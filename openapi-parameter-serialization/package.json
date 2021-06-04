@@ -1,0 +1,27 @@
+{
+  "name": "@oats-ts/openapi-parameter-serialization",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {},
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "ncc build src/index.ts -o lib"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {
+    "@types/node": "^15.12.0",
+    "@vercel/ncc": "0.28.6",
+    "typescript": "4.3.2"
+  }
+}
