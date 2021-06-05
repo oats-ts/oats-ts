@@ -2,13 +2,14 @@ export type Primitive = string | number | boolean
 export type PrimitiveArray = ReadonlyArray<Primitive>
 export type PrimitiveRecord = Record<string, Primitive>
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
+export type ParameterObject = Record<string, ParameterValue>
 
 export type Options<T> = {
   defaultValue?: T
-  encode?: boolean
+  allowReserved?: boolean
   explode?: boolean
-  allowEmpty?: boolean
+  allowEmptyValue?: boolean
   required?: boolean
 }
 
-export type Serializer = (name: string) => (value: ParameterValue) => string
+export type Serializer<T extends ParameterValue> = (name: string) => (value: T) => string

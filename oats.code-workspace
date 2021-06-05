@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "openapi-parameter-serialization",
+      "path": "openapi-parameter-serialization"
+    },
+    {
+      "name": "root",
+      "path": "."
+    }
+  ]
+}
