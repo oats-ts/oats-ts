@@ -1,17 +1,16 @@
 import { path } from '..'
-import { PathTestData } from '../testUtils'
-import { PathSerializerCreator } from '../types'
-import { pathSimplePrimitiveTestData } from './pathSerializers.testdata'
+import { createSerializerTest } from '../testUtils'
+import {
+  pathLabelArrayTestData,
+  pathLabelPrimitiveTestData,
+  pathSimpleArrayTestData,
+  pathSimpleObjectTestData,
+  pathSimplePrimitiveTestData,
+} from './pathSerializers.testdata'
 
-function createQueryTest(name: string, data: PathTestData, fn: PathSerializerCreator<any>): void {
-  describe(name, () => {
-    it.each(data.data)('should be "%s", given options: %s, name %s, value: %s', (expected, options, name, value) => {
-      expect(fn(options)(name)(value)).toEqual(expected)
-    })
-    it.each(data.error)('should throw, given options: %s, name %s, value: %s', (options, name, value) => {
-      expect(() => fn(options)(name)(value)).toThrowError()
-    })
-  })
-}
+createSerializerTest('path.simple.primitive', pathSimplePrimitiveTestData, path.simple.primitive)
+createSerializerTest('path.simple.array', pathSimpleArrayTestData, path.simple.array)
+createSerializerTest('path.simple.object', pathSimpleObjectTestData, path.simple.object)
 
-createQueryTest('path.simple.primitive', pathSimplePrimitiveTestData, path.simple.primitive)
+createSerializerTest('path.label.primitive', pathLabelPrimitiveTestData, path.label.primitive)
+createSerializerTest('path.label.array', pathLabelArrayTestData, path.label.array)
