@@ -1,8 +1,8 @@
-import { Options, Primitive } from '../types'
+import { QueryOptions, Primitive } from '../types'
 
 export const cookieFormPrimitive =
-  <T extends Primitive>(options: Options<T>) =>
+  <T extends Primitive>(options: QueryOptions<T>) =>
   (name: string) =>
   (value: T) => {
-    return ''
+    throw new Error('not implemented')
   }

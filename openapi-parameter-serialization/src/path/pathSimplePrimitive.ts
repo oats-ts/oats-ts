@@ -1,8 +1,9 @@
-import { Options, Primitive } from '../types'
+import { Primitive, PathOptions } from '../types'
+import { encode, getPathValue } from '../utils'
 
 export const pathSimplePrimitive =
-  <T extends Primitive>(options: Options<T>) =>
+  <T extends Primitive>(options: PathOptions<T>) =>
   (name: string) =>
-  (value: T) => {
-    return ''
+  (data: T): string => {
+    return encode(getPathValue(name, data, options), options.allowReserved)
   }

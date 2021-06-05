@@ -1,13 +1,13 @@
-import { Options, PrimitiveArray } from '../types'
-import { encode, getValue, isNil } from '../utils'
+import { QueryOptions, PrimitiveArray } from '../types'
+import { encode, getQueryValue, isNil } from '../utils'
 
 export const queryDelimitedArray =
   (delimiter: string) =>
-  <T extends PrimitiveArray>(opts: Options<T>) =>
+  <T extends PrimitiveArray>(opts: QueryOptions<T>) =>
   (name: string) =>
   (data: T): string[] => {
-    const options: Options<T> = { explode: true, ...opts }
-    const value = getValue(name, data, options)
+    const options: QueryOptions<T> = { explode: true, ...opts }
+    const value = getQueryValue(name, data, options)
     if (isNil(value)) {
       return []
     }

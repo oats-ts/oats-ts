@@ -1,5 +1,5 @@
 import { query } from '..'
-import { createQueryString } from './createQueryString'
+import { createQuerySerializer } from './createQuerySerializer'
 
 type Q = {
   a: string
@@ -9,7 +9,7 @@ type Q = {
   e: Record<string, number>
 }
 
-const serializer = createQueryString<Q>({
+const serializer = createQuerySerializer<Q>({
   a: query.form.primitive<string>({}),
   b: query.form.primitive<number>({}),
   c: query.form.primitive<boolean>({}),
@@ -18,7 +18,7 @@ const serializer = createQueryString<Q>({
 })
 
 // TODO more full scope tests
-describe('createQueryString', () => {
+describe('createQuerySerializer', () => {
   it('should create query string with all the parts necessary', () => {
     const queryString = serializer({
       a: 'some string',

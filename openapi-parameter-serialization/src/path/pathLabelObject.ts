@@ -1,8 +1,16 @@
-import { Options, PrimitiveRecord } from '../types'
+import { PrimitiveRecord, PathOptions } from '../types'
+import { entries, getPathValue } from '../utils'
+import { joinKeyValuePairs } from './joinKeyValuePairs'
 
 export const pathLabelObject =
-  <T extends PrimitiveRecord>(options: Options<T>) =>
+  <T extends PrimitiveRecord>(options: PathOptions<T>) =>
   (name: string) =>
-  (value: T) => {
-    return ''
+  (data: T): string => {
+    return joinKeyValuePairs(
+      '.',
+      options.explode ? '=' : ',',
+      ',',
+      entries(getPathValue(name, data, options)),
+      options.allowReserved,
+    )
   }

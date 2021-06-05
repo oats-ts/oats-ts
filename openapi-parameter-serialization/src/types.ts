@@ -4,12 +4,22 @@ export type PrimitiveRecord = Record<string, Primitive>
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 export type ParameterObject = Record<string, ParameterValue>
 
-export type Options<T> = {
+export type QueryOptions<T> = {
   defaultValue?: T
   allowReserved?: boolean
   explode?: boolean
   required?: boolean
 }
 
-export type Serializer<T extends ParameterValue> = (name: string) => (value: T) => string[]
-export type SerializerCreator<T extends ParameterValue> = (options: Options<T>) => Serializer<T>
+export type QuerySerializer<T extends ParameterValue> = (name: string) => (value: T) => string[]
+export type QuerySerializerCreator<T extends ParameterValue> = (options: QueryOptions<T>) => QuerySerializer<T>
+
+// Path params always required https://swagger.io/docs/specification/describing-parameters/#path-parameters
+export type PathOptions<T> = {
+  defaultValue?: T
+  allowReserved?: boolean
+  explode?: boolean
+}
+
+export type PathSerializer<T extends ParameterValue> = (name: string) => (value: T) => string
+export type PathSerializerCreator<T extends ParameterValue> = (options: PathOptions<T>) => PathSerializer<T>

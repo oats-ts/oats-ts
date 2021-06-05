@@ -1,7 +1,7 @@
 import { query } from '..'
-import { SerializerCreator } from '../types'
+import { QuerySerializerCreator } from '../types'
 
-import { TestData } from '../testUtils'
+import { QueryTestData } from '../testUtils'
 
 import {
   queryFormPrimitiveTestData,
@@ -12,7 +12,7 @@ import {
   queryDeepObjectObjectTestData,
 } from './querySerializers.testdata'
 
-function createQueryTest(name: string, data: TestData, fn: SerializerCreator<any>): void {
+function createQueryTest(name: string, data: QueryTestData, fn: QuerySerializerCreator<any>): void {
   describe(name, () => {
     it.each(data.data)('should be "%s", given options: %s, name %s, value: %s', (expected, options, name, value) => {
       expect(fn(options)(name)(value)).toEqual(expected)

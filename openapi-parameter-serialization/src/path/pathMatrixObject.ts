@@ -1,8 +1,16 @@
-import { Options, PrimitiveRecord } from '../types'
+import { PrimitiveRecord, PathOptions } from '../types'
+import { encode, entries, getPathValue } from '../utils'
+import { joinKeyValuePairs } from './joinKeyValuePairs'
 
 export const pathMatrixObject =
-  <T extends PrimitiveRecord>(options: Options<T>) =>
+  <T extends PrimitiveRecord>(options: PathOptions<T>) =>
   (name: string) =>
   (value: T) => {
-    return ''
+    return joinKeyValuePairs(
+      options.explode ? ';' : `;${encode(name, options.allowReserved)}=`,
+      options.explode ? '=' : ',',
+      options.explode ? ';' : ',',
+      entries(getPathValue(name, value, options)),
+      options.allowReserved,
+    )
   }

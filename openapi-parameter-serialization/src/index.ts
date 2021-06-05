@@ -20,7 +20,7 @@ import { queryFormPrimitive } from './query/queryFormPrimitive'
 import { queryPipeDelimitedArray } from './query/queryPipeDelimitedArray'
 import { querySpaceDelimitedArray } from './query/querySpaceDelimitedArray'
 
-export { createQueryString } from './query/createQueryString'
+export { createQuerySerializer as createQueryString } from './query/createQuerySerializer'
 
 export const query = {
   form: {

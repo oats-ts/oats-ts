@@ -1,12 +1,12 @@
-import { Options, PrimitiveRecord } from '../types'
-import { encode, entries, getValue, isNil } from '../utils'
+import { QueryOptions, PrimitiveRecord } from '../types'
+import { encode, entries, getQueryValue, isNil } from '../utils'
 
 export const queryDeepObjectObject =
-  <T extends PrimitiveRecord>(opts: Options<T>) =>
+  <T extends PrimitiveRecord>(opts: QueryOptions<T>) =>
   (name: string) =>
   (data: T): string[] => {
-    const options: Options<T> = { explode: true, ...opts }
-    const value = getValue(name, data, options)
+    const options: QueryOptions<T> = { explode: true, ...opts }
+    const value = getQueryValue(name, data, options)
 
     if (!options.explode) {
       throw new TypeError(`"${name}" can only be serialized as with explode=true`)

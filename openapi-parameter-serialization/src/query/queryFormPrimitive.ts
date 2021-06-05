@@ -1,11 +1,11 @@
-import { Options, Primitive } from '../types'
-import { encode, getValue, isNil } from '../utils'
+import { QueryOptions, Primitive } from '../types'
+import { encode, getQueryValue, isNil } from '../utils'
 
 export const queryFormPrimitive =
-  <T extends Primitive>(options: Options<T>) =>
+  <T extends Primitive>(options: QueryOptions<T>) =>
   (name: string) =>
   (data: T): string[] => {
-    const value = getValue(name, data, options)
+    const value = getQueryValue(name, data, options)
     if (isNil(value)) {
       return []
     }

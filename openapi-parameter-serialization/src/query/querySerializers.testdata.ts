@@ -1,6 +1,6 @@
-import { TestData } from '../testUtils'
+import { QueryTestData } from '../testUtils'
 
-export const queryFormPrimitiveTestData: TestData = {
+export const queryFormPrimitiveTestData: QueryTestData = {
   data: [
     [['foo=bar'], {}, 'foo', 'bar'],
     [['cat=1'], {}, 'cat', 1],
@@ -16,7 +16,7 @@ export const queryFormPrimitiveTestData: TestData = {
   ],
 }
 
-export const queryFormArrayTestData: TestData = {
+export const queryFormArrayTestData: QueryTestData = {
   data: [
     [['foo=bar'], {}, 'foo', ['bar']],
     [['foo=a', 'foo=b', 'foo=c'], {}, 'foo', ['a', 'b', 'c']],
@@ -28,7 +28,7 @@ export const queryFormArrayTestData: TestData = {
   ],
 }
 
-export const queryFormObjectTestData: TestData = {
+export const queryFormObjectTestData: QueryTestData = {
   data: [
     [['a=foo', 'b=1', 'c=false'], {}, 'foo', { a: 'foo', b: 1, c: false }],
     [['foo=a,foo,b,1,c,false'], { explode: false }, 'foo', { a: 'foo', b: 1, c: false }],
@@ -39,7 +39,7 @@ export const queryFormObjectTestData: TestData = {
   ],
 }
 
-export const querySpaceDelimitedArrayTestData: TestData = {
+export const querySpaceDelimitedArrayTestData: QueryTestData = {
   data: [
     [['foo=bar'], {}, 'foo', ['bar']],
     [['foo=a', 'foo=b', 'foo=c'], {}, 'foo', ['a', 'b', 'c']],
@@ -51,7 +51,7 @@ export const querySpaceDelimitedArrayTestData: TestData = {
   ],
 }
 
-export const queryPipeDelimitedArrayTestData: TestData = {
+export const queryPipeDelimitedArrayTestData: QueryTestData = {
   data: [
     [['foo=bar'], {}, 'foo', ['bar']],
     [['foo=a', 'foo=b', 'foo=c'], {}, 'foo', ['a', 'b', 'c']],
@@ -63,7 +63,7 @@ export const queryPipeDelimitedArrayTestData: TestData = {
   ],
 }
 
-export const queryDeepObjectObjectTestData: TestData = {
+export const queryDeepObjectObjectTestData: QueryTestData = {
   data: [[['foo[a]=foo', 'foo[b]=1', 'foo[c]=false'], {}, 'foo', { a: 'foo', b: 1, c: false }]],
   error: [
     [{ required: true }, 'foo', undefined],

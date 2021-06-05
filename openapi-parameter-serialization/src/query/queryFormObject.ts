@@ -1,12 +1,12 @@
-import { Options, PrimitiveRecord } from '../types'
-import { entries, getValue, isNil, encode } from '../utils'
+import { QueryOptions, PrimitiveRecord } from '../types'
+import { entries, getQueryValue, isNil, encode } from '../utils'
 
 export const queryFormObject =
-  <T extends PrimitiveRecord>(opts: Options<T>) =>
+  <T extends PrimitiveRecord>(opts: QueryOptions<T>) =>
   (name: string) =>
   (data: T): string[] => {
-    const options: Options<T> = { explode: true, ...opts }
-    const value = getValue(name, data, options)
+    const options: QueryOptions<T> = { explode: true, ...opts }
+    const value = getQueryValue(name, data, options)
     if (isNil(value)) {
       return []
     }
