@@ -1,0 +1,73 @@
+import { TestData } from '../testUtils'
+
+export const queryFormPrimitiveTestData: TestData = {
+  data: [
+    [['foo=bar'], {}, 'foo', 'bar'],
+    [['cat=1'], {}, 'cat', 1],
+    [['dog=false'], {}, 'dog', false],
+    [['x=true'], {}, 'x', true],
+    [['x=foo bar'], { allowReserved: true }, 'x', 'foo bar'],
+    [['x=foo%20bar'], { allowReserved: false }, 'x', 'foo bar'],
+    [['x=5'], { defaultValue: 5 }, 'x', undefined],
+  ],
+  error: [
+    [{ required: true }, 'foo', undefined],
+    [{ required: true }, 'foo', null],
+  ],
+}
+
+export const queryFormArrayTestData: TestData = {
+  data: [
+    [['foo=bar'], {}, 'foo', ['bar']],
+    [['foo=a', 'foo=b', 'foo=c'], {}, 'foo', ['a', 'b', 'c']],
+    [['foo=a,b,c'], { explode: false }, 'foo', ['a', 'b', 'c']],
+  ],
+  error: [
+    [{ required: true }, 'foo', undefined],
+    [{ required: true }, 'foo', null],
+  ],
+}
+
+export const queryFormObjectTestData: TestData = {
+  data: [
+    [['a=foo', 'b=1', 'c=false'], {}, 'foo', { a: 'foo', b: 1, c: false }],
+    [['foo=a,foo,b,1,c,false'], { explode: false }, 'foo', { a: 'foo', b: 1, c: false }],
+  ],
+  error: [
+    [{ required: true }, 'foo', undefined],
+    [{ required: true }, 'foo', null],
+  ],
+}
+
+export const querySpaceDelimitedArrayTestData: TestData = {
+  data: [
+    [['foo=bar'], {}, 'foo', ['bar']],
+    [['foo=a', 'foo=b', 'foo=c'], {}, 'foo', ['a', 'b', 'c']],
+    [['foo=a%20b%20c'], { explode: false }, 'foo', ['a', 'b', 'c']],
+  ],
+  error: [
+    [{ required: true }, 'foo', undefined],
+    [{ required: true }, 'foo', null],
+  ],
+}
+
+export const queryPipeDelimitedArrayTestData: TestData = {
+  data: [
+    [['foo=bar'], {}, 'foo', ['bar']],
+    [['foo=a', 'foo=b', 'foo=c'], {}, 'foo', ['a', 'b', 'c']],
+    [['foo=a|b|c'], { explode: false }, 'foo', ['a', 'b', 'c']],
+  ],
+  error: [
+    [{ required: true }, 'foo', undefined],
+    [{ required: true }, 'foo', null],
+  ],
+}
+
+export const queryDeepObjectObjectTestData: TestData = {
+  data: [[['foo[a]=foo', 'foo[b]=1', 'foo[c]=false'], {}, 'foo', { a: 'foo', b: 1, c: false }]],
+  error: [
+    [{ required: true }, 'foo', undefined],
+    [{ required: true }, 'foo', null],
+    [{ explode: false }, 'foo', { a: 'foo', b: 1, c: false }],
+  ],
+}

@@ -8,8 +8,8 @@ export type Options<T> = {
   defaultValue?: T
   allowReserved?: boolean
   explode?: boolean
-  allowEmptyValue?: boolean
   required?: boolean
 }
 
-export type Serializer<T extends ParameterValue> = (name: string) => (value: T) => string
+export type Serializer<T extends ParameterValue> = (name: string) => (value: T) => string[]
+export type SerializerCreator<T extends ParameterValue> = (options: Options<T>) => Serializer<T>

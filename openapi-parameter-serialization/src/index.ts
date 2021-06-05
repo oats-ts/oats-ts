@@ -13,8 +13,7 @@ import { pathMatrixPrimitive } from './path/pathMatrixPrimitive'
 import { pathSimpleArray } from './path/pathSimpleArray'
 import { pathSimpleObject } from './path/pathSimpleObject'
 import { pathSimplePrimitive } from './path/pathSimplePrimitive'
-import { createQueryString } from './query/createQueryString'
-import { queryDeepObject } from './query/queryDeepObjectObject'
+import { queryDeepObjectObject } from './query/queryDeepObjectObject'
 import { queryFormArray } from './query/queryFormArray'
 import { queryFormObject } from './query/queryFormObject'
 import { queryFormPrimitive } from './query/queryFormPrimitive'
@@ -36,7 +35,7 @@ export const query = {
     array: queryPipeDelimitedArray,
   },
   deepObject: {
-    object: queryDeepObject,
+    object: queryDeepObjectObject,
   },
 }
 
@@ -73,27 +72,3 @@ export const path = {
     object: pathLabelObject,
   },
 }
-
-type X = {
-  s: string
-  n: number
-  b: boolean
-  a: string[]
-  o: Record<string, number>
-}
-
-const querySerializer = createQueryString<X>({
-  s: query.form.primitive<string>({}),
-  n: query.form.primitive<number>({}),
-  b: query.form.primitive<boolean>({}),
-  a: query.form.array<string[]>({}),
-  o: query.form.object<Record<string, number>>({}),
-})
-
-const str = querySerializer({
-  s: '',
-  n: 1,
-  b: true,
-  a: [],
-  o: {},
-})

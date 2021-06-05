@@ -1,13 +1,15 @@
 import { Options, Primitive } from '../types'
-import { encode, getPrimitiveValue, isNil } from '../utils'
+import { encode, getValue, isNil } from '../utils'
 
 export const queryFormPrimitive =
   <T extends Primitive>(options: Options<T>) =>
   (name: string) =>
-  (data: T) => {
-    const value = getPrimitiveValue(name, data, options)
+  (data: T): string[] => {
+    const value = getValue(name, data, options)
     if (isNil(value)) {
-      return options.allowEmptyValue ? encode(name, options.allowReserved) : undefined
+      return []
     }
-    return `${encode(name, options.allowReserved)}=${encode(value, options.allowReserved)}`
+    const keyStr = encode(name, options.allowReserved)
+    const valStr = encode(value, options.allowReserved)
+    return [`${keyStr}=${valStr}`]
   }

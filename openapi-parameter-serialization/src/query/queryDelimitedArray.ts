@@ -1,7 +1,8 @@
 import { Options, PrimitiveArray } from '../types'
 import { encode, getValue, isNil } from '../utils'
 
-export const queryFormArray =
+export const queryDelimitedArray =
+  (delimiter: string) =>
   <T extends PrimitiveArray>(opts: Options<T>) =>
   (name: string) =>
   (data: T): string[] => {
@@ -17,5 +18,5 @@ export const queryFormArray =
       }
       return value.map((item) => `${keyStr}=${encode(item, options.allowReserved)}`)
     }
-    return [`${keyStr}=${value.map((item) => encode(item, options.allowReserved)).join(',')}`]
+    return [`${keyStr}=${value.map((item) => encode(item, options.allowReserved)).join(delimiter)}`]
   }

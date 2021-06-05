@@ -1,8 +1,4 @@
-import { Options, Primitive, PrimitiveArray } from '../types'
+import { queryDelimitedArray } from './queryDelimitedArray'
 
-export const querySpaceDelimitedArray =
-  <T extends PrimitiveArray>(options: Options<T>) =>
-  (name: string) =>
-  (value: T) => {
-    return ''
-  }
+// TODO not factoring in allowReserved with the separator...
+export const querySpaceDelimitedArray = queryDelimitedArray(encodeURIComponent(' '))

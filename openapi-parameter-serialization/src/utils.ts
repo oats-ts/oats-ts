@@ -1,25 +1,29 @@
-import { Options, Primitive } from './types'
+import { Options, ParameterValue, Primitive } from './types'
 
-export function isNil(input: any): boolean {
+export function isNil(input: any): input is null | undefined {
   return input === null || input === undefined
 }
 
-export function getPrimitiveValue<T extends Primitive>(name: string, value: T, options: Options<T>): string {
+export function entries(input: object): [string, any][] {
+  return Object.keys(input).map((key: string) => [key, (input as any)[key]])
+}
+
+export function getValue<T extends ParameterValue>(name: string, value: T, options: Options<T>): T {
   if (!isNil(value)) {
-    return value.toString()
+    return value
   }
   if (!isNil(options.defaultValue)) {
-    return options.defaultValue.toString()
+    return options.defaultValue
   }
-  if (!options.required || options.allowEmptyValue) {
+  if (!options.required) {
     return undefined
   }
   throw new TypeError(`parameter "${name}" should be defined`)
 }
 
-export function encode(value: string, allowReserved: boolean): string {
+export function encode<T>(value: T, allowReserved: boolean): string {
   if (isNil(value)) {
     return undefined
   }
-  return allowReserved ? value : encodeURIComponent(value)
+  return allowReserved ? `${value}` : encodeURIComponent(`${value}`)
 }
