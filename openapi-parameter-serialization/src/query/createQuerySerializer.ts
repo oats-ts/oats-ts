@@ -1,7 +1,7 @@
-import { ParameterObject, QuerySerializer } from '../types'
+import { ParameterObject, QuerySerializers } from '../types'
 
 export const createQuerySerializer =
-  <T extends ParameterObject>(serializers: { [P in keyof T]: QuerySerializer<T[P]> }) =>
+  <T extends ParameterObject>(serializers: QuerySerializers<T>) =>
   (input: T): string => {
     const parts: string[] = []
     const keys = Object.keys(serializers)
