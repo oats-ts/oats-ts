@@ -5,5 +5,5 @@ export const pathSimplePrimitive =
   <T extends Primitive>(options: PathOptions<T>) =>
   (name: string) =>
   (data: T): string => {
-    return encode(getPathValue(name, data, options), options.allowReserved)
+    return encode(getPathValue(name, data, options))
   }

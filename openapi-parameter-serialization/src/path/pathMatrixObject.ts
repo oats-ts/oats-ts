@@ -7,10 +7,9 @@ export const pathMatrixObject =
   (name: string) =>
   (value: T) => {
     return joinKeyValuePairs(
-      options.explode ? ';' : `;${encode(name, options.allowReserved)}=`,
+      options.explode ? ';' : `;${encode(name)}=`,
       options.explode ? '=' : ',',
       options.explode ? ';' : ',',
       entries(getPathValue(name, value, options)),
-      options.allowReserved,
     )
   }

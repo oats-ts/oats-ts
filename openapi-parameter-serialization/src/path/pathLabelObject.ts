@@ -6,11 +6,5 @@ export const pathLabelObject =
   <T extends PrimitiveRecord>(options: PathOptions<T>) =>
   (name: string) =>
   (data: T): string => {
-    return joinKeyValuePairs(
-      '.',
-      options.explode ? '=' : ',',
-      ',',
-      entries(getPathValue(name, data, options)),
-      options.allowReserved,
-    )
+    return joinKeyValuePairs('.', options.explode ? '=' : ',', ',', entries(getPathValue(name, data, options)))
   }

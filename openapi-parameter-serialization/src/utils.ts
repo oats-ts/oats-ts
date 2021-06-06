@@ -41,6 +41,6 @@ export function getPathValue<T extends ParameterValue>(name: string, value: T, {
   throw new TypeError(`Path parameter "${name}" should be defined`)
 }
 
-export function encode<T>(value: T, allowReserved: boolean): string {
+export function encode<T>(value: T, allowReserved: boolean = false): string {
   return allowReserved ? `${value}` : encodeURIComponent(`${value}`)
 }

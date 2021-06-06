@@ -6,12 +6,11 @@ export function joinKeyValuePairs(
   kvSeparator: string,
   separator: string,
   items: [string, Primitive][],
-  allowReserved: boolean,
 ): string {
   const itemsStr = items
     .map(([key, value]) => {
-      const keyStr = encode(key, allowReserved)
-      const valStr = encode(value, allowReserved)
+      const keyStr = encode(key)
+      const valStr = encode(value)
       return `${keyStr}${kvSeparator}${valStr}`
     })
     .join(separator)

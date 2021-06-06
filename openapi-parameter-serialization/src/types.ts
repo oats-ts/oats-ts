@@ -19,7 +19,6 @@ export type QuerySerializers<T extends ParameterObject> = { [P in keyof T]: Quer
 // Path params always required https://swagger.io/docs/specification/describing-parameters/#path-parameters
 export type PathOptions<T> = {
   defaultValue?: T
-  allowReserved?: boolean
   explode?: boolean
 }
 

@@ -8,18 +8,12 @@ export const pathMatrixArray =
   (name: string) =>
   (data: T): string => {
     if (!options.explode) {
-      return joinArrayItems(
-        `;${encode(name, options.allowReserved)}=`,
-        ',',
-        getPathValue(name, data, options),
-        options.allowReserved,
-      )
+      return joinArrayItems(`;${encode(name)}=`, ',', getPathValue(name, data, options))
     }
     return joinKeyValuePairs(
       ';',
       '=',
       ';',
       getPathValue(name, data, options).map((v): [string, Primitive] => [name, v]),
-      options.allowReserved,
     )
   }

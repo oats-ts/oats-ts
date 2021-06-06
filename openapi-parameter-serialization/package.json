@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "ncc build src/index.ts -o lib"
+    "build": "ncc build src/index.ts -o lib",
+    "typecheck": "tsc --noEmit"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"
