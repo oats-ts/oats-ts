@@ -1,10 +1,12 @@
 import { PrimitiveRecord, PathOptions } from '../types'
-import { entries, getPathValue } from '../utils'
+import { entries } from '../utils'
 import { joinKeyValuePairs } from './joinKeyValuePairs'
+import { getPathValue, validatePathObject } from './pathUtils'
 
 export const pathLabelObject =
   <T extends PrimitiveRecord>(options: PathOptions<T>) =>
   (name: string) =>
   (data: T): string => {
-    return joinKeyValuePairs('.', options.explode ? '=' : ',', ',', entries(getPathValue(name, data, options)))
+    const value = validatePathObject(name, getPathValue(name, data, options))
+    return joinKeyValuePairs('.', options.explode ? '=' : ',', ',', entries(value))
   }

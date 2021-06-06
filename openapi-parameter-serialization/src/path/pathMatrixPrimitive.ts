@@ -1,11 +1,13 @@
 import { Primitive, PathOptions } from '../types'
-import { encode, getPathValue } from '../utils'
+import { encode } from '../utils'
+import { getPathValue, validatePathPrimitive } from './pathUtils'
 
 export const pathMatrixPrimitive =
   <T extends Primitive>(options: PathOptions<T>) =>
   (name: string) =>
-  (value: T) => {
+  (data: T) => {
+    const value = validatePathPrimitive(name, getPathValue(name, data, options))
     const nameStr = encode(name)
-    const valueStr = encode(getPathValue(name, value, options))
+    const valueStr = encode(value)
     return `;${nameStr}=${valueStr}`
   }

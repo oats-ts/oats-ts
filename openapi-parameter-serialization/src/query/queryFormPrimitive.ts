@@ -1,5 +1,6 @@
 import { QueryOptions, Primitive } from '../types'
-import { encode, getQueryValue, isNil } from '../utils'
+import { encode, isNil } from '../utils'
+import { getQueryValue } from './queryUtils'
 
 export const queryFormPrimitive =
   <T extends Primitive>(options: QueryOptions<T>) =>

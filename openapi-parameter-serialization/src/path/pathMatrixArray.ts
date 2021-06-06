@@ -1,19 +1,21 @@
 import { PrimitiveArray, PathOptions, Primitive } from '../types'
-import { encode, getPathValue } from '../utils'
+import { encode } from '../utils'
 import { joinArrayItems } from './joinArrayItems'
 import { joinKeyValuePairs } from './joinKeyValuePairs'
+import { getPathValue, validatePathArray } from './pathUtils'
 
 export const pathMatrixArray =
   <T extends PrimitiveArray>(options: PathOptions<T>) =>
   (name: string) =>
   (data: T): string => {
+    const value = validatePathArray(name, getPathValue(name, data, options))
     if (!options.explode) {
-      return joinArrayItems(`;${encode(name)}=`, ',', getPathValue(name, data, options))
+      return joinArrayItems(`;${encode(name)}=`, ',', value)
     }
     return joinKeyValuePairs(
       ';',
       '=',
       ';',
-      getPathValue(name, data, options).map((v): [string, Primitive] => [name, v]),
+      value.map((v): [string, Primitive] => [name, v]),
     )
   }

@@ -1,5 +1,6 @@
 import { QueryOptions, PrimitiveArray } from '../types'
-import { encode, getQueryValue, isNil } from '../utils'
+import { encode, isNil } from '../utils'
+import { getQueryValue } from './queryUtils'
 
 export const queryDelimitedArray =
   (delimiter: string) =>

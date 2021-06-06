@@ -11,6 +11,7 @@ export const pathSimplePrimitiveTestData: PathTestData = {
   error: [
     [{}, 'foo', undefined],
     [{}, 'foo', null],
+    [{}, 'foo', ''],
   ],
 }
 
@@ -26,6 +27,7 @@ export const pathSimpleArrayTestData: PathTestData = {
     [{}, 'foo', undefined],
     [{}, 'foo', null],
     [{}, 'foo', []],
+    [{}, 'foo', ['']],
   ],
 }
 
@@ -52,6 +54,7 @@ export const pathLabelPrimitiveTestData: PathTestData = {
   error: [
     [{}, 'foo', undefined],
     [{}, 'foo', null],
+    [{}, 'foo', ''],
   ],
 }
 
@@ -69,6 +72,7 @@ export const pathLabelArrayTestData: PathTestData = {
     [{}, 'foo', undefined],
     [{}, 'foo', null],
     [{}, 'foo', []],
+    [{}, 'foo', ['']],
   ],
 }
 
@@ -95,6 +99,7 @@ export const pathMatrixPrimitiveTestData: PathTestData = {
   error: [
     [{}, 'foo', undefined],
     [{}, 'foo', null],
+    [{}, 'foo', ''],
   ],
 }
 
@@ -112,6 +117,7 @@ export const pathMatrixArrayTestData: PathTestData = {
     [{}, 'foo', undefined],
     [{}, 'foo', null],
     [{}, 'foo', []],
+    [{}, 'foo', ['']],
   ],
 }
 

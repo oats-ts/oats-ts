@@ -1,5 +1,6 @@
 import { QueryOptions, PrimitiveRecord } from '../types'
-import { entries, getQueryValue, isNil, encode } from '../utils'
+import { entries, isNil, encode } from '../utils'
+import { getQueryValue } from './queryUtils'
 
 export const queryFormObject =
   <T extends PrimitiveRecord>(opts: QueryOptions<T>) =>

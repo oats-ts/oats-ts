@@ -1,10 +1,11 @@
 import { PrimitiveArray, PathOptions } from '../types'
-import { getPathValue } from '../utils'
 import { joinArrayItems } from './joinArrayItems'
+import { getPathValue, validatePathArray } from './pathUtils'
 
 export const pathSimpleArray =
   <T extends PrimitiveArray>(options: PathOptions<T>) =>
   (name: string) =>
   (data: T): string => {
-    return joinArrayItems('', ',', getPathValue(name, data, options))
+    const value = validatePathArray(name, getPathValue(name, data, options))
+    return joinArrayItems('', ',', value)
   }

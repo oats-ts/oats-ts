@@ -1,5 +1,6 @@
 import { QueryOptions, PrimitiveRecord } from '../types'
-import { encode, entries, getQueryValue, isNil } from '../utils'
+import { encode, entries, isNil } from '../utils'
+import { getQueryValue } from './queryUtils'
 
 export const queryDeepObjectObject =
   <T extends PrimitiveRecord>(opts: QueryOptions<T>) =>
