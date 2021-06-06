@@ -1,12 +1,16 @@
 {
   "folders": [
     {
+      "name": "root",
+      "path": "."
+    },
+    {
       "name": "openapi-parameter-serialization",
       "path": "openapi-parameter-serialization"
     },
     {
-      "name": "root",
-      "path": "."
-    }
+      "name": "validator",
+      "path": "validator"
+    },
   ]
 }
