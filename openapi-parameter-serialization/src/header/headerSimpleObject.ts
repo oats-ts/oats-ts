@@ -1,8 +1,18 @@
-import { QueryOptions, PrimitiveRecord } from '../types'
+import { HeaderOptions, PrimitiveRecord } from '../types'
+import { encode, entries, isNil } from '../utils'
+import { getHeaderValue } from './headerUtils'
 
 export const headerSimpleObject =
-  <T extends PrimitiveRecord>(options: QueryOptions<T>) =>
+  <T extends PrimitiveRecord>(options: HeaderOptions<T>) =>
   (name: string) =>
-  (value: T) => {
-    return ''
+  (data: T): string => {
+    const value = getHeaderValue(name, data, options)
+    if (isNil(value)) {
+      return undefined
+    }
+    const kvPairs = entries(value).map(([key, value]): [string, string] => [encode(key), encode(value)])
+    if (options.explode) {
+      return kvPairs.map(([key, value]) => `${key}=${value}`).join(',')
+    }
+    return kvPairs.map(([key, value]) => `${key},${value}`).join(',')
   }

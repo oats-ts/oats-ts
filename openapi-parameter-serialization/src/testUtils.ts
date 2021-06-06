@@ -1,4 +1,4 @@
-import { QueryOptions, ParameterValue, PathOptions } from './types'
+import { QueryOptions, ParameterValue, PathOptions, HeaderOptions } from './types'
 
 export type SerialzerCreator<Result, Options> = (options: Options) => (name: string) => (data: ParameterValue) => Result
 
@@ -16,6 +16,10 @@ export type QueryTestData = TestData<string[], QueryOptions<any>>
 export type PathTestDataInput = TestDataInput<string, PathOptions<any>>
 export type PathTestErrorInput = TestErrorInput<PathOptions<any>>
 export type PathTestData = TestData<string, PathOptions<any>>
+
+export type HeaderTestDataInput = TestDataInput<string, HeaderOptions<any>>
+export type HeaderTestErrorInput = TestErrorInput<HeaderOptions<any>>
+export type HeaderTestData = TestData<string, HeaderOptions<any>>
 
 export function createSerializerTest<Result, Options>(
   name: string,

@@ -1,6 +1,6 @@
-import { cookieFormArray } from './cookie/cookieFormArray'
-import { cookieFormObject } from './cookie/cookieFormObject'
-import { cookieFormPrimitive } from './cookie/cookieFormPrimitive'
+// import { cookieFormArray } from './cookie/cookieFormArray'
+// import { cookieFormObject } from './cookie/cookieFormObject'
+// import { cookieFormPrimitive } from './cookie/cookieFormPrimitive'
 import { headerSimpleArray } from './header/headerSimpleArray'
 import { headerSimpleObject } from './header/headerSimpleObject'
 import { headerSimplePrimitive } from './header/headerSimplePrimitive'
@@ -20,7 +20,8 @@ import { queryFormPrimitive } from './query/queryFormPrimitive'
 import { queryPipeDelimitedArray } from './query/queryPipeDelimitedArray'
 import { querySpaceDelimitedArray } from './query/querySpaceDelimitedArray'
 
-export { createQuerySerializer as createQueryString } from './query/createQuerySerializer'
+export { createQuerySerializer } from './query/createQuerySerializer'
+export { createPathSerializer } from './path/createPathSerializer'
 
 export const query = {
   form: {
@@ -47,14 +48,6 @@ export const header = {
   },
 }
 
-export const cookie = {
-  form: {
-    primitive: cookieFormPrimitive,
-    array: cookieFormArray,
-    object: cookieFormObject,
-  },
-}
-
 export const path = {
   simple: {
     primitive: pathSimplePrimitive,
@@ -72,3 +65,12 @@ export const path = {
     object: pathLabelObject,
   },
 }
+
+// TODO no idea what to do with this
+// export const cookie = {
+//   form: {
+//     primitive: cookieFormPrimitive,
+//     array: cookieFormArray,
+//     object: cookieFormObject,
+//   },
+// }

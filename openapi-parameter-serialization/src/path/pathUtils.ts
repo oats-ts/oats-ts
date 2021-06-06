@@ -56,7 +56,7 @@ export function getPathValue<T extends ParameterValue>(name: string, value: T, o
   if (!isNil(options.defaultValue)) {
     return options.defaultValue
   }
-  throw new TypeError(`Path parameter "${name}" should be defined`)
+  throw new TypeError(`Path parameter "${name}" should not be ${value}`)
 }
 
 export function validatePathSerializers<T extends ParameterObject>(

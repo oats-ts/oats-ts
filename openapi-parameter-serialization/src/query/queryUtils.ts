@@ -11,5 +11,5 @@ export function getQueryValue<T extends ParameterValue>(name: string, value: T, 
   if (!options.required) {
     return undefined
   }
-  throw new TypeError(`Query parameter "${name}" should be defined`)
+  throw new TypeError(`Query parameter "${name}" not be ${value}`)
 }

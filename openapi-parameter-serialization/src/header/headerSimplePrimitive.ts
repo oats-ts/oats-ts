@@ -1,8 +1,15 @@
-import { QueryOptions, Primitive } from '../types'
+import { Primitive, HeaderOptions } from '../types'
+import { encode, isNil } from '../utils'
+import { getHeaderValue } from './headerUtils'
 
 export const headerSimplePrimitive =
-  <T extends Primitive>(options: QueryOptions<T>) =>
+  <T extends Primitive>(options: HeaderOptions<T>) =>
   (name: string) =>
-  (value: T): string => {
-    return ''
+  (data: T): string => {
+    const value = getHeaderValue(name, data, options)
+    if (isNil(value)) {
+      return undefined
+    }
+    // TODO do we need to encode here???
+    return encode(value)
   }

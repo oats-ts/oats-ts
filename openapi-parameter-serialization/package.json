@@ -5,7 +5,8 @@
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
   "license": "ISC",
-  "main": "index.js",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
   "directories": {},
   "files": [],
   "repository": {
@@ -14,7 +15,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "ncc build src/index.ts -o lib",
+    "build": "tsc",
     "typecheck": "tsc --noEmit"
   },
   "bugs": {
