@@ -9,7 +9,7 @@ export const createHeaderSerializer =
     for (let i = 0; i < keys.length; i += 1) {
       const name = keys[i] as keyof T
       const serializer = serializers[name]
-      headers[name as string] = serializer(name.toString())(input[name])
+      headers[name.toString().toLowerCase()] = serializer(name.toString())(input[name])
     }
 
     return headers
