@@ -1,4 +1,4 @@
-import { path } from '..'
+import { path } from '.'
 import { createSerializerTest } from '../testUtils'
 import {
   pathLabelArrayTestData,

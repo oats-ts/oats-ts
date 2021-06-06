@@ -1,4 +1,4 @@
-import { query } from '..'
+import { query } from '.'
 import { createQuerySerializer } from './createQuerySerializer'
 
 type Q = {

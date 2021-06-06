@@ -1,4 +1,4 @@
-import { query } from '..'
+import { query } from '.'
 import { createSerializerTest } from '../testUtils'
 
 import {

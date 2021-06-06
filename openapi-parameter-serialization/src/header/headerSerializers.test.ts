@@ -1,4 +1,4 @@
-import { header } from '..'
+import { header } from '.'
 import { createSerializerTest } from '../testUtils'
 import {
   headerSimpleArrayTestData,

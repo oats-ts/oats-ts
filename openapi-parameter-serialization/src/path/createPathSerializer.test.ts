@@ -1,4 +1,4 @@
-import { path } from '..'
+import { path } from '.'
 import { PathSerializers } from '../types'
 import { createPathSerializer } from './createPathSerializer'
 
