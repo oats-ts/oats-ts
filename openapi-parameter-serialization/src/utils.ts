@@ -21,12 +21,22 @@ export function getQueryValue<T extends ParameterValue>(name: string, value: T, 
   throw new TypeError(`Query parameter "${name}" should be defined`)
 }
 
-export function getPathValue<T extends ParameterValue>(name: string, value: T, options: PathOptions<T>): T {
+function isEmpty(input: any): boolean {
+  return (Array.isArray(input) && input.length === 0) || (typeof input === 'object' && Object.keys(input).length === 0)
+}
+
+export function getPathValue<T extends ParameterValue>(name: string, value: T, { defaultValue }: PathOptions<T>): T {
   if (!isNil(value)) {
+    if (isEmpty(value)) {
+      throw new TypeError(`Path parameter "${name}" should not be empty`)
+    }
     return value
   }
-  if (!isNil(options.defaultValue)) {
-    return options.defaultValue
+  if (!isNil(defaultValue)) {
+    if (isEmpty(defaultValue)) {
+      throw new TypeError(`Path parameter "${name}" should not be empty`)
+    }
+    return defaultValue
   }
   throw new TypeError(`Path parameter "${name}" should be defined`)
 }
