@@ -1,8 +1,9 @@
-import { Issue, IssueType, Severity, Validator, ValidatorConfig } from '../typings'
+import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
+import { getSeverity, isNil } from '../utils'
 
 export const fields =
-  <T extends object>(validators: Record<keyof T, Validator<any>>): Validator<T> =>
-  (input: object, { path, append }: ValidatorConfig): Issue[] => {
+  <T extends object>(validators: Record<keyof T, Validator<any>>, allowExtraFields = false): Validator<T> =>
+  (input: object, config: ValidatorConfig) => {
     const keys = Object.keys(input)
     const expectedKeys = Object.keys(validators)
     const extraKeys: string[] = keys.filter((key) => expectedKeys.indexOf(key) < 0)
@@ -12,23 +13,23 @@ export const fields =
       const key = expectedKeys[i]
       const value = (input as any)[key]
       const validator = (validators as any)[key]
-      issues.push(
-        ...validator(value, {
-          path: append(path, key),
-          append,
-        }),
-      )
+      const newIssues = validator(value, {
+        ...config,
+        path: config.append(config.path, key),
+      })
+      issues.push(...newIssues)
     }
 
-    // TODO allow extra key validation
-    if (extraKeys.length > 0 && !!false) {
+    const severity = getSeverity(IssueType.KEY, config)
+
+    if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
       issues.push(
         ...extraKeys.map(
           (key): Issue => ({
-            type: IssueType.EXTRA_KEY,
-            severity: Severity.ERROR,
+            type: IssueType.KEY,
             message: `should not have key "${key}"`,
-            path: append(path, key),
+            path: config.append(config.path, key),
+            severity,
           }),
         ),
       )

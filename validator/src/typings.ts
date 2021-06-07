@@ -1,16 +1,7 @@
-export enum ValueType {
-  STRING = 'string',
-  NUMBER = 'number',
-  BOOLEAN = 'boolean',
-  NIL = 'nil',
-  OBJECT = 'object',
-  ARRAY = 'array',
-}
-
 export enum Severity {
-  ERROR = 'ERROR',
-  WARNING = 'WARNING',
-  INFO = 'INFO',
+  ERROR = 'error',
+  WARNING = 'warning',
+  INFO = 'info',
 }
 
 export enum IssueType {
@@ -18,18 +9,19 @@ export enum IssueType {
   ENUM = 'enum',
   LENGTH = 'length',
   UNION = 'union',
-  EXTRA_KEY = 'extra-key',
+  KEY = 'key',
 }
 
 export type Issue = {
-  severity?: Severity | string
-  type?: IssueType | string
+  severity: string
+  type: string
   path: string
   message: string
 }
 
 export type ValidatorConfig = {
   path: string
+  severities?: Record<string, string>
   append(path: string, ...segments: string[]): string
 }
 

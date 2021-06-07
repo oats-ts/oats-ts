@@ -7,4 +7,5 @@ export function jsonPathAppend(path: string, ...segments: string[]): string {
 export const DefaultConfig: ValidatorConfig = {
   append: jsonPathAppend,
   path: '$',
+  severities: undefined,
 }

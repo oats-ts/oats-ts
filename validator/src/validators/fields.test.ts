@@ -4,17 +4,17 @@ import { optional } from './optional'
 import { boolean, number, object, string } from './type'
 
 describe('fields', () => {
-  const f = {
-    cat: string(),
-    foo: number(),
-    mayhaps: optional(boolean()),
-  }
-
   it('should validate fields', () => {
-    const v = object(fields(f))
+    const v = object(
+      fields({
+        cat: string(),
+        foo: number(),
+        mayhaps: optional(boolean()),
+      }),
+    )
     expect(v({ cat: '', foo: 1 }, DefaultConfig)).toHaveLength(0)
     expect(v({ cat: '', foo: 1, mayhaps: false }, DefaultConfig)).toHaveLength(0)
-    expect(v({ cat: '', foo: 1, mayhaps: false, extra: 'foo' }, DefaultConfig)).toHaveLength(0)
+    expect(v({ cat: '', foo: 1, mayhaps: false, extra: 'foo' }, DefaultConfig)).toHaveLength(1)
 
     expect(v({ cat: '', foo: 1, mayhaps: 'yes' }, DefaultConfig)).toHaveLength(1)
     expect(v({ cat: '', mayhaps: 'yes' }, DefaultConfig)).toHaveLength(2)
