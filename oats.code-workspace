@@ -9,8 +9,8 @@
       "path": "openapi-parameter-serialization"
     },
     {
-      "name": "validator",
-      "path": "validator"
+      "name": "validators",
+      "path": "validators"
     },
   ]
 }
