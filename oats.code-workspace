@@ -9,6 +9,10 @@
       "path": "openapi-parameter-serialization"
     },
     {
+      "name": "openapi-reader",
+      "path": "openapi-reader"
+    },
+    {
       "name": "validators",
       "path": "validators"
     },

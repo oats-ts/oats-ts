@@ -1,0 +1,34 @@
+{
+  "name": "@oats-ts/openapi-reader",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "directories": {},
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.0",
+    "jest": "^27.0.4",
+    "ts-jest": "^27.0.2",
+    "typescript": "4.3.2"
+  },
+  "dependencies": {
+    "openapi3-ts": "^2.0.1"
+  }
+}
