@@ -1,6 +1,6 @@
 import { PathsObject } from 'openapi3-ts'
 import { register } from './register'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { pathsObject } from './validators/pathsObject'
 

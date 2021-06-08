@@ -1,12 +1,10 @@
-import { defaultOpenAPIGlobalConfig } from '../../defaults/defaultOpenAPIGlobalConfig'
-import { defaultOpenAPIReadConfig } from '../defaults/defaultOpenAPIReadConfig'
-import { Severity } from '../../validation/typings'
-import { OpenAPIGlobalConfig } from '../types/OpenAPIGlobalConfig'
-import { OpenAPIReadConfig } from '../types/OpenAPIReadConfig'
-import { OpenAPIReadOutput } from '../types/OpenAPIReadOutput'
+import { Severity } from '@oats-ts/validators'
+import { Try } from '@oats-ts/generator'
 import { resolveOpenAPIObject } from './resolveOpenAPIObject'
-import { ReadContext } from './types'
+import { ReadContext } from './internalTypings'
 import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIReadConfig, OpenAPIReadOutput } from './_typings'
+import { defaultOpenAPIReadConfig } from './defaultOpenAPIReadConfig'
 
 function getUnresolved(resolved: Set<string>, documents: Map<string, OpenAPIObject>): Map<string, OpenAPIObject> {
   const unresolved: Map<string, OpenAPIObject> = new Map()
@@ -39,37 +37,37 @@ async function resolveAll(resolved: Set<string>, context: ReadContext) {
   await resolveAll(resolved, context)
 }
 
-export const openAPIReader =
-  (readConfig: Partial<OpenAPIReadConfig> = {}) =>
-  (globalConfig: Partial<OpenAPIGlobalConfig> = {}) =>
-  async (): Promise<OpenAPIReadOutput> => {
-    const { path, resolve } = defaultOpenAPIReadConfig(readConfig)
-    const { uri } = defaultOpenAPIGlobalConfig(globalConfig)
+export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Try<OpenAPIReadOutput>> => {
+  const { path, resolve, uriManipulator } = defaultOpenAPIReadConfig(config)
 
-    const documentUri = uri.sanitize(path)
+  const documentUri = uriManipulator.sanitize(path)
 
-    const context: ReadContext = {
-      resolve,
-      uri,
-      issues: [],
-      documents: new Map(),
-      byComponent: new Map(),
-      byUri: new Map(),
-    }
-
-    const rootSpec = await resolve(documentUri)
-    context.documents.set(documentUri, rootSpec)
-
-    await resolveOpenAPIObject({ data: rootSpec, uri: documentUri }, context)
-    await resolveAll(new Set(documentUri), context)
-
-    const hasIssues = context.issues.some((issue) => issue.severity === Severity.ERROR)
-
-    return {
-      documentUri,
-      document: hasIssues ? null : rootSpec,
-      documents: hasIssues ? null : context.documents,
-      uris: hasIssues ? null : context.byComponent,
-      issues: context.issues,
-    }
+  const context: ReadContext = {
+    resolve,
+    uri: uriManipulator,
+    issues: [],
+    documents: new Map(),
+    byComponent: new Map(),
+    byUri: new Map(),
   }
+
+  const rootSpec = await resolve(documentUri)
+  context.documents.set(documentUri, rootSpec)
+
+  await resolveOpenAPIObject({ data: rootSpec, uri: documentUri }, context)
+  await resolveAll(new Set(documentUri), context)
+
+  const hasIssues = context.issues.some((issue) => issue.severity === Severity.ERROR)
+
+  if (hasIssues) {
+    return { issues: context.issues }
+  }
+
+  return {
+    documentUri,
+    document: hasIssues ? null : rootSpec,
+    documents: hasIssues ? null : context.documents,
+    uriToObject: context.byUri,
+    objectToUri: context.byComponent,
+  }
+}

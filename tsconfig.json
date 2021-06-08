@@ -5,6 +5,7 @@
     "noImplicitAny": true,
     "target": "es6",
     "sourceMap": true,
+    "esModuleInterop": true,
     "lib": [
       "es6"
     ]

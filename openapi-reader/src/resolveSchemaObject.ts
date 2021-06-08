@@ -1,11 +1,12 @@
 import { SchemaObject } from 'openapi3-ts'
-import { entries, isNil } from '../../utils'
 import { register } from './register'
 import { resolveDiscriminatorObject } from './resolveDiscriminatorObject'
 import { resolveReferenceable } from './resolveReferenceable'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { schemaObject } from './validators/schemaObject'
+import isNil from 'lodash/isNil'
+import entries from 'lodash/entries'
 
 export async function resolveSchemaObject(input: ReadInput<SchemaObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, schemaObject)) {

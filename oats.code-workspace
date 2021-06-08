@@ -5,6 +5,10 @@
       "path": "."
     },
     {
+      "name": "generator",
+      "path": "generator"
+    },
+    {
       "name": "openapi-parameter-serialization",
       "path": "openapi-parameter-serialization"
     },

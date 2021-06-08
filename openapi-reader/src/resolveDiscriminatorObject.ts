@@ -1,11 +1,12 @@
 import { DiscriminatorObject, SchemaObject } from 'openapi3-ts'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
-import { entries, isNil } from '../../utils'
 import { discriminatorObject } from './validators/discriminatorObject'
 import { resolveReferenceUri } from './resolveReference'
 import { resolveSchemaObject } from './resolveSchemaObject'
 import { register } from './register'
+import isNil from 'lodash/isNil'
+import entries from 'lodash/entries'
 
 export async function resolveDiscriminatorObject(
   input: ReadInput<DiscriminatorObject>,

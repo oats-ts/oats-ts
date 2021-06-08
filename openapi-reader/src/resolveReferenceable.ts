@@ -1,7 +1,6 @@
 import { ReferenceObject, isReferenceObject } from 'openapi3-ts'
-import { isNil } from '../../utils'
 import { resolveReference } from './resolveReference'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 
 export async function resolveReferenceable<T>(
   input: ReadInput<ReferenceObject | T>,

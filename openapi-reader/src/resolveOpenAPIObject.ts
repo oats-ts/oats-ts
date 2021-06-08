@@ -1,11 +1,11 @@
 import { OpenAPIObject } from 'openapi3-ts'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 import { resolveComponents } from './resolveComponents'
 import { resolvePaths } from './resolvePaths'
 import { validate } from './validate'
 import { openApiObject } from './validators/openApiObject'
-import { isNil } from '../../utils'
 import { register } from './register'
+import isNil from 'lodash/isNil'
 
 export async function resolveOpenAPIObject(input: ReadInput<OpenAPIObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, openApiObject)) {

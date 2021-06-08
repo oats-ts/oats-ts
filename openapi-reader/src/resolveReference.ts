@@ -1,10 +1,9 @@
 import { ReferenceObject } from 'openapi3-ts'
-import { ReadContext, ReadInput } from './types'
-import { isNil } from '../../utils'
-import { findByFragments } from '../findByFragments'
+import { ReadContext, ReadInput } from './internalTypings'
+import { findByFragments } from './findByFragments'
 import { register } from './register'
-import { validate } from './validate'
 import { Severity } from '@oats-ts/validators'
+import isNil from 'lodash/isNil'
 
 export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
   const specUri = context.uri.document(uri)
@@ -12,9 +11,10 @@ export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
 
   if (isNil(spec)) {
     context.issues.push({
-      message: `Spec "${specUri}" is not yet loaded.`,
+      message: `Document "${specUri}" is not yet loaded.`,
       path: specUri,
       severity: Severity.ERROR,
+      type: 'load',
     })
     return null
   }
@@ -28,6 +28,7 @@ export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
       message: `Can't resolve "${uri}"`,
       path: specUri,
       severity: Severity.ERROR,
+      type: 'load',
     })
     return null
   }
@@ -49,6 +50,7 @@ export async function resolveReferenceUri<T>(input: ReadInput<string>, context: 
         path: specUri,
         message: `Failed to load document at "${specUri}".`,
         severity: Severity.ERROR,
+        type: 'load',
       })
     }
   }

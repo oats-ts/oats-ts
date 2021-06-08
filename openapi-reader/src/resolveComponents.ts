@@ -1,12 +1,13 @@
 import { ComponentsObject, HeaderObject, ParameterObject, SchemaObject } from 'openapi3-ts'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { componentsObject } from './validators/componentsObject'
-import { entries, isNil } from '../../utils'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveSchemaObject } from './resolveSchemaObject'
 import { resolveHeaderObject, resolveParameterObject } from './resolveParameterObject'
 import { register } from './register'
+import isNil from 'lodash/isNil'
+import entries from 'lodash/entries'
 
 export async function resolveComponents(input: ReadInput<ComponentsObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, componentsObject)) {

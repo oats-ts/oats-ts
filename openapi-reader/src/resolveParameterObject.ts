@@ -1,13 +1,14 @@
 import { Validator } from '@oats-ts/validators'
 import { BaseParameterObject, HeaderObject, ParameterObject } from 'openapi3-ts'
-import { entries, isNil } from '../../utils'
 import { register } from './register'
 import { resolveMediaTypeObject } from './resolveMediaTypeObject'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveSchemaObject } from './resolveSchemaObject'
-import { ReadContext, ReadInput } from './types'
+import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { headerObject, parameterObject } from './validators/parameterObject'
+import entries from 'lodash/entries'
+import isNil from 'lodash/isNil'
 
 const resolveBaseParameter =
   <T extends BaseParameterObject>(validator: Validator<any>) =>
