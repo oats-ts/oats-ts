@@ -17,6 +17,10 @@
       "path": "openapi-reader"
     },
     {
+      "name": "openapi-generator",
+      "path": "openapi-generator"
+    },
+    {
       "name": "validators",
       "path": "validators"
     },
