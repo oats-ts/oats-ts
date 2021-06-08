@@ -1,6 +1,6 @@
 import { Issue } from '@oats-ts/validators'
 import { OpenAPIObject } from 'openapi3-ts'
-import { URIManipulator } from './_typings'
+import { URIManipulator } from './typings'
 
 export type ReadContext = {
   documents: Map<string, OpenAPIObject>

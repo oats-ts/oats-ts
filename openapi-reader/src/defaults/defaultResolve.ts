@@ -7,9 +7,7 @@ import { fileURLToPath } from 'url'
 import http, { RequestOptions, IncomingHttpHeaders } from 'http'
 import https from 'https'
 import { URL } from 'url'
-import isNil from 'lodash/isNil'
-import { OpenAPIReadConfig } from './_typings'
-import { URIManipulatorImpl } from './URIManipulatorImpl'
+import { OpenAPIObject } from 'openapi3-ts'
 
 const YAMLContentTypes = [
   'text/x-yaml',
@@ -73,7 +71,7 @@ function tryParse<T>(content: string, isYaml: boolean): T {
   }
 }
 
-export async function resolveUriTarget<T>(uri: string): Promise<T> {
+export async function defaultResolve(uri: string): Promise<OpenAPIObject> {
   const _uri = new URI(uri)
   if (_uri.scheme() === 'http' || _uri.scheme() === 'https') {
     const { data, headers } = await request(uri)
@@ -85,14 +83,4 @@ export async function resolveUriTarget<T>(uri: string): Promise<T> {
     return tryParse(data, isYaml)
   }
   throw new TypeError(`Unexpeced URI scheme: ${_uri.scheme()} in ${uri}`)
-}
-
-export function defaultOpenAPIReadConfig(config: OpenAPIReadConfig): OpenAPIReadConfig {
-  const { resolve, path, uriManipulator } = config
-
-  return {
-    uriManipulator: isNil(uriManipulator) ? new URIManipulatorImpl() : uriManipulator,
-    resolve: isNil(resolve) ? resolveUriTarget : resolve,
-    path: path,
-  }
 }

@@ -3,8 +3,8 @@ import { Try } from '@oats-ts/generator'
 import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadContext } from './internalTypings'
 import { OpenAPIObject } from 'openapi3-ts'
-import { OpenAPIReadConfig, OpenAPIReadOutput } from './_typings'
-import { defaultOpenAPIReadConfig } from './defaultOpenAPIReadConfig'
+import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
+import { defaultOpenAPIReadConfig } from './defaults/defaultOpenAPIReadConfig'
 
 function getUnresolved(resolved: Set<string>, documents: Map<string, OpenAPIObject>): Map<string, OpenAPIObject> {
   const unresolved: Map<string, OpenAPIObject> = new Map()

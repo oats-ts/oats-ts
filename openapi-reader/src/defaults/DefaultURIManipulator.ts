@@ -1,4 +1,4 @@
-import { URIManipulator } from './_typings'
+import { URIManipulator } from '../typings'
 import URI, { encode, decode } from 'urijs'
 import p from 'path'
 import { pathToFileURL } from 'url'
@@ -8,7 +8,8 @@ import dropHead from 'lodash/drop'
 
 const AcceptedSchemes = ['http', 'https', 'file']
 
-export class URIManipulatorImpl implements URIManipulator {
+/** Default implementation of URIManipulator. Extensible class. */
+export class DefaultURIManipulator implements URIManipulator {
   protected setFragments(uri: string, fragments: string[]): string {
     const fragment = fragments.length > 0 ? `/${fragments.map(encode).join('/')}` : null
     return new URI(uri).fragment(fragment).valueOf()
