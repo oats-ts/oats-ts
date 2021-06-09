@@ -10,16 +10,16 @@ const AcceptedSchemes = ['http', 'https', 'file']
 
 /** Default implementation of URIManipulator. Extensible class. */
 export class DefaultURIManipulator implements URIManipulator {
-  protected setFragments(uri: string, fragments: string[]): string {
+  protected setFragments = (uri: string, fragments: string[]): string => {
     const fragment = fragments.length > 0 ? `/${fragments.map(encode).join('/')}` : null
     return new URI(uri).fragment(fragment).valueOf()
   }
 
-  append(uri: string, ...pieces: string[]): string {
+  append = (uri: string, ...pieces: string[]): string => {
     return this.setFragments(uri, this.fragments(uri).concat(pieces))
   }
 
-  resolve(ref: string, parent: string): string {
+  resolve = (ref: string, parent: string): string => {
     const parentUri = new URI(parent)
     const uri = new URI(ref)
     if (!isEmpty(uri.hostname()) && !isEmpty(uri.protocol())) {
@@ -28,7 +28,7 @@ export class DefaultURIManipulator implements URIManipulator {
     return uri.absoluteTo(parentUri).valueOf()
   }
 
-  sanitize(path: string): string {
+  sanitize = (path: string): string => {
     if (isUri(path)) {
       const uri = new URI(path)
       if (AcceptedSchemes.indexOf(uri.scheme()) < 0) {
@@ -41,11 +41,11 @@ export class DefaultURIManipulator implements URIManipulator {
     return pathToFileURL(p.resolve(path)).toString()
   }
 
-  document(path: string): string {
+  document = (path: string): string => {
     return new URI(path).fragment('').hash('').valueOf()
   }
 
-  fragments(uri: string): string[] {
+  fragments = (uri: string): string[] => {
     const fragment = new URI(uri).fragment()
     if (isEmpty(fragment)) {
       return []

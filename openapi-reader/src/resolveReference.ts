@@ -45,10 +45,9 @@ export async function resolveReferenceUri<T>(input: ReadInput<string>, context: 
       context.documents.set(specUri, spec)
       return { uri: fullUri, data: getReferenceTarget<T>(fullUri, context) }
     } catch (e) {
-      console.log(e)
       context.issues.push({
         path: specUri,
-        message: `Failed to load document at "${specUri}".`,
+        message: `Failed to load document at "${specUri}" (${e.message}).`,
         severity: Severity.ERROR,
         type: 'load',
       })

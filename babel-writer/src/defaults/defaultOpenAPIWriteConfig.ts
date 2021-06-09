@@ -1,9 +1,9 @@
 import isNil from 'lodash/isNil'
 import { defaultWrite } from './defaultWrite'
 import { defaultStringify } from './defaultStringify'
-import { OpenAPIWriteConfig } from '../typings'
+import { BabelWriterConfig } from '../typings'
 
-export function defaultOpenAPIWriteConfig(config: OpenAPIWriteConfig): OpenAPIWriteConfig {
+export function defaultOpenAPIWriteConfig(config: BabelWriterConfig): BabelWriterConfig {
   const { write, stringify } = config
   return {
     write: isNil(write) ? defaultWrite : write,

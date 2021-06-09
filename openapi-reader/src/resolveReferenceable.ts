@@ -8,9 +8,9 @@ export async function resolveReferenceable<T>(
   resolveTarget: (input: ReadInput<T>, context: ReadContext) => Promise<void>,
 ): Promise<void> {
   if (!isReferenceObject(input.data)) {
-    await resolveTarget(input as ReadInput<T>, context)
+    return await resolveTarget(input as ReadInput<T>, context)
   }
   if (!context.byUri.has(input.uri)) {
-    await resolveTarget(await resolveReference(input as ReadInput<ReferenceObject>, context), context)
+    return await resolveTarget(await resolveReference(input as ReadInput<ReferenceObject>, context), context)
   }
 }

@@ -28,5 +28,9 @@
       "name": "validators",
       "path": "validators"
     },
+    {
+      "name": "example",
+      "path": "example"
+    },
   ]
 }

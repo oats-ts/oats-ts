@@ -1,34 +1,40 @@
-import { defaultOpenAPIGlobalConfig } from '../../defaults/defaultOpenAPIGlobalConfig'
-import { Issue } from '../../validation/typings'
-import { OpenAPIGenerator, OpenAPIMainGenerator } from '../types/OpenAPIGenator'
-import { OpenAPIGeneratorOutput } from '../types/OpenAPIGeneratorOutput'
-import { OpenAPIGlobalConfig } from '../types/OpenAPIGlobalConfig'
-import { OpenAPIReadOutput } from '../types/OpenAPIReadOutput'
-import { TypeScriptUnit } from '../types/TypeScriptUnit'
-import { createOpenAPIUtils } from './createOpenAPIUtils'
+import type { BabelModule, BabelGeneratorOutput } from '@oats-ts/babel-writer'
+import type { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { Try, isFailure } from '@oats-ts/generator'
+import { Issue, Severity } from '@oats-ts/validators'
 import { mergeUnits } from './mergeUnits'
-import { GeneratorContext } from './typings'
+import { OpenAPIGeneratorContext, OpenAPIChildGenerator, OpenAPIGeneratorConfig } from './typings'
+import { DefaultOpenAPIAccessor } from './DefaultOpenAPIAccessor'
+import { defaultOpenAPIGeneratorConfig } from './defaults/defaultOpenAPIGeneratorConfig'
 
 export const openAPIGenerator =
-  (...generators: OpenAPIGenerator[]): OpenAPIMainGenerator =>
-  (globalConfig: OpenAPIGlobalConfig) =>
-  async (data: OpenAPIReadOutput): Promise<OpenAPIGeneratorOutput> => {
-    const { uri } = defaultOpenAPIGlobalConfig(globalConfig)
-    const allUnits: TypeScriptUnit[] = []
+  (config: OpenAPIGeneratorConfig) =>
+  (...generators: OpenAPIChildGenerator[]) =>
+  async (data: OpenAPIReadOutput): Promise<Try<BabelGeneratorOutput>> => {
+    const allUnits: BabelModule[] = []
     const allIssues: Issue[] = []
-    const context: GeneratorContext = {
-      ...data,
-      uri: uri,
+
+    const fullConfig = defaultOpenAPIGeneratorConfig(config)
+
+    const context: OpenAPIGeneratorContext = {
+      accessor: new DefaultOpenAPIAccessor(fullConfig, data),
       issues: [],
-      utils: createOpenAPIUtils(uri, data.documents, data.uris),
     }
+
     for (const generator of generators) {
-      const { issues, units } = await generator(context)
-      allUnits.push(...units)
-      allIssues.push(...issues)
+      const results = await generator(context)
+      if (isFailure(results)) {
+        allIssues.push(...results.issues)
+        break
+      }
+      allUnits.push(...results.modules)
+    }
+    if (allIssues.some((issue) => issue.severity === Severity.ERROR)) {
+      return {
+        issues: allIssues,
+      }
     }
     return {
-      issues: allIssues,
-      units: mergeUnits(allUnits),
+      modules: mergeUnits(allUnits),
     }
   }

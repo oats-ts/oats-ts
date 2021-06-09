@@ -1,14 +1,17 @@
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { isNil, entries, values } from '../../utils'
-import { SchemaContext } from './schemas/types'
+import isNil from 'lodash/isNil'
+import entries from 'lodash/entries'
+import values from 'lodash/values'
+import { OpenAPIGeneratorContext } from './typings'
 
 function collectFromSchema(
   uri: string,
   input: SchemaObject | ReferenceObject,
-  context: SchemaContext,
+  context: OpenAPIGeneratorContext,
   discriminators: Record<string, string>,
 ): string {
-  const schema = isReferenceObject(input) ? context.utils.dereference<SchemaObject>(input) : input
+  const { accessor } = context
+  const schema = isReferenceObject(input) ? accessor.dereference<SchemaObject>(input) : input
 
   if (!isNil(schema.discriminator)) {
     const { propertyName, mapping } = schema.discriminator
@@ -16,7 +19,7 @@ function collectFromSchema(
     for (const [value, ref] of mappingEntries) {
       if (ref == uri) {
         discriminators[propertyName] = value
-        const parentUri = context.utils.uriOf(schema)
+        const parentUri = accessor.uri(schema)
         return parentUri
       }
     }
@@ -27,9 +30,14 @@ function collectFromSchema(
   return null
 }
 
-function collectFromDocuments(uri: string, context: SchemaContext, discriminators: Record<string, string>): string[] {
+function collectFromDocuments(
+  uri: string,
+  context: OpenAPIGeneratorContext,
+  discriminators: Record<string, string>,
+): string[] {
+  const { accessor } = context
   const parents: Set<string> = new Set()
-  for (const document of Array.from(context.documents.values())) {
+  for (const document of accessor.documents()) {
     for (const schema of values(document?.components?.schemas || {})) {
       const parentUri = collectFromSchema(uri, schema, context, discriminators)
       if (!isNil(parentUri)) {
@@ -40,8 +48,9 @@ function collectFromDocuments(uri: string, context: SchemaContext, discriminator
   return Array.from(parents)
 }
 
-export function findDiscriminatorFields(input: SchemaObject, context: SchemaContext): Record<string, string> {
-  const schemaUri = context.utils.uriOf(input)
+export function findDiscriminatorFields(input: SchemaObject, context: OpenAPIGeneratorContext): Record<string, string> {
+  const { accessor } = context
+  const schemaUri = accessor.uri(input)
   const discriminators: Record<string, string> = {}
   const visited: string[] = []
   const toVisit: string[] = collectFromDocuments(schemaUri, context, discriminators)

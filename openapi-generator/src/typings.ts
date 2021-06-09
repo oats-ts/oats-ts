@@ -1,20 +1,38 @@
-import { ReferenceObject } from 'openapi3-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { Issue } from '@oats-ts/validators'
+import { OpenAPIObject, ReferenceObject } from 'openapi3-ts'
+import type { Issue } from '@oats-ts/validators'
+import type { Try } from '@oats-ts/generator'
+import type { BabelGeneratorOutput } from '@oats-ts/babel-writer'
 
-export type OpenAPIUtils = {
-  dereferenceUri<T>(uri: string): T
-  dereference<T>(input: T | ReferenceObject): T
-  nameOf(input: any): string
-  uriOf(input: any): string
+/** Configuration object for generating code from OpenAPI documents. */
+export type OpenAPIGeneratorConfig = {
+  /**
+   * @param input The named object (schema, operation, parameter, etc).
+   * @param name The name of the object.
+   * @param target The generator target (type definition, operation, etc).
+   * @returns The desired name based on the parameters.
+   */
+  name?(input: any, name: string, target: string): string
+  /**
+   * @param input The named object (schema, operation, parameter, etc).
+   * @param name The name of the object.
+   * @param target The generator target (type definition, operation, etc).
+   * @returns The operating system dependent path for the desired generator target.
+   */
+  path(input: any, name: string, target: string): string
 }
 
-export type GeneratorContext = OpenAPIReadOutput & {
-  utils: OpenAPIUtils
+export type OpenAPIAccessor = {
+  document(): OpenAPIObject
+  documents(): OpenAPIObject[]
+  dereference<T>(input: string | T | ReferenceObject): T
+  name(input: any, target: string): string
+  path(input: any, target: string): string
+  uri(input: any): string
+}
+
+export type OpenAPIGeneratorContext = {
+  accessor: OpenAPIAccessor
   issues: Issue[]
 }
 
-export type GeneratorInput<T> = {
-  data: T
-  uri: string
-}
+export type OpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promise<Try<BabelGeneratorOutput>>

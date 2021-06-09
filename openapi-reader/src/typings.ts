@@ -1,4 +1,3 @@
-import { Issue } from '@oats-ts/validators'
 import { OpenAPIObject } from 'openapi3-ts'
 
 /** Configuration object for reading OpenAPI documents. */

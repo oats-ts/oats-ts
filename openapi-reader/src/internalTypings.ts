@@ -1,4 +1,4 @@
-import { Issue } from '@oats-ts/validators'
+import type { Issue } from '@oats-ts/validators'
 import { OpenAPIObject } from 'openapi3-ts'
 import { URIManipulator } from './typings'
 

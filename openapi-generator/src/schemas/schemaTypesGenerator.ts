@@ -1,26 +1,25 @@
-import { OpenAPIGeneratorOutput } from '../../types/OpenAPIGeneratorOutput'
-import { TypeScriptUnit } from '../../types/TypeScriptUnit'
-import { GeneratorContext } from '../typings'
+import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
+import { Try } from '@oats-ts/generator'
+import { Severity } from '@oats-ts/validators'
+import { OpenAPIGeneratorContext } from '../typings'
 import { collectNamedSchemas } from './collectNamedTypes'
 import { generateTypeAst } from './generateTypeAst'
-import { SchemaContext, SchemaTypesGeneratorConfig } from './types'
 
 export const schemaTypesGenerator =
-  (config: SchemaTypesGeneratorConfig) =>
-  async (input: GeneratorContext): Promise<OpenAPIGeneratorOutput> => {
-    const context: SchemaContext = { ...input, ...config }
-
+  (/* TODO config? */) =>
+  async (context: OpenAPIGeneratorContext): Promise<Try<BabelGeneratorOutput>> => {
     const schemas = collectNamedSchemas(context)
-    const units = schemas.map((schema): TypeScriptUnit => {
-      const statement = generateTypeAst({ data: schema, uri: 'TODO' }, context)
-      const path = context.path(context.utils.nameOf(schema), schema)
-      const imports = []
+    const modules = schemas.map((schema): BabelModule => {
+      const statement = generateTypeAst(schema, context)
+      const path = context.accessor.path(schema, 'schema')
       return {
-        content: [statement],
+        statements: [statement],
         path,
-        imports,
+        imports: [],
       }
     })
-
-    return { issues: context.issues, units }
+    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+      return { issues: context.issues }
+    }
+    return { modules }
   }

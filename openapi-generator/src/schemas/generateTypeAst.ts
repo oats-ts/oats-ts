@@ -1,8 +1,8 @@
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { entries, hasOwnProperty, isNil } from '../../../utils'
 import { findDiscriminatorFields } from '../findDiscriminatorFields'
-import { GeneratorInput } from '../typings'
-import { SchemaContext } from './types'
+import entries from 'lodash/entries'
+import isNil from 'lodash/isNil'
+import has from 'lodash/has'
 
 import {
   tsTypeAliasDeclaration,
@@ -30,7 +30,9 @@ import {
   Statement,
   TSUnionType,
   TSTypeLiteral,
+  TSType,
 } from '@babel/types'
+import { OpenAPIGeneratorContext } from '../typings'
 
 function generateEnumValueAst(value: string | number | boolean) {
   if (typeof value === 'string') {
@@ -42,37 +44,32 @@ function generateEnumValueAst(value: string | number | boolean) {
   }
 }
 
-export function generateEnumAst(input: GeneratorInput<SchemaObject>, context: SchemaContext) {
-  const { data } = input
-
+export function generateEnumAst(input: SchemaObject, context: OpenAPIGeneratorContext): Statement {
+  const { accessor } = context
   return exportNamedDeclaration(
     tsEnumDeclaration(
-      identifier(context.utils.nameOf(data)),
-      data.enum.map((value) => {
+      identifier(accessor.name(input, 'schema')),
+      input.enum.map((value) => {
         return tsEnumMember(identifier(value.toString()), generateEnumValueAst(value))
       }),
     ),
   )
 }
 
-export function generateTypeReferenceAst(
-  input: GeneratorInput<SchemaObject | ReferenceObject>,
-  context: SchemaContext,
-) {
-  const { data } = input
-  const schema = isNil(data) ? null : context.utils.dereference(data)
+export function generateTypeReferenceAst(data: SchemaObject | ReferenceObject, context: OpenAPIGeneratorContext) {
+  const { accessor } = context
+  const schema = isNil(data) ? null : accessor.dereference(data)
   if (isNil(schema)) {
-    return tsTypeAnnotation(tsAnyKeyword())
+    return tsAnyKeyword()
   }
-  const name = context.utils.nameOf(schema)
+  const name = accessor.name(schema, 'schema')
   if (isNil(name)) {
-    return generateRighthandSideAst({ data: schema, uri: 'TODO' }, context)
+    return generateRighthandSideAst(schema, context)
   }
   return tsTypeReference(identifier(name))
 }
 
-export function generateObjectTypeAst(input: GeneratorInput<SchemaObject>, context: SchemaContext): TSTypeLiteral {
-  const { data } = input
+export function generateObjectTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext): TSTypeLiteral {
   const discriminators = findDiscriminatorFields(data, context)
 
   const discriminatorFields = entries(discriminators || {}).map(([name, value]): TSPropertySignature => {
@@ -80,11 +77,11 @@ export function generateObjectTypeAst(input: GeneratorInput<SchemaObject>, conte
   })
 
   const fields = entries(data.properties || {})
-    .filter(([name]) => !hasOwnProperty(discriminators, name))
+    .filter(([name]) => !has(discriminators, name))
     .map(([name, schema]): TSPropertySignature => {
       const property = tsPropertySignature(
         identifier(name),
-        tsTypeAnnotation(generateTypeReferenceAst({ data: schema, uri: 'TODO' }, context)),
+        tsTypeAnnotation(generateTypeReferenceAst(schema, context)),
       )
       property.optional = data?.required?.indexOf(name) >= 0
       return property
@@ -92,46 +89,39 @@ export function generateObjectTypeAst(input: GeneratorInput<SchemaObject>, conte
   return tsTypeLiteral(discriminatorFields.concat(fields))
 }
 
-export function generateUnionTypeAst(input: GeneratorInput<SchemaObject>, context: SchemaContext): TSUnionType {
-  const { data } = input
-  const types = data.oneOf.map((type) => generateTypeReferenceAst({ data: type, uri: 'TODO' }, context))
+export function generateUnionTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext): TSUnionType {
+  const types = data.oneOf.map((type) => generateTypeReferenceAst(type, context))
   return tsUnionType(types)
 }
 
-export function generateDictionaryTypeAst(
-  input: GeneratorInput<SchemaObject | ReferenceObject>,
-  context: SchemaContext,
-) {
-  const { data } = input
-  const schema = context.utils.dereference(data)
+export function generateDictionaryTypeAst(data: SchemaObject | ReferenceObject, context: OpenAPIGeneratorContext) {
+  const { accessor } = context
+  const schema = accessor.dereference(data)
 
   return tsTypeReference(
     identifier('Record'),
     tsTypeParameterInstantiation([
       tsStringKeyword(),
-      generateTypeReferenceAst({ data: schema.additionalProperties as any, uri: 'TODO' }, context),
+      generateTypeReferenceAst(schema.additionalProperties as any, context),
     ]),
   )
 }
 
-export function generateArrayTypeAst(input: GeneratorInput<SchemaObject>, context: SchemaContext) {
-  const { data } = input
-  return tsArrayType(generateTypeReferenceAst({ data: data.items, uri: 'TODO' }, context))
+export function generateArrayTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext) {
+  return tsArrayType(generateTypeReferenceAst(data.items, context))
 }
 
-export function generateLiteralUnionTypeAst(input: GeneratorInput<SchemaObject>, context: SchemaContext) {
-  const { data } = input
+export function generateLiteralUnionTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext) {
   return tsUnionType(data.enum.map((value) => tsLiteralType(generateEnumValueAst(value.value))))
 }
 
-export function generateRighthandSideAst(input: GeneratorInput<SchemaObject>, context: SchemaContext) {
-  const { data } = input
+export function generateRighthandSideAst(data: SchemaObject, context: OpenAPIGeneratorContext): TSType {
   if (!isNil(data.oneOf)) {
-    return generateUnionTypeAst(input, context)
+    return generateUnionTypeAst(data, context)
   }
 
   if (!isNil(data.enum)) {
-    return generateLiteralUnionTypeAst(input, context)
+    return generateLiteralUnionTypeAst(data, context)
   }
 
   switch (data.type) {
@@ -144,11 +134,11 @@ export function generateRighthandSideAst(input: GeneratorInput<SchemaObject>, co
       return tsBooleanKeyword()
     case 'object':
       if (!isNil(data.additionalProperties)) {
-        return generateDictionaryTypeAst(input, context)
+        return generateDictionaryTypeAst(data, context)
       }
-      return generateObjectTypeAst(input, context)
+      return generateObjectTypeAst(data, context)
     case 'array':
-      return generateArrayTypeAst(input, context)
+      return generateArrayTypeAst(data, context)
     case 'null':
       return tsUndefinedKeyword()
     default:
@@ -156,13 +146,17 @@ export function generateRighthandSideAst(input: GeneratorInput<SchemaObject>, co
   }
 }
 
-export function generateTypeAst(input: GeneratorInput<SchemaObject>, context: SchemaContext): Statement {
-  const { data } = input
+export function generateTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext): Statement {
+  const { accessor } = context
   if (!isNil(data.enum)) {
-    return generateEnumAst(input, context)
+    return generateEnumAst(data, context)
   }
 
   return exportNamedDeclaration(
-    tsTypeAliasDeclaration(identifier(context.utils.nameOf(data)), undefined, generateRighthandSideAst(input, context)),
+    tsTypeAliasDeclaration(
+      identifier(accessor.name(data, 'schema')),
+      undefined,
+      generateRighthandSideAst(data, context),
+    ),
   )
 }

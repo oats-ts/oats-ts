@@ -1,5 +1,5 @@
 import { Severity } from '@oats-ts/validators'
-import { Try } from '@oats-ts/generator'
+import type { Try } from '@oats-ts/generator'
 import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadContext } from './internalTypings'
 import { OpenAPIObject } from 'openapi3-ts'

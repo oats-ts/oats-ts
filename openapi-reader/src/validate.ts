@@ -1,4 +1,4 @@
-import { Validator } from '@oats-ts/validators'
+import type { Validator } from '@oats-ts/validators'
 import { ReadContext, ReadInput } from './internalTypings'
 import isNil from 'lodash/isNil'
 

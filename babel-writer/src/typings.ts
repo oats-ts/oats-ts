@@ -10,8 +10,14 @@ export type BabelModule = {
   path: string
 }
 
+/** Generator output with BabelModules */
+export type BabelGeneratorOutput = {
+  /** The list of modules. Producer should ensure, that paths are unique */
+  modules: BabelModule[]
+}
+
 /** Configuration object for writing OpenAPI generated artifacts to file. */
-export type OpenAPIWriteConfig = {
+export type BabelWriterConfig = {
   /**
    * @param babelModule A module containing ast, imports and full file path.
    * @returns The module as a source code string.

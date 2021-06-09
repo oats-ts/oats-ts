@@ -1,24 +1,26 @@
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { isNil, values } from '../../../utils'
-import { SchemaContext } from './types'
+import isNil from 'lodash/isNil'
+import values from 'lodash/values'
+import { OpenAPIGeneratorContext } from '../typings'
 
 /* TODO prevent recursion */
 function collectNamedTypesForSchema(
   input: SchemaObject | ReferenceObject,
-  context: SchemaContext,
+  context: OpenAPIGeneratorContext,
   schemas: Set<SchemaObject>,
 ) {
+  const { accessor } = context
   if (isNil(input)) {
     return
   }
 
-  const schema = isReferenceObject(input) ? context.utils.dereference<SchemaObject>(input) : input
+  const schema = isReferenceObject(input) ? accessor.dereference<SchemaObject>(input) : input
 
   if (schemas.has(schema)) {
     return
   }
 
-  if (!isNil(context.utils.nameOf(schema))) {
+  if (!isNil(accessor.name(schema, 'schema'))) {
     schemas.add(schema)
   }
 
@@ -39,10 +41,11 @@ function collectNamedTypesForSchema(
   }
 }
 
-export function collectNamedSchemas(context: SchemaContext): SchemaObject[] {
+export function collectNamedSchemas(context: OpenAPIGeneratorContext): SchemaObject[] {
+  const { accessor } = context
   const schemaSet = new Set<SchemaObject>()
 
-  for (const schema of values(context.document?.components?.schemas || {})) {
+  for (const schema of values(accessor.document()?.components?.schemas || {})) {
     collectNamedTypesForSchema(schema, context, schemaSet)
   }
 
