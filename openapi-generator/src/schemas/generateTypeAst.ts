@@ -48,7 +48,7 @@ export function generateEnumAst(input: SchemaObject, context: OpenAPIGeneratorCo
   const { accessor } = context
   return exportNamedDeclaration(
     tsEnumDeclaration(
-      identifier(accessor.name(input, 'schema')),
+      identifier(accessor.name(input, 'type')),
       input.enum.map((value) => {
         return tsEnumMember(identifier(value.toString()), generateEnumValueAst(value))
       }),
@@ -62,7 +62,7 @@ export function generateTypeReferenceAst(data: SchemaObject | ReferenceObject, c
   if (isNil(schema)) {
     return tsAnyKeyword()
   }
-  const name = accessor.name(schema, 'schema')
+  const name = accessor.name(schema, 'type')
   if (isNil(name)) {
     return generateRighthandSideAst(schema, context)
   }
@@ -153,10 +153,6 @@ export function generateTypeAst(data: SchemaObject, context: OpenAPIGeneratorCon
   }
 
   return exportNamedDeclaration(
-    tsTypeAliasDeclaration(
-      identifier(accessor.name(data, 'schema')),
-      undefined,
-      generateRighthandSideAst(data, context),
-    ),
+    tsTypeAliasDeclaration(identifier(accessor.name(data, 'type')), undefined, generateRighthandSideAst(data, context)),
   )
 }

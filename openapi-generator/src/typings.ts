@@ -21,12 +21,33 @@ export type OpenAPIGeneratorConfig = {
   path(input: any, name: string, target: string): string
 }
 
+/** Accessors to make it easy to find information about deeply nested structures. */
 export type OpenAPIAccessor = {
+  /** @returns The main OpenAPI document.  */
   document(): OpenAPIObject
+  /** @returns All the documents referenced from #document()  */
   documents(): OpenAPIObject[]
+  /**
+   * @param input Either a string ref, a ReferenceObject, the desired target value.
+   * @returns The dereferenced value (in case its not a string or a ReferenceObject the value itself).
+   */
   dereference<T>(input: string | T | ReferenceObject): T
-  name(input: any, target: string): string
-  path(input: any, target: string): string
+  /**
+   * @param input The named value
+   * @param target The generator target (type, operation, etc).
+   * @returns The name of the value.
+   */
+  name(input: any, target: OpenAPIGeneratorTarget): string
+  /**
+   * @param input The named value
+   * @param target The generator target (type, operation, etc).
+   * @returns The path for the value.
+   */
+  path(input: any, target: OpenAPIGeneratorTarget): string
+  /**
+   * @param input Any object value present in any of #documents().
+   * @returns The absolute URI of the value.
+   */
   uri(input: any): string
 }
 
@@ -36,3 +57,5 @@ export type OpenAPIGeneratorContext = {
 }
 
 export type OpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promise<Try<BabelGeneratorOutput>>
+
+export type OpenAPIGeneratorTarget = 'type' | 'operation'

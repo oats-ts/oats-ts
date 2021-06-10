@@ -1,4 +1,4 @@
-import { ComponentsObject, HeaderObject, ParameterObject, SchemaObject } from 'openapi3-ts'
+import { ComponentsObject, HeaderObject, ParameterObject, ResponseObject, SchemaObject } from 'openapi3-ts'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { componentsObject } from './validators/componentsObject'
@@ -8,6 +8,7 @@ import { resolveHeaderObject, resolveParameterObject } from './resolveParameterO
 import { register } from './register'
 import isNil from 'lodash/isNil'
 import entries from 'lodash/entries'
+import { resolveResponseObject } from './resolveResponseObject'
 
 export async function resolveComponents(input: ReadInput<ComponentsObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, componentsObject)) {
@@ -49,6 +50,16 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
     }
   }
 
+  if (!isNil(responses)) {
+    for (const [name, respOrRef] of entries(responses)) {
+      await resolveReferenceable<ResponseObject>(
+        { data: respOrRef, uri: context.uri.append(uri, 'responses', name) },
+        context,
+        resolveResponseObject,
+      )
+    }
+  }
+
   if (!isNil(callbacks)) {
   }
   if (!isNil(links)) {
@@ -56,8 +67,6 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   if (!isNil(examples)) {
   }
   if (!isNil(requestBodies)) {
-  }
-  if (!isNil(responses)) {
   }
   if (!isNil(securitySchemes)) {
   }

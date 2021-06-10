@@ -1,16 +1,14 @@
 import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
-import isNil from 'lodash/isNil'
+import { OpenAPIGeneratorTarget } from '../typings'
+import { OperationObject } from '@oats-ts/openapi-reader/node_modules/openapi3-ts'
 
-export function defaultNameProvider(input: any, name: string, target: string): string {
-  if (isNil(name)) {
-    return undefined
-  }
+export function defaultNameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
   switch (target) {
-    case 'schema':
+    case 'type':
       return pascalCase(name)
     case 'operation':
-      return camelCase(name)
+      return camelCase((input as OperationObject).operationId || name)
     default:
       return name
   }

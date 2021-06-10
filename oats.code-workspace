@@ -29,6 +29,10 @@
       "path": "validators"
     },
     {
+      "name": "http",
+      "path": "http"
+    },
+    {
       "name": "example",
       "path": "example"
     },

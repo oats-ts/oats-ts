@@ -1,5 +1,10 @@
 {
-  "openapi": "3.1",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "servers": [],
   "components": {
     "schemas": {
       "StringType": {
@@ -125,6 +130,34 @@
         "properties": {
           "test": {
             "$ref": "https://api.apis.guru/v2/specs/ably.io/1.1.0/openapi.json#/components/schemas/Message"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/cat/dog": {
+      "get": {
+        "operationId": "getCatDog",
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "name": "foo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "foo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectWithKeys"
+                }
+              }
+            }
           }
         }
       }

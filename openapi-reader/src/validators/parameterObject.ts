@@ -1,7 +1,7 @@
-import { HeaderObject, ParameterObject } from 'openapi3-ts'
-import { boolean, fields, object, optional, string, enumeration, any } from '@oats-ts/validators'
+import { BaseParameterObject, HeaderObject, ParameterObject } from 'openapi3-ts'
+import { boolean, fields, object, optional, string, enumeration, any, Validator } from '@oats-ts/validators'
 
-const baseParameterObjectFileds = {
+const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any>> = {
   description: optional(string()),
   required: optional(boolean()),
   deprecated: optional(boolean()),

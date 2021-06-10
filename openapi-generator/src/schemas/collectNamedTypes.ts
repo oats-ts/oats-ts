@@ -20,7 +20,7 @@ function collectNamedTypesForSchema(
     return
   }
 
-  if (!isNil(accessor.name(schema, 'schema'))) {
+  if (!isNil(accessor.name(schema, 'type'))) {
     schemas.add(schema)
   }
 

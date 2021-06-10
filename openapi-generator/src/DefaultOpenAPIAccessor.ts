@@ -37,7 +37,7 @@ export class DefaultOpenAPIAccessor implements OpenAPIAccessor {
   }
 
   path(input: any, target: string): string {
-    return this.config.path(input, this.nameToObject.get(input), target)
+    return this.config.path(input, this.name(input, target), target)
   }
 
   uri(input: any): string {
