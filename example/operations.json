@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ErrorSchema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          }
+        }
+      },
+      "ParamSchemaArray": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "ParamSchemaObject": {
+        "type": "object",
+        "properties": {
+          "str": {
+            "type": "string"
+          },
+          "num": {
+            "type": "number"
+          },
+          "bool": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ObjectWithKeys": {
+        "type": "object",
+        "required": [
+          "stringField",
+          "arrayField"
+        ],
+        "properties": {
+          "stringField": {
+            "type": "string"
+          },
+          "numberField": {
+            "type": "number"
+          },
+          "booleanField": {
+            "type": "boolean"
+          },
+          "arrayField": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dictField": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/cat/{asd}dog": {
+      "get": {
+        "operationId": "getCatDog",
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "str"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ParamSchemaObject"
+            },
+            "name": "obj"
+          },
+          {
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ParamSchemaArray"
+            },
+            "explode": false,
+            "name": "arr"
+          },
+          {
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "asd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "foo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectWithKeys"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,13 +2,47 @@ import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { OpenAPIGeneratorTarget } from '../typings'
 import { OperationObject } from '@oats-ts/openapi-reader/node_modules/openapi3-ts'
+import { isNil } from 'lodash'
 
 export function defaultNameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
   switch (target) {
-    case 'type':
-      return pascalCase(name)
-    case 'operation':
-      return camelCase((input as OperationObject).operationId || name)
+    case 'type': {
+      return isNil(name) ? undefined : pascalCase(name)
+    }
+    case 'operation': {
+      const operation: OperationObject = input
+      return isNil(operation.operationId) ? undefined : camelCase(operation.operationId)
+    }
+    case 'operation-query-type': {
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}QueryParameters`)
+    }
+    case 'operation-headers-type': {
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}HeaderParameters`)
+    }
+    case 'operation-path-type': {
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}PathParameters`)
+    }
+    case 'operation-return-type': {
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}Result`)
+    }
+    case 'operation-input-type': {
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}Input`)
+    }
+    // TODO does it need to be named based on operation?
+    case 'operation-path-serializer': {
+      return 'pathSerializer'
+    }
+    case 'operation-query-serializer': {
+      return 'querySerializer'
+    }
+    case 'operation-headers-serializer': {
+      return 'headersSerializer'
+    }
     default:
       return name
   }

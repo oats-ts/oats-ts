@@ -58,4 +58,14 @@ export type OpenAPIGeneratorContext = {
 
 export type OpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promise<Try<BabelGeneratorOutput>>
 
-export type OpenAPIGeneratorTarget = 'type' | 'operation'
+export type OpenAPIGeneratorTarget =
+  | 'type'
+  | 'operation'
+  | 'operation-query-type'
+  | 'operation-path-type'
+  | 'operation-headers-type'
+  | 'operation-return-type'
+  | 'operation-input-type'
+  | 'operation-headers-serializer'
+  | 'operation-query-serializer'
+  | 'operation-path-serializer'

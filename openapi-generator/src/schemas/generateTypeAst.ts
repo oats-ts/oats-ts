@@ -83,9 +83,10 @@ export function generateObjectTypeAst(data: SchemaObject, context: OpenAPIGenera
         identifier(name),
         tsTypeAnnotation(generateTypeReferenceAst(schema, context)),
       )
-      property.optional = data?.required?.indexOf(name) >= 0
+      property.optional = (data.required || []).indexOf(name) < 0
       return property
     })
+
   return tsTypeLiteral(discriminatorFields.concat(fields))
 }
 

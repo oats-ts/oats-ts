@@ -1,27 +1,39 @@
 import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
 import { Try } from '@oats-ts/generator'
 import type { HttpMethod } from '@oats-ts/http'
-import { OperationObject, PathItemObject } from '@oats-ts/openapi-reader/node_modules/openapi3-ts'
+import { OperationObject, ParameterObject, PathItemObject, ReferenceObject } from 'openapi3-ts'
 import { Severity } from '@oats-ts/validators'
 import { entries, isNil, negate } from 'lodash'
-import { createImportDeclarations } from '../createImportDeclarations'
 import { OpenAPIGeneratorContext } from '../typings'
-import { generateOperationAst } from './generateOperationAst'
+import { generateOperationFunction } from './generateOperationFunction'
+import { generateParameterType } from './generateOperationParameterType'
+import { generateOperationReturnType } from './generateOperationReturnType'
+import { getPartitionedParameters } from './getPartitionedParameters'
+import { generateOperationInputType } from './generateOperationInputType'
+import { generateParameterTypeSerializer } from './generateParameterTypeSerializer'
 
 function generateOperation(
   url: string,
   method: HttpMethod,
   operation: OperationObject,
+  commonParameters: (ParameterObject | ReferenceObject)[],
   context: OpenAPIGeneratorContext,
-): BabelModule {
-  if (!isNil(operation)) {
-    return {
-      imports: [],
-      path: context.accessor.path(operation, 'operation'),
-      statements: [generateOperationAst(url, method, operation, context)],
-    }
+): BabelModule[] {
+  if (isNil(operation)) {
+    return []
   }
-  return undefined
+  const parameters = getPartitionedParameters(operation, commonParameters, context)
+  return [
+    generateParameterType(parameters.path, operation, 'operation-path-type', context),
+    generateParameterType(parameters.query, operation, 'operation-query-type', context),
+    generateParameterType(parameters.header, operation, 'operation-headers-type', context),
+    generateOperationReturnType(operation, context),
+    generateOperationInputType(parameters, operation, context),
+    generateParameterTypeSerializer(url, parameters.path, operation, context),
+    generateParameterTypeSerializer(url, parameters.query, operation, context),
+    generateParameterTypeSerializer(url, parameters.header, operation, context),
+    generateOperationFunction(url, method, operation, context),
+  ].filter(negate(isNil))
 }
 
 function generatePathItemObjectAsts(
@@ -29,17 +41,17 @@ function generatePathItemObjectAsts(
   data: PathItemObject,
   context: OpenAPIGeneratorContext,
 ): BabelModule[] {
-  const { get, post, put, patch, trace, options, head, delete: _delete } = data
+  const { get, post, put, patch, trace, options, head, delete: _delete, parameters = [] } = data
   return [
-    generateOperation(url, 'get', get, context),
-    generateOperation(url, 'post', post, context),
-    generateOperation(url, 'put', put, context),
-    generateOperation(url, 'patch', patch, context),
-    generateOperation(url, 'trace', trace, context),
-    generateOperation(url, 'options', options, context),
-    generateOperation(url, 'head', head, context),
-    generateOperation(url, 'delete', _delete, context),
-  ].filter(negate(isNil))
+    ...generateOperation(url, 'get', get, parameters, context),
+    ...generateOperation(url, 'post', post, parameters, context),
+    ...generateOperation(url, 'put', put, parameters, context),
+    ...generateOperation(url, 'patch', patch, parameters, context),
+    ...generateOperation(url, 'trace', trace, parameters, context),
+    ...generateOperation(url, 'options', options, parameters, context),
+    ...generateOperation(url, 'head', head, parameters, context),
+    ...generateOperation(url, 'delete', _delete, parameters, context),
+  ]
 }
 
 export const operationsGenerator =

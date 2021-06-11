@@ -4,7 +4,7 @@ import { Severity } from '@oats-ts/validators'
 import { createImportDeclarations } from '../createImportDeclarations'
 import { OpenAPIGeneratorContext } from '../typings'
 import { collectNamedSchemas } from './collectNamedTypes'
-import { collectReferencedNamedSchemas } from './collectReferencedTypes'
+import { collectReferencedNamedSchemas } from './collectReferencedNamedSchemas'
 import { generateTypeAst } from './generateTypeAst'
 
 export const schemaTypesGenerator =

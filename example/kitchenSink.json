@@ -136,7 +136,7 @@
     }
   },
   "paths": {
-    "/cat/dog": {
+    "/cat/{asd}dog": {
       "get": {
         "operationId": "getCatDog",
         "parameters": [
@@ -146,6 +146,14 @@
               "type": "string"
             },
             "name": "foo"
+          },
+          {
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "asd"
           }
         ],
         "responses": {
