@@ -33,6 +33,7 @@ import {
   TSType,
 } from '@babel/types'
 import { OpenAPIGeneratorContext } from '../typings'
+import { nameAst } from '../babelUtils'
 
 function generateEnumValueAst(value: string | number | boolean) {
   if (typeof value === 'string') {
@@ -50,7 +51,7 @@ export function generateEnumAst(input: SchemaObject, context: OpenAPIGeneratorCo
     tsEnumDeclaration(
       identifier(accessor.name(input, 'type')),
       input.enum.map((value) => {
-        return tsEnumMember(identifier(value.toString()), generateEnumValueAst(value))
+        return tsEnumMember(nameAst(value.toString()), generateEnumValueAst(value))
       }),
     ),
   )
@@ -73,16 +74,13 @@ export function generateObjectTypeAst(data: SchemaObject, context: OpenAPIGenera
   const discriminators = findDiscriminatorFields(data, context)
 
   const discriminatorFields = entries(discriminators || {}).map(([name, value]): TSPropertySignature => {
-    return tsPropertySignature(identifier(name), tsTypeAnnotation(tsLiteralType(stringLiteral(value))))
+    return tsPropertySignature(nameAst(name), tsTypeAnnotation(tsLiteralType(stringLiteral(value))))
   })
 
   const fields = entries(data.properties || {})
     .filter(([name]) => !has(discriminators, name))
     .map(([name, schema]): TSPropertySignature => {
-      const property = tsPropertySignature(
-        identifier(name),
-        tsTypeAnnotation(generateTypeReferenceAst(schema, context)),
-      )
+      const property = tsPropertySignature(nameAst(name), tsTypeAnnotation(generateTypeReferenceAst(schema, context)))
       property.optional = (data.required || []).indexOf(name) < 0
       return property
     })

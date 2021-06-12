@@ -1,8 +1,9 @@
 import { HttpAdapter, HttpRequest } from '../typings'
 import { mergeHeaders } from '../common/mergeHeaders'
+import fetch, { RequestInit, Response } from 'node-fetch'
 
-export const fetchAdapter = (init: RequestInit = {}): HttpAdapter => {
-  return async function fetchAdapterInstance(request: HttpRequest): Promise<Response> {
+export const nodeFetchAdapter = (init: RequestInit = {}): HttpAdapter => {
+  return async function nodeFetchAdapterInstance(request: HttpRequest): Promise<Response> {
     const fetchRequest: RequestInit = {
       ...(init || {}),
       headers: mergeHeaders(init?.headers, request.headers),

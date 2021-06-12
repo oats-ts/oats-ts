@@ -32,7 +32,7 @@ function generateOperation(
     generateParameterTypeSerializer(url, parameters.path, operation, context),
     generateParameterTypeSerializer(url, parameters.query, operation, context),
     generateParameterTypeSerializer(url, parameters.header, operation, context),
-    generateOperationFunction(url, method, operation, context),
+    generateOperationFunction(url, method, parameters, operation, context),
   ].filter(negate(isNil))
 }
 

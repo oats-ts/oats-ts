@@ -16,17 +16,11 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
   return resolve(join('generated', target, `${name}.ts`))
 }
 
-// const querySerializer = createQuerySerializer<GetCatDogQueryParameters>({
-//   arr: query.form.array({}),
-//   obj: query.form.object({}),
-//   str: query.form.primitive({}),
-// })
-
 describe('workflow test', () => {
   it('should generate', async () => {
     await harness()
       .read(openAPIReader({ path: 'operations.json' }))
-      .generate(openAPIGenerator({ path })(schemaTypesGenerator(), operationsGenerator()))
+      .generate(openAPIGenerator({ path })(/*schemaTypesGenerator(),*/ operationsGenerator()))
       .write(babelWriter())
       .run()
   })

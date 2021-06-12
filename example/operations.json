@@ -105,6 +105,21 @@
               "type": "string"
             },
             "name": "asd"
+          },
+          {
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "name": "X-Extra-Header-1"
+          },
+          {
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "name": "X-Extra-Header-2"
           }
         ],
         "responses": {
