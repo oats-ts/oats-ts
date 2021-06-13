@@ -43,6 +43,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     case 'operation-headers-serializer': {
       return 'headersSerializer'
     }
+    case 'operation-response-parser-hint': {
+      return 'responseParserHint'
+    }
     default:
       return name
   }

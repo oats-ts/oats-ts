@@ -10,7 +10,8 @@ import { generateParameterType } from './generateOperationParameterType'
 import { generateOperationReturnType } from './generateOperationReturnType'
 import { getPartitionedParameters } from './getPartitionedParameters'
 import { generateOperationInputType } from './generateOperationInputType'
-import { generateParameterTypeSerializer } from './generateParameterTypeSerializer'
+import { generateOperationParameterTypeSerializer } from './generateOperationParameterTypeSerializer'
+import { generateResponseParserHint } from './generateResponseParserHint'
 
 function generateOperation(
   url: string,
@@ -29,9 +30,10 @@ function generateOperation(
     generateParameterType(parameters.header, operation, 'operation-headers-type', context),
     generateOperationReturnType(operation, context),
     generateOperationInputType(parameters, operation, context),
-    generateParameterTypeSerializer(url, parameters.path, operation, context),
-    generateParameterTypeSerializer(url, parameters.query, operation, context),
-    generateParameterTypeSerializer(url, parameters.header, operation, context),
+    generateOperationParameterTypeSerializer(url, parameters.path, operation, context),
+    generateOperationParameterTypeSerializer(url, parameters.query, operation, context),
+    generateOperationParameterTypeSerializer(url, parameters.header, operation, context),
+    generateResponseParserHint(operation, context),
     generateOperationFunction(url, method, parameters, operation, context),
   ].filter(negate(isNil))
 }

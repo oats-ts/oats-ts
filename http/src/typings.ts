@@ -15,10 +15,9 @@ export type HttpRequest = {
   headers: HttpHeaders
 }
 
-/**  */
-export type HttpResponse = {
+export type HttpResponse<T = any> = {
   url: string
-  body: any
+  body: T
   statusCode: number
   headers: HttpHeaders
 }

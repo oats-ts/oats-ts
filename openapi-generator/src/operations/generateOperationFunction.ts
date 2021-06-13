@@ -25,7 +25,7 @@ import { BabelModule } from '../../../babel-writer/lib'
 import { getOperationReturnTypeImports, getOperationReturnTypeReference } from './generateOperationReturnType'
 import { PartitionedParameters } from './getPartitionedParameters'
 import { isNil, negate } from 'lodash'
-import { importAst, nameAst, typedParameter } from '../babelUtils'
+import { importAst, nameAst, typedId } from '../babelUtils'
 import { OatsModules } from '../packageUtils'
 
 function getSerializedParamExpr(
@@ -62,29 +62,37 @@ function getHeadersExpression(data: OperationObject, context: OpenAPIGeneratorCo
   return getSerializedParamExpr(data, 'headers', 'operation-headers-serializer', context)
 }
 
-function getResponseStatement(
+function getResponseExpression(
   url: string,
   method: HttpMethod,
   data: OperationObject,
   parameters: PartitionedParameters,
   context: OpenAPIGeneratorContext,
-): Statement {
+): Expression {
   getHeadersExpression(data, context)
-  return variableDeclaration('const', [
-    variableDeclarator(
-      identifier('response'),
-      awaitExpression(
-        callExpression(memberExpression(identifier('config'), identifier('request')), [
-          objectExpression([
-            objectProperty(nameAst('url'), getUrlExpression(url, data, parameters, context)),
-            objectProperty(nameAst('method'), stringLiteral(method)),
-            ...(parameters.header.length === 0
-              ? []
-              : [objectProperty(nameAst('headers'), getHeadersExpression(data, context))]),
-          ]),
-        ]),
-      ),
-    ),
+  return awaitExpression(
+    callExpression(memberExpression(identifier('config'), identifier('request')), [
+      objectExpression([
+        objectProperty(nameAst('url'), getUrlExpression(url, data, parameters, context)),
+        objectProperty(nameAst('method'), stringLiteral(method)),
+        ...(parameters.header.length === 0
+          ? []
+          : [objectProperty(nameAst('headers'), getHeadersExpression(data, context))]),
+      ]),
+    ]),
+  )
+}
+
+function getReturnExpression(
+  url: string,
+  method: HttpMethod,
+  data: OperationObject,
+  parameters: PartitionedParameters,
+  context: OpenAPIGeneratorContext,
+): Expression {
+  return callExpression(memberExpression(identifier('config'), identifier('parse')), [
+    getResponseExpression(url, method, data, parameters, context),
+    identifier(context.accessor.name(data, 'operation-response-parser-hint')),
   ])
 }
 
@@ -97,34 +105,33 @@ export function generateOperationFunction(
 ): BabelModule {
   const { accessor } = context
 
-  const configParameter = typedParameter('config', tsTypeReference(identifier('RequestConfig')))
+  const configParameter = typedId('config', tsTypeReference(identifier('RequestConfig')))
 
-  const inputParameter = typedParameter(
-    'input',
-    tsTypeReference(identifier(accessor.name(data, 'operation-input-type'))),
-  )
+  const inputParameter = typedId('input', tsTypeReference(identifier(accessor.name(data, 'operation-input-type'))))
 
   const fn = functionDeclaration(
     identifier(data.operationId),
     [configParameter, inputParameter],
-    blockStatement([
-      getResponseStatement(url, method, data, parameters, context),
-      returnStatement(identifier('undefined')),
-    ]),
+    blockStatement([returnStatement(getReturnExpression(url, method, data, parameters, context))]),
     false,
     true,
   )
   fn.returnType = tsTypeAnnotation(
     tsTypeReference(
       identifier('Promise'),
-      tsTypeParameterInstantiation([getOperationReturnTypeReference(data, context)]),
+      tsTypeParameterInstantiation([
+        tsTypeReference(
+          identifier('HttpResponse'),
+          tsTypeParameterInstantiation([getOperationReturnTypeReference(data, context)]),
+        ),
+      ]),
     ),
   )
   const ast = exportNamedDeclaration(fn)
   return {
     imports: [
       importAst(OatsModules.Param, ['joinUrl']),
-      importAst(OatsModules.Http, ['RequestConfig']),
+      importAst(OatsModules.Http, ['RequestConfig', 'HttpResponse']),
       ...getOperationReturnTypeImports(data, context),
     ],
     path: accessor.path(data, 'operation'),

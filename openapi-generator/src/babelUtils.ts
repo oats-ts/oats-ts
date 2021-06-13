@@ -22,7 +22,7 @@ export function importAst(from: string, names: string[]): ImportDeclaration {
   )
 }
 
-export function typedParameter(name: string, type: TSType): Identifier {
+export function typedId(name: string, type: TSType): Identifier {
   const parameter = identifier(name)
   parameter.typeAnnotation = tsTypeAnnotation(type)
   return parameter

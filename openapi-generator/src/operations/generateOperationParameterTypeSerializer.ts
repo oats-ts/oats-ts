@@ -167,11 +167,11 @@ function createSerializerConstant(
   ])
 }
 
-function getQuerySerializerImports(parameter: ParameterObject) {
+function getParameterSerializerImports(parameter: ParameterObject) {
   return importAst(OatsModules.Param, [parameter.in, getSerializerName(parameter)])
 }
 
-export function generateParameterTypeSerializer(
+export function generateOperationParameterTypeSerializer(
   url: string,
   parameters: ParameterObject[],
   data: OperationObject,
@@ -182,7 +182,7 @@ export function generateParameterTypeSerializer(
     return undefined
   }
   return {
-    imports: [getQuerySerializerImports(head(parameters))],
+    imports: [getParameterSerializerImports(head(parameters))],
     path: accessor.path(data, 'operation'),
     statements: [createSerializerConstant(url, parameters, data, context)],
   }

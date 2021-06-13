@@ -69,3 +69,4 @@ export type OpenAPIGeneratorTarget =
   | 'operation-headers-serializer'
   | 'operation-query-serializer'
   | 'operation-path-serializer'
+  | 'operation-response-parser-hint'
