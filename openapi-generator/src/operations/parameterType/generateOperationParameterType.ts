@@ -1,79 +1,35 @@
-import {
-  exportNamedDeclaration,
-  identifier,
-  ImportDeclaration,
-  tsTypeAliasDeclaration,
-  TSType,
-  tsTypeReference,
-} from '@babel/types'
-import { OperationObject, ParameterLocation, ParameterObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../../typings'
+import { exportNamedDeclaration, identifier, tsTypeAliasDeclaration, TSType, tsTypeReference } from '@babel/types'
+import { ParameterLocation } from 'openapi3-ts'
+import { OpenAPIGeneratorContext } from '../../typings'
 import { BabelModule } from '../../../../babel-writer/lib'
-import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
-import { createImportDeclarations } from '../../common/getImportDeclarations'
 import { getRighthandSideTypeAst } from '../../schemas/types/getRighthandSideTypeAst'
+import { EnhancedOperation } from '../typings'
+import { getParameterTypeImports } from './getParameterTypeImports'
+import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
+import { getParameterSchemaObject } from './getParameterSchemaObject'
 
-function asSchemaObject(params: ParameterObject[]): SchemaObject {
-  return {
-    type: 'object',
-    required: params.filter((param) => param.required).map((param) => param.name),
-    properties: params.reduce(
-      (props: Record<string, SchemaObject | ReferenceObject>, param: ParameterObject) =>
-        Object.assign(props, {
-          [param.name]: param.schema,
-        }),
-      {},
-    ),
-  }
-}
-
-export function generateParameterTypeReference(
-  parameters: ParameterObject[],
-  operation: OperationObject,
-  target: OpenAPIGeneratorTarget,
+export function generateOperationParameterType(
   location: ParameterLocation,
-  context: OpenAPIGeneratorContext,
-): TSType {
-  const { accessor } = context
-  const params = parameters.filter((param) => param.in === location)
-  if (params.length === 0) {
-    return undefined
-  }
-  return tsTypeReference(identifier(accessor.name(operation, target)))
-}
-
-export function getParameterTypeImports(
-  parameters: ParameterObject[],
-  operation: OperationObject,
-  target: OpenAPIGeneratorTarget,
-  context: OpenAPIGeneratorContext,
-): ImportDeclaration[] {
-  const { accessor } = context
-  const paramsSchema = asSchemaObject(parameters)
-  const path = accessor.path(operation, target)
-  const referencedSchemas = getReferencedNamedSchemas(paramsSchema, context)
-  return createImportDeclarations(path, 'type', referencedSchemas, context)
-}
-
-export function generateParameterType(
-  parameters: ParameterObject[],
-  operation: OperationObject,
-  target: OpenAPIGeneratorTarget,
+  data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): BabelModule {
+  const parameters = data[location]
+  const { operation } = data
+  const { accessor } = context
+
   if (parameters.length === 0) {
     return undefined
   }
-  const { accessor } = context
+
   return {
-    imports: getParameterTypeImports(parameters, operation, target, context),
-    path: accessor.path(operation, target),
+    imports: getParameterTypeImports(location, data, context),
+    path: accessor.path(operation, getParameterTypeGeneratorTarget(location)),
     statements: [
       exportNamedDeclaration(
         tsTypeAliasDeclaration(
-          identifier(accessor.name(operation, target)),
+          identifier(accessor.name(operation, getParameterTypeGeneratorTarget(location))),
           undefined,
-          getRighthandSideTypeAst(asSchemaObject(parameters), context),
+          getRighthandSideTypeAst(getParameterSchemaObject(parameters), context),
         ),
       ),
     ],

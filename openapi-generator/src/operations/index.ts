@@ -6,7 +6,7 @@ import { Severity } from '@oats-ts/validators'
 import { entries, isNil, negate } from 'lodash'
 import { OpenAPIGeneratorContext } from '../typings'
 import { generateOperationFunction } from './operation/generateOperationFunction'
-import { generateParameterType } from './parameterType/generateOperationParameterType'
+import { generateOperationParameterType } from './parameterType/generateOperationParameterType'
 import { generateOperationReturnType } from './returnType/generateOperationReturnType'
 import { getEnhancedOperation } from './getEnhancedOperation'
 import { generateOperationInputType } from './inputType/generateOperationInputType'
@@ -25,16 +25,17 @@ function generateOperation(
   }
   const enhancedOperation = getEnhancedOperation(url, method, operation, commonParameters, context)
   return [
-    generateParameterType(enhancedOperation.path, operation, 'operation-path-type', context),
-    generateParameterType(enhancedOperation.query, operation, 'operation-query-type', context),
-    generateParameterType(enhancedOperation.header, operation, 'operation-headers-type', context),
+    generateOperationParameterType('path', enhancedOperation, context),
+    generateOperationParameterType('query', enhancedOperation, context),
+    generateOperationParameterType('header', enhancedOperation, context),
+
     generateOperationReturnType(operation, context),
     generateOperationInputType(enhancedOperation, context),
     generateOperationParameterTypeSerializer(url, enhancedOperation.path, operation, context),
     generateOperationParameterTypeSerializer(url, enhancedOperation.query, operation, context),
     generateOperationParameterTypeSerializer(url, enhancedOperation.header, operation, context),
     generateResponseParserHint(operation, context),
-    generateOperationFunction(url, method, enhancedOperation, operation, context),
+    generateOperationFunction(enhancedOperation, context),
   ].filter(negate(isNil))
 }
 
