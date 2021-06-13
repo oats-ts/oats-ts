@@ -2,9 +2,9 @@ import type { BabelModule, BabelGeneratorOutput } from '@oats-ts/babel-writer'
 import type { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Try, isFailure } from '@oats-ts/generator'
 import { Issue, Severity } from '@oats-ts/validators'
-import { mergeUnits } from './mergeUnits'
+import { mergeModules } from './common/mergeModules'
 import { OpenAPIGeneratorContext, OpenAPIChildGenerator, OpenAPIGeneratorConfig } from './typings'
-import { DefaultOpenAPIAccessor } from './DefaultOpenAPIAccessor'
+import { DefaultOpenAPIAccessor } from './common/DefaultOpenAPIAccessor'
 import { defaultOpenAPIGeneratorConfig } from './defaults/defaultOpenAPIGeneratorConfig'
 
 export const openAPIGenerator =
@@ -35,6 +35,6 @@ export const openAPIGenerator =
       }
     }
     return {
-      modules: mergeUnits(allUnits),
+      modules: mergeModules(allUnits),
     }
   }

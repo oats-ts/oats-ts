@@ -9,7 +9,7 @@ import {
   ObjectProperty,
   stringLiteral,
 } from '@babel/types'
-import { nameAst } from '../../babelUtils'
+import { idAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
@@ -20,14 +20,14 @@ export function getOperationRequestAst(data: EnhancedOperation, context: OpenAPI
   const { method, header } = data
 
   const properties: ObjectProperty[] = [
-    objectProperty(nameAst('url'), getUrlAst(data, context)),
-    objectProperty(nameAst('method'), stringLiteral(method)),
+    objectProperty(idAst('url'), getUrlAst(data, context)),
+    objectProperty(idAst('method'), stringLiteral(method)),
   ]
 
   if (header.length > 0) {
     properties.push(
       objectProperty(
-        nameAst('headers'),
+        idAst('headers'),
         getParameterSerializerCallAst(accessor.name(data, 'operation-headers-serializer'), 'headers'),
       ),
     )

@@ -34,7 +34,7 @@ function generateOperation(
     generateOperationParameterTypeSerializer(url, enhancedOperation.path, operation, context),
     generateOperationParameterTypeSerializer(url, enhancedOperation.query, operation, context),
     generateOperationParameterTypeSerializer(url, enhancedOperation.header, operation, context),
-    generateResponseParserHint(operation, context),
+    generateResponseParserHint(enhancedOperation, context),
     generateOperationFunction(enhancedOperation, context),
   ].filter(negate(isNil))
 }

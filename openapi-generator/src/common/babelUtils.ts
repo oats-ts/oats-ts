@@ -11,7 +11,7 @@ import {
 } from '@babel/types'
 import { isIdentifier } from './isIdentifier'
 
-export function nameAst(input: string): Identifier | StringLiteral {
+export function idAst(input: string): Identifier | StringLiteral {
   return isIdentifier(input) ? identifier(input) : stringLiteral(input)
 }
 
@@ -22,7 +22,7 @@ export function importAst(from: string, names: string[]): ImportDeclaration {
   )
 }
 
-export function typedId(name: string, type: TSType): Identifier {
+export function typedIdAst(name: string, type: TSType): Identifier {
   const parameter = identifier(name)
   parameter.typeAnnotation = tsTypeAnnotation(type)
   return parameter

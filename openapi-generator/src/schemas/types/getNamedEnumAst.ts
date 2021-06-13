@@ -6,7 +6,7 @@ import {
   tsEnumMember,
 } from '@babel/types'
 import { SchemaObject } from 'openapi3-ts'
-import { nameAst } from '../../babelUtils'
+import { idAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { getLiteralTypeAst } from './getLiteralTypeAst'
 
@@ -16,7 +16,7 @@ export function getNamedEnumAst(input: SchemaObject, context: OpenAPIGeneratorCo
     tsEnumDeclaration(
       identifier(accessor.name(input, 'type')),
       input.enum.map((value) => {
-        return tsEnumMember(nameAst(value.toString()), getLiteralTypeAst(value))
+        return tsEnumMember(idAst(value.toString()), getLiteralTypeAst(value))
       }),
     ),
   )

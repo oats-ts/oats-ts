@@ -38,8 +38,8 @@ function mergeImports(imps: ImportDeclaration[]): ImportDeclaration[] {
   })
 }
 
-export function mergeUnits(units: BabelModule[]): BabelModule[] {
-  return Array.from(values(groupBy(units, (unit) => unit.path))).map(
+export function mergeModules(modules: BabelModule[]): BabelModule[] {
+  return Array.from(values(groupBy(modules, (unit) => unit.path))).map(
     (units): BabelModule => ({
       statements: flatMap(units, (unit) => unit.statements),
       imports: mergeImports(flatMap(units, (unit) => unit.imports)),

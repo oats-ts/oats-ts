@@ -2,7 +2,7 @@ import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import isNil from 'lodash/isNil'
 import entries from 'lodash/entries'
 import values from 'lodash/values'
-import { OpenAPIGeneratorContext } from './typings'
+import { OpenAPIGeneratorContext } from '../typings'
 
 function collectFromSchema(
   uri: string,
@@ -48,7 +48,8 @@ function collectFromDocuments(
   return Array.from(parents)
 }
 
-export function findDiscriminatorFields(input: SchemaObject, context: OpenAPIGeneratorContext): Record<string, string> {
+/** @returns Discriminators in a propertyName -> value format */
+export function getDiscriminators(input: SchemaObject, context: OpenAPIGeneratorContext): Record<string, string> {
   const { accessor } = context
   const schemaUri = accessor.uri(input)
   const discriminators: Record<string, string> = {}

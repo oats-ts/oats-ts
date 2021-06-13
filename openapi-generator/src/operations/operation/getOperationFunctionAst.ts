@@ -9,9 +9,9 @@ import {
   tsTypeParameterInstantiation,
   tsTypeReference,
 } from '@babel/types'
-import { typedId } from '../../babelUtils'
+import { typedIdAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
-import { getOperationReturnTypeReference } from '../returnType/generateOperationReturnType'
+import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
 import { EnhancedOperation } from '../typings'
 import { getOperationParseAst } from './getOperationParseAst'
 
@@ -25,8 +25,8 @@ export function getOperationFunctionAst(
   const fnAst = functionDeclaration(
     identifier(accessor.name(operation, 'operation')),
     [
-      typedId('config', tsTypeReference(identifier('RequestConfig'))),
-      typedId('input', tsTypeReference(identifier(accessor.name(operation, 'operation-input-type')))),
+      typedIdAst('config', tsTypeReference(identifier('RequestConfig'))),
+      typedIdAst('input', tsTypeReference(identifier(accessor.name(operation, 'operation-input-type')))),
     ],
     blockStatement([returnStatement(getOperationParseAst(data, context))]),
     false,
@@ -39,7 +39,7 @@ export function getOperationFunctionAst(
       tsTypeParameterInstantiation([
         tsTypeReference(
           identifier('HttpResponse'),
-          tsTypeParameterInstantiation([getOperationReturnTypeReference(operation, context)]),
+          tsTypeParameterInstantiation([getOperationReturnTypeReferenceAst(operation, context)]),
         ),
       ]),
     ),

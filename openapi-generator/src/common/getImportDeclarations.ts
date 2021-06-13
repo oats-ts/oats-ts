@@ -5,7 +5,7 @@ import {
   importSpecifier,
   stringLiteral,
 } from '@oats-ts/babel-writer/node_modules/@babel/types'
-import { createImportPath } from '../createImportPath'
+import { createImportPath } from './createImportPath'
 import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 export function createImportDeclarations(
