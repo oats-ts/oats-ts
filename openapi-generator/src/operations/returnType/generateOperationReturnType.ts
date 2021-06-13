@@ -8,12 +8,13 @@ import {
   tsVoidKeyword,
 } from '@babel/types'
 import { OperationObject, ReferenceObject, SchemaObject, ResponseObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
-import { generateRighthandSideAst, generateTypeReferenceAst } from '../schemas/generateTypeAst'
-import { BabelModule } from '../../../babel-writer/lib'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../../typings'
+import { BabelModule } from '../../../../babel-writer/lib'
 import { isNil, values } from 'lodash'
-import { collectReferencedNamedSchemas } from '../schemas/collectReferencedNamedSchemas'
-import { createImportDeclarations } from '../createImportDeclarations'
+import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
+import { createImportDeclarations } from '../../common/getImportDeclarations'
+import { getTypeReferenceAst } from '../../schemas/types/getTypeReferenceAst'
+import { getRighthandSideTypeAst } from '../../schemas/types/getRighthandSideTypeAst'
 
 function collectReturnSchemas(operation: OperationObject, context: OpenAPIGeneratorContext): SchemaObject[] {
   const { accessor } = context
@@ -60,7 +61,7 @@ export function getOperationReturnTypeReference(operation: OperationObject, cont
       case 0:
         return tsVoidKeyword()
       case 1:
-        return generateTypeReferenceAst(schemas[0], context)
+        return getTypeReferenceAst(schemas[0], context)
     }
   }
   return tsTypeReference(identifier(accessor.name(operation, 'operation-return-type')))
@@ -76,7 +77,7 @@ export function getOperationReturnTypeImports(
     oneOf: schemas,
   }
   const path = accessor.path(operation, 'operation-return-type')
-  const referencedSchemas = collectReferencedNamedSchemas(wrapperSchema, context)
+  const referencedSchemas = getReferencedNamedSchemas(wrapperSchema, context)
   return createImportDeclarations(path, 'type', referencedSchemas, context)
 }
 
@@ -99,7 +100,7 @@ export function generateOperationReturnType(operation: OperationObject, context:
         tsTypeAliasDeclaration(
           identifier(accessor.name(operation, 'operation-return-type')),
           undefined,
-          generateRighthandSideAst(wrapperSchema, context),
+          getRighthandSideTypeAst(wrapperSchema, context),
         ),
       ),
     ],

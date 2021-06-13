@@ -11,10 +11,10 @@ import {
 } from '@babel/types'
 import { entries, isNil } from 'lodash'
 import { OperationObject, ResponseObject, ResponsesObject } from 'openapi3-ts'
-import { BabelModule } from '../../../babel-writer/lib'
-import { importAst, typedId, nameAst } from '../babelUtils'
-import { OatsModules } from '../packageUtils'
-import { OpenAPIGeneratorContext } from '../typings'
+import { BabelModule } from '../../../../babel-writer/lib'
+import { importAst, typedId, nameAst } from '../../babelUtils'
+import { OatsModules } from '../../packageUtils'
+import { OpenAPIGeneratorContext } from '../../typings'
 
 function getContentTypeProperties(data: ResponseObject, context: OpenAPIGeneratorContext): ObjectProperty[] {
   const { content } = data

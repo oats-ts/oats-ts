@@ -34,7 +34,7 @@ function collect(
   }
 }
 
-export function collectReferencedNamedSchemas(schema: SchemaObject, context: OpenAPIGeneratorContext): SchemaObject[] {
+export function getReferencedNamedSchemas(schema: SchemaObject, context: OpenAPIGeneratorContext): SchemaObject[] {
   const schemas: SchemaObject[] = []
   collectInChildren(schema, context, schemas)
   return schemas

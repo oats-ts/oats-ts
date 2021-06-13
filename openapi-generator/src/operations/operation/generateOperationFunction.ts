@@ -19,14 +19,14 @@ import {
   variableDeclarator,
 } from '@babel/types'
 import { OperationObject, ParameterLocation } from 'openapi3-ts'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../../typings'
 import type { HttpMethod } from '@oats-ts/http'
-import { BabelModule } from '../../../babel-writer/lib'
-import { getOperationReturnTypeImports, getOperationReturnTypeReference } from './generateOperationReturnType'
-import { PartitionedParameters } from './getPartitionedParameters'
+import { BabelModule } from '../../../../babel-writer/lib'
+import { getOperationReturnTypeImports, getOperationReturnTypeReference } from '../returnType/generateOperationReturnType'
+import { PartitionedParameters } from '../getEnhancedOperation'
 import { isNil, negate } from 'lodash'
-import { importAst, nameAst, typedId } from '../babelUtils'
-import { OatsModules } from '../packageUtils'
+import { importAst, nameAst, typedId } from '../../babelUtils'
+import { OatsModules } from '../../packageUtils'
 
 function getSerializedParamExpr(
   data: OperationObject,

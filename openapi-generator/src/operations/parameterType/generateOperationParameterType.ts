@@ -7,11 +7,11 @@ import {
   tsTypeReference,
 } from '@babel/types'
 import { OperationObject, ParameterLocation, ParameterObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
-import { generateRighthandSideAst } from '../schemas/generateTypeAst'
-import { BabelModule } from '../../../babel-writer/lib'
-import { collectReferencedNamedSchemas } from '../schemas/collectReferencedNamedSchemas'
-import { createImportDeclarations } from '../createImportDeclarations'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../../typings'
+import { BabelModule } from '../../../../babel-writer/lib'
+import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
+import { createImportDeclarations } from '../../common/getImportDeclarations'
+import { getRighthandSideTypeAst } from '../../schemas/types/getRighthandSideTypeAst'
 
 function asSchemaObject(params: ParameterObject[]): SchemaObject {
   return {
@@ -51,7 +51,7 @@ export function getParameterTypeImports(
   const { accessor } = context
   const paramsSchema = asSchemaObject(parameters)
   const path = accessor.path(operation, target)
-  const referencedSchemas = collectReferencedNamedSchemas(paramsSchema, context)
+  const referencedSchemas = getReferencedNamedSchemas(paramsSchema, context)
   return createImportDeclarations(path, 'type', referencedSchemas, context)
 }
 
@@ -73,7 +73,7 @@ export function generateParameterType(
         tsTypeAliasDeclaration(
           identifier(accessor.name(operation, target)),
           undefined,
-          generateRighthandSideAst(asSchemaObject(parameters), context),
+          getRighthandSideTypeAst(asSchemaObject(parameters), context),
         ),
       ),
     ],

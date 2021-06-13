@@ -1,13 +1,11 @@
 import { harness } from '@oats-ts/generator'
 import { openAPIReader } from '@oats-ts/openapi-reader'
-import {
-  openAPIGenerator,
-  schemaTypesGenerator,
-  operationsGenerator,
-  OpenAPIGeneratorTarget,
-} from '@oats-ts/openapi-generator'
-import { babelWriter } from '@oats-ts/babel-writer'
+import { openAPIGenerator, OpenAPIGeneratorTarget, types, operations } from '@oats-ts/openapi-generator'
+import { babelWriter, prettierStringify } from '@oats-ts/babel-writer'
 import { join, resolve } from 'path'
+import { readFileSync } from 'fs'
+
+const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '.prettierrc'), 'utf-8'))
 
 function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
   if (target.startsWith('operation')) {
@@ -20,8 +18,8 @@ describe('workflow test', () => {
   it('should generate', async () => {
     await harness()
       .read(openAPIReader({ path: 'operations.json' }))
-      .generate(openAPIGenerator({ path })(/*schemaTypesGenerator(),*/ operationsGenerator()))
-      .write(babelWriter())
+      .generate(openAPIGenerator({ path })(types(), operations()))
+      .write(babelWriter({ stringify: prettierStringify(prettierConfiguration) }))
       .run()
   })
 })

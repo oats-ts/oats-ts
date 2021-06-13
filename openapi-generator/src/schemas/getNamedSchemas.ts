@@ -41,7 +41,7 @@ function collectNamedTypesForSchema(
   }
 }
 
-export function collectNamedSchemas(context: OpenAPIGeneratorContext): SchemaObject[] {
+export function getNamedSchemas(context: OpenAPIGeneratorContext): SchemaObject[] {
   const { accessor } = context
   const schemaSet = new Set<SchemaObject>()
 

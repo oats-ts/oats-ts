@@ -18,11 +18,11 @@ import {
   booleanLiteral,
 } from '@babel/types'
 import { OperationObject, ParameterObject, ParameterStyle, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../../typings'
 import { BabelModule } from '@oats-ts/babel-writer'
 import { has, head, isNil, negate } from 'lodash'
-import { importAst, nameAst } from '../babelUtils'
-import { OatsModules } from '../packageUtils'
+import { importAst, nameAst } from '../../babelUtils'
+import { OatsModules } from '../../packageUtils'
 
 function getSerializerMethod(schema: SchemaObject): 'primitive' | 'object' | 'array' {
   switch (schema.type) {

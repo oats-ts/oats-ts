@@ -1,12 +1,12 @@
-export { openAPIGenerator } from './openAPIGenerator'
-export {
+export type {
   OpenAPIAccessor,
   OpenAPIChildGenerator,
   OpenAPIGeneratorConfig,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
 } from './typings'
+export { openAPIGenerator } from './openAPIGenerator'
 export { defaultNameProvider } from './defaults/defaultNameProvider'
 export { singleFile, byName } from './defaults/defaultPathProviders'
-export { schemaTypesGenerator } from './schemas/schemaTypesGenerator'
-export { operationsGenerator } from './operations/operationsGenerator'
+export { types } from './schemas'
+export { operations } from './operations'

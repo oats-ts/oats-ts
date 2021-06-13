@@ -5,13 +5,13 @@ import { OperationObject, ParameterObject, PathItemObject, ReferenceObject } fro
 import { Severity } from '@oats-ts/validators'
 import { entries, isNil, negate } from 'lodash'
 import { OpenAPIGeneratorContext } from '../typings'
-import { generateOperationFunction } from './generateOperationFunction'
-import { generateParameterType } from './generateOperationParameterType'
-import { generateOperationReturnType } from './generateOperationReturnType'
-import { getPartitionedParameters } from './getPartitionedParameters'
-import { generateOperationInputType } from './generateOperationInputType'
-import { generateOperationParameterTypeSerializer } from './generateOperationParameterTypeSerializer'
-import { generateResponseParserHint } from './generateResponseParserHint'
+import { generateOperationFunction } from './operation/generateOperationFunction'
+import { generateParameterType } from './parameterType/generateOperationParameterType'
+import { generateOperationReturnType } from './returnType/generateOperationReturnType'
+import { getEnhancedOperation } from './getEnhancedOperation'
+import { generateOperationInputType } from './inputType/generateOperationInputType'
+import { generateOperationParameterTypeSerializer } from './parameterSerializer/generateOperationParameterTypeSerializer'
+import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
 
 function generateOperation(
   url: string,
@@ -23,18 +23,18 @@ function generateOperation(
   if (isNil(operation)) {
     return []
   }
-  const parameters = getPartitionedParameters(operation, commonParameters, context)
+  const enhancedOperation = getEnhancedOperation(url, method, operation, commonParameters, context)
   return [
-    generateParameterType(parameters.path, operation, 'operation-path-type', context),
-    generateParameterType(parameters.query, operation, 'operation-query-type', context),
-    generateParameterType(parameters.header, operation, 'operation-headers-type', context),
+    generateParameterType(enhancedOperation.path, operation, 'operation-path-type', context),
+    generateParameterType(enhancedOperation.query, operation, 'operation-query-type', context),
+    generateParameterType(enhancedOperation.header, operation, 'operation-headers-type', context),
     generateOperationReturnType(operation, context),
-    generateOperationInputType(parameters, operation, context),
-    generateOperationParameterTypeSerializer(url, parameters.path, operation, context),
-    generateOperationParameterTypeSerializer(url, parameters.query, operation, context),
-    generateOperationParameterTypeSerializer(url, parameters.header, operation, context),
+    generateOperationInputType(enhancedOperation, context),
+    generateOperationParameterTypeSerializer(url, enhancedOperation.path, operation, context),
+    generateOperationParameterTypeSerializer(url, enhancedOperation.query, operation, context),
+    generateOperationParameterTypeSerializer(url, enhancedOperation.header, operation, context),
     generateResponseParserHint(operation, context),
-    generateOperationFunction(url, method, parameters, operation, context),
+    generateOperationFunction(url, method, enhancedOperation, operation, context),
   ].filter(negate(isNil))
 }
 
@@ -56,7 +56,7 @@ function generatePathItemObjectAsts(
   ]
 }
 
-export const operationsGenerator =
+export const operations =
   (/* TODO config? */) =>
   async (context: OpenAPIGeneratorContext): Promise<Try<BabelGeneratorOutput>> => {
     const { accessor } = context
