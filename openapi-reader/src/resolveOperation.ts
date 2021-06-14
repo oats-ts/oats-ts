@@ -1,4 +1,4 @@
-import { OperationObject, ResponseObject } from 'openapi3-ts'
+import { OperationObject, RequestBodyObject, ResponseObject } from 'openapi3-ts'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
@@ -8,6 +8,7 @@ import entries from 'lodash/entries'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveParameterObject } from './resolveParameterObject'
 import { resolveResponseObject } from './resolveResponseObject'
+import { resolveRequestBodyObject } from './resolveRequestBodyObject'
 
 export async function resolveOperation(input: ReadInput<OperationObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, operationObject)) {
@@ -37,6 +38,11 @@ export async function resolveOperation(input: ReadInput<OperationObject>, contex
   }
 
   if (!isNil(requestBody)) {
+    await resolveReferenceable<RequestBodyObject>(
+      { data: requestBody, uri: context.uri.append(uri, 'requestBody') },
+      context,
+      resolveRequestBodyObject,
+    )
   }
 
   register(input, context)

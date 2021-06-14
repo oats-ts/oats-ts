@@ -1,6 +1,6 @@
 import { ImportDeclaration } from '@babel/types'
 import { ParameterLocation } from 'openapi3-ts'
-import { createImportDeclarations } from '../../common/getImportDeclarations'
+import { getImportDeclarations } from '../../common/getImportDeclarations'
 import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
@@ -20,5 +20,5 @@ export function getParameterTypeImports(
   const path = accessor.path(operation, getParameterTypeGeneratorTarget(location))
   const referencedSchemas = getReferencedNamedSchemas(paramsSchema, context)
 
-  return createImportDeclarations(path, 'type', referencedSchemas, context)
+  return getImportDeclarations(path, 'type', referencedSchemas, context)
 }

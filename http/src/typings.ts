@@ -12,7 +12,7 @@ export type HttpRequest = {
   /** Request body, should only be set for the appropriate method. */
   body?: any
   /** Headers, content-type will be filled by default */
-  headers: HttpHeaders
+  headers?: HttpHeaders
 }
 
 export type HttpResponse<T = any> = {
@@ -33,12 +33,15 @@ export type ResponseParserHint = {
   default?: ResponseValidator
 }
 
+export type BodySerializer = (contentType: string, body: any) => Promise<any>
+
 export type HttpAdapter = (request: HttpRequest) => Promise<any>
 
 export type ResponseParser = (response: any, hint: ResponseParserHint) => Promise<HttpResponse>
 
 export type RequestConfig = {
   baseUrl: string
+  serialize: BodySerializer
   request: HttpAdapter
   parse: ResponseParser
 }

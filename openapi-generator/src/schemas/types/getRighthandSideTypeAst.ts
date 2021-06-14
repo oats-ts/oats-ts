@@ -24,24 +24,29 @@ export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGene
     return getLiteralUnionTypeAst(data, context)
   }
 
-  switch (data.type) {
-    case 'string':
-      return tsStringKeyword()
-    case 'number':
-    case 'integer':
-      return tsNumberKeyword()
-    case 'boolean':
-      return tsBooleanKeyword()
-    case 'object':
-      if (!isNil(data.additionalProperties)) {
-        return getDictionaryTypeAst(data, context)
-      }
-      return getObjectTypeAst(data, context)
-    case 'array':
-      return getArrayTypeAst(data, context)
-    case 'null':
-      return tsUndefinedKeyword()
-    default:
-      return tsAnyKeyword()
+  if (data.type === 'string') {
+    return tsStringKeyword()
   }
+
+  if (data.type === 'number' || data.type === 'integer') {
+    return tsNumberKeyword()
+  }
+
+  if (data.type === 'boolean') {
+    return tsBooleanKeyword()
+  }
+
+  if (!isNil(data.additionalProperties)) {
+    return getDictionaryTypeAst(data, context)
+  }
+
+  if (!isNil(data.properties)) {
+    return getObjectTypeAst(data, context)
+  }
+
+  if (!isNil(data.items)) {
+    return getArrayTypeAst(data, context)
+  }
+
+  return tsAnyKeyword()
 }

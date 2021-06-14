@@ -71,8 +71,35 @@
     }
   },
   "paths": {
-    "/cat/{asd}dog": {
+    "/frog": {
       "get": {
+        "operationId": "getFrog",
+        "responses": {
+          "200": {
+            "description": "foo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectWithKeys"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cat/{asd}dog": {
+      "post": {
         "operationId": "getCatDog",
         "parameters": [
           {
@@ -122,6 +149,20 @@
             "name": "X-Extra-Header-2"
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectWithKeys"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "foo",

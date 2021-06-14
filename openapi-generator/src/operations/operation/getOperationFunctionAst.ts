@@ -11,6 +11,7 @@ import {
 } from '@babel/types'
 import { typedIdAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
+import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
 import { EnhancedOperation } from '../typings'
 import { getOperationParseAst } from './getOperationParseAst'
@@ -22,12 +23,15 @@ export function getOperationFunctionAst(
   const { accessor } = context
   const { operation } = data
 
+  const params = [typedIdAst('config', tsTypeReference(identifier('RequestConfig')))]
+
+  if (isOperationInputTypeRequired(data, context)) {
+    params.push(typedIdAst('input', tsTypeReference(identifier(accessor.name(operation, 'operation-input-type')))))
+  }
+
   const fnAst = functionDeclaration(
     identifier(accessor.name(operation, 'operation')),
-    [
-      typedIdAst('config', tsTypeReference(identifier('RequestConfig'))),
-      typedIdAst('input', tsTypeReference(identifier(accessor.name(operation, 'operation-input-type')))),
-    ],
+    params,
     blockStatement([returnStatement(getOperationParseAst(data, context))]),
     false,
     true,

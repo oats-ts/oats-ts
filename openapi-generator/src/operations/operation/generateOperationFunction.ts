@@ -7,17 +7,16 @@ import { Http, Params } from '../../common/OatsPackages'
 import { getOperationReturnTypeImports } from '../returnType/getOperationReturnTypeImports'
 import { isReturnTypeRequired } from '../returnType/isReturnTypeRequired'
 import { getResponseSchemas } from '../returnType/getResponseSchemas'
+import { getImports } from '../../common/getImports'
 
 export function generateOperationFunction(data: EnhancedOperation, context: OpenAPIGeneratorContext): BabelModule {
   const { accessor } = context
   const { operation } = data
-
+  const operationPath = accessor.path(operation, 'operation')
   const returnTypeImports = isReturnTypeRequired(getResponseSchemas(operation, context), context)
-    ? [
-        importAst(accessor.path(operation, 'operation-return-type'), [
-          accessor.name(operation, 'operation-return-type'),
-        ]),
-      ]
+    ? getImports(operationPath, [
+        [accessor.path(operation, 'operation-return-type'), accessor.name(operation, 'operation-return-type')],
+      ])
     : getOperationReturnTypeImports(operation, context)
 
   return {
@@ -26,7 +25,7 @@ export function generateOperationFunction(data: EnhancedOperation, context: Open
       importAst(Http.name, [Http.RequestConfig, Http.HttpResponse]),
       ...returnTypeImports,
     ],
-    path: accessor.path(operation, 'operation'),
+    path: operationPath,
     statements: [getOperationFunctionAst(data, context)],
   }
 }
