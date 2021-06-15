@@ -1,9 +1,10 @@
 import { harness } from '@oats-ts/generator'
 import { openAPIReader } from '@oats-ts/openapi-reader'
-import { openAPIGenerator, OpenAPIGeneratorTarget, types, operations } from '@oats-ts/openapi-generator'
+import { openAPIGenerator, OpenAPIGeneratorTarget, types, operations, typeGuards } from '@oats-ts/openapi-generator'
 import { babelWriter, defaultStringify, prettierStringify } from '@oats-ts/babel-writer'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
+import { identifier, memberExpression, stringLiteral } from '@babel/types'
 
 const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '.prettierrc'), 'utf-8'))
 
@@ -18,8 +19,8 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
 describe('workflow test', () => {
   it('should generate', async () => {
     await harness()
-      .read(openAPIReader({ path: 'adyen.json' }))
-      .generate(openAPIGenerator({ path })(types(), operations()))
+      .read(openAPIReader({ path: 'kitchenSink.json' }))
+      .generate(openAPIGenerator({ path })(types(), typeGuards({ mode: 'shallow' })))
       .write(babelWriter({ stringify: defaultStringify }))
       .run()
   })

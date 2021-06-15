@@ -7,11 +7,10 @@ import { getNamedTypeAst } from './getNamedTypeAst'
 
 export function generateType(schema: SchemaObject, context: OpenAPIGeneratorContext): BabelModule {
   const { accessor } = context
-  const statement = getNamedTypeAst(schema, context)
   const path = accessor.path(schema, 'type')
   const referencedTypes = getReferencedNamedSchemas(schema, context)
   return {
-    statements: [statement],
+    statements: [getNamedTypeAst(schema, context)],
     path,
     imports: getImportDeclarations(path, 'type', referencedTypes, context),
   }

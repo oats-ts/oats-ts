@@ -51,5 +51,5 @@ const Keywords = new Set([
 ])
 
 export function isIdentifier(name: string): boolean {
-  return !Keywords.has(name) && /^[a-z_]\w*$/.test(name)
+  return !Keywords.has(name) && /^[a-zA-Z_]\w*$/.test(name)
 }

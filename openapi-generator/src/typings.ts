@@ -60,6 +60,7 @@ export type OpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promis
 
 export type OpenAPIGeneratorTarget =
   | 'type'
+  | 'type-guard'
   | 'operation'
   | 'operation-query-type'
   | 'operation-path-type'

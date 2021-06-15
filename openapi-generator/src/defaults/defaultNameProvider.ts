@@ -9,6 +9,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     case 'type': {
       return isNil(name) ? undefined : pascalCase(name)
     }
+    case 'type-guard': {
+      return isNil(name) ? undefined : camelCase(`is-${name}`)
+    }
     case 'operation': {
       const operation: OperationObject = input
       return isNil(operation.operationId) ? undefined : camelCase(operation.operationId)

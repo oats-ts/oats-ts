@@ -1,9 +1,9 @@
 import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
 import { Try } from '@oats-ts/generator'
 import { Severity } from '@oats-ts/validators'
-import { OpenAPIGeneratorContext } from '../typings'
-import { getNamedSchemas } from './getNamedSchemas'
-import { generateType } from './types/generateType'
+import { OpenAPIGeneratorContext } from '../../typings'
+import { getNamedSchemas } from '../getNamedSchemas'
+import { generateType } from './generateType'
 
 export const types =
   (/* TODO config? */) =>

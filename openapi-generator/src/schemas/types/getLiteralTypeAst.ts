@@ -7,7 +7,7 @@ import {
   stringLiteral,
 } from '@babel/types'
 
-export function getLiteralTypeAst(value: string | number | boolean): StringLiteral | NumericLiteral | BooleanLiteral {
+export function getLiteralAst(value: string | number | boolean): StringLiteral | NumericLiteral | BooleanLiteral {
   if (typeof value === 'string') {
     return stringLiteral(value)
   } else if (typeof value === 'number') {

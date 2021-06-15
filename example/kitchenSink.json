@@ -115,7 +115,11 @@
       },
       "Cat": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "isCat": {
+            "type": "boolean"
+          }
+        }
       },
       "Dog": {
         "type": "object",

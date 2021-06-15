@@ -38,6 +38,13 @@
           }
         }
       },
+      "MixedEnum": {
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
       "ObjectWithKeys": {
         "type": "object",
         "required": [
