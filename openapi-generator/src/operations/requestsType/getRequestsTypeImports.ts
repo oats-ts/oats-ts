@@ -1,12 +1,11 @@
 import { ImportDeclaration } from '@babel/types'
-import { flatMap } from 'lodash'
+import { flatMap, values } from 'lodash'
 import { OpenAPIObject } from 'openapi3-ts'
 import { getImports } from '../../common/getImports'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeImports } from '../returnType/getOperationReturnTypeImports'
-import { getResponseSchemas } from '../returnType/getResponseSchemas'
-import { isReturnTypeRequired } from '../returnType/isReturnTypeRequired'
+import { getResponseMap } from '../returnType/getResponseMap'
 import { EnhancedOperation } from '../typings'
 
 export function getRequestsTypeImports(
@@ -27,15 +26,11 @@ export function getRequestsTypeImports(
         ]),
       )
     }
-    if (isReturnTypeRequired(getResponseSchemas(operation, context), context)) {
-      imports.push(
-        ...getImports(requestsPath, [
-          [accessor.path(operation, 'operation-return-type'), accessor.name(operation, 'operation-return-type')],
-        ]),
-      )
-    } else {
-      imports.push(...getOperationReturnTypeImports(operation, context))
-    }
+    imports.push(
+      ...getImports(requestsPath, [
+        [accessor.path(operation, 'operation-return-type'), accessor.name(operation, 'operation-return-type')],
+      ]),
+    )
     return imports
   })
 }

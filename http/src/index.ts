@@ -9,4 +9,5 @@ export {
   ContentValidator,
   ResponseParserHint,
   ResponseValidator,
+  StatusCode,
 } from './typings'

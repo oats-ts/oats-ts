@@ -73,7 +73,7 @@ export type StatusCode =
   | 507
   | 511
 
-export type HttpResponse<Body = any, Status = StatusCode> = {
+export type HttpResponse<Body = any, Status = any> = {
   url: string
   body: Body
   statusCode: Status

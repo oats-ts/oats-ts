@@ -22,7 +22,7 @@ export const operations =
         generateOperationParameterType('path', operation, context),
         generateOperationParameterType('query', operation, context),
         generateOperationParameterType('header', operation, context),
-        generateOperationReturnType(operation.operation, context),
+        generateOperationReturnType(operation, context),
         generateOperationInputType(operation, context),
         generateOperationParameterTypeSerializer(operation.url, operation.path, operation.operation, context),
         generateOperationParameterTypeSerializer(operation.url, operation.query, operation.operation, context),

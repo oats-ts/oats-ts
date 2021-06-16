@@ -1,6 +1,6 @@
 import { asHttpHeaders } from './asHttpHeaders'
 import { ResponseLike } from './typings'
-import { ContentValidator, HttpResponse, ResponseParserHint } from '../typings'
+import { ContentValidator, HttpResponse, ResponseParserHint, StatusCode } from '../typings'
 
 async function getResponseBody(response: ResponseLike, contentType: string): Promise<any> {
   switch (contentType) {
@@ -42,7 +42,7 @@ export async function fetchResponseParser(response: ResponseLike, hint: Response
   return {
     url,
     body,
-    statusCode,
+    statusCode: statusCode as StatusCode,
     headers: asHttpHeaders(headers),
   }
 }

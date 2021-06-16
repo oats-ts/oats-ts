@@ -40,12 +40,7 @@ export function getOperationFunctionAst(
   fnAst.returnType = tsTypeAnnotation(
     tsTypeReference(
       identifier('Promise'),
-      tsTypeParameterInstantiation([
-        tsTypeReference(
-          identifier('HttpResponse'),
-          tsTypeParameterInstantiation([getOperationReturnTypeReferenceAst(operation, context)]),
-        ),
-      ]),
+      tsTypeParameterInstantiation([getOperationReturnTypeReferenceAst(operation, context)]),
     ),
   )
 

@@ -7,6 +7,7 @@ export const Http = {
   ResponseParserHint: 'ResponseParserHint',
   RequestConfig: 'RequestConfig',
   HttpResponse: 'HttpResponse',
+  StatusCode: 'StatusCode',
 }
 
 export const Params = {

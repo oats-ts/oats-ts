@@ -54,6 +54,21 @@
           }
         },
         "responses": {
+          "default": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "generic-400": {
+                    "$ref": "#/components/examples/generic-400"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/RestServiceError"
+                }
+              }
+            },
+            "description": "Bad Request - a problem reading or understanding the request."
+          },
           "200": {
             "content": {
               "application/json": {
