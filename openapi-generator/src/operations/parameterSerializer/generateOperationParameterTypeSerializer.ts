@@ -85,7 +85,7 @@ function createSerializerFactoryCall(
     createSerializersObject(parameters, context),
   ])
   expr.typeParameters = tsTypeParameterInstantiation([
-    tsTypeReference(identifier(accessor.name(data, getParameterTypeGeneratorTarget(location)))),
+    tsTypeReference(identifier(accessor.name(data.operation, getParameterTypeGeneratorTarget(location)))),
   ])
   return expr
 }

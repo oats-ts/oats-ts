@@ -71,5 +71,6 @@ export type OpenAPIGeneratorTarget =
   | 'operation-query-serializer'
   | 'operation-path-serializer'
   | 'operation-response-parser-hint'
-  | 'requests-type'
-  | 'requests-impl'
+  | 'api-type'
+  | 'api-class'
+  | 'api-stub'

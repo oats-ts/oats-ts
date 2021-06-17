@@ -7,10 +7,10 @@ import {
 } from '@babel/types'
 import { OpenAPIObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
-import { getRequestTypeMethodSignatureAst } from './getRequestTypeMethodSignatureAst'
+import { EnhancedOperation } from '../../operations/typings'
+import { getApiTypeMethodSignatureAst } from './getApiTypeMethodSignatureAst'
 
-export function getRequestsTypeAst(
+export function getApiTypeAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
@@ -18,9 +18,9 @@ export function getRequestsTypeAst(
   const { accessor } = context
   return exportNamedDeclaration(
     tsTypeAliasDeclaration(
-      identifier(accessor.name(document, 'requests-type')),
+      identifier(accessor.name(document, 'api-type')),
       undefined,
-      tsTypeLiteral(operations.map((operation) => getRequestTypeMethodSignatureAst(operation, context))),
+      tsTypeLiteral(operations.map((operation) => getApiTypeMethodSignatureAst(operation, context))),
     ),
   )
 }

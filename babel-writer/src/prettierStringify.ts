@@ -5,5 +5,5 @@ import { BabelModule } from './typings'
 export const prettierStringify =
   (options: Options = {}) =>
   async (data: BabelModule): Promise<string> => {
-    return format(await defaultStringify(data), options)
+    return format(await defaultStringify({})(data), options)
   }

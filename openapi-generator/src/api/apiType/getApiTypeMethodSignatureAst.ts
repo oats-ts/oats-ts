@@ -8,11 +8,11 @@ import {
 } from '@babel/types'
 import { typedIdAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
-import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
-import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
-import { EnhancedOperation } from '../typings'
+import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
+import { getOperationReturnTypeReferenceAst } from '../../operations/returnType/getReturnTypeReferenceAst'
+import { EnhancedOperation } from '../../operations/typings'
 
-export function getRequestTypeMethodSignatureAst(
+export function getApiTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): TSMethodSignature {
@@ -27,13 +27,6 @@ export function getRequestTypeMethodSignatureAst(
     identifier(accessor.name(data.operation, 'operation')),
     undefined,
     parameters,
-    tsTypeAnnotation(
-      tsTypeReference(
-        identifier('Promise'),
-        tsTypeParameterInstantiation([
-          tsTypeReference(identifier('HttpResponse'), tsTypeParameterInstantiation([returnType])),
-        ]),
-      ),
-    ),
+    tsTypeAnnotation(tsTypeReference(identifier('Promise'), tsTypeParameterInstantiation([returnType]))),
   )
 }

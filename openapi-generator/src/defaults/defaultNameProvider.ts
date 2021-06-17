@@ -49,11 +49,14 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     case 'operation-response-parser-hint': {
       return 'responseParserHint'
     }
-    case 'requests-type': {
-      return 'ApiRequests'
+    case 'api-type': {
+      return 'Api'
     }
-    case 'requests-impl': {
-      return 'ApiRequestsImpl'
+    case 'api-class': {
+      return 'ApiImpl'
+    }
+    case 'api-stub': {
+      return 'ApiStub'
     }
     default:
       return name

@@ -3,18 +3,18 @@ import { flatMap, values } from 'lodash'
 import { OpenAPIObject } from 'openapi3-ts'
 import { getImports } from '../../common/getImports'
 import { OpenAPIGeneratorContext } from '../../typings'
-import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
-import { getOperationReturnTypeImports } from '../returnType/getOperationReturnTypeImports'
-import { getResponseMap } from '../returnType/getResponseMap'
-import { EnhancedOperation } from '../typings'
+import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
+import { getOperationReturnTypeImports } from '../../operations/returnType/getOperationReturnTypeImports'
+import { getResponseMap } from '../../operations/returnType/getResponseMap'
+import { EnhancedOperation } from '../../operations/typings'
 
-export function getRequestsTypeImports(
+export function getApiTypeImports(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
   const { accessor } = context
-  const requestsPath = accessor.path(doc, 'requests-type')
+  const requestsPath = accessor.path(doc, 'api-type')
 
   return flatMap(operations, (data) => {
     const { operation } = data
