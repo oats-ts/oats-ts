@@ -1,9 +1,9 @@
 import generate from '@babel/generator'
-import { program, Statement } from '@babel/types'
+import { program, Node } from '@babel/types'
 import { BabelModule } from '../typings'
 
 export async function defaultStringify(data: BabelModule): Promise<string> {
-  const content: Statement[] = (data.imports as Statement[]).concat(data.statements)
-  const ast = program(content, [], 'module')
-  return generate(ast, { compact: false }).code
+  const nodes: Node[] = [program(data.imports, [], 'module'), ...data.statements]
+  const source = nodes.map((node) => generate(node).code).join('\n\n')
+  return `${source}\n`
 }

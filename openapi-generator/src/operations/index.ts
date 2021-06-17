@@ -4,11 +4,19 @@ import { Severity } from '@oats-ts/validators'
 import { flatMap, isNil, negate } from 'lodash'
 import { OpenAPIGeneratorContext } from '../typings'
 import { generateOperationFunction } from './operation/generateOperationFunction'
-import { generateOperationParameterType } from './parameterType/generateOperationParameterType'
+import {
+  generateHeaderParametersType,
+  generatePathParametersType,
+  generateQueryParametersType,
+} from './parameterType/generateOperationParameterType'
 import { generateOperationReturnType } from './returnType/generateOperationReturnType'
 import { getEnhancedOperations } from './getEnhancedOperations'
 import { generateOperationInputType } from './inputType/generateOperationInputType'
-import { generateOperationParameterTypeSerializer } from './parameterSerializer/generateOperationParameterTypeSerializer'
+import {
+  generateHeaderParameterTypeSerializer,
+  generatePathParameterTypeSerializer,
+  generateQueryParameterTypeSerializer,
+} from './parameterSerializer/generateOperationParameterTypeSerializer'
 import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
 import { EnhancedOperation } from './typings'
 
@@ -19,14 +27,14 @@ export const operations =
     const operations = getEnhancedOperations(accessor.document(), context)
     const operationModules: BabelModule[] = flatMap(operations, (operation: EnhancedOperation): BabelModule[] => {
       return [
-        generateOperationParameterType('path', operation, context),
-        generateOperationParameterType('query', operation, context),
-        generateOperationParameterType('header', operation, context),
+        generatePathParametersType(operation, context),
+        generateQueryParametersType(operation, context),
+        generateHeaderParametersType(operation, context),
         generateOperationReturnType(operation, context),
         generateOperationInputType(operation, context),
-        generateOperationParameterTypeSerializer(operation.url, operation.path, operation.operation, context),
-        generateOperationParameterTypeSerializer(operation.url, operation.query, operation.operation, context),
-        generateOperationParameterTypeSerializer(operation.url, operation.header, operation.operation, context),
+        generatePathParameterTypeSerializer(operation, context),
+        generateQueryParameterTypeSerializer(operation, context),
+        generateHeaderParameterTypeSerializer(operation, context),
         generateResponseParserHint(operation, context),
         generateOperationFunction(operation, context),
       ].filter(negate(isNil))

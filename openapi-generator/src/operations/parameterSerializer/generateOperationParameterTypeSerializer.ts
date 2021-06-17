@@ -15,10 +15,10 @@ import {
   ObjectExpression,
   booleanLiteral,
 } from '@babel/types'
-import { OperationObject, ParameterObject } from 'openapi3-ts'
+import { OperationObject, ParameterLocation, ParameterObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { BabelModule } from '@oats-ts/babel-writer'
-import { has, head, isNil, negate } from 'lodash'
+import { has, isNil, negate } from 'lodash'
 import { importAst, idAst } from '../../common/babelUtils'
 import { getParameterSerializerMethod } from './getParameterSerializerMethod'
 import { getParameterStyle } from './getParameterStyle'
@@ -26,6 +26,7 @@ import { getParameterSerializerGeneratorTarget } from './getParameterSerializerG
 import { getParameterTypeGeneratorTarget } from '../parameterType/getParameterTypeGeneratorTarget'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
 import { Params } from '../../common/OatsPackages'
+import { EnhancedOperation } from '../typings'
 
 function getSerializerOptionProperty(key: keyof ParameterObject, parameter: ParameterObject): ObjectProperty {
   return has(parameter, key)
@@ -73,55 +74,51 @@ function createSerializersObject(parameters: ParameterObject[], context: OpenAPI
 }
 
 function createSerializerFactoryCall(
-  url: string,
-  parameters: ParameterObject[],
-  data: OperationObject,
+  location: ParameterLocation,
+  data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): CallExpression {
   const { accessor } = context
-  const paramSample = head(parameters)
-  const expr = callExpression(identifier(getParameterSerializerFactoryName(paramSample.in)), [
-    ...(paramSample.in === 'path' ? [stringLiteral(url)] : []),
+  const parameters = data[location]
+  const expr = callExpression(identifier(getParameterSerializerFactoryName(location)), [
+    ...(location === 'path' ? [stringLiteral(data.url)] : []),
     createSerializersObject(parameters, context),
   ])
   expr.typeParameters = tsTypeParameterInstantiation([
-    tsTypeReference(identifier(accessor.name(data, getParameterTypeGeneratorTarget(paramSample.in)))),
+    tsTypeReference(identifier(accessor.name(data, getParameterTypeGeneratorTarget(location)))),
   ])
   return expr
 }
 
 function createSerializerConstant(
-  url: string,
-  parameters: ParameterObject[],
-  data: OperationObject,
+  location: ParameterLocation,
+  data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ) {
   const { accessor } = context
   return variableDeclaration('const', [
     variableDeclarator(
-      identifier(accessor.name(data, getParameterSerializerGeneratorTarget(head(parameters).in))),
-      createSerializerFactoryCall(url, parameters, data, context),
+      identifier(accessor.name(data.operation, getParameterSerializerGeneratorTarget(location))),
+      createSerializerFactoryCall(location, data, context),
     ),
   ])
 }
 
-function getParameterSerializerImports(parameter: ParameterObject) {
-  return importAst(Params.name, [parameter.in, getParameterSerializerFactoryName(parameter.in)])
-}
+const generateOperationParameterTypeSerializer =
+  (location: ParameterLocation) =>
+  (data: EnhancedOperation, context: OpenAPIGeneratorContext): BabelModule => {
+    const parameters = data[location]
+    const { accessor } = context
+    if (parameters.length === 0) {
+      return undefined
+    }
+    return {
+      imports: [importAst(Params.name, [location, getParameterSerializerFactoryName(location)])],
+      path: accessor.path(data.operation, 'operation'),
+      statements: [createSerializerConstant(location, data, context)],
+    }
+  }
 
-export function generateOperationParameterTypeSerializer(
-  url: string,
-  parameters: ParameterObject[],
-  data: OperationObject,
-  context: OpenAPIGeneratorContext,
-): BabelModule {
-  const { accessor } = context
-  if (parameters.length === 0) {
-    return undefined
-  }
-  return {
-    imports: [getParameterSerializerImports(head(parameters))],
-    path: accessor.path(data, 'operation'),
-    statements: [createSerializerConstant(url, parameters, data, context)],
-  }
-}
+export const generateQueryParameterTypeSerializer = generateOperationParameterTypeSerializer('query')
+export const generatePathParameterTypeSerializer = generateOperationParameterTypeSerializer('path')
+export const generateHeaderParameterTypeSerializer = generateOperationParameterTypeSerializer('header')

@@ -8,30 +8,32 @@ import { getParameterTypeImports } from './getParameterTypeImports'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { getParameterSchemaObject } from './getParameterSchemaObject'
 
-export function generateOperationParameterType(
-  location: ParameterLocation,
-  data: EnhancedOperation,
-  context: OpenAPIGeneratorContext,
-): BabelModule {
-  const parameters = data[location]
-  const { operation } = data
-  const { accessor } = context
+const generateOperationParameterType =
+  (location: ParameterLocation) =>
+  (data: EnhancedOperation, context: OpenAPIGeneratorContext): BabelModule => {
+    const parameters = data[location]
+    const { operation } = data
+    const { accessor } = context
 
-  if (parameters.length === 0) {
-    return undefined
-  }
+    if (parameters.length === 0) {
+      return undefined
+    }
 
-  return {
-    imports: getParameterTypeImports(location, data, context),
-    path: accessor.path(operation, getParameterTypeGeneratorTarget(location)),
-    statements: [
-      exportNamedDeclaration(
-        tsTypeAliasDeclaration(
-          identifier(accessor.name(operation, getParameterTypeGeneratorTarget(location))),
-          undefined,
-          getRighthandSideTypeAst(getParameterSchemaObject(parameters), context),
+    return {
+      imports: getParameterTypeImports(location, data, context),
+      path: accessor.path(operation, getParameterTypeGeneratorTarget(location)),
+      statements: [
+        exportNamedDeclaration(
+          tsTypeAliasDeclaration(
+            identifier(accessor.name(operation, getParameterTypeGeneratorTarget(location))),
+            undefined,
+            getRighthandSideTypeAst(getParameterSchemaObject(parameters), context),
+          ),
         ),
-      ),
-    ],
+      ],
+    }
   }
-}
+
+export const generateQueryParametersType = generateOperationParameterType('query')
+export const generatePathParametersType = generateOperationParameterType('path')
+export const generateHeaderParametersType = generateOperationParameterType('header')
