@@ -9,6 +9,9 @@ import {
   returnStatement,
   callExpression,
   memberExpression,
+  assignmentPattern,
+  objectExpression,
+  spreadElement,
 } from '@babel/types'
 import { typedIdAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
@@ -19,17 +22,35 @@ import { EnhancedOperation } from '../../operations/typings'
 export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): ClassMethod {
   const { accessor } = context
 
+  const configParam = assignmentPattern(
+    typedIdAst(
+      'config',
+      tsTypeReference(
+        identifier('Partial'),
+        tsTypeParameterInstantiation([tsTypeReference(identifier('RequestConfig'))]),
+      ),
+    ),
+    objectExpression([]),
+  )
+
   const parameters = isOperationInputTypeRequired(data, context)
-    ? [typedIdAst('input', tsTypeReference(identifier(accessor.name(data.operation, 'operation-input-type'))))]
-    : []
-  const returnType = getOperationReturnTypeReferenceAst(data.operation, context)
+    ? [
+        typedIdAst('input', tsTypeReference(identifier(accessor.name(data.operation, 'operation-input-type')))),
+        configParam,
+      ]
+    : [configParam]
 
   const returnStmnt = returnStatement(
     callExpression(identifier(accessor.name(data.operation, 'operation')), [
-      memberExpression(identifier('this'), identifier('config')),
       identifier('input'),
+      objectExpression([
+        spreadElement(memberExpression(identifier('this'), identifier('config'))),
+        spreadElement(identifier('config')),
+      ]),
     ]),
   )
+
+  const returnType = getOperationReturnTypeReferenceAst(data.operation, context)
 
   const method = classMethod(
     'method',

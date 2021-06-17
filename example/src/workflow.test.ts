@@ -34,7 +34,7 @@ describe('workflow test', () => {
         openAPIGenerator({ path })(
           // types(),
           // typeGuards({ mode: 'shallow' }),
-          // operations(),
+          operations(),
           api({ implementation: true, stub: true }),
         ),
       )

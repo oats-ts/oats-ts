@@ -3,6 +3,7 @@ import {
   ExportNamedDeclaration,
   exportNamedDeclaration,
   functionDeclaration,
+  Identifier,
   identifier,
   returnStatement,
   tsTypeAnnotation,
@@ -23,11 +24,13 @@ export function getOperationFunctionAst(
   const { accessor } = context
   const { operation } = data
 
-  const params = [typedIdAst('config', tsTypeReference(identifier('RequestConfig')))]
+  const params: Identifier[] = []
 
   if (isOperationInputTypeRequired(data, context)) {
     params.push(typedIdAst('input', tsTypeReference(identifier(accessor.name(operation, 'operation-input-type')))))
   }
+
+  params.push(typedIdAst('config', tsTypeReference(identifier('RequestConfig'))))
 
   const fnAst = functionDeclaration(
     identifier(accessor.name(operation, 'operation')),

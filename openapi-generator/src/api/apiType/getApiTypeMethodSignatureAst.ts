@@ -18,9 +18,23 @@ export function getApiTypeMethodSignatureAst(
 ): TSMethodSignature {
   const { accessor } = context
 
+  const configParam = typedIdAst(
+    'config',
+    tsTypeReference(
+      identifier('Partial'),
+      tsTypeParameterInstantiation([tsTypeReference(identifier('RequestConfig'))]),
+    ),
+  )
+
+  configParam.optional = true
+
   const parameters = isOperationInputTypeRequired(data, context)
-    ? [typedIdAst('input', tsTypeReference(identifier(accessor.name(data.operation, 'operation-input-type'))))]
-    : []
+    ? [
+        typedIdAst('input', tsTypeReference(identifier(accessor.name(data.operation, 'operation-input-type')))),
+        configParam,
+      ]
+    : [configParam]
+
   const returnType = getOperationReturnTypeReferenceAst(data.operation, context)
 
   return tsMethodSignature(
