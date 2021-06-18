@@ -1,21 +1,21 @@
 import { OperationObject } from 'openapi3-ts'
-import { boolean, fields, object, optional, string, array, itemsOf } from '@oats-ts/validators'
+import { boolean, shape, object, optional, string, array, items } from '@oats-ts/validators'
 
 export const operationObject = object(
-  fields<OperationObject>(
+  shape<OperationObject>(
     {
-      tags: optional(array(itemsOf(string()))),
+      tags: optional(array(items(string()))),
       summary: optional(string()),
       description: optional(string()),
       externalDocs: optional(object()),
       operationId: string(),
-      parameters: optional(array(itemsOf(object()))),
+      parameters: optional(array(items(object()))),
       requestBody: optional(object()),
       responses: optional(object()),
       callbacks: optional(object()),
       deprecated: optional(boolean()),
-      security: optional(array(itemsOf(object()))),
-      servers: optional(array(itemsOf(object()))),
+      security: optional(array(items(object()))),
+      servers: optional(array(items(object()))),
     },
     true,
   ),

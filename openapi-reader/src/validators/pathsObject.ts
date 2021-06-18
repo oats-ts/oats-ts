@@ -1,3 +1,3 @@
-import { dictionaryOf, object } from '@oats-ts/validators'
+import { record, object, string } from '@oats-ts/validators'
 
-export const pathsObject = object(dictionaryOf(object()))
+export const pathsObject = object(record(string(), object()))

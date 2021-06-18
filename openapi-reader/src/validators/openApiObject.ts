@@ -1,8 +1,8 @@
 import { OpenAPIObject } from 'openapi3-ts'
-import { array, fields, object, optional, string } from '@oats-ts/validators'
+import { array, shape, object, optional, string } from '@oats-ts/validators'
 
 export const openApiObject = object(
-  fields<OpenAPIObject>(
+  shape<OpenAPIObject>(
     {
       openapi: string(),
       info: object(),

@@ -25,4 +25,4 @@ export type ValidatorConfig = {
   append(path: string, ...segments: string[]): string
 }
 
-export type Validator<T> = (input: T, config: ValidatorConfig) => Issue[]
+export type Validator<T> = (input: T, config?: Partial<ValidatorConfig>) => Issue[]

@@ -1,5 +1,5 @@
 import { BaseParameterObject, HeaderObject, ParameterObject } from 'openapi3-ts'
-import { boolean, fields, object, optional, string, enumeration, any, Validator } from '@oats-ts/validators'
+import { boolean, shape, object, optional, string, enumeration, any, Validator } from '@oats-ts/validators'
 
 const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any>> = {
   description: optional(string()),
@@ -15,10 +15,10 @@ const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any
   content: optional(object()),
 }
 
-export const headerObject = object(fields<HeaderObject>(baseParameterObjectFileds))
+export const headerObject = object(shape<HeaderObject>(baseParameterObjectFileds))
 
 export const parameterObject = object(
-  fields<ParameterObject>({
+  shape<ParameterObject>({
     ...baseParameterObjectFileds,
     name: string(),
     in: enumeration(['query', 'header', 'path', 'cookie']),

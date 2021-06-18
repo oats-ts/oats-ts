@@ -24,6 +24,7 @@ export function getApiClassAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
+  implement: boolean,
 ): ExportNamedDeclaration {
   const { accessor } = context
 
@@ -54,7 +55,7 @@ export function getApiClassAst(
     undefined,
   )
 
-  classDecl.implements = [classImplements(identifier(accessor.name(document, 'api-type')))]
+  classDecl.implements = implement ? [classImplements(identifier(accessor.name(document, 'api-type')))] : undefined
 
   return exportNamedDeclaration(classDecl)
 }

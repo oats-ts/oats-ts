@@ -6,7 +6,7 @@ import {
   stringLiteral,
   unaryExpression,
 } from '@babel/types'
-import { entries } from 'lodash'
+import { entries, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { logical } from '../../common/babelUtils'
 import { isIdentifier } from '../../common/isIdentifier'
@@ -20,7 +20,7 @@ export function getUnionTypeAssertionAst(
   const objAssertions: Expression[] = [
     binaryExpression('!==', identifier('input'), identifier('null')),
     binaryExpression('===', unaryExpression('typeof', identifier('input')), stringLiteral('object')),
-    ...entries(discriminators).map(([propName, value]) => {
+    ...sortBy(entries(discriminators), ([name]) => name).map(([propName, value]) => {
       const member = isIdentifier(propName)
         ? memberExpression(identifier('input'), identifier(propName))
         : memberExpression(identifier('input'), stringLiteral(propName), true)

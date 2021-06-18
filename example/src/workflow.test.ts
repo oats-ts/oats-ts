@@ -35,10 +35,12 @@ describe('workflow test', () => {
           // types(),
           // typeGuards({ mode: 'shallow' }),
           operations(),
-          api({ implementation: true, stub: true }),
+          api({ class: true, stub: true }),
         ),
       )
       .write(babelWriter({ stringify: defaultStringify({ compact: true }) }))
       .run()
   })
+
+  xit('test', () => {})
 })

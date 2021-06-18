@@ -1,7 +1,7 @@
 import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
 import { Try } from '@oats-ts/generator'
 import { Severity } from '@oats-ts/validators'
-import { flatMap, isNil, negate } from 'lodash'
+import { flatMap, isNil, negate, sortBy } from 'lodash'
 import { OpenAPIGeneratorContext } from '../typings'
 import { generateOperationFunction } from './operation/generateOperationFunction'
 import {
@@ -24,7 +24,9 @@ export const operations =
   (/* TODO config? */) =>
   async (context: OpenAPIGeneratorContext): Promise<Try<BabelGeneratorOutput>> => {
     const { accessor } = context
-    const operations = getEnhancedOperations(accessor.document(), context)
+    const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
+      accessor.name(operation, 'operation'),
+    )
     const operationModules: BabelModule[] = flatMap(operations, (operation: EnhancedOperation): BabelModule[] => {
       return [
         generatePathParametersType(operation, context),

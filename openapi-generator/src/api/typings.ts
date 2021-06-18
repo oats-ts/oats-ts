@@ -1,4 +1,5 @@
 export type ApiGeneratorConfig = {
-  implementation: boolean
-  stub: boolean
+  type?: boolean
+  class?: boolean
+  stub?: boolean
 }

@@ -1,8 +1,8 @@
 import { PathItemObject } from 'openapi3-ts'
-import { fields, object, optional, string, array } from '@oats-ts/validators'
+import { shape, object, optional, string, array } from '@oats-ts/validators'
 
 export const pathItemObject = object(
-  fields<PathItemObject>(
+  shape<PathItemObject>(
     {
       $ref: optional(string()),
       description: optional(string()),

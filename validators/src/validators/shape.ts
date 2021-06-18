@@ -1,9 +1,10 @@
 import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
-import { getSeverity, isNil } from '../utils'
+import { getConfig, getSeverity, isNil } from '../utils'
 
-export const fields =
+export const shape =
   <T extends object>(validators: Record<keyof T, Validator<any>>, allowExtraFields = false): Validator<T> =>
-  (input: object, config: ValidatorConfig) => {
+  (input: object, config?: Partial<ValidatorConfig>) => {
+    const cfg = getConfig(config)
     const keys = Object.keys(input)
     const expectedKeys = Object.keys(validators)
     const extraKeys: string[] = keys.filter((key) => expectedKeys.indexOf(key) < 0)
@@ -14,13 +15,13 @@ export const fields =
       const value = (input as any)[key]
       const validator = (validators as any)[key]
       const newIssues = validator(value, {
-        ...config,
-        path: config.append(config.path, key),
+        ...cfg,
+        path: cfg.append(cfg.path, key),
       })
       issues.push(...newIssues)
     }
 
-    const severity = getSeverity(IssueType.KEY, config)
+    const severity = getSeverity(IssueType.KEY, cfg)
 
     if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
       issues.push(
@@ -28,7 +29,7 @@ export const fields =
           (key): Issue => ({
             type: IssueType.KEY,
             message: `should not have key "${key}"`,
-            path: config.append(config.path, key),
+            path: cfg.append(cfg.path, key),
             severity,
           }),
         ),

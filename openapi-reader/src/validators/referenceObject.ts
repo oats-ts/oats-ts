@@ -1,3 +1,3 @@
-import { fields, object, string } from '@oats-ts/validators'
+import { shape, object, string } from '@oats-ts/validators'
 
-export const referenceObject = object(fields({ $ref: string() }))
+export const referenceObject = object(shape({ $ref: string() }))

@@ -1,8 +1,8 @@
 import { ResponseObject } from 'openapi3-ts'
-import { fields, object, optional, string } from '@oats-ts/validators'
+import { shape, object, optional, string } from '@oats-ts/validators'
 
 export const responseObject = object(
-  fields<ResponseObject>(
+  shape<ResponseObject>(
     {
       description: optional(string()),
       content: optional(object()),

@@ -1,9 +1,9 @@
 import { ComponentsObject } from 'openapi3-ts'
-import { fields, object, optional } from '@oats-ts/validators'
+import { shape, object, optional } from '@oats-ts/validators'
 import { recordOfObjects } from './recordOfObjects'
 
 export const componentsObject = object(
-  fields<ComponentsObject>(
+  shape<ComponentsObject>(
     {
       schemas: optional(recordOfObjects),
       responses: optional(recordOfObjects),

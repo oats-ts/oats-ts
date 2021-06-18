@@ -9,7 +9,7 @@ import {
   stringLiteral,
   unaryExpression,
 } from '@babel/types'
-import { entries, has, isNil } from 'lodash'
+import { entries, has, isNil, sortBy } from 'lodash'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { idAst, logical } from '../../common/babelUtils'
 import { getDiscriminators } from '../../common/getDiscriminators'
@@ -28,9 +28,10 @@ function getPropertyAssertionAsts(
   context: OpenAPIGeneratorContext,
   config: TypeAssertionConfig,
 ): Expression[] {
-  const discriminators = getDiscriminators(data, context)
-  const properties = entries(data.properties)
-  const discAssertions: Expression[] = entries(discriminators).map(([propName, value]) => {
+  const discriminators = sortBy(entries(getDiscriminators(data, context)), ([name]) => name)
+  const properties = sortBy(entries(data.properties), ([name]) => name)
+
+  const discAssertions: Expression[] = discriminators.map(([propName, value]) => {
     const nameAst = isIdentifier(propName)
       ? memberExpression(config.name, identifier(propName))
       : memberExpression(config.name, stringLiteral(propName), true)

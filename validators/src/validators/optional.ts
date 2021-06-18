@@ -4,6 +4,6 @@ import { isNil } from '../utils'
 
 export const optional =
   (validator: Validator<any> = any): Validator<any> =>
-  (input: any, config: ValidatorConfig) => {
+  (input: any, config?: Partial<ValidatorConfig>) => {
     return isNil(input) ? [] : validator(input, config)
   }

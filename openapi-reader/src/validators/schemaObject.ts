@@ -1,8 +1,8 @@
 import { SchemaObject } from 'openapi3-ts'
-import { boolean, fields, object, optional, string, number, array, itemsOf, any } from '@oats-ts/validators'
+import { boolean, shape, object, optional, string, number, array, items, any } from '@oats-ts/validators'
 
 export const schemaObject = object(
-  fields<SchemaObject>(
+  shape<SchemaObject>(
     {
       type: optional(string()),
       format: optional(string()),
@@ -19,7 +19,7 @@ export const schemaObject = object(
       minItems: optional(number()),
       uniqueItems: optional(boolean()),
       description: optional(string()),
-      required: optional(array(itemsOf(string()))),
+      required: optional(array(items(string()))),
       enum: optional(array()),
       discriminator: optional(object()),
       properties: optional(object()),
