@@ -1,7 +1,7 @@
 import { OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import type { Issue } from '@oats-ts/validators'
 import type { Try } from '@oats-ts/generator'
-import type { BabelGeneratorOutput } from '@oats-ts/babel-writer'
+import type { BabelGeneratorOutput, TypeScriptGeneratorOutput } from '@oats-ts/babel-writer'
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type OpenAPIGeneratorConfig = {
@@ -57,6 +57,8 @@ export type OpenAPIGeneratorContext = {
 }
 
 export type OpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promise<Try<BabelGeneratorOutput>>
+
+export type TsOpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promise<Try<TypeScriptGeneratorOutput>>
 
 export type OpenAPIGeneratorTarget =
   | 'type'

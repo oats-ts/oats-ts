@@ -28,7 +28,7 @@ export function getOperationInputUnionTypeAst(
       identifier(baseTypeName),
       tsTypeParameterInstantiation([
         tsLiteralType(stringLiteral(contentType)),
-        getTypeReferenceAst(mediaType.schema, context),
+        tsTypeReference(identifier('any')), // getTypeReferenceAst(mediaType.schema, context),
       ]),
     )
   })

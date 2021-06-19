@@ -27,7 +27,7 @@ const generateOperationParameterType =
           tsTypeAliasDeclaration(
             identifier(accessor.name(operation, getParameterTypeGeneratorTarget(location))),
             undefined,
-            getRighthandSideTypeAst(getParameterSchemaObject(parameters), context),
+            tsTypeReference(identifier('any')), // getRighthandSideTypeAst(getParameterSchemaObject(parameters), context),
           ),
         ),
       ],

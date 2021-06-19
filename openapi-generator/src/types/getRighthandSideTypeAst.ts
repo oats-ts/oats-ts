@@ -1,13 +1,6 @@
-import {
-  tsAnyKeyword,
-  tsBooleanKeyword,
-  tsNumberKeyword,
-  tsStringKeyword,
-  TSType,
-  tsUndefinedKeyword,
-} from '@babel/types'
 import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
+import { factory, SyntaxKind, TypeNode } from 'typescript'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getArrayTypeAst } from './getArrayTypeAst'
 import { getDictionaryTypeAst } from './getDictionaryTypeAst'
@@ -15,7 +8,7 @@ import { getLiteralUnionTypeAst } from './getLiteralUnionTypeAst'
 import { getObjectTypeAst } from './getObjectTypeAst'
 import { getUnionTypeAst } from './getUnionTypeAst'
 
-export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext): TSType {
+export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext): TypeNode {
   if (!isNil(data.oneOf)) {
     return getUnionTypeAst(data, context)
   }
@@ -25,15 +18,15 @@ export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGene
   }
 
   if (data.type === 'string') {
-    return tsStringKeyword()
+    return factory.createKeywordTypeNode(SyntaxKind.StringKeyword)
   }
 
   if (data.type === 'number' || data.type === 'integer') {
-    return tsNumberKeyword()
+    return factory.createKeywordTypeNode(SyntaxKind.NumberKeyword)
   }
 
   if (data.type === 'boolean') {
-    return tsBooleanKeyword()
+    return factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword)
   }
 
   if (!isNil(data.additionalProperties)) {
@@ -48,5 +41,5 @@ export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGene
     return getArrayTypeAst(data, context)
   }
 
-  return tsAnyKeyword()
+  return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)
 }

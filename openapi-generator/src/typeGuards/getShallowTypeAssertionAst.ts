@@ -73,7 +73,7 @@ function getAssertionAst(
   if (Array.isArray(data.enum) && data.enum.length > 0) {
     return logical(
       '||',
-      data.enum.map((value) => binaryExpression('===', config.name, getLiteralAst(value))),
+      data.enum.map((value) => binaryExpression('===', config.name, stringLiteral(value) /*  getLiteralAst(value) */)),
     )
   }
 

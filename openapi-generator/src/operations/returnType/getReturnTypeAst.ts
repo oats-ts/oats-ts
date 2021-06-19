@@ -33,7 +33,8 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
       tsTypeReference(
         identifier(Http.HttpResponse),
         tsTypeParameterInstantiation([
-          getTypeReferenceAst(schema, context),
+          tsTypeReference(identifier('any')),
+          //getTypeReferenceAst(schema, context),
           tsLiteralType(numericLiteral(Number(status))),
         ]),
       ),
@@ -47,7 +48,8 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
     const type = tsTypeReference(
       identifier(Http.HttpResponse),
       tsTypeParameterInstantiation([
-        getTypeReferenceAst(schema, context),
+        // getTypeReferenceAst(schema, context),
+        tsTypeReference(identifier('any')),
         tsTypeReference(
           identifier('Exclude'),
           tsTypeParameterInstantiation([tsTypeReference(identifier(Http.StatusCode)), knownStatusCodesType]),

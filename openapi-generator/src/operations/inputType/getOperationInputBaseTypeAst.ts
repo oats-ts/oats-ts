@@ -59,7 +59,10 @@ export function getOperationInputBaseTypeAst(
         tsPropertySignature(identifier('contentType'), tsTypeAnnotation(tsLiteralType(stringLiteral(contentType)))),
       )
       properties.push(
-        tsPropertySignature(identifier('body'), tsTypeAnnotation(getTypeReferenceAst(mediaType.schema, context))),
+        tsPropertySignature(
+          identifier('body'),
+          tsTypeAnnotation(tsTypeReference(identifier('any')) /* getTypeReferenceAst(mediaType.schema, context)) */),
+        ),
       )
       break
     }

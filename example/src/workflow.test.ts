@@ -8,8 +8,9 @@ import {
   typeGuards,
   api,
   validators,
+  tsOpenAPIGenerator,
 } from '@oats-ts/openapi-generator'
-import { babelWriter, prettierStringify } from '@oats-ts/babel-writer'
+import { babelWriter, prettierStringify, tsPrettierStringify, typeScriptWriter } from '@oats-ts/babel-writer'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
 
@@ -29,7 +30,14 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
 }
 
 describe('workflow test', () => {
-  it('should generate', async () => {
+  it('should generate using typescript', async () => {
+    await harness()
+      .read(openAPIReader({ path: 'adyen.json' }))
+      .generate(tsOpenAPIGenerator({ path })(types()))
+      .write(typeScriptWriter({ stringify: tsPrettierStringify(prettierConfiguration) }))
+      .run()
+  })
+  xit('should generate', async () => {
     await harness()
       .read(openAPIReader({ path: 'kitchenSink.json' }))
       .generate(

@@ -80,7 +80,7 @@ export function getRightHandSideValidatorAst(
 
   if (!isNil(data.enum)) {
     return callExpression(identifier(Validators.enumeration), [
-      arrayExpression(data.enum.map((value) => getLiteralAst(value))),
+      arrayExpression(data.enum.map((value) => stringLiteral(value.toString()) /*getLiteralAst(value)*/)),
     ])
   }
 
