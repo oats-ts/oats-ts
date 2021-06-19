@@ -22,7 +22,7 @@ export type BabelWriterConfig = {
    * @param babelModule A module containing ast, imports and full file path.
    * @returns The module as a source code string.
    */
-  stringify?(babelModule: BabelModule): Promise<string>
+  stringify(babelModule: BabelModule): Promise<string>
   /**
    * Writes the given content to the given path.
    * Creating possibly missing folders is part of it's responsibilty.

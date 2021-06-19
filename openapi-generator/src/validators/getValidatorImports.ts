@@ -1,13 +1,30 @@
-import { SchemaObject } from 'openapi3-ts'
+import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../typings'
 import { ImportDeclaration } from '@babel/types'
 import { entries, isNil, keys, sortBy, values } from 'lodash'
 import { Validators } from '../common/OatsPackages'
 import { importAst } from '../common/babelUtils'
+import { getImportDeclarations } from '../common/getImportDeclarations'
 
-function collectImportedNames(data: SchemaObject, names: Set<string>): void {
+function collectImportedNames(
+  data: SchemaObject | ReferenceObject,
+  names: Set<string>,
+  refs: Set<ReferenceObject>,
+  references: boolean,
+): void {
+  if (isReferenceObject(data)) {
+    if (!references) {
+      names.add(Validators.any)
+    } else {
+      names.add(Validators.lazy)
+      refs.add(data)
+    }
+    return
+  }
+
+  // TODO
   if (!isNil(data.oneOf)) {
-    // names.add(Validators.union)
+    return
   }
 
   if (!isNil(data.enum)) {
@@ -32,7 +49,7 @@ function collectImportedNames(data: SchemaObject, names: Set<string>): void {
 
   if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
     names.add(Validators.object).add(Validators.record)
-    return collectImportedNames(data.additionalProperties, names)
+    return collectImportedNames(data.additionalProperties, names, refs, references)
   }
 
   if (!isNil(data.properties)) {
@@ -42,24 +59,39 @@ function collectImportedNames(data: SchemaObject, names: Set<string>): void {
       if (isOptional) {
         names.add(Validators.optional)
       }
-      collectImportedNames(propSchema, names)
+      collectImportedNames(propSchema, names, refs, references)
     }
-    return collectImportedNames(data.properties, names)
+    return collectImportedNames(data.properties, names, refs, references)
   }
 
   if (!isNil(data.items)) {
     names.add(Validators.array)
-    return collectImportedNames(data.items, names)
+    return collectImportedNames(data.items, names, refs, references)
   }
 
   names.add(Validators.any)
 }
 
-export function getValidatorImports(schema: SchemaObject, context: OpenAPIGeneratorContext): ImportDeclaration {
+export function getValidatorImports(
+  schema: SchemaObject,
+  context: OpenAPIGeneratorContext,
+  references: boolean,
+): ImportDeclaration[] {
+  const { accessor } = context
   const nameSet = new Set<string>()
-  collectImportedNames(schema, nameSet)
-  return importAst(
-    Validators.name,
-    sortBy(Array.from(nameSet), (name) => name),
-  )
+  const refs = new Set<ReferenceObject>()
+  collectImportedNames(schema, nameSet, refs, references)
+  const asts = [
+    importAst(
+      Validators.name,
+      sortBy(Array.from(nameSet), (name) => name),
+    ),
+    ...getImportDeclarations(
+      accessor.path(schema, 'validator'),
+      'validator',
+      Array.from(refs).map((ref) => accessor.dereference<SchemaObject>(ref)),
+      context,
+    ),
+  ]
+  return asts
 }

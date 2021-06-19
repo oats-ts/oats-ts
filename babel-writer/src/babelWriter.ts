@@ -3,7 +3,7 @@ import { defaultOpenAPIWriteConfig } from './defaults/defaultOpenAPIWriteConfig'
 import type { BabelGeneratorOutput, BabelModule, BabelWriterConfig } from './typings'
 
 export const babelWriter =
-  (config: Partial<BabelWriterConfig> = {}) =>
+  (config: BabelWriterConfig) =>
   async (data: BabelGeneratorOutput): Promise<Try<null>> => {
     const { stringify, write } = defaultOpenAPIWriteConfig(config)
     const { modules } = data

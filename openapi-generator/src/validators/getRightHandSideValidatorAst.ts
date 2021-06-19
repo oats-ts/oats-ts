@@ -1,5 +1,6 @@
 import {
   arrayExpression,
+  arrowFunctionExpression,
   CallExpression,
   callExpression,
   Identifier,
@@ -9,7 +10,7 @@ import {
   stringLiteral,
 } from '@babel/types'
 import { entries, has, isNil, sortBy } from 'lodash'
-import { SchemaObject } from 'openapi3-ts'
+import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { idAst } from '../common/babelUtils'
 import { getDiscriminators } from '../common/getDiscriminators'
 import { isIdentifier } from '../common/isIdentifier'
@@ -18,10 +19,24 @@ import { getLiteralAst } from '../types/getLiteralAst'
 import { OpenAPIGeneratorContext } from '../typings'
 
 export function getRightHandSideValidatorAst(
-  data: SchemaObject,
+  data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
+  references: boolean,
 ): CallExpression | Identifier {
+  const { accessor } = context
+  if (isReferenceObject(data)) {
+    if (!references) {
+      return identifier(Validators.any)
+    }
+    const resolved = accessor.dereference(data)
+    return callExpression(identifier(Validators.lazy), [
+      arrowFunctionExpression([], identifier(accessor.name(resolved, 'validator'))),
+    ])
+  }
+
+  // TODO
   if (!isNil(data.oneOf)) {
+    return identifier(Validators.any)
   }
 
   if (!isNil(data.enum)) {
@@ -46,7 +61,7 @@ export function getRightHandSideValidatorAst(
     return callExpression(identifier(Validators.object), [
       callExpression(identifier(Validators.record), [
         callExpression(identifier(Validators.string), []),
-        getRightHandSideValidatorAst(data.additionalProperties, context),
+        getRightHandSideValidatorAst(data.additionalProperties, context, references),
       ]),
     ])
   }
@@ -65,7 +80,7 @@ export function getRightHandSideValidatorAst(
       .filter(([name]) => !has(discriminators, name))
       .map(([name, schema]) => {
         const isOptional = (data.required || []).indexOf(name) < 0
-        const expr = getRightHandSideValidatorAst(schema, context)
+        const expr = getRightHandSideValidatorAst(schema, context, references)
         return objectProperty(
           idAst(name),
           isOptional ? callExpression(identifier(Validators.optional), [expr]) : expr,
@@ -79,7 +94,7 @@ export function getRightHandSideValidatorAst(
   }
 
   if (!isNil(data.items)) {
-    return callExpression(identifier(Validators.array), [getRightHandSideValidatorAst(data.items, context)])
+    return callExpression(identifier(Validators.array), [getRightHandSideValidatorAst(data.items, context, references)])
   }
 
   return identifier(Validators.any)
