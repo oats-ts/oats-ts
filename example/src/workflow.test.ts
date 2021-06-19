@@ -33,7 +33,7 @@ describe('workflow test', () => {
   it('should generate using typescript', async () => {
     await harness()
       .read(openAPIReader({ path: 'adyen.json' }))
-      .generate(tsOpenAPIGenerator({ path })(types()))
+      .generate(tsOpenAPIGenerator({ path })(types(), validators({ references: true })))
       .write(typeScriptWriter({ stringify: tsPrettierStringify(prettierConfiguration) }))
       .run()
   })
@@ -46,7 +46,6 @@ describe('workflow test', () => {
           // typeGuards({ mode: 'shallow' }),
           operations(),
           api({ class: true, stub: true }),
-          validators({ references: true }),
         ),
       )
       .write(babelWriter({ stringify: prettierStringify(prettierConfiguration) }))

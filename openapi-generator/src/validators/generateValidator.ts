@@ -1,4 +1,4 @@
-import { BabelModule } from '@oats-ts/babel-writer'
+import { BabelModule, TypeScriptModule } from '@oats-ts/babel-writer'
 import { SchemaObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getValidatorAst } from './getValidatorAst'
@@ -8,7 +8,7 @@ export function generateValidator(
   schema: SchemaObject,
   context: OpenAPIGeneratorContext,
   references: boolean,
-): BabelModule {
+): TypeScriptModule {
   const { accessor } = context
   const path = accessor.path(schema, 'validator')
   return {

@@ -15,9 +15,7 @@ export function tsImportAst(from: string, names: string[]): ImportDeclaration {
       false,
       undefined,
       factory.createNamedImports(
-        names.map((name) =>
-          factory.createImportSpecifier(factory.createIdentifier(name), factory.createIdentifier(name)),
-        ),
+        names.map((name) => factory.createImportSpecifier(undefined, factory.createIdentifier(name))),
       ),
     ),
     factory.createStringLiteral(from),
