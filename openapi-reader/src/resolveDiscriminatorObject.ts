@@ -5,8 +5,7 @@ import { discriminatorObject } from './validators/discriminatorObject'
 import { resolveReferenceUri } from './resolveReference'
 import { resolveSchemaObject } from './resolveSchemaObject'
 import { register } from './register'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
+import { entries, isNil } from 'lodash'
 
 export async function resolveDiscriminatorObject(
   input: ReadInput<DiscriminatorObject>,

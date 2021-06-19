@@ -9,14 +9,10 @@ import {
   stringLiteral,
 } from '@babel/types'
 import type { BabelModule } from '@oats-ts/babel-writer'
-import flatMap from 'lodash/flatMap'
-import groupBy from 'lodash/groupBy'
-import head from 'lodash/head'
-import uniqueBy from 'lodash/uniqBy'
-import values from 'lodash/values'
+import { flatMap, groupBy, head, uniqBy, values } from 'lodash'
 
 function cloneImportSpecifiers(imps: ImportSpecifier[]): ImportSpecifier[] {
-  return uniqueBy(
+  return uniqBy(
     imps.map((imp) =>
       importSpecifier(
         identifier(imp.local.name),

@@ -5,7 +5,7 @@ import { resolveSchemaObject } from './resolveSchemaObject'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { mediaTypeObject } from './validators/mediaTypeObject'
-import isNil from 'lodash/isNil'
+import { isNil } from 'lodash'
 
 export async function resolveMediaTypeObject(input: ReadInput<MediaTypeObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, mediaTypeObject)) {

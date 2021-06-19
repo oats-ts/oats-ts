@@ -3,12 +3,11 @@ import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { operationObject } from './validators/operationObject'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveParameterObject } from './resolveParameterObject'
 import { resolveResponseObject } from './resolveResponseObject'
 import { resolveRequestBodyObject } from './resolveRequestBodyObject'
+import { entries, isNil } from 'lodash'
 
 export async function resolveOperation(input: ReadInput<OperationObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, operationObject)) {

@@ -5,7 +5,7 @@ import { resolveSchemaObject } from './resolveSchemaObject'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { recordOfObjects } from './validators/recordOfObjects'
-import entries from 'lodash/entries'
+import { entries } from 'lodash'
 
 export async function resolveSchemas(
   input: ReadInput<Record<string, SchemaObject | ReferenceObject>>,

@@ -3,8 +3,8 @@ import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { pathsObject } from './validators/pathsObject'
-import entries from 'lodash/entries'
 import { resolvePathItemObject } from './resolvePathItemObject'
+import { entries } from 'lodash'
 
 export async function resolvePaths(input: ReadInput<PathsObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, pathsObject)) {

@@ -2,12 +2,11 @@ import { ParameterObject, PathItemObject } from 'openapi3-ts'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveParameterObject } from './resolveParameterObject'
 import { resolveOperation } from './resolveOperation'
 import { pathItemObject } from './validators/pathItemObject'
+import { entries, isNil } from 'lodash'
 
 export async function resolvePathItemObject(input: ReadInput<PathItemObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, pathItemObject)) {

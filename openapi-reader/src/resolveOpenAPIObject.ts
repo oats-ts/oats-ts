@@ -5,7 +5,7 @@ import { resolvePaths } from './resolvePaths'
 import { validate } from './validate'
 import { openApiObject } from './validators/openApiObject'
 import { register } from './register'
-import isNil from 'lodash/isNil'
+import { isNil } from 'lodash'
 
 export async function resolveOpenAPIObject(input: ReadInput<OpenAPIObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, openApiObject)) {

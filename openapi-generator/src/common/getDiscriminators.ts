@@ -1,7 +1,5 @@
+import { entries, isNil, values } from 'lodash'
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
-import values from 'lodash/values'
 import { OpenAPIGeneratorContext } from '../typings'
 
 function collectFromSchema(

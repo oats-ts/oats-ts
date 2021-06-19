@@ -3,8 +3,7 @@ import URI, { encode, decode } from 'urijs'
 import p from 'path'
 import { pathToFileURL } from 'url'
 import { isUri } from 'valid-url'
-import isEmpty from 'lodash/isEmpty'
-import dropHead from 'lodash/drop'
+import { drop, isEmpty } from 'lodash'
 
 const AcceptedSchemes = ['http', 'https', 'file']
 
@@ -53,6 +52,6 @@ export class DefaultURIManipulator implements URIManipulator {
     if (fragment[0] !== '/') {
       throw new TypeError(`Malformed URI: ${uri}.`)
     }
-    return dropHead(fragment.split('/')).map(decode)
+    return drop(fragment.split('/')).map(decode)
   }
 }

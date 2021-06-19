@@ -1,6 +1,6 @@
 import type { Validator } from '@oats-ts/validators'
+import { isNil } from 'lodash'
 import { ReadContext, ReadInput } from './internalTypings'
-import isNil from 'lodash/isNil'
 
 export function validate<T>(input: ReadInput<T>, context: ReadContext, validator: Validator<T>): boolean {
   const { data, uri } = input

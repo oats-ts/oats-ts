@@ -6,9 +6,8 @@ import { resolveReferenceable } from './resolveReferenceable'
 import { resolveSchemaObject } from './resolveSchemaObject'
 import { resolveHeaderObject, resolveParameterObject } from './resolveParameterObject'
 import { register } from './register'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
 import { resolveResponseObject } from './resolveResponseObject'
+import { entries, isNil } from 'lodash'
 
 export async function resolveComponents(input: ReadInput<ComponentsObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, componentsObject)) {

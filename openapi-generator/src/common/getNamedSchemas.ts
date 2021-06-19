@@ -1,6 +1,5 @@
+import { isNil, values } from 'lodash'
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import isNil from 'lodash/isNil'
-import values from 'lodash/values'
 import { OpenAPIGeneratorContext } from '../typings'
 
 /* TODO prevent recursion */

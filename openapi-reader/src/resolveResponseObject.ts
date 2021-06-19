@@ -2,12 +2,11 @@ import { HeaderObject, ResponseObject } from 'openapi3-ts'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveHeaderObject } from './resolveParameterObject'
 import { responseObject } from './validators/responseObject'
 import { resolveContentObject } from './resolveContentObject'
+import { entries, isNil } from 'lodash'
 
 export async function resolveResponseObject(input: ReadInput<ResponseObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, responseObject)) {

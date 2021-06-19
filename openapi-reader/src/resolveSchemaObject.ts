@@ -5,8 +5,7 @@ import { resolveReferenceable } from './resolveReferenceable'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { schemaObject } from './validators/schemaObject'
-import isNil from 'lodash/isNil'
-import entries from 'lodash/entries'
+import { entries, isNil } from 'lodash'
 
 export async function resolveSchemaObject(input: ReadInput<SchemaObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, schemaObject)) {

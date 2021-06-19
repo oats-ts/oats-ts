@@ -1,4 +1,4 @@
-import isNil from 'lodash/isNil'
+import { isNil } from 'lodash'
 import { OpenAPIReadConfig } from '../typings'
 import { defaultResolve } from './defaultResolve'
 import { DefaultURIManipulator } from './DefaultURIManipulator'

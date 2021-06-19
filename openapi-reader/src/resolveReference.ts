@@ -3,7 +3,7 @@ import { ReadContext, ReadInput } from './internalTypings'
 import { findByFragments } from './findByFragments'
 import { register } from './register'
 import { Severity } from '@oats-ts/validators'
-import isNil from 'lodash/isNil'
+import { isNil } from 'lodash'
 
 export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
   const specUri = context.uri.document(uri)

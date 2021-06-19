@@ -1,8 +1,7 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { entries } from 'lodash'
 import { isReferenceObject, OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import { OpenAPIAccessor, OpenAPIGeneratorConfig } from '../typings'
-import entries from 'lodash/entries'
-import { isNil } from 'lodash'
 
 export class DefaultOpenAPIAccessor implements OpenAPIAccessor {
   private readonly context: OpenAPIReadOutput

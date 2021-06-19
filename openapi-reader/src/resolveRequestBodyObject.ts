@@ -2,9 +2,9 @@ import { RequestBodyObject } from 'openapi3-ts'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
-import isNil from 'lodash/isNil'
 import { resolveContentObject } from './resolveContentObject'
 import { requestBodyObject } from './validators/requestBodyObject'
+import { isNil } from 'lodash'
 
 export async function resolveRequestBodyObject(
   input: ReadInput<RequestBodyObject>,

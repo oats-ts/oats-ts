@@ -7,8 +7,7 @@ import { resolveSchemaObject } from './resolveSchemaObject'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { headerObject, parameterObject } from './validators/parameterObject'
-import entries from 'lodash/entries'
-import isNil from 'lodash/isNil'
+import { entries, isNil } from 'lodash'
 
 const resolveBaseParameter =
   <T extends BaseParameterObject>(validator: Validator<any>) =>
