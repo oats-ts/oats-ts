@@ -58,6 +58,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     case 'api-stub': {
       return 'ApiStub'
     }
+    case 'validator': {
+      return `${camelCase(name)}Validator`
+    }
     default:
       return name
   }

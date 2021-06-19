@@ -7,6 +7,7 @@ export enum Severity {
 export enum IssueType {
   TYPE = 'type',
   ENUM = 'enum',
+  LITERAL = 'literal',
   LENGTH = 'length',
   UNION = 'union',
   KEY = 'key',

@@ -8,9 +8,9 @@ import {
 } from '@babel/types'
 import { entries, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { logical } from '../../common/babelUtils'
-import { isIdentifier } from '../../common/isIdentifier'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { logical } from '../common/babelUtils'
+import { isIdentifier } from '../common/isIdentifier'
+import { OpenAPIGeneratorContext } from '../typings'
 
 export function getUnionTypeAssertionAst(
   data: SchemaObject,

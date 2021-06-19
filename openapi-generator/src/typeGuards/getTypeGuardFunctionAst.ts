@@ -11,8 +11,8 @@ import {
   Expression,
 } from '@babel/types'
 import { SchemaObject } from 'openapi3-ts'
-import { typedIdAst } from '../../common/babelUtils'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { typedIdAst } from '../common/babelUtils'
+import { OpenAPIGeneratorContext } from '../typings'
 import { getShallowTypeAssertionAst } from './getShallowTypeAssertionAst'
 
 export function getTypeGuardFunctionAst(schema: SchemaObject, context: OpenAPIGeneratorContext, assertion: Expression) {

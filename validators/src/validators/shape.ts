@@ -2,7 +2,10 @@ import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
 import { getConfig, getSeverity, isNil } from '../utils'
 
 export const shape =
-  <T extends object>(validators: Record<keyof T, Validator<any>>, allowExtraFields = false): Validator<T> =>
+  <T extends Record<string, any>>(
+    validators: Record<keyof T, Validator<any>>,
+    allowExtraFields = false,
+  ): Validator<Record<string, any>> =>
   (input: object, config?: Partial<ValidatorConfig>) => {
     const cfg = getConfig(config)
     const keys = Object.keys(input)

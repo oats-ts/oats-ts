@@ -10,7 +10,7 @@ import {
   tsUnionType,
 } from '@babel/types'
 import { entries } from 'lodash'
-import { getTypeReferenceAst } from '../../schemas/types/getTypeReferenceAst'
+import { getTypeReferenceAst } from '../../types/getTypeReferenceAst'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getRequestBodyContent } from './getRequestBodyContent'

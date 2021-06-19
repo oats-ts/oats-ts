@@ -8,7 +8,7 @@ import {
 } from '@babel/types'
 import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '../typings'
 import { getArrayTypeAst } from './getArrayTypeAst'
 import { getDictionaryTypeAst } from './getDictionaryTypeAst'
 import { getLiteralUnionTypeAst } from './getLiteralUnionTypeAst'

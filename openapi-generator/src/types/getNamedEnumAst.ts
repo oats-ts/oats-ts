@@ -6,9 +6,9 @@ import {
   tsEnumMember,
 } from '@babel/types'
 import { SchemaObject } from 'openapi3-ts'
-import { idAst } from '../../common/babelUtils'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { getLiteralAst } from './getLiteralTypeAst'
+import { idAst } from '../common/babelUtils'
+import { OpenAPIGeneratorContext } from '../typings'
+import { getLiteralAst } from './getLiteralAst'
 
 export function getNamedEnumAst(input: SchemaObject, context: OpenAPIGeneratorContext): ExportNamedDeclaration {
   const { accessor } = context

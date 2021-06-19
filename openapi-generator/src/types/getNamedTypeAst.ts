@@ -1,7 +1,7 @@
 import { ExportNamedDeclaration, exportNamedDeclaration, identifier, tsTypeAliasDeclaration } from '@babel/types'
 import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '../typings'
 import { getNamedEnumAst } from './getNamedEnumAst'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
 

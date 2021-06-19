@@ -1,19 +1,16 @@
 import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
 import { Try } from '@oats-ts/generator'
 import { Severity } from '@oats-ts/validators'
-import { isNil, negate, sortBy } from 'lodash'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { getNamedSchemas } from '../getNamedSchemas'
-import { generateTypeGuard } from './generateTypeGuards'
-import { TypeGuardGeneratorConfig } from './typings'
+import { sortBy } from 'lodash'
+import { OpenAPIGeneratorContext } from '../typings'
+import { getNamedSchemas } from '../common/getNamedSchemas'
+import { generateValidator } from './generateValidator'
 
-export const typeGuards =
-  (config: TypeGuardGeneratorConfig) =>
+export const validators =
+  (/* TODO config? */) =>
   async (context: OpenAPIGeneratorContext): Promise<Try<BabelGeneratorOutput>> => {
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
-    const modules = schemas
-      .map((schema): BabelModule => generateTypeGuard(schema, context, config))
-      .filter(negate(isNil))
+    const modules = schemas.map((schema): BabelModule => generateValidator(schema, context))
     if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
       return { issues: context.issues }
     }

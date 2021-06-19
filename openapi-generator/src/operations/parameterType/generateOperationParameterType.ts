@@ -2,7 +2,7 @@ import { exportNamedDeclaration, identifier, tsTypeAliasDeclaration, TSType, tsT
 import { ParameterLocation } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { BabelModule } from '../../../../babel-writer/lib'
-import { getRighthandSideTypeAst } from '../../schemas/types/getRighthandSideTypeAst'
+import { getRighthandSideTypeAst } from '../../types/getRighthandSideTypeAst'
 import { EnhancedOperation } from '../typings'
 import { getParameterTypeImports } from './getParameterTypeImports'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'

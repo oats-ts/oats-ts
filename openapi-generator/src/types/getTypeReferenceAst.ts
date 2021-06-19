@@ -1,7 +1,7 @@
 import { identifier, tsAnyKeyword, tsTypeReference } from '@babel/types'
 import { isNil } from 'lodash'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '../typings'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
 
 export function getTypeReferenceAst(data: SchemaObject | ReferenceObject, context: OpenAPIGeneratorContext) {

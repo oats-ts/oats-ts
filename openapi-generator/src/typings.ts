@@ -74,3 +74,4 @@ export type OpenAPIGeneratorTarget =
   | 'api-type'
   | 'api-class'
   | 'api-stub'
+  | 'validator'

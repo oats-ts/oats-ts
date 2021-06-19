@@ -13,7 +13,7 @@ import {
 } from '@babel/types'
 import { entries, head, isNil } from 'lodash'
 import { Http } from '../../common/OatsPackages'
-import { getTypeReferenceAst } from '../../schemas/types/getTypeReferenceAst'
+import { getTypeReferenceAst } from '../../types/getTypeReferenceAst'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getResponseMap } from './getResponseMap'

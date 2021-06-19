@@ -7,10 +7,12 @@ import {
   operations,
   typeGuards,
   api,
+  validators,
 } from '@oats-ts/openapi-generator'
 import { babelWriter, defaultStringify, prettierStringify } from '@oats-ts/babel-writer'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
+import { z } from 'zod'
 
 const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '.prettierrc'), 'utf-8'))
 
@@ -19,7 +21,10 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
     return resolve(join('generated', 'operations', `${_.operationId}.ts`))
   }
   if (target.startsWith('api')) {
-    return resolve(join('generated', 'requests', `ApiRequests.ts`))
+    return resolve(join('generated', 'ApiRequests.ts'))
+  }
+  if (target === 'validator') {
+    return resolve(join('generated', 'Validators.ts'))
   }
   return resolve(join('generated', 'types.ts'))
 }
@@ -36,11 +41,13 @@ describe('workflow test', () => {
           // typeGuards({ mode: 'shallow' }),
           operations(),
           api({ class: true, stub: true }),
+          validators(),
         ),
       )
       .write(babelWriter({ stringify: defaultStringify({ compact: true }) }))
       .run()
   })
-
-  xit('test', () => {})
+  xit('test', () => {
+z.object()
+  })
 })

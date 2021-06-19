@@ -2,8 +2,8 @@ import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
 import { Try } from '@oats-ts/generator'
 import { Severity } from '@oats-ts/validators'
 import { sortBy } from 'lodash'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { getNamedSchemas } from '../getNamedSchemas'
+import { OpenAPIGeneratorContext } from '../typings'
+import { getNamedSchemas } from '../common/getNamedSchemas'
 import { generateType } from './generateType'
 
 export const types =

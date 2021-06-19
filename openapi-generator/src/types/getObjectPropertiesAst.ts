@@ -1,9 +1,9 @@
 import { stringLiteral, tsLiteralType, tsPropertySignature, TSPropertySignature, tsTypeAnnotation } from '@babel/types'
 import { entries, has, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { idAst } from '../../common/babelUtils'
-import { getDiscriminators } from '../../common/getDiscriminators'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { idAst } from '../common/babelUtils'
+import { getDiscriminators } from '../common/getDiscriminators'
+import { OpenAPIGeneratorContext } from '../typings'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 
 export function getObjectPropertiesAst(data: SchemaObject, context: OpenAPIGeneratorContext): TSPropertySignature[] {

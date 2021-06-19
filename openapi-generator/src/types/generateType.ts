@@ -1,8 +1,8 @@
 import { BabelModule } from '@oats-ts/babel-writer'
 import { SchemaObject } from 'openapi3-ts'
-import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
-import { getImportDeclarations } from '../../common/getImportDeclarations'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { getReferencedNamedSchemas } from '../common/getReferencedNamedSchemas'
+import { getImportDeclarations } from '../common/getImportDeclarations'
+import { OpenAPIGeneratorContext } from '../typings'
 import { getNamedTypeAst } from './getNamedTypeAst'
 
 export function generateType(schema: SchemaObject, context: OpenAPIGeneratorContext): BabelModule {

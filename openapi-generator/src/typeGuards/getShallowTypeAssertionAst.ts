@@ -11,11 +11,11 @@ import {
 } from '@babel/types'
 import { entries, has, isNil, sortBy } from 'lodash'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { idAst, logical } from '../../common/babelUtils'
-import { getDiscriminators } from '../../common/getDiscriminators'
-import { isIdentifier } from '../../common/isIdentifier'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { getLiteralAst } from '../types/getLiteralTypeAst'
+import { idAst, logical } from '../common/babelUtils'
+import { getDiscriminators } from '../common/getDiscriminators'
+import { isIdentifier } from '../common/isIdentifier'
+import { OpenAPIGeneratorContext } from '../typings'
+import { getLiteralAst } from '../types/getLiteralAst'
 
 type TypeAssertionConfig = {
   name: Expression
