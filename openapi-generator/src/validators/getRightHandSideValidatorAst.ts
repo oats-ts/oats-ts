@@ -9,7 +9,7 @@ import {
   objectProperty,
   stringLiteral,
 } from '@babel/types'
-import { entries, has, isNil, sortBy } from 'lodash'
+import { entries, has, isNil, sortBy, values } from 'lodash'
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { idAst } from '../common/babelUtils'
 import { getDiscriminators } from '../common/getDiscriminators'
@@ -17,6 +17,20 @@ import { isIdentifier } from '../common/isIdentifier'
 import { Validators } from '../common/OatsPackages'
 import { getLiteralAst } from '../types/getLiteralAst'
 import { OpenAPIGeneratorContext } from '../typings'
+
+const PrimitiveTypes: SchemaObject['type'][] = ['boolean', 'string', 'number', 'integer']
+
+function getSchemaType(schema: SchemaObject): 'string' | 'number' | 'boolean' {
+  switch (schema.type) {
+    case 'integer':
+    case 'number':
+      return 'number'
+    case 'string':
+      return 'string'
+    case 'boolean':
+      return 'boolean'
+  }
+}
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
@@ -34,8 +48,33 @@ export function getRightHandSideValidatorAst(
     ])
   }
 
-  // TODO
   if (!isNil(data.oneOf)) {
+    if (isNil(data.discriminator)) {
+      return callExpression(identifier(Validators.union), [
+        objectExpression(
+          data.oneOf.map((schemaOrRef) => {
+            const schema = accessor.dereference(schemaOrRef)
+            const rightHandSide =
+              PrimitiveTypes.indexOf(schema.type) >= 0
+                ? getRightHandSideValidatorAst(schema, context, false)
+                : identifier('any')
+            return objectProperty(identifier(getSchemaType(schema)), rightHandSide)
+          }),
+        ),
+      ])
+    } else {
+      const discriminators = values(data.discriminator.mapping || {})
+      return callExpression(identifier(Validators.union), [
+        objectExpression(
+          discriminators.map(($ref) => {
+            return objectProperty(
+              identifier(accessor.name(accessor.dereference($ref), 'type')),
+              getRightHandSideValidatorAst({ $ref }, context, references),
+            )
+          }),
+        ),
+      ])
+    }
     return identifier(Validators.any)
   }
 

@@ -31,7 +31,7 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
 describe('workflow test', () => {
   it('should generate', async () => {
     await harness()
-      .read(openAPIReader({ path: 'adyen.json' }))
+      .read(openAPIReader({ path: 'kitchenSink.json' }))
       .generate(
         openAPIGenerator({ path })(
           // types(),

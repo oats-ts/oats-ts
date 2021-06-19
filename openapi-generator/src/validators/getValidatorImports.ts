@@ -9,7 +9,7 @@ import { getImportDeclarations } from '../common/getImportDeclarations'
 function collectImportedNames(
   data: SchemaObject | ReferenceObject,
   names: Set<string>,
-  refs: Set<ReferenceObject>,
+  refs: Set<string>,
   references: boolean,
 ): void {
   if (isReferenceObject(data)) {
@@ -17,13 +17,18 @@ function collectImportedNames(
       names.add(Validators.any)
     } else {
       names.add(Validators.lazy)
-      refs.add(data)
+      refs.add(data.$ref)
     }
     return
   }
 
-  // TODO
   if (!isNil(data.oneOf)) {
+    names.add(Validators.union)
+    if (!isNil(data.discriminator)) {
+      // TODO maybe better of collecting discriminators
+      names.add(Validators.literal)
+      values(data.discriminator.mapping || {}).map((ref) => refs.add(ref))
+    }
     return
   }
 
@@ -61,7 +66,7 @@ function collectImportedNames(
       }
       collectImportedNames(propSchema, names, refs, references)
     }
-    return collectImportedNames(data.properties, names, refs, references)
+    return
   }
 
   if (!isNil(data.items)) {
@@ -79,7 +84,7 @@ export function getValidatorImports(
 ): ImportDeclaration[] {
   const { accessor } = context
   const nameSet = new Set<string>()
-  const refs = new Set<ReferenceObject>()
+  const refs = new Set<string>()
   collectImportedNames(schema, nameSet, refs, references)
   const asts = [
     importAst(
