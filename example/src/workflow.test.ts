@@ -42,6 +42,7 @@ describe('workflow test', () => {
           validators({ references: true }),
           typeGuards({ references: true, arrays: true, records: true, unionReferences: true }),
           operations(),
+          api({ type: true, class: true, stub: true }),
         ),
       )
       .write(typeScriptWriter({ stringify: tsPrettierStringify(prettierConfiguration) }))
@@ -51,12 +52,10 @@ describe('workflow test', () => {
     await harness()
       .read(openAPIReader({ path: 'kitchenSink.json' }))
       .generate(
-        openAPIGenerator({ path })(
-          // types(),
-          // typeGuards({ mode: 'shallow' }),
-          // operations(),
-          api({ class: true, stub: true }),
-        ),
+        openAPIGenerator({ path })(),
+        // types(),
+        // typeGuards({ mode: 'shallow' }),
+        // operations(),
       )
       .write(babelWriter({ stringify: prettierStringify(prettierConfiguration) }))
       .run()

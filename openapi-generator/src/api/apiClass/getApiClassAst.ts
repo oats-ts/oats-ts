@@ -1,61 +1,66 @@
-import {
-  ExportNamedDeclaration,
-  exportNamedDeclaration,
-  identifier,
-  classDeclaration,
-  classBody,
-  classImplements,
-  classMethod,
-  tsTypeReference,
-  blockStatement,
-  classProperty,
-  tsTypeAnnotation,
-  assignmentExpression,
-  expressionStatement,
-  memberExpression,
-} from '@babel/types'
+import { factory, ClassDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../../operations/typings'
-import { typedIdAst } from '../../common/babelUtils'
 import { getApiClassMethodAst } from './getApiClassMethodAst'
+import { tsExportModifier, tsPrivateModifier, tsPublicModifier, tsReadonlyKeyword } from '../../common/typeScriptUtils'
+import { Http } from '../../common/OatsPackages'
 
 export function getApiClassAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
   implement: boolean,
-): ExportNamedDeclaration {
+): ClassDeclaration {
   const { accessor } = context
 
-  const configField = classProperty(identifier('config'))
-  configField.typeAnnotation = tsTypeAnnotation(tsTypeReference(identifier('RequestConfig')))
-  configField.readonly = true
-  configField.accessibility = 'private'
+  const configField = factory.createPropertyDeclaration(
+    [],
+    [tsPrivateModifier(), tsReadonlyKeyword()],
+    'config',
+    undefined,
+    factory.createTypeReferenceNode(Http.RequestConfig),
+    undefined,
+  )
 
-  const constructorMethod = classMethod(
-    'constructor',
-    identifier('constructor'),
-    [typedIdAst('config', tsTypeReference(identifier('RequestConfig')))],
-    blockStatement([
-      expressionStatement(
-        assignmentExpression('=', memberExpression(identifier('this'), identifier('config')), identifier('config')),
+  const constructor = factory.createConstructorDeclaration(
+    [],
+    [tsPublicModifier()],
+    [
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        'config',
+        undefined,
+        factory.createTypeReferenceNode(Http.RequestConfig),
+      ),
+    ],
+    factory.createBlock([
+      factory.createExpressionStatement(
+        factory.createBinaryExpression(
+          factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'config'),
+          SyntaxKind.EqualsToken,
+          factory.createIdentifier('config'),
+        ),
       ),
     ]),
   )
 
-  const classDecl = classDeclaration(
-    identifier(accessor.name(document, 'api-class')),
-    undefined,
-    classBody([
-      configField,
-      constructorMethod,
-      ...operations.map((operation) => getApiClassMethodAst(operation, context)),
-    ]),
-    undefined,
+  const heritageClauses = implement
+    ? [
+        factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
+          factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'api-type')), []),
+        ]),
+      ]
+    : []
+
+  return factory.createClassDeclaration(
+    [],
+    [tsExportModifier()],
+    accessor.name(document, 'api-class'),
+    [],
+    heritageClauses,
+    [configField, constructor, ...operations.map((operation) => getApiClassMethodAst(operation, context))],
   )
-
-  classDecl.implements = implement ? [classImplements(identifier(accessor.name(document, 'api-type')))] : undefined
-
-  return exportNamedDeclaration(classDecl)
 }

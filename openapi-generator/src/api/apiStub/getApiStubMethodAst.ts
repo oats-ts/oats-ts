@@ -1,32 +1,30 @@
-import {
-  identifier,
-  ClassMethod,
-  classMethod,
-  blockStatement,
-  returnStatement,
-  callExpression,
-  memberExpression,
-} from '@babel/types'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../../operations/typings'
 import { getApiMethodParameterAsts } from '../apiClass/getApiMethodParameterAsts'
 import { getApiMethodReturnTypeAst } from '../apiClass/getApiMethodReturnTypeAst'
+import { factory, MethodDeclaration } from 'typescript'
+import { tsAsyncModifier, tsPublicModifier } from '../../common/typeScriptUtils'
 
-export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): ClassMethod {
+export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
   const { accessor } = context
 
-  const returnStmnt = returnStatement(callExpression(memberExpression(identifier('this'), identifier('fallback')), []))
-
-  const method = classMethod(
-    'method',
-    identifier(accessor.name(data.operation, 'operation')),
-    getApiMethodParameterAsts(data, context),
-    blockStatement([returnStmnt]),
+  const returnStatement = factory.createReturnStatement(
+    factory.createCallExpression(
+      factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'fallback'),
+      [],
+      [],
+    ),
   )
 
-  method.async = true
-  method.returnType = getApiMethodReturnTypeAst(data, context)
-  method.accessibility = 'public'
-
-  return method
+  return factory.createMethodDeclaration(
+    [],
+    [tsPublicModifier(), tsAsyncModifier()],
+    undefined,
+    accessor.name(data.operation, 'operation'),
+    undefined,
+    [],
+    getApiMethodParameterAsts(data, context),
+    getApiMethodReturnTypeAst(data, context),
+    factory.createBlock([returnStatement]),
+  )
 }

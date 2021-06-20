@@ -1,46 +1,54 @@
-import {
-  identifier,
-  TSMethodSignature,
-  tsMethodSignature,
-  tsTypeAnnotation,
-  tsTypeParameterInstantiation,
-  tsTypeReference,
-} from '@babel/types'
 import { typedIdAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../../operations/returnType/getReturnTypeReferenceAst'
 import { EnhancedOperation } from '../../operations/typings'
+import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
+import { tsQuestionToken } from '../../common/typeScriptUtils'
+import { Http } from '../../common/OatsPackages'
 
 export function getApiTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-): TSMethodSignature {
+): MethodSignature {
   const { accessor } = context
 
-  const configParam = typedIdAst(
-    'config',
-    tsTypeReference(
-      identifier('Partial'),
-      tsTypeParameterInstantiation([tsTypeReference(identifier('RequestConfig'))]),
+  const parameters: ParameterDeclaration[] = []
+
+  if (isOperationInputTypeRequired(data, context)) {
+    parameters.push(
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        'input',
+        undefined,
+        factory.createTypeReferenceNode(accessor.name(data.operation, 'operation-input-type')),
+      ),
+    )
+  }
+
+  parameters.push(
+    factory.createParameterDeclaration(
+      [],
+      [],
+      undefined,
+      'config',
+      tsQuestionToken(),
+      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(Http.RequestConfig)]),
     ),
   )
 
-  configParam.optional = true
+  const returnType = factory.createTypeReferenceNode('Promise', [
+    getOperationReturnTypeReferenceAst(data.operation, context),
+  ])
 
-  const parameters = isOperationInputTypeRequired(data, context)
-    ? [
-        typedIdAst('input', tsTypeReference(identifier(accessor.name(data.operation, 'operation-input-type')))),
-        configParam,
-      ]
-    : [configParam]
-
-  const returnType = getOperationReturnTypeReferenceAst(data.operation, context)
-
-  return tsMethodSignature(
-    identifier(accessor.name(data.operation, 'operation')),
+  return factory.createMethodSignature(
+    [],
+    accessor.name(data.operation, 'operation'),
     undefined,
+    [],
     parameters,
-    tsTypeAnnotation(tsTypeReference(identifier('Promise') /* tsTypeParameterInstantiation([returnType])*/)),
+    returnType,
   )
 }

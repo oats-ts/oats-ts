@@ -1,4 +1,4 @@
-import { BabelGeneratorOutput, BabelModule } from '@oats-ts/babel-writer'
+import { TypeScriptGeneratorOutput, TypeScriptModule } from '@oats-ts/babel-writer'
 import { Try } from '@oats-ts/generator'
 import { sortBy } from 'lodash'
 import { Severity } from '../../../validators/lib'
@@ -11,12 +11,12 @@ import { ApiGeneratorConfig } from './typings'
 
 export const api =
   (config: ApiGeneratorConfig) =>
-  async (context: OpenAPIGeneratorContext): Promise<Try<BabelGeneratorOutput>> => {
+  async (context: OpenAPIGeneratorContext): Promise<Try<TypeScriptGeneratorOutput>> => {
     const document = context.accessor.document()
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       context.accessor.name(operation, 'operation'),
     )
-    const modules = [
+    const modules: TypeScriptModule[] = [
       ...(config.type ? [generateApiType(document, operations, context)] : []),
       ...(config.class ? [generateApiClass(document, operations, context, config.type)] : []),
       ...(config.stub ? [generateApiStub(document, operations, context, config.type)] : []),

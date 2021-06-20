@@ -1,14 +1,6 @@
-import {
-  AssignmentPattern,
-  assignmentPattern,
-  ClassMethod,
-  Identifier,
-  identifier,
-  objectExpression,
-  tsTypeParameterInstantiation,
-  tsTypeReference,
-} from '@babel/types'
+import { factory, ParameterDeclaration } from 'typescript'
 import { typedIdAst } from '../../common/babelUtils'
+import { Http } from '../../common/OatsPackages'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
 import { EnhancedOperation } from '../../operations/typings'
 import { OpenAPIGeneratorContext } from '../../typings'
@@ -16,26 +8,35 @@ import { OpenAPIGeneratorContext } from '../../typings'
 export function getApiMethodParameterAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-): (AssignmentPattern | Identifier)[] {
+): ParameterDeclaration[] {
   const { accessor } = context
 
-  const configParam = assignmentPattern(
-    typedIdAst(
-      'config',
-      tsTypeReference(
-        identifier('Partial'),
-        tsTypeParameterInstantiation([tsTypeReference(identifier('RequestConfig'))]),
-      ),
-    ),
-    objectExpression([]),
-  )
+  const parameters: ParameterDeclaration[] = []
 
-  const parameters = isOperationInputTypeRequired(data, context)
-    ? [
-        typedIdAst('input', tsTypeReference(identifier(accessor.name(data.operation, 'operation-input-type')))),
-        configParam,
-      ]
-    : [configParam]
+  if (isOperationInputTypeRequired(data, context)) {
+    parameters.unshift(
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        'input',
+        undefined,
+        factory.createTypeReferenceNode(accessor.name(data.operation, 'operation-input-type')),
+      ),
+    )
+  }
+
+  parameters.push(
+    factory.createParameterDeclaration(
+      [],
+      [],
+      undefined,
+      'config',
+      undefined,
+      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(Http.RequestConfig)]),
+      factory.createObjectLiteralExpression([]),
+    ),
+  )
 
   return parameters
 }

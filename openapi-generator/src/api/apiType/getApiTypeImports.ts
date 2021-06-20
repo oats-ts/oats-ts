@@ -1,12 +1,10 @@
-import { ImportDeclaration } from '@babel/types'
-import { flatMap, values } from 'lodash'
+import { flatMap } from 'lodash'
 import { OpenAPIObject } from 'openapi3-ts'
-import { getImports } from '../../common/getImports'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
-import { getOperationReturnTypeImports } from '../../operations/returnType/getOperationReturnTypeImports'
-import { getResponseMap } from '../../operations/returnType/getResponseMap'
 import { EnhancedOperation } from '../../operations/typings'
+import { ImportDeclaration } from 'typescript'
+import { tsRelativeImports } from '../../common/typeScriptUtils'
 
 export function getApiTypeImports(
   doc: OpenAPIObject,
@@ -21,13 +19,13 @@ export function getApiTypeImports(
     const imports: ImportDeclaration[] = []
     if (isOperationInputTypeRequired(data, context)) {
       imports.push(
-        ...getImports(requestsPath, [
+        ...tsRelativeImports(requestsPath, [
           [accessor.path(operation, 'operation-input-type'), accessor.name(operation, 'operation-input-type')],
         ]),
       )
     }
     imports.push(
-      ...getImports(requestsPath, [
+      ...tsRelativeImports(requestsPath, [
         [accessor.path(operation, 'operation-return-type'), accessor.name(operation, 'operation-return-type')],
       ]),
     )

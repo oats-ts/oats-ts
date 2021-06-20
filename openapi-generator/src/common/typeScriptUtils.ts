@@ -77,6 +77,26 @@ export function tsAsyncModifier() {
   return factory.createModifier(SyntaxKind.AsyncKeyword)
 }
 
+export function tsQuestionToken() {
+  return factory.createToken(SyntaxKind.QuestionToken)
+}
+
+export function tsPrivateModifier() {
+  return factory.createModifier(SyntaxKind.PrivateKeyword)
+}
+
+export function tsPublicModifier() {
+  return factory.createModifier(SyntaxKind.PublicKeyword)
+}
+
+export function tsProtectedModifier() {
+  return factory.createModifier(SyntaxKind.ProtectedKeyword)
+}
+
+export function tsReadonlyKeyword() {
+  return factory.createModifier(SyntaxKind.ReadonlyKeyword)
+}
+
 export function tsMemberAccess(
   expression: Expression,
   member: string,
