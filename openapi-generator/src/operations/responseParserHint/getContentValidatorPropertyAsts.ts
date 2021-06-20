@@ -1,13 +1,14 @@
-import { ObjectProperty, objectProperty, identifier } from '@babel/types'
 import { entries } from 'lodash'
 import { ResponseObject } from 'openapi3-ts/dist/model/OpenApi'
+import { factory, PropertyAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '../..'
-import { idAst } from '../../common/babelUtils'
 
 export function getContentValidatorPropertyAsts(
   data: ResponseObject,
   context: OpenAPIGeneratorContext,
-): ObjectProperty[] {
+): PropertyAssignment[] {
   const { content } = data
-  return entries(content || {}).map(([contentType]) => objectProperty(idAst(contentType), identifier('undefined')))
+  return entries(content || {}).map(([contentType]) =>
+    factory.createPropertyAssignment(factory.createStringLiteral(contentType), factory.createIdentifier('undefined')),
+  )
 }

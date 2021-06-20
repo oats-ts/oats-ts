@@ -1,11 +1,11 @@
-import { ImportDeclaration } from '@babel/types'
 import { ParameterLocation } from 'openapi3-ts'
-import { getImportDeclarations } from '../../common/getImportDeclarations'
 import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { getParameterSchemaObject } from './getParameterSchemaObject'
+import { tsModelImportAsts } from '../../common/typeScriptUtils'
+import { ImportDeclaration } from 'typescript'
 
 export function getParameterTypeImports(
   location: ParameterLocation,
@@ -20,5 +20,5 @@ export function getParameterTypeImports(
   const path = accessor.path(operation, getParameterTypeGeneratorTarget(location))
   const referencedSchemas = getReferencedNamedSchemas(paramsSchema, context)
 
-  return getImportDeclarations(path, 'type', referencedSchemas, context)
+  return tsModelImportAsts(path, 'type', referencedSchemas, context)
 }

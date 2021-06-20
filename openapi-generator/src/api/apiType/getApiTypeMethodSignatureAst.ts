@@ -41,6 +41,6 @@ export function getApiTypeMethodSignatureAst(
     identifier(accessor.name(data.operation, 'operation')),
     undefined,
     parameters,
-    tsTypeAnnotation(tsTypeReference(identifier('Promise'), tsTypeParameterInstantiation([returnType]))),
+    tsTypeAnnotation(tsTypeReference(identifier('Promise') /* tsTypeParameterInstantiation([returnType])*/)),
   )
 }

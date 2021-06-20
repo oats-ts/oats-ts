@@ -69,8 +69,12 @@ export function tsBinaryExpressions(
   }
 }
 
-export function tsExportModifiers() {
-  return [factory.createModifier(SyntaxKind.ExportKeyword)]
+export function tsExportModifier() {
+  return factory.createModifier(SyntaxKind.ExportKeyword)
+}
+
+export function tsAsyncModifier() {
+  return factory.createModifier(SyntaxKind.AsyncKeyword)
 }
 
 export function tsMemberAccess(

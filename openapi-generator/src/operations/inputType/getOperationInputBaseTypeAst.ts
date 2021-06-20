@@ -1,38 +1,23 @@
-import {
-  ExportNamedDeclaration,
-  exportNamedDeclaration,
-  identifier,
-  stringLiteral,
-  tsLiteralType,
-  tsPropertySignature,
-  TSPropertySignature,
-  tsStringKeyword,
-  TSTypeAliasDeclaration,
-  tsTypeAliasDeclaration,
-  tsTypeAnnotation,
-  tsTypeLiteral,
-  tsTypeParameter,
-  tsTypeParameterDeclaration,
-  tsTypeReference,
-} from '@babel/types'
 import { entries } from 'lodash'
+import { factory, PropertySignature, TypeAliasDeclaration } from 'typescript'
+import { tsExportModifier } from '../../common/typeScriptUtils'
 import { getTypeReferenceAst } from '../../types/getTypeReferenceAst'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getRequestBodyContent } from './getRequestBodyContent'
 
-function getInputTypeParameter(name: string, typeName: string): TSPropertySignature {
-  return tsPropertySignature(identifier(name), tsTypeAnnotation(tsTypeReference(identifier(typeName))))
+function getInputTypeParameter(name: string, typeName: string): PropertySignature {
+  return factory.createPropertySignature([], name, undefined, factory.createTypeReferenceNode(typeName))
 }
 
 export function getOperationInputBaseTypeAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-): ExportNamedDeclaration | TSTypeAliasDeclaration {
+): TypeAliasDeclaration {
   const { accessor } = context
   const { header, query, operation, path } = data
 
-  const properties: TSPropertySignature[] = []
+  const properties: PropertySignature[] = []
 
   if (header.length > 0) {
     properties.push(getInputTypeParameter('headers', accessor.name(operation, 'operation-headers-type')))
@@ -56,22 +41,24 @@ export function getOperationInputBaseTypeAst(
     case 1: {
       const [[contentType, mediaType]] = bodies
       properties.push(
-        tsPropertySignature(identifier('contentType'), tsTypeAnnotation(tsLiteralType(stringLiteral(contentType)))),
+        factory.createPropertySignature(
+          [],
+          'contentType',
+          undefined,
+          factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
+        ),
       )
       properties.push(
-        tsPropertySignature(
-          identifier('body'),
-          tsTypeAnnotation(tsTypeReference(identifier('any')) /* getTypeReferenceAst(mediaType.schema, context)) */),
-        ),
+        factory.createPropertySignature([], 'body', undefined, getTypeReferenceAst(mediaType.schema, context)),
       )
       break
     }
     // More than one, we need generics
     default: {
       properties.push(
-        tsPropertySignature(identifier('contentType'), tsTypeAnnotation(tsTypeReference(identifier('ContentType')))),
+        factory.createPropertySignature([], 'contentType', undefined, factory.createTypeReferenceNode('ContentType')),
       )
-      properties.push(tsPropertySignature(identifier('body'), tsTypeAnnotation(tsTypeReference(identifier('Body')))))
+      properties.push(factory.createPropertySignature([], 'body', undefined, factory.createTypeReferenceNode('Body')))
       break
     }
   }
@@ -80,13 +67,17 @@ export function getOperationInputBaseTypeAst(
   const typeName = bodies.length > 1 ? `_${baseTypeName}` : baseTypeName
   const typeArgs =
     bodies.length > 1
-      ? tsTypeParameterDeclaration([
-          tsTypeParameter(tsStringKeyword(), undefined, 'ContentType'),
-          tsTypeParameter(undefined, undefined, 'Body'),
-        ])
-      : undefined
+      ? [
+          factory.createTypeParameterDeclaration('ContentType', factory.createTypeReferenceNode('string')),
+          factory.createTypeParameterDeclaration('Body'),
+        ]
+      : []
 
-  const typeDecl = tsTypeAliasDeclaration(identifier(typeName), typeArgs, tsTypeLiteral(properties))
-
-  return bodies.length > 1 ? typeDecl : exportNamedDeclaration(typeDecl)
+  return factory.createTypeAliasDeclaration(
+    [],
+    bodies.length > 1 ? [] : [tsExportModifier()],
+    typeName,
+    typeArgs,
+    factory.createTypeLiteralNode(properties),
+  )
 }

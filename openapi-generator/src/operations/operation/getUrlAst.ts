@@ -1,4 +1,4 @@
-import { CallExpression, callExpression, Expression, identifier, memberExpression, stringLiteral } from '@babel/types'
+import { CallExpression, Expression, factory } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
@@ -7,11 +7,13 @@ export function getUrlAst(data: EnhancedOperation, context: OpenAPIGeneratorCont
   const { accessor } = context
   const { path, query, url, operation } = data
 
-  const parameterAsts: Expression[] = [memberExpression(identifier('config'), identifier('baseUrl'))]
+  const parameterAsts: Expression[] = [
+    factory.createPropertyAccessExpression(factory.createIdentifier('config'), 'baseUrl'),
+  ]
 
   if (path.length === 0) {
     // If no path parameter, no serialization needed, use url as is
-    parameterAsts.push(stringLiteral(url))
+    parameterAsts.push(factory.createStringLiteral(url))
   } else {
     // Otherwise use serializer
     parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'operation-path-serializer'), 'path'))
@@ -21,5 +23,5 @@ export function getUrlAst(data: EnhancedOperation, context: OpenAPIGeneratorCont
     parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'operation-query-serializer'), 'query'))
   }
 
-  return callExpression(identifier('joinUrl'), parameterAsts)
+  return factory.createCallExpression(factory.createIdentifier('joinUrl'), [], parameterAsts)
 }

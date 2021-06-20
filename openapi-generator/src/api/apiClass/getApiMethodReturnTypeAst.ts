@@ -13,7 +13,7 @@ export function getApiMethodReturnTypeAst(data: EnhancedOperation, context: Open
   return tsTypeAnnotation(
     tsTypeReference(
       identifier('Promise'),
-      tsTypeParameterInstantiation([getOperationReturnTypeReferenceAst(data.operation, context)]),
+      // tsTypeParameterInstantiation([getOperationReturnTypeReferenceAst(data.operation, context)]),
     ),
   )
 }

@@ -1,14 +1,17 @@
-import { BabelModule } from '../../../../babel-writer/lib'
-import { importAst } from '../../common/babelUtils'
+import { TypeScriptModule } from '../../../../babel-writer/lib'
 import { Http } from '../../common/OatsPackages'
+import { tsImportAst } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getResponseParserHintAst } from './getResponseParserHintAst'
 
-export function generateResponseParserHint(data: EnhancedOperation, context: OpenAPIGeneratorContext): BabelModule {
+export function generateResponseParserHint(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+): TypeScriptModule {
   const { accessor } = context
   return {
-    imports: [importAst(Http.name, [Http.ResponseParserHint])],
+    imports: [tsImportAst(Http.name, [Http.ResponseParserHint])],
     path: accessor.path(data.operation, 'operation-response-parser-hint'),
     statements: [getResponseParserHintAst(data, context)],
   }

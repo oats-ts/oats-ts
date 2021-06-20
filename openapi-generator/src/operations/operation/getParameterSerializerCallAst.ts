@@ -1,5 +1,9 @@
-import { CallExpression, callExpression, identifier, memberExpression } from '@babel/types'
+import { CallExpression, factory } from 'typescript'
 
 export function getParameterSerializerCallAst(fnName: string, inputKey: string): CallExpression {
-  return callExpression(identifier(fnName), [memberExpression(identifier('input'), identifier(inputKey))])
+  return factory.createCallExpression(
+    factory.createIdentifier(fnName),
+    [],
+    [factory.createPropertyAccessExpression(factory.createIdentifier('input'), inputKey)],
+  )
 }

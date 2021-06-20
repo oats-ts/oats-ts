@@ -1,11 +1,11 @@
-import { TSType, tsTypeReference, identifier } from '@babel/types'
 import { OperationObject } from 'openapi3-ts'
+import { factory, TypeReferenceNode } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 
 export function getOperationReturnTypeReferenceAst(
   operation: OperationObject,
   context: OpenAPIGeneratorContext,
-): TSType {
+): TypeReferenceNode {
   const { accessor } = context
-  return tsTypeReference(identifier(accessor.name(operation, 'operation-return-type')))
+  return factory.createTypeReferenceNode(accessor.name(operation, 'operation-return-type'))
 }

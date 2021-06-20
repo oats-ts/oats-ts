@@ -1,9 +1,9 @@
-import { Statement } from '@babel/types'
-import { BabelModule } from '@oats-ts/babel-writer'
+import { BabelModule, TypeScriptModule } from '@oats-ts/babel-writer'
 import { entries, isNil, negate } from 'lodash'
-import { SchemaObject } from 'openapi3-ts'
+import { Statement } from 'typescript'
 import { getImportDeclarations } from '../../common/getImportDeclarations'
 import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
+import { tsModelImportAsts } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getOperationInputBaseTypeAst } from './getOperationInputBaseTypeAst'
@@ -11,7 +11,10 @@ import { getOperationInputUnionTypeAst } from './getOperationInputUnionTypeAst'
 import { getRequestBodyContent } from './getRequestBodyContent'
 import { isOperationInputTypeRequired } from './isOperationInputTypeRequired'
 
-export function generateOperationInputType(data: EnhancedOperation, context: OpenAPIGeneratorContext): BabelModule {
+export function generateOperationInputType(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+): TypeScriptModule {
   if (!isOperationInputTypeRequired(data, context)) {
     return undefined
   }
@@ -31,7 +34,7 @@ export function generateOperationInputType(data: EnhancedOperation, context: Ope
     statements.push(getOperationInputUnionTypeAst(data, context))
   }
   return {
-    imports: getImportDeclarations(path, 'type', referencedTypes, context),
+    imports: tsModelImportAsts(path, 'type', referencedTypes, context),
     path,
     statements,
   }

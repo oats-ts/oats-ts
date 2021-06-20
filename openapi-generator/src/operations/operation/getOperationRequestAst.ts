@@ -1,25 +1,12 @@
-import {
-  AwaitExpression,
-  awaitExpression,
-  callExpression,
-  identifier,
-  memberExpression,
-  objectExpression,
-  objectProperty,
-  ObjectProperty,
-  SpreadElement,
-  spreadElement,
-  stringLiteral,
-} from '@babel/types'
 import { entries } from 'lodash'
-import { idAst } from '../../common/babelUtils'
+import { AwaitExpression, factory, PropertyAssignment, SpreadAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { getRequestBodyContent } from '../inputType/getRequestBodyContent'
 import { EnhancedOperation } from '../typings'
 import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
 import { getUrlAst } from './getUrlAst'
 
-function getHeadersParameter(data: EnhancedOperation, context: OpenAPIGeneratorContext): ObjectProperty {
+function getHeadersParameter(data: EnhancedOperation, context: OpenAPIGeneratorContext): PropertyAssignment {
   const { accessor } = context
   const { header } = data
   const bodies = entries(getRequestBodyContent(data, context))
@@ -28,17 +15,23 @@ function getHeadersParameter(data: EnhancedOperation, context: OpenAPIGeneratorC
     'headers',
   )
   if (header.length > 0 && bodies.length === 0) {
-    return objectProperty(idAst('headers'), headerSerializerAst)
+    return factory.createPropertyAssignment('headers', headerSerializerAst)
   }
   if (bodies.length > 0) {
-    const properties: (ObjectProperty | SpreadElement)[] = []
+    const properties: (PropertyAssignment | SpreadAssignment)[] = []
     if (header.length > 0) {
-      properties.push(spreadElement(headerSerializerAst))
+      properties.push(factory.createSpreadAssignment(headerSerializerAst))
     }
     properties.push(
-      objectProperty(stringLiteral('content-type'), memberExpression(identifier('input'), identifier('contentType'))),
+      factory.createPropertyAssignment(
+        factory.createStringLiteral('content-type'),
+        factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'contentType'),
+      ),
     )
-    return objectProperty(idAst('headers'), objectExpression(properties))
+    return factory.createPropertyAssignment(
+      factory.createIdentifier('headers'),
+      factory.createObjectLiteralExpression(properties),
+    )
   }
   return undefined
 }
@@ -47,20 +40,24 @@ export function getOperationRequestAst(data: EnhancedOperation, context: OpenAPI
   const { method, header } = data
   const bodies = entries(getRequestBodyContent(data, context))
 
-  const properties: ObjectProperty[] = [
-    objectProperty(idAst('url'), getUrlAst(data, context)),
-    objectProperty(idAst('method'), stringLiteral(method)),
+  const properties: PropertyAssignment[] = [
+    factory.createPropertyAssignment('url', getUrlAst(data, context)),
+    factory.createPropertyAssignment('method', factory.createStringLiteral(method)),
   ]
 
   if (bodies.length > 1) {
     properties.push(
-      objectProperty(
-        idAst('body'),
-        awaitExpression(
-          callExpression(memberExpression(identifier('config'), identifier('serialize')), [
-            memberExpression(identifier('input'), identifier('contentType')),
-            memberExpression(identifier('input'), identifier('body')),
-          ]),
+      factory.createPropertyAssignment(
+        'body',
+        factory.createAwaitExpression(
+          factory.createCallExpression(
+            factory.createPropertyAccessExpression(factory.createIdentifier('config'), 'serialize'),
+            [],
+            [
+              factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'contentType'),
+              factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'body'),
+            ],
+          ),
         ),
       ),
     )
@@ -70,7 +67,11 @@ export function getOperationRequestAst(data: EnhancedOperation, context: OpenAPI
     properties.push(getHeadersParameter(data, context))
   }
 
-  return awaitExpression(
-    callExpression(memberExpression(identifier('config'), identifier('request')), [objectExpression(properties)]),
+  return factory.createAwaitExpression(
+    factory.createCallExpression(
+      factory.createPropertyAccessExpression(factory.createIdentifier('config'), 'request'),
+      [],
+      [factory.createObjectLiteralExpression(properties)],
+    ),
   )
 }

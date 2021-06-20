@@ -41,6 +41,7 @@ describe('workflow test', () => {
           types(),
           validators({ references: true }),
           typeGuards({ references: true, arrays: true, records: true, unionReferences: true }),
+          operations(),
         ),
       )
       .write(typeScriptWriter({ stringify: tsPrettierStringify(prettierConfiguration) }))
@@ -53,7 +54,7 @@ describe('workflow test', () => {
         openAPIGenerator({ path })(
           // types(),
           // typeGuards({ mode: 'shallow' }),
-          operations(),
+          // operations(),
           api({ class: true, stub: true }),
         ),
       )

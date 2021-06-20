@@ -1,16 +1,6 @@
-import {
-  blockStatement,
-  ExportNamedDeclaration,
-  exportNamedDeclaration,
-  functionDeclaration,
-  Identifier,
-  identifier,
-  returnStatement,
-  tsTypeAnnotation,
-  tsTypeParameterInstantiation,
-  tsTypeReference,
-} from '@babel/types'
-import { typedIdAst } from '../../common/babelUtils'
+import { factory, FunctionDeclaration, ParameterDeclaration } from 'typescript'
+import { Http } from '../../common/OatsPackages'
+import { tsAsyncModifier, tsExportModifier } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
@@ -20,32 +10,44 @@ import { getOperationParseAst } from './getOperationParseAst'
 export function getOperationFunctionAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-): ExportNamedDeclaration {
+): FunctionDeclaration {
   const { accessor } = context
   const { operation } = data
 
-  const params: Identifier[] = []
+  const params: ParameterDeclaration[] = []
 
   if (isOperationInputTypeRequired(data, context)) {
-    params.push(typedIdAst('input', tsTypeReference(identifier(accessor.name(operation, 'operation-input-type')))))
+    params.push(
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        'input',
+        undefined,
+        factory.createTypeReferenceNode(accessor.name(operation, 'operation-input-type')),
+      ),
+    )
   }
 
-  params.push(typedIdAst('config', tsTypeReference(identifier('RequestConfig'))))
-
-  const fnAst = functionDeclaration(
-    identifier(accessor.name(operation, 'operation')),
-    params,
-    blockStatement([returnStatement(getOperationParseAst(data, context))]),
-    false,
-    true,
-  )
-
-  fnAst.returnType = tsTypeAnnotation(
-    tsTypeReference(
-      identifier('Promise'),
-      tsTypeParameterInstantiation([getOperationReturnTypeReferenceAst(operation, context)]),
+  params.push(
+    factory.createParameterDeclaration(
+      [],
+      [],
+      undefined,
+      'config',
+      undefined,
+      factory.createTypeReferenceNode(Http.RequestConfig),
     ),
   )
 
-  return exportNamedDeclaration(fnAst)
+  return factory.createFunctionDeclaration(
+    [],
+    [tsExportModifier(), tsAsyncModifier()],
+    undefined,
+    accessor.name(operation, 'operation'),
+    [],
+    params,
+    factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),
+    factory.createBlock([factory.createReturnStatement(getOperationParseAst(data, context))]),
+  )
 }

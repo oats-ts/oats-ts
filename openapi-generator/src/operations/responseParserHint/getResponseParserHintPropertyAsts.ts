@@ -1,5 +1,5 @@
-import { identifier, numericLiteral, objectExpression, ObjectProperty, objectProperty } from '@babel/types'
 import { entries, isNil } from 'lodash'
+import { factory, PropertyAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getContentValidatorPropertyAsts } from './getContentValidatorPropertyAsts'
@@ -7,25 +7,29 @@ import { getContentValidatorPropertyAsts } from './getContentValidatorPropertyAs
 export function getResponseParserHintPropertyAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-): ObjectProperty[] {
+): PropertyAssignment[] {
   const { operation } = data
   const { default: defaultResponse, ...responses } = operation.responses || {}
   const { accessor } = context
-  const properties: ObjectProperty[] = []
+  const properties: PropertyAssignment[] = []
   properties.push(
     ...entries(responses).map(
-      ([statusCode, response]): ObjectProperty =>
-        objectProperty(
-          numericLiteral(Number(statusCode)),
-          objectExpression(getContentValidatorPropertyAsts(accessor.dereference(response), context)),
+      ([statusCode, response]): PropertyAssignment =>
+        factory.createPropertyAssignment(
+          factory.createNumericLiteral(Number(statusCode)),
+          factory.createObjectLiteralExpression(
+            getContentValidatorPropertyAsts(accessor.dereference(response), context),
+          ),
         ),
     ),
   )
   if (!isNil(defaultResponse)) {
     properties.push(
-      objectProperty(
-        identifier('default'),
-        objectExpression(getContentValidatorPropertyAsts(accessor.dereference(defaultResponse), context)),
+      factory.createPropertyAssignment(
+        'default',
+        factory.createObjectLiteralExpression(
+          getContentValidatorPropertyAsts(accessor.dereference(defaultResponse), context),
+        ),
       ),
     )
   }

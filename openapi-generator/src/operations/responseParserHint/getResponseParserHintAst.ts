@@ -1,13 +1,6 @@
-import {
-  identifier,
-  objectExpression,
-  Statement,
-  tsTypeReference,
-  variableDeclaration,
-  variableDeclarator,
-} from '@babel/types'
-import { typedIdAst } from '../../common/babelUtils'
+import { factory, NodeFlags, Statement } from 'typescript'
 import { Http } from '../../common/OatsPackages'
+import { tsExportModifier } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getResponseParserHintPropertyAsts } from './getResponseParserHintPropertyAsts'
@@ -15,11 +8,21 @@ import { getResponseParserHintPropertyAsts } from './getResponseParserHintProper
 export function getResponseParserHintAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
   const { accessor } = context
   const { operation } = data
-  const varName = typedIdAst(
-    accessor.name(operation, 'operation-response-parser-hint'),
-    tsTypeReference(identifier(Http.ResponseParserHint)),
+
+  const varName = accessor.name(operation, 'operation-response-parser-hint')
+
+  return factory.createVariableStatement(
+    [tsExportModifier()],
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          varName,
+          undefined,
+          factory.createTypeReferenceNode(Http.ResponseParserHint),
+          factory.createObjectLiteralExpression(getResponseParserHintPropertyAsts(data, context)),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
   )
-  return variableDeclaration('const', [
-    variableDeclarator(varName, objectExpression(getResponseParserHintPropertyAsts(data, context))),
-  ])
 }
