@@ -21,10 +21,13 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
     return resolve(join('generated', 'operations', `${_.operationId}.ts`))
   }
   if (target.startsWith('api')) {
-    return resolve(join('generated', 'ApiRequests.ts'))
+    return resolve(join('generated', 'apiRequests.ts'))
   }
   if (target === 'validator') {
-    return resolve(join('generated', 'Validators.ts'))
+    return resolve(join('generated', 'validators.ts'))
+  }
+  if (target === 'type-guard') {
+    return resolve(join('generated', 'typeGuards.ts'))
   }
   return resolve(join('generated', 'types.ts'))
 }
@@ -32,8 +35,14 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
 describe('workflow test', () => {
   it('should generate using typescript', async () => {
     await harness()
-      .read(openAPIReader({ path: 'adyen.json' }))
-      .generate(tsOpenAPIGenerator({ path })(types(), validators({ references: true })))
+      .read(openAPIReader({ path: 'kitchenSink.json' }))
+      .generate(
+        tsOpenAPIGenerator({ path })(
+          types(),
+          validators({ references: true }),
+          typeGuards({ references: true, arrays: true, records: true, unionReferences: true }),
+        ),
+      )
       .write(typeScriptWriter({ stringify: tsPrettierStringify(prettierConfiguration) }))
       .run()
   })

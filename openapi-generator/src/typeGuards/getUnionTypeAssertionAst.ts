@@ -1,31 +1,29 @@
-import {
-  binaryExpression,
-  Expression,
-  identifier,
-  memberExpression,
-  stringLiteral,
-  unaryExpression,
-} from '@babel/types'
-import { entries, sortBy } from 'lodash'
+import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { logical } from '../common/babelUtils'
-import { isIdentifier } from '../common/isIdentifier'
+import { Expression, factory, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '../typings'
+import { getTypeAssertionAst } from './getTypeAssertionAst'
+import { reduceExpressions } from './reduceExpressions'
+import { FullTypeGuardGeneratorConfig } from './typings'
 
 export function getUnionTypeAssertionAst(
   data: SchemaObject,
-  discriminators: Record<string, string>,
   context: OpenAPIGeneratorContext,
+  variable: Expression,
+  config: FullTypeGuardGeneratorConfig,
 ): Expression {
-  const objAssertions: Expression[] = [
-    binaryExpression('!==', identifier('input'), identifier('null')),
-    binaryExpression('===', unaryExpression('typeof', identifier('input')), stringLiteral('object')),
-    ...sortBy(entries(discriminators), ([name]) => name).map(([propName, value]) => {
-      const member = isIdentifier(propName)
-        ? memberExpression(identifier('input'), identifier(propName))
-        : memberExpression(identifier('input'), stringLiteral(propName), true)
-      return binaryExpression('===', member, stringLiteral(value))
+  const { accessor } = context
+  if (isNil(data.discriminator) || !config.unionReferences) {
+    return reduceExpressions(
+      SyntaxKind.BarBarToken,
+      data.oneOf.map((refOrSchema) => getTypeAssertionAst(refOrSchema, context, variable, config)),
+    )
+  }
+  return reduceExpressions(
+    SyntaxKind.BarBarToken,
+    data.oneOf.map((refOrSchema) => {
+      const schema = accessor.dereference<SchemaObject>(refOrSchema)
+      return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'type-guard')), [], [variable])
     }),
-  ]
-  return logical('&&', objAssertions)
+  )
 }

@@ -1,41 +1,48 @@
 import { SchemaObject } from 'openapi3-ts'
-import { BabelModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/babel-writer'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
-import { TypeGuardGeneratorConfig } from './typings'
+import { TypeGuardGeneratorConfig, UnionTypeGuardGeneratorConfig } from './typings'
 import { getDiscriminators } from '../common/getDiscriminators'
-import { keys } from 'lodash'
-import { getShallowTypeAssertionAst } from './getShallowTypeAssertionAst'
-import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
+import { isNil, keys } from 'lodash'
+import { factory } from 'typescript'
+import { tsModelImportAsts } from '../common/typeScriptUtils'
+import { getTypeAssertionAst } from './getTypeAssertionAst'
+import { getDiscriminatorBasedTypeAssertionAst } from './getDiscriminatorBasedTypeAssertionAst'
+import { getTypeGuardImports } from './getTypeGuardImports'
+
+function isUnionTypeGuardGeneratorConfig(input: any): input is UnionTypeGuardGeneratorConfig {
+  return typeof input === 'object' && input !== null && input.discriminatorBased === true
+}
 
 export function generateTypeGuard(
   schema: SchemaObject,
   context: OpenAPIGeneratorContext,
   config: TypeGuardGeneratorConfig,
-): BabelModule {
+): TypeScriptModule {
   const { accessor } = context
   const path = accessor.path(schema, 'type-guard')
-  switch (config.mode) {
-    case 'shallow': {
-      return {
-        statements: [getTypeGuardFunctionAst(schema, context, getShallowTypeAssertionAst(schema, context))],
-        path,
-        imports: [],
-      }
+  const typeImports = tsModelImportAsts(path, 'type', [schema], context)
+  if (isUnionTypeGuardGeneratorConfig(config)) {
+    const discriminators = getDiscriminators(schema, context)
+    if (keys(discriminators).length === 0 || (!isNil(schema.oneOf) && schema.oneOf.length > 0)) {
+      return undefined
     }
-    case 'union': {
-      const discriminators = getDiscriminators(schema, context)
-      if (keys(discriminators).length === 0) {
-        return undefined
-      }
-      return {
-        statements: [
-          getTypeGuardFunctionAst(schema, context, getUnionTypeAssertionAst(schema, discriminators, context)),
-        ],
-        path,
-        imports: [],
-      }
+    return {
+      statements: [getTypeGuardFunctionAst(schema, context, getDiscriminatorBasedTypeAssertionAst(schema, context))],
+      path,
+      imports: [...typeImports],
     }
   }
-  return undefined
+  return {
+    statements: [
+      getTypeGuardFunctionAst(
+        schema,
+        context,
+        getTypeAssertionAst(schema, context, factory.createIdentifier('input'), config),
+      ),
+    ],
+    path,
+    imports: [...typeImports, ...getTypeGuardImports(schema, context, config)],
+  }
 }

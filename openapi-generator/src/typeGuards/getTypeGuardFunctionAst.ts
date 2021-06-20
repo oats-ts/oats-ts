@@ -1,32 +1,22 @@
-import {
-  blockStatement,
-  exportNamedDeclaration,
-  functionDeclaration,
-  identifier,
-  tsAnyKeyword,
-  tsTypeAnnotation,
-  tsTypePredicate,
-  tsTypeReference,
-  returnStatement,
-  Expression,
-} from '@babel/types'
 import { SchemaObject } from 'openapi3-ts'
-import { typedIdAst } from '../common/babelUtils'
+import { Expression, factory, FunctionDeclaration } from 'typescript'
+import { tsExportModifiers } from '../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../typings'
-import { getShallowTypeAssertionAst } from './getShallowTypeAssertionAst'
 
-export function getTypeGuardFunctionAst(schema: SchemaObject, context: OpenAPIGeneratorContext, assertion: Expression) {
+export function getTypeGuardFunctionAst(
+  schema: SchemaObject,
+  context: OpenAPIGeneratorContext,
+  assertion: Expression,
+): FunctionDeclaration {
   const { accessor } = context
-
-  const fn = functionDeclaration(
-    identifier(accessor.name(schema, 'type-guard')),
-    [typedIdAst('input', tsAnyKeyword())],
-    blockStatement([returnStatement(assertion)]),
+  return factory.createFunctionDeclaration(
+    [],
+    tsExportModifiers(),
+    undefined,
+    accessor.name(schema, 'type-guard'),
+    [],
+    [factory.createParameterDeclaration([], [], undefined, 'input', undefined, factory.createTypeReferenceNode('any'))],
+    factory.createTypePredicateNode(undefined, 'input', factory.createTypeReferenceNode(accessor.name(schema, 'type'))),
+    factory.createBlock([factory.createReturnStatement(assertion)]),
   )
-
-  fn.returnType = tsTypeAnnotation(
-    tsTypePredicate(identifier('input'), tsTypeAnnotation(tsTypeReference(identifier(accessor.name(schema, 'type'))))),
-  )
-
-  return exportNamedDeclaration(fn)
 }

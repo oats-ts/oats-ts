@@ -2,22 +2,9 @@ import { isNil, values } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
 import { Validators } from '../common/OatsPackages'
+import { getPrimitiveType, PrimitiveTypes } from '../common/primitiveTypeUtils'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-
-const PrimitiveTypes: SchemaObject['type'][] = ['boolean', 'string', 'number', 'integer']
-
-function getSchemaType(schema: SchemaObject): 'string' | 'number' | 'boolean' {
-  switch (schema.type) {
-    case 'integer':
-    case 'number':
-      return 'number'
-    case 'string':
-      return 'string'
-    case 'boolean':
-      return 'boolean'
-  }
-}
 
 function getUnionProperties(
   data: SchemaObject,
@@ -32,7 +19,7 @@ function getUnionProperties(
         PrimitiveTypes.indexOf(schema.type) >= 0
           ? getRightHandSideValidatorAst(schema, context, false)
           : factory.createIdentifier('any')
-      return factory.createPropertyAssignment(getSchemaType(schema), rightHandSide)
+      return factory.createPropertyAssignment(getPrimitiveType(schema), rightHandSide)
     })
   }
   const discriminators = values(data.discriminator.mapping || {})
