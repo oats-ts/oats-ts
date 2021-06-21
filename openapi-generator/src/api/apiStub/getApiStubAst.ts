@@ -4,12 +4,13 @@ import { EnhancedOperation } from '../../operations/typings'
 import { getApiStubMethodAst } from './getApiStubMethodAst'
 import { ClassDeclaration, factory, SyntaxKind } from 'typescript'
 import { tsExportModifier, tsProtectedModifier } from '../../common/typeScriptUtils'
+import { ApiGeneratorConfig } from '../typings'
 
 export function getApiStubAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  implement: boolean,
+  config: ApiGeneratorConfig,
 ): ClassDeclaration {
   const { accessor } = context
 
@@ -33,7 +34,7 @@ export function getApiStubAst(
     ]),
   )
 
-  const heritageClauses = implement
+  const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
           factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'api-type')), []),

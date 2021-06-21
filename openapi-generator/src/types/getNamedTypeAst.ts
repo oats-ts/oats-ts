@@ -5,13 +5,15 @@ import { tsExportModifier } from '../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getNamedEnumAst } from './getNamedEnumAst'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
+import { TypesGeneratorConfig } from './typings'
 
 export function getNamedTypeAst(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
+  config: TypesGeneratorConfig,
 ): TypeAliasDeclaration | EnumDeclaration {
   const { accessor } = context
-  if (!isNil(data.enum)) {
+  if (!isNil(data.enum) && config.enums) {
     return getNamedEnumAst(data, context)
   }
 

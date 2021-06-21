@@ -9,6 +9,7 @@ export { openAPIGenerator } from './openAPIGenerator'
 export { defaultNameProvider } from './defaults/defaultNameProvider'
 export { singleFile, byName } from './defaults/defaultPathProviders'
 export { types } from './types'
+export { TypesGeneratorConfig } from './types/typings'
 export { typeGuards } from './typeGuards'
 export {
   UnionTypeGuardGeneratorConfig,

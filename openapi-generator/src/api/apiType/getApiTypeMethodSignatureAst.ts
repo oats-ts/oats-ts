@@ -1,15 +1,16 @@
-import { typedIdAst } from '../../common/babelUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../../operations/returnType/getReturnTypeReferenceAst'
 import { EnhancedOperation } from '../../operations/typings'
-import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
+import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
 import { tsQuestionToken } from '../../common/typeScriptUtils'
 import { Http } from '../../common/OatsPackages'
+import { ApiGeneratorConfig } from '../typings'
 
 export function getApiTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
+  config: ApiGeneratorConfig,
 ): MethodSignature {
   const { accessor } = context
 

@@ -5,12 +5,13 @@ import { EnhancedOperation } from '../../operations/typings'
 import { getApiClassMethodAst } from './getApiClassMethodAst'
 import { tsExportModifier, tsPrivateModifier, tsPublicModifier, tsReadonlyKeyword } from '../../common/typeScriptUtils'
 import { Http } from '../../common/OatsPackages'
+import { ApiGeneratorConfig } from '../typings'
 
 export function getApiClassAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  implement: boolean,
+  config: ApiGeneratorConfig,
 ): ClassDeclaration {
   const { accessor } = context
 
@@ -47,7 +48,7 @@ export function getApiClassAst(
     ]),
   )
 
-  const heritageClauses = implement
+  const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
           factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'api-type')), []),

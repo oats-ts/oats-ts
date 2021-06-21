@@ -17,9 +17,9 @@ export const api =
       context.accessor.name(operation, 'operation'),
     )
     const modules: TypeScriptModule[] = [
-      ...(config.type ? [generateApiType(document, operations, context)] : []),
-      ...(config.class ? [generateApiClass(document, operations, context, config.type)] : []),
-      ...(config.stub ? [generateApiStub(document, operations, context, config.type)] : []),
+      ...(config.type ? [generateApiType(document, operations, context, config)] : []),
+      ...(config.class ? [generateApiClass(document, operations, context, config)] : []),
+      ...(config.stub ? [generateApiStub(document, operations, context, config)] : []),
     ]
     if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
       return { issues: context.issues }

@@ -6,12 +6,13 @@ import { getApiTypeImports } from '../apiType/getApiTypeImports'
 import { Http } from '../../common/OatsPackages'
 import { getApiStubAst } from './getApiStubAst'
 import { tsImportAst, tsRelativeImports } from '../../common/typeScriptUtils'
+import { ApiGeneratorConfig } from '../typings'
 
 export function generateApiStub(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  implement: boolean,
+  config: ApiGeneratorConfig,
 ): TypeScriptModule {
   const { accessor } = context
   const path = accessor.path(doc, 'api-stub')
@@ -22,6 +23,6 @@ export function generateApiStub(
       ...tsRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
     ],
     path,
-    statements: [getApiStubAst(doc, operations, context, implement)],
+    statements: [getApiStubAst(doc, operations, context, config)],
   }
 }

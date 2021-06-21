@@ -6,12 +6,13 @@ import { getApiTypeImports } from '../apiType/getApiTypeImports'
 import { getApiClassAst } from './getApiClassAst'
 import { Http } from '../../common/OatsPackages'
 import { tsImportAst, tsModelImportAsts, tsRelativeImports } from '../../common/typeScriptUtils'
+import { ApiGeneratorConfig } from '../typings'
 
 export function generateApiClass(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  implement: boolean,
+  config: ApiGeneratorConfig,
 ): TypeScriptModule {
   const { accessor } = context
   const path = accessor.path(doc, 'api-class')
@@ -28,6 +29,6 @@ export function generateApiClass(
       ),
     ],
     path,
-    statements: [getApiClassAst(doc, operations, context, implement)],
+    statements: [getApiClassAst(doc, operations, context, config)],
   }
 }

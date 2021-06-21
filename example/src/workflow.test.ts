@@ -35,14 +35,29 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
 describe('workflow test', () => {
   it('should generate using typescript', async () => {
     await harness()
-      .read(openAPIReader({ path: 'kitchenSink.json' }))
+      .read(openAPIReader({ path: 'adyen.json' }))
       .generate(
         tsOpenAPIGenerator({ path })(
-          types(),
-          validators({ references: true }),
-          typeGuards({ references: true, arrays: true, records: true, unionReferences: true }),
+          types({
+            documentation: true,
+            enums: true,
+          }),
+          validators({
+            references: true,
+          }),
+          typeGuards({
+            references: true,
+            arrays: true,
+            records: true,
+            unionReferences: true,
+          }),
           operations(),
-          api({ type: true, class: true, stub: true }),
+          api({
+            type: true,
+            class: true,
+            stub: true,
+            documentation: true,
+          }),
         ),
       )
       .write(typeScriptWriter({ stringify: tsPrettierStringify(prettierConfiguration) }))
