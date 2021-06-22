@@ -9,6 +9,7 @@ import {
   api,
   validators,
   tsOpenAPIGenerator,
+  parameterTypes,
 } from '@oats-ts/openapi-generator'
 import { babelWriter, prettierStringify, tsPrettierStringify, typeScriptWriter } from '@oats-ts/babel-writer'
 import { join, resolve } from 'path'
@@ -35,7 +36,9 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
 describe('workflow test', () => {
   it('should generate using typescript', async () => {
     await harness()
-      .read(openAPIReader({ path: 'adyen.json' }))
+      .read(
+        openAPIReader({ path: 'https://api.apis.guru/v2/specs/amazonaws.com/accessanalyzer/2019-11-01/openapi.json' }),
+      )
       .generate(
         tsOpenAPIGenerator({ path })(
           types({
@@ -51,6 +54,7 @@ describe('workflow test', () => {
             records: true,
             unionReferences: true,
           }),
+          parameterTypes(),
           operations(),
           api({
             type: true,

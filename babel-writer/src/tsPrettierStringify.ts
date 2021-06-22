@@ -1,19 +1,18 @@
 import { Options, format } from 'prettier'
 import { TypeScriptModule } from './typings'
-import { factory, createPrinter, NewLineKind, SyntaxKind, NodeFlags } from 'typescript'
+import { factory, createPrinter, NewLineKind, SyntaxKind, NodeFlags, Statement, SourceFile } from 'typescript'
+
+function file(nodes: Statement[]): SourceFile {
+  return factory.createSourceFile([...nodes], factory.createToken(SyntaxKind.EndOfFileToken), NodeFlags.None)
+}
 
 export const tsPrettierStringify =
   (options: Options) =>
   async (data: TypeScriptModule): Promise<string> => {
     const printer = createPrinter({
       newLine: NewLineKind.LineFeed,
-      omitTrailingSemicolon: true,
       removeComments: false,
     })
-    const file = factory.createSourceFile(
-      [...data.imports, ...data.statements],
-      factory.createToken(SyntaxKind.EndOfFileToken),
-      NodeFlags.None,
-    )
-    return format(printer.printFile(file), options)
+    const files = [file(data.imports), ...data.statements.map((statement) => file([statement]))]
+    return files.map((file) => format(printer.printFile(file), options)).join('\n')
   }

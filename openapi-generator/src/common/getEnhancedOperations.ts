@@ -9,8 +9,7 @@ import {
 } from 'openapi3-ts'
 import { HttpMethod } from '../../../http/lib'
 import { OpenAPIGeneratorContext } from '../typings'
-import { EnhancedOperation } from './typings'
-export type PartitionedParameters = Record<ParameterLocation, ParameterObject[]>
+import { EnhancedOperation } from '../operations/typings'
 
 function getEnhancedOperation(
   url: string,

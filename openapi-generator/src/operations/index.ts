@@ -8,9 +8,9 @@ import {
   generateHeaderParametersType,
   generatePathParametersType,
   generateQueryParametersType,
-} from './parameterType/generateOperationParameterType'
+} from '../parameterTypes/generateOperationParameterType'
 import { generateOperationReturnType } from './returnType/generateOperationReturnType'
-import { getEnhancedOperations } from './getEnhancedOperations'
+import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { generateOperationInputType } from './inputType/generateOperationInputType'
 import {
   generateHeaderParameterTypeSerializer,
@@ -31,9 +31,6 @@ export const operations =
       operations,
       (operation: EnhancedOperation): TypeScriptModule[] => {
         return [
-          generatePathParametersType(operation, context),
-          generateQueryParametersType(operation, context),
-          generateHeaderParametersType(operation, context),
           generateOperationReturnType(operation, context),
           generateOperationInputType(operation, context),
           generatePathParameterTypeSerializer(operation, context),

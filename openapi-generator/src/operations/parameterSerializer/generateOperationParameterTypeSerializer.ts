@@ -5,7 +5,7 @@ import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerMethod } from './getParameterSerializerMethod'
 import { getParameterStyle } from './getParameterStyle'
 import { getParameterSerializerGeneratorTarget } from './getParameterSerializerGeneratorTarget'
-import { getParameterTypeGeneratorTarget } from '../parameterType/getParameterTypeGeneratorTarget'
+import { getParameterTypeGeneratorTarget } from '../../parameterTypes/getParameterTypeGeneratorTarget'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
 import { Params } from '../../common/OatsPackages'
 import { EnhancedOperation } from '../typings'
@@ -18,6 +18,7 @@ import {
   VariableStatement,
 } from 'typescript'
 import { tsExportModifier, tsImportAst } from '../../common/typeScriptUtils'
+import { isIdentifier } from '../../common/isIdentifier'
 
 function getSerializerOptionProperty(key: keyof ParameterObject, parameter: ParameterObject): PropertyAssignment {
   return has(parameter, key)
@@ -61,7 +62,10 @@ function createParameterSerializer(parameter: ParameterObject, context: OpenAPIG
 }
 
 function createSerializerProperty(parameter: ParameterObject, context: OpenAPIGeneratorContext): PropertyAssignment {
-  return factory.createPropertyAssignment(parameter.name, createParameterSerializer(parameter, context))
+  return factory.createPropertyAssignment(
+    isIdentifier(parameter.name) ? parameter.name : factory.createStringLiteral(parameter.name),
+    createParameterSerializer(parameter, context),
+  )
 }
 
 function createSerializersObject(

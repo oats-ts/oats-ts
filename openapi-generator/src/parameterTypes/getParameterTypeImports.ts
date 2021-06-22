@@ -1,10 +1,10 @@
 import { ParameterLocation } from 'openapi3-ts'
-import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { getReferencedNamedSchemas } from '../common/getReferencedNamedSchemas'
+import { OpenAPIGeneratorContext } from '../typings'
+import { EnhancedOperation } from '../operations/typings'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { getParameterSchemaObject } from './getParameterSchemaObject'
-import { tsModelImportAsts } from '../../common/typeScriptUtils'
+import { tsModelImportAsts } from '../common/typeScriptUtils'
 import { ImportDeclaration } from 'typescript'
 
 export function getParameterTypeImports(

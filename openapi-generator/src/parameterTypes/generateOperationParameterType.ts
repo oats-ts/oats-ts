@@ -1,13 +1,13 @@
 import { ParameterLocation } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { TypeScriptModule } from '../../../../babel-writer/lib'
-import { getRighthandSideTypeAst } from '../../types/getRighthandSideTypeAst'
-import { EnhancedOperation } from '../typings'
+import { OpenAPIGeneratorContext } from '../typings'
+import { TypeScriptModule } from '../../../babel-writer/lib'
+import { getRighthandSideTypeAst } from '../types/getRighthandSideTypeAst'
+import { EnhancedOperation } from '../operations/typings'
 import { getParameterTypeImports } from './getParameterTypeImports'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { getParameterSchemaObject } from './getParameterSchemaObject'
 import { factory } from 'typescript'
-import { tsExportModifier } from '../../common/typeScriptUtils'
+import { tsExportModifier } from '../common/typeScriptUtils'
 
 const generateOperationParameterType =
   (location: ParameterLocation) =>

@@ -2,7 +2,7 @@ import { TypeScriptGeneratorOutput, TypeScriptModule } from '@oats-ts/babel-writ
 import { Try } from '@oats-ts/generator'
 import { sortBy } from 'lodash'
 import { Severity } from '../../../validators/lib'
-import { getEnhancedOperations } from '../operations/getEnhancedOperations'
+import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { OpenAPIGeneratorContext } from '../typings'
 import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
