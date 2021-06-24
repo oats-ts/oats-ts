@@ -1,4 +1,4 @@
-import { harness } from '@oats-ts/generator'
+import { generate } from '@oats-ts/generator'
 import { openAPIReader } from '@oats-ts/openapi-reader'
 import {
   openAPIGenerator,
@@ -42,41 +42,39 @@ function name(input: any, name: string, target: OpenAPIGeneratorTarget): string 
 
 describe('workflow test', () => {
   it('should generate using typescript', async () => {
-    await harness()
-      .read(openAPIReader({ path: 'adyen.json' }))
-      .generate(
-        openAPIGenerator({ path, name })(
-          types({
-            documentation: true,
-            enums: true,
-          }),
-          validators({
-            references: false,
-            arrays: false,
-            records: false,
-            unionReferences: true,
-          }),
-          typeGuards({
-            references: true,
-            arrays: true,
-            records: true,
-            unionReferences: true,
-          }),
-          parameterTypes({
-            documentation: true,
-          }),
-          operations({
-            documentation: true,
-          }),
-          api({
-            type: true,
-            class: true,
-            stub: true,
-            documentation: true,
-          }),
-        ),
-      )
-      .write(typeScriptWriter({ stringify: prettierStringify(prettierConfiguration) }))
-      .run()
+    await generate({
+      reader: openAPIReader({ path: 'adyen.json' }),
+      generator: openAPIGenerator({ path, name })(
+        types({
+          documentation: true,
+          enums: true,
+        }),
+        validators({
+          references: false,
+          arrays: false,
+          records: false,
+          unionReferences: true,
+        }),
+        typeGuards({
+          references: true,
+          arrays: true,
+          records: true,
+          unionReferences: true,
+        }),
+        parameterTypes({
+          documentation: true,
+        }),
+        operations({
+          documentation: true,
+        }),
+        api({
+          type: true,
+          class: true,
+          stub: true,
+          documentation: true,
+        }),
+      ),
+      writer: typeScriptWriter({ stringify: prettierStringify(prettierConfiguration) }),
+    })
   })
 })
