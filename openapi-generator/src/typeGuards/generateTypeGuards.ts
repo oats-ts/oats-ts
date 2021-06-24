@@ -1,5 +1,5 @@
 import { SchemaObject } from 'openapi3-ts'
-import { TypeScriptModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
 import { TypeGuardGeneratorConfig, UnionTypeGuardGeneratorConfig } from './typings'

@@ -1,4 +1,4 @@
-import { TypeScriptModule } from '../../../../babel-writer/lib'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { Http } from '../../common/OatsPackages'
 import { tsImportAst } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'

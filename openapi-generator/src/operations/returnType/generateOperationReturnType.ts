@@ -1,5 +1,5 @@
 import { OpenAPIGeneratorContext } from '../../typings'
-import { TypeScriptModule } from '../../../../babel-writer/lib'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getOperationReturnTypeImports } from './getOperationReturnTypeImports'
 import { getReturnTypeAst } from './getReturnTypeAst'
 import { EnhancedOperation } from '../typings'

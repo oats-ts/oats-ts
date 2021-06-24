@@ -1,17 +1,17 @@
-import type { BabelModule, BabelGeneratorOutput } from '@oats-ts/babel-writer'
+import type { TypeScriptGeneratorOutput, TypeScriptModule } from '@oats-ts/typescript-writer'
 import type { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Try, isFailure } from '@oats-ts/generator'
 import { Issue, Severity } from '@oats-ts/validators'
-import { mergeModules } from './common/mergeModules'
-import { OpenAPIGeneratorContext, OpenAPIChildGenerator, OpenAPIGeneratorConfig } from './typings'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorConfig, OpenAPIChildGenerator } from './typings'
 import { DefaultOpenAPIAccessor } from './common/DefaultOpenAPIAccessor'
 import { defaultOpenAPIGeneratorConfig } from './defaults/defaultOpenAPIGeneratorConfig'
+import { tsMergeModules } from './common/tsMergeModules'
 
 export const openAPIGenerator =
   (config: OpenAPIGeneratorConfig) =>
   (...generators: OpenAPIChildGenerator[]) =>
-  async (data: OpenAPIReadOutput): Promise<Try<BabelGeneratorOutput>> => {
-    const allUnits: BabelModule[] = []
+  async (data: OpenAPIReadOutput): Promise<Try<TypeScriptGeneratorOutput>> => {
+    const allModules: TypeScriptModule[] = []
     const allIssues: Issue[] = []
 
     const fullConfig = defaultOpenAPIGeneratorConfig(config)
@@ -27,7 +27,7 @@ export const openAPIGenerator =
         allIssues.push(...results.issues)
         break
       }
-      allUnits.push(...results.modules)
+      allModules.push(...results.modules)
     }
     if (allIssues.some((issue) => issue.severity === Severity.ERROR)) {
       return {
@@ -35,6 +35,6 @@ export const openAPIGenerator =
       }
     }
     return {
-      modules: mergeModules(allUnits),
+      modules: tsMergeModules(allModules),
     }
   }

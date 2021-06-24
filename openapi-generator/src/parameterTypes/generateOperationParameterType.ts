@@ -1,6 +1,6 @@
 import { ParameterLocation } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../typings'
-import { TypeScriptModule } from '../../../babel-writer/lib'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '../operations/typings'
 import { getParameterTypeImports } from './getParameterTypeImports'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
@@ -11,7 +11,11 @@ import { getParameterTypeLiteralAst } from './getParameterTypeLiteralAst'
 
 const generateOperationParameterType =
   (location: ParameterLocation) =>
-  (data: EnhancedOperation, context: OpenAPIGeneratorContext, config: ParameterTypesGeneratorConfig): TypeScriptModule => {
+  (
+    data: EnhancedOperation,
+    context: OpenAPIGeneratorContext,
+    config: ParameterTypesGeneratorConfig,
+  ): TypeScriptModule => {
     const parameters = data[location]
     const { operation } = data
     const { accessor } = context

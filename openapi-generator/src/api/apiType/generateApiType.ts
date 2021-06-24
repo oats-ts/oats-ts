@@ -1,6 +1,6 @@
 import { OpenAPIObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
-import { TypeScriptModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '../../operations/typings'
 import { getApiTypeAst } from './getApiTypeAst'
 import { getApiTypeImports } from './getApiTypeImports'

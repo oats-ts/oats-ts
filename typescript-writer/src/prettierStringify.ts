@@ -6,7 +6,7 @@ function file(nodes: Statement[]): SourceFile {
   return factory.createSourceFile([...nodes], factory.createToken(SyntaxKind.EndOfFileToken), NodeFlags.None)
 }
 
-export const tsPrettierStringify =
+export const prettierStringify =
   (options: Options) =>
   async (data: TypeScriptModule): Promise<string> => {
     const printer = createPrinter({

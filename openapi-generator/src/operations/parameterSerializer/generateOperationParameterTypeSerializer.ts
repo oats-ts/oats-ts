@@ -1,6 +1,6 @@
 import { ParameterLocation, ParameterObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
-import { TypeScriptModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerMethod } from './getParameterSerializerMethod'
 import { getParameterStyle } from './getParameterStyle'

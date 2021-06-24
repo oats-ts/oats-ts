@@ -1,4 +1,4 @@
-import { TypeScriptModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { SchemaObject } from 'openapi3-ts'
 import { getReferencedNamedSchemas } from '../common/getReferencedNamedSchemas'
 import { OpenAPIGeneratorContext } from '../typings'

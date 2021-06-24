@@ -21,8 +21,8 @@
       "path": "openapi-generator"
     },
     {
-      "name": "babel-writer",
-      "path": "babel-writer"
+      "name": "typescript-writer",
+      "path": "typescript-writer"
     },
     {
       "name": "validators",

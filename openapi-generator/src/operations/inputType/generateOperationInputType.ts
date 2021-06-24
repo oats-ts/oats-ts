@@ -1,7 +1,6 @@
-import { BabelModule, TypeScriptModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { entries, isNil, negate } from 'lodash'
 import { Statement } from 'typescript'
-import { getImportDeclarations } from '../../common/getImportDeclarations'
 import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
 import { tsModelImportAsts } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'

@@ -1,4 +1,4 @@
-import { TypeScriptModule, TypeScriptGeneratorOutput } from '@oats-ts/babel-writer'
+import { TypeScriptModule, TypeScriptGeneratorOutput } from '@oats-ts/typescript-writer'
 import { Try } from '@oats-ts/generator'
 import { Severity } from '@oats-ts/validators'
 import { sortBy } from 'lodash'

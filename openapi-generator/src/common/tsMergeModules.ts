@@ -8,7 +8,7 @@ import {
   SyntaxKind,
 } from 'typescript'
 import { flatMap, groupBy, head, uniqBy, values } from 'lodash'
-import { TypeScriptModule } from '@oats-ts/babel-writer'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 
 function mergeNamedImportBindings(bindings: NamedImportBindings[]): NamedImports {
   const specifiers = flatMap(

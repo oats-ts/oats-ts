@@ -1,7 +1,6 @@
 import { values } from 'lodash'
 import { OperationObject, SchemaObject } from 'openapi3-ts'
 import { ImportDeclaration } from 'typescript'
-import { getImportDeclarations } from '../../common/getImportDeclarations'
 import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
 import { tsModelImportAsts } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
