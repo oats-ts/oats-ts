@@ -6,6 +6,7 @@ import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
 import { tsQuestionToken } from '../../common/typeScriptUtils'
 import { Http } from '../../common/OatsPackages'
 import { ApiGeneratorConfig } from '../typings'
+import { documentOperation } from '../../common/jsDoc'
 
 export function getApiTypeMethodSignatureAst(
   data: EnhancedOperation,
@@ -44,12 +45,16 @@ export function getApiTypeMethodSignatureAst(
     getOperationReturnTypeReferenceAst(data.operation, context),
   ])
 
-  return factory.createMethodSignature(
-    [],
-    accessor.name(data.operation, 'operation'),
-    undefined,
-    [],
-    parameters,
-    returnType,
+  return documentOperation(
+    factory.createMethodSignature(
+      [],
+      accessor.name(data.operation, 'operation'),
+      undefined,
+      [],
+      parameters,
+      returnType,
+    ),
+    data.operation,
+    config,
   )
 }

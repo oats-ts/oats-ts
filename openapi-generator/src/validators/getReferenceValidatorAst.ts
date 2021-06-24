@@ -2,14 +2,15 @@ import { ReferenceObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { Validators } from '../common/OatsPackages'
 import { OpenAPIGeneratorContext } from '../typings'
+import { ValidatorsGeneratorConfig } from './typings'
 
 export function getReferenceValidatorAst(
   data: ReferenceObject,
   context: OpenAPIGeneratorContext,
-  references: boolean,
+  config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
   const { accessor } = context
-  if (!references) {
+  if (!config.references) {
     return factory.createIdentifier(Validators.any)
   }
   const resolved = accessor.dereference(data)

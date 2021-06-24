@@ -28,9 +28,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}PathParameters`)
     }
-    case 'operation-return-type': {
+    case 'operation-response-type': {
       const operationName = defaultNameProvider(input, name, 'operation')
-      return isNil(operationName) ? undefined : pascalCase(`${operationName}Result`)
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}Response`)
     }
     case 'operation-input-type': {
       const operationName = defaultNameProvider(input, name, 'operation')

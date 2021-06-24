@@ -20,7 +20,7 @@ export function generateOperationReturnType(
       ...(has(schemas, 'default') ? [tsImportAst(Http.name, [Http.StatusCode])] : []),
       ...getOperationReturnTypeImports(data.operation, context),
     ],
-    path: accessor.path(data.operation, 'operation-return-type'),
+    path: accessor.path(data.operation, 'operation-response-type'),
     statements: [getReturnTypeAst(data, context)],
   }
 }

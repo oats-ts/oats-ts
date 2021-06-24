@@ -1,0 +1,26 @@
+{
+  "name": "@oats-ts/asyncapi-model",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "directories": {},
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

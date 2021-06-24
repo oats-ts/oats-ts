@@ -1,11 +1,15 @@
 import { OpenAPIGeneratorContext } from '../../typings'
 import { TypeScriptModule } from '../../../../babel-writer/lib'
 import { getOperationFunctionAst } from './getOperationFunctionAst'
-import { EnhancedOperation } from '../typings'
+import { EnhancedOperation, OperationsGeneratorConfig } from '../typings'
 import { Http, Params } from '../../common/OatsPackages'
 import { tsImportAst, tsRelativeImports } from '../../common/typeScriptUtils'
 
-export function generateOperationFunction(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule {
+export function generateOperationFunction(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  config: OperationsGeneratorConfig,
+): TypeScriptModule {
   const { accessor } = context
   const { operation } = data
   const operationPath = accessor.path(operation, 'operation')
@@ -15,10 +19,10 @@ export function generateOperationFunction(data: EnhancedOperation, context: Open
       tsImportAst(Params.name, [Params.joinUrl]),
       tsImportAst(Http.name, [Http.RequestConfig, Http.HttpResponse]),
       ...tsRelativeImports(operationPath, [
-        [accessor.path(operation, 'operation-return-type'), accessor.name(operation, 'operation-return-type')],
+        [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),
     ],
     path: operationPath,
-    statements: [getOperationFunctionAst(data, context)],
+    statements: [getOperationFunctionAst(data, context, config)],
   }
 }

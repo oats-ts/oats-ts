@@ -1,17 +1,17 @@
 import { ParameterLocation } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../typings'
 import { TypeScriptModule } from '../../../babel-writer/lib'
-import { getRighthandSideTypeAst } from '../types/getRighthandSideTypeAst'
 import { EnhancedOperation } from '../operations/typings'
 import { getParameterTypeImports } from './getParameterTypeImports'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
-import { getParameterSchemaObject } from './getParameterSchemaObject'
 import { factory } from 'typescript'
 import { tsExportModifier } from '../common/typeScriptUtils'
+import { ParameterTypesGeneratorConfig } from './typings'
+import { getParameterTypeLiteralAst } from './getParameterTypeLiteralAst'
 
 const generateOperationParameterType =
   (location: ParameterLocation) =>
-  (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
+  (data: EnhancedOperation, context: OpenAPIGeneratorContext, config: ParameterTypesGeneratorConfig): TypeScriptModule => {
     const parameters = data[location]
     const { operation } = data
     const { accessor } = context
@@ -29,7 +29,7 @@ const generateOperationParameterType =
           [tsExportModifier()],
           accessor.name(operation, getParameterTypeGeneratorTarget(location)),
           undefined,
-          getRighthandSideTypeAst(getParameterSchemaObject(parameters), context),
+          getParameterTypeLiteralAst(parameters, context, config),
         ),
       ],
     }

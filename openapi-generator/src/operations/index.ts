@@ -18,10 +18,10 @@ import {
   generateQueryParameterTypeSerializer,
 } from './parameterSerializer/generateOperationParameterTypeSerializer'
 import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
-import { EnhancedOperation } from './typings'
+import { EnhancedOperation, OperationsGeneratorConfig } from './typings'
 
 export const operations =
-  (/* TODO config? */) =>
+  (config: OperationsGeneratorConfig) =>
   async (context: OpenAPIGeneratorContext): Promise<Try<TypeScriptGeneratorOutput>> => {
     const { accessor } = context
     const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
@@ -37,7 +37,7 @@ export const operations =
           generateQueryParameterTypeSerializer(operation, context),
           generateHeaderParameterTypeSerializer(operation, context),
           generateResponseParserHint(operation, context),
-          generateOperationFunction(operation, context),
+          generateOperationFunction(operation, context, config),
         ].filter(negate(isNil))
       },
     )

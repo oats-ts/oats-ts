@@ -26,7 +26,7 @@ export function getApiTypeImports(
     }
     imports.push(
       ...tsRelativeImports(requestsPath, [
-        [accessor.path(operation, 'operation-return-type'), accessor.name(operation, 'operation-return-type')],
+        [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),
     )
     return imports

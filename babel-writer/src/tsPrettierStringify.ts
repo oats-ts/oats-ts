@@ -13,6 +13,9 @@ export const tsPrettierStringify =
       newLine: NewLineKind.LineFeed,
       removeComments: false,
     })
-    const files = [file(data.imports), ...data.statements.map((statement) => file([statement]))]
+    const files = [
+      ...(data.imports.length > 0 ? [file(data.imports)] : []),
+      ...data.statements.map((statement) => file([statement])),
+    ]
     return files.map((file) => format(printer.printFile(file), options)).join('\n')
   }

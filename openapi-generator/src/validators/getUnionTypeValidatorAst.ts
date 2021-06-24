@@ -5,11 +5,12 @@ import { Validators } from '../common/OatsPackages'
 import { getPrimitiveType, PrimitiveTypes } from '../common/primitiveTypeUtils'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
+import { ValidatorsGeneratorConfig } from './typings'
 
 function getUnionProperties(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
-  references: boolean,
+  config: ValidatorsGeneratorConfig,
 ): PropertyAssignment[] {
   const { accessor } = context
   if (isNil(data.discriminator)) {
@@ -17,7 +18,7 @@ function getUnionProperties(
       const schema = accessor.dereference(schemaOrRef)
       const rightHandSide =
         PrimitiveTypes.indexOf(schema.type) >= 0
-          ? getRightHandSideValidatorAst(schema, context, false)
+          ? getRightHandSideValidatorAst(schema, context, config)
           : factory.createIdentifier('any')
       return factory.createPropertyAssignment(getPrimitiveType(schema), rightHandSide)
     })
@@ -26,7 +27,7 @@ function getUnionProperties(
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
       factory.createIdentifier(accessor.name(accessor.dereference($ref), 'type')),
-      getRightHandSideValidatorAst({ $ref }, context, references),
+      getRightHandSideValidatorAst({ $ref }, context, config),
     )
   })
 }
@@ -34,9 +35,12 @@ function getUnionProperties(
 export function getUnionTypeValidatorAst(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
-  references: boolean,
+  config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
-  const properties = getUnionProperties(data, context, references)
-  const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
-  return factory.createCallExpression(factory.createIdentifier(Validators.union), [], [parameters])
+  if (config.unionReferences || config.references) {
+    const properties = getUnionProperties(data, context, config)
+    const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
+    return factory.createCallExpression(factory.createIdentifier(Validators.union), [], [parameters])
+  }
+  return factory.createIdentifier(Validators.any)
 }

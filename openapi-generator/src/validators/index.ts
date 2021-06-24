@@ -11,7 +11,7 @@ export const validators =
   (config: ValidatorsGeneratorConfig) =>
   async (context: OpenAPIGeneratorContext): Promise<Try<TypeScriptGeneratorOutput>> => {
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
-    const modules = schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config.references))
+    const modules = schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config))
     if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
       return { issues: context.issues }
     }

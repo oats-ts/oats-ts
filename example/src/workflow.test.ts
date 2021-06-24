@@ -10,6 +10,7 @@ import {
   validators,
   tsOpenAPIGenerator,
   parameterTypes,
+  defaultNameProvider,
 } from '@oats-ts/openapi-generator'
 import { babelWriter, prettierStringify, tsPrettierStringify, typeScriptWriter } from '@oats-ts/babel-writer'
 import { join, resolve } from 'path'
@@ -33,20 +34,28 @@ function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
   return resolve(join('generated', 'types.ts'))
 }
 
+function name(input: any, name: string, target: OpenAPIGeneratorTarget): string {
+  if (target === 'operation-response-type') {
+    return `${defaultNameProvider(input, name, target)}Type`
+  }
+  return defaultNameProvider(input, name, target)
+}
+
 describe('workflow test', () => {
   it('should generate using typescript', async () => {
     await harness()
-      .read(
-        openAPIReader({ path: 'https://api.apis.guru/v2/specs/amazonaws.com/accessanalyzer/2019-11-01/openapi.json' }),
-      )
+      .read(openAPIReader({ path: 'adyen.json' }))
       .generate(
-        tsOpenAPIGenerator({ path })(
+        tsOpenAPIGenerator({ path, name })(
           types({
             documentation: true,
             enums: true,
           }),
           validators({
-            references: true,
+            references: false,
+            arrays: false,
+            records: false,
+            unionReferences: true,
           }),
           typeGuards({
             references: true,
@@ -54,8 +63,12 @@ describe('workflow test', () => {
             records: true,
             unionReferences: true,
           }),
-          parameterTypes(),
-          operations(),
+          parameterTypes({
+            documentation: true,
+          }),
+          operations({
+            documentation: true,
+          }),
           api({
             type: true,
             class: true,

@@ -7,10 +7,15 @@ import { getDictionaryTypeAst } from './getDictionaryTypeAst'
 import { getLiteralUnionTypeAst } from './getLiteralUnionTypeAst'
 import { getObjectTypeAst } from './getObjectTypeAst'
 import { getUnionTypeAst } from './getUnionTypeAst'
+import { TypesGeneratorConfig } from './typings'
 
-export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGeneratorContext): TypeNode {
+export function getRighthandSideTypeAst(
+  data: SchemaObject,
+  context: OpenAPIGeneratorContext,
+  config: TypesGeneratorConfig,
+): TypeNode {
   if (!isNil(data.oneOf)) {
-    return getUnionTypeAst(data, context)
+    return getUnionTypeAst(data, context, config)
   }
 
   if (!isNil(data.enum)) {
@@ -30,15 +35,15 @@ export function getRighthandSideTypeAst(data: SchemaObject, context: OpenAPIGene
   }
 
   if (!isNil(data.additionalProperties)) {
-    return getDictionaryTypeAst(data, context)
+    return getDictionaryTypeAst(data, context, config)
   }
 
   if (!isNil(data.properties)) {
-    return getObjectTypeAst(data, context)
+    return getObjectTypeAst(data, context, config)
   }
 
   if (!isNil(data.items)) {
-    return getArrayTypeAst(data, context)
+    return getArrayTypeAst(data, context, config)
   }
 
   return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)

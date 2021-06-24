@@ -8,19 +8,20 @@ import { getObjectValidatorAst } from './getObjectValidatorAst'
 import { getRecordValidatorAst } from './getRecordValidatorAst'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 import { getUnionTypeValidatorAst } from './getUnionTypeValidatorAst'
+import { ValidatorsGeneratorConfig } from './typings'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
-  references: boolean,
+  config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
   const { accessor } = context
   if (isReferenceObject(data)) {
-    return getReferenceValidatorAst(data, context, references)
+    return getReferenceValidatorAst(data, context, config)
   }
 
   if (!isNil(data.oneOf)) {
-    return getUnionTypeValidatorAst(data, context, references)
+    return getUnionTypeValidatorAst(data, context, config)
   }
 
   if (!isNil(data.enum)) {
@@ -44,18 +45,18 @@ export function getRightHandSideValidatorAst(
   }
 
   if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
-    return getRecordValidatorAst(data, context, references)
+    return getRecordValidatorAst(data, context, config)
   }
 
   if (!isNil(data.properties)) {
-    return getObjectValidatorAst(data, context, references)
+    return getObjectValidatorAst(data, context, config)
   }
 
   if (!isNil(data.items)) {
     return factory.createCallExpression(
       factory.createIdentifier(Validators.array),
       [],
-      [getRightHandSideValidatorAst(data.items, context, references)],
+      [getRightHandSideValidatorAst(data.items, context, config)],
     )
   }
 

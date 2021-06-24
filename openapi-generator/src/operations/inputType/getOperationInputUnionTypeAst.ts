@@ -17,7 +17,7 @@ export function getOperationInputUnionTypeAst(
   const types = bodies.map(([contentType, mediaType]) => {
     return factory.createTypeReferenceNode(baseTypeName, [
       factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
-      getTypeReferenceAst(mediaType.schema, context),
+      getTypeReferenceAst(mediaType.schema, context, { enums: false, documentation: false }),
     ])
   })
   return factory.createTypeAliasDeclaration(

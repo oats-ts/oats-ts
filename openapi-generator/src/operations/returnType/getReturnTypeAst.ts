@@ -20,7 +20,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   types.push(
     ...statusCodeResponses.map(([status, schema]) =>
       factory.createTypeReferenceNode(Http.HttpResponse, [
-        getTypeReferenceAst(schema, context),
+        getTypeReferenceAst(schema, context, { enums: false, documentation: false }),
         factory.createLiteralTypeNode(factory.createNumericLiteral(status)),
       ]),
     ),
@@ -31,7 +31,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
     )
     const [, schema] = defaultResponse
     const type = factory.createTypeReferenceNode(Http.HttpResponse, [
-      getTypeReferenceAst(schema, context),
+      getTypeReferenceAst(schema, context, { enums: false, documentation: false }),
       factory.createTypeReferenceNode('Exclude', [
         factory.createTypeReferenceNode(Http.StatusCode),
         knownStatusCodesType,
@@ -42,7 +42,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   return factory.createTypeAliasDeclaration(
     [],
     [tsExportModifier()],
-    accessor.name(data.operation, 'operation-return-type'),
+    accessor.name(data.operation, 'operation-response-type'),
     undefined,
     types.length === 1 ? head(types) : factory.createUnionTypeNode(types),
   )

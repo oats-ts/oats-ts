@@ -67,7 +67,7 @@ export type OpenAPIGeneratorTarget =
   | 'operation-query-type'
   | 'operation-path-type'
   | 'operation-headers-type'
-  | 'operation-return-type'
+  | 'operation-response-type'
   | 'operation-input-type'
   | 'operation-headers-serializer'
   | 'operation-query-serializer'

@@ -49,7 +49,15 @@ export function getOperationInputBaseTypeAst(
         ),
       )
       properties.push(
-        factory.createPropertySignature([], 'body', undefined, getTypeReferenceAst(mediaType.schema, context)),
+        factory.createPropertySignature(
+          [],
+          'body',
+          undefined,
+          getTypeReferenceAst(mediaType.schema, context, {
+            documentation: false,
+            enums: false,
+          }),
+        ),
       )
       break
     }

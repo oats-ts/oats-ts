@@ -7,5 +7,5 @@ export function getOperationReturnTypeReferenceAst(
   context: OpenAPIGeneratorContext,
 ): TypeReferenceNode {
   const { accessor } = context
-  return factory.createTypeReferenceNode(accessor.name(operation, 'operation-return-type'))
+  return factory.createTypeReferenceNode(accessor.name(operation, 'operation-response-type'))
 }

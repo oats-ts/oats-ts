@@ -10,9 +10,10 @@ import {
 } from '../parameterTypes/generateOperationParameterType'
 import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { EnhancedOperation } from '../operations/typings'
+import { ParameterTypesGeneratorConfig } from './typings'
 
 export const parameterTypes =
-  (/* TODO config? */) =>
+  (config: ParameterTypesGeneratorConfig) =>
   async (context: OpenAPIGeneratorContext): Promise<Try<TypeScriptGeneratorOutput>> => {
     const { accessor } = context
     const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
@@ -22,9 +23,9 @@ export const parameterTypes =
       operations,
       (operation: EnhancedOperation): TypeScriptModule[] => {
         return [
-          generatePathParametersType(operation, context),
-          generateQueryParametersType(operation, context),
-          generateHeaderParametersType(operation, context),
+          generatePathParametersType(operation, context, config),
+          generateQueryParametersType(operation, context, config),
+          generateHeaderParametersType(operation, context, config),
         ].filter(negate(isNil))
       },
     )

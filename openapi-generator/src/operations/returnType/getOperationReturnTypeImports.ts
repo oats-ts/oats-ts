@@ -16,7 +16,7 @@ export function getOperationReturnTypeImports(
   const wrapperSchema: SchemaObject = {
     oneOf: values(schemas),
   }
-  const path = accessor.path(operation, 'operation-return-type')
+  const path = accessor.path(operation, 'operation-response-type')
   const referencedSchemas = getReferencedNamedSchemas(wrapperSchema, context)
   return tsModelImportAsts(path, 'type', referencedSchemas, context)
 }

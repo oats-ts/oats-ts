@@ -8,6 +8,7 @@ export type {
 export { openAPIGenerator } from './openAPIGenerator'
 export { defaultNameProvider } from './defaults/defaultNameProvider'
 export { singleFile, byName } from './defaults/defaultPathProviders'
+
 export { types } from './types'
 export { TypesGeneratorConfig } from './types/typings'
 export { typeGuards } from './typeGuards'
@@ -17,9 +18,11 @@ export {
   TypeGuardGeneratorConfig,
 } from './typeGuards/typings'
 export { operations } from './operations'
+export { OperationsGeneratorConfig } from './operations/typings'
 export { api } from './api'
 export { ApiGeneratorConfig } from './api/typings'
 export { validators } from './validators'
 export { ValidatorsGeneratorConfig } from './validators/typings'
 export { parameterTypes } from './parameterTypes'
+export { ParameterTypesGeneratorConfig } from './parameterTypes/typings'
 export { tsOpenAPIGenerator } from './tsOpenAPIGenerator'

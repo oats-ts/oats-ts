@@ -14,3 +14,7 @@ export type EnhancedOperation = {
   cookie: ParameterObject[]
   header: ParameterObject[]
 }
+
+export type OperationsGeneratorConfig = {
+  documentation: boolean
+}
