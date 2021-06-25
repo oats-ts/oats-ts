@@ -14,23 +14,36 @@ import {
 import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
+import { SimpleNameProvider } from '../../openapi-generator/lib/typings'
 
 const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '.prettierrc'), 'utf-8'))
 
-function path(_: any, name: string, target: OpenAPIGeneratorTarget) {
-  if (target.startsWith('operation')) {
-    return resolve(join('generated', 'operations', `${_.operationId}.ts`))
+function path(input: any, name: SimpleNameProvider, target: OpenAPIGeneratorTarget) {
+  switch (target) {
+    case 'operation':
+    case 'operation-headers-serializer':
+    case 'operation-headers-type':
+    case 'operation-input-type':
+    case 'operation-path-serializer':
+    case 'operation-path-type':
+    case 'operation-query-serializer':
+    case 'operation-query-type':
+    case 'operation-response-parser-hint':
+    case 'operation-response-type':
+      return resolve(join('generated', 'operations', `${name(input, 'operation')}.ts`))
+    case 'api-class':
+    case 'api-type':
+    case 'api-stub':
+      return resolve(join('generated', 'apiRequests.ts'))
+    case 'validator':
+      return resolve(join('generated', 'validators.ts'))
+    case 'type-guard':
+      return resolve(join('generated', 'typeGuards.ts'))
+    case 'type':
+      return resolve(join('generated', 'types.ts'))
+    default:
+      throw new TypeError(`Unexpected target "${target}".`)
   }
-  if (target.startsWith('api')) {
-    return resolve(join('generated', 'apiRequests.ts'))
-  }
-  if (target === 'validator') {
-    return resolve(join('generated', 'validators.ts'))
-  }
-  if (target === 'type-guard') {
-    return resolve(join('generated', 'typeGuards.ts'))
-  }
-  return resolve(join('generated', 'types.ts'))
 }
 
 function name(input: any, name: string, target: OpenAPIGeneratorTarget): string {
