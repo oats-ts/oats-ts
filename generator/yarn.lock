@@ -576,15 +576,15 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
+"@types/lodash@^4.14.170":
+  version "4.14.170"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.170.tgz#0d67711d4bf7f4ca5147e9091b847479b87925d6"
+  integrity sha512-bpcvu/MKHHeYX+qeEN8GE7DIravODWdACVA1ctevD8CN24RhPZIKMn9ntfAsrvLfSX3cR5RrBKAbYm9bGs0A+Q==
+
 "@types/node@*", "@types/node@^15.12.0":
   version "15.12.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.1.tgz#9b60797dee1895383a725f828a869c86c6caa5c2"
   integrity sha512-zyxJM8I1c9q5sRMtVF+zdd13Jt6RU4r4qfhTd7lQubyThvLfx6yYekWSQjGCGV2Tkecgxnlpl/DNlb6Hg+dmEw==
-
-"@types/pascalcase@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/pascalcase/-/pascalcase-1.0.0.tgz#7f655b653e2ed207e282e13b6d2f4cfe5e93c5b1"
-  integrity sha512-GUljFjs6pnZuxxmStKR1uDWIcGQSVdmUedFfreyJGU0owXW096kvYxf+6T/e1I6r3N8gNrqk3PETHqZwlR2xVg==
 
 "@types/prettier@^2.1.5":
   version "2.2.3"
@@ -1893,7 +1893,7 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash@4.x, lodash@^4.7.0:
+lodash@4.x, lodash@^4.17.21, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

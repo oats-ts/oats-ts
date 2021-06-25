@@ -1,7 +1,6 @@
 import { generate } from '@oats-ts/generator'
 import { openAPIReader } from '@oats-ts/openapi-reader'
 import {
-  openAPIGenerator,
   OpenAPIGeneratorTarget,
   types,
   operations,
@@ -57,36 +56,48 @@ describe('workflow test', () => {
   it('should generate using typescript', async () => {
     await generate({
       reader: openAPIReader({ path: 'adyen.json' }),
-      generator: openAPIGenerator({ path, name })(
+      generators: [
         types({
+          name,
+          path,
           documentation: true,
           enums: true,
         }),
         validators({
+          name,
+          path,
           references: false,
           arrays: false,
           records: false,
           unionReferences: true,
         }),
         typeGuards({
+          name,
+          path,
           references: true,
           arrays: true,
           records: true,
           unionReferences: true,
         }),
         parameterTypes({
+          name,
+          path,
           documentation: true,
         }),
         operations({
+          name,
+          path,
           documentation: true,
         }),
         api({
+          name,
+          path,
           type: true,
           class: true,
           stub: true,
           documentation: true,
         }),
-      ),
+      ],
       writer: typeScriptWriter({ stringify: prettierStringify(prettierConfiguration) }),
     })
   })

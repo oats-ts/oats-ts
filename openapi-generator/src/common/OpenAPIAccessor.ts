@@ -3,7 +3,7 @@ import { entries } from 'lodash'
 import { isReferenceObject, OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import { OpenAPIAccessor, OpenAPIGeneratorConfig } from '../typings'
 
-export class DefaultOpenAPIAccessor implements OpenAPIAccessor {
+export class OpenAPIAccessorImpl implements OpenAPIAccessor {
   private readonly context: OpenAPIReadOutput
   private readonly config: OpenAPIGeneratorConfig
   private readonly nameToObject: Map<any, string>

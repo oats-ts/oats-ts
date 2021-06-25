@@ -8,7 +8,7 @@ import {
   SyntaxKind,
 } from 'typescript'
 import { flatMap, groupBy, head, uniqBy, values } from 'lodash'
-import { TypeScriptModule } from '@oats-ts/typescript-writer'
+import { TypeScriptModule } from './typings'
 
 function mergeNamedImportBindings(bindings: NamedImportBindings[]): NamedImports {
   const specifiers = flatMap(
@@ -42,11 +42,11 @@ function mergeImportDeclarations(declarations: ImportDeclaration[]): ImportDecla
   )
 }
 
-export function tsMergeModules(units: TypeScriptModule[]): TypeScriptModule[] {
+export function mergeTypeScriptModules(units: TypeScriptModule[]): TypeScriptModule[] {
   return Array.from(values(groupBy(units, (unit) => unit.path))).map(
     (units: TypeScriptModule[]): TypeScriptModule => ({
-      statements: flatMap(units, (unit) => unit.statements),
-      imports: mergeImportDeclarations(flatMap(units, (unit) => unit.imports)),
+      content: flatMap(units, (unit) => unit.content),
+      dependencies: mergeImportDeclarations(flatMap(units, (unit) => unit.dependencies)),
       path: head(units).path,
     }),
   )

@@ -11,8 +11,8 @@ export function generateResponseParserHint(
 ): TypeScriptModule {
   const { accessor } = context
   return {
-    imports: [tsImportAst(Http.name, [Http.ResponseParserHint])],
     path: accessor.path(data.operation, 'operation-response-parser-hint'),
-    statements: [getResponseParserHintAst(data, context)],
+    dependencies: [tsImportAst(Http.name, [Http.ResponseParserHint])],
+    content: [getResponseParserHintAst(data, context)],
   }
 }

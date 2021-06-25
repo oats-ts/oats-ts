@@ -13,8 +13,8 @@ export function generateValidator(
   const { accessor } = context
   const path = accessor.path(schema, 'validator')
   return {
-    statements: [getValidatorAst(schema, context, config)],
     path,
-    imports: getValidatorImports(schema, context, config),
+    dependencies: getValidatorImports(schema, context, config),
+    content: [getValidatorAst(schema, context, config)],
   }
 }

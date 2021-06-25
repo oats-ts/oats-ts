@@ -17,12 +17,12 @@ export function generateApiStub(
   const { accessor } = context
   const path = accessor.path(doc, 'api-stub')
   return {
-    imports: [
+    path,
+    dependencies: [
       tsImportAst(Http.name, [Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
       ...tsRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
     ],
-    path,
-    statements: [getApiStubAst(doc, operations, context, config)],
+    content: [getApiStubAst(doc, operations, context, config)],
   }
 }

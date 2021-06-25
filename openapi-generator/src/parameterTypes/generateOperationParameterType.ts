@@ -25,9 +25,9 @@ const generateOperationParameterType =
     }
 
     return {
-      imports: getParameterTypeImports(location, data, context),
       path: accessor.path(operation, getParameterTypeGeneratorTarget(location)),
-      statements: [
+      dependencies: getParameterTypeImports(location, data, context),
+      content: [
         factory.createTypeAliasDeclaration(
           [],
           [tsExportModifier()],

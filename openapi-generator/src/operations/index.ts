@@ -1,14 +1,9 @@
-import { TypeScriptGeneratorOutput, TypeScriptModule } from '@oats-ts/typescript-writer'
-import { Try } from '@oats-ts/generator'
+import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
+import { Generator } from '@oats-ts/generator'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { OpenAPIGeneratorContext } from '../typings'
 import { generateOperationFunction } from './operation/generateOperationFunction'
-import {
-  generateHeaderParametersType,
-  generatePathParametersType,
-  generateQueryParametersType,
-} from '../parameterTypes/generateOperationParameterType'
 import { generateOperationReturnType } from './returnType/generateOperationReturnType'
 import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { generateOperationInputType } from './inputType/generateOperationInputType'
@@ -19,17 +14,39 @@ import {
 } from './parameterSerializer/generateOperationParameterTypeSerializer'
 import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
 import { EnhancedOperation, OperationsGeneratorConfig } from './typings'
+import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
+import { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
 
-export const operations =
-  (config: OperationsGeneratorConfig) =>
-  async (context: OpenAPIGeneratorContext): Promise<Try<TypeScriptGeneratorOutput>> => {
-    const { accessor } = context
-    const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
-      accessor.name(operation, 'operation'),
-    )
-    const operationModules: TypeScriptModule[] = flatMap(
-      operations,
-      (operation: EnhancedOperation): TypeScriptModule[] => {
+const consumes: OpenAPIGeneratorTarget[] = [
+  'type',
+  'operation-headers-type',
+  'operation-query-type',
+  'operation-path-type',
+]
+const produces: OpenAPIGeneratorTarget[] = [
+  'operation',
+  'operation-response-type',
+  'operation-input-type',
+  'operation-headers-serializer',
+  'operation-path-serializer',
+  'operation-query-serializer',
+  'operation-response-parser-hint',
+]
+
+export const operations = (
+  config: OpenAPIGeneratorConfig & OperationsGeneratorConfig,
+): Generator<OpenAPIReadOutput, TypeScriptModule> => {
+  return {
+    id: 'openapi/operations',
+    consumes,
+    produces,
+    generate: async (data: OpenAPIReadOutput) => {
+      const context = createOpenAPIGeneratorContext(data, config)
+      const { accessor } = context
+      const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
+        accessor.name(operation, 'operation'),
+      )
+      const modules: TypeScriptModule[] = flatMap(operations, (operation: EnhancedOperation): TypeScriptModule[] => {
         return [
           generateOperationReturnType(operation, context),
           generateOperationInputType(operation, context),
@@ -39,11 +56,12 @@ export const operations =
           generateResponseParserHint(operation, context),
           generateOperationFunction(operation, context, config),
         ].filter(negate(isNil))
-      },
-    )
+      })
 
-    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
-      return { issues: context.issues }
-    }
-    return { modules: operationModules }
+      if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+        return { issues: context.issues }
+      }
+      return mergeTypeScriptModules(modules)
+    },
   }
+}

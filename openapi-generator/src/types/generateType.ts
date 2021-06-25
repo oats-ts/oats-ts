@@ -15,8 +15,8 @@ export function generateType(
   const path = accessor.path(schema, 'type')
   const referencedTypes = getReferencedNamedSchemas(schema, context)
   return {
-    statements: [getNamedTypeAst(schema, context, config)],
     path,
-    imports: tsModelImportAsts(path, 'type', referencedTypes, context),
+    content: [getNamedTypeAst(schema, context, config)],
+    dependencies: tsModelImportAsts(path, 'type', referencedTypes, context),
   }
 }

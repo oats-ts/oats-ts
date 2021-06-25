@@ -15,12 +15,12 @@ export function generateOperationReturnType(
   const { accessor } = context
   const schemas = getResponseMap(data.operation, context)
   return {
-    imports: [
+    path: accessor.path(data.operation, 'operation-response-type'),
+    dependencies: [
       tsImportAst(Http.name, [Http.HttpResponse]),
       ...(has(schemas, 'default') ? [tsImportAst(Http.name, [Http.StatusCode])] : []),
       ...getOperationReturnTypeImports(data.operation, context),
     ],
-    path: accessor.path(data.operation, 'operation-response-type'),
-    statements: [getReturnTypeAst(data, context)],
+    content: [getReturnTypeAst(data, context)],
   }
 }

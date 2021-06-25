@@ -14,8 +14,8 @@ export function generateApiType(
 ): TypeScriptModule {
   const { accessor } = context
   return {
-    imports: getApiTypeImports(doc, operations, context),
     path: accessor.path(doc, 'api-type'),
-    statements: [getApiTypeAst(doc, operations, context, config)],
+    dependencies: getApiTypeImports(doc, operations, context),
+    content: [getApiTypeAst(doc, operations, context, config)],
   }
 }

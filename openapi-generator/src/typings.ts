@@ -1,7 +1,5 @@
 import { OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import type { Issue } from '@oats-ts/validators'
-import type { Try } from '@oats-ts/generator'
-import type { TypeScriptGeneratorOutput } from '@oats-ts/typescript-writer'
 
 /**
  * @param input The named object (schema, operation, parameter, etc).
@@ -29,8 +27,8 @@ export type PathProvider = (input: any, name: SimpleNameProvider, target: string
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type OpenAPIGeneratorConfig = {
-  name?: NameProvider
-  path?: PathProvider
+  name: NameProvider
+  path: PathProvider
 }
 
 /** Accessors to make it easy to find information about deeply nested structures. */
@@ -67,8 +65,6 @@ export type OpenAPIGeneratorContext = {
   accessor: OpenAPIAccessor
   issues: Issue[]
 }
-
-export type OpenAPIChildGenerator = (context: OpenAPIGeneratorContext) => Promise<Try<TypeScriptGeneratorOutput>>
 
 export type OpenAPIGeneratorTarget =
   | 'type'

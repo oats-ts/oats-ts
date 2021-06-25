@@ -29,20 +29,20 @@ export function generateTypeGuard(
       return undefined
     }
     return {
-      statements: [getTypeGuardFunctionAst(schema, context, getDiscriminatorBasedTypeAssertionAst(schema, context))],
       path,
-      imports: [...typeImports],
+      content: [getTypeGuardFunctionAst(schema, context, getDiscriminatorBasedTypeAssertionAst(schema, context))],
+      dependencies: [...typeImports],
     }
   }
   return {
-    statements: [
+    path,
+    dependencies: [...typeImports, ...getTypeGuardImports(schema, context, config)],
+    content: [
       getTypeGuardFunctionAst(
         schema,
         context,
         getTypeAssertionAst(schema, context, factory.createIdentifier('input'), config),
       ),
     ],
-    path,
-    imports: [...typeImports, ...getTypeGuardImports(schema, context, config)],
   }
 }

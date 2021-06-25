@@ -17,7 +17,8 @@ export function generateApiClass(
   const { accessor } = context
   const path = accessor.path(doc, 'api-class')
   return {
-    imports: [
+    path,
+    dependencies: [
       tsImportAst(Http.name, [Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
       ...tsRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
@@ -28,7 +29,6 @@ export function generateApiClass(
         context,
       ),
     ],
-    path,
-    statements: [getApiClassAst(doc, operations, context, config)],
+    content: [getApiClassAst(doc, operations, context, config)],
   }
 }

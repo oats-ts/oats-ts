@@ -1,28 +1,41 @@
-import { TypeScriptGeneratorOutput, TypeScriptModule } from '@oats-ts/typescript-writer'
-import { Try } from '@oats-ts/generator'
+import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
+import { Generator } from '@oats-ts/generator'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import { Severity } from '../../../validators/lib'
 import { getEnhancedOperations } from '../common/getEnhancedOperations'
-import { OpenAPIGeneratorContext } from '../typings'
 import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
+import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
+import { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
 
-export const api =
-  (config: ApiGeneratorConfig) =>
-  async (context: OpenAPIGeneratorContext): Promise<Try<TypeScriptGeneratorOutput>> => {
-    const document = context.accessor.document()
-    const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
-      context.accessor.name(operation, 'operation'),
-    )
-    const modules: TypeScriptModule[] = [
-      ...(config.type ? [generateApiType(document, operations, context, config)] : []),
-      ...(config.class ? [generateApiClass(document, operations, context, config)] : []),
-      ...(config.stub ? [generateApiStub(document, operations, context, config)] : []),
-    ]
-    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
-      return { issues: context.issues }
-    }
-    return { modules }
+const consumes: OpenAPIGeneratorTarget[] = ['operation', 'operation-input-type']
+const produces: OpenAPIGeneratorTarget[] = ['api-class', 'api-stub', 'api-type']
+
+export const api = (
+  config: OpenAPIGeneratorConfig & ApiGeneratorConfig,
+): Generator<OpenAPIReadOutput, TypeScriptModule> => {
+  return {
+    id: 'openapi/api',
+    consumes,
+    produces,
+    generate: async (data: OpenAPIReadOutput) => {
+      const context = createOpenAPIGeneratorContext(data, config)
+      const document = context.accessor.document()
+      const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
+        context.accessor.name(operation, 'operation'),
+      )
+      const modules: TypeScriptModule[] = [
+        ...(config.type ? [generateApiType(document, operations, context, config)] : []),
+        ...(config.class ? [generateApiClass(document, operations, context, config)] : []),
+        ...(config.stub ? [generateApiStub(document, operations, context, config)] : []),
+      ]
+      if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+        return { issues: context.issues }
+      }
+      return mergeTypeScriptModules(modules)
+    },
   }
+}

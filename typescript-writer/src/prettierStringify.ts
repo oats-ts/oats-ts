@@ -14,8 +14,8 @@ export const prettierStringify =
       removeComments: false,
     })
     const files = [
-      ...(data.imports.length > 0 ? [file(data.imports)] : []),
-      ...data.statements.map((statement) => file([statement])),
+      ...(data.dependencies.length > 0 ? [file(data.dependencies)] : []),
+      ...data.content.map((statement) => file([statement])),
     ]
     return files.map((file) => format(printer.printFile(file), options)).join('\n')
   }

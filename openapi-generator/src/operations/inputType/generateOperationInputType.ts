@@ -33,8 +33,8 @@ export function generateOperationInputType(
     statements.push(getOperationInputUnionTypeAst(data, context))
   }
   return {
-    imports: tsModelImportAsts(path, 'type', referencedTypes, context),
     path,
-    statements,
+    dependencies: tsModelImportAsts(path, 'type', referencedTypes, context),
+    content: statements,
   }
 }

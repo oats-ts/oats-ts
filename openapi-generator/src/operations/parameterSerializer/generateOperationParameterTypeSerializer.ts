@@ -126,9 +126,9 @@ const generateOperationParameterTypeSerializer =
       return undefined
     }
     return {
-      imports: [tsImportAst(Params.name, [location, getParameterSerializerFactoryName(location)])],
       path: accessor.path(data.operation, 'operation'),
-      statements: [createSerializerConstant(location, data, context)],
+      dependencies: [tsImportAst(Params.name, [location, getParameterSerializerFactoryName(location)])],
+      content: [createSerializerConstant(location, data, context)],
     }
   }
 

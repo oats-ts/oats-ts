@@ -1,20 +1,7 @@
-import type { ImportDeclaration, Statement } from '@babel/types'
-import type { ImportDeclaration as TsImportDeclaration, Statement as TsStatement } from 'typescript'
+import type { ImportDeclaration, Statement } from 'typescript'
+import type { Module } from '@oats-ts/generator'
 
-export type TypeScriptModule = {
-  /** The imports. Separate field for easy access. */
-  imports: TsImportDeclaration[]
-  /** The statements in the file. Types, functions, etc. */
-  statements: TsStatement[]
-  /** The path where the file should be generated. */
-  path: string
-}
-
-/** Generator output with BabelModules */
-export type TypeScriptGeneratorOutput = {
-  /** The list of modules. Producer should ensure, that paths are unique */
-  modules: TypeScriptModule[]
-}
+export type TypeScriptModule = Module<Statement[], ImportDeclaration[]>
 
 /** Configuration object for writing OpenAPI generated artifacts to file. */
 export type TypeScriptWriterConfig = {

@@ -1,3 +1,3 @@
 export { generate } from './generate'
-export { ContentReader, Generator, Writer, Try, Failure } from './typings'
+export { ContentReader, GeneratorFn, Generator, Writer, Try, Failure, Module, GeneratorInput } from './typings'
 export { isFailure } from './isFailure'

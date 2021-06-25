@@ -15,14 +15,14 @@ export function generateOperationFunction(
   const operationPath = accessor.path(operation, 'operation')
 
   return {
-    imports: [
+    path: operationPath,
+    dependencies: [
       tsImportAst(Params.name, [Params.joinUrl]),
       tsImportAst(Http.name, [Http.RequestConfig, Http.HttpResponse]),
       ...tsRelativeImports(operationPath, [
         [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),
     ],
-    path: operationPath,
-    statements: [getOperationFunctionAst(data, context, config)],
+    content: [getOperationFunctionAst(data, context, config)],
   }
 }
