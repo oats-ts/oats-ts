@@ -16,8 +16,9 @@ export type CodeGenerator<R, G extends Module<C, D>, C = any, D = any> = {
   id: string
   produces: string[]
   consumes: string[]
-  generate: (data: R, generators: CodeGenerator<R, G>[]) => Promise<Try<G[]>>
-  reference?: (data: R, generators: CodeGenerator<R, G>[], input: any, target: string) => C
+  initialize: (data: R, generators: CodeGenerator<R, G>[]) => void
+  generate: () => Promise<Try<G[]>>
+  reference?: (input: any, target: string) => C
 }
 
 export type GeneratorInput<R, G extends Module> = {

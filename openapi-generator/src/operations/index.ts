@@ -15,7 +15,7 @@ import {
 import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
 import { EnhancedOperation, OperationsGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = [
   'type',
@@ -34,12 +34,15 @@ const produces: OpenAPIGeneratorTarget[] = [
 ]
 
 export const operations = (config: OpenAPIGeneratorConfig & OperationsGeneratorConfig): OpenAPIGenerator => {
+  let context: OpenAPIGeneratorContext = null
   return {
     id: 'openapi/operations',
     consumes,
     produces,
-    generate: async (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
-      const context = createOpenAPIGeneratorContext(data, config, generators)
+    initialize: (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
+      context = createOpenAPIGeneratorContext(data, config, generators)
+    },
+    generate: async () => {
       const { accessor } = context
       const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
         accessor.name(operation, 'operation'),

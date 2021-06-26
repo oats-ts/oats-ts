@@ -12,18 +12,21 @@ import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { EnhancedOperation } from '../operations/typings'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['operation-headers-type', 'operation-path-type', 'operation-query-type']
 
 export const parameterTypes = (config: OpenAPIGeneratorConfig & ParameterTypesGeneratorConfig): OpenAPIGenerator => {
+  let context: OpenAPIGeneratorContext = null
   return {
     id: 'openapi/parameterTypes',
     consumes,
     produces,
-    generate: async (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
-      const context = createOpenAPIGeneratorContext(data, config, generators)
+    initialize: (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
+      context = createOpenAPIGeneratorContext(data, config, generators)
+    },
+    generate: async () => {
       const { accessor } = context
       const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
         accessor.name(operation, 'operation'),

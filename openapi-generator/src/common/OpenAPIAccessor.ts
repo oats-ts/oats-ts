@@ -1,5 +1,5 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { entries, isNil, memoize } from 'lodash'
+import { entries, isNil } from 'lodash'
 import { isReferenceObject, OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import { OpenAPIAccessor, OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
 
@@ -50,7 +50,7 @@ export class OpenAPIAccessorImpl implements OpenAPIAccessor {
       if (isNil(generator.reference)) {
         continue
       }
-      const result = generator.reference(this.data, this.generators, input, target)
+      const result = generator.reference(input, target)
       if (!isNil(result)) {
         return result
       }
@@ -65,9 +65,7 @@ function addNameMappings<T>(docPart: Record<string, T>, mappings: Map<any, strin
   }
 }
 
-const createNameToObjectMapping = memoize(function createNameToObjectMapping(
-  documents: Map<string, OpenAPIObject>,
-): Map<any, string> {
+function createNameToObjectMapping(documents: Map<string, OpenAPIObject>): Map<any, string> {
   const mappings = new Map<any, string>()
   for (const document of Array.from(documents.values())) {
     const { headers, parameters, schemas } = document?.components || {}
@@ -76,4 +74,4 @@ const createNameToObjectMapping = memoize(function createNameToObjectMapping(
     addNameMappings(schemas || {}, mappings)
   }
   return mappings
-})
+}

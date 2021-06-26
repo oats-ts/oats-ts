@@ -4,7 +4,6 @@ import { isFailure } from './isFailure'
 import { consoleLogger, noopLogger } from './logger'
 import { GeneratorInput, Try, Module, Failure } from './typings'
 
-// TODO proper logging
 export async function generate<R, G extends Module>(input: GeneratorInput<R, G>): Promise<Try<G[]>> {
   const { reader, generators, writer, log } = input
   const logger = log ? consoleLogger : noopLogger
@@ -29,7 +28,11 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
   const modules: G[] = []
 
   for (const generator of generators) {
-    const result = await generator.generate(readResult, generators)
+    generator.initialize(readResult, generators)
+  }
+
+  for (const generator of generators) {
+    const result = await generator.generate()
     if (isFailure(result)) {
       logger.failure(`Generator step "${generator.id}" failed:`, result)
       return result

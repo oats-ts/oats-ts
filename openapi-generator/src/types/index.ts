@@ -7,7 +7,7 @@ import { getNamedSchemas } from '../common/getNamedSchemas'
 import { generateType } from './generateType'
 import { TypesGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { Node } from 'typescript'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
@@ -16,12 +16,15 @@ const consumes: OpenAPIGeneratorTarget[] = []
 const produces: OpenAPIGeneratorTarget[] = ['type']
 
 export const types = (config: OpenAPIGeneratorConfig & TypesGeneratorConfig): OpenAPIGenerator => {
+  let context: OpenAPIGeneratorContext = null
   return {
     id: 'openapi/types',
     consumes,
     produces,
-    generate: async (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
-      const context = createOpenAPIGeneratorContext(data, config, generators)
+    initialize: (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
+      context = createOpenAPIGeneratorContext(data, config, generators)
+    },
+    generate: async () => {
       const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
       const modules = schemas.map((schema): TypeScriptModule => generateType(schema, context, config))
       if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
@@ -29,15 +32,12 @@ export const types = (config: OpenAPIGeneratorConfig & TypesGeneratorConfig): Op
       }
       return mergeTypeScriptModules(modules)
     },
-    reference: (
-      data: OpenAPIReadOutput,
-      generators: OpenAPIGenerator[],
-      input: SchemaObject | ReferenceObject,
-      target: OpenAPIGeneratorTarget,
-    ): Node => {
+    reference: (input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Node => {
       switch (target) {
         case 'type':
-          return getTypeReferenceAst(input, createOpenAPIGeneratorContext(data, config, generators), config)
+          return getTypeReferenceAst(input, context, config)
+        default:
+          return undefined
       }
     },
   }

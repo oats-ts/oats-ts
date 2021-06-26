@@ -7,18 +7,21 @@ import { getNamedSchemas } from '../common/getNamedSchemas'
 import { generateTypeGuard } from './generateTypeGuards'
 import { TypeGuardGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['type-guard']
 
 export const typeGuards = (config: OpenAPIGeneratorConfig & TypeGuardGeneratorConfig): OpenAPIGenerator => {
+  let context: OpenAPIGeneratorContext = null
   return {
     id: 'openapi/typeGuards',
     consumes,
     produces,
-    generate: async (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
-      const context = createOpenAPIGeneratorContext(data, config, generators)
+    initialize: (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
+      context = createOpenAPIGeneratorContext(data, config, generators)
+    },
+    generate: async () => {
       const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
       const modules = schemas
         .map((schema): TypeScriptModule => generateTypeGuard(schema, context, config))
