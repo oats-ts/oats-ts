@@ -4,7 +4,7 @@ export type Failure = { issues: Issue[] }
 export type Try<T> = T | Failure
 
 export type ContentReader<R> = () => Promise<Try<R>>
-export type Writer<G, W> = (data: G[]) => Promise<Try<W>>
+export type Writer<G> = (data: G[]) => Promise<Try<G[]>>
 
 export type Module<C = any, D = any> = {
   path: string
@@ -20,8 +20,9 @@ export type CodeGenerator<R, G extends Module<C, D>, C = any, D = any> = {
   reference?: (data: R, generators: CodeGenerator<R, G>[], input: any, target: string) => C
 }
 
-export type GeneratorInput<R, G extends Module, W> = {
+export type GeneratorInput<R, G extends Module> = {
   reader: ContentReader<R>
   generators: CodeGenerator<R, G>[]
-  writer: Writer<G, W>
+  writer: Writer<G>
+  log?: boolean
 }

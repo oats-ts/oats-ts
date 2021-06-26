@@ -17,7 +17,8 @@
     "test": "jest",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "serve": "ts-node src/expressTest.ts"
+    "serve": "ts-node src/expressTest.ts",
+    "gen": "ts-node src/generateAll.ts"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"

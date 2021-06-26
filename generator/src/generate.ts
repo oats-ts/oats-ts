@@ -1,40 +1,48 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import { ensureDependencies } from './ensureDependencies'
 import { isFailure } from './isFailure'
-import { GeneratorInput, Try, Module } from './typings'
+import { consoleLogger, noopLogger } from './logger'
+import { GeneratorInput, Try, Module, Failure } from './typings'
 
 // TODO proper logging
-export async function generate<R, G extends Module, W>(input: GeneratorInput<R, G, W>): Promise<Try<W>> {
-  const { reader, generators, writer } = input
+export async function generate<R, G extends Module>(input: GeneratorInput<R, G>): Promise<Try<G[]>> {
+  const { reader, generators, writer, log } = input
+  const logger = log ? consoleLogger : noopLogger
 
-  const r = await reader()
-  if (isFailure(r)) {
-    console.log(r)
-    return r
+  const readResult = await reader()
+  if (isFailure(readResult)) {
+    logger.failure(`Read step failed:`, readResult)
+    return readResult
   }
+  logger.readSuccess()
 
   const depIssues = ensureDependencies(generators)
   if (!isEmpty(depIssues)) {
-    console.log({ issues: depIssues })
-    return { issues: depIssues }
+    const failure: Failure = { issues: depIssues }
+    logger.failure(
+      'Some generators have unresolved dependencies. You can fix this by adding the appropriate generator!',
+      failure,
+    )
+    return failure
   }
 
   const modules: G[] = []
 
   for (const generator of generators) {
-    const result = await generator.generate(r, generators)
+    const result = await generator.generate(readResult, generators)
     if (isFailure(result)) {
-      console.log(result)
+      logger.failure(`Generator step "${generator.id}" failed:`, result)
       return result
     }
+    logger.generatorSuccess(generator.id, result)
     modules.push(...result)
   }
 
-  const w = await writer(modules)
-  if (isFailure(w)) {
-    console.log(w)
-    return w
+  const writeResult = await writer(modules)
+  if (isFailure(writeResult)) {
+    logger.failure(`Writer step failed:`, writeResult)
+    return writeResult
   }
-
-  return w
+  logger.writerSuccess(writeResult)
+  return writeResult
 }

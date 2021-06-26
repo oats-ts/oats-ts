@@ -52,54 +52,50 @@ function name(input: any, name: string, target: OpenAPIGeneratorTarget): string 
   return defaultNameProvider(input, name, target)
 }
 
-describe('workflow test', () => {
-  it('should generate using typescript', async () => {
-    await generate({
-      log: true,
-      reader: openAPIReader({ path: 'adyen.json' }),
-      generators: [
-        types({
-          name,
-          path,
-          documentation: true,
-          enums: true,
-        }),
-        validators({
-          name,
-          path,
-          references: false,
-          arrays: false,
-          records: false,
-          unionReferences: true,
-        }),
-        typeGuards({
-          name,
-          path,
-          references: true,
-          arrays: true,
-          records: true,
-          unionReferences: true,
-        }),
-        parameterTypes({
-          name,
-          path,
-          documentation: true,
-        }),
-        operations({
-          name,
-          path,
-          documentation: true,
-        }),
-        api({
-          name,
-          path,
-          type: true,
-          class: true,
-          stub: true,
-          documentation: true,
-        }),
-      ],
-      writer: typeScriptWriter({ stringify: prettierStringify(prettierConfiguration) }),
-    })
-  })
+generate({
+  log: true,
+  reader: openAPIReader({ path: 'adyen.json' }),
+  generators: [
+    types({
+      name,
+      path,
+      documentation: true,
+      enums: true,
+    }),
+    validators({
+      name,
+      path,
+      references: false,
+      arrays: false,
+      records: false,
+      unionReferences: true,
+    }),
+    typeGuards({
+      name,
+      path,
+      references: true,
+      arrays: true,
+      records: true,
+      unionReferences: true,
+    }),
+    parameterTypes({
+      name,
+      path,
+      documentation: true,
+    }),
+    operations({
+      name,
+      path,
+      documentation: true,
+    }),
+    api({
+      name,
+      path,
+      type: true,
+      class: true,
+      stub: true,
+      documentation: true,
+    }),
+  ],
+  writer: typeScriptWriter({ stringify: prettierStringify(prettierConfiguration) }),
 })
