@@ -15,9 +15,10 @@ import {
   NodeFlags,
   ObjectLiteralExpression,
   PropertyAssignment,
+  SyntaxKind,
   VariableStatement,
 } from 'typescript'
-import { tsExportModifier, tsImportAst } from '../../common/typeScriptUtils'
+import { tsImportAst } from '../../common/typeScriptUtils'
 import { isIdentifier } from '../../common/isIdentifier'
 
 function getSerializerOptionProperty(key: keyof ParameterObject, parameter: ParameterObject): PropertyAssignment {
@@ -102,7 +103,7 @@ function createSerializerConstant(
 ): VariableStatement {
   const { accessor } = context
   return factory.createVariableStatement(
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(

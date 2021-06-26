@@ -1,6 +1,5 @@
 import { SchemaObject } from 'openapi3-ts'
-import { factory, NodeFlags } from 'typescript'
-import { tsExportModifier } from '../common/typeScriptUtils'
+import { factory, NodeFlags, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
@@ -12,7 +11,7 @@ export function getValidatorAst(
 ) {
   const { accessor } = context
   return factory.createVariableStatement(
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(

@@ -1,7 +1,5 @@
 import { entries } from 'lodash'
-import { factory, PropertySignature, TypeAliasDeclaration } from 'typescript'
-import { tsExportModifier } from '../../common/typeScriptUtils'
-import { getTypeReferenceAst } from '../../types/getTypeReferenceAst'
+import { factory, PropertySignature, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getRequestBodyContent } from './getRequestBodyContent'
@@ -49,15 +47,7 @@ export function getOperationInputBaseTypeAst(
         ),
       )
       properties.push(
-        factory.createPropertySignature(
-          [],
-          'body',
-          undefined,
-          getTypeReferenceAst(mediaType.schema, context, {
-            documentation: false,
-            enums: false,
-          }),
-        ),
+        factory.createPropertySignature([], 'body', undefined, accessor.reference(mediaType.schema, 'type')),
       )
       break
     }
@@ -83,7 +73,7 @@ export function getOperationInputBaseTypeAst(
 
   return factory.createTypeAliasDeclaration(
     [],
-    bodies.length > 1 ? [] : [tsExportModifier()],
+    bodies.length > 1 ? [] : [factory.createModifier(SyntaxKind.ExportKeyword)],
     typeName,
     typeArgs,
     factory.createTypeLiteralNode(properties),

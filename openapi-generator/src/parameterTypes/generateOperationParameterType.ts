@@ -4,8 +4,7 @@ import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '../operations/typings'
 import { getParameterTypeImports } from './getParameterTypeImports'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
-import { factory } from 'typescript'
-import { tsExportModifier } from '../common/typeScriptUtils'
+import { factory, SyntaxKind } from 'typescript'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { getParameterTypeLiteralAst } from './getParameterTypeLiteralAst'
 
@@ -30,7 +29,7 @@ const generateOperationParameterType =
       content: [
         factory.createTypeAliasDeclaration(
           [],
-          [tsExportModifier()],
+          [factory.createModifier(SyntaxKind.ExportKeyword)],
           accessor.name(operation, getParameterTypeGeneratorTarget(location)),
           undefined,
           getParameterTypeLiteralAst(parameters, context, config),

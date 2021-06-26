@@ -1,8 +1,7 @@
 import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { EnumDeclaration, factory, TypeAliasDeclaration } from 'typescript'
+import { EnumDeclaration, factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { documentType } from '../common/jsDoc'
-import { tsExportModifier } from '../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../typings'
 import { getNamedEnumAst } from './getNamedEnumAst'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
@@ -21,7 +20,7 @@ export function getNamedTypeAst(
   return documentType(
     factory.createTypeAliasDeclaration(
       undefined,
-      [tsExportModifier()],
+      [factory.createModifier(SyntaxKind.ExportKeyword)],
       factory.createIdentifier(accessor.name(schema, 'type')),
       undefined,
       getRighthandSideTypeAst(schema, context, config),

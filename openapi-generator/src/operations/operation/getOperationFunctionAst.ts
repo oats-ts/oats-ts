@@ -1,7 +1,6 @@
-import { factory, FunctionDeclaration, ParameterDeclaration } from 'typescript'
+import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { documentOperation } from '../../common/jsDoc'
 import { Http } from '../../common/OatsPackages'
-import { tsAsyncModifier, tsExportModifier } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
@@ -45,7 +44,7 @@ export function getOperationFunctionAst(
   return documentOperation(
     factory.createFunctionDeclaration(
       [],
-      [tsExportModifier(), tsAsyncModifier()],
+      [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
       undefined,
       accessor.name(operation, 'operation'),
       [],

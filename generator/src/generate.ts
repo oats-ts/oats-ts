@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+import { ensureDependencies } from './ensureDependencies'
 import { isFailure } from './isFailure'
 import { GeneratorInput, Try, Module } from './typings'
 
@@ -11,10 +13,16 @@ export async function generate<R, G extends Module, W>(input: GeneratorInput<R, 
     return r
   }
 
+  const depIssues = ensureDependencies(generators)
+  if (!isEmpty(depIssues)) {
+    console.log({ issues: depIssues })
+    return { issues: depIssues }
+  }
+
   const modules: G[] = []
 
   for (const generator of generators) {
-    const result = await generator.generate(r)
+    const result = await generator.generate(r, generators)
     if (isFailure(result)) {
       console.log(result)
       return result

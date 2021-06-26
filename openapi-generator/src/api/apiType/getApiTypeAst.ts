@@ -2,8 +2,7 @@ import { OpenAPIObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../../operations/typings'
 import { getApiTypeMethodSignatureAst } from './getApiTypeMethodSignatureAst'
-import { factory, TypeAliasDeclaration } from 'typescript'
-import { tsExportModifier } from '../../common/typeScriptUtils'
+import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { ApiGeneratorConfig } from '../typings'
 
 export function getApiTypeAst(
@@ -15,7 +14,7 @@ export function getApiTypeAst(
   const { accessor } = context
   return factory.createTypeAliasDeclaration(
     [],
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     accessor.name(document, 'api-type'),
     [],
     factory.createTypeLiteralNode(

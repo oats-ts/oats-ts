@@ -1,5 +1,5 @@
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
-import { Generator } from '@oats-ts/generator'
+import { CodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import { Severity } from '../../../validators/lib'
@@ -9,20 +9,18 @@ import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['operation', 'operation-input-type']
 const produces: OpenAPIGeneratorTarget[] = ['api-class', 'api-stub', 'api-type']
 
-export const api = (
-  config: OpenAPIGeneratorConfig & ApiGeneratorConfig,
-): Generator<OpenAPIReadOutput, TypeScriptModule> => {
+export const api = (config: OpenAPIGeneratorConfig & ApiGeneratorConfig): OpenAPIGenerator => {
   return {
     id: 'openapi/api',
     consumes,
     produces,
-    generate: async (data: OpenAPIReadOutput) => {
-      const context = createOpenAPIGeneratorContext(data, config)
+    generate: async (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
+      const context = createOpenAPIGeneratorContext(data, config, generators)
       const document = context.accessor.document()
       const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
         context.accessor.name(operation, 'operation'),

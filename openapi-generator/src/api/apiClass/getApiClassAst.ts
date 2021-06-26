@@ -3,7 +3,6 @@ import { OpenAPIObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../../operations/typings'
 import { getApiClassMethodAst } from './getApiClassMethodAst'
-import { tsExportModifier, tsPrivateModifier, tsPublicModifier, tsReadonlyKeyword } from '../../common/typeScriptUtils'
 import { Http } from '../../common/OatsPackages'
 import { ApiGeneratorConfig } from '../typings'
 
@@ -17,7 +16,7 @@ export function getApiClassAst(
 
   const configField = factory.createPropertyDeclaration(
     [],
-    [tsPrivateModifier(), tsReadonlyKeyword()],
+    [factory.createModifier(SyntaxKind.PrivateKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
     'config',
     undefined,
     factory.createTypeReferenceNode(Http.RequestConfig),
@@ -26,7 +25,7 @@ export function getApiClassAst(
 
   const constructor = factory.createConstructorDeclaration(
     [],
-    [tsPublicModifier()],
+    [factory.createModifier(SyntaxKind.PublicKeyword)],
     [
       factory.createParameterDeclaration(
         [],
@@ -58,7 +57,7 @@ export function getApiClassAst(
 
   return factory.createClassDeclaration(
     [],
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     accessor.name(document, 'api-class'),
     [],
     heritageClauses,

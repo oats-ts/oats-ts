@@ -1,5 +1,5 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
-import { Generator } from '@oats-ts/generator'
+import { CodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
@@ -12,20 +12,18 @@ import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { EnhancedOperation } from '../operations/typings'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['operation-headers-type', 'operation-path-type', 'operation-query-type']
 
-export const parameterTypes = (
-  config: OpenAPIGeneratorConfig & ParameterTypesGeneratorConfig,
-): Generator<OpenAPIReadOutput, TypeScriptModule> => {
+export const parameterTypes = (config: OpenAPIGeneratorConfig & ParameterTypesGeneratorConfig): OpenAPIGenerator => {
   return {
     id: 'openapi/parameterTypes',
     consumes,
     produces,
-    generate: async (data: OpenAPIReadOutput) => {
-      const context = createOpenAPIGeneratorContext(data, config)
+    generate: async (data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) => {
+      const context = createOpenAPIGeneratorContext(data, config, generators)
       const { accessor } = context
       const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
         accessor.name(operation, 'operation'),

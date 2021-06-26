@@ -6,7 +6,6 @@ import {
   Identifier,
   ImportDeclaration,
   StringLiteral,
-  SyntaxKind,
   BinaryOperator,
   PropertyAccessExpression,
   ElementAccessExpression,
@@ -67,34 +66,6 @@ export function tsBinaryExpressions(
       return factory.createBinaryExpression(h, operator, tsBinaryExpressions(operator, t))
     }
   }
-}
-
-export function tsExportModifier() {
-  return factory.createModifier(SyntaxKind.ExportKeyword)
-}
-
-export function tsAsyncModifier() {
-  return factory.createModifier(SyntaxKind.AsyncKeyword)
-}
-
-export function tsQuestionToken() {
-  return factory.createToken(SyntaxKind.QuestionToken)
-}
-
-export function tsPrivateModifier() {
-  return factory.createModifier(SyntaxKind.PrivateKeyword)
-}
-
-export function tsPublicModifier() {
-  return factory.createModifier(SyntaxKind.PublicKeyword)
-}
-
-export function tsProtectedModifier() {
-  return factory.createModifier(SyntaxKind.ProtectedKeyword)
-}
-
-export function tsReadonlyKeyword() {
-  return factory.createModifier(SyntaxKind.ReadonlyKeyword)
 }
 
 export function tsMemberAccess(

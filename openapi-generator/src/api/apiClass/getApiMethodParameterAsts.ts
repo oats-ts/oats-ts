@@ -1,5 +1,4 @@
 import { factory, ParameterDeclaration } from 'typescript'
-import { typedIdAst } from '../../common/babelUtils'
 import { Http } from '../../common/OatsPackages'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
 import { EnhancedOperation } from '../../operations/typings'

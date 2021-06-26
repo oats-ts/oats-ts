@@ -1,9 +1,8 @@
-import { factory, MethodDeclaration } from 'typescript'
+import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../../operations/typings'
 import { getApiMethodParameterAsts } from './getApiMethodParameterAsts'
 import { getApiMethodReturnTypeAst } from './getApiMethodReturnTypeAst'
-import { tsAsyncModifier, tsPublicModifier } from '../../common/typeScriptUtils'
 
 export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
   const { accessor } = context
@@ -26,7 +25,7 @@ export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
 
   return factory.createMethodDeclaration(
     [],
-    [tsPublicModifier(), tsAsyncModifier()],
+    [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
     accessor.name(data.operation, 'operation'),
     undefined,

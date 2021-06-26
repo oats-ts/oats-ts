@@ -2,8 +2,7 @@ import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../../operations/returnType/getReturnTypeReferenceAst'
 import { EnhancedOperation } from '../../operations/typings'
-import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
-import { tsQuestionToken } from '../../common/typeScriptUtils'
+import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { Http } from '../../common/OatsPackages'
 import { ApiGeneratorConfig } from '../typings'
 import { documentOperation } from '../../common/jsDoc'
@@ -36,7 +35,7 @@ export function getApiTypeMethodSignatureAst(
       [],
       undefined,
       'config',
-      tsQuestionToken(),
+      factory.createToken(SyntaxKind.QuestionToken),
       factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(Http.RequestConfig)]),
     ),
   )

@@ -1,5 +1,8 @@
 import { OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import type { Issue } from '@oats-ts/validators'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { CodeGenerator } from '@oats-ts/generator'
 
 /**
  * @param input The named object (schema, operation, parameter, etc).
@@ -59,6 +62,13 @@ export type OpenAPIAccessor = {
    * @returns The absolute URI of the value.
    */
   uri(input: any): string
+
+  /**
+   * Generator specific reference to the given input and target
+   * @param input The input for which the reference is needed. For example SchemaObject
+   * @param target The generator target, for example "type" or "validator"
+   */
+  reference<T>(input: any, target: OpenAPIGeneratorTarget): T
 }
 
 export type OpenAPIGeneratorContext = {
@@ -83,3 +93,5 @@ export type OpenAPIGeneratorTarget =
   | 'api-class'
   | 'api-stub'
   | 'validator'
+
+export type OpenAPIGenerator = CodeGenerator<OpenAPIReadOutput, TypeScriptModule>

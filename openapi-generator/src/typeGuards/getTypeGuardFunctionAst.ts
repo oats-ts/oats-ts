@@ -1,6 +1,5 @@
 import { SchemaObject } from 'openapi3-ts'
-import { Expression, factory, FunctionDeclaration } from 'typescript'
-import { tsExportModifier } from '../common/typeScriptUtils'
+import { Expression, factory, FunctionDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '../typings'
 
 export function getTypeGuardFunctionAst(
@@ -11,7 +10,7 @@ export function getTypeGuardFunctionAst(
   const { accessor } = context
   return factory.createFunctionDeclaration(
     [],
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
     accessor.name(schema, 'type-guard'),
     [],

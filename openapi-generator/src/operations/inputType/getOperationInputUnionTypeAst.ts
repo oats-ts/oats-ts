@@ -1,7 +1,5 @@
 import { entries } from 'lodash'
-import { factory, TypeAliasDeclaration } from 'typescript'
-import { tsExportModifier } from '../../common/typeScriptUtils'
-import { getTypeReferenceAst } from '../../types/getTypeReferenceAst'
+import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getRequestBodyContent } from './getRequestBodyContent'
@@ -17,12 +15,12 @@ export function getOperationInputUnionTypeAst(
   const types = bodies.map(([contentType, mediaType]) => {
     return factory.createTypeReferenceNode(baseTypeName, [
       factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
-      getTypeReferenceAst(mediaType.schema, context, { enums: false, documentation: false }),
+      accessor.reference(mediaType.schema, 'type'),
     ])
   })
   return factory.createTypeAliasDeclaration(
     [],
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     typeName,
     undefined,
     factory.createUnionTypeNode(types),

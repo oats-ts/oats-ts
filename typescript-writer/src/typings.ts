@@ -1,7 +1,7 @@
 import type { ImportDeclaration, Statement } from 'typescript'
 import type { Module } from '@oats-ts/generator'
 
-export type TypeScriptModule = Module<Statement[], ImportDeclaration[]>
+export type TypeScriptModule = Module<Statement, ImportDeclaration>
 
 /** Configuration object for writing OpenAPI generated artifacts to file. */
 export type TypeScriptWriterConfig = {

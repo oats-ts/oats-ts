@@ -3,7 +3,6 @@ import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../../operations/typings'
 import { getApiStubMethodAst } from './getApiStubMethodAst'
 import { ClassDeclaration, factory, SyntaxKind } from 'typescript'
-import { tsExportModifier, tsProtectedModifier } from '../../common/typeScriptUtils'
 import { ApiGeneratorConfig } from '../typings'
 
 export function getApiStubAst(
@@ -16,7 +15,7 @@ export function getApiStubAst(
 
   const fallback = factory.createMethodDeclaration(
     [],
-    [tsProtectedModifier()],
+    [factory.createModifier(SyntaxKind.ProtectedKeyword)],
     undefined,
     'fallback',
     undefined,
@@ -44,7 +43,7 @@ export function getApiStubAst(
 
   return factory.createClassDeclaration(
     [],
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     accessor.name(document, 'api-stub'),
     [],
     heritageClauses,

@@ -1,8 +1,6 @@
 import { entries, head, isNil } from 'lodash'
-import { factory, TypeAliasDeclaration, TypeReferenceNode } from 'typescript'
+import { factory, SyntaxKind, TypeAliasDeclaration, TypeReferenceNode } from 'typescript'
 import { Http } from '../../common/OatsPackages'
-import { tsExportModifier } from '../../common/typeScriptUtils'
-import { getTypeReferenceAst } from '../../types/getTypeReferenceAst'
 import { OpenAPIGeneratorContext } from '../../typings'
 import { EnhancedOperation } from '../typings'
 import { getResponseMap } from './getResponseMap'
@@ -20,7 +18,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   types.push(
     ...statusCodeResponses.map(([status, schema]) =>
       factory.createTypeReferenceNode(Http.HttpResponse, [
-        getTypeReferenceAst(schema, context, { enums: false, documentation: false }),
+        accessor.reference(schema, 'type'),
         factory.createLiteralTypeNode(factory.createNumericLiteral(status)),
       ]),
     ),
@@ -31,7 +29,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
     )
     const [, schema] = defaultResponse
     const type = factory.createTypeReferenceNode(Http.HttpResponse, [
-      getTypeReferenceAst(schema, context, { enums: false, documentation: false }),
+      accessor.reference(schema, 'type'),
       factory.createTypeReferenceNode('Exclude', [
         factory.createTypeReferenceNode(Http.StatusCode),
         knownStatusCodesType,
@@ -41,7 +39,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   }
   return factory.createTypeAliasDeclaration(
     [],
-    [tsExportModifier()],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
     accessor.name(data.operation, 'operation-response-type'),
     undefined,
     types.length === 1 ? head(types) : factory.createUnionTypeNode(types),
