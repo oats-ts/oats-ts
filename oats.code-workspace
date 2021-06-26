@@ -6,35 +6,35 @@
     },
     {
       "name": "generator",
-      "path": "generator"
+      "path": "projects/generator"
     },
     {
       "name": "openapi-parameter-serialization",
-      "path": "openapi-parameter-serialization"
+      "path": "projects/openapi-parameter-serialization"
     },
     {
       "name": "openapi-reader",
-      "path": "openapi-reader"
+      "path": "projects/openapi-reader"
     },
     {
       "name": "openapi-generator",
-      "path": "openapi-generator"
+      "path": "projects/openapi-generator"
     },
     {
       "name": "typescript-writer",
-      "path": "typescript-writer"
+      "path": "projects/typescript-writer"
     },
     {
       "name": "validators",
-      "path": "validators"
+      "path": "projects/validators"
     },
     {
       "name": "http",
-      "path": "http"
+      "path": "projects/http"
     },
     {
       "name": "example",
-      "path": "example"
+      "path": "projects/example"
     },
   ]
 }
