@@ -1,4 +1,5 @@
 export { documentNode } from './documentNode'
+export { getLiteralAst } from './getLiteralAst'
 export { getLogicalExpression } from './getLogicalExpression'
 export { getModelImports } from './getModelImports'
 export { getNamedImports } from './getNamedImports'

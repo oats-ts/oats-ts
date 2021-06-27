@@ -1,6 +1,7 @@
 import { generate } from '@oats-ts/generator'
 import { openAPIReader } from '@oats-ts/openapi-reader'
-import { types, operations, typeGuards, api, validators, parameterTypes } from '@oats-ts/openapi-generator'
+import { types, operations, typeGuards, api, parameterTypes } from '@oats-ts/openapi-generator'
+import { validators } from '@oats-ts/openapi-validators-generator'
 import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
 import { NameProvider, OpenAPIGeneratorTarget, defaultNameProvider } from '@oats-ts/openapi-common'
 import { join, resolve } from 'path'

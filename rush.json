@@ -59,6 +59,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/openapi-validators-generator",
+      "projectFolder": "projects/openapi-validators-generator",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/typescript-common",
       "projectFolder": "projects/typescript-common",
       "shouldPublish": false

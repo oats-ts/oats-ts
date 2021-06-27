@@ -2,12 +2,12 @@ import { isNil } from 'lodash'
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getLiteralAst } from '../types/getLiteralAst'
 import { getObjectValidatorAst } from './getObjectValidatorAst'
 import { getRecordValidatorAst } from './getRecordValidatorAst'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 import { getUnionTypeValidatorAst } from './getUnionTypeValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
+import { getLiteralAst } from '@oats-ts/typescript-common'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
