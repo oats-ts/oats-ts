@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc",
+    "build": "echo 'Nothing to build'",
     "typecheck": "tsc --noEmit"
   },
   "bugs": {

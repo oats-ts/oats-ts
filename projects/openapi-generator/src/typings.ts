@@ -1,5 +1,5 @@
 import { OpenAPIObject, ReferenceObject } from 'openapi3-ts'
-import type { Issue } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator } from '@oats-ts/generator'

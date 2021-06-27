@@ -13,11 +13,10 @@ import {
 import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
-import { SimpleNameProvider } from '../../openapi-generator/lib/typings'
 
 const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '.prettierrc'), 'utf-8'))
 
-function path(input: any, name: SimpleNameProvider, target: OpenAPIGeneratorTarget) {
+function path(input: any, name: (input: any, target: string) => string, target: OpenAPIGeneratorTarget) {
   switch (target) {
     case 'operation':
     case 'operation-headers-serializer':

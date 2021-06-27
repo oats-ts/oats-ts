@@ -1,4 +1,4 @@
-import { isEmpty, isNil } from 'lodash'
+import { isEmpty } from 'lodash'
 import { ensureDependencies } from './ensureDependencies'
 import { isFailure } from './isFailure'
 import { consoleLogger, noopLogger } from './logger'

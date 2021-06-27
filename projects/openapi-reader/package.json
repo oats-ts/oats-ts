@@ -37,6 +37,7 @@
     "openapi3-ts": "^2.0.1",
     "urijs": "^1.19.6",
     "valid-url": "^1.0.9",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0",
+    "@oats-ts/validators": "~0.0.0"
   }
 }

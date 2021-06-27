@@ -1,0 +1,67 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.47.0",
+  "yarnVersion": "1.9.4",
+  "nodeSupportedVersionRange": ">=12.13.0 <13.0.0 || >=14.15.0 <15.0.0",
+  "gitPolicy": {
+    "versionBumpCommitMessage": "Applying package updates. [skip-ci]",
+    "changeLogUpdateCommitMessage": "Deleting change files and updating change logs for package updates. [skip-ci]"
+  },
+  "repository": {
+    "url": "https://github.com/bali182/oats",
+    "defaultRemote": "origin"
+  },
+  "eventHooks": {
+    "preRushInstall": [],
+    "postRushInstall": [],
+    "postRushBuild": []
+  },
+  "telemetryEnabled": false,
+  "projects": [
+    {
+      "packageName": "@oats-ts/asyncapi-model",
+      "projectFolder": "projects/asyncapi-model",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/example",
+      "projectFolder": "projects/example",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/generator",
+      "projectFolder": "projects/generator",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/http",
+      "projectFolder": "projects/http",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/openapi-generator",
+      "projectFolder": "projects/openapi-generator",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/openapi-parameter-serialization",
+      "projectFolder": "projects/openapi-parameter-serialization",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/openapi-reader",
+      "projectFolder": "projects/openapi-reader",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/typescript-writer",
+      "projectFolder": "projects/typescript-writer",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/validators",
+      "projectFolder": "projects/validators",
+      "shouldPublish": false
+    }
+  ]
+}

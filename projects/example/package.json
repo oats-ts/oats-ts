@@ -44,6 +44,10 @@
     "valid-url": "^1.0.9",
     "yamljs": "^0.3.0",
     "yup": "^0.32.9",
-    "zod": "^3.2.0"
+    "zod": "^3.2.0",
+    "@oats-ts/generator": "~0.0.0",
+    "@oats-ts/openapi-reader": "~0.0.0",
+    "@oats-ts/openapi-generator": "~0.0.0",
+    "@oats-ts/typescript-writer": "~0.0.0"
   }
 }
