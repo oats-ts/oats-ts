@@ -9,6 +9,7 @@ specifiers:
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-generator': file:./projects/openapi-generator.tgz
   '@rush-temp/openapi-parameter-serialization': file:./projects/openapi-parameter-serialization.tgz
+  '@rush-temp/openapi-parameter-types-generator': file:./projects/openapi-parameter-types-generator.tgz
   '@rush-temp/openapi-reader': file:./projects/openapi-reader.tgz
   '@rush-temp/openapi-type-guards-generator': file:./projects/openapi-type-guards-generator.tgz
   '@rush-temp/openapi-types-generator': file:./projects/openapi-types-generator.tgz
@@ -53,6 +54,7 @@ dependencies:
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
   '@rush-temp/openapi-generator': file:projects/openapi-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-parameter-types-generator': file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.0.0
   '@rush-temp/openapi-type-guards-generator': file:projects/openapi-type-guards-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-types-generator': file:projects/openapi-types-generator.tgz_ts-node@10.0.0
@@ -3336,7 +3338,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-ZTJD3Ki6nf5jqIUFV5tnIqfm5KKPUHMBi8x2rHIdYXIDqtLY8F6uQunjlCylZUds/70ejD5Jqp25jYgDL2dOIw==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-4CQd9aTVvq7DLFWCIbxrWcpt8WwPd0pjoFA3EOjdNAqIsY+1PcQOIkpOwjO8JU9Euf9toKSr3mdtKWvcyY03PQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -3504,6 +3506,29 @@ packages:
       '@types/jest': 26.0.23
       '@types/node': 15.12.5
       jest: 27.0.5_ts-node@10.0.0
+      ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-fRKYmfxZDgJNaAoiTKe6qS+OLHkr1tzEVFD96oJHZrxxbdq20iX8h7oc01fRn7q7Zpsfd75+gqriUzH5+DBshg==, tarball: file:projects/openapi-parameter-types-generator.tgz}
+    id: file:projects/openapi-parameter-types-generator.tgz
+    name: '@rush-temp/openapi-parameter-types-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.5
+      jest: 27.0.5_ts-node@10.0.0
+      lodash: 4.17.21
+      openapi3-ts: 2.0.1
       ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
       typescript: 4.3.2
     transitivePeerDependencies:

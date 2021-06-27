@@ -25,6 +25,10 @@
       "path": "projects/openapi-types-generator"
     },
     {
+      "name": "openapi-parameter-types-generator",
+      "path": "projects/openapi-parameter-types-generator"
+    },
+    {
       "name": "openapi-validators-generator",
       "path": "projects/openapi-validators-generator"
     },

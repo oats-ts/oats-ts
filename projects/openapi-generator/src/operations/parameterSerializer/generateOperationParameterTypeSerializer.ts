@@ -5,7 +5,6 @@ import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerMethod } from './getParameterSerializerMethod'
 import { getParameterStyle } from './getParameterStyle'
 import { getParameterSerializerGeneratorTarget } from './getParameterSerializerGeneratorTarget'
-import { getParameterTypeGeneratorTarget } from '../../parameterTypes/getParameterTypeGeneratorTarget'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
@@ -19,6 +18,7 @@ import {
   VariableStatement,
 } from 'typescript'
 import { getNamedImports, isIdentifier } from '@oats-ts/typescript-common'
+import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 
 function getSerializerOptionProperty(key: keyof ParameterObject, parameter: ParameterObject): PropertyAssignment {
   return has(parameter, key)

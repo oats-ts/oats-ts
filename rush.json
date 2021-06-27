@@ -59,6 +59,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/openapi-parameter-types-generator",
+      "projectFolder": "projects/openapi-parameter-types-generator",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/openapi-reader",
       "projectFolder": "projects/openapi-reader",
       "shouldPublish": false

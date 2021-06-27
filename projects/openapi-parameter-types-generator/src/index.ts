@@ -6,7 +6,7 @@ import {
   generateHeaderParametersType,
   generatePathParametersType,
   generateQueryParametersType,
-} from '../parameterTypes/generateOperationParameterType'
+} from './generateOperationParameterType'
 import {
   EnhancedOperation,
   getEnhancedOperations,
