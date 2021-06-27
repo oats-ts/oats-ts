@@ -1,6 +1,6 @@
-import express, { Request, Response, json } from 'express'
+import express, { Router, Request, Response, json } from 'express'
 
-export const firstRoute = express
+export const firstRoute: Router = express
   .Router({ mergeParams: false, strict: true, caseSensitive: true })
   .get('/foo/bar/', (req: Request, res: Response) => {
     res.json({ path: req.path })
@@ -8,7 +8,7 @@ export const firstRoute = express
 
 type Foo = { foo: string }
 
-export const secondRoute = express
+export const secondRoute: Router = express
   .Router()
   .use(json())
   .get<string, any, any, any, any, Foo>(
