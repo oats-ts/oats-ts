@@ -59,6 +59,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/typescript-common",
+      "projectFolder": "projects/typescript-common",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/typescript-writer",
       "projectFolder": "projects/typescript-writer",
       "shouldPublish": false

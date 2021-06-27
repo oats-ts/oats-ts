@@ -25,6 +25,10 @@
       "path": "projects/openapi-generator"
     },
     {
+      "name": "typescript-common",
+      "path": "projects/typescript-common"
+    },
+    {
       "name": "typescript-writer",
       "path": "projects/typescript-writer"
     },
