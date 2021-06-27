@@ -23,9 +23,10 @@ function validateResponseBody(body: any, validator: ContentValidator): void {
 export async function fetchResponseParser(response: ResponseLike, hint: ResponseParserHint): Promise<HttpResponse> {
   const { status: statusCode, url, headers } = response
   const hintForStatus = hint[statusCode] || hint.default
+  console.log(await response.text())
   if (hintForStatus === undefined || hintForStatus === null) {
     // TODO more descriptive error
-    throw new TypeError(`Unexpected status code: "${statusCode}".`)
+    throw new Error(`Unexpected status code: "${statusCode}".`)
   }
   if (!headers.has('content-type')) {
     throw new Error('Expected content-type header to be present.')

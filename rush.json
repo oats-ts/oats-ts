@@ -49,6 +49,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/openapi-e2e-test",
+      "projectFolder": "projects/openapi-e2e-test",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/openapi-operations-generator",
       "projectFolder": "projects/openapi-operations-generator",
       "shouldPublish": false

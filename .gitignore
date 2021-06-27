@@ -65,4 +65,3 @@ common/autoinstallers/*/.npmrc
 **/.rush/temp/
 # Actual interesting stuff...
 lib/
-generated/

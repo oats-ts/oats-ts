@@ -1,0 +1,222 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "servers": [],
+  "components": {
+    "schemas": {
+      "NamedString": {
+        "type": "string"
+      },
+      "NamedNumber": {
+        "type": "number"
+      },
+      "NamedBoolean": {
+        "type": "boolean"
+      },
+      "NamedEnum": {
+        "type": "string",
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "NamedStringArray": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "NamedRecord": {
+        "type": "object",
+        "description": "This is a named record.",
+        "additionalProperties": {
+          "type": "number"
+        }
+      },
+      "NamedDeprecatedObject": {
+        "type": "object",
+        "deprecated": true,
+        "properties": {
+          "deprecatedProperty": {
+            "type": "string",
+            "deprecated": true
+          }
+        }
+      },
+      "NamedSimpleObject": {
+        "type": "object",
+        "required": [
+          "stringProperty",
+          "numberProperty",
+          "booleanProperty",
+          "stringArrayProperty",
+          "recordProperty",
+          "enumProperty"
+        ],
+        "properties": {
+          "stringProperty": {
+            "type": "string"
+          },
+          "optionalStringProperty": {
+            "type": "string"
+          },
+          "numberProperty": {
+            "type": "number"
+          },
+          "optionalNumberProperty": {
+            "type": "number"
+          },
+          "booleanProperty": {
+            "type": "boolean"
+          },
+          "optionalBooleanProperty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "NamedComplexObject": {
+        "properties": {
+          "stringArrayProperty": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recordProperty": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "enumProperty": {
+            "type": "string",
+            "enum": [
+              "Racoon",
+              "Dog",
+              "Cat"
+            ]
+          },
+          "enumReferenceProperty": {
+            "$ref": "#/components/schemas/NamedEnum"
+          },
+          "referenceProperty": {
+            "$ref": "#/components/schemas/NamedRecord"
+          },
+          "referenceArrayProperty": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NamedRecord"
+            }
+          },
+          "non-identifier * property}": {
+            "type": "string"
+          }
+        }
+      },
+      "NamedPrimitiveUnion": {
+        "oneOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "boolean"
+          }
+        ]
+      },
+      "NamedTopLevelUnion": {
+        "type": "object",
+        "discriminator": {
+          "propertyName": "topLevelType",
+          "mapping": {
+            "NamedMidLevelUnion": "#/components/schemas/NamedMidLevelUnion",
+            "NamedUnionLeaf1": "#/components/schemas/NamedUnionLeaf1"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/NamedMidLevelUnion"
+          },
+          {
+            "$ref": "#/components/schemas/NamedUnionLeaf1"
+          }
+        ]
+      },
+      "NamedMidLevelUnion": {
+        "discriminator": {
+          "propertyName": "midLevelType",
+          "mapping": {
+            "NamedUnionLeaf2": "#/components/schemas/NamedUnionLeaf2",
+            "NamedUnionLeaf3": "#/components/schemas/NamedUnionLeaf3"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/NamedUnionLeaf2"
+          },
+          {
+            "$ref": "#/components/schemas/NamedUnionLeaf3"
+          }
+        ]
+      },
+      "NamedUnionLeaf1": {
+        "type": "object",
+        "properties": {
+          "namedUnionLeaf1Property": {
+            "type": "string"
+          }
+        }
+      },
+      "NamedUnionLeaf2": {
+        "type": "object",
+        "properties": {
+          "namedUnionLeaf2Property": {
+            "type": "number"
+          }
+        }
+      },
+      "NamedUnionLeaf3": {
+        "type": "object",
+        "properties": {
+          "namedUnionLeaf3Property": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/cat/dog": {
+      "get": {
+        "operationId": "getCatDog",
+        "parameters": [
+          {
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "name": "foo"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "foo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
