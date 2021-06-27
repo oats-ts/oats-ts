@@ -8,10 +8,10 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIGeneratorConfig,
+  createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { generateType } from './generateType'
 import { TypesGeneratorConfig } from './typings'
-import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { Node } from 'typescript'
 import { getTypeReferenceAst } from './getTypeReferenceAst'

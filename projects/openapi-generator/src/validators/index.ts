@@ -8,8 +8,8 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIGeneratorConfig,
+  createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 

@@ -8,10 +8,10 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIGeneratorConfig,
+  createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { generateTypeGuard } from './generateTypeGuards'
 import { TypeGuardGeneratorConfig } from './typings'
-import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['type-guard']

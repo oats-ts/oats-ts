@@ -1,6 +1,6 @@
 import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget } from './typings'
 import { OperationObject } from 'openapi3-ts'
 import { isNil } from 'lodash'
 

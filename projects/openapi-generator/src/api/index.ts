@@ -8,12 +8,12 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIGeneratorConfig,
+  createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
-import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 
 const consumes: OpenAPIGeneratorTarget[] = ['operation', 'operation-input-type']
 const produces: OpenAPIGeneratorTarget[] = ['api-class', 'api-stub', 'api-type']

@@ -19,8 +19,8 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIGeneratorConfig,
+  createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 
 const consumes: OpenAPIGeneratorTarget[] = [
   'type',

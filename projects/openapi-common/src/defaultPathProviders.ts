@@ -1,5 +1,5 @@
 import { resolve, join } from 'path'
-import { NameProvider } from '@oats-ts/openapi-common'
+import { NameProvider } from './typings'
 
 export const singleFile = (path: string) => () => resolve(path)
 

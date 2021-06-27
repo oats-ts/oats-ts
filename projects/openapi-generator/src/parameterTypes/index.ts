@@ -14,9 +14,9 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIGeneratorConfig,
+  createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { ParameterTypesGeneratorConfig } from './typings'
-import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['operation-headers-type', 'operation-path-type', 'operation-query-type']
