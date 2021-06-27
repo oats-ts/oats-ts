@@ -49,12 +49,13 @@
     "@oats-ts/openapi-reader": "~0.0.0",
     "@oats-ts/typescript-writer": "~0.0.0",
     "@oats-ts/openapi-common": "~0.0.0",
-    "@oats-ts/openapi-generator": "~0.0.0",
     "@oats-ts/openapi-validators-generator": "~0.0.0",
     "@oats-ts/openapi-types-generator": "~0.0.0",
     "@oats-ts/openapi-parameter-serialization": "~0.0.0",
     "@oats-ts/http": "~0.0.0",
     "@oats-ts/openapi-api-generator": "~0.0.0",
-    "@oats-ts/openapi-type-guards-generator": "~0.0.0"
+    "@oats-ts/openapi-type-guards-generator": "~0.0.0",
+    "@oats-ts/openapi-parameter-types-generator": "~0.0.0",
+    "@oats-ts/openapi-operations-generator": "~0.0.0"
   }
 }

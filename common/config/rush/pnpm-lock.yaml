@@ -7,7 +7,7 @@ specifiers:
   '@rush-temp/http': file:./projects/http.tgz
   '@rush-temp/openapi-api-generator': file:./projects/openapi-api-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
-  '@rush-temp/openapi-generator': file:./projects/openapi-generator.tgz
+  '@rush-temp/openapi-operations-generator': file:./projects/openapi-operations-generator.tgz
   '@rush-temp/openapi-parameter-serialization': file:./projects/openapi-parameter-serialization.tgz
   '@rush-temp/openapi-parameter-types-generator': file:./projects/openapi-parameter-types-generator.tgz
   '@rush-temp/openapi-reader': file:./projects/openapi-reader.tgz
@@ -52,7 +52,7 @@ dependencies:
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
   '@rush-temp/openapi-api-generator': file:projects/openapi-api-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-generator': file:projects/openapi-generator.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-operations-generator': file:projects/openapi-operations-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-types-generator': file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.0.0
@@ -3338,7 +3338,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-4CQd9aTVvq7DLFWCIbxrWcpt8WwPd0pjoFA3EOjdNAqIsY+1PcQOIkpOwjO8JU9Euf9toKSr3mdtKWvcyY03PQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-6+dlq5vyO8GoOtLm4wGmNXuvpLn0IPlJ9oa/53xTA+vlbX4UV3CDn7WRypw2gvazGgyyjvbJYUVRcywMhrJcOA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -3468,24 +3468,18 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-np/LvomH9Dc0vwvRBMu8+QdcqiHF2G0tjwpdne8y9xeq+XcXesbE09q96OV+g8ad11wkBAVAksiigVVXbPylAA==, tarball: file:projects/openapi-generator.tgz}
-    id: file:projects/openapi-generator.tgz
-    name: '@rush-temp/openapi-generator'
+  file:projects/openapi-operations-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-Pqeh1q6sGigSlkw1pzwqFBJ3dvG1huieN/csm79pUA33wmktsuh37h1e+81WiPjsnWjZfdVs8AgazHkTJZvCRg==, tarball: file:projects/openapi-operations-generator.tgz}
+    id: file:projects/openapi-operations-generator.tgz
+    name: '@rush-temp/openapi-operations-generator'
     version: 0.0.0
     dependencies:
-      '@babel/generator': 7.14.5
-      '@babel/types': 7.14.5
-      '@types/camelcase': 5.2.0
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.170
       '@types/node': 15.12.5
-      '@types/pascalcase': 1.0.0
-      camelcase: 6.2.0
       jest: 27.0.5_ts-node@10.0.0
       lodash: 4.17.21
       openapi3-ts: 2.0.1
-      pascalcase: 1.0.0
       ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
       typescript: 4.3.2
     transitivePeerDependencies:

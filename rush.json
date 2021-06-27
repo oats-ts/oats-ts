@@ -49,8 +49,8 @@
       "shouldPublish": false
     },
     {
-      "packageName": "@oats-ts/openapi-generator",
-      "projectFolder": "projects/openapi-generator",
+      "packageName": "@oats-ts/openapi-operations-generator",
+      "projectFolder": "projects/openapi-operations-generator",
       "shouldPublish": false
     },
     {

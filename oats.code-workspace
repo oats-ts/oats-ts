@@ -41,8 +41,8 @@
       "path": "projects/openapi-common"
     },
     {
-      "name": "openapi-generator",
-      "path": "projects/openapi-generator"
+      "name": "openapi-operations-generator",
+      "path": "projects/openapi-operations-generator"
     },
     {
       "name": "typescript-common",
