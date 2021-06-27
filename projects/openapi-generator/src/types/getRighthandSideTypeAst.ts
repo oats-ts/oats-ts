@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { factory, SyntaxKind, TypeNode } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getArrayTypeAst } from './getArrayTypeAst'
 import { getDictionaryTypeAst } from './getDictionaryTypeAst'
 import { getLiteralUnionTypeAst } from './getLiteralUnionTypeAst'

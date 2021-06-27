@@ -1,9 +1,9 @@
 import { entries, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { getDiscriminators } from '../common/getDiscriminators'
+import { getDiscriminators } from '@oats-ts/openapi-common'
 import { tsMemberAccess } from '../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { reduceExpressions } from './reduceExpressions'
 
 export function getDiscriminatorBasedTypeAssertionAst(

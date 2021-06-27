@@ -1,6 +1,6 @@
 import { factory, SyntaxKind, EnumDeclaration } from 'typescript'
 import { SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getLiteralAst } from './getLiteralAst'
 import { tsIdAst } from '../common/typeScriptUtils'
 

@@ -1,6 +1,6 @@
 import { SchemaObject } from 'openapi3-ts'
 import { factory, TypeLiteralNode } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getObjectPropertiesAst } from './getObjectPropertiesAst'
 import { TypesGeneratorConfig } from './typings'
 

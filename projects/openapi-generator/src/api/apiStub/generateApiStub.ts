@@ -1,9 +1,8 @@
 import { OpenAPIObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { EnhancedOperation } from '../../operations/typings'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getApiTypeImports } from '../apiType/getApiTypeImports'
-import { Http } from '../../common/OatsPackages'
+import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiStubAst } from './getApiStubAst'
 import { tsImportAst, tsRelativeImports } from '../../common/typeScriptUtils'
 import { ApiGeneratorConfig } from '../typings'
@@ -19,7 +18,7 @@ export function generateApiStub(
   return {
     path,
     dependencies: [
-      tsImportAst(Http.name, [Http.RequestConfig]),
+      tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
       ...tsRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
     ],

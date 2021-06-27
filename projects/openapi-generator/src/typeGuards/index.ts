@@ -1,13 +1,17 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
-import { CodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
 import { isNil, negate, sortBy } from 'lodash'
-import { getNamedSchemas } from '../common/getNamedSchemas'
+import {
+  getNamedSchemas,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 import { generateTypeGuard } from './generateTypeGuards'
 import { TypeGuardGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['type-guard']

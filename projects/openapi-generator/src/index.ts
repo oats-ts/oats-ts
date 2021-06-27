@@ -1,9 +1,3 @@
-export type {
-  OpenAPIAccessor,
-  OpenAPIGeneratorConfig,
-  OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-} from './typings'
 export { defaultNameProvider } from './defaults/defaultNameProvider'
 export { singleFile, byName } from './defaults/defaultPathProviders'
 

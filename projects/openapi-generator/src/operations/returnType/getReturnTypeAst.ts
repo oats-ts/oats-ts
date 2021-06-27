@@ -1,8 +1,8 @@
 import { entries, head, isNil } from 'lodash'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeReferenceNode } from 'typescript'
-import { Http } from '../../common/OatsPackages'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getResponseMap } from './getResponseMap'
 
 export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
@@ -10,14 +10,16 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   const responses = entries(getResponseMap(data.operation, context))
   const types: TypeReferenceNode[] = []
   if (responses.length === 0) {
-    types.push(factory.createTypeReferenceNode(Http.HttpResponse, [factory.createTypeReferenceNode('void')]))
+    types.push(
+      factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [factory.createTypeReferenceNode('void')]),
+    )
   }
 
   const defaultResponse = responses.find(([status]) => status === 'default')
   const statusCodeResponses = responses.filter(([status]) => status !== 'default')
   types.push(
     ...statusCodeResponses.map(([status, schema]) =>
-      factory.createTypeReferenceNode(Http.HttpResponse, [
+      factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
         accessor.reference(schema, 'type'),
         factory.createLiteralTypeNode(factory.createNumericLiteral(status)),
       ]),
@@ -28,10 +30,10 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
       statusCodeResponses.map(([status]) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
     )
     const [, schema] = defaultResponse
-    const type = factory.createTypeReferenceNode(Http.HttpResponse, [
+    const type = factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
       accessor.reference(schema, 'type'),
       factory.createTypeReferenceNode('Exclude', [
-        factory.createTypeReferenceNode(Http.StatusCode),
+        factory.createTypeReferenceNode(RuntimePackages.Http.StatusCode),
         knownStatusCodesType,
       ]),
     ])

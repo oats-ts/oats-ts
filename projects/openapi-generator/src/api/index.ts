@@ -1,15 +1,19 @@
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
-import { CodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import { Severity } from '../../../validators/lib'
-import { getEnhancedOperations } from '../common/getEnhancedOperations'
+import {
+  getEnhancedOperations,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['operation', 'operation-input-type']
 const produces: OpenAPIGeneratorTarget[] = ['api-class', 'api-stub', 'api-type']

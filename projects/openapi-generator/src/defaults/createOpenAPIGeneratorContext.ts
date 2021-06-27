@@ -1,6 +1,10 @@
-import { OpenAPIReadOutput } from '../../../openapi-reader/lib'
-import { OpenAPIAccessorImpl } from '../common/OpenAPIAccessor'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import {
+  OpenAPIAccessorImpl,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 
 export function createOpenAPIGeneratorContext<T extends OpenAPIGeneratorConfig>(
   data: OpenAPIReadOutput,

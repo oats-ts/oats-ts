@@ -1,10 +1,9 @@
 import { entries, has, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier } from 'typescript'
-import { getDiscriminators } from '../common/getDiscriminators'
-import { Validators } from '../common/OatsPackages'
+import { getDiscriminators } from '@oats-ts/openapi-common'
+import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { tsIdAst } from '../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../typings'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 
@@ -18,7 +17,7 @@ export function getObjectValidatorAst(
     factory.createPropertyAssignment(
       tsIdAst(name),
       factory.createCallExpression(
-        factory.createIdentifier(Validators.literal),
+        factory.createIdentifier(RuntimePackages.Validators.literal),
         [],
         [factory.createStringLiteral(value)],
       ),
@@ -31,7 +30,7 @@ export function getObjectValidatorAst(
       const isOptional = (data.required || []).indexOf(name) < 0
       const rhs = getRightHandSideValidatorAst(schema, context, config)
       const value = isOptional
-        ? factory.createCallExpression(factory.createIdentifier(Validators.optional), [], [rhs])
+        ? factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [rhs])
         : rhs
       return factory.createPropertyAssignment(tsIdAst(name), value)
     })
@@ -39,11 +38,11 @@ export function getObjectValidatorAst(
   const properties = discriminatorProperties.concat(basicProperties)
 
   return factory.createCallExpression(
-    factory.createIdentifier(Validators.object),
+    factory.createIdentifier(RuntimePackages.Validators.object),
     [],
     [
       factory.createCallExpression(
-        factory.createIdentifier(Validators.shape),
+        factory.createIdentifier(RuntimePackages.Validators.shape),
         [],
         [factory.createObjectLiteralExpression(properties, properties.length > 1)],
       ),

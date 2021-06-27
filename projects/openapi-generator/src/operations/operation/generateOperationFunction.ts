@@ -1,8 +1,9 @@
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getOperationFunctionAst } from './getOperationFunctionAst'
-import { EnhancedOperation, OperationsGeneratorConfig } from '../typings'
-import { Http, Params } from '../../common/OatsPackages'
+import { OperationsGeneratorConfig } from '../typings'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
+import { RuntimePackages } from '@oats-ts/openapi-common'
 import { tsImportAst, tsRelativeImports } from '../../common/typeScriptUtils'
 
 export function generateOperationFunction(
@@ -17,8 +18,8 @@ export function generateOperationFunction(
   return {
     path: operationPath,
     dependencies: [
-      tsImportAst(Params.name, [Params.joinUrl]),
-      tsImportAst(Http.name, [Http.RequestConfig, Http.HttpResponse]),
+      tsImportAst(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
+      tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig, RuntimePackages.Http.HttpResponse]),
       ...tsRelativeImports(operationPath, [
         [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),

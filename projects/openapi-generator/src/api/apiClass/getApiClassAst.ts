@@ -1,9 +1,7 @@
 import { factory, ClassDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../../operations/typings'
+import { RuntimePackages, EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiClassMethodAst } from './getApiClassMethodAst'
-import { Http } from '../../common/OatsPackages'
 import { ApiGeneratorConfig } from '../typings'
 
 export function getApiClassAst(
@@ -19,7 +17,7 @@ export function getApiClassAst(
     [factory.createModifier(SyntaxKind.PrivateKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
     'config',
     undefined,
-    factory.createTypeReferenceNode(Http.RequestConfig),
+    factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),
     undefined,
   )
 
@@ -33,7 +31,7 @@ export function getApiClassAst(
         undefined,
         'config',
         undefined,
-        factory.createTypeReferenceNode(Http.RequestConfig),
+        factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),
       ),
     ],
     factory.createBlock([

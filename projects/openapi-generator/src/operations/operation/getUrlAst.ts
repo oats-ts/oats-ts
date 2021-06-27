@@ -1,6 +1,6 @@
 import { CallExpression, Expression, factory } from 'typescript'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
 
 export function getUrlAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): CallExpression {

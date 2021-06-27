@@ -1,11 +1,9 @@
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
-import { CodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
 import { generateOperationFunction } from './operation/generateOperationFunction'
 import { generateOperationReturnType } from './returnType/generateOperationReturnType'
-import { getEnhancedOperations } from '../common/getEnhancedOperations'
 import { generateOperationInputType } from './inputType/generateOperationInputType'
 import {
   generateHeaderParameterTypeSerializer,
@@ -13,9 +11,16 @@ import {
   generateQueryParameterTypeSerializer,
 } from './parameterSerializer/generateOperationParameterTypeSerializer'
 import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
-import { EnhancedOperation, OperationsGeneratorConfig } from './typings'
+import { OperationsGeneratorConfig } from './typings'
+import {
+  EnhancedOperation,
+  getEnhancedOperations,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = [
   'type',

@@ -1,7 +1,6 @@
 import { generate } from '@oats-ts/generator'
 import { openAPIReader } from '@oats-ts/openapi-reader'
 import {
-  OpenAPIGeneratorTarget,
   types,
   operations,
   typeGuards,
@@ -11,13 +10,13 @@ import {
   defaultNameProvider,
 } from '@oats-ts/openapi-generator'
 import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
+import { NameProvider, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { join, resolve } from 'path'
 import { readFileSync } from 'fs'
-import { SimpleNameProvider } from '../../openapi-generator/lib/typings'
 
-const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '.prettierrc'), 'utf-8'))
+const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '..', '.prettierrc'), 'utf-8'))
 
-function path(input: any, name: SimpleNameProvider, target: OpenAPIGeneratorTarget) {
+function path(input: any, name: NameProvider, target: OpenAPIGeneratorTarget) {
   switch (target) {
     case 'operation':
     case 'operation-headers-serializer':

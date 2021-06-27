@@ -1,8 +1,8 @@
 import { factory, ParameterDeclaration } from 'typescript'
-import { Http } from '../../common/OatsPackages'
+import { RuntimePackages } from '@oats-ts/openapi-common'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
-import { EnhancedOperation } from '../../operations/typings'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getApiMethodParameterAsts(
   data: EnhancedOperation,
@@ -32,7 +32,7 @@ export function getApiMethodParameterAsts(
       undefined,
       'config',
       undefined,
-      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(Http.RequestConfig)]),
+      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig)]),
       factory.createObjectLiteralExpression([]),
     ),
   )

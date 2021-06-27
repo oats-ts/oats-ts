@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { factory, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
 import { TypesGeneratorConfig } from './typings'
 

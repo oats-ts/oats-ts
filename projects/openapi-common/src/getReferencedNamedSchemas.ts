@@ -1,6 +1,6 @@
 import { entries, isNil } from 'lodash'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from './typings'
 
 function collectInChildren(input: SchemaObject, context: OpenAPIGeneratorContext, schemas: SchemaObject[]) {
   const { items, additionalProperties, properties, oneOf } = input

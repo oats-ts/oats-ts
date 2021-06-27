@@ -7,11 +7,16 @@ import {
   generatePathParametersType,
   generateQueryParametersType,
 } from '../parameterTypes/generateOperationParameterType'
-import { getEnhancedOperations } from '../common/getEnhancedOperations'
-import { EnhancedOperation } from '../operations/typings'
+import {
+  EnhancedOperation,
+  getEnhancedOperations,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['operation-headers-type', 'operation-path-type', 'operation-query-type']

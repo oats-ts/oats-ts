@@ -1,7 +1,7 @@
 import { factory, TypeReferenceNode } from 'typescript'
 import { getOperationReturnTypeReferenceAst } from '../../operations/returnType/getReturnTypeReferenceAst'
-import { EnhancedOperation } from '../../operations/typings'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getApiMethodReturnTypeAst(
   data: EnhancedOperation,

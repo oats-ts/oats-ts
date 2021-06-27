@@ -1,6 +1,4 @@
-import { OpenAPIGeneratorConfig } from '../typings'
-
-export type ValidatorsGeneratorConfig = OpenAPIGeneratorConfig & {
+export type ValidatorsGeneratorConfig = {
   /** When true nested $refs will be validated, when false these checks will be ommited. */
   references: boolean
   /** When true, contents of records (additionalProperties) will be checked, otherwise only their type will be asserted. */

@@ -1,7 +1,7 @@
 import { entries } from 'lodash'
 import { ResponseObject } from 'openapi3-ts/dist/model/OpenApi'
 import { factory, PropertyAssignment } from 'typescript'
-import { OpenAPIGeneratorContext } from '../..'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getContentValidatorPropertyAsts(
   data: ResponseObject,

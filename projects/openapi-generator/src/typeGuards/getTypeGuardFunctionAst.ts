@@ -1,6 +1,6 @@
 import { SchemaObject } from 'openapi3-ts'
 import { Expression, factory, FunctionDeclaration, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getTypeGuardFunctionAst(
   schema: SchemaObject,

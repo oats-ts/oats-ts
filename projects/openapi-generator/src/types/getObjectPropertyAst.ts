@@ -2,7 +2,7 @@ import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { factory, PropertySignature, SyntaxKind } from 'typescript'
 import { documentProperty, getSchemaAndDoc } from '../common/jsDoc'
 import { tsIdAst } from '../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 

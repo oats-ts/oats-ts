@@ -1,6 +1,6 @@
 import { factory, SyntaxKind } from 'typescript'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 

@@ -1,8 +1,8 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { Http } from '../../common/OatsPackages'
+import { RuntimePackages } from '@oats-ts/openapi-common'
 import { tsImportAst } from '../../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getResponseParserHintAst } from './getResponseParserHintAst'
 
 export function generateResponseParserHint(
@@ -12,7 +12,7 @@ export function generateResponseParserHint(
   const { accessor } = context
   return {
     path: accessor.path(data.operation, 'operation-response-parser-hint'),
-    dependencies: [tsImportAst(Http.name, [Http.ResponseParserHint])],
+    dependencies: [tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.ResponseParserHint])],
     content: [getResponseParserHintAst(data, context)],
   }
 }

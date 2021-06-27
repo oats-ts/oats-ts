@@ -1,15 +1,8 @@
 import { entries, isNil } from 'lodash'
-import {
-  OpenAPIObject,
-  OperationObject,
-  ParameterLocation,
-  ParameterObject,
-  PathItemObject,
-  ReferenceObject,
-} from 'openapi3-ts'
-import { HttpMethod } from '../../../http/lib'
-import { OpenAPIGeneratorContext } from '../typings'
-import { EnhancedOperation } from '../operations/typings'
+import { OpenAPIObject, OperationObject, ParameterObject, PathItemObject, ReferenceObject } from 'openapi3-ts'
+import { HttpMethod } from '../../http/lib'
+import { OpenAPIGeneratorContext } from './typings'
+import { EnhancedOperation } from './typings'
 
 function getEnhancedOperation(
   url: string,

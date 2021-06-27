@@ -31,7 +31,6 @@
   "dependencies": {
     "@babel/generator": "^7.14.3",
     "@babel/types": "^7.14.4",
-    "@types/camelcase": "^5.2.0",
     "@types/lodash": "^4.14.170",
     "@types/pascalcase": "^1.0.0",
     "camelcase": "^6.2.0",
@@ -42,6 +41,7 @@
     "@oats-ts/openapi-reader": "~0.0.0",
     "@oats-ts/typescript-writer": "~0.0.0",
     "@oats-ts/generator": "~0.0.0",
-    "@oats-ts/http": "~0.0.0"
+    "@oats-ts/http": "~0.0.0",
+    "@oats-ts/openapi-common": "~0.0.0"
   }
 }

@@ -1,9 +1,9 @@
 import { values } from 'lodash'
 import { OperationObject, SchemaObject } from 'openapi3-ts'
 import { ImportDeclaration } from 'typescript'
-import { getReferencedNamedSchemas } from '../../common/getReferencedNamedSchemas'
+import { getReferencedNamedSchemas } from '@oats-ts/openapi-common'
 import { tsModelImportAsts } from '../../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getResponseMap } from './getResponseMap'
 
 export function getOperationReturnTypeImports(

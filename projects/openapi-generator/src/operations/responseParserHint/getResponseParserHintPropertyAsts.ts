@@ -1,7 +1,7 @@
 import { entries, isNil } from 'lodash'
 import { factory, PropertyAssignment } from 'typescript'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getContentValidatorPropertyAsts } from './getContentValidatorPropertyAsts'
 
 export function getResponseParserHintPropertyAsts(

@@ -1,37 +1,34 @@
-import { OpenAPIObject, ReferenceObject } from 'openapi3-ts'
+import { OpenAPIObject, ReferenceObject, OperationObject, ParameterObject } from 'openapi3-ts'
 import { Issue } from '@oats-ts/validators'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator } from '@oats-ts/generator'
+import { HttpMethod } from '@oats-ts/http'
 
 /**
  * @param input The named object (schema, operation, parameter, etc).
  * @param target The generator target (type definition, operation, etc).
  * @returns The desired name for the object based on target
  */
-export type SimpleNameProvider = (input: any, target: string) => string
-
-/**
- * @param input The named object (schema, operation, parameter, etc).
- * @param originalName The name of the object as described in the document.
- * It's a separate argument, as in many cases it's separate from input object.
- * @param target The generator target (type definition, operation, etc).
- * @returns The desired name based on the parameters.
- */
-export type NameProvider = (input: any, originalName: string, target: string) => string
-
-/**
- * @param input The named object (schema, operation, parameter, etc).
- * @param name A simplified name provider.
- * @param target The generator target (type definition, operation, etc).
- * @returns The operating system dependent path for the desired generator target.
- */
-export type PathProvider = (input: any, name: SimpleNameProvider, target: string) => string
+export type NameProvider = (input: any, target: string) => string
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type OpenAPIGeneratorConfig = {
-  name: NameProvider
-  path: PathProvider
+  /**
+   * @param input The named object (schema, operation, parameter, etc).
+   * @param originalName The name of the object as described in the document.
+   * It's a separate argument, as in many cases it's separate from input object.
+   * @param target The generator target (type definition, operation, etc).
+   * @returns The desired name based on the parameters.
+   */
+  name(input: any, originalName: string, target: string): string
+  /**
+   * @param input The named object (schema, operation, parameter, etc).
+   * @param name A simplified name provider.
+   * @param target The generator target (type definition, operation, etc).
+   * @returns The operating system dependent path for the desired generator target.
+   */
+  path(input: any, name: NameProvider, target: string): string
 }
 
 /** Accessors to make it easy to find information about deeply nested structures. */
@@ -95,3 +92,17 @@ export type OpenAPIGeneratorTarget =
   | 'validator'
 
 export type OpenAPIGenerator = CodeGenerator<OpenAPIReadOutput, TypeScriptModule>
+
+/**
+ * Type to contain all the related stuff for an operation.
+ * It exists to prevent passing around a large amount of parameters.
+ */
+export type EnhancedOperation = {
+  url: string
+  method: HttpMethod
+  operation: OperationObject
+  query: ParameterObject[]
+  path: ParameterObject[]
+  cookie: ParameterObject[]
+  header: ParameterObject[]
+}

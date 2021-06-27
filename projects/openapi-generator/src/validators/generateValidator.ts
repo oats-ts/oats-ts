@@ -1,6 +1,6 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getValidatorAst } from './getValidatorAst'
 import { getValidatorImports } from './getValidatorImports'
 import { ValidatorsGeneratorConfig } from './typings'

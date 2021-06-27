@@ -1,6 +1,6 @@
 import { OperationObject } from 'openapi3-ts'
 import { factory, TypeReferenceNode } from 'typescript'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getOperationReturnTypeReferenceAst(
   operation: OperationObject,

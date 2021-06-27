@@ -1,12 +1,10 @@
 import { entries, has, keys, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
-import { factory, PropertySignature, SyntaxKind } from 'typescript'
-import { getDiscriminators } from '../common/getDiscriminators'
-import { getSchemaAndDoc } from '../common/jsDoc'
+import { factory, PropertySignature } from 'typescript'
+import { getDiscriminators } from '@oats-ts/openapi-common'
 import { tsIdAst } from '../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getObjectPropertyAst } from './getObjectPropertyAst'
-import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 
 export function getObjectPropertiesAst(

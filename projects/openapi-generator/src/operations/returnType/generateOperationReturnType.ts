@@ -1,9 +1,9 @@
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getOperationReturnTypeImports } from './getOperationReturnTypeImports'
 import { getReturnTypeAst } from './getReturnTypeAst'
-import { EnhancedOperation } from '../typings'
-import { Http } from '../../common/OatsPackages'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
+import { RuntimePackages } from '@oats-ts/openapi-common'
 import { getResponseMap } from './getResponseMap'
 import { has } from 'lodash'
 import { tsImportAst } from '../../common/typeScriptUtils'
@@ -17,8 +17,8 @@ export function generateOperationReturnType(
   return {
     path: accessor.path(data.operation, 'operation-response-type'),
     dependencies: [
-      tsImportAst(Http.name, [Http.HttpResponse]),
-      ...(has(schemas, 'default') ? [tsImportAst(Http.name, [Http.StatusCode])] : []),
+      tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.HttpResponse]),
+      ...(has(schemas, 'default') ? [tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.StatusCode])] : []),
       ...getOperationReturnTypeImports(data.operation, context),
     ],
     content: [getReturnTypeAst(data, context)],

@@ -1,5 +1,5 @@
 import { ParameterLocation, ParameterObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerMethod } from './getParameterSerializerMethod'
@@ -7,8 +7,8 @@ import { getParameterStyle } from './getParameterStyle'
 import { getParameterSerializerGeneratorTarget } from './getParameterSerializerGeneratorTarget'
 import { getParameterTypeGeneratorTarget } from '../../parameterTypes/getParameterTypeGeneratorTarget'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
-import { Params } from '../../common/OatsPackages'
-import { EnhancedOperation } from '../typings'
+import { RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import {
   CallExpression,
   factory,
@@ -128,7 +128,12 @@ const generateOperationParameterTypeSerializer =
     }
     return {
       path: accessor.path(data.operation, 'operation'),
-      dependencies: [tsImportAst(Params.name, [location, getParameterSerializerFactoryName(location)])],
+      dependencies: [
+        tsImportAst(RuntimePackages.ParameterSerialization.name, [
+          location,
+          getParameterSerializerFactoryName(location),
+        ]),
+      ],
       content: [createSerializerConstant(location, data, context)],
     }
   }

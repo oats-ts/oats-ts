@@ -1,6 +1,6 @@
 import { SchemaObject } from 'openapi3-ts'
 import { factory, UnionTypeNode } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 

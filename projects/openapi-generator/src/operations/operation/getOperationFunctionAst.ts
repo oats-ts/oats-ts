@@ -1,10 +1,11 @@
 import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { documentOperation } from '../../common/jsDoc'
-import { Http } from '../../common/OatsPackages'
-import { OpenAPIGeneratorContext } from '../../typings'
+import { RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
 import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
-import { EnhancedOperation, OperationsGeneratorConfig } from '../typings'
+import { OperationsGeneratorConfig } from '../typings'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getOperationParseAst } from './getOperationParseAst'
 
 export function getOperationFunctionAst(
@@ -37,7 +38,7 @@ export function getOperationFunctionAst(
       undefined,
       'config',
       undefined,
-      factory.createTypeReferenceNode(Http.RequestConfig),
+      factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),
     ),
   )
 

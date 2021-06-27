@@ -1,7 +1,6 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { SchemaObject } from 'openapi3-ts'
-import { getReferencedNamedSchemas } from '../common/getReferencedNamedSchemas'
-import { OpenAPIGeneratorContext } from '../typings'
+import { getReferencedNamedSchemas, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getNamedTypeAst } from './getNamedTypeAst'
 import { tsModelImportAsts } from '../common/typeScriptUtils'
 import { TypesGeneratorConfig } from './typings'

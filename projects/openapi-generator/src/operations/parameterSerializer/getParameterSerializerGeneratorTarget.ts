@@ -1,5 +1,5 @@
 import { ParameterLocation } from 'openapi3-ts'
-import { OpenAPIGeneratorTarget } from '../../typings'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 
 export function getParameterSerializerGeneratorTarget(location: ParameterLocation): OpenAPIGeneratorTarget {
   switch (location) {

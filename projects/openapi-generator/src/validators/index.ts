@@ -1,13 +1,17 @@
-import { CodeGenerator } from '@oats-ts/generator'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
 import { sortBy } from 'lodash'
-import { getNamedSchemas } from '../common/getNamedSchemas'
+import {
+  getNamedSchemas,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 
 const consumes: OpenAPIGeneratorTarget[] = ['type']
 const produces: OpenAPIGeneratorTarget[] = ['validator']

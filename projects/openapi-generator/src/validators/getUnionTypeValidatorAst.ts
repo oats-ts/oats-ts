@@ -1,9 +1,8 @@
 import { isNil, values } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
-import { Validators } from '../common/OatsPackages'
+import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getPrimitiveType, PrimitiveTypes } from '../common/primitiveTypeUtils'
-import { OpenAPIGeneratorContext } from '../typings'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 
@@ -40,7 +39,7 @@ export function getUnionTypeValidatorAst(
   if (config.unionReferences || config.references) {
     const properties = getUnionProperties(data, context, config)
     const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
-    return factory.createCallExpression(factory.createIdentifier(Validators.union), [], [parameters])
+    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.union), [], [parameters])
   }
-  return factory.createIdentifier(Validators.any)
+  return factory.createIdentifier(RuntimePackages.Validators.any)
 }

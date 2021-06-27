@@ -1,7 +1,6 @@
 import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier } from 'typescript'
-import { Validators } from '../common/OatsPackages'
-import { OpenAPIGeneratorContext } from '../typings'
+import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 
@@ -11,7 +10,7 @@ export function getArrayValidatorAst(
   config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
   return factory.createCallExpression(
-    factory.createIdentifier(Validators.array),
+    factory.createIdentifier(RuntimePackages.Validators.array),
     [],
     config.arrays ? [getRightHandSideValidatorAst(data.items, context, config)] : [],
   )

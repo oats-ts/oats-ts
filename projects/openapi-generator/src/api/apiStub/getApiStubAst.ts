@@ -1,6 +1,5 @@
 import { OpenAPIObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../../operations/typings'
+import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiStubMethodAst } from './getApiStubMethodAst'
 import { ClassDeclaration, factory, SyntaxKind } from 'typescript'
 import { ApiGeneratorConfig } from '../typings'

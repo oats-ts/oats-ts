@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { reduceExpressions } from './reduceExpressions'
 import { FullTypeGuardGeneratorConfig } from './typings'

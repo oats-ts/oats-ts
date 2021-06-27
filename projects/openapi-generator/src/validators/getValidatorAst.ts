@@ -1,6 +1,6 @@
 import { SchemaObject } from 'openapi3-ts'
 import { factory, NodeFlags, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 

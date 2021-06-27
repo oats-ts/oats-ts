@@ -1,6 +1,6 @@
 import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../../operations/typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getApiMethodParameterAsts } from './getApiMethodParameterAsts'
 import { getApiMethodReturnTypeAst } from './getApiMethodReturnTypeAst'
 

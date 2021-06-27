@@ -10,7 +10,7 @@ import {
   PropertyAccessExpression,
   ElementAccessExpression,
 } from 'typescript'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { createImportPath } from './createImportPath'
 import { isIdentifier } from './isIdentifier'
 

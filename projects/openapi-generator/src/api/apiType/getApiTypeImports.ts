@@ -1,8 +1,7 @@
 import { flatMap } from 'lodash'
 import { OpenAPIObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../../typings'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
-import { EnhancedOperation } from '../../operations/typings'
+import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { tsRelativeImports } from '../../common/typeScriptUtils'
 

@@ -1,14 +1,14 @@
 import { ParameterLocation } from 'openapi3-ts'
-import { Params } from '../../common/OatsPackages'
+import { RuntimePackages } from '@oats-ts/openapi-common'
 
 export function getParameterSerializerFactoryName(location: ParameterLocation) {
   switch (location) {
     case 'header':
-      return Params.createHeaderSerializer
+      return RuntimePackages.ParameterSerialization.createHeaderSerializer
     case 'path':
-      return Params.createPathSerializer
+      return RuntimePackages.ParameterSerialization.createPathSerializer
     case 'query':
-      return Params.createQuerySerializer
+      return RuntimePackages.ParameterSerialization.createQuerySerializer
     default:
       return undefined
   }

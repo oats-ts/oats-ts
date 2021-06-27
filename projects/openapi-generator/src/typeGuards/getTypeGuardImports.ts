@@ -1,7 +1,8 @@
 import { isNil, sortBy, values } from 'lodash'
+import { ImportDeclaration } from 'typescript'
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { tsModelImportAsts } from '../common/typeScriptUtils'
-import { OpenAPIGeneratorContext } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { FullTypeGuardGeneratorConfig } from './typings'
 
 function getImportedRefs(
@@ -53,7 +54,7 @@ export function getTypeGuardImports(
   data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: FullTypeGuardGeneratorConfig,
-) {
+): ImportDeclaration[] {
   const { accessor } = context
   const refs = new Set<string>()
   getImportedRefs(data, context, config, refs)

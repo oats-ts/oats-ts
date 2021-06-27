@@ -1,7 +1,7 @@
 import { factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
-import { Http } from '../../common/OatsPackages'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getResponseParserHintPropertyAsts } from './getResponseParserHintPropertyAsts'
 
 export function getResponseParserHintAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
@@ -17,7 +17,7 @@ export function getResponseParserHintAst(data: EnhancedOperation, context: OpenA
         factory.createVariableDeclaration(
           varName,
           undefined,
-          factory.createTypeReferenceNode(Http.ResponseParserHint),
+          factory.createTypeReferenceNode(RuntimePackages.Http.ResponseParserHint),
           factory.createObjectLiteralExpression(getResponseParserHintPropertyAsts(data, context)),
         ),
       ],

@@ -1,6 +1,6 @@
 import { CallExpression, factory } from 'typescript'
-import { OpenAPIGeneratorContext } from '../../typings'
-import { EnhancedOperation } from '../typings'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getOperationRequestAst } from './getOperationRequestAst'
 
 export function getOperationParseAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): CallExpression {

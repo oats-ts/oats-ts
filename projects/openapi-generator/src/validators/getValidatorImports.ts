@@ -1,7 +1,6 @@
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '../typings'
 import { entries, isNil, sortBy, values } from 'lodash'
-import { Validators } from '../common/OatsPackages'
+import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { tsImportAst, tsModelImportAsts } from '../common/typeScriptUtils'
 import { ValidatorsGeneratorConfig } from './typings'
@@ -14,59 +13,59 @@ function collectImportedNames(
 ): void {
   if (isReferenceObject(data)) {
     if (!config.references) {
-      names.add(Validators.any)
+      names.add(RuntimePackages.Validators.any)
     } else {
-      names.add(Validators.lazy)
+      names.add(RuntimePackages.Validators.lazy)
       refs.add(data.$ref)
     }
     return
   }
 
   if (!isNil(data.oneOf)) {
-    names.add(Validators.union)
+    names.add(RuntimePackages.Validators.union)
     if (!isNil(data.discriminator) && (config.references || config.unionReferences)) {
       // TODO maybe better of collecting discriminators
-      names.add(Validators.literal)
+      names.add(RuntimePackages.Validators.literal)
       values(data.discriminator.mapping || {}).map((ref) => refs.add(ref))
     }
     return
   }
 
   if (!isNil(data.enum)) {
-    names.add(Validators.enumeration)
+    names.add(RuntimePackages.Validators.enumeration)
     return
   }
 
   if (data.type === 'string') {
-    names.add(Validators.string)
+    names.add(RuntimePackages.Validators.string)
     return
   }
 
   if (data.type === 'number' || data.type === 'integer') {
-    names.add(Validators.number)
+    names.add(RuntimePackages.Validators.number)
     return
   }
 
   if (data.type === 'boolean') {
-    names.add(Validators.boolean)
+    names.add(RuntimePackages.Validators.boolean)
     return
   }
 
   if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
-    names.add(Validators.object)
+    names.add(RuntimePackages.Validators.object)
     if (config.records) {
-      names.add(Validators.record)
+      names.add(RuntimePackages.Validators.record)
       return collectImportedNames(data.additionalProperties, names, refs, config)
     }
     return
   }
 
   if (!isNil(data.properties)) {
-    names.add(Validators.object).add(Validators.shape)
+    names.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
     for (const [name, propSchema] of entries(data.properties)) {
       const isOptional = (data.required || []).indexOf(name) < 0
       if (isOptional) {
-        names.add(Validators.optional)
+        names.add(RuntimePackages.Validators.optional)
       }
       collectImportedNames(propSchema, names, refs, config)
     }
@@ -74,15 +73,15 @@ function collectImportedNames(
   }
 
   if (!isNil(data.items)) {
-    names.add(Validators.array)
+    names.add(RuntimePackages.Validators.array)
     if (config.arrays) {
-      names.add(Validators.items)
+      names.add(RuntimePackages.Validators.items)
       return collectImportedNames(data.items, names, refs, config)
     }
     return
   }
 
-  names.add(Validators.any)
+  names.add(RuntimePackages.Validators.any)
 }
 
 export function getValidatorImports(
@@ -96,7 +95,7 @@ export function getValidatorImports(
   collectImportedNames(schema, nameSet, refs, config)
   const asts = [
     tsImportAst(
-      Validators.name,
+      RuntimePackages.Validators.name,
       sortBy(Array.from(nameSet), (name) => name),
     ),
     ...tsModelImportAsts(

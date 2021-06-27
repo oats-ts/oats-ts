@@ -1,4 +1,4 @@
-export const Validators = {
+const Validators = {
   name: '@oats-ts/validators',
   string: 'string',
   enumeration: 'enumeration',
@@ -16,7 +16,7 @@ export const Validators = {
   literal: 'literal',
 }
 
-export const Http = {
+const Http = {
   name: '@oats-ts/http',
   ResponseParserHint: 'ResponseParserHint',
   RequestConfig: 'RequestConfig',
@@ -24,10 +24,16 @@ export const Http = {
   StatusCode: 'StatusCode',
 }
 
-export const Params = {
+const ParameterSerialization = {
   name: '@oats-ts/openapi-parameter-serialization',
   joinUrl: 'joinUrl',
   createHeaderSerializer: 'createHeaderSerializer',
   createPathSerializer: 'createPathSerializer',
   createQuerySerializer: 'createQuerySerializer',
+}
+
+export const RuntimePackages = {
+  Validators,
+  Http,
+  ParameterSerialization,
 }

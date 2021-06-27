@@ -1,13 +1,17 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { CodeGenerator } from '@oats-ts/generator'
 import { Severity } from '@oats-ts/validators'
 import { sortBy } from 'lodash'
-import { getNamedSchemas } from '../common/getNamedSchemas'
+import {
+  getNamedSchemas,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIGeneratorConfig,
+} from '@oats-ts/openapi-common'
 import { generateType } from './generateType'
 import { TypesGeneratorConfig } from './typings'
 import { createOpenAPIGeneratorContext } from '../defaults/createOpenAPIGeneratorContext'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '../typings'
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { Node } from 'typescript'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
