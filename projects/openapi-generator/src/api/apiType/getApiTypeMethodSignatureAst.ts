@@ -4,7 +4,7 @@ import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-com
 import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { ApiGeneratorConfig } from '../typings'
-import { documentOperation } from '../../common/jsDoc'
+import { documentNode } from '@oats-ts/typescript-common'
 
 export function getApiTypeMethodSignatureAst(
   data: EnhancedOperation,
@@ -43,16 +43,14 @@ export function getApiTypeMethodSignatureAst(
     getOperationReturnTypeReferenceAst(data.operation, context),
   ])
 
-  return documentOperation(
-    factory.createMethodSignature(
-      [],
-      accessor.name(data.operation, 'operation'),
-      undefined,
-      [],
-      parameters,
-      returnType,
-    ),
-    data.operation,
-    config,
+  const node = factory.createMethodSignature(
+    [],
+    accessor.name(data.operation, 'operation'),
+    undefined,
+    [],
+    parameters,
+    returnType,
   )
+
+  return config.documentation ? documentNode(node, data.operation) : node
 }

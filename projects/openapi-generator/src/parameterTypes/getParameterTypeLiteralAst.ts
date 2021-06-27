@@ -3,7 +3,7 @@ import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { factory, TypeLiteralNode } from 'typescript'
 import { getObjectPropertyAst } from '../types/getObjectPropertyAst'
-import { documentParameter } from '../common/jsDoc'
+import { documentNode } from '@oats-ts/typescript-common'
 
 export function getParameterTypeLiteralAst(
   parameters: ParameterObject[],
@@ -12,11 +12,11 @@ export function getParameterTypeLiteralAst(
 ): TypeLiteralNode {
   return factory.createTypeLiteralNode(
     parameters.map((parameter) => {
-      const ast = getObjectPropertyAst(parameter.name, !parameter.required, parameter.schema, context, {
+      const node = getObjectPropertyAst(parameter.name, !parameter.required, parameter.schema, context, {
         enums: false,
         documentation: false,
       })
-      return documentParameter(ast, parameter, config)
+      return config.documentation ? documentNode(node, parameter) : node
     }),
   )
 }

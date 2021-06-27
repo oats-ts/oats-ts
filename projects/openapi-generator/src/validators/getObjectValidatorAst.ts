@@ -3,9 +3,9 @@ import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { getDiscriminators } from '@oats-ts/openapi-common'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { tsIdAst } from '../common/typeScriptUtils'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
+import { safeName } from '@oats-ts/typescript-common'
 
 export function getObjectValidatorAst(
   data: SchemaObject,
@@ -15,7 +15,7 @@ export function getObjectValidatorAst(
   const discriminators = getDiscriminators(data, context) || {}
   const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
     factory.createPropertyAssignment(
-      tsIdAst(name),
+      safeName(name),
       factory.createCallExpression(
         factory.createIdentifier(RuntimePackages.Validators.literal),
         [],
@@ -32,7 +32,7 @@ export function getObjectValidatorAst(
       const value = isOptional
         ? factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [rhs])
         : rhs
-      return factory.createPropertyAssignment(tsIdAst(name), value)
+      return factory.createPropertyAssignment(safeName(name), value)
     })
 
   const properties = discriminatorProperties.concat(basicProperties)

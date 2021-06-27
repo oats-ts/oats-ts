@@ -1,5 +1,4 @@
 import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
-import { documentOperation } from '../../common/jsDoc'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { isOperationInputTypeRequired } from '../inputType/isOperationInputTypeRequired'
@@ -7,6 +6,7 @@ import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeR
 import { OperationsGeneratorConfig } from '../typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getOperationParseAst } from './getOperationParseAst'
+import { documentNode } from '@oats-ts/typescript-common'
 
 export function getOperationFunctionAst(
   data: EnhancedOperation,
@@ -42,18 +42,15 @@ export function getOperationFunctionAst(
     ),
   )
 
-  return documentOperation(
-    factory.createFunctionDeclaration(
-      [],
-      [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
-      undefined,
-      accessor.name(operation, 'operation'),
-      [],
-      params,
-      factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),
-      factory.createBlock([factory.createReturnStatement(getOperationParseAst(data, context))]),
-    ),
-    data.operation,
-    config,
+  const node = factory.createFunctionDeclaration(
+    [],
+    [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
+    undefined,
+    accessor.name(operation, 'operation'),
+    [],
+    params,
+    factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),
+    factory.createBlock([factory.createReturnStatement(getOperationParseAst(data, context))]),
   )
+  return config.documentation ? documentNode(node, operation) : node
 }

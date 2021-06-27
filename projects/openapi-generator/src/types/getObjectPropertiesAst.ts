@@ -2,10 +2,10 @@ import { entries, has, keys, sortBy } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { factory, PropertySignature } from 'typescript'
 import { getDiscriminators } from '@oats-ts/openapi-common'
-import { tsIdAst } from '../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getObjectPropertyAst } from './getObjectPropertyAst'
 import { TypesGeneratorConfig } from './typings'
+import { safeName } from '@oats-ts/typescript-common'
 
 export function getObjectPropertiesAst(
   data: SchemaObject,
@@ -18,7 +18,7 @@ export function getObjectPropertiesAst(
     ([name, value]): PropertySignature => {
       return factory.createPropertySignature(
         undefined,
-        tsIdAst(name),
+        safeName(name),
         undefined,
         factory.createLiteralTypeNode(factory.createStringLiteral(value)),
       )

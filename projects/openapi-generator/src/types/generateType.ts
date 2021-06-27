@@ -2,8 +2,8 @@ import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { SchemaObject } from 'openapi3-ts'
 import { getReferencedNamedSchemas, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getNamedTypeAst } from './getNamedTypeAst'
-import { tsModelImportAsts } from '../common/typeScriptUtils'
 import { TypesGeneratorConfig } from './typings'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 export function generateType(
   schema: SchemaObject,
@@ -16,6 +16,6 @@ export function generateType(
   return {
     path,
     content: [getNamedTypeAst(schema, context, config)],
-    dependencies: tsModelImportAsts(path, 'type', referencedTypes, context),
+    dependencies: getModelImports(path, 'type', referencedTypes, context),
   }
 }

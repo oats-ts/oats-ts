@@ -4,8 +4,8 @@ import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getApiTypeImports } from '../apiType/getApiTypeImports'
 import { getApiClassAst } from './getApiClassAst'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { tsImportAst, tsModelImportAsts, tsRelativeImports } from '../../common/typeScriptUtils'
 import { ApiGeneratorConfig } from '../typings'
+import { getModelImports, getNamedImports, getRelativeImports } from '@oats-ts/typescript-common'
 
 export function generateApiClass(
   doc: OpenAPIObject,
@@ -18,10 +18,10 @@ export function generateApiClass(
   return {
     path,
     dependencies: [
-      tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
-      ...tsRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
-      ...tsModelImportAsts(
+      ...getRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
+      ...getModelImports(
         path,
         'operation',
         operations.map((o) => o.operation),

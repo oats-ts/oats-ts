@@ -2,9 +2,9 @@ import { isNil, values } from 'lodash'
 import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getPrimitiveType, PrimitiveTypes } from '../common/primitiveTypeUtils'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
+import { getPrimitiveType, PrimitiveTypes } from '@oats-ts/typescript-common'
 
 function getUnionProperties(
   data: SchemaObject,

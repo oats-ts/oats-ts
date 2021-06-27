@@ -3,8 +3,8 @@ import { SchemaObject } from 'openapi3-ts'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { reduceExpressions } from './reduceExpressions'
 import { FullTypeGuardGeneratorConfig } from './typings'
+import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
 
 export function getUnionTypeAssertionAst(
   data: SchemaObject,
@@ -14,12 +14,12 @@ export function getUnionTypeAssertionAst(
 ): Expression {
   const { accessor } = context
   if (isNil(data.discriminator) || !config.unionReferences) {
-    return reduceExpressions(
+    return reduceLogicalExpressions(
       SyntaxKind.BarBarToken,
       data.oneOf.map((refOrSchema) => getTypeAssertionAst(refOrSchema, context, variable, config)),
     )
   }
-  return reduceExpressions(
+  return reduceLogicalExpressions(
     SyntaxKind.BarBarToken,
     data.oneOf.map((refOrSchema) => {
       const schema = accessor.dereference<SchemaObject>(refOrSchema)

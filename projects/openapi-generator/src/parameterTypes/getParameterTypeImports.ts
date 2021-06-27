@@ -4,8 +4,8 @@ import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { getParameterSchemaObject } from './getParameterSchemaObject'
-import { tsModelImportAsts } from '../common/typeScriptUtils'
 import { ImportDeclaration } from 'typescript'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 export function getParameterTypeImports(
   location: ParameterLocation,
@@ -20,5 +20,5 @@ export function getParameterTypeImports(
   const path = accessor.path(operation, getParameterTypeGeneratorTarget(location))
   const referencedSchemas = getReferencedNamedSchemas(paramsSchema, context)
 
-  return tsModelImportAsts(path, 'type', referencedSchemas, context)
+  return getModelImports(path, 'type', referencedSchemas, context)
 }

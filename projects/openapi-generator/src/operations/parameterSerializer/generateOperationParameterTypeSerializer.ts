@@ -18,8 +18,7 @@ import {
   SyntaxKind,
   VariableStatement,
 } from 'typescript'
-import { tsImportAst } from '../../common/typeScriptUtils'
-import { isIdentifier } from '../../common/isIdentifier'
+import { getNamedImports, isIdentifier } from '@oats-ts/typescript-common'
 
 function getSerializerOptionProperty(key: keyof ParameterObject, parameter: ParameterObject): PropertyAssignment {
   return has(parameter, key)
@@ -129,7 +128,7 @@ const generateOperationParameterTypeSerializer =
     return {
       path: accessor.path(data.operation, 'operation'),
       dependencies: [
-        tsImportAst(RuntimePackages.ParameterSerialization.name, [
+        getNamedImports(RuntimePackages.ParameterSerialization.name, [
           location,
           getParameterSerializerFactoryName(location),
         ]),

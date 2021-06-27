@@ -4,8 +4,8 @@ import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getApiTypeImports } from '../apiType/getApiTypeImports'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiStubAst } from './getApiStubAst'
-import { tsImportAst, tsRelativeImports } from '../../common/typeScriptUtils'
 import { ApiGeneratorConfig } from '../typings'
+import { getNamedImports, getRelativeImports } from '@oats-ts/typescript-common'
 
 export function generateApiStub(
   doc: OpenAPIObject,
@@ -18,9 +18,9 @@ export function generateApiStub(
   return {
     path,
     dependencies: [
-      tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
-      ...tsRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
+      ...getRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
     ],
     content: [getApiStubAst(doc, operations, context, config)],
   }

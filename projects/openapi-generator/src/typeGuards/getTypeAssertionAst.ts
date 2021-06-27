@@ -1,7 +1,6 @@
 import { isNil } from 'lodash'
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { Expression, factory } from 'typescript'
-import { PrimitiveTypes } from '../common/primitiveTypeUtils'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getArrayTypeAssertionAst } from './getArrayTypeAssertion'
 import { getEnumAssertionAst } from './getEnumAssertionAst'
@@ -11,6 +10,7 @@ import { getRecordTypeAssertionAst } from './getRecordTypeAssertionAst'
 import { getReferenceAssertionAst } from './getReferenceAssertionAst'
 import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
 import { FullTypeGuardGeneratorConfig } from './typings'
+import { PrimitiveTypes } from '@oats-ts/typescript-common'
 
 export function getTypeAssertionAst(
   data: SchemaObject | ReferenceObject,

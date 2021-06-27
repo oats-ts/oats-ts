@@ -6,10 +6,10 @@ import { TypeGuardGeneratorConfig, UnionTypeGuardGeneratorConfig } from './typin
 import { getDiscriminators } from '@oats-ts/openapi-common'
 import { isNil, keys } from 'lodash'
 import { factory } from 'typescript'
-import { tsModelImportAsts } from '../common/typeScriptUtils'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { getDiscriminatorBasedTypeAssertionAst } from './getDiscriminatorBasedTypeAssertionAst'
 import { getTypeGuardImports } from './getTypeGuardImports'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 function isUnionTypeGuardGeneratorConfig(input: any): input is UnionTypeGuardGeneratorConfig {
   return typeof input === 'object' && input !== null && input.discriminatorBased === true
@@ -22,7 +22,7 @@ export function generateTypeGuard(
 ): TypeScriptModule {
   const { accessor } = context
   const path = accessor.path(schema, 'type-guard')
-  const typeImports = tsModelImportAsts(path, 'type', [schema], context)
+  const typeImports = getModelImports(path, 'type', [schema], context)
   if (isUnionTypeGuardGeneratorConfig(config)) {
     const discriminators = getDiscriminators(schema, context)
     if (keys(discriminators).length === 0 || (!isNil(schema.oneOf) && schema.oneOf.length > 0)) {

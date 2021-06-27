@@ -1,9 +1,9 @@
 import { SchemaObject } from 'openapi3-ts'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { tsBinaryExpressions } from '../common/typeScriptUtils'
 import { getLiteralAst } from '../types/getLiteralAst'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { FullTypeGuardGeneratorConfig } from './typings'
+import { getLogicalExpression } from '@oats-ts/typescript-common'
 
 export function getEnumAssertionAst(
   data: SchemaObject,
@@ -11,7 +11,7 @@ export function getEnumAssertionAst(
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
 ): Expression {
-  return tsBinaryExpressions(
+  return getLogicalExpression(
     SyntaxKind.BarBarToken,
     data.enum.map((value) =>
       factory.createBinaryExpression(variable, SyntaxKind.EqualsEqualsEqualsToken, getLiteralAst(value)),

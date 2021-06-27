@@ -2,8 +2,8 @@ import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { CallExpression, Expression, factory, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { reduceExpressions } from './reduceExpressions'
 import { FullTypeGuardGeneratorConfig } from './typings'
+import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
 
 function getRecordItemsAsserterAst(
   data: SchemaObject,
@@ -54,5 +54,5 @@ export function getRecordTypeAssertionAst(
     ),
     ...(config.records ? [getRecordItemsAsserterAst(data, context, variable, config)] : []),
   ]
-  return reduceExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
+  return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
 }

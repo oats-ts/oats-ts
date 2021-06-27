@@ -2,13 +2,13 @@ import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { entries, isNil, negate } from 'lodash'
 import { Statement } from 'typescript'
 import { getReferencedNamedSchemas } from '@oats-ts/openapi-common'
-import { tsModelImportAsts } from '../../common/typeScriptUtils'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getOperationInputBaseTypeAst } from './getOperationInputBaseTypeAst'
 import { getOperationInputUnionTypeAst } from './getOperationInputUnionTypeAst'
 import { getRequestBodyContent } from './getRequestBodyContent'
 import { isOperationInputTypeRequired } from './isOperationInputTypeRequired'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 export function generateOperationInputType(
   data: EnhancedOperation,
@@ -34,7 +34,7 @@ export function generateOperationInputType(
   }
   return {
     path,
-    dependencies: tsModelImportAsts(path, 'type', referencedTypes, context),
+    dependencies: getModelImports(path, 'type', referencedTypes, context),
     content: statements,
   }
 }

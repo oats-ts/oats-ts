@@ -3,7 +3,7 @@ import { OpenAPIObject } from 'openapi3-ts'
 import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
-import { tsRelativeImports } from '../../common/typeScriptUtils'
+import { getRelativeImports } from '@oats-ts/typescript-common'
 
 export function getApiTypeImports(
   doc: OpenAPIObject,
@@ -18,13 +18,13 @@ export function getApiTypeImports(
     const imports: ImportDeclaration[] = []
     if (isOperationInputTypeRequired(data, context)) {
       imports.push(
-        ...tsRelativeImports(requestsPath, [
+        ...getRelativeImports(requestsPath, [
           [accessor.path(operation, 'operation-input-type'), accessor.name(operation, 'operation-input-type')],
         ]),
       )
     }
     imports.push(
-      ...tsRelativeImports(requestsPath, [
+      ...getRelativeImports(requestsPath, [
         [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),
     )

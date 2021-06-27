@@ -4,7 +4,7 @@ import { getOperationFunctionAst } from './getOperationFunctionAst'
 import { OperationsGeneratorConfig } from '../typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/openapi-common'
-import { tsImportAst, tsRelativeImports } from '../../common/typeScriptUtils'
+import { getNamedImports, getRelativeImports } from '@oats-ts/typescript-common'
 
 export function generateOperationFunction(
   data: EnhancedOperation,
@@ -18,9 +18,12 @@ export function generateOperationFunction(
   return {
     path: operationPath,
     dependencies: [
-      tsImportAst(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
-      tsImportAst(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig, RuntimePackages.Http.HttpResponse]),
-      ...tsRelativeImports(operationPath, [
+      getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
+      getNamedImports(RuntimePackages.Http.name, [
+        RuntimePackages.Http.RequestConfig,
+        RuntimePackages.Http.HttpResponse,
+      ]),
+      ...getRelativeImports(operationPath, [
         [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),
     ],
