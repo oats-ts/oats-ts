@@ -9,6 +9,7 @@ specifiers:
   '@rush-temp/openapi-generator': file:./projects/openapi-generator.tgz
   '@rush-temp/openapi-parameter-serialization': file:./projects/openapi-parameter-serialization.tgz
   '@rush-temp/openapi-reader': file:./projects/openapi-reader.tgz
+  '@rush-temp/openapi-types-generator': file:./projects/openapi-types-generator.tgz
   '@rush-temp/openapi-validators-generator': file:./projects/openapi-validators-generator.tgz
   '@rush-temp/typescript-common': file:./projects/typescript-common.tgz
   '@rush-temp/typescript-writer': file:./projects/typescript-writer.tgz
@@ -50,6 +51,7 @@ dependencies:
   '@rush-temp/openapi-generator': file:projects/openapi-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-types-generator': file:projects/openapi-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-validators-generator': file:projects/openapi-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.0.0
   '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
@@ -3330,7 +3332,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-wjbZcq5gL+hwNxPkDQz/mNl98pwt4w7TXF81nLIfsRtGtMED1utp2+uaAXsP9TCDAp/uCaZTBwXJQ4MMcFhg5Q==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-xixWb/SplMkOAbVEf2+hVu6QlVjnAAItb4yX6HAYeS4ynaiiLr2vgKHT40ggwuRDQ4krZnKwi0rzLGRCjD2Shw==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -3506,6 +3508,29 @@ packages:
       urijs: 1.19.6
       valid-url: 1.0.9
       yamljs: 0.3.0
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/openapi-types-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-WGXi5yi8+UFJAHQiaN1B3ipAiqMWHLwPLjTF7V/b56fPL3i1sCi1LycImRhO0KSBj08Sq/vqaSydwSnWfapagA==, tarball: file:projects/openapi-types-generator.tgz}
+    id: file:projects/openapi-types-generator.tgz
+    name: '@rush-temp/openapi-types-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.5
+      jest: 27.0.5_ts-node@10.0.0
+      lodash: 4.17.21
+      openapi3-ts: 2.0.1
+      ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
+      typescript: 4.3.2
     transitivePeerDependencies:
       - bufferutil
       - canvas

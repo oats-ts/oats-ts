@@ -1,7 +1,7 @@
 import { factory, SyntaxKind, EnumDeclaration } from 'typescript'
 import { SchemaObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getLiteralAst } from './getLiteralAst'
+import { getLiteralAst } from '@oats-ts/typescript-common'
 import { safeName } from '@oats-ts/typescript-common'
 
 export function getNamedEnumAst(input: SchemaObject, context: OpenAPIGeneratorContext): EnumDeclaration {

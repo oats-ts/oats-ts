@@ -1,9 +1,8 @@
 import { SchemaObject } from 'openapi3-ts'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { getLiteralAst } from '../types/getLiteralAst'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { FullTypeGuardGeneratorConfig } from './typings'
-import { getLogicalExpression } from '@oats-ts/typescript-common'
+import { getLiteralAst, getLogicalExpression } from '@oats-ts/typescript-common'
 
 export function getEnumAssertionAst(
   data: SchemaObject,
