@@ -64,6 +64,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/openapi-type-guards-generator",
+      "projectFolder": "projects/openapi-type-guards-generator",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/openapi-types-generator",
       "projectFolder": "projects/openapi-types-generator",
       "shouldPublish": false

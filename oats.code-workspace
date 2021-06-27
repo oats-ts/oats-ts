@@ -17,6 +17,10 @@
       "path": "projects/openapi-reader"
     },
     {
+      "name": "openapi-type-guards-generator",
+      "path": "projects/openapi-type-guards-generator"
+    },
+    {
       "name": "openapi-types-generator",
       "path": "projects/openapi-types-generator"
     },
