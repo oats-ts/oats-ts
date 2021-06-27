@@ -1,7 +1,6 @@
 import { flatMap } from 'lodash'
 import { OpenAPIObject } from 'openapi3-ts'
-import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
-import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { getRelativeImports } from '@oats-ts/typescript-common'
 
@@ -16,7 +15,7 @@ export function getApiTypeImports(
   return flatMap(operations, (data) => {
     const { operation } = data
     const imports: ImportDeclaration[] = []
-    if (isOperationInputTypeRequired(data, context)) {
+    if (hasRequestBody(data, context)) {
       imports.push(
         ...getRelativeImports(requestsPath, [
           [accessor.path(operation, 'operation-input-type'), accessor.name(operation, 'operation-input-type')],

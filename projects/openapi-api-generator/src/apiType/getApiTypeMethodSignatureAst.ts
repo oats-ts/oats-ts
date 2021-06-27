@@ -1,6 +1,4 @@
-import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
-import { getOperationReturnTypeReferenceAst } from '../../operations/returnType/getReturnTypeReferenceAst'
-import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { ApiGeneratorConfig } from '../typings'
@@ -15,7 +13,7 @@ export function getApiTypeMethodSignatureAst(
 
   const parameters: ParameterDeclaration[] = []
 
-  if (isOperationInputTypeRequired(data, context)) {
+  if (hasRequestBody(data, context)) {
     parameters.push(
       factory.createParameterDeclaration(
         [],
@@ -40,7 +38,7 @@ export function getApiTypeMethodSignatureAst(
   )
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    getOperationReturnTypeReferenceAst(data.operation, context),
+    factory.createTypeReferenceNode(accessor.name(data.operation, 'operation-response-type')),
   ])
 
   const node = factory.createMethodSignature(

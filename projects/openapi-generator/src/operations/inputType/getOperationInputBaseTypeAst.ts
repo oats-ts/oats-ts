@@ -1,8 +1,7 @@
 import { entries } from 'lodash'
 import { factory, PropertySignature, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getRequestBodyContent } from './getRequestBodyContent'
+import { EnhancedOperation, getRequestBodyContent } from '@oats-ts/openapi-common'
 
 function getInputTypeParameter(name: string, typeName: string): PropertySignature {
   return factory.createPropertySignature([], name, undefined, factory.createTypeReferenceNode(typeName))

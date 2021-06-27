@@ -5,6 +5,7 @@ specifiers:
   '@rush-temp/example': file:./projects/example.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/http': file:./projects/http.tgz
+  '@rush-temp/openapi-api-generator': file:./projects/openapi-api-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-generator': file:./projects/openapi-generator.tgz
   '@rush-temp/openapi-parameter-serialization': file:./projects/openapi-parameter-serialization.tgz
@@ -47,6 +48,7 @@ dependencies:
   '@rush-temp/example': file:projects/example.tgz
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-api-generator': file:projects/openapi-api-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
   '@rush-temp/openapi-generator': file:projects/openapi-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0
@@ -3332,7 +3334,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-xixWb/SplMkOAbVEf2+hVu6QlVjnAAItb4yX6HAYeS4ynaiiLr2vgKHT40ggwuRDQ4krZnKwi0rzLGRCjD2Shw==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-O5n9X/m4XkNej221btoHuAsqu2jWC3Mivf8nLfExXH/R3uCaRS0nxxgTdfGtX1CPa18DLgAmtfmsdY3/yGm3OA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -3399,6 +3401,29 @@ packages:
       '@types/node-fetch': 2.5.10
       jest: 27.0.5_ts-node@10.0.0
       node-fetch: 2.6.1
+      ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/openapi-api-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-UqjFaKiubqC3iiYN6Mh+/gTdLC/AC13M88D5LhIVrGKI2HwXZTPZXJ1VdrFQcXfkUd+2NbfHEDdTny7/aNgnHw==, tarball: file:projects/openapi-api-generator.tgz}
+    id: file:projects/openapi-api-generator.tgz
+    name: '@rush-temp/openapi-api-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.5
+      jest: 27.0.5_ts-node@10.0.0
+      lodash: 4.17.21
+      openapi3-ts: 2.0.1
       ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
       typescript: 4.3.2
     transitivePeerDependencies:

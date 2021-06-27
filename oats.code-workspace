@@ -25,6 +25,10 @@
       "path": "projects/openapi-validators-generator"
     },
     {
+      "name": "openapi-api-generator",
+      "path": "projects/openapi-api-generator"
+    },
+    {
       "name": "openapi-common",
       "path": "projects/openapi-common"
     },

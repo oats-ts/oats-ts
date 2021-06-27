@@ -1,7 +1,6 @@
 import { entries } from 'lodash'
 import { AwaitExpression, factory, PropertyAssignment, SpreadAssignment } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getRequestBodyContent } from '../inputType/getRequestBodyContent'
+import { OpenAPIGeneratorContext, getRequestBodyContent } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
 import { getUrlAst } from './getUrlAst'

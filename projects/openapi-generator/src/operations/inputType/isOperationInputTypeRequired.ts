@@ -1,7 +1,6 @@
 import { keys } from 'lodash'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getRequestBodyContent } from './getRequestBodyContent'
+import { EnhancedOperation, getRequestBodyContent } from '@oats-ts/openapi-common'
 
 export function isOperationInputTypeRequired(data: EnhancedOperation, context: OpenAPIGeneratorContext): boolean {
   const { header, path, query } = data

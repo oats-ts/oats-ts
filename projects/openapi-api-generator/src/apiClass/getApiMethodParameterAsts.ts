@@ -1,6 +1,5 @@
 import { factory, ParameterDeclaration } from 'typescript'
-import { RuntimePackages } from '@oats-ts/openapi-common'
-import { isOperationInputTypeRequired } from '../../operations/inputType/isOperationInputTypeRequired'
+import { hasRequestBody, RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
@@ -12,7 +11,7 @@ export function getApiMethodParameterAsts(
 
   const parameters: ParameterDeclaration[] = []
 
-  if (isOperationInputTypeRequired(data, context)) {
+  if (hasRequestBody(data, context)) {
     parameters.unshift(
       factory.createParameterDeclaration(
         [],

@@ -1,8 +1,6 @@
 import { entries } from 'lodash'
 import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getRequestBodyContent } from './getRequestBodyContent'
+import { EnhancedOperation, getRequestBodyContent, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getOperationInputUnionTypeAst(
   data: EnhancedOperation,
