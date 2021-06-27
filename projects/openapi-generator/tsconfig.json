@@ -13,7 +13,7 @@
   },
   "include": [
     "./src"
-, "../openapi-common/src/createOpenAPIGeneratorContext.ts"  ],
+  ],
   "exclude": [
     "node_modules",
     "lib"
