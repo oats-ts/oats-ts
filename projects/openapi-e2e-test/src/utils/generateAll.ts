@@ -59,6 +59,9 @@ export async function generateAll() {
         parser: 'typescript',
         arrowParens: 'always',
         printWidth: 120,
+        semi: false,
+        singleQuote: true,
+        trailingComma: 'all',
       }),
     }),
   })

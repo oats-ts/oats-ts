@@ -34,6 +34,7 @@ specifiers:
   jest: ^27.0.4
   lodash: ^4.17.21
   node-fetch: ^2.6.1
+  open-api-mocker: 1.7.2
   openapi3-ts: ^2.0.1
   pascalcase: ^1.0.0
   prettier: ^2.3.1
@@ -42,6 +43,7 @@ specifiers:
   typescript: 4.3.2
   urijs: ^1.19.6
   valid-url: ^1.0.9
+  whatwg-mimetype: ~2.3.0
   yamljs: ^0.3.0
   yup: ^0.32.9
   zod: ^3.2.0
@@ -80,6 +82,7 @@ dependencies:
   jest: 27.0.5_ts-node@10.0.0
   lodash: 4.17.21
   node-fetch: 2.6.1
+  open-api-mocker: 1.7.2
   openapi3-ts: 2.0.1
   pascalcase: 1.0.0
   prettier: 2.3.2
@@ -88,6 +91,7 @@ dependencies:
   typescript: 4.3.2
   urijs: 1.19.6
   valid-url: 1.0.9
+  whatwg-mimetype: 2.3.0
   yamljs: 0.3.0
   yup: 0.32.9
   zod: 3.2.0
@@ -840,6 +844,10 @@ packages:
 
   /@types/valid-url/1.0.3:
     resolution: {integrity: sha512-+33x29mg+ecU88ODdWpqaie2upIuRkhujVLA7TuJjM823cNMbeggfI6NhxewaRaRF8dy+g33e4uIg/m5Mb3xDQ==}
+    dev: false
+
+  /@types/whatwg-mimetype/2.1.0:
+    resolution: {integrity: sha512-bJ/bZ+pA69lm+Ll8JJRoAD9saH7unIMfxPQQpl7bxa00qNqvUXSyk3xvoRMea1uCpAOxweI7CzjWx48ysX6yug==}
     dev: false
 
   /@types/yamljs/0.2.31:
@@ -2825,8 +2833,8 @@ packages:
       mimic-fn: 2.1.0
     dev: false
 
-  /open-api-mocker/1.7.1:
-    resolution: {integrity: sha512-1j86oiSCjWb3ZBxI/uvWAa1h909H1oQc5dmTQ6YGzGtrFvJOyKcOk7NxJu945aPUhgkJm77bS8SQJy4LkxfAIA==}
+  /open-api-mocker/1.7.2:
+    resolution: {integrity: sha512-wMPkFYZW5hnQzv3U6Eqv2S/cVvVgNEbj/piheK93ji7WQyNg1wZ9hacbjrIocy4XMuzzqgNztxEJHBQ3I8u9yQ==}
     hasBin: true
     dependencies:
       ajv: 6.12.6
@@ -3756,7 +3764,7 @@ packages:
     dev: false
 
   file:projects/http.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-F+fCmBQeyrqSZ21kphSCfZ4uo5acl6c4JRkUPRs0FUFY9nh5V0HkAIOto6Upj0iEDlM7EgoYGkUYY0M/u18Y6w==, tarball: file:projects/http.tgz}
+    resolution: {integrity: sha512-RXZOy6IklCtNoXRKPLxpZuqTEi1Z0U3ncM3HZJ/JhGhlJxsv6FpFHeA5nl1huOZ7Kgk1zdXz8L1nhfTpmS15gQ==, tarball: file:projects/http.tgz}
     id: file:projects/http.tgz
     name: '@rush-temp/http'
     version: 0.0.0
@@ -3764,10 +3772,12 @@ packages:
       '@types/jest': 26.0.23
       '@types/node': 15.12.5
       '@types/node-fetch': 2.5.10
+      '@types/whatwg-mimetype': 2.1.0
       jest: 27.0.5_ts-node@10.0.0
       node-fetch: 2.6.1
       ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
       typescript: 4.3.2
+      whatwg-mimetype: 2.3.0
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -3830,7 +3840,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-2Yg5sLs9PdfKjlgNiby1r4QaDg+zGUddJdpx3l3tFIwudRH/m8XAJEQuZWxQdInGT+iXxvMrclGcUQ826Lvpzg==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-8arZtlttJEeH9SAKY/Aca4KEYO63ANzMj7IcfDL/KDAueQcxmeoaW4fdFdDWGIqFIeRybxDs47itzCFEp7NsYA==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -3844,7 +3854,7 @@ packages:
       express: 4.17.1
       jest: 27.0.5_ts-node@10.0.0
       lodash: 4.17.21
-      open-api-mocker: 1.7.1
+      open-api-mocker: 1.7.2
       openapi3-ts: 2.0.1
       ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
       ts-node: 10.0.0_1f6563a284477d805f226e2299702621

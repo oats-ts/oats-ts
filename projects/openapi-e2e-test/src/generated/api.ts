@@ -312,9 +312,10 @@ export const querySerializer = createQuerySerializer<GetCatDogQueryParameters>({
 export const responseParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
 
 export async function getCatDog(input: GetCatDogInput, config: RequestConfig): Promise<GetCatDogResponse> {
-  const url = joinUrl(config.baseUrl, '/cat/dog', querySerializer(input.query))
-  console.log(url)
-  return config.parse(await config.request({ url: url, method: 'get' }), responseParserHint)
+  return config.parse(
+    await config.request({ url: joinUrl(config.baseUrl, '/cat/dog', querySerializer(input.query)), method: 'get' }),
+    responseParserHint,
+  )
 }
 
 export type Api = {

@@ -11,6 +11,13 @@ describe('Api', () => {
 
   it('should do something', async () => {
     const response = await api.getCatDog({ query: { foo: 'ho' } })
-    console.log(response)
+    if (response.statusCode === 200) {
+      expect(typeof response.body).toBe('object')
+      expect(typeof response.body.stringProperty).toBe('string')
+      expect(typeof response.body.numberProperty).toBe('number')
+      expect(typeof response.body.booleanProperty).toBe('boolean')
+    } else {
+      fail('Unexpected status code.')
+    }
   })
 })

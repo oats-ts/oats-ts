@@ -58,6 +58,6 @@
     "@oats-ts/openapi-parameter-types-generator": "~0.0.0",
     "@oats-ts/openapi-operations-generator": "~0.0.0",
     "@oats-ts/validators": "~0.0.0",
-    "open-api-mocker": "~1.7.1"
+    "open-api-mocker": "1.7.2"
   }
 }
