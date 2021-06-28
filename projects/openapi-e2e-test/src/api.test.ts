@@ -26,34 +26,46 @@ describe('Api', () => {
       body: { booleanProperty: false, numberProperty: 1, stringProperty: 'hi' },
       contentType: 'application/json',
     })
-    if (response.statusCode === 200) {
-      expect(typeof response.body).toBe('object')
-      expect(typeof response.body.stringProperty).toBe('string')
-      expect(typeof response.body.numberProperty).toBe('number')
-      expect(typeof response.body.booleanProperty).toBe('boolean')
-    } else {
-      fail('Unexpected status code.')
-    }
+    expect(response.statusCode).toBe(200)
+    expect(typeof response.body).toBe('object')
   })
 
-  xit('should getWithPathParams', async () => {
+  it('should getWithPathParams', async () => {
     const response = await api.getWithPathParams({
       path: {
         stringInPath: 'foo',
         numberInPath: 1,
         booleanInPath: true,
-        arrayInPath: ['a', 'b'],
-        objectInPath: {
-          b: false,
-          n: 12,
-          s: 'bar',
-        },
+        enumInPath: 'racoon',
       },
     })
-    if (response.statusCode === 200) {
-      expect(typeof response.body).toBe('object')
-    } else {
-      fail('Unexpected status code.')
-    }
+    expect(response.statusCode).toBe(200)
+    expect(typeof response.body).toBe('object')
+  })
+
+  it('should getWithQueryParams', async () => {
+    const response = await api.getWithQueryParams({
+      query: {
+        stringInQuery: 'foo',
+        numberInQuery: 1,
+        booleanInQuery: true,
+        enumInQuery: 'cat',
+      },
+    })
+    expect(response.statusCode).toBe(200)
+    expect(typeof response.body).toBe('object')
+  })
+
+  it('should getWithHeaderParams', async () => {
+    const response = await api.getWithHeaderParams({
+      headers: {
+        'X-String-In-Headers': 'foo',
+        'X-Number-In-Headers': 12,
+        'X-Boolean-In-Headers': true,
+        'X-Enum-In-Headers': 'bear',
+      },
+    })
+    expect(response.statusCode).toBe(200)
+    expect(typeof response.body).toBe('object')
   })
 })

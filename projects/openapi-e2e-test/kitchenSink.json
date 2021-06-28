@@ -189,7 +189,7 @@
     }
   },
   "paths": {
-    "/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{arrayInPath}/{objectInPath}": {
+    "/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{enumInPath}": {
       "parameters": [
         {
           "name": "stringInPath",
@@ -219,35 +219,17 @@
           }
         },
         {
-          "name": "arrayInPath",
+          "name": "enumInPath",
           "required": true,
           "in": "path",
           "style": "simple",
           "schema": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "name": "objectInPath",
-          "required": true,
-          "in": "path",
-          "style": "simple",
-          "schema": {
-            "type": "object",
-            "properties": {
-              "s": {
-                "type": "string"
-              },
-              "n": {
-                "type": "number"
-              },
-              "b": {
-                "type": "boolean"
-              }
-            }
+            "type": "string",
+            "enum": [
+              "bear",
+              "racoon",
+              "cat"
+            ]
           }
         }
       ],
@@ -256,6 +238,126 @@
         "responses": {
           "200": {
             "description": "Simple response returning a string",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/query-params": {
+      "get": {
+        "parameters": [
+          {
+            "name": "stringInQuery",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numberInQuery",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "booleanInQuery",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "enumInQuery",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "bear",
+                "racoon",
+                "cat"
+              ]
+            }
+          }
+        ],
+        "operationId": "getWithQueryParams",
+        "responses": {
+          "200": {
+            "description": "Simple response returning a json object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/header-params": {
+      "get": {
+        "parameters": [
+          {
+            "name": "X-String-In-Headers",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Number-In-Headers",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-Boolean-In-Headers",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "X-Enum-In-Headers",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "bear",
+                "racoon",
+                "cat"
+              ]
+            }
+          }
+        ],
+        "operationId": "getWithHeaderParams",
+        "responses": {
+          "200": {
+            "description": "Simple response returning a json object",
             "content": {
               "application/json": {
                 "schema": {
