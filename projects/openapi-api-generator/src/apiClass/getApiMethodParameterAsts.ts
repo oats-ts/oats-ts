@@ -1,5 +1,5 @@
 import { factory, ParameterDeclaration } from 'typescript'
-import { hasRequestBody, RuntimePackages } from '@oats-ts/openapi-common'
+import { hasInput, RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
@@ -11,7 +11,7 @@ export function getApiMethodParameterAsts(
 
   const parameters: ParameterDeclaration[] = []
 
-  if (hasRequestBody(data, context)) {
+  if (hasInput(data, context)) {
     parameters.unshift(
       factory.createParameterDeclaration(
         [],

@@ -1,6 +1,6 @@
 import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorContext, hasRequestBody } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
 import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
 import { OperationsGeneratorConfig } from '../typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
@@ -17,7 +17,7 @@ export function getOperationFunctionAst(
 
   const params: ParameterDeclaration[] = []
 
-  if (hasRequestBody(data, context)) {
+  if (hasInput(data, context)) {
     params.push(
       factory.createParameterDeclaration(
         [],

@@ -1,4 +1,4 @@
-import { EnhancedOperation, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { ApiGeneratorConfig } from '../typings'
@@ -13,7 +13,7 @@ export function getApiTypeMethodSignatureAst(
 
   const parameters: ParameterDeclaration[] = []
 
-  if (hasRequestBody(data, context)) {
+  if (hasInput(data, context)) {
     parameters.push(
       factory.createParameterDeclaration(
         [],

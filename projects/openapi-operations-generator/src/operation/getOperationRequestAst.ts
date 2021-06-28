@@ -44,7 +44,7 @@ export function getOperationRequestAst(data: EnhancedOperation, context: OpenAPI
     factory.createPropertyAssignment('method', factory.createStringLiteral(method)),
   ]
 
-  if (bodies.length > 1) {
+  if (bodies.length > 0) {
     properties.push(
       factory.createPropertyAssignment(
         'body',

@@ -36,19 +36,26 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}Input`)
     }
-    // TODO does it need to be named based on operation?
     case 'operation-path-serializer': {
-      return 'pathSerializer'
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return `${operationName}PathSerializer`
     }
     case 'operation-query-serializer': {
-      return 'querySerializer'
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return `${operationName}QuerySerializer`
     }
     case 'operation-headers-serializer': {
-      return 'headersSerializer'
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return `${operationName}HeadersSerializer`
     }
     case 'operation-response-parser-hint': {
-      return 'responseParserHint'
+      const operationName = defaultNameProvider(input, name, 'operation')
+      return `${operationName}ParserHint`
     }
+    /**
+     * No need to incorporate anything in the name as these should be singletons.
+     * Change that in case multi-root schema generation is added.
+     */
     case 'api-type': {
       return 'Api'
     }

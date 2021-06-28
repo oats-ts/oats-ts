@@ -12,7 +12,7 @@ import {
   number,
 } from '@oats-ts/validators'
 import { HttpResponse, ResponseParserHint, RequestConfig } from '@oats-ts/http'
-import { query, createQuerySerializer, joinUrl } from '@oats-ts/openapi-parameter-serialization'
+import { joinUrl, path, createPathSerializer } from '@oats-ts/openapi-parameter-serialization'
 
 export type NamedBoolean = boolean
 
@@ -297,29 +297,89 @@ export function isNamedUnionLeaf3(input: any): input is NamedUnionLeaf3 {
   )
 }
 
-export type GetCatDogQueryParameters = {
-  foo?: string
+export type GetWithPathParamsPathParameters = {
+  stringInPath: string
+  numberInPath: number
+  booleanInPath: boolean
+  arrayInPath: string[]
+  objectInPath: {
+    b?: boolean
+    n?: number
+    s?: string
+  }
 }
 
-export type GetCatDogResponse = HttpResponse<NamedSimpleObject, 200>
+export type GetSimpleNamedObjectResponse = HttpResponse<NamedSimpleObject, 200>
 
-export type GetCatDogInput = {
-  query: GetCatDogQueryParameters
-}
+export const getSimpleNamedObjectParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
 
-export const querySerializer = createQuerySerializer<GetCatDogQueryParameters>({ foo: query.form.primitive({}) })
-
-export const responseParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
-
-export async function getCatDog(input: GetCatDogInput, config: RequestConfig): Promise<GetCatDogResponse> {
+export async function getSimpleNamedObject(config: RequestConfig): Promise<GetSimpleNamedObjectResponse> {
   return config.parse(
-    await config.request({ url: joinUrl(config.baseUrl, '/cat/dog', querySerializer(input.query)), method: 'get' }),
-    responseParserHint,
+    await config.request({ url: joinUrl(config.baseUrl, '/simple-named-object'), method: 'get' }),
+    getSimpleNamedObjectParserHint,
+  )
+}
+
+export type GetWithPathParamsResponse = HttpResponse<NamedSimpleObject, 200>
+
+export type GetWithPathParamsInput = {
+  path: GetWithPathParamsPathParameters
+}
+
+export const getWithPathParamsPathSerializer = createPathSerializer<GetWithPathParamsPathParameters>(
+  '/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{arrayInPath}/{objectInPath}',
+  {
+    stringInPath: path.simple.primitive({}),
+    numberInPath: path.simple.primitive({}),
+    booleanInPath: path.simple.primitive({}),
+    arrayInPath: path.simple.array({}),
+    objectInPath: path.simple.object({}),
+  },
+)
+
+export const getWithPathParamsParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
+
+export async function getWithPathParams(
+  input: GetWithPathParamsInput,
+  config: RequestConfig,
+): Promise<GetWithPathParamsResponse> {
+  return config.parse(
+    await config.request({ url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' }),
+    getWithPathParamsParserHint,
+  )
+}
+
+export type PostSimpleNamedObjectResponse = HttpResponse<NamedSimpleObject, 200>
+
+export type PostSimpleNamedObjectInput = {
+  contentType: 'application/json'
+  body: NamedSimpleObject
+}
+
+export const postSimpleNamedObjectParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
+
+export async function postSimpleNamedObject(
+  input: PostSimpleNamedObjectInput,
+  config: RequestConfig,
+): Promise<PostSimpleNamedObjectResponse> {
+  return config.parse(
+    await config.request({
+      url: joinUrl(config.baseUrl, '/simple-named-object'),
+      method: 'post',
+      body: await config.serialize(input.contentType, input.body),
+      headers: { 'content-type': input.contentType },
+    }),
+    postSimpleNamedObjectParserHint,
   )
 }
 
 export type Api = {
-  getCatDog(input: GetCatDogInput, config?: Partial<RequestConfig>): Promise<GetCatDogResponse>
+  getSimpleNamedObject(config?: Partial<RequestConfig>): Promise<GetSimpleNamedObjectResponse>
+  getWithPathParams(input: GetWithPathParamsInput, config?: Partial<RequestConfig>): Promise<GetWithPathParamsResponse>
+  postSimpleNamedObject(
+    input: PostSimpleNamedObjectInput,
+    config?: Partial<RequestConfig>,
+  ): Promise<PostSimpleNamedObjectResponse>
 }
 
 export class ApiImpl implements Api {
@@ -327,8 +387,20 @@ export class ApiImpl implements Api {
   public constructor(config: RequestConfig) {
     this.config = config
   }
-  public async getCatDog(input: GetCatDogInput, config: Partial<RequestConfig> = {}): Promise<GetCatDogResponse> {
-    return getCatDog(input, { ...this.config, ...config })
+  public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
+    return getSimpleNamedObject({ ...this.config, ...config })
+  }
+  public async getWithPathParams(
+    input: GetWithPathParamsInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithPathParamsResponse> {
+    return getWithPathParams(input, { ...this.config, ...config })
+  }
+  public async postSimpleNamedObject(
+    input: PostSimpleNamedObjectInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<PostSimpleNamedObjectResponse> {
+    return postSimpleNamedObject(input, { ...this.config, ...config })
   }
 }
 
@@ -336,7 +408,19 @@ export class ApiStub implements Api {
   protected fallback(): never {
     throw new Error('Not implemented.')
   }
-  public async getCatDog(input: GetCatDogInput, config: Partial<RequestConfig> = {}): Promise<GetCatDogResponse> {
+  public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
+    return this.fallback()
+  }
+  public async getWithPathParams(
+    input: GetWithPathParamsInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithPathParamsResponse> {
+    return this.fallback()
+  }
+  public async postSimpleNamedObject(
+    input: PostSimpleNamedObjectInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<PostSimpleNamedObjectResponse> {
     return this.fallback()
   }
 }

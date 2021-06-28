@@ -52,10 +52,7 @@
         "required": [
           "stringProperty",
           "numberProperty",
-          "booleanProperty",
-          "stringArrayProperty",
-          "recordProperty",
-          "enumProperty"
+          "booleanProperty"
         ],
         "properties": {
           "stringProperty": {
@@ -192,21 +189,114 @@
     }
   },
   "paths": {
-    "/cat/dog": {
-      "get": {
-        "operationId": "getCatDog",
-        "parameters": [
-          {
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "name": "foo"
+    "/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{arrayInPath}/{objectInPath}": {
+      "parameters": [
+        {
+          "name": "stringInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "type": "string"
           }
-        ],
+        },
+        {
+          "name": "numberInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "booleanInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "type": "boolean"
+          }
+        },
+        {
+          "name": "arrayInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "objectInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "s": {
+                "type": "string"
+              },
+              "n": {
+                "type": "number"
+              },
+              "b": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      ],
+      "get": {
+        "operationId": "getWithPathParams",
         "responses": {
           "200": {
-            "description": "foo",
+            "description": "Simple response returning a string",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/simple-named-object": {
+      "get": {
+        "operationId": "getSimpleNamedObject",
+        "responses": {
+          "200": {
+            "description": "Simple response returning a json object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "postSimpleNamedObject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NamedSimpleObject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Simple response returning a json object",
             "content": {
               "application/json": {
                 "schema": {

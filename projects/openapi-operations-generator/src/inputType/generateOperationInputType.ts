@@ -1,7 +1,7 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { entries, isNil, negate } from 'lodash'
 import { Statement } from 'typescript'
-import { getReferencedNamedSchemas, getRequestBodyContent, hasRequestBody } from '@oats-ts/openapi-common'
+import { getReferencedNamedSchemas, getRequestBodyContent, hasInput } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getOperationInputBaseTypeAst } from './getOperationInputBaseTypeAst'
@@ -12,7 +12,7 @@ export function generateOperationInputType(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): TypeScriptModule {
-  if (!hasRequestBody(data, context)) {
+  if (!hasInput(data, context)) {
     return undefined
   }
 

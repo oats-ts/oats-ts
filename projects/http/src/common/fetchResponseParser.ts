@@ -29,17 +29,13 @@ export async function fetchResponseParser(response: ResponseLike, hint: Response
   const hintForStatus = hint[statusCode] || hint.default
   if (hintForStatus === undefined || hintForStatus === null) {
     // TODO more descriptive error
-    throw new Error(`Unexpected status code: "${statusCode}".`)
+    throw new Error(`Unexpected status code: "${statusCode}".\nServer sent: ${await response.text()}`)
   }
   if (!headers.has('content-type')) {
-    throw new Error('Expected content-type header to be present.')
+    throw new Error(`Expected content-type header to be present.\nServer sent: ${await response.text()}`)
   }
   // TODO check if casing matters.
   const contentType = headers.get('content-type')
-  if (contentType === null || contentType === undefined) {
-    throw new TypeError(`Header content-type expected to be defined.`)
-  }
-
   const mimeType = new MIMEType(contentType)
 
   if (!hasOwnProperty.call(hintForStatus, mimeType.essence)) {

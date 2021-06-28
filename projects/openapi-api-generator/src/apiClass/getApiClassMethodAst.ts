@@ -1,5 +1,5 @@
 import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getApiMethodParameterAsts } from './getApiMethodParameterAsts'
 import { getApiMethodReturnTypeAst } from './getApiMethodReturnTypeAst'
@@ -12,7 +12,7 @@ export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
       factory.createIdentifier(accessor.name(data.operation, 'operation')),
       [],
       [
-        factory.createIdentifier('input'),
+        ...(hasInput(data, context) ? [factory.createIdentifier('input')] : []),
         factory.createObjectLiteralExpression([
           factory.createSpreadAssignment(
             factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'config'),
