@@ -4,7 +4,6 @@ import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerMethod } from './getParameterSerializerMethod'
 import { getParameterStyle } from './getParameterStyle'
-import { getParameterSerializerGeneratorTarget } from './getParameterSerializerGeneratorTarget'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
@@ -17,8 +16,9 @@ import {
   SyntaxKind,
   VariableStatement,
 } from 'typescript'
-import { getNamedImports, isIdentifier } from '@oats-ts/typescript-common'
+import { getNamedImports, getRelativeImports, isIdentifier } from '@oats-ts/typescript-common'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 
 function getSerializerOptionProperty(key: keyof ParameterObject, parameter: ParameterObject): PropertyAssignment {
   return has(parameter, key)
@@ -99,6 +99,7 @@ function createSerializerConstant(
   location: ParameterLocation,
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
+  target: OpenAPIGeneratorTarget,
 ): VariableStatement {
   const { accessor } = context
   return factory.createVariableStatement(
@@ -106,7 +107,7 @@ function createSerializerConstant(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          accessor.name(data.operation, getParameterSerializerGeneratorTarget(location)),
+          accessor.name(data.operation, target),
           undefined,
           undefined,
           createSerializerFactoryCall(location, data, context),
@@ -118,25 +119,41 @@ function createSerializerConstant(
 }
 
 const generateOperationParameterTypeSerializer =
-  (location: ParameterLocation) =>
+  (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
   (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
     const parameters = data[location]
     const { accessor } = context
     if (parameters.length === 0) {
       return undefined
     }
+    const serializerPath = accessor.path(data.operation, target)
     return {
-      path: accessor.path(data.operation, 'operation'),
+      path: serializerPath,
       dependencies: [
         getNamedImports(RuntimePackages.ParameterSerialization.name, [
           location,
           getParameterSerializerFactoryName(location),
         ]),
+        ...getRelativeImports(serializerPath, [
+          [accessor.path(data.operation, typeTarget), accessor.name(data.operation, typeTarget)],
+        ]),
       ],
-      content: [createSerializerConstant(location, data, context)],
+      content: [createSerializerConstant(location, data, context, target)],
     }
   }
 
-export const generateQueryParameterTypeSerializer = generateOperationParameterTypeSerializer('query')
-export const generatePathParameterTypeSerializer = generateOperationParameterTypeSerializer('path')
-export const generateHeaderParameterTypeSerializer = generateOperationParameterTypeSerializer('header')
+export const generateQueryParameterTypeSerializer = generateOperationParameterTypeSerializer(
+  'query',
+  'operation-query-serializer',
+  'operation-query-type',
+)
+export const generatePathParameterTypeSerializer = generateOperationParameterTypeSerializer(
+  'path',
+  'operation-path-serializer',
+  'operation-path-type',
+)
+export const generateHeaderParameterTypeSerializer = generateOperationParameterTypeSerializer(
+  'header',
+  'operation-headers-serializer',
+  'operation-headers-type',
+)

@@ -1,8 +1,8 @@
 import { flatMap } from 'lodash'
 import { OpenAPIObject } from 'openapi3-ts'
-import { EnhancedOperation, hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, hasInput, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
-import { getRelativeImports } from '@oats-ts/typescript-common'
+import { getRelativeImports, getNamedImports } from '@oats-ts/typescript-common'
 
 export function getApiTypeImports(
   doc: OpenAPIObject,
@@ -10,23 +10,26 @@ export function getApiTypeImports(
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
   const { accessor } = context
-  const requestsPath = accessor.path(doc, 'api-type')
+  const apiPath = accessor.path(doc, 'api-type')
 
-  return flatMap(operations, (data) => {
+  const imports = flatMap(operations, (data) => {
     const { operation } = data
     const imports: ImportDeclaration[] = []
     if (hasInput(data, context)) {
       imports.push(
-        ...getRelativeImports(requestsPath, [
+        ...getRelativeImports(apiPath, [
           [accessor.path(operation, 'operation-input-type'), accessor.name(operation, 'operation-input-type')],
         ]),
       )
     }
     imports.push(
-      ...getRelativeImports(requestsPath, [
+      ...getRelativeImports(apiPath, [
         [accessor.path(operation, 'operation-response-type'), accessor.name(operation, 'operation-response-type')],
       ]),
     )
     return imports
   })
+  return operations.length > 0
+    ? [...imports, getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig])]
+    : imports
 }
