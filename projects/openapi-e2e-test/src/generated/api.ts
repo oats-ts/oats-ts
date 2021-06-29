@@ -11,7 +11,7 @@ import {
   union,
   number,
 } from '@oats-ts/validators'
-import { HttpResponse, ResponseParserHint, RequestConfig } from '@oats-ts/http'
+import { HttpResponse, ResponseParserHint, RequestConfig, StatusCode } from '@oats-ts/http'
 import {
   joinUrl,
   header,
@@ -366,6 +366,24 @@ export async function getWithHeaderParams(
   )
 }
 
+export type GetWithMultipleResponsesResponse =
+  | HttpResponse<NamedSimpleObject, 200>
+  | HttpResponse<NamedDeprecatedObject, 205>
+  | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 205>>
+
+export const getWithMultipleResponsesParserHint: ResponseParserHint = {
+  200: { 'application/json': undefined },
+  205: { 'application/json': undefined },
+  default: { 'application/json': undefined },
+}
+
+export async function getWithMultipleResponses(config: RequestConfig): Promise<GetWithMultipleResponsesResponse> {
+  return config.parse(
+    await config.request({ url: joinUrl(config.baseUrl, '/multiple-responses'), method: 'get' }),
+    getWithMultipleResponsesParserHint,
+  )
+}
+
 export type GetWithPathParamsResponse = HttpResponse<NamedSimpleObject, 200>
 
 export type GetWithPathParamsInput = {
@@ -452,6 +470,7 @@ export type Api = {
     input: GetWithHeaderParamsInput,
     config?: Partial<RequestConfig>,
   ): Promise<GetWithHeaderParamsResponse>
+  getWithMultipleResponses(config?: Partial<RequestConfig>): Promise<GetWithMultipleResponsesResponse>
   getWithPathParams(input: GetWithPathParamsInput, config?: Partial<RequestConfig>): Promise<GetWithPathParamsResponse>
   getWithQueryParams(
     input: GetWithQueryParamsInput,
@@ -476,6 +495,11 @@ export class ApiImpl implements Api {
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithHeaderParamsResponse> {
     return getWithHeaderParams(input, { ...this.config, ...config })
+  }
+  public async getWithMultipleResponses(
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithMultipleResponsesResponse> {
+    return getWithMultipleResponses({ ...this.config, ...config })
   }
   public async getWithPathParams(
     input: GetWithPathParamsInput,
@@ -508,6 +532,11 @@ export class ApiStub implements Api {
     input: GetWithHeaderParamsInput,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithHeaderParamsResponse> {
+    return this.fallback()
+  }
+  public async getWithMultipleResponses(
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithMultipleResponsesResponse> {
     return this.fallback()
   }
   public async getWithPathParams(

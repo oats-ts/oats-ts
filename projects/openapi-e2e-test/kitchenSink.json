@@ -369,6 +369,43 @@
         }
       }
     },
+    "/multiple-responses": {
+      "get": {
+        "operationId": "getWithMultipleResponses",
+        "responses": {
+          "200": {
+            "description": "Simple response returning a json object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          },
+          "205": {
+            "description": "Simple response returning a json object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedDeprecatedObject"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Simple response returning a json object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedComplexObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/simple-named-object": {
       "get": {
         "operationId": "getSimpleNamedObject",

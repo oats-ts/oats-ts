@@ -68,4 +68,9 @@ describe('Api', () => {
     expect(response.statusCode).toBe(200)
     expect(typeof response.body).toBe('object')
   })
+
+  it('should getWithMultipleResponses', async () => {
+    // TODO need a way to test other responses
+    await api.getWithMultipleResponses()
+  })
 })
