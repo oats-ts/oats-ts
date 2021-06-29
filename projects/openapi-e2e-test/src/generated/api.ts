@@ -11,8 +11,16 @@ import {
   union,
   number,
 } from '@oats-ts/validators'
-import { HttpResponse, ResponseParserHint, RequestConfig } from '@oats-ts/http'
-import { joinUrl, path, createPathSerializer } from '@oats-ts/openapi-parameter-serialization'
+import { HttpResponse, ResponseParserHint, RequestConfig, StatusCode } from '@oats-ts/http'
+import {
+  joinUrl,
+  header,
+  createHeaderSerializer,
+  path,
+  createPathSerializer,
+  query,
+  createQuerySerializer,
+} from '@oats-ts/openapi-parameter-serialization'
 
 export type NamedBoolean = boolean
 
@@ -297,16 +305,25 @@ export function isNamedUnionLeaf3(input: any): input is NamedUnionLeaf3 {
   )
 }
 
+export type GetWithHeaderParamsHeaderParameters = {
+  'X-String-In-Headers': string
+  'X-Number-In-Headers': number
+  'X-Boolean-In-Headers': boolean
+  'X-Enum-In-Headers': 'bear' | 'racoon' | 'cat'
+}
+
 export type GetWithPathParamsPathParameters = {
   stringInPath: string
   numberInPath: number
   booleanInPath: boolean
-  arrayInPath: string[]
-  objectInPath: {
-    b?: boolean
-    n?: number
-    s?: string
-  }
+  enumInPath: 'bear' | 'racoon' | 'cat'
+}
+
+export type GetWithQueryParamsQueryParameters = {
+  stringInQuery: string
+  numberInQuery: number
+  booleanInQuery: boolean
+  enumInQuery: 'bear' | 'racoon' | 'cat'
 }
 
 export type GetSimpleNamedObjectResponse = HttpResponse<NamedSimpleObject, 200>
@@ -320,6 +337,53 @@ export async function getSimpleNamedObject(config: RequestConfig): Promise<GetSi
   )
 }
 
+export type GetWithHeaderParamsResponse = HttpResponse<NamedSimpleObject, 200>
+
+export type GetWithHeaderParamsInput = {
+  headers: GetWithHeaderParamsHeaderParameters
+}
+
+export const getWithHeaderParamsHeadersSerializer = createHeaderSerializer<GetWithHeaderParamsHeaderParameters>({
+  'X-String-In-Headers': header.simple.primitive({ required: true }),
+  'X-Number-In-Headers': header.simple.primitive({ required: true }),
+  'X-Boolean-In-Headers': header.simple.primitive({ required: true }),
+  'X-Enum-In-Headers': header.simple.primitive({ required: true }),
+})
+
+export const getWithHeaderParamsParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
+
+export async function getWithHeaderParams(
+  input: GetWithHeaderParamsInput,
+  config: RequestConfig,
+): Promise<GetWithHeaderParamsResponse> {
+  return config.parse(
+    await config.request({
+      url: joinUrl(config.baseUrl, '/header-params'),
+      method: 'get',
+      headers: getWithHeaderParamsHeadersSerializer(input.headers),
+    }),
+    getWithHeaderParamsParserHint,
+  )
+}
+
+export type GetWithMultipleResponsesResponse =
+  | HttpResponse<NamedSimpleObject, 200>
+  | HttpResponse<NamedDeprecatedObject, 205>
+  | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 205>>
+
+export const getWithMultipleResponsesParserHint: ResponseParserHint = {
+  200: { 'application/json': undefined },
+  205: { 'application/json': undefined },
+  default: { 'application/json': undefined },
+}
+
+export async function getWithMultipleResponses(config: RequestConfig): Promise<GetWithMultipleResponsesResponse> {
+  return config.parse(
+    await config.request({ url: joinUrl(config.baseUrl, '/multiple-responses'), method: 'get' }),
+    getWithMultipleResponsesParserHint,
+  )
+}
+
 export type GetWithPathParamsResponse = HttpResponse<NamedSimpleObject, 200>
 
 export type GetWithPathParamsInput = {
@@ -327,13 +391,12 @@ export type GetWithPathParamsInput = {
 }
 
 export const getWithPathParamsPathSerializer = createPathSerializer<GetWithPathParamsPathParameters>(
-  '/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{arrayInPath}/{objectInPath}',
+  '/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{enumInPath}',
   {
     stringInPath: path.simple.primitive({}),
     numberInPath: path.simple.primitive({}),
     booleanInPath: path.simple.primitive({}),
-    arrayInPath: path.simple.array({}),
-    objectInPath: path.simple.object({}),
+    enumInPath: path.simple.primitive({}),
   },
 )
 
@@ -346,6 +409,34 @@ export async function getWithPathParams(
   return config.parse(
     await config.request({ url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' }),
     getWithPathParamsParserHint,
+  )
+}
+
+export type GetWithQueryParamsResponse = HttpResponse<NamedSimpleObject, 200>
+
+export type GetWithQueryParamsInput = {
+  query: GetWithQueryParamsQueryParameters
+}
+
+export const getWithQueryParamsQuerySerializer = createQuerySerializer<GetWithQueryParamsQueryParameters>({
+  stringInQuery: query.form.primitive({ required: true }),
+  numberInQuery: query.form.primitive({ required: true }),
+  booleanInQuery: query.form.primitive({ required: true }),
+  enumInQuery: query.form.primitive({ required: true }),
+})
+
+export const getWithQueryParamsParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
+
+export async function getWithQueryParams(
+  input: GetWithQueryParamsInput,
+  config: RequestConfig,
+): Promise<GetWithQueryParamsResponse> {
+  return config.parse(
+    await config.request({
+      url: joinUrl(config.baseUrl, '/query-params', getWithQueryParamsQuerySerializer(input.query)),
+      method: 'get',
+    }),
+    getWithQueryParamsParserHint,
   )
 }
 
@@ -375,7 +466,16 @@ export async function postSimpleNamedObject(
 
 export type Api = {
   getSimpleNamedObject(config?: Partial<RequestConfig>): Promise<GetSimpleNamedObjectResponse>
+  getWithHeaderParams(
+    input: GetWithHeaderParamsInput,
+    config?: Partial<RequestConfig>,
+  ): Promise<GetWithHeaderParamsResponse>
+  getWithMultipleResponses(config?: Partial<RequestConfig>): Promise<GetWithMultipleResponsesResponse>
   getWithPathParams(input: GetWithPathParamsInput, config?: Partial<RequestConfig>): Promise<GetWithPathParamsResponse>
+  getWithQueryParams(
+    input: GetWithQueryParamsInput,
+    config?: Partial<RequestConfig>,
+  ): Promise<GetWithQueryParamsResponse>
   postSimpleNamedObject(
     input: PostSimpleNamedObjectInput,
     config?: Partial<RequestConfig>,
@@ -390,11 +490,28 @@ export class ApiImpl implements Api {
   public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
     return getSimpleNamedObject({ ...this.config, ...config })
   }
+  public async getWithHeaderParams(
+    input: GetWithHeaderParamsInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithHeaderParamsResponse> {
+    return getWithHeaderParams(input, { ...this.config, ...config })
+  }
+  public async getWithMultipleResponses(
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithMultipleResponsesResponse> {
+    return getWithMultipleResponses({ ...this.config, ...config })
+  }
   public async getWithPathParams(
     input: GetWithPathParamsInput,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithPathParamsResponse> {
     return getWithPathParams(input, { ...this.config, ...config })
+  }
+  public async getWithQueryParams(
+    input: GetWithQueryParamsInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithQueryParamsResponse> {
+    return getWithQueryParams(input, { ...this.config, ...config })
   }
   public async postSimpleNamedObject(
     input: PostSimpleNamedObjectInput,
@@ -411,10 +528,27 @@ export class ApiStub implements Api {
   public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
     return this.fallback()
   }
+  public async getWithHeaderParams(
+    input: GetWithHeaderParamsInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithHeaderParamsResponse> {
+    return this.fallback()
+  }
+  public async getWithMultipleResponses(
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithMultipleResponsesResponse> {
+    return this.fallback()
+  }
   public async getWithPathParams(
     input: GetWithPathParamsInput,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithPathParamsResponse> {
+    return this.fallback()
+  }
+  public async getWithQueryParams(
+    input: GetWithQueryParamsInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<GetWithQueryParamsResponse> {
     return this.fallback()
   }
   public async postSimpleNamedObject(
