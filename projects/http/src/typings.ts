@@ -93,13 +93,13 @@ export type ResponseParserHint = {
 
 export type BodySerializer = (contentType: string, body: any) => Promise<any>
 
-export type HttpAdapter = (request: HttpRequest) => Promise<any>
+export type RequestFn = (request: HttpRequest) => Promise<any>
 
 export type ResponseParser = (response: any, hint: ResponseParserHint) => Promise<HttpResponse>
 
 export type RequestConfig = {
   baseUrl: string
   serialize: BodySerializer
-  request: HttpAdapter
+  request: RequestFn
   parse: ResponseParser
 }

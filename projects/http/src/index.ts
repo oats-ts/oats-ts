@@ -1,5 +1,5 @@
 export {
-  HttpAdapter,
+  RequestFn as HttpAdapter,
   HttpHeaders,
   HttpMethod,
   HttpRequest,

@@ -1,3 +1,3 @@
-export { nodeFetchAdapter } from './nodeFetchAdapter'
-export { fetchResponseParser as nodeFetchResponseParser } from '../common/fetchResponseParser'
-export { defaultBodySerializer } from '../common/defaultBodySerializer'
+export { nodeFetchRequest as request } from './nodeFetchRequest'
+export { fetchResponseParser as parse } from '../common/fetchResponseParser'
+export { defaultBodySerializer as serialize } from '../common/defaultBodySerializer'
