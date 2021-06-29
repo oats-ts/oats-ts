@@ -4,7 +4,7 @@ import { OpenAPIGeneratorTarget } from './typings'
 import { OperationObject } from 'openapi3-ts'
 import { isNil } from 'lodash'
 
-export function defaultNameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
+export function nameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
   switch (target) {
     case 'type': {
       return isNil(name) ? undefined : pascalCase(name)
@@ -17,39 +17,39 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       return isNil(operation.operationId) ? undefined : camelCase(operation.operationId)
     }
     case 'operation-query-type': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}QueryParameters`)
     }
     case 'operation-headers-type': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}HeaderParameters`)
     }
     case 'operation-path-type': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}PathParameters`)
     }
     case 'operation-response-type': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}Response`)
     }
     case 'operation-input-type': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}Input`)
     }
     case 'operation-path-serializer': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return `${operationName}PathSerializer`
     }
     case 'operation-query-serializer': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return `${operationName}QuerySerializer`
     }
     case 'operation-headers-serializer': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return `${operationName}HeadersSerializer`
     }
     case 'operation-response-parser-hint': {
-      const operationName = defaultNameProvider(input, name, 'operation')
+      const operationName = nameProvider(input, name, 'operation')
       return `${operationName}ParserHint`
     }
     /**

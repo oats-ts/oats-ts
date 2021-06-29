@@ -1,4 +1,5 @@
-import { OpenAPIGenerator, OpenAPIGeneratorConfig } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { TypeGuardGeneratorConfig } from './typings'
 import { TypeGuardsGenerator } from './TypeGuardsGenerator'
 

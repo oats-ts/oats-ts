@@ -31,6 +31,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.170",
     "openapi3-ts": "^2.0.1",
-    "@oats-ts/openapi-common": "~0.0.0"
+    "@oats-ts/openapi-common": "~0.0.0",
+    "@oats-ts/openapi": "~0.0.0"
   }
 }

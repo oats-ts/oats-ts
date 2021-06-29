@@ -2,12 +2,11 @@ import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
 import { isNil, negate, sortBy } from 'lodash'
+import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import {
   getNamedSchemas,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  OpenAPIGeneratorConfig,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { Try } from '@oats-ts/generator'

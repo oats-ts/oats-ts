@@ -68,5 +68,9 @@
       "name": "openapi-e2e-test",
       "path": "projects/openapi-e2e-test"
     },
+    {
+      "name": "openapi",
+      "path": "projects/openapi"
+    },
   ]
 }

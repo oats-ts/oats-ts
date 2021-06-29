@@ -1,5 +1,5 @@
 import { ParameterLocation } from 'openapi3-ts'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 
 /* TODO this is duplicated for the moment in both this and parameter-types generator. */
 export function getParameterTypeGeneratorTarget(location: ParameterLocation): OpenAPIGeneratorTarget {

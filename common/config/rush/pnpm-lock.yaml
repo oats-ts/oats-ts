@@ -5,6 +5,7 @@ specifiers:
   '@rush-temp/example': file:./projects/example.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/http': file:./projects/http.tgz
+  '@rush-temp/openapi': file:./projects/openapi.tgz
   '@rush-temp/openapi-api-generator': file:./projects/openapi-api-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-e2e-test': file:./projects/openapi-e2e-test.tgz
@@ -27,6 +28,7 @@ specifiers:
   '@types/prettier': ^2.2.3
   '@types/urijs': ^1.19.15
   '@types/valid-url': ^1.0.3
+  '@types/whatwg-mimetype': ~2.1.0
   '@types/yamljs': ^0.2.31
   camelcase: ^6.2.0
   chalk: ^4.1.1
@@ -53,6 +55,7 @@ dependencies:
   '@rush-temp/example': file:projects/example.tgz
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
+  '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.0.0
   '@rush-temp/openapi-api-generator': file:projects/openapi-api-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
@@ -75,6 +78,7 @@ dependencies:
   '@types/prettier': 2.3.0
   '@types/urijs': 1.19.15
   '@types/valid-url': 1.0.3
+  '@types/whatwg-mimetype': 2.1.0
   '@types/yamljs': 0.2.31
   camelcase: 6.2.0
   chalk: 4.1.1
@@ -4027,6 +4031,32 @@ packages:
       jest: 27.0.5_ts-node@10.0.0
       lodash: 4.17.21
       openapi3-ts: 2.0.1
+      ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/openapi.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-G2jWPjn555ewsi7bCHOvPTszL+eA+icirtmTdgv4tmP0bNRM3N1W3ytCGamjZHl+F5L2jOAOKHtNRY9/hZEgwg==, tarball: file:projects/openapi.tgz}
+    id: file:projects/openapi.tgz
+    name: '@rush-temp/openapi'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.5
+      '@types/pascalcase': 1.0.0
+      camelcase: 6.2.0
+      jest: 27.0.5_ts-node@10.0.0
+      lodash: 4.17.21
+      openapi3-ts: 2.0.1
+      pascalcase: 1.0.0
       ts-jest: 27.0.3_jest@27.0.5+typescript@4.3.2
       typescript: 4.3.2
     transitivePeerDependencies:

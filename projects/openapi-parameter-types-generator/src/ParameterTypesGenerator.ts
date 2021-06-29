@@ -12,10 +12,9 @@ import {
   getEnhancedOperations,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  OpenAPIGeneratorConfig,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { Try } from '@oats-ts/generator'
 

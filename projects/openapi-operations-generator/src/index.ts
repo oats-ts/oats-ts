@@ -1,5 +1,6 @@
 import { OperationsGeneratorConfig } from './typings'
-import { OpenAPIGenerator, OpenAPIGeneratorConfig } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { OperationsGenerator } from './OperationsGenerator'
 
 export { OperationsGeneratorConfig } from './typings'

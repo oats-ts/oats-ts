@@ -1,6 +1,7 @@
 import { ImportDeclaration } from 'typescript'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRelativeImports } from './getRelativeImports'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 
 export function getModelImports(
   fromPath: string,

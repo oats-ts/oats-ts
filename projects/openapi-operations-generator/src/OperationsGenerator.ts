@@ -18,10 +18,9 @@ import {
   getEnhancedOperations,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  OpenAPIGeneratorConfig,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 
 export class OperationsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/operations'

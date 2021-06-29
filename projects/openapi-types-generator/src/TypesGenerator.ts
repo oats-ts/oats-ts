@@ -8,10 +8,9 @@ import {
   getNamedSchemas,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  OpenAPIGeneratorConfig,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { Try } from '@oats-ts/generator'
 import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'

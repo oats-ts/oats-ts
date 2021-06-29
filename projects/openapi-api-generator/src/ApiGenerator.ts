@@ -5,10 +5,9 @@ import {
   getEnhancedOperations,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  OpenAPIGeneratorConfig,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'

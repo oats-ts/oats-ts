@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/openapi-operations-generator",
+  "name": "@oats-ts/openapi",
   "version": "0.0.0",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
@@ -30,15 +30,10 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.170",
+    "@types/pascalcase": "^1.0.0",
+    "camelcase": "^6.2.0",
     "lodash": "^4.17.21",
     "openapi3-ts": "^2.0.1",
-    "@oats-ts/validators": "~0.0.0",
-    "@oats-ts/openapi-reader": "~0.0.0",
-    "@oats-ts/typescript-writer": "~0.0.0",
-    "@oats-ts/generator": "~0.0.0",
-    "@oats-ts/http": "~0.0.0",
-    "@oats-ts/openapi-common": "~0.0.0",
-    "@oats-ts/typescript-common": "~0.0.0",
-    "@oats-ts/openapi": "~0.0.0"
+    "pascalcase": "^1.0.0"
   }
 }

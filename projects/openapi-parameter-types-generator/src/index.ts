@@ -1,4 +1,5 @@
-import { OpenAPIGenerator, OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi-common'
+import { OpenAPIGenerator } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { ParameterTypesGenerator } from './ParameterTypesGenerator'
 
