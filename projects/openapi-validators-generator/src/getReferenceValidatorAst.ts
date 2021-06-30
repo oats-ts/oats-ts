@@ -7,9 +7,10 @@ export function getReferenceValidatorAst(
   data: ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  isUnion: boolean = false,
 ): CallExpression | Identifier {
   const { accessor } = context
-  if (!config.references) {
+  if (!config.references && !(isUnion && (config.unionReferences || config.references))) {
     return factory.createIdentifier(RuntimePackages.Validators.any)
   }
   const resolved = accessor.dereference(data)

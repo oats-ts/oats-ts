@@ -8,13 +8,13 @@ import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 import { getUnionTypeValidatorAst } from './getUnionTypeValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 import { getLiteralAst } from '@oats-ts/typescript-common'
+import { getArrayValidatorAst } from './getArrayValidatorAst'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
-  const { accessor } = context
   if (isReferenceObject(data)) {
     return getReferenceValidatorAst(data, context, config)
   }
@@ -52,11 +52,7 @@ export function getRightHandSideValidatorAst(
   }
 
   if (!isNil(data.items)) {
-    return factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.array),
-      [],
-      [getRightHandSideValidatorAst(data.items, context, config)],
-    )
+    return getArrayValidatorAst(data, context, config)
   }
 
   return factory.createIdentifier(RuntimePackages.Validators.any)
