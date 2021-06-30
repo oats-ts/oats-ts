@@ -1,5 +1,5 @@
 import { ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { TypeNode } from 'typescript'
+import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
@@ -15,6 +15,7 @@ import { Try } from '@oats-ts/generator'
 import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
+import { getTypeImports } from './getTypeImports'
 
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'
@@ -53,6 +54,19 @@ export class TypesGenerator implements OpenAPIGenerator {
         return getTypeReferenceAst(input, context, config)
       default:
         return undefined
+    }
+  }
+
+  public dependencies(
+    fromPath: string,
+    input: SchemaObject | ReferenceObject,
+    target: OpenAPIGeneratorTarget,
+  ): ImportDeclaration[] {
+    switch (target) {
+      case 'type':
+        return getTypeImports(fromPath, input, this.context, true)
+      default:
+        return []
     }
   }
 }

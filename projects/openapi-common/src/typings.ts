@@ -5,6 +5,7 @@ import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator } from '@oats-ts/generator'
 import { HttpMethod } from '@oats-ts/http'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
+import { ImportDeclaration } from 'typescript'
 
 /** Accessors to make it easy to find information about deeply nested structures. */
 export type OpenAPIAccessor = {
@@ -41,6 +42,13 @@ export type OpenAPIAccessor = {
    * @param target The generator target, for example "type" or "validator"
    */
   reference<T>(input: any, target: OpenAPIGeneratorTarget): T
+  /**
+   * Generator specific dependencies to the given input and target. Returns imports for reference.
+   * @param fromPath The path from wich you are referencing from.
+   * @param input The input for which the deps are needed for. For example SchemaObject
+   * @param target The generator target, for example "type" or "validator"
+   */
+  dependencies(fromPath: string, input: any, target: OpenAPIGeneratorTarget): ImportDeclaration[]
 }
 
 export type OpenAPIGeneratorContext = {

@@ -1,7 +1,7 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { Severity } from '@oats-ts/validators'
-import { flatMap, isNil, negate, sortBy } from 'lodash'
+import { flatMap, isEmpty, isNil, negate, sortBy } from 'lodash'
 import {
   generateHeaderParametersType,
   generatePathParametersType,
@@ -17,6 +17,9 @@ import {
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { Try } from '@oats-ts/generator'
+import { OperationObject } from 'openapi3-ts/dist'
+import { TypeNode, ImportDeclaration, factory } from 'typescript'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ParameterTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameterTypes'
@@ -29,6 +32,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & ParameterTypesGeneratorConfig
+  private operations: EnhancedOperation[]
 
   public readonly id: string = ParameterTypesGenerator.id
   public readonly produces: string[] = ParameterTypesGenerator.produces
@@ -40,15 +44,14 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+    this.operations = sortBy(getEnhancedOperations(this.context.accessor.document(), this.context), ({ operation }) =>
+      this.context.accessor.name(operation, 'operation'),
+    )
   }
 
   public async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
-    const { accessor } = context
-    const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
-      accessor.name(operation, 'operation'),
-    )
-    const modules: TypeScriptModule[] = flatMap(operations, (operation: EnhancedOperation): TypeScriptModule[] => {
+    const modules: TypeScriptModule[] = flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] => {
       return [
         generatePathParametersType(operation, context, config),
         generateQueryParametersType(operation, context, config),
@@ -60,5 +63,50 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)
+  }
+
+  private enhance(input: OperationObject): EnhancedOperation {
+    const operation = this.operations.find(({ operation }) => operation === input)
+    if (isNil(operation)) {
+      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
+    }
+    return operation
+  }
+
+  public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode {
+    const { context } = this
+    switch (target) {
+      case 'operation-headers-type': {
+        const { header } = this.enhance(input)
+        return isEmpty(header) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
+      }
+      case 'operation-path-type': {
+        const { path } = this.enhance(input)
+        return isEmpty(path) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
+      }
+      case 'operation-query-type':
+        const { query } = this.enhance(input)
+        return isEmpty(query) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
+      default:
+        return undefined
+    }
+  }
+
+  public dependencies(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+    switch (target) {
+      case 'operation-headers-type': {
+        const { header } = this.enhance(input)
+        return isEmpty(header) ? [] : getModelImports(fromPath, 'operation-headers-type', [input], this.context)
+      }
+      case 'operation-path-type': {
+        const { path } = this.enhance(input)
+        return isEmpty(path) ? [] : getModelImports(fromPath, 'operation-path-type', [input], this.context)
+      }
+      case 'operation-query-type':
+        const { query } = this.enhance(input)
+        return isEmpty(query) ? [] : getModelImports(fromPath, 'operation-query-type', [input], this.context)
+      default:
+        return []
+    }
   }
 }

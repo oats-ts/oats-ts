@@ -1,13 +1,10 @@
-import { hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getOperationFunctionAst } from './getOperationFunctionAst'
 import { OperationsGeneratorConfig } from '../typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/openapi-common'
-import { getNamedImports, getRelativeImports } from '@oats-ts/typescript-common'
-import { ImportDeclaration } from 'typescript'
-import { getResponseMap } from '../returnType/getResponseMap'
-import { values } from 'lodash'
+import { getNamedImports } from '@oats-ts/typescript-common'
 
 export function generateOperationFunction(
   data: EnhancedOperation,
@@ -16,57 +13,19 @@ export function generateOperationFunction(
 ): TypeScriptModule {
   const { accessor } = context
   const { operation } = data
-  const operationPath = accessor.path(operation, 'operation')
-
-  const relativeImports: [string, string][] = []
-  if (hasInput(data, context)) {
-    relativeImports.push([
-      accessor.path(operation, 'operation-input-type'),
-      accessor.name(operation, 'operation-input-type'),
-    ])
-  }
-
-  if (values(getResponseMap(data.operation, context)).length > 0) {
-    relativeImports.push([
-      accessor.path(operation, 'operation-response-type'),
-      accessor.name(operation, 'operation-response-type'),
-    ])
-    relativeImports.push([
-      accessor.path(operation, 'operation-response-parser-hint'),
-      accessor.name(operation, 'operation-response-parser-hint'),
-    ])
-  }
-
-  if (data.path.length > 0) {
-    relativeImports.push([
-      accessor.path(operation, 'operation-path-serializer'),
-      accessor.name(operation, 'operation-path-serializer'),
-    ])
-  }
-
-  if (data.query.length > 0) {
-    relativeImports.push([
-      accessor.path(operation, 'operation-query-serializer'),
-      accessor.name(operation, 'operation-query-serializer'),
-    ])
-  }
-
-  if (data.header.length > 0) {
-    relativeImports.push([
-      accessor.path(operation, 'operation-headers-serializer'),
-      accessor.name(operation, 'operation-headers-serializer'),
-    ])
-  }
-
-  const imports: ImportDeclaration[] = [
-    getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
-    getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
-    ...getRelativeImports(operationPath, relativeImports),
-  ]
-
+  const path = accessor.path(operation, 'operation')
   return {
-    path: operationPath,
-    dependencies: imports,
+    path,
+    dependencies: [
+      getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
+      ...accessor.dependencies(path, data.operation, 'operation-input-type'),
+      ...accessor.dependencies(path, data.operation, 'operation-response-type'),
+      ...accessor.dependencies(path, data.operation, 'operation-response-parser-hint'),
+      ...accessor.dependencies(path, data.operation, 'operation-path-serializer'),
+      ...accessor.dependencies(path, data.operation, 'operation-query-serializer'),
+      ...accessor.dependencies(path, data.operation, 'operation-headers-serializer'),
+    ],
     content: [getOperationFunctionAst(data, context, config)],
   }
 }

@@ -1,11 +1,9 @@
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getResponseSchemas, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { getOperationReturnTypeImports } from './getOperationReturnTypeImports'
 import { getReturnTypeAst } from './getReturnTypeAst'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/openapi-common'
-import { getResponseMap } from './getResponseMap'
-import { has } from 'lodash'
+import { has, flatMap, values } from 'lodash'
 import { getNamedImports } from '@oats-ts/typescript-common'
 
 export function generateOperationReturnType(
@@ -13,15 +11,18 @@ export function generateOperationReturnType(
   context: OpenAPIGeneratorContext,
 ): TypeScriptModule {
   const { accessor } = context
-  const schemas = getResponseMap(data.operation, context)
+  const schemas = getResponseSchemas(data.operation, context)
+  const path = accessor.path(data.operation, 'operation-response-type')
   return {
-    path: accessor.path(data.operation, 'operation-response-type'),
+    path,
     dependencies: [
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.HttpResponse]),
       ...(has(schemas, 'default')
         ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.StatusCode])]
         : []),
-      ...getOperationReturnTypeImports(data.operation, context),
+      ...flatMap(values(getResponseSchemas(data.operation, context)), (schema) =>
+        accessor.dependencies(path, schema, 'type'),
+      ),
     ],
     content: [getReturnTypeAst(data, context)],
   }

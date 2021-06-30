@@ -1,8 +1,9 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { entries, isNil } from 'lodash'
+import { entries, isNil, isEmpty } from 'lodash'
 import { isReferenceObject, OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import { OpenAPIAccessor, OpenAPIGenerator } from './typings'
 import { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '@oats-ts/openapi'
+import { ImportDeclaration } from 'typescript'
 
 export class OpenAPIAccessorImpl implements OpenAPIAccessor {
   private readonly data: OpenAPIReadOutput
@@ -57,6 +58,19 @@ export class OpenAPIAccessorImpl implements OpenAPIAccessor {
       }
     }
     return undefined
+  }
+
+  dependencies(fromPath: string, input: any, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+    for (const generator of this.generators) {
+      if (isNil(generator.dependencies)) {
+        continue
+      }
+      const result = generator.dependencies(fromPath, input, target)
+      if (!isEmpty(result)) {
+        return result
+      }
+    }
+    return []
   }
 }
 

@@ -2,12 +2,11 @@ import { entries, head, isNil } from 'lodash'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeReferenceNode } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getResponseMap } from './getResponseMap'
+import { EnhancedOperation, getResponseSchemas } from '@oats-ts/openapi-common'
 
 export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
   const { accessor } = context
-  const responses = entries(getResponseMap(data.operation, context))
+  const responses = entries(getResponseSchemas(data.operation, context))
   const types: TypeReferenceNode[] = []
   if (responses.length === 0) {
     types.push(

@@ -1,8 +1,8 @@
 import { values, isNil, entries } from 'lodash'
 import { OperationObject, ReferenceObject, ResponseObject, SchemaObject } from 'openapi3-ts'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from './typings'
 
-export function getResponseMap(
+export function getResponseSchemas(
   operation: OperationObject,
   context: OpenAPIGeneratorContext,
 ): Record<string, SchemaObject> {
