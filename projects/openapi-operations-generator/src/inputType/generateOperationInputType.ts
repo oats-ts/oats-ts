@@ -1,13 +1,10 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { entries } from 'lodash'
-import { Statement } from 'typescript'
+import { values, negate, isNil, flatMap } from 'lodash'
 import { getRequestBodyContent, hasInput } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getOperationInputBaseTypeAst } from './getOperationInputBaseTypeAst'
 import { getOperationInputUnionTypeAst } from './getOperationInputUnionTypeAst'
-import { getModelImports } from '@oats-ts/typescript-common'
-import { getOperationInputTypeImports } from './getOperationInputTypeImports'
 
 export function generateOperationInputType(
   data: EnhancedOperation,
@@ -20,15 +17,22 @@ export function generateOperationInputType(
   const { accessor } = context
   const { operation } = data
 
-  const bodies = entries(getRequestBodyContent(data, context))
+  const path = accessor.path(operation, 'operation-input-type')
+  const bodies = values(getRequestBodyContent(data, context))
+    .map(({ schema }) => schema)
+    .filter(negate(isNil))
 
-  const statements: Statement[] = [getOperationInputBaseTypeAst(data, context)]
-  if (bodies.length > 1) {
-    statements.push(getOperationInputUnionTypeAst(data, context))
-  }
   return {
-    path: accessor.path(operation, 'operation-input-type'),
-    dependencies: getOperationInputTypeImports(data, context),
-    content: statements,
+    path,
+    dependencies: [
+      ...flatMap(bodies, (schema) => accessor.dependencies(path, schema, 'type')),
+      ...accessor.dependencies(path, operation, 'operation-path-type'),
+      ...accessor.dependencies(path, operation, 'operation-query-type'),
+      ...accessor.dependencies(path, operation, 'operation-headers-type'),
+    ],
+    content: [
+      getOperationInputBaseTypeAst(data, context),
+      ...(bodies.length > 1 ? [getOperationInputUnionTypeAst(data, context)] : []),
+    ],
   }
 }

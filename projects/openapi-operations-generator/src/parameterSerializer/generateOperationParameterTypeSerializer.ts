@@ -134,9 +134,7 @@ const generateOperationParameterTypeSerializer =
           location,
           getParameterSerializerFactoryName(location),
         ]),
-        ...getRelativeImports(serializerPath, [
-          [accessor.path(data.operation, typeTarget), accessor.name(data.operation, typeTarget)],
-        ]),
+        ...accessor.dependencies(serializerPath, data.operation, typeTarget),
       ],
       content: [createSerializerConstant(location, data, context, target)],
     }
