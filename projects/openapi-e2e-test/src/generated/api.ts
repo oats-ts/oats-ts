@@ -3,13 +3,15 @@ import {
   any,
   array,
   enumeration,
+  items,
   object,
   optional,
   shape,
   string,
-  literal,
+  lazy,
   union,
   number,
+  literal,
 } from '@oats-ts/validators'
 import { HttpResponse, ResponseParserHint, RequestConfig, StatusCode } from '@oats-ts/http'
 import {
@@ -101,9 +103,9 @@ export const namedComplexObjectValidator = object(
     enumReferenceProperty: optional(any),
     'non-identifier * property}': optional(string()),
     recordProperty: optional(object()),
-    referenceArrayProperty: optional(array(any)),
+    referenceArrayProperty: optional(array(items(any))),
     referenceProperty: optional(any),
-    stringArrayProperty: optional(array(string())),
+    stringArrayProperty: optional(array(items(string()))),
   }),
 )
 
@@ -112,8 +114,8 @@ export const namedDeprecatedObjectValidator = object(shape({ deprecatedProperty:
 export const namedEnumValidator = enumeration(['A', 'B', 'C'])
 
 export const namedMidLevelUnionValidator = union({
-  NamedUnionLeaf2: any,
-  NamedUnionLeaf3: any,
+  NamedUnionLeaf2: lazy(() => namedUnionLeaf2Validator),
+  NamedUnionLeaf3: lazy(() => namedUnionLeaf3Validator),
 })
 
 export const namedNumberValidator = number()
@@ -139,11 +141,11 @@ export const namedSimpleObjectValidator = object(
 
 export const namedStringValidator = string()
 
-export const namedStringArrayValidator = array(string())
+export const namedStringArrayValidator = array(items(string()))
 
 export const namedTopLevelUnionValidator = union({
-  NamedMidLevelUnion: any,
-  NamedUnionLeaf1: any,
+  NamedMidLevelUnion: lazy(() => namedMidLevelUnionValidator),
+  NamedUnionLeaf1: lazy(() => namedUnionLeaf1Validator),
 })
 
 export const namedUnionLeaf1Validator = object(
