@@ -12,6 +12,9 @@ import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 import { Try } from '@oats-ts/generator'
+import { TypeNode, ImportDeclaration } from 'typescript'
+import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { getModelImports } from '../../typescript-common/lib'
 
 export class ValidatorsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -41,5 +44,30 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)
+  }
+
+  // TODO
+  public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
+    const { context, config } = this
+    switch (target) {
+      case 'validator':
+        return undefined
+      default:
+        return undefined
+    }
+  }
+
+  public dependencies(
+    fromPath: string,
+    input: SchemaObject | ReferenceObject,
+    target: OpenAPIGeneratorTarget,
+  ): ImportDeclaration[] {
+    const { context, config } = this
+    switch (target) {
+      case 'validator':
+        return getModelImports(fromPath, target, [context.accessor.dereference(input)], context)
+      default:
+        return []
+    }
   }
 }

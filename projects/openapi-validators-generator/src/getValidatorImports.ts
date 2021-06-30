@@ -1,5 +1,5 @@
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { entries, isNil, sortBy, values } from 'lodash'
+import { entries, isNil, sortBy, values, flatMap } from 'lodash'
 import { RuntimePackages, OpenAPIGeneratorContext, getDiscriminators } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { ValidatorsGeneratorConfig } from './typings'
@@ -105,17 +105,14 @@ export function getValidatorImports(
   const nameSet = new Set<string>()
   const refs = new Set<string>()
   collectImportedNames(schema, nameSet, refs, config, context)
+  const schemaRefs = Array.from(refs).map((ref) => accessor.dereference<SchemaObject>(ref))
+  const path = accessor.path(schema, 'validator')
   const asts = [
     getNamedImports(
       RuntimePackages.Validators.name,
       sortBy(Array.from(nameSet), (name) => name),
     ),
-    ...getModelImports(
-      accessor.path(schema, 'validator'),
-      'validator',
-      Array.from(refs).map((ref) => accessor.dereference<SchemaObject>(ref)),
-      context,
-    ),
+    ...flatMap(schemaRefs, (s) => accessor.dependencies(path, s, 'validator')),
   ]
   return asts
 }
