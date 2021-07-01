@@ -5,7 +5,7 @@ import { getApiTypeImports } from '../apiType/getApiTypeImports'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiStubAst } from './getApiStubAst'
 import { ApiGeneratorConfig } from '../typings'
-import { getNamedImports, getRelativeImports } from '@oats-ts/typescript-common'
+import { getNamedImports } from '@oats-ts/typescript-common'
 
 export function generateApiStub(
   doc: OpenAPIObject,
@@ -20,7 +20,7 @@ export function generateApiStub(
     dependencies: [
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
-      ...getRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
+      ...accessor.dependencies(path, doc, 'api-type'),
     ],
     content: [getApiStubAst(doc, operations, context, config)],
   }

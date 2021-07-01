@@ -55,6 +55,7 @@ export async function generateAll() {
       }),
     ],
     writer: typeScriptWriter({
+      purge: true,
       stringify: prettierStringify({
         parser: 'typescript',
         arrowParens: 'always',

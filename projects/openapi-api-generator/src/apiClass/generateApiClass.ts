@@ -5,7 +5,8 @@ import { getApiTypeImports } from '../apiType/getApiTypeImports'
 import { getApiClassAst } from './getApiClassAst'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ApiGeneratorConfig } from '../typings'
-import { getModelImports, getNamedImports, getRelativeImports } from '@oats-ts/typescript-common'
+import { flatMap } from 'lodash'
+import { getNamedImports } from '@oats-ts/typescript-common'
 
 export function generateApiClass(
   doc: OpenAPIObject,
@@ -20,13 +21,8 @@ export function generateApiClass(
     dependencies: [
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
-      ...getRelativeImports(path, [[accessor.path(doc, 'api-type'), accessor.name(doc, 'api-type')]]),
-      ...getModelImports(
-        path,
-        'operation',
-        operations.map((o) => o.operation),
-        context,
-      ),
+      ...accessor.dependencies(path, doc, 'api-type'),
+      ...flatMap(operations, ({ operation }) => accessor.dependencies(path, operation, 'operation')),
     ],
     content: [getApiClassAst(doc, operations, context, config)],
   }

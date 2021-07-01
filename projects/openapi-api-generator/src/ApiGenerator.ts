@@ -14,6 +14,9 @@ import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
 import { Severity } from '@oats-ts/validators'
 import { Try } from '@oats-ts/generator'
+import { OpenAPIObject } from 'openapi3-ts'
+import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
+import { getModelImports } from '../../typescript-common/lib'
 
 export class ApiGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -62,5 +65,39 @@ export class ApiGenerator implements OpenAPIGenerator {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)
+  }
+
+  public reference(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+    const { context, config } = this
+    switch (target) {
+      case 'api-type': {
+        return config.type ? factory.createTypeReferenceNode(context.accessor.name(input, target)) : undefined
+      }
+      case 'api-class': {
+        return config.class ? factory.createIdentifier(context.accessor.name(input, target)) : undefined
+      }
+      case 'api-stub': {
+        return config.stub ? factory.createIdentifier(context.accessor.name(input, target)) : undefined
+      }
+      default:
+        return undefined
+    }
+  }
+
+  public dependencies(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+    const { context, config } = this
+    switch (target) {
+      case 'api-type': {
+        return config.type ? getModelImports(fromPath, target, [input], context) : []
+      }
+      case 'api-class': {
+        return config.class ? getModelImports(fromPath, target, [input], context) : []
+      }
+      case 'api-stub': {
+        return config.stub ? getModelImports(fromPath, target, [input], context) : []
+      }
+      default:
+        return []
+    }
   }
 }
