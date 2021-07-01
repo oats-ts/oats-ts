@@ -1,42 +1,138 @@
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
-import { entries, isNil, sortBy, values, flatMap } from 'lodash'
+import { isEmpty, entries, isNil, sortBy, values } from 'lodash'
 import { RuntimePackages, OpenAPIGeneratorContext, getDiscriminators } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { ValidatorsGeneratorConfig } from './typings'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 
-function collectImportedNames(
+export type ImportCollector = (
   data: SchemaObject | ReferenceObject,
-  names: Set<string>,
-  refs: Set<string>,
   config: ValidatorsGeneratorConfig,
   context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+) => void
+
+export function collectExternalReferenceImports(
+  data: SchemaObject | ReferenceObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
 ): void {
-  if (isReferenceObject(data)) {
-    if (!config.references) {
-      names.add(RuntimePackages.Validators.any)
-    } else {
+  const { accessor } = context
+  const schema = accessor.dereference(data)
+  if (!isNil(accessor.name(schema, 'validator'))) {
+    refs.add(accessor.uri(schema))
+  } else {
+    collectImports(schema, config, context, names, refs)
+  }
+}
+
+export function collectReferenceImports(
+  data: SchemaObject | ReferenceObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  if (!config.references) {
+    names.add(RuntimePackages.Validators.any)
+  } else {
+    const schema = context.accessor.dereference(data)
+    if (!isNil(context.accessor.name(schema, 'validator'))) {
       names.add(RuntimePackages.Validators.lazy)
       refs.add(data.$ref)
+    } else {
+      collectImports(schema, config, context, names, refs)
     }
-    return
+  }
+}
+
+export function collectUnionImports(
+  data: SchemaObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  names.add(RuntimePackages.Validators.union)
+  if (!isNil(data.discriminator) && (config.references || config.unionReferences)) {
+    // TODO maybe better of collecting discriminators
+    const discRefs = values(data.discriminator.mapping || {})
+    values(data.discriminator.mapping || {}).map((ref) => refs.add(ref))
+    if (discRefs.length > 0) {
+      names.add(RuntimePackages.Validators.lazy)
+    }
+  } else {
+    for (const schemaOrRef of data.oneOf) {
+      collectImports(schemaOrRef, config, context, names, refs)
+    }
+  }
+}
+
+export function collectRecordImports(
+  data: SchemaObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  names.add(RuntimePackages.Validators.object)
+  if (config.records) {
+    names.add(RuntimePackages.Validators.record)
+    return collectImports(data.additionalProperties as SchemaObject | ReferenceObject, config, context, names, refs)
+  }
+}
+
+export function collectObjectTypeImports(
+  data: SchemaObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  const discriminators = getDiscriminators(data, context)
+  if (values(discriminators).length > 0) {
+    names.add(RuntimePackages.Validators.literal)
+  }
+  names.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
+  for (const [name, propSchema] of entries(data.properties)) {
+    const isOptional = (data.required || []).indexOf(name) < 0
+    if (isOptional) {
+      names.add(RuntimePackages.Validators.optional)
+    }
+    collectImports(propSchema, config, context, names, refs)
+  }
+}
+
+export function collectArrayTypeImports(
+  data: SchemaObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  names.add(RuntimePackages.Validators.array)
+  if (config.arrays) {
+    names.add(RuntimePackages.Validators.items)
+    return collectImports(data.items, config, context, names, refs)
+  }
+}
+
+export function collectImports(
+  data: SchemaObject | ReferenceObject,
+  config: ValidatorsGeneratorConfig,
+  context: OpenAPIGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  if (isReferenceObject(data)) {
+    return collectReferenceImports(data, config, context, names, refs)
   }
 
   if (!isNil(data.oneOf)) {
-    names.add(RuntimePackages.Validators.union)
-    if (!isNil(data.discriminator) && (config.references || config.unionReferences)) {
-      // TODO maybe better of collecting discriminators
-      const discRefs = values(data.discriminator.mapping || {})
-      values(data.discriminator.mapping || {}).map((ref) => refs.add(ref))
-      if (discRefs.length > 0) {
-        names.add(RuntimePackages.Validators.lazy)
-      }
-    } else {
-      for (const schemaOrRef of data.oneOf) {
-        collectImportedNames(schemaOrRef, names, refs, config, context)
-      }
-    }
-    return
+    return collectUnionImports(data, config, context, names, refs)
   }
 
   if (!isNil(data.enum)) {
@@ -60,59 +156,47 @@ function collectImportedNames(
   }
 
   if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
-    names.add(RuntimePackages.Validators.object)
-    if (config.records) {
-      names.add(RuntimePackages.Validators.record)
-      return collectImportedNames(data.additionalProperties, names, refs, config, context)
-    }
-    return
+    return collectRecordImports(data, config, context, names, refs)
   }
 
   if (!isNil(data.properties)) {
-    const discriminators = getDiscriminators(data, context)
-    if (values(discriminators).length > 0) {
-      names.add(RuntimePackages.Validators.literal)
-    }
-    names.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
-    for (const [name, propSchema] of entries(data.properties)) {
-      const isOptional = (data.required || []).indexOf(name) < 0
-      if (isOptional) {
-        names.add(RuntimePackages.Validators.optional)
-      }
-      collectImportedNames(propSchema, names, refs, config, context)
-    }
-    return
+    return collectObjectTypeImports(data, config, context, names, refs)
   }
 
   if (!isNil(data.items)) {
-    names.add(RuntimePackages.Validators.array)
-    if (config.arrays) {
-      names.add(RuntimePackages.Validators.items)
-      return collectImportedNames(data.items, names, refs, config, context)
-    }
-    return
+    return collectArrayTypeImports(data, config, context, names, refs)
   }
 
   names.add(RuntimePackages.Validators.any)
 }
 
 export function getValidatorImports(
-  schema: SchemaObject,
+  fromPath: string,
+  schema: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  collector: ImportCollector = collectImports,
 ): ImportDeclaration[] {
   const { accessor } = context
   const nameSet = new Set<string>()
-  const refs = new Set<string>()
-  collectImportedNames(schema, nameSet, refs, config, context)
-  const schemaRefs = Array.from(refs).map((ref) => accessor.dereference<SchemaObject>(ref))
-  const path = accessor.path(schema, 'validator')
-  const asts = [
-    getNamedImports(
-      RuntimePackages.Validators.name,
-      sortBy(Array.from(nameSet), (name) => name),
+  const refSet = new Set<string>()
+  collector(schema, config, context, nameSet, refSet)
+  const names = Array.from(nameSet)
+  const refs = Array.from(refSet)
+  return [
+    ...(isEmpty(names)
+      ? []
+      : [
+          getNamedImports(
+            RuntimePackages.Validators.name,
+            sortBy(names, (name) => name),
+          ),
+        ]),
+    ...getModelImports(
+      fromPath,
+      'validator',
+      refs.map((ref) => accessor.dereference<SchemaObject>(ref)),
+      context,
     ),
-    ...flatMap(schemaRefs, (s) => accessor.dependencies(path, s, 'validator')),
   ]
-  return asts
 }

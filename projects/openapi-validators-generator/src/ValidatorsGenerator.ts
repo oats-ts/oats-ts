@@ -12,9 +12,10 @@ import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 import { Try } from '@oats-ts/generator'
-import { TypeNode, ImportDeclaration } from 'typescript'
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
-import { getModelImports } from '../../typescript-common/lib'
+import { Expression, ImportDeclaration } from 'typescript'
+import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
+import { getReferenceValidatorAst } from './getReferenceValidatorAst'
+import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 
 export class ValidatorsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -46,12 +47,13 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
     return mergeTypeScriptModules(modules)
   }
 
-  // TODO
-  public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
+  public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Expression {
     const { context, config } = this
+    const { accessor } = context
     switch (target) {
       case 'validator':
-        return undefined
+        const ref = isReferenceObject(input) ? input : { $ref: accessor.uri(input) }
+        return getReferenceValidatorAst(ref, context, config, false, true)
       default:
         return undefined
     }
@@ -65,7 +67,7 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
     const { context, config } = this
     switch (target) {
       case 'validator':
-        return getModelImports(fromPath, target, [context.accessor.dereference(input)], context)
+        return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
       default:
         return []
     }

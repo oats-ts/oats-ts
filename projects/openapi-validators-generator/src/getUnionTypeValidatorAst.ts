@@ -1,5 +1,5 @@
 import { isNil, values } from 'lodash'
-import { isReferenceObject, SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from 'openapi3-ts'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
@@ -27,7 +27,7 @@ function getUnionProperties(
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
       factory.createIdentifier(accessor.name(accessor.dereference($ref), 'type')),
-      getReferenceValidatorAst({ $ref }, context, config, true),
+      getReferenceValidatorAst({ $ref }, context, config, true, config.references || config.unionReferences),
     )
   })
 }
