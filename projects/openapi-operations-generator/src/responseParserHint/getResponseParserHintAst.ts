@@ -3,8 +3,13 @@ import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getResponseParserHintPropertyAsts } from './getResponseParserHintPropertyAsts'
+import { OperationsGeneratorConfig } from '../typings'
 
-export function getResponseParserHintAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
+export function getResponseParserHintAst(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  config: OperationsGeneratorConfig,
+): Statement {
   const { accessor } = context
   const { operation } = data
 
@@ -18,7 +23,7 @@ export function getResponseParserHintAst(data: EnhancedOperation, context: OpenA
           varName,
           undefined,
           factory.createTypeReferenceNode(RuntimePackages.Http.ResponseParserHint),
-          factory.createObjectLiteralExpression(getResponseParserHintPropertyAsts(data, context)),
+          factory.createObjectLiteralExpression(getResponseParserHintPropertyAsts(data, context, config)),
         ),
       ],
       NodeFlags.Const,

@@ -38,19 +38,19 @@ export function nameProvider(input: any, name: string, target: OpenAPIGeneratorT
     }
     case 'operation-path-serializer': {
       const operationName = nameProvider(input, name, 'operation')
-      return `${operationName}PathSerializer`
+      return isNil(operationName) ? undefined : `${operationName}PathSerializer`
     }
     case 'operation-query-serializer': {
       const operationName = nameProvider(input, name, 'operation')
-      return `${operationName}QuerySerializer`
+      return isNil(operationName) ? undefined : `${operationName}QuerySerializer`
     }
     case 'operation-headers-serializer': {
       const operationName = nameProvider(input, name, 'operation')
-      return `${operationName}HeadersSerializer`
+      return isNil(operationName) ? undefined : `${operationName}HeadersSerializer`
     }
     case 'operation-response-parser-hint': {
       const operationName = nameProvider(input, name, 'operation')
-      return `${operationName}ParserHint`
+      return isNil(operationName) ? undefined : `${operationName}ParserHint`
     }
     /**
      * No need to incorporate anything in the name as these should be singletons.
@@ -66,7 +66,7 @@ export function nameProvider(input: any, name: string, target: OpenAPIGeneratorT
       return 'ApiStub'
     }
     case 'validator': {
-      return `${camelCase(name)}Validator`
+      return isNil(name) ? undefined : `${camelCase(name)}Validator`
     }
     default:
       return name

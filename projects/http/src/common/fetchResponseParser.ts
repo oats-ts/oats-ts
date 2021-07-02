@@ -1,6 +1,6 @@
 import { asHttpHeaders } from './asHttpHeaders'
 import { ResponseLike } from './typings'
-import { ContentValidator, HttpResponse, ResponseParserHint, StatusCode } from '../typings'
+import { HttpResponse, ResponseParserHint, StatusCode } from '../typings'
 import MIMEType from 'whatwg-mimetype'
 
 /* TODO could be expanded to handle more content types, but no use case for now. */
@@ -15,11 +15,8 @@ async function getResponseBody(response: ResponseLike, contentType: string): Pro
   }
 }
 
-function validateResponseBody(body: any, validator: ContentValidator): void {
-  if (validator === undefined || validator === null) {
-    return
-  }
-  validator(body)
+function validateResponseBody(body: any, validator: any): void {
+  // TODO
 }
 
 const hasOwnProperty = Object.prototype.hasOwnProperty

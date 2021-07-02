@@ -383,6 +383,21 @@
               }
             }
           },
+          "201": {
+            "description": "Simple response returning a json object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "test": {
+                      "$ref": "#/components/schemas/NamedSimpleObject"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "205": {
             "description": "Simple response returning a json object",
             "content": {

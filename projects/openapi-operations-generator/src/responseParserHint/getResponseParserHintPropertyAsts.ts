@@ -3,10 +3,12 @@ import { factory, PropertyAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getContentValidatorPropertyAsts } from './getContentValidatorPropertyAsts'
+import { OperationsGeneratorConfig } from '../typings'
 
 export function getResponseParserHintPropertyAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
+  config: OperationsGeneratorConfig,
 ): PropertyAssignment[] {
   const { operation } = data
   const { default: defaultResponse, ...responses } = operation.responses || {}
@@ -18,7 +20,7 @@ export function getResponseParserHintPropertyAsts(
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
           factory.createObjectLiteralExpression(
-            getContentValidatorPropertyAsts(accessor.dereference(response), context),
+            getContentValidatorPropertyAsts(accessor.dereference(response), context, config),
           ),
         ),
     ),
@@ -28,7 +30,7 @@ export function getResponseParserHintPropertyAsts(
       factory.createPropertyAssignment(
         'default',
         factory.createObjectLiteralExpression(
-          getContentValidatorPropertyAsts(accessor.dereference(defaultResponse), context),
+          getContentValidatorPropertyAsts(accessor.dereference(defaultResponse), context, config),
         ),
       ),
     )

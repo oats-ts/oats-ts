@@ -80,10 +80,8 @@ export type HttpResponse<Body = any, Status = any> = {
   headers: HttpHeaders
 }
 
-export type ContentValidator = (input: any) => void
-
 export type ResponseValidator = {
-  [contentType: string]: ContentValidator | undefined
+  [contentType: string]: any
 }
 
 export type ResponseParserHint = {

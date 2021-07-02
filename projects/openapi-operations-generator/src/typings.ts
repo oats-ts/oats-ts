@@ -4,4 +4,9 @@ export type OperationsGeneratorConfig = {
    * to generate documentation for the generated methods. Otherwise docs will be omitted.
    */
   documentation: boolean
+  /**
+   * If set to true, validators will be generated for the response parser hint objects. This will allow
+   * responses to be validated. This is useful, in case you are unsure the backend respects the contract.
+   */
+  validate: boolean
 }

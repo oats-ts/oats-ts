@@ -6,7 +6,6 @@ export {
   HttpResponse,
   ResponseParser,
   RequestConfig,
-  ContentValidator,
   ResponseParserHint,
   ResponseValidator,
   StatusCode,

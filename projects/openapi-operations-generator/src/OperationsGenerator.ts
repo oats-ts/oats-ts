@@ -51,10 +51,11 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
   public readonly id: string = OperationsGenerator.id
   public readonly produces: string[] = OperationsGenerator.produces
-  public readonly consumes: string[] = OperationsGenerator.consumes
+  public readonly consumes: string[]
 
   public constructor(config: OpenAPIGeneratorConfig & OperationsGeneratorConfig) {
     this.config = config
+    this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['validator'] : [])
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -85,7 +86,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
         generatePathParameterTypeSerializer(operation, context),
         generateQueryParameterTypeSerializer(operation, context),
         generateHeaderParameterTypeSerializer(operation, context),
-        generateResponseParserHint(operation, context),
+        generateResponseParserHint(operation, context, config),
         generateOperationFunction(operation, context, config),
       ].filter(negate(isNil))
     })
