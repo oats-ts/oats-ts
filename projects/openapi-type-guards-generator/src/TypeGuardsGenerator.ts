@@ -39,7 +39,7 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
     const modules = schemas
       .map((schema): TypeScriptModule => generateTypeGuard(schema, context, config))
       .filter(negate(isNil))
-    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+    if (context.issues.some((issue) => issue.severity === 'error')) {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)

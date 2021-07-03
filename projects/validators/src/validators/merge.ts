@@ -1,5 +1,4 @@
 import { Issue, Validator, ValidatorConfig } from '../typings'
-import { getConfig } from '../utils'
 
 export const merge =
   <T>(...validators: Validator<T>[]): Validator<T> =>

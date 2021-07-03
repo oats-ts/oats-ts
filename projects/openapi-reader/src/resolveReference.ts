@@ -13,7 +13,7 @@ export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
     context.issues.push({
       message: `Document "${specUri}" is not yet loaded.`,
       path: specUri,
-      severity: Severity.ERROR,
+      severity: 'error',
       type: 'load',
     })
     return null
@@ -27,7 +27,7 @@ export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
     context.issues.push({
       message: `Can't resolve "${uri}"`,
       path: specUri,
-      severity: Severity.ERROR,
+      severity: 'error',
       type: 'load',
     })
     return null
@@ -48,7 +48,7 @@ export async function resolveReferenceUri<T>(input: ReadInput<string>, context: 
       context.issues.push({
         path: specUri,
         message: `Failed to load document at "${specUri}" (${e.message}).`,
-        severity: Severity.ERROR,
+        severity: 'error',
         type: 'load',
       })
     }

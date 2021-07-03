@@ -17,7 +17,7 @@ function getUnresolved(resolved: Set<string>, documents: Map<string, OpenAPIObje
 }
 
 async function resolveAll(resolved: Set<string>, context: ReadContext) {
-  const hasIssues = context.issues.some((issue) => issue.severity === Severity.ERROR)
+  const hasIssues = context.issues.some((issue) => issue.severity === 'error')
 
   if (hasIssues) {
     return
@@ -57,7 +57,7 @@ export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Tr
   await resolveOpenAPIObject({ data: rootSpec, uri: documentUri }, context)
   await resolveAll(new Set(documentUri), context)
 
-  const hasIssues = context.issues.some((issue) => issue.severity === Severity.ERROR)
+  const hasIssues = context.issues.some((issue) => issue.severity === 'error')
 
   if (hasIssues) {
     return { issues: context.issues }

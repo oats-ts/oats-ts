@@ -1,18 +1,20 @@
 import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
 import { getConfig, getSeverity, isNil } from '../utils'
 
+const issueType: IssueType = 'length'
+
 export const tuple =
   (...validators: Validator<any>[]): Validator<any> =>
   (input: any[], config?: Partial<ValidatorConfig>) => {
     const cfg = getConfig(config)
-    const severity = getSeverity(IssueType.LENGTH, cfg)
+    const severity = getSeverity(issueType, cfg)
     if (isNil(severity)) {
       return []
     }
     if (input.length !== validators.length) {
       return [
         {
-          type: IssueType.LENGTH,
+          type: issueType,
           message: `should have ${validators.length} items`,
           path: cfg.path,
           severity,

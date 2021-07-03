@@ -1,20 +1,20 @@
-export enum Severity {
-  ERROR = 'error',
-  WARNING = 'warning',
-  INFO = 'info',
-}
+export type Severity = 'error' | 'warning' | 'info'
 
-export enum IssueType {
-  TYPE = 'openapi/type',
-  ENUM = 'enum',
-  LITERAL = 'literal',
-  LENGTH = 'length',
-  UNION = 'union',
-  KEY = 'key',
-}
+export type IssueType =
+  | 'array'
+  | 'boolean'
+  | 'nil'
+  | 'number'
+  | 'object'
+  | 'string'
+  | 'enum'
+  | 'literal'
+  | 'length'
+  | 'union'
+  | 'extra-key'
 
 export type Issue = {
-  severity: string
+  severity: Severity
   type: string
   path: string
   message: string
@@ -22,7 +22,7 @@ export type Issue = {
 
 export type ValidatorConfig = {
   path: string
-  severities?: Record<string, string>
+  severities?: Record<string, Severity>
   append(path: string, ...segments: string[]): string
 }
 

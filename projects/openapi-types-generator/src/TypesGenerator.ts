@@ -41,7 +41,7 @@ export class TypesGenerator implements OpenAPIGenerator {
     const { context, config } = this
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
     const modules = schemas.map((schema): TypeScriptModule => generateType(schema, context, config))
-    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+    if (context.issues.some((issue) => issue.severity === 'error')) {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)

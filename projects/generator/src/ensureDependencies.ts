@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import { Issue, Severity } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
 import { CodeGenerator } from './typings'
 
 export function ensureDependencies(generators: CodeGenerator<any, any>[]): Issue[] {
@@ -17,7 +17,7 @@ export function ensureDependencies(generators: CodeGenerator<any, any>[]): Issue
         type: 'deps',
         message: `Following dependencies required by ${id} were not provided: [${notProvided.join(', ')}]`,
         path: id,
-        severity: Severity.ERROR,
+        severity: 'error',
       })
     }
   }

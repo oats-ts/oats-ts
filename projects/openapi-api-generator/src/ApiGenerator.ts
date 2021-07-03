@@ -61,7 +61,7 @@ export class ApiGenerator implements OpenAPIGenerator {
       ...(config.class ? [generateApiClass(document, operations, context, config)] : []),
       ...(config.stub ? [generateApiStub(document, operations, context, config)] : []),
     ]
-    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+    if (context.issues.some((issue) => issue.severity === 'error')) {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)

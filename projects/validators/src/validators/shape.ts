@@ -1,6 +1,8 @@
 import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
 import { getConfig, getSeverity, isNil } from '../utils'
 
+const issueType: IssueType = 'extra-key'
+
 export const shape =
   <T extends Record<string, any>>(
     validators: Record<keyof T, Validator<any>>,
@@ -23,14 +25,13 @@ export const shape =
       })
       issues.push(...newIssues)
     }
-
-    const severity = getSeverity(IssueType.KEY, cfg)
+    const severity = getSeverity(issueType, cfg)
 
     if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
       issues.push(
         ...extraKeys.map(
           (key): Issue => ({
-            type: IssueType.KEY,
+            type: issueType,
             message: `should not have key "${key}"`,
             path: cfg.append(cfg.path, key),
             severity,

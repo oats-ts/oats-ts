@@ -59,7 +59,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
       ].filter(negate(isNil))
     })
 
-    if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
+    if (context.issues.some((issue) => issue.severity === 'error')) {
       return { issues: context.issues }
     }
     return mergeTypeScriptModules(modules)

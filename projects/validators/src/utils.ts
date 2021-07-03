@@ -9,11 +9,7 @@ export function hasOwnProperty(obj: object, property: string): boolean {
   return Object.prototype.hasOwnProperty.call(obj, property)
 }
 
-export function getSeverity(
-  issueType: string,
-  config: ValidatorConfig,
-  defaultSeverity: Severity = Severity.ERROR,
-): string {
+export function getSeverity(issueType: string, config: ValidatorConfig, defaultSeverity: Severity = 'error'): Severity {
   if (isNil(config) || isNil(config.severities)) {
     return defaultSeverity
   }
