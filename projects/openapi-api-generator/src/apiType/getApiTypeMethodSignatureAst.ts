@@ -21,7 +21,7 @@ export function getApiTypeMethodSignatureAst(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(accessor.name(data.operation, 'operation-input-type')),
+        factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/input-type')),
       ),
     )
   }
@@ -38,12 +38,12 @@ export function getApiTypeMethodSignatureAst(
   )
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(accessor.name(data.operation, 'operation-response-type')),
+    factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/response-type')),
   ])
 
   const node = factory.createMethodSignature(
     [],
-    accessor.name(data.operation, 'operation'),
+    accessor.name(data.operation, 'openapi/operation'),
     undefined,
     [],
     parameters,

@@ -17,7 +17,7 @@ export function generateOperationInputType(
   const { accessor } = context
   const { operation } = data
 
-  const path = accessor.path(operation, 'operation-input-type')
+  const path = accessor.path(operation, 'openapi/input-type')
   const bodies = values(getRequestBodyContent(data, context))
     .map(({ schema }) => schema)
     .filter(negate(isNil))
@@ -25,10 +25,10 @@ export function generateOperationInputType(
   return {
     path,
     dependencies: [
-      ...flatMap(bodies, (schema) => accessor.dependencies(path, schema, 'type')),
-      ...accessor.dependencies(path, operation, 'operation-path-type'),
-      ...accessor.dependencies(path, operation, 'operation-query-type'),
-      ...accessor.dependencies(path, operation, 'operation-headers-type'),
+      ...flatMap(bodies, (schema) => accessor.dependencies(path, schema, 'openapi/type')),
+      ...accessor.dependencies(path, operation, 'openapi/path-type'),
+      ...accessor.dependencies(path, operation, 'openapi/query-type'),
+      ...accessor.dependencies(path, operation, 'openapi/headers-type'),
     ],
     content: [
       getOperationInputBaseTypeAst(data, context),

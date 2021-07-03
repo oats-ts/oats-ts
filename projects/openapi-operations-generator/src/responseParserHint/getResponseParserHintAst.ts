@@ -13,7 +13,7 @@ export function getResponseParserHintAst(
   const { accessor } = context
   const { operation } = data
 
-  const varName = accessor.name(operation, 'operation-response-parser-hint')
+  const varName = accessor.name(operation, 'openapi/expectations')
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

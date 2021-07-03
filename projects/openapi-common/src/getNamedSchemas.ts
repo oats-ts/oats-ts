@@ -19,7 +19,7 @@ function collectNamedTypesForSchema(
     return
   }
 
-  if (!isNil(accessor.name(schema, 'type'))) {
+  if (!isNil(accessor.name(schema, 'openapi/type'))) {
     schemas.add(schema)
   }
 

@@ -12,7 +12,7 @@ export function getReferenceAssertionAst(
   const { accessor } = context
   if (config.references) {
     const schema = accessor.dereference<SchemaObject>(data)
-    return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'type-guard')), [], [variable])
+    return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'openapi/type-guard')), [], [variable])
   }
   return factory.createTrue()
 }

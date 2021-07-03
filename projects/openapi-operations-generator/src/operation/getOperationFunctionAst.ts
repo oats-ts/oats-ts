@@ -25,7 +25,7 @@ export function getOperationFunctionAst(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(accessor.name(operation, 'operation-input-type')),
+        factory.createTypeReferenceNode(accessor.name(operation, 'openapi/input-type')),
       ),
     )
   }
@@ -45,7 +45,7 @@ export function getOperationFunctionAst(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    accessor.name(operation, 'operation'),
+    accessor.name(operation, 'openapi/operation'),
     [],
     params,
     factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),

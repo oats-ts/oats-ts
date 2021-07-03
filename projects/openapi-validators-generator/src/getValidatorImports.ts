@@ -22,7 +22,7 @@ export function collectExternalReferenceImports(
 ): void {
   const { accessor } = context
   const schema = accessor.dereference(data)
-  if (!isNil(accessor.name(schema, 'validator'))) {
+  if (!isNil(accessor.name(schema, 'openapi/validator'))) {
     refs.add(accessor.uri(schema))
   } else {
     collectImports(schema, config, context, names, refs)
@@ -40,7 +40,7 @@ export function collectReferenceImports(
     names.add(RuntimePackages.Validators.any)
   } else {
     const schema = context.accessor.dereference(data)
-    if (!isNil(context.accessor.name(schema, 'validator'))) {
+    if (!isNil(context.accessor.name(schema, 'openapi/validator'))) {
       names.add(RuntimePackages.Validators.lazy)
       refs.add(data.$ref)
     } else {
@@ -194,7 +194,7 @@ export function getValidatorImports(
         ]),
     ...getModelImports(
       fromPath,
-      'validator',
+      'openapi/validator',
       refs.map((ref) => accessor.dereference<SchemaObject>(ref)),
       context,
     ),

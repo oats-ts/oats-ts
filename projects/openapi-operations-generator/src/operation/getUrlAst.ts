@@ -16,11 +16,11 @@ export function getUrlAst(data: EnhancedOperation, context: OpenAPIGeneratorCont
     parameterAsts.push(factory.createStringLiteral(url))
   } else {
     // Otherwise use serializer
-    parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'operation-path-serializer'), 'path'))
+    parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'openapi/path-serializer'), 'path'))
   }
 
   if (query.length > 0) {
-    parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'operation-query-serializer'), 'query'))
+    parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'openapi/query-serializer'), 'query'))
   }
 
   return factory.createCallExpression(factory.createIdentifier('joinUrl'), [], parameterAsts)

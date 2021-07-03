@@ -20,7 +20,7 @@ export function getOperationExecuteAst(
       getOperationRequestLiteralAst(data, context),
       factory.createIdentifier('config'),
       ...(config.validate
-        ? [factory.createIdentifier(accessor.name(data.operation, 'operation-response-parser-hint'))]
+        ? [factory.createIdentifier(accessor.name(data.operation, 'openapi/expectations'))]
         : []),
     ],
   )

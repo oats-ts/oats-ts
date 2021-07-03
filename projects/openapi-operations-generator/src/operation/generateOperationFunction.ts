@@ -13,18 +13,18 @@ export function generateOperationFunction(
 ): TypeScriptModule {
   const { accessor } = context
   const { operation } = data
-  const path = accessor.path(operation, 'operation')
+  const path = accessor.path(operation, 'openapi/operation')
   return {
     path,
     dependencies: [
       getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig, RuntimePackages.Http.execute]),
-      ...accessor.dependencies(path, data.operation, 'operation-input-type'),
-      ...accessor.dependencies(path, data.operation, 'operation-response-type'),
-      ...accessor.dependencies(path, data.operation, 'operation-path-serializer'),
-      ...accessor.dependencies(path, data.operation, 'operation-query-serializer'),
-      ...accessor.dependencies(path, data.operation, 'operation-headers-serializer'),
-      ...(config.validate ? accessor.dependencies(path, data.operation, 'operation-response-parser-hint') : []),
+      ...accessor.dependencies(path, data.operation, 'openapi/input-type'),
+      ...accessor.dependencies(path, data.operation, 'openapi/response-type'),
+      ...accessor.dependencies(path, data.operation, 'openapi/path-serializer'),
+      ...accessor.dependencies(path, data.operation, 'openapi/query-serializer'),
+      ...accessor.dependencies(path, data.operation, 'openapi/headers-serializer'),
+      ...(config.validate ? accessor.dependencies(path, data.operation, 'openapi/expectations') : []),
     ],
     content: [getOperationFunctionAst(data, context, config)],
   }

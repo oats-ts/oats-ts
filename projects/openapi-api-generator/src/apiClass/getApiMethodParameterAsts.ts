@@ -19,7 +19,7 @@ export function getApiMethodParameterAsts(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(accessor.name(data.operation, 'operation-input-type')),
+        factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/input-type')),
       ),
     )
   }

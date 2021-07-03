@@ -19,7 +19,7 @@ export function getNamedTypeAst(
   const node = factory.createTypeAliasDeclaration(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    factory.createIdentifier(accessor.name(schema, 'type')),
+    factory.createIdentifier(accessor.name(schema, 'openapi/type')),
     undefined,
     getRighthandSideTypeAst(schema, context, config),
   )

@@ -19,8 +19,8 @@ import { collectExternalReferenceImports, getValidatorImports } from './getValid
 
 export class ValidatorsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
-  public static consumes: OpenAPIGeneratorTarget[] = ['type']
-  public static produces: OpenAPIGeneratorTarget[] = ['validator']
+  public static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  public static produces: OpenAPIGeneratorTarget[] = ['openapi/validator']
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & ValidatorsGeneratorConfig
@@ -39,7 +39,7 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
 
   public async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
-    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
+    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
     const modules = schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config))
     if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
       return { issues: context.issues }
@@ -51,7 +51,7 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
     const { context, config } = this
     const { accessor } = context
     switch (target) {
-      case 'validator':
+      case 'openapi/validator':
         const ref = isReferenceObject(input) ? input : { $ref: accessor.uri(input) }
         return getReferenceValidatorAst(ref, context, config, false, true)
       default:
@@ -66,7 +66,7 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
   ): ImportDeclaration[] {
     const { context, config } = this
     switch (target) {
-      case 'validator':
+      case 'openapi/validator':
         return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
       default:
         return []

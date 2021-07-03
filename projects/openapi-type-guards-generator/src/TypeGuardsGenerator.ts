@@ -15,8 +15,8 @@ import { TypeGuardGeneratorConfig } from './typings'
 
 export class TypeGuardsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/typeGuards'
-  public static consumes: OpenAPIGeneratorTarget[] = ['type']
-  public static produces: OpenAPIGeneratorTarget[] = ['type-guard']
+  public static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  public static produces: OpenAPIGeneratorTarget[] = ['openapi/type-guard']
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & TypeGuardGeneratorConfig
@@ -35,7 +35,7 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
 
   async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
-    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
+    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
     const modules = schemas
       .map((schema): TypeScriptModule => generateTypeGuard(schema, context, config))
       .filter(negate(isNil))

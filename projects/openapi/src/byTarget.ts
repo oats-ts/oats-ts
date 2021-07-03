@@ -3,35 +3,35 @@ import { GeneratorPathProvider, NameProvider, OpenAPIGeneratorTarget } from './t
 
 function folderName(target: OpenAPIGeneratorTarget): string {
   switch (target) {
-    case 'type':
+    case 'openapi/type':
       return 'types'
-    case 'type-guard':
+    case 'openapi/type-guard':
       return 'typeGuards'
-    case 'operation':
+    case 'openapi/operation':
       return 'operations'
-    case 'operation-query-type':
+    case 'openapi/query-type':
       return 'queryParameterTypes'
-    case 'operation-headers-type':
+    case 'openapi/headers-type':
       return 'headerParameterTypes'
-    case 'operation-path-type':
+    case 'openapi/path-type':
       return 'pathParameterTypes'
-    case 'operation-response-type':
+    case 'openapi/response-type':
       return 'responseTypes'
-    case 'operation-input-type':
+    case 'openapi/input-type':
       return 'inputTypes'
-    case 'operation-path-serializer':
+    case 'openapi/path-serializer':
       return 'pathSerializers'
-    case 'operation-query-serializer':
+    case 'openapi/query-serializer':
       return 'querySerializers'
-    case 'operation-headers-serializer':
+    case 'openapi/headers-serializer':
       return 'headerSerializers'
-    case 'operation-response-parser-hint':
+    case 'openapi/expectations':
       return 'parserHints'
-    case 'validator':
+    case 'openapi/validator':
       return 'validators'
-    case 'api-type':
-    case 'api-class':
-    case 'api-stub':
+    case 'openapi/api-type':
+    case 'openapi/api-class':
+    case 'openapi/api-stub':
       return 'api'
   }
 }

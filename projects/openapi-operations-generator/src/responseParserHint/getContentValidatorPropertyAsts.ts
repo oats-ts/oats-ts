@@ -13,7 +13,7 @@ export function getContentValidatorPropertyAsts(
   const { content } = data
   return entries(content || {}).map(([contentType, mediaTypeObj]) => {
     const validator: Expression = config.validate
-      ? accessor.reference(mediaTypeObj.schema, 'validator')
+      ? accessor.reference(mediaTypeObj.schema, 'openapi/validator')
       : factory.createIdentifier('undefined')
     return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validator)
   })

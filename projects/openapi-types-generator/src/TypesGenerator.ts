@@ -20,7 +20,7 @@ import { getTypeImports } from './getTypeImports'
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'
   public static consumes: OpenAPIGeneratorTarget[] = []
-  public static produces: OpenAPIGeneratorTarget[] = ['type']
+  public static produces: OpenAPIGeneratorTarget[] = ['openapi/type']
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & TypesGeneratorConfig
@@ -39,7 +39,7 @@ export class TypesGenerator implements OpenAPIGenerator {
 
   public async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
-    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'type'))
+    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
     const modules = schemas.map((schema): TypeScriptModule => generateType(schema, context, config))
     if (context.issues.some((issue) => issue.severity === Severity.ERROR)) {
       return { issues: context.issues }
@@ -50,7 +50,7 @@ export class TypesGenerator implements OpenAPIGenerator {
   public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
     const { context, config } = this
     switch (target) {
-      case 'type':
+      case 'openapi/type':
         return getTypeReferenceAst(input, context, config)
       default:
         return undefined
@@ -63,7 +63,7 @@ export class TypesGenerator implements OpenAPIGenerator {
     target: OpenAPIGeneratorTarget,
   ): ImportDeclaration[] {
     switch (target) {
-      case 'type':
+      case 'openapi/type':
         return getTypeImports(fromPath, input, this.context, true)
       default:
         return []

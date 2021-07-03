@@ -23,11 +23,11 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ParameterTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameterTypes'
-  public static consumes: OpenAPIGeneratorTarget[] = ['type']
+  public static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
   public static produces: OpenAPIGeneratorTarget[] = [
-    'operation-headers-type',
-    'operation-path-type',
-    'operation-query-type',
+    'openapi/headers-type',
+    'openapi/path-type',
+    'openapi/query-type',
   ]
 
   private context: OpenAPIGeneratorContext = null
@@ -45,7 +45,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
     this.operations = sortBy(getEnhancedOperations(this.context.accessor.document(), this.context), ({ operation }) =>
-      this.context.accessor.name(operation, 'operation'),
+      this.context.accessor.name(operation, 'openapi/operation'),
     )
   }
 
@@ -76,15 +76,15 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
   public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode {
     const { context } = this
     switch (target) {
-      case 'operation-headers-type': {
+      case 'openapi/headers-type': {
         const { header } = this.enhance(input)
         return isEmpty(header) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
       }
-      case 'operation-path-type': {
+      case 'openapi/path-type': {
         const { path } = this.enhance(input)
         return isEmpty(path) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
       }
-      case 'operation-query-type':
+      case 'openapi/query-type':
         const { query } = this.enhance(input)
         return isEmpty(query) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
       default:
@@ -94,17 +94,17 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
 
   public dependencies(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     switch (target) {
-      case 'operation-headers-type': {
+      case 'openapi/headers-type': {
         const { header } = this.enhance(input)
-        return isEmpty(header) ? [] : getModelImports(fromPath, 'operation-headers-type', [input], this.context)
+        return isEmpty(header) ? [] : getModelImports(fromPath, 'openapi/headers-type', [input], this.context)
       }
-      case 'operation-path-type': {
+      case 'openapi/path-type': {
         const { path } = this.enhance(input)
-        return isEmpty(path) ? [] : getModelImports(fromPath, 'operation-path-type', [input], this.context)
+        return isEmpty(path) ? [] : getModelImports(fromPath, 'openapi/path-type', [input], this.context)
       }
-      case 'operation-query-type':
+      case 'openapi/query-type':
         const { query } = this.enhance(input)
-        return isEmpty(query) ? [] : getModelImports(fromPath, 'operation-query-type', [input], this.context)
+        return isEmpty(query) ? [] : getModelImports(fromPath, 'openapi/query-type', [input], this.context)
       default:
         return []
     }

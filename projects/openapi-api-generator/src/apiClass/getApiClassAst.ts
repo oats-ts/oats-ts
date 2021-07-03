@@ -48,7 +48,7 @@ export function getApiClassAst(
   const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-          factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'api-type')), []),
+          factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'openapi/api-type')), []),
         ]),
       ]
     : []
@@ -56,7 +56,7 @@ export function getApiClassAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    accessor.name(document, 'api-class'),
+    accessor.name(document, 'openapi/api-class'),
     [],
     heritageClauses,
     [configField, constructor, ...operations.map((operation) => getApiClassMethodAst(operation, context))],

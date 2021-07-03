@@ -15,7 +15,7 @@ export function getTypeReferenceAst(
   if (isNil(schema)) {
     return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)
   }
-  const name = accessor.name(schema, 'type')
+  const name = accessor.name(schema, 'openapi/type')
   if (isNil(name)) {
     return getRighthandSideTypeAst(schema, context, config)
   }

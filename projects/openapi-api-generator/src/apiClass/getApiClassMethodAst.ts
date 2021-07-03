@@ -9,7 +9,7 @@ export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
 
   const returnStatement = factory.createReturnStatement(
     factory.createCallExpression(
-      factory.createIdentifier(accessor.name(data.operation, 'operation')),
+      factory.createIdentifier(accessor.name(data.operation, 'openapi/operation')),
       [],
       [
         ...(hasInput(data, context) ? [factory.createIdentifier('input')] : []),
@@ -27,7 +27,7 @@ export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
     [],
     [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    accessor.name(data.operation, 'operation'),
+    accessor.name(data.operation, 'openapi/operation'),
     undefined,
     [],
     getApiMethodParameterAsts(data, context), // TODO parameters

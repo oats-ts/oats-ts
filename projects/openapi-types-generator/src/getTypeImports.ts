@@ -12,9 +12,9 @@ export function getTypeImports(
 ): ImportDeclaration[] {
   const { accessor } = context
   const schema = accessor.dereference(schemaOrRef)
-  const name = accessor.name(schema, 'type')
+  const name = accessor.name(schema, 'openapi/type')
   if (referenceOnly && !isNil(name)) {
-    return getModelImports(fromPath, 'type', [schema], context)
+    return getModelImports(fromPath, 'openapi/type', [schema], context)
   }
-  return getModelImports(fromPath, 'type', getReferencedNamedSchemas(schema, context), context)
+  return getModelImports(fromPath, 'openapi/type', getReferencedNamedSchemas(schema, context), context)
 }

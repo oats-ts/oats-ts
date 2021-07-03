@@ -18,7 +18,7 @@ export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGen
     [],
     [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    accessor.name(data.operation, 'operation'),
+    accessor.name(data.operation, 'openapi/operation'),
     undefined,
     [],
     getApiMethodParameterAsts(data, context),

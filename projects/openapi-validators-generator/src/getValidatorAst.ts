@@ -15,7 +15,7 @@ export function getValidatorAst(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          accessor.name(schema, 'validator'),
+          accessor.name(schema, 'openapi/validator'),
           undefined,
           undefined,
           getRightHandSideValidatorAst(schema, context, config),

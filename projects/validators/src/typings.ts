@@ -5,7 +5,7 @@ export enum Severity {
 }
 
 export enum IssueType {
-  TYPE = 'type',
+  TYPE = 'openapi/type',
   ENUM = 'enum',
   LITERAL = 'literal',
   LENGTH = 'length',

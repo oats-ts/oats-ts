@@ -9,7 +9,7 @@ export function getNamedEnumAst(input: SchemaObject, context: OpenAPIGeneratorCo
   return factory.createEnumDeclaration(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    factory.createIdentifier(accessor.name(input, 'type')),
+    factory.createIdentifier(accessor.name(input, 'openapi/type')),
     input.enum.map((value) => {
       return factory.createEnumMember(safeName(value.toString()), getLiteralAst(value))
     }),

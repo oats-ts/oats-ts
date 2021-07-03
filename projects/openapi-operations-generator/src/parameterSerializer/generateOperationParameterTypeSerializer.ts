@@ -142,16 +142,16 @@ const generateOperationParameterTypeSerializer =
 
 export const generateQueryParameterTypeSerializer = generateOperationParameterTypeSerializer(
   'query',
-  'operation-query-serializer',
-  'operation-query-type',
+  'openapi/query-serializer',
+  'openapi/query-type',
 )
 export const generatePathParameterTypeSerializer = generateOperationParameterTypeSerializer(
   'path',
-  'operation-path-serializer',
-  'operation-path-type',
+  'openapi/path-serializer',
+  'openapi/path-type',
 )
 export const generateHeaderParameterTypeSerializer = generateOperationParameterTypeSerializer(
   'header',
-  'operation-headers-serializer',
-  'operation-headers-type',
+  'openapi/headers-serializer',
+  'openapi/headers-type',
 )

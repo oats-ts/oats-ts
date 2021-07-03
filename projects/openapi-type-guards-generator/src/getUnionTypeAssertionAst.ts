@@ -23,7 +23,7 @@ export function getUnionTypeAssertionAst(
     SyntaxKind.BarBarToken,
     data.oneOf.map((refOrSchema) => {
       const schema = accessor.dereference<SchemaObject>(refOrSchema)
-      return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'type-guard')), [], [variable])
+      return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'openapi/type-guard')), [], [variable])
     }),
   )
 }

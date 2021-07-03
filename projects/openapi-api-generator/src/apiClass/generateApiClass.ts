@@ -15,14 +15,14 @@ export function generateApiClass(
   config: ApiGeneratorConfig,
 ): TypeScriptModule {
   const { accessor } = context
-  const path = accessor.path(doc, 'api-class')
+  const path = accessor.path(doc, 'openapi/api-class')
   return {
     path,
     dependencies: [
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
-      ...accessor.dependencies(path, doc, 'api-type'),
-      ...flatMap(operations, ({ operation }) => accessor.dependencies(path, operation, 'operation')),
+      ...accessor.dependencies(path, doc, 'openapi/api-type'),
+      ...flatMap(operations, ({ operation }) => accessor.dependencies(path, operation, 'openapi/operation')),
     ],
     content: [getApiClassAst(doc, operations, context, config)],
   }

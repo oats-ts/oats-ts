@@ -12,10 +12,10 @@ export function getTypeGuardFunctionAst(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    accessor.name(schema, 'type-guard'),
+    accessor.name(schema, 'openapi/type-guard'),
     [],
     [factory.createParameterDeclaration([], [], undefined, 'input', undefined, factory.createTypeReferenceNode('any'))],
-    factory.createTypePredicateNode(undefined, 'input', accessor.reference(schema, 'type')),
+    factory.createTypePredicateNode(undefined, 'input', accessor.reference(schema, 'openapi/type')),
     factory.createBlock([factory.createReturnStatement(assertion)]),
   )
 }

@@ -17,7 +17,7 @@ export function getReferenceValidatorAst(
     return factory.createIdentifier(RuntimePackages.Validators.any)
   }
   const resolved = accessor.dereference(data)
-  const name = accessor.name(resolved, 'validator')
+  const name = accessor.name(resolved, 'openapi/validator')
   if (!isNil(name)) {
     const validator = factory.createIdentifier(name)
     if (lazy) {

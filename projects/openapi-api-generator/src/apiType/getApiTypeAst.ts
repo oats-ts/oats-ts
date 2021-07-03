@@ -14,7 +14,7 @@ export function getApiTypeAst(
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    accessor.name(document, 'api-type'),
+    accessor.name(document, 'openapi/api-type'),
     [],
     factory.createTypeLiteralNode(
       operations.map((operation) => getApiTypeMethodSignatureAst(operation, context, config)),

@@ -27,7 +27,7 @@ function collect(
 ): void {
   const { accessor } = context
   const schema = accessor.dereference(input)
-  if (!isNil(accessor.name(schema, 'type'))) {
+  if (!isNil(accessor.name(schema, 'openapi/type'))) {
     schemas.push(schema)
   } else {
     collectInChildren(schema, context, schemas)

@@ -59,8 +59,8 @@ export function getTypeGuardImports(
   getImportedRefs(data, context, config, refs)
   const importedSchemas = sortBy(
     Array.from(refs).map((ref) => accessor.dereference<SchemaObject>(ref)),
-    (schema) => accessor.name(schema, 'type-guard'),
+    (schema) => accessor.name(schema, 'openapi/type-guard'),
   )
-  const path = accessor.path(data, 'type-guard')
-  return flatMap(importedSchemas, (schema) => accessor.dependencies(path, schema, 'type-guard'))
+  const path = accessor.path(data, 'openapi/type-guard')
+  return flatMap(importedSchemas, (schema) => accessor.dependencies(path, schema, 'openapi/type-guard'))
 }

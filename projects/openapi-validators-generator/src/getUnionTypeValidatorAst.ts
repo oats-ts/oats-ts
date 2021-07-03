@@ -26,7 +26,7 @@ function getUnionProperties(
   const discriminators = values(data.discriminator.mapping || {})
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
-      factory.createIdentifier(accessor.name(accessor.dereference($ref), 'type')),
+      factory.createIdentifier(accessor.name(accessor.dereference($ref), 'openapi/type')),
       getReferenceValidatorAst({ $ref }, context, config, true, config.references || config.unionReferences),
     )
   })

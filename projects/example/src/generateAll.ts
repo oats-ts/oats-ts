@@ -15,26 +15,26 @@ const prettierConfiguration = JSON.parse(readFileSync(resolve('..', '..', '.pret
 
 function path(input: any, name: NameProvider, target: OpenAPIGeneratorTarget) {
   switch (target) {
-    case 'operation':
-    case 'operation-headers-serializer':
-    case 'operation-headers-type':
-    case 'operation-input-type':
-    case 'operation-path-serializer':
-    case 'operation-path-type':
-    case 'operation-query-serializer':
-    case 'operation-query-type':
-    case 'operation-response-parser-hint':
-    case 'operation-response-type':
-      return resolve(join('generated', 'operations', `${name(input, 'operation')}.ts`))
-    case 'api-class':
-    case 'api-type':
-    case 'api-stub':
+    case 'openapi/operation':
+    case 'openapi/headers-serializer':
+    case 'openapi/headers-type':
+    case 'openapi/input-type':
+    case 'openapi/path-serializer':
+    case 'openapi/path-type':
+    case 'openapi/query-serializer':
+    case 'openapi/query-type':
+    case 'openapi/expectations':
+    case 'openapi/response-type':
+      return resolve(join('generated', 'operations', `${name(input, 'openapi/operation')}.ts`))
+    case 'openapi/api-class':
+    case 'openapi/api-type':
+    case 'openapi/api-stub':
       return resolve(join('generated', 'apiRequests.ts'))
-    case 'validator':
+    case 'openapi/validator':
       return resolve(join('generated', 'validators.ts'))
-    case 'type-guard':
+    case 'openapi/type-guard':
       return resolve(join('generated', 'typeGuards.ts'))
-    case 'type':
+    case 'openapi/type':
       return resolve(join('generated', 'types.ts'))
     default:
       throw new TypeError(`Unexpected target "${target}".`)
@@ -42,7 +42,7 @@ function path(input: any, name: NameProvider, target: OpenAPIGeneratorTarget) {
 }
 
 function name(input: any, name: string, target: OpenAPIGeneratorTarget): string {
-  if (target === 'operation-response-type') {
+  if (target === 'openapi/response-type') {
     return `${defaultNameProvider(input, name, target)}Type`
   }
   return defaultNameProvider(input, name, target)

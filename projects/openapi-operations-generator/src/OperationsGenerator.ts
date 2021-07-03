@@ -30,18 +30,18 @@ import { getModelImports } from '@oats-ts/typescript-common'
 export class OperationsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/operations'
   public static consumes: OpenAPIGeneratorTarget[] = [
-    'type',
-    'operation-headers-type',
-    'operation-query-type',
-    'operation-path-type',
+    'openapi/type',
+    'openapi/headers-type',
+    'openapi/query-type',
+    'openapi/path-type',
   ]
   public static produces: OpenAPIGeneratorTarget[] = [
-    'operation',
-    'operation-response-type',
-    'operation-input-type',
-    'operation-headers-serializer',
-    'operation-path-serializer',
-    'operation-query-serializer',
+    'openapi/operation',
+    'openapi/response-type',
+    'openapi/input-type',
+    'openapi/headers-serializer',
+    'openapi/path-serializer',
+    'openapi/query-serializer',
   ]
 
   private context: OpenAPIGeneratorContext = null
@@ -54,14 +54,14 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
   public constructor(config: OpenAPIGeneratorConfig & OperationsGeneratorConfig) {
     this.config = config
-    this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['validator'] : [])
-    this.produces = OperationsGenerator.produces.concat(config.validate ? ['operation-response-parser-hint'] : [])
+    this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['openapi/validator'] : [])
+    this.produces = OperationsGenerator.produces.concat(config.validate ? ['openapi/expectations'] : [])
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
     this.operations = sortBy(getEnhancedOperations(this.context.accessor.document(), this.context), ({ operation }) =>
-      this.context.accessor.name(operation, 'operation'),
+      this.context.accessor.name(operation, 'openapi/operation'),
     )
   }
 
@@ -77,7 +77,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
     const { context, config } = this
     const { accessor } = context
     const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
-      accessor.name(operation, 'operation'),
+      accessor.name(operation, 'openapi/operation'),
     )
     const modules: TypeScriptModule[] = flatMap(operations, (operation: EnhancedOperation): TypeScriptModule[] => {
       return [
@@ -101,29 +101,29 @@ export class OperationsGenerator implements OpenAPIGenerator {
     const { context } = this
     const { accessor } = context
     switch (target) {
-      case 'operation': {
+      case 'openapi/operation': {
         return factory.createIdentifier(accessor.name(input, target))
       }
-      case 'operation-response-type': {
+      case 'openapi/response-type': {
         return hasResponses(input, context) ? factory.createTypeReferenceNode(accessor.name(input, target)) : undefined
       }
-      case 'operation-input-type': {
+      case 'openapi/input-type': {
         return hasInput(this.enhance(input), context)
           ? factory.createTypeReferenceNode(accessor.name(input, target))
           : undefined
       }
-      case 'operation-headers-serializer': {
+      case 'openapi/headers-serializer': {
         const { header } = this.enhance(input)
         return isEmpty(header) ? undefined : factory.createIdentifier(context.accessor.name(input, target))
       }
-      case 'operation-path-serializer': {
+      case 'openapi/path-serializer': {
         const { path } = this.enhance(input)
         return isEmpty(path) ? undefined : factory.createIdentifier(context.accessor.name(input, target))
       }
-      case 'operation-query-serializer':
+      case 'openapi/query-serializer':
         const { query } = this.enhance(input)
         return isEmpty(query) ? undefined : factory.createIdentifier(context.accessor.name(input, target))
-      case 'operation-response-parser-hint': {
+      case 'openapi/expectations': {
         return hasResponses(input, context) ? factory.createIdentifier(context.accessor.name(input, target)) : undefined
       }
       default:
@@ -134,29 +134,29 @@ export class OperationsGenerator implements OpenAPIGenerator {
   public dependencies(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'operation': {
+      case 'openapi/operation': {
         return getModelImports(fromPath, target, [input], this.context)
       }
-      case 'operation-response-type': {
+      case 'openapi/response-type': {
         return hasResponses(input, context) ? getModelImports(fromPath, target, [input], this.context) : []
       }
-      case 'operation-input-type': {
+      case 'openapi/input-type': {
         return hasInput(this.enhance(input), context)
           ? getModelImports(fromPath, target, [input], this.context)
           : undefined
       }
-      case 'operation-headers-serializer': {
+      case 'openapi/headers-serializer': {
         const { header } = this.enhance(input)
         return isEmpty(header) ? undefined : getModelImports(fromPath, target, [input], this.context)
       }
-      case 'operation-path-serializer': {
+      case 'openapi/path-serializer': {
         const { path } = this.enhance(input)
         return isEmpty(path) ? undefined : getModelImports(fromPath, target, [input], this.context)
       }
-      case 'operation-query-serializer':
+      case 'openapi/query-serializer':
         const { query } = this.enhance(input)
         return isEmpty(query) ? undefined : getModelImports(fromPath, target, [input], this.context)
-      case 'operation-response-parser-hint': {
+      case 'openapi/expectations': {
         return hasResponses(input, context) ? getModelImports(fromPath, target, [input], this.context) : undefined
       }
       default:
