@@ -18,13 +18,13 @@ export function generateOperationFunction(
     path,
     dependencies: [
       getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig, RuntimePackages.Http.execute]),
       ...accessor.dependencies(path, data.operation, 'operation-input-type'),
       ...accessor.dependencies(path, data.operation, 'operation-response-type'),
-      ...accessor.dependencies(path, data.operation, 'operation-response-parser-hint'),
       ...accessor.dependencies(path, data.operation, 'operation-path-serializer'),
       ...accessor.dependencies(path, data.operation, 'operation-query-serializer'),
       ...accessor.dependencies(path, data.operation, 'operation-headers-serializer'),
+      ...(config.validate ? accessor.dependencies(path, data.operation, 'operation-response-parser-hint') : []),
     ],
     content: [getOperationFunctionAst(data, context, config)],
   }

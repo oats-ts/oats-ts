@@ -22,7 +22,7 @@ export function getResponseParserHintAst(
         factory.createVariableDeclaration(
           varName,
           undefined,
-          factory.createTypeReferenceNode(RuntimePackages.Http.ResponseParserHint),
+          factory.createTypeReferenceNode(RuntimePackages.Http.ResponseExpectations),
           factory.createObjectLiteralExpression(getResponseParserHintPropertyAsts(data, context, config)),
         ),
       ],

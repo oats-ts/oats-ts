@@ -1,11 +1,16 @@
 import { ApiImpl } from './generated/api'
-import { parse, serialize, request } from '@oats-ts/http/lib/node-fetch'
+import { validate } from '@oats-ts/validators'
+import { body, headers, mimeType, statusCode, serialize, request } from '@oats-ts/http/lib/node-fetch'
 
 describe('Api', () => {
   const api = new ApiImpl({
     baseUrl: 'http://localhost:3000',
-    parse,
+    body,
+    headers,
+    mimeType,
+    statusCode,
     serialize,
+    validate,
     request: request(),
   })
 

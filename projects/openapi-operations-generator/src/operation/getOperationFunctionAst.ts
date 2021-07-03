@@ -4,8 +4,8 @@ import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
 import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
 import { OperationsGeneratorConfig } from '../typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getOperationParseAst } from './getOperationParseAst'
 import { documentNode } from '@oats-ts/typescript-common'
+import { getOperationExecuteAst } from './getOperationRequestAst'
 
 export function getOperationFunctionAst(
   data: EnhancedOperation,
@@ -49,7 +49,7 @@ export function getOperationFunctionAst(
     [],
     params,
     factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),
-    factory.createBlock([factory.createReturnStatement(getOperationParseAst(data, context))]),
+    factory.createBlock([factory.createReturnStatement(getOperationExecuteAst(data, context, config))]),
   )
   return config.documentation ? documentNode(node, operation) : node
 }

@@ -1,9 +1,8 @@
-import { RequestFn, HttpRequest } from '../typings'
+import { HttpRequest } from '../typings'
 import { mergeHeaders } from '../common/mergeHeaders'
-import fetch, { RequestInit, Response } from 'node-fetch'
 
-export const nodeFetchRequest = (init: RequestInit = {}): RequestFn => {
-  return async function nodeFetchAdapterInstance(request: HttpRequest): Promise<Response> {
+export function request(init: RequestInit = {}) {
+  return async function browserFetch(request: HttpRequest): Promise<Response> {
     const fetchRequest: RequestInit = {
       ...(init || {}),
       headers: mergeHeaders(init?.headers, request.headers),

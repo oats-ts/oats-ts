@@ -13,7 +13,7 @@ import {
   number,
   literal,
 } from '@oats-ts/validators'
-import { HttpResponse, ResponseParserHint, RequestConfig, StatusCode } from '@oats-ts/http'
+import { HttpResponse, RequestConfig, execute, StatusCode } from '@oats-ts/http'
 import {
   joinUrl,
   header,
@@ -330,13 +330,8 @@ export type GetWithQueryParamsQueryParameters = {
 
 export type GetSimpleNamedObjectResponse = HttpResponse<NamedSimpleObject, 200>
 
-export const getSimpleNamedObjectParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
-
 export async function getSimpleNamedObject(config: RequestConfig): Promise<GetSimpleNamedObjectResponse> {
-  return config.parse(
-    await config.request({ url: joinUrl(config.baseUrl, '/simple-named-object'), method: 'get' }),
-    getSimpleNamedObjectParserHint,
-  )
+  return execute({ url: joinUrl(config.baseUrl, '/simple-named-object'), method: 'get' }, config)
 }
 
 export type GetWithHeaderParamsResponse = HttpResponse<NamedSimpleObject, 200>
@@ -352,38 +347,33 @@ export const getWithHeaderParamsHeadersSerializer = createHeaderSerializer<GetWi
   'X-Enum-In-Headers': header.simple.primitive({ required: true }),
 })
 
-export const getWithHeaderParamsParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
-
 export async function getWithHeaderParams(
   input: GetWithHeaderParamsInput,
   config: RequestConfig,
 ): Promise<GetWithHeaderParamsResponse> {
-  return config.parse(
-    await config.request({
+  return execute(
+    {
       url: joinUrl(config.baseUrl, '/header-params'),
       method: 'get',
       headers: getWithHeaderParamsHeadersSerializer(input.headers),
-    }),
-    getWithHeaderParamsParserHint,
+    },
+    config,
   )
 }
 
 export type GetWithMultipleResponsesResponse =
   | HttpResponse<NamedSimpleObject, 200>
+  | HttpResponse<
+      {
+        test?: NamedSimpleObject
+      },
+      201
+    >
   | HttpResponse<NamedDeprecatedObject, 205>
-  | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 205>>
-
-export const getWithMultipleResponsesParserHint: ResponseParserHint = {
-  200: { 'application/json': undefined },
-  205: { 'application/json': undefined },
-  default: { 'application/json': undefined },
-}
+  | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 201 | 205>>
 
 export async function getWithMultipleResponses(config: RequestConfig): Promise<GetWithMultipleResponsesResponse> {
-  return config.parse(
-    await config.request({ url: joinUrl(config.baseUrl, '/multiple-responses'), method: 'get' }),
-    getWithMultipleResponsesParserHint,
-  )
+  return execute({ url: joinUrl(config.baseUrl, '/multiple-responses'), method: 'get' }, config)
 }
 
 export type GetWithPathParamsResponse = HttpResponse<NamedSimpleObject, 200>
@@ -402,16 +392,11 @@ export const getWithPathParamsPathSerializer = createPathSerializer<GetWithPathP
   },
 )
 
-export const getWithPathParamsParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
-
 export async function getWithPathParams(
   input: GetWithPathParamsInput,
   config: RequestConfig,
 ): Promise<GetWithPathParamsResponse> {
-  return config.parse(
-    await config.request({ url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' }),
-    getWithPathParamsParserHint,
-  )
+  return execute({ url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' }, config)
 }
 
 export type GetWithQueryParamsResponse = HttpResponse<NamedSimpleObject, 200>
@@ -427,18 +412,13 @@ export const getWithQueryParamsQuerySerializer = createQuerySerializer<GetWithQu
   enumInQuery: query.form.primitive({ required: true }),
 })
 
-export const getWithQueryParamsParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
-
 export async function getWithQueryParams(
   input: GetWithQueryParamsInput,
   config: RequestConfig,
 ): Promise<GetWithQueryParamsResponse> {
-  return config.parse(
-    await config.request({
-      url: joinUrl(config.baseUrl, '/query-params', getWithQueryParamsQuerySerializer(input.query)),
-      method: 'get',
-    }),
-    getWithQueryParamsParserHint,
+  return execute(
+    { url: joinUrl(config.baseUrl, '/query-params', getWithQueryParamsQuerySerializer(input.query)), method: 'get' },
+    config,
   )
 }
 
@@ -449,20 +429,18 @@ export type PostSimpleNamedObjectInput = {
   body: NamedSimpleObject
 }
 
-export const postSimpleNamedObjectParserHint: ResponseParserHint = { 200: { 'application/json': undefined } }
-
 export async function postSimpleNamedObject(
   input: PostSimpleNamedObjectInput,
   config: RequestConfig,
 ): Promise<PostSimpleNamedObjectResponse> {
-  return config.parse(
-    await config.request({
+  return execute(
+    {
       url: joinUrl(config.baseUrl, '/simple-named-object'),
       method: 'post',
       body: await config.serialize(input.contentType, input.body),
       headers: { 'content-type': input.contentType },
-    }),
-    postSimpleNamedObjectParserHint,
+    },
+    config,
   )
 }
 

@@ -42,7 +42,6 @@ export class OperationsGenerator implements OpenAPIGenerator {
     'operation-headers-serializer',
     'operation-path-serializer',
     'operation-query-serializer',
-    'operation-response-parser-hint',
   ]
 
   private context: OpenAPIGeneratorContext = null
@@ -56,6 +55,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
   public constructor(config: OpenAPIGeneratorConfig & OperationsGeneratorConfig) {
     this.config = config
     this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['validator'] : [])
+    this.produces = OperationsGenerator.produces.concat(config.validate ? ['operation-response-parser-hint'] : [])
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -86,7 +86,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
         generatePathParameterTypeSerializer(operation, context),
         generateQueryParameterTypeSerializer(operation, context),
         generateHeaderParameterTypeSerializer(operation, context),
-        generateResponseParserHint(operation, context, config),
+        ...(config.validate ? [generateResponseParserHint(operation, context, config)] : []),
         generateOperationFunction(operation, context, config),
       ].filter(negate(isNil))
     })

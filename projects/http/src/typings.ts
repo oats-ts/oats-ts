@@ -80,24 +80,22 @@ export type HttpResponse<Body = any, Status = any> = {
   headers: HttpHeaders
 }
 
-export type ResponseValidator = {
-  [contentType: string]: any
+export type ResponseExpectation<V = unknown> = {
+  [contentType: string]: V
 }
 
-export type ResponseParserHint = {
-  [statusCode: number]: ResponseValidator
-  default?: ResponseValidator
+export type ResponseExpectations<V = unknown> = {
+  [statusCode: number]: ResponseExpectation<V>
+  default?: ResponseExpectation<V>
 }
 
-export type BodySerializer = (contentType: string, body: any) => Promise<any>
-
-export type RequestFn = (request: HttpRequest) => Promise<any>
-
-export type ResponseParser = (response: any, hint: ResponseParserHint) => Promise<HttpResponse>
-
-export type RequestConfig = {
+export type RequestConfig<R = unknown, V = unknown> = {
   baseUrl: string
-  serialize: BodySerializer
-  request: RequestFn
-  parse: ResponseParser
+  request(request: HttpRequest): Promise<R>
+  serialize(contentType: string, body: any): Promise<any>
+  statusCode(response: R): Promise<number>
+  mimeType(response: R): Promise<string>
+  body(response: R, mimeType: string): Promise<unknown>
+  headers(response: R): Promise<HttpHeaders>
+  validate(body: unknown, validator: V): void
 }

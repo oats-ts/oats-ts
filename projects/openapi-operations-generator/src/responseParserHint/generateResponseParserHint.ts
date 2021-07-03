@@ -14,7 +14,7 @@ export function generateResponseParserHint(
 ): TypeScriptModule {
   const { accessor } = context
   const path = accessor.path(data.operation, 'operation-response-parser-hint')
-  const dependencies = [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ResponseParserHint])]
+  const dependencies = [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ResponseExpectations])]
   if (config.validate) {
     const schemas = values(getResponseSchemas(data.operation, context))
     dependencies.push(...flatMap(schemas, (schema) => accessor.dependencies(path, schema, 'validator')))

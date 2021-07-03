@@ -1,12 +1,12 @@
 export {
-  RequestFn as HttpAdapter,
   HttpHeaders,
   HttpMethod,
   HttpRequest,
   HttpResponse,
-  ResponseParser,
   RequestConfig,
-  ResponseParserHint,
-  ResponseValidator,
+  ResponseExpectations,
+  ResponseExpectation,
   StatusCode,
 } from './typings'
+
+export { execute } from './execute'

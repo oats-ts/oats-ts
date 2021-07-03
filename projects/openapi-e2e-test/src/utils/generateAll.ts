@@ -11,7 +11,7 @@ import { singleFile, nameProvider, OpenAPIGeneratorConfig, byTarget } from '@oat
 
 const common: OpenAPIGeneratorConfig = {
   name: nameProvider,
-  path: byTarget('src/generated/byTarget'), // singleFile('src/generated/api.ts'),
+  path: singleFile('src/generated/api.ts'), // byTarget('src/generated/byTarget'),
 }
 
 export async function generateAll() {
@@ -44,7 +44,7 @@ export async function generateAll() {
       }),
       operations({
         ...common,
-        validate: true,
+        validate: false,
         documentation: true,
       }),
       api({

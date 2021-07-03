@@ -18,10 +18,15 @@ const Validators = {
 
 const Http = {
   name: '@oats-ts/http',
-  ResponseParserHint: 'ResponseParserHint',
+  ResponseExpectations: 'ResponseExpectations',
+  ResponseExpectation: 'ResponseExpectation',
   RequestConfig: 'RequestConfig',
   HttpResponse: 'HttpResponse',
   StatusCode: 'StatusCode',
+  HttpRequest: 'HttpRequest',
+  HttpHeaders: 'HttpHeaders',
+  HttpMethod: 'HttpMethod',
+  execute: 'execute',
 }
 
 const ParameterSerialization = {
