@@ -15,8 +15,8 @@ import { TypeGuardGeneratorConfig } from './typings'
 
 export class TypeGuardsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/typeGuards'
-  public static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
-  public static produces: OpenAPIGeneratorTarget[] = ['openapi/type-guard']
+  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/type-guard']
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & TypeGuardGeneratorConfig

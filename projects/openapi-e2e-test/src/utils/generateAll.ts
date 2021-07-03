@@ -44,7 +44,7 @@ export async function generateAll() {
       }),
       operations({
         ...common,
-        validate: false,
+        validate: true,
         documentation: true,
       }),
       api({

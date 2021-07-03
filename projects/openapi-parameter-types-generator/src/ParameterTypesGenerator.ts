@@ -23,8 +23,8 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ParameterTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameterTypes'
-  public static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
-  public static produces: OpenAPIGeneratorTarget[] = [
+  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  private static produces: OpenAPIGeneratorTarget[] = [
     'openapi/headers-type',
     'openapi/path-type',
     'openapi/query-type',

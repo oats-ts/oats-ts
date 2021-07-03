@@ -2,10 +2,10 @@ import { entries, isNil } from 'lodash'
 import { factory, PropertyAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getContentValidatorPropertyAsts } from './getContentValidatorPropertyAsts'
+import { getExpectationPropertyAsts } from './getExpectationPropertyAsts'
 import { OperationsGeneratorConfig } from '../typings'
 
-export function getResponseParserHintPropertyAsts(
+export function getExpectationsPropertyAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
@@ -20,7 +20,7 @@ export function getResponseParserHintPropertyAsts(
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
           factory.createObjectLiteralExpression(
-            getContentValidatorPropertyAsts(accessor.dereference(response), context, config),
+            getExpectationPropertyAsts(accessor.dereference(response), context, config),
           ),
         ),
     ),
@@ -30,7 +30,7 @@ export function getResponseParserHintPropertyAsts(
       factory.createPropertyAssignment(
         'default',
         factory.createObjectLiteralExpression(
-          getContentValidatorPropertyAsts(accessor.dereference(defaultResponse), context, config),
+          getExpectationPropertyAsts(accessor.dereference(defaultResponse), context, config),
         ),
       ),
     )

@@ -4,7 +4,7 @@ import { Expression, factory, PropertyAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { OperationsGeneratorConfig } from '../typings'
 
-export function getContentValidatorPropertyAsts(
+export function getExpectationPropertyAsts(
   data: ResponseObject,
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,

@@ -19,8 +19,8 @@ import { collectExternalReferenceImports, getValidatorImports } from './getValid
 
 export class ValidatorsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
-  public static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
-  public static produces: OpenAPIGeneratorTarget[] = ['openapi/validator']
+  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/validator']
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & ValidatorsGeneratorConfig

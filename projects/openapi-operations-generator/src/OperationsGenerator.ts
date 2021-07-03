@@ -12,7 +12,7 @@ import {
   generatePathParameterTypeSerializer,
   generateQueryParameterTypeSerializer,
 } from './parameterSerializer/generateOperationParameterTypeSerializer'
-import { generateResponseParserHint } from './responseParserHint/generateResponseParserHint'
+import { generateResponseParserHint } from './expectations/generateExpectations'
 import { OperationsGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
@@ -29,13 +29,13 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class OperationsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/operations'
-  public static consumes: OpenAPIGeneratorTarget[] = [
+  private static consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
     'openapi/headers-type',
     'openapi/query-type',
     'openapi/path-type',
   ]
-  public static produces: OpenAPIGeneratorTarget[] = [
+  private static produces: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
     'openapi/response-type',
     'openapi/input-type',

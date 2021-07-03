@@ -50,7 +50,7 @@ export function nameProvider(input: any, name: string, target: OpenAPIGeneratorT
     }
     case 'openapi/expectations': {
       const operationName = nameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${operationName}ParserHint`
+      return isNil(operationName) ? undefined : `${operationName}Expectations`
     }
     /**
      * No need to incorporate anything in the name as these should be singletons.

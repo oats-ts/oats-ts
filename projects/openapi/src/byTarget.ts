@@ -10,11 +10,11 @@ function folderName(target: OpenAPIGeneratorTarget): string {
     case 'openapi/operation':
       return 'operations'
     case 'openapi/query-type':
-      return 'queryParameterTypes'
+      return 'queryTypes'
     case 'openapi/headers-type':
-      return 'headerParameterTypes'
+      return 'headerTypes'
     case 'openapi/path-type':
-      return 'pathParameterTypes'
+      return 'pathTypes'
     case 'openapi/response-type':
       return 'responseTypes'
     case 'openapi/input-type':
@@ -26,7 +26,7 @@ function folderName(target: OpenAPIGeneratorTarget): string {
     case 'openapi/headers-serializer':
       return 'headerSerializers'
     case 'openapi/expectations':
-      return 'parserHints'
+      return 'expectations'
     case 'openapi/validator':
       return 'validators'
     case 'openapi/api-type':

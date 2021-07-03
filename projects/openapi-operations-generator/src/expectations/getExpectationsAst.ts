@@ -2,10 +2,10 @@ import { factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getResponseParserHintPropertyAsts } from './getResponseParserHintPropertyAsts'
+import { getExpectationsPropertyAsts } from './getExpectationsPropertyAsts'
 import { OperationsGeneratorConfig } from '../typings'
 
-export function getResponseParserHintAst(
+export function getExpectationsAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
@@ -23,7 +23,7 @@ export function getResponseParserHintAst(
           varName,
           undefined,
           factory.createTypeReferenceNode(RuntimePackages.Http.ResponseExpectations),
-          factory.createObjectLiteralExpression(getResponseParserHintPropertyAsts(data, context, config)),
+          factory.createObjectLiteralExpression(getExpectationsPropertyAsts(data, context, config)),
         ),
       ],
       NodeFlags.Const,

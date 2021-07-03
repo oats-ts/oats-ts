@@ -2,7 +2,7 @@ import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation, getResponseSchemas } from '@oats-ts/openapi-common'
-import { getResponseParserHintAst } from './getResponseParserHintAst'
+import { getExpectationsAst } from './getExpectationsAst'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { values, flatMap } from 'lodash'
 import { OperationsGeneratorConfig } from '../typings'
@@ -22,6 +22,6 @@ export function generateResponseParserHint(
   return {
     path,
     dependencies,
-    content: [getResponseParserHintAst(data, context, config)],
+    content: [getExpectationsAst(data, context, config)],
   }
 }

@@ -13,7 +13,7 @@ import {
   number,
   literal,
 } from '@oats-ts/validators'
-import { HttpResponse, RequestConfig, execute, StatusCode } from '@oats-ts/http'
+import { HttpResponse, ResponseExpectations, RequestConfig, execute, StatusCode } from '@oats-ts/http'
 import {
   joinUrl,
   header,
@@ -330,8 +330,16 @@ export type GetWithQueryParamsQueryParameters = {
 
 export type GetSimpleNamedObjectResponse = HttpResponse<NamedSimpleObject, 200>
 
+export const getSimpleNamedObjectExpectations: ResponseExpectations = {
+  200: { 'application/json': namedSimpleObjectValidator },
+}
+
 export async function getSimpleNamedObject(config: RequestConfig): Promise<GetSimpleNamedObjectResponse> {
-  return execute({ url: joinUrl(config.baseUrl, '/simple-named-object'), method: 'get' }, config)
+  return execute(
+    { url: joinUrl(config.baseUrl, '/simple-named-object'), method: 'get' },
+    config,
+    getSimpleNamedObjectExpectations,
+  )
 }
 
 export type GetWithHeaderParamsResponse = HttpResponse<NamedSimpleObject, 200>
@@ -347,6 +355,10 @@ export const getWithHeaderParamsHeadersSerializer = createHeaderSerializer<GetWi
   'X-Enum-In-Headers': header.simple.primitive({ required: true }),
 })
 
+export const getWithHeaderParamsExpectations: ResponseExpectations = {
+  200: { 'application/json': namedSimpleObjectValidator },
+}
+
 export async function getWithHeaderParams(
   input: GetWithHeaderParamsInput,
   config: RequestConfig,
@@ -358,6 +370,7 @@ export async function getWithHeaderParams(
       headers: getWithHeaderParamsHeadersSerializer(input.headers),
     },
     config,
+    getWithHeaderParamsExpectations,
   )
 }
 
@@ -372,8 +385,19 @@ export type GetWithMultipleResponsesResponse =
   | HttpResponse<NamedDeprecatedObject, 205>
   | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 201 | 205>>
 
+export const getWithMultipleResponsesExpectations: ResponseExpectations = {
+  200: { 'application/json': namedSimpleObjectValidator },
+  201: { 'application/json': object(shape({ test: optional(any) })) },
+  205: { 'application/json': namedDeprecatedObjectValidator },
+  default: { 'application/json': namedComplexObjectValidator },
+}
+
 export async function getWithMultipleResponses(config: RequestConfig): Promise<GetWithMultipleResponsesResponse> {
-  return execute({ url: joinUrl(config.baseUrl, '/multiple-responses'), method: 'get' }, config)
+  return execute(
+    { url: joinUrl(config.baseUrl, '/multiple-responses'), method: 'get' },
+    config,
+    getWithMultipleResponsesExpectations,
+  )
 }
 
 export type GetWithPathParamsResponse = HttpResponse<NamedSimpleObject, 200>
@@ -392,11 +416,19 @@ export const getWithPathParamsPathSerializer = createPathSerializer<GetWithPathP
   },
 )
 
+export const getWithPathParamsExpectations: ResponseExpectations = {
+  200: { 'application/json': namedSimpleObjectValidator },
+}
+
 export async function getWithPathParams(
   input: GetWithPathParamsInput,
   config: RequestConfig,
 ): Promise<GetWithPathParamsResponse> {
-  return execute({ url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' }, config)
+  return execute(
+    { url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' },
+    config,
+    getWithPathParamsExpectations,
+  )
 }
 
 export type GetWithQueryParamsResponse = HttpResponse<NamedSimpleObject, 200>
@@ -412,6 +444,10 @@ export const getWithQueryParamsQuerySerializer = createQuerySerializer<GetWithQu
   enumInQuery: query.form.primitive({ required: true }),
 })
 
+export const getWithQueryParamsExpectations: ResponseExpectations = {
+  200: { 'application/json': namedSimpleObjectValidator },
+}
+
 export async function getWithQueryParams(
   input: GetWithQueryParamsInput,
   config: RequestConfig,
@@ -419,6 +455,7 @@ export async function getWithQueryParams(
   return execute(
     { url: joinUrl(config.baseUrl, '/query-params', getWithQueryParamsQuerySerializer(input.query)), method: 'get' },
     config,
+    getWithQueryParamsExpectations,
   )
 }
 
@@ -427,6 +464,10 @@ export type PostSimpleNamedObjectResponse = HttpResponse<NamedSimpleObject, 200>
 export type PostSimpleNamedObjectInput = {
   contentType: 'application/json'
   body: NamedSimpleObject
+}
+
+export const postSimpleNamedObjectExpectations: ResponseExpectations = {
+  200: { 'application/json': namedSimpleObjectValidator },
 }
 
 export async function postSimpleNamedObject(
@@ -441,6 +482,7 @@ export async function postSimpleNamedObject(
       headers: { 'content-type': input.contentType },
     },
     config,
+    postSimpleNamedObjectExpectations,
   )
 }
 

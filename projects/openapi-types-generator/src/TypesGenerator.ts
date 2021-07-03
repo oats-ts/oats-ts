@@ -19,8 +19,8 @@ import { getTypeImports } from './getTypeImports'
 
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'
-  public static consumes: OpenAPIGeneratorTarget[] = []
-  public static produces: OpenAPIGeneratorTarget[] = ['openapi/type']
+  private static consumes: OpenAPIGeneratorTarget[] = []
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/type']
 
   private context: OpenAPIGeneratorContext = null
   private config: OpenAPIGeneratorConfig & TypesGeneratorConfig
