@@ -61,10 +61,6 @@
       "path": "projects/http"
     },
     {
-      "name": "example",
-      "path": "projects/example"
-    },
-    {
       "name": "openapi-e2e-test",
       "path": "projects/openapi-e2e-test"
     },

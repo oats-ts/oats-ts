@@ -24,11 +24,6 @@
       "shouldPublish": false
     },
     {
-      "packageName": "@oats-ts/example",
-      "projectFolder": "projects/example",
-      "shouldPublish": false
-    },
-    {
       "packageName": "@oats-ts/generator",
       "projectFolder": "projects/generator",
       "shouldPublish": false
