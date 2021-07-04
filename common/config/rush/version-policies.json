@@ -1,0 +1,9 @@
+[
+  {
+    "definitionName": "lockStepVersion",
+    "policyName": "oats",
+    "version": "0.0.0",
+    "nextBump": "patch",
+    "exemptFromRushChange": true
+  }
+]
