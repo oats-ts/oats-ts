@@ -2,8 +2,8 @@
   {
     "definitionName": "lockStepVersion",
     "policyName": "oats",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "nextBump": "patch",
-    "exemptFromRushChange": true
+    "mainProject": "@oats-ts/generator"
   }
 ]
