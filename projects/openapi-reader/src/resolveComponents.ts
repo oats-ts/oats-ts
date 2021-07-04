@@ -1,4 +1,11 @@
-import { ComponentsObject, HeaderObject, ParameterObject, ResponseObject, SchemaObject } from 'openapi3-ts'
+import {
+  ComponentsObject,
+  HeaderObject,
+  ParameterObject,
+  RequestBodyObject,
+  ResponseObject,
+  SchemaObject,
+} from 'openapi3-ts'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { componentsObject } from './validators/componentsObject'
@@ -8,6 +15,8 @@ import { resolveHeaderObject, resolveParameterObject } from './resolveParameterO
 import { register } from './register'
 import { resolveResponseObject } from './resolveResponseObject'
 import { entries, isNil } from 'lodash'
+import { registerNamed } from './registerNamed'
+import { resolveRequestBodyObject } from './resolveRequestBodyObject'
 
 export async function resolveComponents(input: ReadInput<ComponentsObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, componentsObject)) {
@@ -17,7 +26,7 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   register(input, context)
 
   const { data, uri } = input
-  const { callbacks, headers, links, examples, parameters, requestBodies, responses, schemas, securitySchemes } = data
+  const { headers, parameters, responses, requestBodies, schemas } = data
 
   if (!isNil(schemas)) {
     for (const [name, schemaOrRef] of entries(schemas)) {
@@ -26,6 +35,7 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
         context,
         resolveSchemaObject,
       )
+      registerNamed(name, schemaOrRef, context)
     }
   }
 
@@ -36,6 +46,7 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
         context,
         resolveParameterObject,
       )
+      registerNamed(name, paramOrRef, context)
     }
   }
 
@@ -46,6 +57,7 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
         context,
         resolveHeaderObject,
       )
+      registerNamed(name, headerOrRef, context)
     }
   }
 
@@ -56,17 +68,18 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
         context,
         resolveResponseObject,
       )
+      registerNamed(name, respOrRef, context)
     }
   }
 
-  if (!isNil(callbacks)) {
-  }
-  if (!isNil(links)) {
-  }
-  if (!isNil(examples)) {
-  }
   if (!isNil(requestBodies)) {
-  }
-  if (!isNil(securitySchemes)) {
+    for (const [name, reqOrRef] of entries(requestBodies)) {
+      await resolveReferenceable<RequestBodyObject>(
+        { data: reqOrRef, uri: context.uri.append(uri, 'requestBodies', name) },
+        context,
+        resolveRequestBodyObject,
+      )
+      registerNamed(name, reqOrRef, context)
+    }
   }
 }

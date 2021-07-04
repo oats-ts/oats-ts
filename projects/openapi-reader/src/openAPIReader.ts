@@ -46,9 +46,10 @@ export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Tr
     resolve,
     uri: uriManipulator,
     issues: [],
+    objectToName: new Map(),
     documents: new Map(),
-    byComponent: new Map(),
-    byUri: new Map(),
+    objectToUri: new Map(),
+    uriToObject: new Map(),
   }
 
   const rootSpec = await resolve(documentUri)
@@ -65,9 +66,10 @@ export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Tr
 
   return {
     documentUri,
-    document: hasIssues ? null : rootSpec,
-    documents: hasIssues ? null : context.documents,
-    uriToObject: context.byUri,
-    objectToUri: context.byComponent,
+    document: rootSpec,
+    documents: context.documents,
+    uriToObject: context.uriToObject,
+    objectToUri: context.objectToUri,
+    objectToName: context.objectToName,
   }
 }

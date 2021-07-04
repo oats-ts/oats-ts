@@ -185,6 +185,9 @@
             "type": "boolean"
           }
         }
+      },
+      "ExternalSchema": {
+        "$ref": "https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json#/components/schemas/AdditionalServiceType"
       }
     }
   },

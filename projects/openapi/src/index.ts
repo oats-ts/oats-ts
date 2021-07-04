@@ -1,4 +1,4 @@
-export type { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget, NameProvider } from './typings'
+export type { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget, NameProvider, PathProvider } from './typings'
 
 export { byName } from './byName'
 export { byTarget } from './byTarget'

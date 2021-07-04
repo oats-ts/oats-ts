@@ -1,8 +1,8 @@
 import {
+  enumeration,
   boolean,
   any,
   array,
-  enumeration,
   items,
   object,
   optional,
@@ -23,6 +23,13 @@ import {
   query,
   createQuerySerializer,
 } from '@oats-ts/openapi-parameter-serialization'
+
+export enum AdditionalServiceType {
+  CHECKED_BAGS = 'CHECKED_BAGS',
+  MEALS = 'MEALS',
+  SEATS = 'SEATS',
+  OTHER_SERVICES = 'OTHER_SERVICES',
+}
 
 export type NamedBoolean = boolean
 
@@ -94,6 +101,8 @@ export type NamedUnionLeaf3 = {
   topLevelType: 'NamedMidLevelUnion'
   namedUnionLeaf3Property?: boolean
 }
+
+export const additionalServiceTypeValidator = enumeration(['CHECKED_BAGS', 'MEALS', 'SEATS', 'OTHER_SERVICES'])
 
 export const namedBooleanValidator = boolean()
 
@@ -170,6 +179,10 @@ export const namedUnionLeaf3Validator = object(
     namedUnionLeaf3Property: optional(boolean()),
   }),
 )
+
+export function isAdditionalServiceType(input: any): input is AdditionalServiceType {
+  return input === 'CHECKED_BAGS' || input === 'MEALS' || input === 'SEATS' || input === 'OTHER_SERVICES'
+}
 
 export function isNamedBoolean(input: any): input is NamedBoolean {
   return typeof input === 'boolean'

@@ -1,5 +1,5 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { entries, isNil, isEmpty } from 'lodash'
+import { isNil, isEmpty } from 'lodash'
 import { isReferenceObject, OpenAPIObject, ReferenceObject } from 'openapi3-ts'
 import { OpenAPIAccessor, OpenAPIGenerator } from './typings'
 import { OpenAPIGeneratorConfig, OpenAPIGeneratorTarget } from '@oats-ts/openapi'
@@ -9,13 +9,11 @@ export class OpenAPIAccessorImpl implements OpenAPIAccessor {
   private readonly data: OpenAPIReadOutput
   private readonly config: OpenAPIGeneratorConfig
   private readonly generators: OpenAPIGenerator[]
-  private readonly nameToObject: Map<any, string>
 
   constructor(config: OpenAPIGeneratorConfig, data: OpenAPIReadOutput, generators: OpenAPIGenerator[]) {
     this.data = data
     this.config = config
     this.generators = generators
-    this.nameToObject = createNameToObjectMapping(data.documents)
   }
 
   document(): OpenAPIObject {
@@ -36,7 +34,7 @@ export class OpenAPIAccessorImpl implements OpenAPIAccessor {
   }
 
   name(input: any, target: string): string {
-    return this.config.name(input, this.nameToObject.get(input), target)
+    return this.config.name(input, this.data.objectToName.get(input), target)
   }
 
   path(input: any, target: string): string {
@@ -72,21 +70,4 @@ export class OpenAPIAccessorImpl implements OpenAPIAccessor {
     }
     return []
   }
-}
-
-function addNameMappings<T>(docPart: Record<string, T>, mappings: Map<any, string>): void {
-  for (const [name, item] of entries(docPart)) {
-    mappings.set(item, name)
-  }
-}
-
-function createNameToObjectMapping(documents: Map<string, OpenAPIObject>): Map<any, string> {
-  const mappings = new Map<any, string>()
-  for (const document of Array.from(documents.values())) {
-    const { headers, parameters, schemas } = document?.components || {}
-    addNameMappings(headers || {}, mappings)
-    addNameMappings(parameters || {}, mappings)
-    addNameMappings(schemas || {}, mappings)
-  }
-  return mappings
 }

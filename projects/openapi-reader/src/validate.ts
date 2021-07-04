@@ -1,13 +1,10 @@
 import type { Validator } from '@oats-ts/validators'
-import { isNil } from 'lodash'
+import { flatMap } from 'lodash'
 import { ReadContext, ReadInput } from './internalTypings'
 
-export function validate<T>(input: ReadInput<T>, context: ReadContext, validator: Validator<T>): boolean {
+export function validate<T>(input: ReadInput<T>, context: ReadContext, ...validators: Validator<T>[]): boolean {
   const { data, uri } = input
-  if (isNil(validator)) {
-    return true
-  }
-  const issues = validator(data, { path: uri, append: context.uri.append })
+  const issues = flatMap(validators, (validator) => validator(data, { path: uri, append: context.uri.append }))
   context.issues.push(...issues)
-  return issues.length === 0 || context.byUri.has(uri)
+  return issues.every((issue) => issue.severity !== 'error') || context.uriToObject.has(uri)
 }

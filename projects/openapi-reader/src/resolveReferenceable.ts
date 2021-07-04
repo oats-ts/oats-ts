@@ -10,7 +10,7 @@ export async function resolveReferenceable<T>(
   if (!isReferenceObject(input.data)) {
     return await resolveTarget(input as ReadInput<T>, context)
   }
-  if (!context.byUri.has(input.uri)) {
+  if (!context.uriToObject.has(input.uri)) {
     return await resolveTarget(await resolveReference(input as ReadInput<ReferenceObject>, context), context)
   }
 }

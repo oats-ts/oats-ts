@@ -55,4 +55,6 @@ export type OpenAPIReadOutput = {
   objectToUri: Map<any, string>
   /** An URI -> object mapping for all the objects the resolution traversed */
   uriToObject: Map<string, any>
+  /** An object -> name mapping for entites that don't encapsulate their names, eg.: schemas. */
+  objectToName: Map<any, string>
 }
