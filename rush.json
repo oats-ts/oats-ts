@@ -26,27 +26,27 @@
     {
       "packageName": "@oats-ts/generator",
       "projectFolder": "projects/generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/http",
       "projectFolder": "projects/http",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi",
       "projectFolder": "projects/openapi",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-api-generator",
       "projectFolder": "projects/openapi-api-generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-common",
       "projectFolder": "projects/openapi-common",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-e2e-test",
@@ -56,52 +56,52 @@
     {
       "packageName": "@oats-ts/openapi-operations-generator",
       "projectFolder": "projects/openapi-operations-generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-parameter-serialization",
       "projectFolder": "projects/openapi-parameter-serialization",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-parameter-types-generator",
       "projectFolder": "projects/openapi-parameter-types-generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-reader",
       "projectFolder": "projects/openapi-reader",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-type-guards-generator",
       "projectFolder": "projects/openapi-type-guards-generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-types-generator",
       "projectFolder": "projects/openapi-types-generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-validators-generator",
       "projectFolder": "projects/openapi-validators-generator",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/typescript-common",
       "projectFolder": "projects/typescript-common",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/typescript-writer",
       "projectFolder": "projects/typescript-writer",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/validators",
       "projectFolder": "projects/validators",
-      "shouldPublish": false
+      "shouldPublish": true
     }
   ]
 }
