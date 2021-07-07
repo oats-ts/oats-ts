@@ -10,7 +10,7 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
 
   const readResult = await reader()
   if (isFailure(readResult)) {
-    logger.failure(`Read step failed:`, readResult)
+    logger.failure(`Read step failed`, readResult)
     return readResult
   }
   logger.readSuccess()
@@ -34,7 +34,7 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
   for (const generator of generators) {
     const result = await generator.generate()
     if (isFailure(result)) {
-      logger.failure(`Generator step "${generator.id}" failed:`, result)
+      logger.failure(`Generator step "${generator.id}" failed`, result)
       return result
     }
     logger.generatorSuccess(generator.id, result)
@@ -43,7 +43,7 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
 
   const writeResult = await writer(modules)
   if (isFailure(writeResult)) {
-    logger.failure(`Writer step failed:`, writeResult)
+    logger.failure(`Writer step failed`, writeResult)
     return writeResult
   }
   logger.writerSuccess(writeResult)

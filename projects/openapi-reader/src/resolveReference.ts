@@ -1,8 +1,7 @@
-import { ReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, isReferenceObject } from 'openapi3-ts'
 import { ReadContext, ReadInput } from './internalTypings'
 import { findByFragments } from './findByFragments'
 import { register } from './register'
-import { Severity } from '@oats-ts/validators'
 import { isNil } from 'lodash'
 
 export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
@@ -67,11 +66,17 @@ export async function resolveReference<T>(
 
   data.$ref = context.uri.resolve(data.$ref, uri)
 
-  return resolveReferenceUri(
+  const result = await resolveReferenceUri<ReferenceObject | T>(
     {
       data: data.$ref,
       uri: context.uri.append(uri, '$ref'),
     },
     context,
   )
+
+  if (isReferenceObject(result.data)) {
+    return resolveReference(result as ReadInput<ReferenceObject>, context)
+  }
+
+  return result as ReadInput<T>
 }

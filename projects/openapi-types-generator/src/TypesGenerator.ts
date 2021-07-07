@@ -16,6 +16,7 @@ import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { getTypeImports } from './getTypeImports'
+import { validateSchemas } from './validators/validateSchemas'
 
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'
@@ -40,6 +41,12 @@ export class TypesGenerator implements OpenAPIGenerator {
   public async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
+    if (!config.skipValidation) {
+      const issues = validateSchemas(schemas, context)
+      if (issues.some((issue) => issue.severity === 'error')) {
+        return { issues }
+      }
+    }
     const modules = schemas.map((schema): TypeScriptModule => generateType(schema, context, config))
     if (context.issues.some((issue) => issue.severity === 'error')) {
       return { issues: context.issues }

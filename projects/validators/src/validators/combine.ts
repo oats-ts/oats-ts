@@ -1,6 +1,6 @@
 import { Issue, Validator, ValidatorConfig } from '../typings'
 
-export const merge =
+export const combine =
   <T>(...validators: Validator<T>[]): Validator<T> =>
   (input: T, config?: Partial<ValidatorConfig>) => {
     const issues: Issue[] = []

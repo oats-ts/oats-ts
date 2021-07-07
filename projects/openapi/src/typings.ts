@@ -29,6 +29,11 @@ export type OpenAPIGeneratorConfig = {
    * @returns The operating system dependent path for the desired generator target.
    */
   path(input: any, name: NameProvider, target: string): string
+  /**
+   * When true, validation of input schemas, parameters, etc. will be omitted.
+   * This can cause the generator to fail, only use it if you know what you are doing.
+   */
+  skipValidation?: boolean
 }
 
 export type GeneratorPathProvider = OpenAPIGeneratorConfig['path']

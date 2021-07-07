@@ -71,3 +71,15 @@ export type EnhancedOperation = {
   cookie: ParameterObject[]
   header: ParameterObject[]
 }
+
+export type InferredType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'enum'
+  | 'object'
+  | 'array'
+  | 'record'
+  | 'union'
+  | 'intersection'
+  | 'unknown'

@@ -1,6 +1,6 @@
 import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { isEmpty, entries, isNil, sortBy, values } from 'lodash'
-import { RuntimePackages, OpenAPIGeneratorContext, getDiscriminators } from '@oats-ts/openapi-common'
+import { RuntimePackages, OpenAPIGeneratorContext, getDiscriminators, getInferredType } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { ValidatorsGeneratorConfig } from './typings'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
@@ -130,44 +130,31 @@ export function collectImports(
   if (isReferenceObject(data)) {
     return collectReferenceImports(data, config, context, names, refs)
   }
-
-  if (!isNil(data.oneOf)) {
-    return collectUnionImports(data, config, context, names, refs)
+  switch (getInferredType(data)) {
+    case 'union':
+      return collectUnionImports(data, config, context, names, refs)
+    case 'enum':
+      names.add(RuntimePackages.Validators.enumeration)
+      return
+    case 'string':
+      names.add(RuntimePackages.Validators.string)
+      return
+    case 'number':
+      names.add(RuntimePackages.Validators.number)
+      return
+    case 'boolean':
+      names.add(RuntimePackages.Validators.boolean)
+      return
+    case 'record':
+      return collectRecordImports(data, config, context, names, refs)
+    case 'object':
+      return collectObjectTypeImports(data, config, context, names, refs)
+    case 'array':
+      return collectArrayTypeImports(data, config, context, names, refs)
+    default:
+      names.add(RuntimePackages.Validators.any)
+      return
   }
-
-  if (!isNil(data.enum)) {
-    names.add(RuntimePackages.Validators.enumeration)
-    return
-  }
-
-  if (data.type === 'string') {
-    names.add(RuntimePackages.Validators.string)
-    return
-  }
-
-  if (data.type === 'number' || data.type === 'integer') {
-    names.add(RuntimePackages.Validators.number)
-    return
-  }
-
-  if (data.type === 'boolean') {
-    names.add(RuntimePackages.Validators.boolean)
-    return
-  }
-
-  if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
-    return collectRecordImports(data, config, context, names, refs)
-  }
-
-  if (!isNil(data.properties)) {
-    return collectObjectTypeImports(data, config, context, names, refs)
-  }
-
-  if (!isNil(data.items)) {
-    return collectArrayTypeImports(data, config, context, names, refs)
-  }
-
-  names.add(RuntimePackages.Validators.any)
 }
 
 export function getValidatorImports(
