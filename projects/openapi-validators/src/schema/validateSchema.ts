@@ -16,7 +16,7 @@ export function validateSchema(
   const data = context.accessor.dereference(schema)
   switch (getInferredType(data)) {
     case 'array':
-      return validateArray(data, context, validated)
+      return validateArray()(data, context, validated)
     case 'boolean':
     case 'string':
     case 'number':
@@ -24,9 +24,9 @@ export function validateSchema(
     case 'enum':
       return validateEnum(data, context, validated)
     case 'object':
-      return validateObject(data, context, validated)
+      return validateObject()(data, context, validated)
     case 'record':
-      return validateRecord(data, context, validated)
+      return validateRecord()(data, context, validated)
     case 'union':
       return validateUnion(data, context, validated)
     default:

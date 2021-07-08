@@ -2,7 +2,7 @@ import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { Severity } from '@oats-ts/validators'
+import { validateSchemas } from '@oats-ts/openapi-validators'
 import { sortBy } from 'lodash'
 import {
   getNamedSchemas,
@@ -16,7 +16,6 @@ import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { getTypeImports } from './getTypeImports'
-import { validateSchemas } from './validators/validateSchemas'
 
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'

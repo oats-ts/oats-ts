@@ -1,11 +1,11 @@
 import { SchemaObject } from 'openapi3-ts'
 import { Issue, object, optional, shape, combine, array, items, literal, minLength } from '@oats-ts/validators'
 import { getInferredType, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { forbidFields } from './forbidFields'
-import { append } from './utils'
+import { append } from '../append'
 import { flatMap } from 'lodash'
 import { validateEnum } from './validateEnum'
 import { validatePrimitive } from './validatePrimitive'
+import { forbidFields } from '../forbidFields'
 
 const validator = object(
   combine(

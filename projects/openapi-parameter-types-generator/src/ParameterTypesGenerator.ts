@@ -1,6 +1,6 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { Severity } from '@oats-ts/validators'
+import { validateParameters } from '@oats-ts/openapi-validators'
 import { flatMap, isEmpty, isNil, negate, sortBy } from 'lodash'
 import {
   generateHeaderParametersType,
@@ -51,6 +51,18 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
 
   public async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
+    if (!config.skipValidation) {
+      const params = flatMap(this.operations, (operation) => [
+        ...operation.cookie,
+        ...operation.header,
+        ...operation.path,
+        ...operation.query,
+      ])
+      const issues = validateParameters(params, context)
+      if (issues.some((issue) => issue.severity === 'error')) {
+        return { issues }
+      }
+    }
     const modules: TypeScriptModule[] = flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] => {
       return [
         generatePathParametersType(operation, context, config),

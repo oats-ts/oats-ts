@@ -68,5 +68,9 @@
       "name": "openapi",
       "path": "projects/openapi"
     },
+    {
+      "name": "openapi-validators",
+      "path": "projects/openapi-validators"
+    },
   ]
 }

@@ -1,8 +1,8 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject } from 'openapi3-ts'
 import { Issue } from '@oats-ts/validators'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { append } from './utils'
-import { forbidFields } from './forbidFields'
+import { append } from '../append'
+import { forbidFields } from '../forbidFields'
 
 const validator = forbidFields([
   'discriminator',
@@ -18,18 +18,19 @@ const validator = forbidFields([
 ])
 
 export function validatePrimitive(
-  input: SchemaObject,
+  data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
-  if (validated.has(input)) {
+  const schema = context.accessor.dereference(data)
+  if (validated.has(schema)) {
     return []
   }
-  validated.add(input)
+  validated.add(schema)
   return [
-    ...validator(input, {
+    ...validator(schema, {
       append,
-      path: context.accessor.uri(input),
+      path: context.accessor.uri(schema),
     }),
   ]
 }

@@ -95,6 +95,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-validators",
+      "projectFolder": "projects/openapi-validators",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-validators-generator",
       "projectFolder": "projects/openapi-validators-generator",
       "versionPolicyName": "oats",

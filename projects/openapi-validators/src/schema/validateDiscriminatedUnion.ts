@@ -13,10 +13,10 @@ import {
   minLength,
 } from '@oats-ts/validators'
 import { OpenAPIGeneratorContext, getInferredType } from '@oats-ts/openapi-common'
-import { forbidFields } from './forbidFields'
-import { append } from './utils'
+import { append } from '../append'
 import { entries, isNil, flatMap } from 'lodash'
 import { validateObject } from './validateObject'
+import { forbidFields } from '../forbidFields'
 
 const validator = object(
   combine(
@@ -48,33 +48,34 @@ const validator = object(
   ),
 )
 export function validateDiscriminatedUnion(
-  input: SchemaObject,
+  data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
   const { accessor } = context
-  if (validated.has(input)) {
+  const schema = accessor.dereference(data)
+  if (validated.has(schema)) {
     return []
   }
-  validated.add(input)
-  const name = accessor.name(input, 'openapi/type')
+  validated.add(schema)
+  const name = accessor.name(schema, 'openapi/type')
   if (isNil(name)) {
     return [
       {
         message: `only named schemas can have the "discriminator" field`,
-        path: accessor.uri(input),
+        path: accessor.uri(schema),
         type: 'other',
         severity: 'error',
       },
     ]
   }
 
-  const structureIssues = validator(input, { append, path: accessor.uri(input) })
+  const structureIssues = validator(schema, { append, path: accessor.uri(schema) })
   if (structureIssues) {
     return structureIssues
   }
 
-  const { discriminator, oneOf } = input
+  const { discriminator, oneOf } = schema
   const discriminatorValues = entries(discriminator.mapping)
   const oneOfRefs = oneOf as ReferenceObject[]
   const missingDiscriminatorIssues = oneOfRefs
@@ -102,7 +103,7 @@ export function validateDiscriminatedUnion(
     const schema = accessor.dereference(ref)
     switch (getInferredType(schema)) {
       case 'object':
-        return validateObject(schema, context, validated)
+        return validateObject()(schema, context, validated)
       case 'union':
         return validateDiscriminatedUnion(schema, context, validated)
       default:
