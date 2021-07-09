@@ -4,6 +4,7 @@ import { ParameterObject } from 'openapi3-ts'
 import { append } from '../append'
 import { forbidFields } from '../forbidFields'
 import { validateParameterSchema } from './validateParameterSchema'
+import { warnContent } from './common'
 
 const validator = object(
   combine(
@@ -17,7 +18,7 @@ const validator = object(
       },
       true,
     ),
-    forbidFields(['content']),
+    warnContent,
   ),
 )
 

@@ -26,6 +26,7 @@ import {
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
+import { validatePaths } from '@oats-ts/openapi-validators'
 
 export class OperationsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/operations'
@@ -76,6 +77,15 @@ export class OperationsGenerator implements OpenAPIGenerator {
   public async generate(): Promise<Try<TypeScriptModule[]>> {
     const { context, config } = this
     const { accessor } = context
+
+    if (!config.skipValidation) {
+      const paths = accessor.document().paths || {}
+      const issues = validatePaths(paths, context)
+      if (issues.some((issue) => issue.severity === 'error')) {
+        return { issues }
+      }
+    }
+
     const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
       accessor.name(operation, 'openapi/operation'),
     )

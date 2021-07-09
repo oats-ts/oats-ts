@@ -42,6 +42,7 @@
     "@oats-ts/http": "0.0.0",
     "@oats-ts/openapi-common": "0.0.0",
     "@oats-ts/typescript-common": "0.0.0",
+    "@oats-ts/openapi-validators": "0.0.0",
     "@oats-ts/openapi": "0.0.0"
   }
 }
