@@ -5,15 +5,20 @@ import { append } from '../append'
 import { entries, flatMap } from 'lodash'
 import { validateUrl } from './validateUrl'
 import { validatePathItem } from './validatePathItem'
+import { ordered } from '../ordered'
 
 const validator = object(record(string(), object()))
 
 export const validatePaths = (data: PathsObject, context: OpenAPIGeneratorContext): Issue[] => {
   const { accessor } = context
-  return [
-    ...flatMap(entries(data), ([url, pathObj]) => {
+  return ordered(() =>
+    validator(data, {
+      append,
+      path: accessor.uri(data),
+    }),
+  )(() =>
+    flatMap(entries(data), ([url, pathObj]) => {
       return [...validateUrl(url, pathObj, context), ...validatePathItem(pathObj, context)]
     }),
-    ...validator(data, { append, path: accessor.uri(data) }),
-  ]
+  )
 }

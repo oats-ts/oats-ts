@@ -13,7 +13,7 @@ import {
 } from '@oats-ts/validators'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../append'
-import { forbidFields } from '../forbidFields'
+import { ignore } from '../ignore'
 
 const validator = object(
   combine(
@@ -24,7 +24,7 @@ const validator = object(
       },
       true,
     ),
-    forbidFields([
+    ignore([
       'discriminator',
       'allOf',
       'oneOf',

@@ -1,5 +1,5 @@
 import { PathItemObject } from 'openapi3-ts'
-import { shape, object, optional, string, array } from '@oats-ts/validators'
+import { shape, object, optional, string, array, items } from '@oats-ts/validators'
 
 export const pathItemObject = object(
   shape<PathItemObject>(
@@ -15,8 +15,8 @@ export const pathItemObject = object(
       post: optional(object()),
       put: optional(object()),
       trace: optional(object()),
-      parameters: optional(array()),
-      servers: optional(array()),
+      parameters: optional(array(items(object()))),
+      servers: optional(array(items(object()))),
     },
     true,
   ),

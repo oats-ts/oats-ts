@@ -4,6 +4,7 @@ import { ParameterObject } from 'openapi3-ts'
 import { append } from '../append'
 import { validateParameterSchema } from './validateParameterSchema'
 import { warnContent } from './common'
+import { ordered } from '../ordered'
 
 const validator = object(
   combine(
@@ -22,8 +23,10 @@ const validator = object(
 )
 
 export function validateHeader(input: ParameterObject, context: OpenAPIGeneratorContext): Issue[] {
-  return [
-    ...validator(input, { path: context.accessor.uri(input), append }),
-    ...validateParameterSchema(input.schema, context),
-  ]
+  return ordered(() =>
+    validator(input, {
+      path: context.accessor.uri(input),
+      append,
+    }),
+  )(() => validateParameterSchema(input.schema, context))
 }

@@ -4,8 +4,9 @@ import { Issue, object, optional, shape, combine, array, items, string, literal 
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../append'
 import { validateSchema } from './validateSchema'
-import { forbidFields } from '../forbidFields'
 import { SchemaValidator } from './typings'
+import { ordered } from '../ordered'
+import { ignore } from '../ignore'
 
 const validator = object(
   combine(
@@ -17,7 +18,7 @@ const validator = object(
       },
       true,
     ),
-    forbidFields(['discriminator', 'allOf', 'oneOf', 'anyOf', 'not', 'items', 'additionalProperties', 'enum']),
+    ignore(['discriminator', 'allOf', 'oneOf', 'anyOf', 'not', 'items', 'additionalProperties', 'enum']),
   ),
 )
 
@@ -29,11 +30,10 @@ export const validateObject =
       return []
     }
     validated.add(input)
-    return [
-      ...validator(input, {
+    return ordered(() =>
+      validator(input, {
         path: context.accessor.uri(input),
         append,
       }),
-      ...flatMap(values(input.properties), (schema) => properties(schema, context, validated)),
-    ]
+    )(() => flatMap(values(input.properties), (schema) => properties(schema, context, validated)))
   }

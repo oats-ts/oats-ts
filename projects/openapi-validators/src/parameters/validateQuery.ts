@@ -2,9 +2,9 @@ import { Issue, object, optional, shape, combine, string, literal, boolean, enum
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ParameterObject } from 'openapi3-ts'
 import { append } from '../append'
-import { forbidFields } from '../forbidFields'
 import { validateArraySchema, validateObjectSchema, validateParameterSchema } from './validateParameterSchema'
 import { warnContent } from './common'
+import { ordered } from '../ordered'
 
 const validator = object(
   combine(
@@ -24,32 +24,35 @@ const validator = object(
 
 export function validateQuery(input: ParameterObject, context: OpenAPIGeneratorContext): Issue[] {
   const uri = context.accessor.uri(input)
-  const issues = validator(input, { path: uri, append })
-  if (issues.length > 0) {
-    return issues
-  }
-  switch (input.style) {
-    case 'form': {
-      return validateParameterSchema(input.schema, context)
+  return ordered(() =>
+    validator(input, {
+      path: uri,
+      append,
+    }),
+  )(() => {
+    switch (input.style) {
+      case 'form': {
+        return validateParameterSchema(input.schema, context)
+      }
+      case 'spaceDelimited': {
+        return [
+          ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
+          ...validateArraySchema(input.schema, context, new Set()),
+        ]
+      }
+      case 'pipeDelimited': {
+        return [
+          ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
+          ...validateArraySchema(input.schema, context, new Set()),
+        ]
+      }
+      case 'deepObject': {
+        return [
+          ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
+          ...validateObjectSchema(input.schema, context, new Set()),
+        ]
+      }
     }
-    case 'spaceDelimited': {
-      return [
-        ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
-        ...validateArraySchema(input.schema, context, new Set()),
-      ]
-    }
-    case 'pipeDelimited': {
-      return [
-        ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
-        ...validateArraySchema(input.schema, context, new Set()),
-      ]
-    }
-    case 'deepObject': {
-      return [
-        ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
-        ...validateObjectSchema(input.schema, context, new Set()),
-      ]
-    }
-  }
-  return []
+    return []
+  })
 }

@@ -4,6 +4,7 @@ import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../append'
 import { validateContent } from '../content/validateContent'
 import { ignore } from '../ignore'
+import { ordered } from '../ordered'
 
 const validator = object(
   combine(
@@ -20,8 +21,10 @@ const validator = object(
 export const validateResponse = (data: ResponseObject | ReferenceObject, context: OpenAPIGeneratorContext): Issue[] => {
   const { accessor } = context
   const response = accessor.dereference(data)
-  return [
-    ...validator(response, { append, path: accessor.uri(response) }),
-    ...validateContent(response.content, context),
-  ]
+  return ordered(() =>
+    validator(response, {
+      append,
+      path: accessor.uri(response),
+    }),
+  )(() => validateContent(response.content, context))
 }

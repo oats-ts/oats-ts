@@ -1,6 +1,7 @@
 import { Failure, Module } from './typings'
-import { red, green, blue } from 'chalk'
+import { red, green, blue, yellow } from 'chalk'
 import { noop } from 'lodash'
+import { items, Severity } from '../../validators/lib'
 
 export type Logger = {
   failure: (message: string, failure: Failure) => void
@@ -17,16 +18,31 @@ export const noopLogger: Logger = {
 }
 
 const x = red('✕')
-const c = green(`✔`)
+const c = green('✔')
+const w = yellow('!')
+const i = blue('i')
 
 const moduleToString = (m: Module) =>
   `    ${m.path} (${blue(m.content.length)} elements, ${blue(m.dependencies.length)} dependencies)`
+
+const issueIcon = (severity: Severity) => {
+  switch (severity) {
+    case 'warning':
+      return w
+    case 'info':
+      return i
+    case 'error':
+      return x
+    default:
+      return '?'
+  }
+}
 
 export const consoleLogger: Logger = {
   failure: (message: string, failure: Failure): void => {
     const lines = [
       `${x} ${message}:`,
-      ...failure.issues.map((issue) => `    ${x} ${issue.message} at "${issue.path}"`),
+      ...failure.issues.map((issue) => `    ${issueIcon(issue.severity)} ${issue.message} at "${issue.path}"`),
       '',
     ]
     console.log(lines.join('\n'))

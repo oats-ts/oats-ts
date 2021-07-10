@@ -46,7 +46,8 @@ export function validateParameterSchema(
     default:
       return [
         {
-          message: `should be either a primitive schema ("string", "number" or "boolean") or array/object of primitives`,
+          message:
+            'should be either a primitive schema ("string", "number" or "boolean") or array/object of primitives',
           path: context.accessor.uri(input),
           severity: 'error',
           type: 'other',

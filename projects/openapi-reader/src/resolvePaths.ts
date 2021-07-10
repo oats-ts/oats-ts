@@ -1,4 +1,4 @@
-import { OperationObject, PathsObject } from 'openapi3-ts'
+import { PathsObject } from 'openapi3-ts'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
@@ -11,12 +11,12 @@ export async function resolvePaths(input: ReadInput<PathsObject>, context: ReadC
     return
   }
 
+  register(input, context)
+
   const { data, uri } = input
 
   // TODO wtf is $ref on pathItemObject
   for (const [path, pathItem] of entries(data)) {
     await resolvePathItemObject({ data: pathItem, uri: context.uri.append(uri, path) }, context)
   }
-
-  register(input, context)
 }

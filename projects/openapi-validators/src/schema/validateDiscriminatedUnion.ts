@@ -16,7 +16,8 @@ import { OpenAPIGeneratorContext, getInferredType } from '@oats-ts/openapi-commo
 import { append } from '../append'
 import { entries, isNil, flatMap } from 'lodash'
 import { validateObject } from './validateObject'
-import { forbidFields } from '../forbidFields'
+import { ordered } from '../ordered'
+import { ignore } from '../ignore'
 
 const validator = object(
   combine(
@@ -44,7 +45,7 @@ const validator = object(
       },
       true,
     ),
-    forbidFields(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'enum']),
+    ignore(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'enum']),
   ),
 )
 export function validateDiscriminatedUnion(
@@ -70,53 +71,56 @@ export function validateDiscriminatedUnion(
     ]
   }
 
-  const structureIssues = validator(schema, { append, path: accessor.uri(schema) })
-  if (structureIssues) {
-    return structureIssues
-  }
-
   const { discriminator, oneOf } = schema
-  const discriminatorValues = entries(discriminator.mapping)
-  const oneOfRefs = oneOf as ReferenceObject[]
-  const missingDiscriminatorIssues = oneOfRefs
-    .filter((ref) => !discriminatorValues.some(([, refTarget]) => ref.$ref === refTarget))
-    .map(
-      (ref): Issue => ({
-        message: `"discriminator" is missing "${ref.$ref}"`,
-        path: accessor.uri(discriminator),
-        severity: 'error',
-        type: 'other',
-      }),
-    )
-  const extraDiscriminatorIssues = discriminatorValues
-    .filter(([, refTarget]) => !oneOfRefs.some((ref) => ref.$ref === refTarget))
-    .map(
-      ([prop]): Issue => ({
-        message: `"${prop}" in "discriminator" has no counterpart in "oneOf"`,
-        path: accessor.uri(discriminator),
-        severity: 'error',
-        type: 'other',
-      }),
-    )
+  const discriminatorValues = entries(discriminator.mapping || {})
+  const oneOfRefs = (oneOf || []) as ReferenceObject[]
 
-  const childIssues = flatMap(oneOf, (ref): Issue[] => {
-    const schema = accessor.dereference(ref)
-    switch (getInferredType(schema)) {
-      case 'object':
-        return validateObject()(schema, context, validated)
-      case 'union':
-        return validateDiscriminatedUnion(schema, context, validated)
-      default:
-        return [
-          {
-            message: `should reference either an "object" schema or another schema with "discriminator"`,
-            path: accessor.uri(ref),
+  return ordered(() =>
+    validator(schema, {
+      append,
+      path: accessor.uri(schema),
+    }),
+  )(
+    () =>
+      oneOfRefs
+        .filter((ref) => !discriminatorValues.some(([, refTarget]) => ref.$ref === refTarget))
+        .map(
+          (ref): Issue => ({
+            message: `"discriminator" is missing "${ref.$ref}"`,
+            path: accessor.uri(discriminator),
             severity: 'error',
             type: 'other',
-          },
-        ]
-    }
-  })
-
-  return [...missingDiscriminatorIssues, ...extraDiscriminatorIssues, ...childIssues]
+          }),
+        ),
+    () =>
+      discriminatorValues
+        .filter(([, refTarget]) => !oneOfRefs.some((ref) => ref.$ref === refTarget))
+        .map(
+          ([prop, ref]): Issue => ({
+            message: `"${prop}" referencing "${ref}" in "discriminator" has no counterpart in "oneOf"`,
+            path: accessor.uri(discriminator),
+            severity: 'error',
+            type: 'other',
+          }),
+        ),
+    () =>
+      flatMap(oneOf, (ref): Issue[] => {
+        const schema = accessor.dereference(ref)
+        switch (getInferredType(schema)) {
+          case 'object':
+            return validateObject()(schema, context, validated)
+          case 'union':
+            return validateDiscriminatedUnion(schema, context, validated)
+          default:
+            return [
+              {
+                message: `should reference either an "object" schema or another schema with "discriminator"`,
+                path: accessor.uri(ref),
+                severity: 'error',
+                type: 'other',
+              },
+            ]
+        }
+      }),
+  )
 }

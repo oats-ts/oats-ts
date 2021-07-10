@@ -4,15 +4,20 @@ import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../append'
 import { entries, flatMap } from 'lodash'
 import { validateResponse } from './validateResponse'
+import { ordered } from '../ordered'
 
 const validator = object(record(string(), object()))
 
 export const validateResponses = (data: ResponsesObject, context: OpenAPIGeneratorContext): Issue[] => {
   const { accessor } = context
 
-  return [
-    ...validator(data, { append, path: accessor.uri(data) }),
-    ...flatMap(entries(data), ([statusCode, response]): Issue[] => {
+  return ordered(() =>
+    validator(data, {
+      append,
+      path: accessor.uri(data),
+    }),
+  )(() =>
+    flatMap(entries(data), ([statusCode, response]): Issue[] => {
       const issues: Issue[] = []
       if (
         statusCode !== 'default' &&
@@ -29,5 +34,5 @@ export const validateResponses = (data: ResponsesObject, context: OpenAPIGenerat
       issues.push(...validateResponse(response, context))
       return issues
     }),
-  ]
+  )
 }

@@ -29,9 +29,11 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   const { headers, parameters, responses, requestBodies, schemas } = data
 
   if (!isNil(schemas)) {
+    const schemasUri = context.uri.append(uri, 'schemas')
+    register({ data: schemas, uri: schemasUri }, context)
     for (const [name, schemaOrRef] of entries(schemas)) {
       await resolveReferenceable<SchemaObject>(
-        { data: schemaOrRef, uri: context.uri.append(uri, 'schemas', name) },
+        { data: schemaOrRef, uri: context.uri.append(schemasUri, name) },
         context,
         resolveSchemaObject,
       )
@@ -40,9 +42,11 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   }
 
   if (!isNil(parameters)) {
+    const parametersUri = context.uri.append(uri, 'parameters')
+    register({ data: parameters, uri: parametersUri }, context)
     for (const [name, paramOrRef] of entries(parameters)) {
       await resolveReferenceable<ParameterObject>(
-        { data: paramOrRef, uri: context.uri.append(uri, 'parameters', name) },
+        { data: paramOrRef, uri: context.uri.append(parametersUri, name) },
         context,
         resolveParameterObject,
       )
@@ -51,9 +55,11 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   }
 
   if (!isNil(headers)) {
+    const headersUri = context.uri.append(uri, 'headers')
+    register({ data: headers, uri: headersUri }, context)
     for (const [name, headerOrRef] of entries(headers)) {
       await resolveReferenceable<HeaderObject>(
-        { data: headerOrRef, uri: context.uri.append(uri, 'headers', name) },
+        { data: headerOrRef, uri: context.uri.append(headersUri, name) },
         context,
         resolveHeaderObject,
       )
@@ -62,9 +68,11 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   }
 
   if (!isNil(responses)) {
+    const responsesUri = context.uri.append(uri, 'responses')
+    register({ data: responses, uri: responsesUri }, context)
     for (const [name, respOrRef] of entries(responses)) {
       await resolveReferenceable<ResponseObject>(
-        { data: respOrRef, uri: context.uri.append(uri, 'responses', name) },
+        { data: respOrRef, uri: context.uri.append(responsesUri, name) },
         context,
         resolveResponseObject,
       )
@@ -73,9 +81,11 @@ export async function resolveComponents(input: ReadInput<ComponentsObject>, cont
   }
 
   if (!isNil(requestBodies)) {
+    const requestBodiesUri = context.uri.append(uri, 'requestBodies')
+    register({ data: requestBodies, uri: requestBodiesUri }, context)
     for (const [name, reqOrRef] of entries(requestBodies)) {
       await resolveReferenceable<RequestBodyObject>(
-        { data: reqOrRef, uri: context.uri.append(uri, 'requestBodies', name) },
+        { data: reqOrRef, uri: context.uri.append(requestBodiesUri, name) },
         context,
         resolveRequestBodyObject,
       )

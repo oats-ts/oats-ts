@@ -7,6 +7,7 @@ import { validateParameters } from '../parameters/validateParameters'
 import { validateRequestBody } from '../requestBody/validateRequestBody'
 import { validateResponses } from '../response/validateResponses'
 import { ignore } from '../ignore'
+import { ordered } from '../ordered'
 
 const validator = object(
   combine(
@@ -25,10 +26,9 @@ const validator = object(
 
 export const validateOperation = (data: OperationObject, context: OpenAPIGeneratorContext): Issue[] => {
   const { accessor } = context
-  return [
-    ...validator(data, { append, path: accessor.uri(data) }),
-    ...(isNil(data.parameters) ? [] : validateParameters(data.parameters || [], context)),
-    ...(isNil(data.requestBody) ? [] : validateRequestBody(data.requestBody, context)),
-    ...validateResponses(data.responses, context),
-  ]
+  return ordered(() => validator(data, { append, path: accessor.uri(data) }))(
+    () => (isNil(data.parameters) ? [] : validateParameters(data.parameters || [], context)),
+    () => (isNil(data.requestBody) ? [] : validateRequestBody(data.requestBody, context)),
+    () => validateResponses(data.responses, context),
+  )
 }

@@ -38,9 +38,11 @@ export async function resolveSchemaObject(input: ReadInput<SchemaObject>, contex
   }
 
   if (!isNil(allOf)) {
+    const allOfUri = context.uri.append(uri, 'allOf')
+    register({ data: allOf, uri: allOfUri }, context)
     for (let i = 0; i < allOf.length; i += 1) {
       await resolveReferenceable(
-        { data: allOf[i], uri: context.uri.append(uri, 'allOf', i.toString()) },
+        { data: allOf[i], uri: context.uri.append(allOfUri, i.toString()) },
         context,
         resolveSchemaObject,
       )
@@ -48,9 +50,11 @@ export async function resolveSchemaObject(input: ReadInput<SchemaObject>, contex
   }
 
   if (!isNil(oneOf)) {
+    const oneOfUri = context.uri.append(uri, 'oneOf')
+    register({ data: oneOf, uri: oneOfUri }, context)
     for (let i = 0; i < oneOf.length; i += 1) {
       await resolveReferenceable(
-        { data: oneOf[i], uri: context.uri.append(uri, 'oneOf', i.toString()) },
+        { data: oneOf[i], uri: context.uri.append(oneOfUri, i.toString()) },
         context,
         resolveSchemaObject,
       )
@@ -58,9 +62,11 @@ export async function resolveSchemaObject(input: ReadInput<SchemaObject>, contex
   }
 
   if (!isNil(anyOf)) {
+    const anyOfUri = context.uri.append(uri, 'anyOf')
+    register({ data: anyOf, uri: anyOfUri }, context)
     for (let i = 0; i < anyOf.length; i += 1) {
       await resolveReferenceable(
-        { data: anyOf[i], uri: context.uri.append(uri, 'anyOf', i.toString()) },
+        { data: anyOf[i], uri: context.uri.append(anyOfUri, i.toString()) },
         context,
         resolveSchemaObject,
       )
@@ -68,9 +74,11 @@ export async function resolveSchemaObject(input: ReadInput<SchemaObject>, contex
   }
 
   if (!isNil(properties)) {
+    const propertiesUri = context.uri.append(uri, 'properties')
+    register({ data: properties, uri: propertiesUri }, context)
     for (const [name, propSchema] of entries(properties)) {
       await resolveReferenceable(
-        { data: propSchema, uri: context.uri.append(uri, 'properties', name) },
+        { data: propSchema, uri: context.uri.append(propertiesUri, name) },
         context,
         resolveSchemaObject,
       )

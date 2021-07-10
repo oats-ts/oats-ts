@@ -17,9 +17,11 @@ export async function resolveOperation(input: ReadInput<OperationObject>, contex
   const { responses, parameters, requestBody } = data
 
   if (!isNil(parameters)) {
+    const parametersUri = context.uri.append(uri, 'parameters')
+    register({ data: parameters, uri: parametersUri }, context)
     for (let i = 0; i < parameters.length; i += 1) {
       await resolveReferenceable(
-        { data: parameters[i], uri: context.uri.append(uri, 'parameters', i.toString()) },
+        { data: parameters[i], uri: context.uri.append(parametersUri, i.toString()) },
         context,
         resolveParameterObject,
       )
@@ -27,6 +29,8 @@ export async function resolveOperation(input: ReadInput<OperationObject>, contex
   }
 
   if (!isNil(responses)) {
+    const responsesUri = context.uri.append(uri, 'responses')
+    register({ data: responses, uri: responsesUri }, context)
     for (const [name, respOrRef] of entries(responses)) {
       await resolveReferenceable<ResponseObject>(
         { data: respOrRef, uri: context.uri.append(uri, 'responses', name) },

@@ -10,11 +10,12 @@ export async function resolveContentObject(input: ReadInput<ContentObject>, cont
   if (!validate(input, context, recordOfObjects)) {
     return
   }
+
+  register(input, context)
+
   const { data, uri } = input
 
   for (const [name, mediaTypeObj] of entries(data)) {
     await resolveMediaTypeObject({ data: mediaTypeObj, uri: context.uri.append(uri, name) }, context)
   }
-
-  register(input, context)
 }

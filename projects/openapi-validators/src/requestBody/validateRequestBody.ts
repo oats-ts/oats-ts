@@ -3,6 +3,7 @@ import { Issue, object, optional, shape, literal, record, string } from '@oats-t
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../append'
 import { validateContent } from '../content/validateContent'
+import { ordered } from '../ordered'
 
 const validator = object(
   shape<RequestBodyObject>(
@@ -20,8 +21,10 @@ export const validateRequestBody = (
 ): Issue[] => {
   const { accessor } = context
   const requestBody = accessor.dereference(data)
-  return [
-    ...validator(requestBody, { append, path: accessor.uri(requestBody) }),
-    ...validateContent(requestBody.content, context),
-  ]
+  return ordered(() =>
+    validator(requestBody, {
+      append,
+      path: accessor.uri(requestBody),
+    }),
+  )(() => validateContent(requestBody.content, context))
 }

@@ -7,6 +7,7 @@ import { validateParameters } from '../parameters/validateParameters'
 import { ignore } from '../ignore'
 import { validateOperation } from '../operation/validateOperation'
 import { getOperations } from './getOperations'
+import { ordered } from '../ordered'
 
 const validator = object(
   combine(
@@ -30,9 +31,8 @@ const validator = object(
 export const validatePathItem = (data: PathItemObject, context: OpenAPIGeneratorContext): Issue[] => {
   const { accessor } = context
   const { parameters } = data
-  return [
-    ...validator(data, { append, path: accessor.uri(data) }),
-    ...flatMap(getOperations(data), (operation) => validateOperation(operation, context)),
-    ...(isNil(parameters) ? [] : validateParameters(parameters, context)),
-  ]
+  return ordered(() => validator(data, { append, path: accessor.uri(data) }))(
+    () => flatMap(getOperations(data), (operation) => validateOperation(operation, context)),
+    () => (isNil(parameters) ? [] : validateParameters(parameters, context)),
+  )
 }
