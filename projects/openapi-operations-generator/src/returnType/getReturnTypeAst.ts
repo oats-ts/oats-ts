@@ -28,14 +28,19 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
     const knownStatusCodesType = factory.createUnionTypeNode(
       statusCodeResponses.map(([status]) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
     )
+    const statusCodeTypeRef = factory.createTypeReferenceNode(RuntimePackages.Http.StatusCode)
+
+    const statusCodeType =
+      statusCodeResponses.length > 0
+        ? factory.createTypeReferenceNode('Exclude', [statusCodeTypeRef, knownStatusCodesType])
+        : statusCodeTypeRef
+
     const [, schema] = defaultResponse
     const type = factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
       referenceOf(schema, 'openapi/type'),
-      factory.createTypeReferenceNode('Exclude', [
-        factory.createTypeReferenceNode(RuntimePackages.Http.StatusCode),
-        knownStatusCodesType,
-      ]),
+      statusCodeType,
     ])
+
     types.push(type)
   }
   return factory.createTypeAliasDeclaration(

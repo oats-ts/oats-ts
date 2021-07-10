@@ -355,6 +355,20 @@ export async function getSimpleNamedObject(config: RequestConfig): Promise<GetSi
   )
 }
 
+export type GetWithDefaultResponseResponse = HttpResponse<NamedSimpleObject, StatusCode>
+
+export const getWithDefaultResponseExpectations: ResponseExpectations = {
+  default: { 'application/json': namedSimpleObjectValidator },
+}
+
+export async function getWithDefaultResponse(config: RequestConfig): Promise<GetWithDefaultResponseResponse> {
+  return execute(
+    { url: joinUrl(config.baseUrl, '/default-response-only'), method: 'get' },
+    config,
+    getWithDefaultResponseExpectations,
+  )
+}
+
 export type GetWithHeaderParamsResponse = HttpResponse<NamedSimpleObject, 200>
 
 export type GetWithHeaderParamsInput = {
@@ -501,6 +515,7 @@ export async function postSimpleNamedObject(
 
 export type Api = {
   getSimpleNamedObject(config?: Partial<RequestConfig>): Promise<GetSimpleNamedObjectResponse>
+  getWithDefaultResponse(config?: Partial<RequestConfig>): Promise<GetWithDefaultResponseResponse>
   getWithHeaderParams(
     input: GetWithHeaderParamsInput,
     config?: Partial<RequestConfig>,
@@ -524,6 +539,9 @@ export class ApiImpl implements Api {
   }
   public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
     return getSimpleNamedObject({ ...this.config, ...config })
+  }
+  public async getWithDefaultResponse(config: Partial<RequestConfig> = {}): Promise<GetWithDefaultResponseResponse> {
+    return getWithDefaultResponse({ ...this.config, ...config })
   }
   public async getWithHeaderParams(
     input: GetWithHeaderParamsInput,
@@ -561,6 +579,9 @@ export class ApiStub implements Api {
     throw new Error('Not implemented.')
   }
   public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
+    return this.fallback()
+  }
+  public async getWithDefaultResponse(config: Partial<RequestConfig> = {}): Promise<GetWithDefaultResponseResponse> {
     return this.fallback()
   }
   public async getWithHeaderParams(

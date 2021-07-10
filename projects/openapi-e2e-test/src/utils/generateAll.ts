@@ -46,6 +46,7 @@ export async function generateAll() {
         ...common,
         validate: true,
         documentation: true,
+        skipValidation: true,
       }),
       api({
         ...common,

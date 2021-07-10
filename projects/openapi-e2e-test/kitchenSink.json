@@ -424,6 +424,23 @@
         }
       }
     },
+    "/default-response-only": {
+      "get": {
+        "operationId": "getWithDefaultResponse",
+        "responses": {
+          "default": {
+            "description": "Simple response returning a string",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedSimpleObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/simple-named-object": {
       "get": {
         "operationId": "getSimpleNamedObject",
