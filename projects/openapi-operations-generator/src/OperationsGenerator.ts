@@ -1,7 +1,7 @@
-import { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { Severity } from '@oats-ts/validators'
+import { isOk } from '@oats-ts/validators'
 import { OperationObject } from 'openapi3-ts'
 import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
 import { generateOperationFunction } from './operation/generateOperationFunction'
@@ -74,23 +74,16 @@ export class OperationsGenerator implements OpenAPIGenerator {
     return operation
   }
 
-  public async generate(): Promise<Try<TypeScriptModule[]>> {
+  private getModules() {
     const { context, config } = this
     const { accessor } = context
-
-    if (!config.skipValidation) {
-      const paths = accessor.document().paths || {}
-      const issues = validatePaths(paths, context)
-      if (issues.some((issue) => issue.severity === 'error')) {
-        return { issues }
-      }
-    }
 
     const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
       accessor.name(operation, 'openapi/operation'),
     )
-    const modules: TypeScriptModule[] = flatMap(operations, (operation: EnhancedOperation): TypeScriptModule[] => {
-      return [
+
+    const modules: TypeScriptModule[] = flatMap(operations, (operation: EnhancedOperation): TypeScriptModule[] =>
+      [
         generateOperationReturnType(operation, context),
         generateOperationInputType(operation, context),
         generatePathParameterTypeSerializer(operation, context),
@@ -98,13 +91,24 @@ export class OperationsGenerator implements OpenAPIGenerator {
         generateHeaderParameterTypeSerializer(operation, context),
         ...(config.validate ? [generateResponseParserHint(operation, context, config)] : []),
         generateOperationFunction(operation, context, config),
-      ].filter(negate(isNil))
-    })
+      ].filter(negate(isNil)),
+    )
 
-    if (context.issues.some((issue) => issue.severity === 'error')) {
-      return { issues: context.issues }
-    }
     return mergeTypeScriptModules(modules)
+  }
+
+  public async generate(): Promise<Result<TypeScriptModule[]>> {
+    const { context, config } = this
+    const { accessor } = context
+
+    const issues = config.skipValidation ? [] : validatePaths(accessor.document().paths, context)
+    const data = isOk(issues) ? this.getModules() : undefined
+
+    return {
+      isOk: isOk(issues),
+      issues,
+      data,
+    }
   }
 
   public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {

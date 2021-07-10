@@ -1,12 +1,12 @@
-import { Failure, Module } from './typings'
+import { Module, Result } from './typings'
 import { red, green, blue, yellow } from 'chalk'
 import { noop } from 'lodash'
-import { items, Severity } from '../../validators/lib'
+import { Issue, Severity } from '../../validators/lib'
 
 export type Logger = {
-  failure: (message: string, failure: Failure) => void
+  failure: (message: string, issues: Issue[]) => void
   readSuccess(): void
-  generatorSuccess(name: string, modules: Module[]): void
+  generatorSuccess(name: string, result: Result<Module[]>): void
   writerSuccess(modules: Module[]): void
 }
 
@@ -22,10 +22,7 @@ const c = green('✔')
 const w = yellow('!')
 const i = blue('i')
 
-const moduleToString = (m: Module) =>
-  `    ${m.path} (${blue(m.content.length)} elements, ${blue(m.dependencies.length)} dependencies)`
-
-const issueIcon = (severity: Severity) => {
+const severityIcon = (severity: Severity) => {
   switch (severity) {
     case 'warning':
       return w
@@ -38,22 +35,31 @@ const issueIcon = (severity: Severity) => {
   }
 }
 
+const moduleToString = (m: Module) =>
+  `    ${m.path} (${blue(m.content.length)} elements, ${blue(m.dependencies.length)} dependencies)`
+
+const issueToString = (issue: Issue) => `    ${severityIcon(issue.severity)} ${issue.message} at "${issue.path}"`
+
 export const consoleLogger: Logger = {
-  failure: (message: string, failure: Failure): void => {
-    const lines = [
-      `${x} ${message}:`,
-      ...failure.issues.map((issue) => `    ${issueIcon(issue.severity)} ${issue.message} at "${issue.path}"`),
-      '',
-    ]
+  failure: (message: string, issues: Issue[]): void => {
+    const lines = [`${x} ${message}:`, ...issues.map(issueToString), '']
     console.log(lines.join('\n'))
   },
   readSuccess(): void {
     console.log(`${c} Read step successful!\n`)
   },
-  generatorSuccess(name: string, modules: Module[]): void {
+  generatorSuccess(name: string, { data, issues }: Result<Module[]>): void {
+    const issueLines =
+      issues.length === 0
+        ? []
+        : [
+            `${w} Generator step "${blue(name)}" produced ${blue(issues.length)} non-critical issue(s):`,
+            ...issues.map(issueToString),
+          ]
     const lines: string[] = [
-      `${c} Generator step "${blue(name)}" succesfully generated ${blue(modules.length)} module(s):`,
-      ...modules.map(moduleToString),
+      `${c} Generator step "${blue(name)}" succesfully generated ${blue(data.length)} module(s):`,
+      ...data.map(moduleToString),
+      ...issueLines,
       '',
     ]
     console.log(lines.join('\n'))

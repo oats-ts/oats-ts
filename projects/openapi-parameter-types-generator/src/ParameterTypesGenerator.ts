@@ -16,10 +16,11 @@ import {
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig } from './typings'
-import { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
 import { OperationObject } from 'openapi3-ts/dist'
 import { TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
+import { isOk } from '@oats-ts/validators'
 
 export class ParameterTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameterTypes'
@@ -49,32 +50,38 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
     )
   }
 
-  public async generate(): Promise<Try<TypeScriptModule[]>> {
+  public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    if (!config.skipValidation) {
-      const params = flatMap(this.operations, (operation) => [
-        ...operation.cookie,
-        ...operation.header,
-        ...operation.path,
-        ...operation.query,
-      ])
-      const issues = validateParameters(params, context)
-      if (issues.some((issue) => issue.severity === 'error')) {
-        return { issues }
-      }
-    }
-    const modules: TypeScriptModule[] = flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] => {
-      return [
-        generatePathParametersType(operation, context, config),
-        generateQueryParametersType(operation, context, config),
-        generateHeaderParametersType(operation, context, config),
-      ].filter(negate(isNil))
-    })
 
-    if (context.issues.some((issue) => issue.severity === 'error')) {
-      return { issues: context.issues }
+    const issues = config.skipValidation
+      ? []
+      : validateParameters(
+          flatMap(this.operations, (operation) => [
+            ...operation.cookie,
+            ...operation.header,
+            ...operation.path,
+            ...operation.query,
+          ]),
+          context,
+        )
+
+    const data: TypeScriptModule[] = isOk(issues)
+      ? mergeTypeScriptModules(
+          flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] => {
+            return [
+              generatePathParametersType(operation, context, config),
+              generateQueryParametersType(operation, context, config),
+              generateHeaderParametersType(operation, context, config),
+            ].filter(negate(isNil))
+          }),
+        )
+      : undefined
+
+    return {
+      isOk: isOk(issues),
+      issues,
+      data,
     }
-    return mergeTypeScriptModules(modules)
   }
 
   private enhance(input: OperationObject): EnhancedOperation {

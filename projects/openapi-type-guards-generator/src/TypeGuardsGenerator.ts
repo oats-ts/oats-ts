@@ -1,6 +1,5 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { Severity } from '@oats-ts/validators'
 import { isNil, negate, sortBy } from 'lodash'
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import {
@@ -9,9 +8,11 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
 import { generateTypeGuard } from './generateTypeGuard'
 import { TypeGuardGeneratorConfig } from './typings'
+import { validateSchemas } from '@oats-ts/openapi-validators'
+import { isOk } from '@oats-ts/validators'
 
 export class TypeGuardsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/typeGuards'
@@ -33,15 +34,19 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
   }
 
-  async generate(): Promise<Try<TypeScriptModule[]>> {
+  async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
-    const modules = schemas
-      .map((schema): TypeScriptModule => generateTypeGuard(schema, context, config))
-      .filter(negate(isNil))
-    if (context.issues.some((issue) => issue.severity === 'error')) {
-      return { issues: context.issues }
+    const issues = config.skipValidation ? [] : validateSchemas(schemas, context)
+    const data = isOk(issues)
+      ? mergeTypeScriptModules(
+          schemas.map((schema) => generateTypeGuard(schema, context, config)).filter(negate(isNil)),
+        )
+      : undefined
+    return {
+      isOk: isOk(issues),
+      issues,
+      data,
     }
-    return mergeTypeScriptModules(modules)
   }
 }

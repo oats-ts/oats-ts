@@ -12,11 +12,11 @@ import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
-import { Severity } from '@oats-ts/validators'
-import { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
 import { OpenAPIObject } from 'openapi3-ts'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '../../typescript-common/lib'
+import { isOk } from '@oats-ts/validators'
 
 export class ApiGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -50,21 +50,23 @@ export class ApiGenerator implements OpenAPIGenerator {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
   }
 
-  public async generate(): Promise<Try<TypeScriptModule[]>> {
+  public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
     const document = context.accessor.document()
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       context.accessor.name(operation, 'openapi/operation'),
     )
-    const modules: TypeScriptModule[] = [
+    const data: TypeScriptModule[] = mergeTypeScriptModules([
       ...(config.type ? [generateApiType(document, operations, context, config)] : []),
       ...(config.class ? [generateApiClass(document, operations, context, config)] : []),
       ...(config.stub ? [generateApiStub(document, operations, context, config)] : []),
-    ]
-    if (context.issues.some((issue) => issue.severity === 'error')) {
-      return { issues: context.issues }
+    ])
+
+    return {
+      isOk: isOk(context.issues),
+      data,
+      issues: context.issues,
     }
-    return mergeTypeScriptModules(modules)
   }
 
   public reference(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {

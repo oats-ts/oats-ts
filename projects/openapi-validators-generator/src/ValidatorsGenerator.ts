@@ -1,6 +1,5 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { Severity } from '@oats-ts/validators'
 import { sortBy } from 'lodash'
 import {
   getNamedSchemas,
@@ -11,11 +10,12 @@ import {
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
-import { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
 import { Expression, ImportDeclaration } from 'typescript'
 import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
+import { isOk } from '@oats-ts/validators'
 
 export class ValidatorsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -37,14 +37,17 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
   }
 
-  public async generate(): Promise<Try<TypeScriptModule[]>> {
+  public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
-    const modules = schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config))
-    if (context.issues.some((issue) => issue.severity === 'error')) {
-      return { issues: context.issues }
+    const data = mergeTypeScriptModules(
+      schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config)),
+    )
+    return {
+      data,
+      isOk: isOk(context.issues),
+      issues: context.issues,
     }
-    return mergeTypeScriptModules(modules)
   }
 
   public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Expression {

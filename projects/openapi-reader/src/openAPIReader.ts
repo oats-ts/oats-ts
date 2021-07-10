@@ -1,5 +1,5 @@
-import { Severity } from '@oats-ts/validators'
-import type { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
+import { isOk } from '@oats-ts/validators'
 import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadContext } from './internalTypings'
 import { OpenAPIObject } from 'openapi3-ts'
@@ -37,7 +37,7 @@ async function resolveAll(resolved: Set<string>, context: ReadContext) {
   await resolveAll(resolved, context)
 }
 
-export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Try<OpenAPIReadOutput>> => {
+export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Result<OpenAPIReadOutput>> => {
   const { path, resolve, uriManipulator } = defaultOpenAPIReadConfig(config)
 
   const documentUri = uriManipulator.sanitize(path)
@@ -52,24 +52,24 @@ export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Tr
     uriToObject: new Map(),
   }
 
-  const rootSpec = await resolve(documentUri)
-  context.documents.set(documentUri, rootSpec)
+  const document = await resolve(documentUri)
+  context.documents.set(documentUri, document)
 
-  await resolveOpenAPIObject({ data: rootSpec, uri: documentUri }, context)
+  await resolveOpenAPIObject({ data: document, uri: documentUri }, context)
   await resolveAll(new Set(documentUri), context)
 
-  const hasIssues = context.issues.some((issue) => issue.severity === 'error')
-
-  if (hasIssues) {
-    return { issues: context.issues }
-  }
+  const { issues, documents, uriToObject, objectToName, objectToUri } = context
 
   return {
-    documentUri,
-    document: rootSpec,
-    documents: context.documents,
-    uriToObject: context.uriToObject,
-    objectToUri: context.objectToUri,
-    objectToName: context.objectToName,
+    isOk: isOk(issues),
+    data: {
+      documentUri,
+      document,
+      documents,
+      uriToObject,
+      objectToUri,
+      objectToName,
+    },
+    issues,
   }
 }

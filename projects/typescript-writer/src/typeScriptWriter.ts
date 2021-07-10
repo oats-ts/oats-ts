@@ -1,12 +1,12 @@
-import type { Try } from '@oats-ts/generator'
+import { Result } from '@oats-ts/generator'
 import { defaultTypeScriptWriterConfig } from './defaults/defaultTypeScriptWriterConfig'
 import { mergeTypeScriptModules } from './mergeTypeScriptModules'
 import { purgeDirectories } from './purgeDirectories'
-import type { TypeScriptModule, TypeScriptWriterConfig } from './typings'
+import { TypeScriptModule, TypeScriptWriterConfig } from './typings'
 
 export const typeScriptWriter =
   (config: TypeScriptWriterConfig) =>
-  async (modules: TypeScriptModule[]): Promise<Try<TypeScriptModule[]>> => {
+  async (modules: TypeScriptModule[]): Promise<Result<TypeScriptModule[]>> => {
     const { stringify, write, purge } = defaultTypeScriptWriterConfig(config)
     const mergedModules = mergeTypeScriptModules(modules)
     const stringifiedData = await Promise.all(
@@ -16,5 +16,10 @@ export const typeScriptWriter =
       await purgeDirectories(mergedModules)
     }
     await Promise.all(stringifiedData.map(([{ path }, content]) => write(path, content)))
-    return mergedModules
+    // TODO probably need better error checks here...
+    return {
+      isOk: true,
+      issues: [],
+      data: mergedModules,
+    }
   }

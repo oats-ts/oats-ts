@@ -1,10 +1,13 @@
 import { Issue } from '@oats-ts/validators'
 
-export type Failure = { issues: Issue[] }
-export type Try<T> = T | Failure
+export type Result<T> = {
+  issues: Issue[]
+  isOk: boolean
+  data?: T
+}
 
-export type ContentReader<R> = () => Promise<Try<R>>
-export type Writer<G> = (data: G[]) => Promise<Try<G[]>>
+export type ContentReader<R> = () => Promise<Result<R>>
+export type Writer<G> = (data: G[]) => Promise<Result<G[]>>
 
 export type Module<C = any, D = any> = {
   path: string
@@ -17,7 +20,7 @@ export type CodeGenerator<R, G extends Module<C, D>, C = any, D = any> = {
   produces: string[]
   consumes: string[]
   initialize: (data: R, generators: CodeGenerator<R, G>[]) => void
-  generate: () => Promise<Try<G[]>>
+  generate: () => Promise<Result<G[]>>
   reference?: (input: any, target: string) => C
   dependencies?: (fromPath: string, input: any, target: string) => D[]
 }

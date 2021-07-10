@@ -11,11 +11,12 @@ import {
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
-import { Try } from '@oats-ts/generator'
 import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { getTypeImports } from './getTypeImports'
+import { isOk, Issue } from '@oats-ts/validators'
+import { Result } from '@oats-ts/generator'
 
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'
@@ -37,20 +38,18 @@ export class TypesGenerator implements OpenAPIGenerator {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
   }
 
-  public async generate(): Promise<Try<TypeScriptModule[]>> {
+  public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
     const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
-    if (!config.skipValidation) {
-      const issues = validateSchemas(schemas, context)
-      if (issues.some((issue) => issue.severity === 'error')) {
-        return { issues }
-      }
+    const issues = config.skipValidation ? [] : validateSchemas(schemas, context)
+    const data = isOk(issues)
+      ? mergeTypeScriptModules(schemas.map((schema): TypeScriptModule => generateType(schema, context, config)))
+      : undefined
+    return {
+      isOk: isOk(issues),
+      data,
+      issues,
     }
-    const modules = schemas.map((schema): TypeScriptModule => generateType(schema, context, config))
-    if (context.issues.some((issue) => issue.severity === 'error')) {
-      return { issues: context.issues }
-    }
-    return mergeTypeScriptModules(modules)
   }
 
   public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
