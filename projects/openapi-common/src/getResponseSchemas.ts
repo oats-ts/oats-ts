@@ -6,16 +6,16 @@ export function getResponseSchemas(
   operation: OperationObject,
   context: OpenAPIGeneratorContext,
 ): Record<string, SchemaObject> {
-  const { accessor } = context
+  const { dereference } = context
   const schemas: Record<string, SchemaObject> = {}
   for (const [rawStatus, resOrRef] of entries(operation.responses || {}) as [
     string,
     ReferenceObject | ResponseObject,
   ][]) {
-    const repsonse = accessor.dereference(resOrRef)
+    const repsonse = dereference(resOrRef)
     for (const mediaTypeObj of values(repsonse.content || {})) {
       if (!isNil(mediaTypeObj.schema)) {
-        schemas[rawStatus] = accessor.dereference(mediaTypeObj.schema)
+        schemas[rawStatus] = dereference(mediaTypeObj.schema)
       }
     }
   }

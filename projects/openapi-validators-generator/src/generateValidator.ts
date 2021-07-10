@@ -10,8 +10,8 @@ export function generateValidator(
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
-  const path = accessor.path(schema, 'openapi/validator')
+  const { pathOf } = context
+  const path = pathOf(schema, 'openapi/validator')
   return {
     path,
     dependencies: getValidatorImports(path, schema, context, config),

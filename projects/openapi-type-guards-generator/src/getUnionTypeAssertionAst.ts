@@ -12,7 +12,7 @@ export function getUnionTypeAssertionAst(
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
 ): Expression {
-  const { accessor } = context
+  const { dereference, nameOf } = context
   if (isNil(data.discriminator) || !config.unionReferences) {
     return reduceLogicalExpressions(
       SyntaxKind.BarBarToken,
@@ -22,8 +22,12 @@ export function getUnionTypeAssertionAst(
   return reduceLogicalExpressions(
     SyntaxKind.BarBarToken,
     data.oneOf.map((refOrSchema) => {
-      const schema = accessor.dereference<SchemaObject>(refOrSchema)
-      return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'openapi/type-guard')), [], [variable])
+      const schema = dereference<SchemaObject>(refOrSchema)
+      return factory.createCallExpression(
+        factory.createIdentifier(nameOf(schema, 'openapi/type-guard')),
+        [],
+        [variable],
+      )
     }),
   )
 }

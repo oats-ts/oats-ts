@@ -29,9 +29,9 @@ const validator = object(
 )
 
 export const validatePathItem = (data: PathItemObject, context: OpenAPIGeneratorContext): Issue[] => {
-  const { accessor } = context
+  const { uriOf } = context
   const { parameters } = data
-  return ordered(() => validator(data, { append, path: accessor.uri(data) }))(
+  return ordered(() => validator(data, { append, path: uriOf(data) }))(
     () => flatMap(getOperations(data), (operation) => validateOperation(operation, context)),
     () => (isNil(parameters) ? [] : validateParameters(parameters, context)),
   )

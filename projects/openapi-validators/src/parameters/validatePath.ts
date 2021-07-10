@@ -23,9 +23,10 @@ const validator = object(
 )
 
 export function validatePath(input: ParameterObject, context: OpenAPIGeneratorContext): Issue[] {
+  const { uriOf } = context
   return ordered(() =>
     validator(input, {
-      path: context.accessor.uri(input),
+      path: uriOf(input),
       append,
     }),
   )(() => validateParameterSchema(input.schema, context))

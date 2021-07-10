@@ -23,7 +23,8 @@ const validator = object(
 )
 
 export function validateQuery(input: ParameterObject, context: OpenAPIGeneratorContext): Issue[] {
-  const uri = context.accessor.uri(input)
+  const { uriOf } = context
+  const uri = uriOf(input)
   return ordered(() =>
     validator(input, {
       path: uri,

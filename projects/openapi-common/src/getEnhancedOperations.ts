@@ -11,12 +11,11 @@ function getEnhancedOperation(
   commonParameters: (ParameterObject | ReferenceObject)[],
   context: OpenAPIGeneratorContext,
 ): EnhancedOperation[] {
+  const { dereference } = context
   if (isNil(operation)) {
     return []
   }
-  const resolved = commonParameters
-    .concat(operation.parameters || [])
-    .map((param) => context.accessor.dereference(param))
+  const resolved = commonParameters.concat(operation.parameters || []).map((param) => dereference(param))
   return [
     {
       url,

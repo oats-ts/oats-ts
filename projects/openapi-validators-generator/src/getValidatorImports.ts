@@ -20,10 +20,10 @@ export function collectExternalReferenceImports(
   names: Set<string>,
   refs: Set<string>,
 ): void {
-  const { accessor } = context
-  const schema = accessor.dereference(data)
-  if (!isNil(accessor.name(schema, 'openapi/validator'))) {
-    refs.add(accessor.uri(schema))
+  const { dereference, nameOf, uriOf } = context
+  const schema = dereference(data)
+  if (!isNil(nameOf(schema, 'openapi/validator'))) {
+    refs.add(uriOf(schema))
   } else {
     collectImports(schema, config, context, names, refs)
   }
@@ -36,11 +36,12 @@ export function collectReferenceImports(
   names: Set<string>,
   refs: Set<string>,
 ): void {
+  const { nameOf, dereference } = context
   if (!config.references) {
     names.add(RuntimePackages.Validators.any)
   } else {
-    const schema = context.accessor.dereference(data)
-    if (!isNil(context.accessor.name(schema, 'openapi/validator'))) {
+    const schema = dereference(data)
+    if (!isNil(nameOf(schema, 'openapi/validator'))) {
       names.add(RuntimePackages.Validators.lazy)
       refs.add(data.$ref)
     } else {
@@ -164,7 +165,7 @@ export function getValidatorImports(
   config: ValidatorsGeneratorConfig,
   collector: ImportCollector = collectImports,
 ): ImportDeclaration[] {
-  const { accessor } = context
+  const { dereference } = context
   const nameSet = new Set<string>()
   const refSet = new Set<string>()
   collector(schema, config, context, nameSet, refSet)
@@ -182,7 +183,7 @@ export function getValidatorImports(
     ...getModelImports(
       fromPath,
       'openapi/validator',
-      refs.map((ref) => accessor.dereference<SchemaObject>(ref)),
+      refs.map((ref) => dereference<SchemaObject>(ref)),
       context,
     ),
   ]

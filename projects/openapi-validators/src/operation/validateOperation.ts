@@ -25,8 +25,8 @@ const validator = object(
 )
 
 export const validateOperation = (data: OperationObject, context: OpenAPIGeneratorContext): Issue[] => {
-  const { accessor } = context
-  return ordered(() => validator(data, { append, path: accessor.uri(data) }))(
+  const { uriOf } = context
+  return ordered(() => validator(data, { append, path: uriOf(data) }))(
     () => (isNil(data.parameters) ? [] : validateParameters(data.parameters || [], context)),
     () => (isNil(data.requestBody) ? [] : validateRequestBody(data.requestBody, context)),
     () => validateResponses(data.responses, context),

@@ -12,12 +12,12 @@ export function getReferenceValidatorAst(
   lazy: boolean = true,
   force: boolean = false,
 ): CallExpression | Identifier {
-  const { accessor } = context
+  const { dereference, nameOf } = context
   if (!config.references && !force) {
     return factory.createIdentifier(RuntimePackages.Validators.any)
   }
-  const resolved = accessor.dereference(data)
-  const name = accessor.name(resolved, 'openapi/validator')
+  const resolved = dereference(data)
+  const name = nameOf(resolved, 'openapi/validator')
   if (!isNil(name)) {
     const validator = factory.createIdentifier(name)
     if (lazy) {

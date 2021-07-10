@@ -10,8 +10,8 @@ export function generateType(
   context: OpenAPIGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
-  const path = accessor.path(schema, 'openapi/type')
+  const { pathOf } = context
+  const path = pathOf(schema, 'openapi/type')
   return {
     path,
     content: [getNamedTypeAst(schema, context, config)],

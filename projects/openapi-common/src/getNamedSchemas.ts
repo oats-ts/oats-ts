@@ -8,18 +8,18 @@ function collectNamedTypesForSchema(
   context: OpenAPIGeneratorContext,
   schemas: Set<SchemaObject>,
 ) {
-  const { accessor } = context
+  const { dereference, nameOf } = context
   if (isNil(input)) {
     return
   }
 
-  const schema = isReferenceObject(input) ? accessor.dereference<SchemaObject>(input) : input
+  const schema = isReferenceObject(input) ? dereference<SchemaObject>(input) : input
 
   if (schemas.has(schema)) {
     return
   }
 
-  if (!isNil(accessor.name(schema, 'openapi/type'))) {
+  if (!isNil(nameOf(schema, 'openapi/type'))) {
     schemas.add(schema)
   }
 
@@ -41,10 +41,10 @@ function collectNamedTypesForSchema(
 }
 
 export function getNamedSchemas(context: OpenAPIGeneratorContext): SchemaObject[] {
-  const { accessor } = context
+  const { document } = context
   const schemaSet = new Set<SchemaObject>()
 
-  for (const schema of values(accessor.document()?.components?.schemas || {})) {
+  for (const schema of values(document?.components?.schemas || {})) {
     collectNamedTypesForSchema(schema, context, schemaSet)
   }
 

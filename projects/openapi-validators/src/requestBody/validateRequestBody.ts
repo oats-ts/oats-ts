@@ -19,12 +19,12 @@ export const validateRequestBody = (
   data: RequestBodyObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
 ): Issue[] => {
-  const { accessor } = context
-  const requestBody = accessor.dereference(data)
+  const { dereference, uriOf } = context
+  const requestBody = dereference(data)
   return ordered(() =>
     validator(requestBody, {
       append,
-      path: accessor.uri(requestBody),
+      path: uriOf(requestBody),
     }),
   )(() => validateContent(requestBody.content, context))
 }

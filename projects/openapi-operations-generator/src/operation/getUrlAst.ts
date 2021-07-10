@@ -4,7 +4,7 @@ import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
 
 export function getUrlAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): CallExpression {
-  const { accessor } = context
+  const { nameOf } = context
   const { path, query, url, operation } = data
 
   const parameterAsts: Expression[] = [
@@ -16,11 +16,11 @@ export function getUrlAst(data: EnhancedOperation, context: OpenAPIGeneratorCont
     parameterAsts.push(factory.createStringLiteral(url))
   } else {
     // Otherwise use serializer
-    parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'openapi/path-serializer'), 'path'))
+    parameterAsts.push(getParameterSerializerCallAst(nameOf(operation, 'openapi/path-serializer'), 'path'))
   }
 
   if (query.length > 0) {
-    parameterAsts.push(getParameterSerializerCallAst(accessor.name(operation, 'openapi/query-serializer'), 'query'))
+    parameterAsts.push(getParameterSerializerCallAst(nameOf(operation, 'openapi/query-serializer'), 'query'))
   }
 
   return factory.createCallExpression(factory.createIdentifier('joinUrl'), [], parameterAsts)

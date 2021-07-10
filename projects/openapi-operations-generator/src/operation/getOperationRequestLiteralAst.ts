@@ -6,11 +6,11 @@ import { getParameterSerializerCallAst } from './getParameterSerializerCallAst'
 import { getUrlAst } from './getUrlAst'
 
 function getHeadersParameter(data: EnhancedOperation, context: OpenAPIGeneratorContext): PropertyAssignment {
-  const { accessor } = context
+  const { nameOf } = context
   const { header } = data
   const bodies = entries(getRequestBodyContent(data, context))
   const headerSerializerAst = getParameterSerializerCallAst(
-    accessor.name(data.operation, 'openapi/headers-serializer'),
+    nameOf(data.operation, 'openapi/headers-serializer'),
     'headers',
   )
   if (header.length > 0 && bodies.length === 0) {

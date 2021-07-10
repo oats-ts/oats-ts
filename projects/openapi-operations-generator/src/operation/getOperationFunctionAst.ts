@@ -12,7 +12,7 @@ export function getOperationFunctionAst(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): FunctionDeclaration {
-  const { accessor } = context
+  const { nameOf } = context
   const { operation } = data
 
   const params: ParameterDeclaration[] = []
@@ -25,7 +25,7 @@ export function getOperationFunctionAst(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(accessor.name(operation, 'openapi/input-type')),
+        factory.createTypeReferenceNode(nameOf(operation, 'openapi/input-type')),
       ),
     )
   }
@@ -45,7 +45,7 @@ export function getOperationFunctionAst(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    accessor.name(operation, 'openapi/operation'),
+    nameOf(operation, 'openapi/operation'),
     [],
     params,
     factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),

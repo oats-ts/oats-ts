@@ -10,11 +10,11 @@ import { ordered } from '../ordered'
 const validator = object(record(string(), object()))
 
 export const validatePaths = (data: PathsObject, context: OpenAPIGeneratorContext): Issue[] => {
-  const { accessor } = context
+  const { uriOf } = context
   return ordered(() =>
     validator(data, {
       append,
-      path: accessor.uri(data),
+      path: uriOf(data),
     }),
   )(() =>
     flatMap(entries(data), ([url, pathObj]) => {

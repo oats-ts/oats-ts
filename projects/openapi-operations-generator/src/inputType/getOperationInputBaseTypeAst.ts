@@ -11,21 +11,21 @@ export function getOperationInputBaseTypeAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): TypeAliasDeclaration {
-  const { accessor } = context
+  const { nameOf, referenceOf } = context
   const { header, query, operation, path } = data
 
   const properties: PropertySignature[] = []
 
   if (header.length > 0) {
-    properties.push(getInputTypeParameter('headers', accessor.name(operation, 'openapi/headers-type')))
+    properties.push(getInputTypeParameter('headers', nameOf(operation, 'openapi/headers-type')))
   }
 
   if (query.length > 0) {
-    properties.push(getInputTypeParameter('query', accessor.name(operation, 'openapi/query-type')))
+    properties.push(getInputTypeParameter('query', nameOf(operation, 'openapi/query-type')))
   }
 
   if (path.length > 0) {
-    properties.push(getInputTypeParameter('path', accessor.name(operation, 'openapi/path-type')))
+    properties.push(getInputTypeParameter('path', nameOf(operation, 'openapi/path-type')))
   }
 
   const bodies = entries(getRequestBodyContent(data, context))
@@ -46,7 +46,7 @@ export function getOperationInputBaseTypeAst(
         ),
       )
       properties.push(
-        factory.createPropertySignature([], 'body', undefined, accessor.reference(mediaType.schema, 'openapi/type')),
+        factory.createPropertySignature([], 'body', undefined, referenceOf(mediaType.schema, 'openapi/type')),
       )
       break
     }
@@ -60,7 +60,7 @@ export function getOperationInputBaseTypeAst(
     }
   }
 
-  const baseTypeName = accessor.name(operation, 'openapi/input-type')
+  const baseTypeName = nameOf(operation, 'openapi/input-type')
   const typeName = bodies.length > 1 ? `_${baseTypeName}` : baseTypeName
   const typeArgs =
     bodies.length > 1

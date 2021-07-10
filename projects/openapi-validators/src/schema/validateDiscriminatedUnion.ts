@@ -53,18 +53,18 @@ export function validateDiscriminatedUnion(
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
-  const { accessor } = context
-  const schema = accessor.dereference(data)
+  const { dereference, nameOf, uriOf } = context
+  const schema = dereference(data)
   if (validated.has(schema)) {
     return []
   }
   validated.add(schema)
-  const name = accessor.name(schema, 'openapi/type')
+  const name = nameOf(schema, 'openapi/type')
   if (isNil(name)) {
     return [
       {
         message: `only named schemas can have the "discriminator" field`,
-        path: accessor.uri(schema),
+        path: uriOf(schema),
         type: 'other',
         severity: 'error',
       },
@@ -78,7 +78,7 @@ export function validateDiscriminatedUnion(
   return ordered(() =>
     validator(schema, {
       append,
-      path: accessor.uri(schema),
+      path: uriOf(schema),
     }),
   )(
     () =>
@@ -87,7 +87,7 @@ export function validateDiscriminatedUnion(
         .map(
           (ref): Issue => ({
             message: `"discriminator" is missing "${ref.$ref}"`,
-            path: accessor.uri(discriminator),
+            path: uriOf(discriminator),
             severity: 'error',
             type: 'other',
           }),
@@ -98,14 +98,14 @@ export function validateDiscriminatedUnion(
         .map(
           ([prop, ref]): Issue => ({
             message: `"${prop}" referencing "${ref}" in "discriminator" has no counterpart in "oneOf"`,
-            path: accessor.uri(discriminator),
+            path: uriOf(discriminator),
             severity: 'error',
             type: 'other',
           }),
         ),
     () =>
       flatMap(oneOf, (ref): Issue[] => {
-        const schema = accessor.dereference(ref)
+        const schema = dereference(ref)
         switch (getInferredType(schema)) {
           case 'object':
             return validateObject()(schema, context, validated)
@@ -115,7 +115,7 @@ export function validateDiscriminatedUnion(
             return [
               {
                 message: `should reference either an "object" schema or another schema with "discriminator"`,
-                path: accessor.uri(ref),
+                path: uriOf(ref),
                 severity: 'error',
                 type: 'other',
               },

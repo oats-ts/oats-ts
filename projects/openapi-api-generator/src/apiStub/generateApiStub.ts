@@ -13,14 +13,14 @@ export function generateApiStub(
   context: OpenAPIGeneratorContext,
   config: ApiGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
-  const path = accessor.path(doc, 'openapi/api-stub')
+  const { dependenciesOf, pathOf } = context
+  const path = pathOf(doc, 'openapi/api-stub')
   return {
     path,
     dependencies: [
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
       ...getApiTypeImports(doc, operations, context),
-      ...accessor.dependencies(path, doc, 'openapi/api-type'),
+      ...dependenciesOf(path, doc, 'openapi/api-type'),
     ],
     content: [getApiStubAst(doc, operations, context, config)],
   }

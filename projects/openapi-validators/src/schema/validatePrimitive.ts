@@ -32,13 +32,14 @@ export function validatePrimitive(
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
-  const schema = context.accessor.dereference(data)
+  const { uriOf, dereference } = context
+  const schema = dereference(data)
   if (validated.has(schema)) {
     return []
   }
   validated.add(schema)
   return validator(schema, {
     append,
-    path: context.accessor.uri(schema),
+    path: uriOf(schema),
   })
 }

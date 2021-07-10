@@ -19,9 +19,9 @@ export function generateTypeGuard(
   context: OpenAPIGeneratorContext,
   config: TypeGuardGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
-  const path = accessor.path(schema, 'openapi/type-guard')
-  const typeImports = accessor.dependencies(path, schema, 'openapi/type')
+  const { pathOf, dependenciesOf } = context
+  const path = pathOf(schema, 'openapi/type-guard')
+  const typeImports = dependenciesOf(path, schema, 'openapi/type')
   if (isUnionTypeGuardGeneratorConfig(config)) {
     const discriminators = getDiscriminators(schema, context)
     if (keys(discriminators).length === 0 || (!isNil(schema.oneOf) && schema.oneOf.length > 0)) {

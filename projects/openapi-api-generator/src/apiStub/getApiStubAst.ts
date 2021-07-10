@@ -10,7 +10,7 @@ export function getApiStubAst(
   context: OpenAPIGeneratorContext,
   config: ApiGeneratorConfig,
 ): ClassDeclaration {
-  const { accessor } = context
+  const { nameOf } = context
 
   const fallback = factory.createMethodDeclaration(
     [],
@@ -35,7 +35,7 @@ export function getApiStubAst(
   const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-          factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'openapi/api-type')), []),
+          factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/api-type')), []),
         ]),
       ]
     : []
@@ -43,7 +43,7 @@ export function getApiStubAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    accessor.name(document, 'openapi/api-stub'),
+    nameOf(document, 'openapi/api-stub'),
     [],
     heritageClauses,
     [fallback, ...operations.map((operation) => getApiStubMethodAst(operation, context))],

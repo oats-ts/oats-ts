@@ -52,9 +52,9 @@ export class ApiGenerator implements OpenAPIGenerator {
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    const document = context.accessor.document()
+    const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
-      context.accessor.name(operation, 'openapi/operation'),
+      nameOf(operation, 'openapi/operation'),
     )
     const data: TypeScriptModule[] = mergeTypeScriptModules([
       ...(config.type ? [generateApiType(document, operations, context, config)] : []),
@@ -63,23 +63,24 @@ export class ApiGenerator implements OpenAPIGenerator {
     ])
 
     return {
-      isOk: isOk(context.issues),
+      isOk: true,
       data,
-      issues: context.issues,
+      issues: [],
     }
   }
 
   public reference(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
     const { context, config } = this
+    const { nameOf } = context
     switch (target) {
       case 'openapi/api-type': {
-        return config.type ? factory.createTypeReferenceNode(context.accessor.name(input, target)) : undefined
+        return config.type ? factory.createTypeReferenceNode(nameOf(input, target)) : undefined
       }
       case 'openapi/api-class': {
-        return config.class ? factory.createIdentifier(context.accessor.name(input, target)) : undefined
+        return config.class ? factory.createIdentifier(nameOf(input, target)) : undefined
       }
       case 'openapi/api-stub': {
-        return config.stub ? factory.createIdentifier(context.accessor.name(input, target)) : undefined
+        return config.stub ? factory.createIdentifier(nameOf(input, target)) : undefined
       }
       default:
         return undefined

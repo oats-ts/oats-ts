@@ -10,9 +10,9 @@ export function generateOperationReturnType(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): TypeScriptModule {
-  const { accessor } = context
+  const { dependenciesOf, pathOf } = context
   const schemas = getResponseSchemas(data.operation, context)
-  const path = accessor.path(data.operation, 'openapi/response-type')
+  const path = pathOf(data.operation, 'openapi/response-type')
   return {
     path,
     dependencies: [
@@ -21,7 +21,7 @@ export function generateOperationReturnType(
         ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.StatusCode])]
         : []),
       ...flatMap(values(getResponseSchemas(data.operation, context)), (schema) =>
-        accessor.dependencies(path, schema, 'openapi/type'),
+        dependenciesOf(path, schema, 'openapi/type'),
       ),
     ],
     content: [getReturnTypeAst(data, context)],

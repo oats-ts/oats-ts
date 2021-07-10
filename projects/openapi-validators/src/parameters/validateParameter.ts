@@ -7,7 +7,8 @@ import { validatePath } from './validatePath'
 import { validateQuery } from './validateQuery'
 
 export function validateParameter(input: ParameterObject | ReferenceObject, context: OpenAPIGeneratorContext): Issue[] {
-  const param = context.accessor.dereference(input)
+  const { dereference } = context
+  const param = dereference(input)
   switch (param.in) {
     case 'cookie':
       return validateCookie(param, context)

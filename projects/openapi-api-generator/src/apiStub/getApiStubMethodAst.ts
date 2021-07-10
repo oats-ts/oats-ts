@@ -4,7 +4,7 @@ import { getApiMethodReturnTypeAst } from '../apiClass/getApiMethodReturnTypeAst
 import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 
 export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
-  const { accessor } = context
+  const { nameOf } = context
 
   const returnStatement = factory.createReturnStatement(
     factory.createCallExpression(
@@ -18,7 +18,7 @@ export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGen
     [],
     [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    accessor.name(data.operation, 'openapi/operation'),
+    nameOf(data.operation, 'openapi/operation'),
     undefined,
     [],
     getApiMethodParameterAsts(data, context),

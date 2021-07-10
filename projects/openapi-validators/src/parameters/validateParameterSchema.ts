@@ -13,7 +13,8 @@ function validateEnumOrPrimitive(
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
-  const input = context.accessor.dereference(data)
+  const { dereference } = context
+  const input = dereference(data)
   if (getInferredType(input) === 'enum') {
     return validateEnum(input, context, validated)
   } else {
@@ -29,6 +30,7 @@ export function validateParameterSchema(
   input: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
 ): Issue[] {
+  const { uriOf } = context
   const type = getInferredType(input)
   switch (type) {
     case 'object':
@@ -48,7 +50,7 @@ export function validateParameterSchema(
         {
           message:
             'should be either a primitive schema ("string", "number" or "boolean") or array/object of primitives',
-          path: context.accessor.uri(input),
+          path: uriOf(input),
           severity: 'error',
           type: 'other',
         },

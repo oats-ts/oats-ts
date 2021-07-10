@@ -36,7 +36,8 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
+    const { nameOf } = context
+    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'openapi/type'))
     const issues = config.skipValidation ? [] : validateSchemas(schemas, context)
     const data = isOk(issues)
       ? mergeTypeScriptModules(

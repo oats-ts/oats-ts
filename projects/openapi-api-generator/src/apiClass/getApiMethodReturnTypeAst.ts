@@ -6,8 +6,8 @@ export function getApiMethodReturnTypeAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): TypeReferenceNode {
-  const { accessor } = context
+  const { nameOf } = context
   return factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/response-type')),
+    factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
   ])
 }

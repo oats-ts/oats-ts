@@ -12,14 +12,14 @@ export function getNamedTypeAst(
   context: OpenAPIGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeAliasDeclaration | EnumDeclaration {
-  const { accessor } = context
+  const { nameOf } = context
   if (!isNil(schema.enum) && config.enums) {
     return getNamedEnumAst(schema, context)
   }
   const node = factory.createTypeAliasDeclaration(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    factory.createIdentifier(accessor.name(schema, 'openapi/type')),
+    factory.createIdentifier(nameOf(schema, 'openapi/type')),
     undefined,
     getRighthandSideTypeAst(schema, context, config),
   )

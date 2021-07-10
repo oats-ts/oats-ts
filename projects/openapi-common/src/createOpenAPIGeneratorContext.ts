@@ -1,7 +1,12 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OpenAPIGeneratorConfig } from '@oats-ts/openapi'
-import { OpenAPIAccessorImpl } from './OpenAPIAccessorImpl'
 import { OpenAPIGenerator, OpenAPIGeneratorContext } from './typings'
+import { dependenciesOf } from './dependenciesOf'
+import { dereference } from './dereference'
+import { nameOf } from './nameOf'
+import { pathOf } from './pathOf'
+import { referenceOf } from './referenceOf'
+import { uriOf } from './uriOf'
 
 export function createOpenAPIGeneratorContext<T extends OpenAPIGeneratorConfig>(
   data: OpenAPIReadOutput,
@@ -9,7 +14,13 @@ export function createOpenAPIGeneratorContext<T extends OpenAPIGeneratorConfig>(
   generators: OpenAPIGenerator[],
 ): OpenAPIGeneratorContext {
   return {
-    accessor: new OpenAPIAccessorImpl(config, data, generators),
-    issues: [],
+    document: data.document,
+    documents: Array.from(data.documents.values()),
+    dereference: dereference(data),
+    dependenciesOf: dependenciesOf(generators),
+    nameOf: nameOf(data, config),
+    pathOf: pathOf(data, config),
+    referenceOf: referenceOf(generators),
+    uriOf: uriOf(data),
   }
 }

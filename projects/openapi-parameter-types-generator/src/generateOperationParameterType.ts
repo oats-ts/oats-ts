@@ -17,20 +17,20 @@ const generateOperationParameterType =
   ): TypeScriptModule => {
     const parameters = data[location]
     const { operation } = data
-    const { accessor } = context
+    const { pathOf, nameOf } = context
 
     if (parameters.length === 0) {
       return undefined
     }
 
     return {
-      path: accessor.path(operation, getParameterTypeGeneratorTarget(location)),
+      path: pathOf(operation, getParameterTypeGeneratorTarget(location)),
       dependencies: getParameterTypeImports(location, data, context),
       content: [
         factory.createTypeAliasDeclaration(
           [],
           [factory.createModifier(SyntaxKind.ExportKeyword)],
-          accessor.name(operation, getParameterTypeGeneratorTarget(location)),
+          nameOf(operation, getParameterTypeGeneratorTarget(location)),
           undefined,
           getParameterTypeLiteralAst(parameters, context, config),
         ),

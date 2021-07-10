@@ -12,10 +12,10 @@ export function getParameterTypeImports(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
-  const { accessor } = context
+  const { pathOf, dependenciesOf } = context
   const parameters = data[location]
   const { operation } = data
-  const path = accessor.path(operation, getParameterTypeGeneratorTarget(location))
+  const path = pathOf(operation, getParameterTypeGeneratorTarget(location))
   const referencedSchemas = getReferencedNamedSchemas(getParameterSchemaObject(parameters), context)
-  return flatMap(referencedSchemas, (schema) => accessor.dependencies(path, schema, 'openapi/type'))
+  return flatMap(referencedSchemas, (schema) => dependenciesOf(path, schema, 'openapi/type'))
 }

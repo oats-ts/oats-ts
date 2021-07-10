@@ -8,8 +8,8 @@ function collectFromSchema(
   context: OpenAPIGeneratorContext,
   discriminators: Record<string, string>,
 ): string {
-  const { accessor } = context
-  const schema = isReferenceObject(input) ? accessor.dereference<SchemaObject>(input) : input
+  const { dereference, uriOf } = context
+  const schema = isReferenceObject(input) ? dereference<SchemaObject>(input) : input
 
   if (!isNil(schema.discriminator)) {
     const { propertyName, mapping } = schema.discriminator
@@ -17,7 +17,7 @@ function collectFromSchema(
     for (const [value, ref] of mappingEntries) {
       if (ref == uri) {
         discriminators[propertyName] = value
-        const parentUri = accessor.uri(schema)
+        const parentUri = uriOf(schema)
         return parentUri
       }
     }
@@ -33,9 +33,9 @@ function collectFromDocuments(
   context: OpenAPIGeneratorContext,
   discriminators: Record<string, string>,
 ): string[] {
-  const { accessor } = context
+  const { documents } = context
   const parents: Set<string> = new Set()
-  for (const document of accessor.documents()) {
+  for (const document of documents) {
     for (const schema of values(document?.components?.schemas || {})) {
       const parentUri = collectFromSchema(uri, schema, context, discriminators)
       if (!isNil(parentUri)) {
@@ -48,8 +48,8 @@ function collectFromDocuments(
 
 /** @returns Discriminators in a propertyName -> value format */
 export function getDiscriminators(input: SchemaObject, context: OpenAPIGeneratorContext): Record<string, string> {
-  const { accessor } = context
-  const schemaUri = accessor.uri(input)
+  const { uriOf } = context
+  const schemaUri = uriOf(input)
   const discriminators: Record<string, string> = {}
   const visited: string[] = []
   const toVisit: string[] = collectFromDocuments(schemaUri, context, discriminators)

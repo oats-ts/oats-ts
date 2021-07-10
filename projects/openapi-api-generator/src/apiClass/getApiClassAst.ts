@@ -10,7 +10,7 @@ export function getApiClassAst(
   context: OpenAPIGeneratorContext,
   config: ApiGeneratorConfig,
 ): ClassDeclaration {
-  const { accessor } = context
+  const { nameOf } = context
 
   const configField = factory.createPropertyDeclaration(
     [],
@@ -48,7 +48,7 @@ export function getApiClassAst(
   const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-          factory.createExpressionWithTypeArguments(factory.createIdentifier(accessor.name(document, 'openapi/api-type')), []),
+          factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/api-type')), []),
         ]),
       ]
     : []
@@ -56,7 +56,7 @@ export function getApiClassAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    accessor.name(document, 'openapi/api-class'),
+    nameOf(document, 'openapi/api-class'),
     [],
     heritageClauses,
     [configField, constructor, ...operations.map((operation) => getApiClassMethodAst(operation, context))],

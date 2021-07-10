@@ -9,12 +9,12 @@ import { ordered } from '../ordered'
 const validator = object(record(string(), object()))
 
 export const validateResponses = (data: ResponsesObject, context: OpenAPIGeneratorContext): Issue[] => {
-  const { accessor } = context
+  const { uriOf } = context
 
   return ordered(() =>
     validator(data, {
       append,
-      path: accessor.uri(data),
+      path: uriOf(data),
     }),
   )(() =>
     flatMap(entries(data), ([statusCode, response]): Issue[] => {
@@ -26,7 +26,7 @@ export const validateResponses = (data: ResponsesObject, context: OpenAPIGenerat
       ) {
         issues.push({
           message: `should be "default" or integer`,
-          path: accessor.uri(response),
+          path: uriOf(response),
           severity: 'error',
           type: 'other',
         })

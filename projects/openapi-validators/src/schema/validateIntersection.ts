@@ -22,8 +22,8 @@ const validator = object(
 export const validatePrimitiveUnion =
   (alternatives: SchemaValidator = validateSchema): SchemaValidator =>
   (data: SchemaObject | ReferenceObject, context: OpenAPIGeneratorContext, validated: Set<SchemaObject>): Issue[] => {
-    const { accessor } = context
-    const input = accessor.dereference(data)
+    const { dereference, uriOf } = context
+    const input = dereference(data)
     if (validated.has(input)) {
       return []
     }
@@ -31,7 +31,7 @@ export const validatePrimitiveUnion =
     return ordered(() =>
       validator(input, {
         append,
-        path: accessor.uri(input),
+        path: uriOf(input),
       }),
     )(() =>
       flatMap(input.allOf, (schema: SchemaObject | ReferenceObject): Issue[] => {

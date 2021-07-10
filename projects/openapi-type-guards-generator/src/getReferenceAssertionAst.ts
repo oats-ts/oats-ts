@@ -9,10 +9,10 @@ export function getReferenceAssertionAst(
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
 ): Expression {
-  const { accessor } = context
+  const { nameOf, dereference } = context
   if (config.references) {
-    const schema = accessor.dereference<SchemaObject>(data)
-    return factory.createCallExpression(factory.createIdentifier(accessor.name(schema, 'openapi/type-guard')), [], [variable])
+    const schema = dereference<SchemaObject>(data)
+    return factory.createCallExpression(factory.createIdentifier(nameOf(schema, 'openapi/type-guard')), [], [variable])
   }
   return factory.createTrue()
 }

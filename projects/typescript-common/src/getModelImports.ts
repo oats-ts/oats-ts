@@ -9,9 +9,9 @@ export function getModelImports(
   referencedModel: any[],
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
-  const { accessor } = context
+  const { pathOf, nameOf } = context
   return getRelativeImports(
     fromPath,
-    referencedModel.map((model): [string, string] => [accessor.path(model, target), accessor.name(model, target)]),
+    referencedModel.map((model): [string, string] => [pathOf(model, target), nameOf(model, target)]),
   )
 }

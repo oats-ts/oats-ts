@@ -11,9 +11,9 @@ export function generateApiType(
   context: OpenAPIGeneratorContext,
   config: ApiGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
+  const { pathOf } = context
   return {
-    path: accessor.path(doc, 'openapi/api-type'),
+    path: pathOf(doc, 'openapi/api-type'),
     dependencies: getApiTypeImports(doc, operations, context),
     content: [getApiTypeAst(doc, operations, context, config)],
   }

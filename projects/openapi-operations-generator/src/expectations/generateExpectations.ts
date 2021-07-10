@@ -12,12 +12,12 @@ export function generateResponseParserHint(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
-  const path = accessor.path(data.operation, 'openapi/expectations')
+  const { pathOf, dependenciesOf } = context
+  const path = pathOf(data.operation, 'openapi/expectations')
   const dependencies = [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ResponseExpectations])]
   if (config.validate) {
     const schemas = values(getResponseSchemas(data.operation, context))
-    dependencies.push(...flatMap(schemas, (schema) => accessor.dependencies(path, schema, 'openapi/validator')))
+    dependencies.push(...flatMap(schemas, (schema) => dependenciesOf(path, schema, 'openapi/validator')))
   }
   return {
     path,

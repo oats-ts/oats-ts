@@ -50,11 +50,11 @@ function getSerializerOptions(parameter: ParameterObject): ObjectLiteralExpressi
 }
 
 function createParameterSerializer(parameter: ParameterObject, context: OpenAPIGeneratorContext): CallExpression {
-  const { accessor } = context
+  const { dereference } = context
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(
       factory.createPropertyAccessExpression(factory.createIdentifier(parameter.in), getParameterStyle(parameter)),
-      getParameterSerializerMethod(accessor.dereference(parameter.schema)),
+      getParameterSerializerMethod(dereference(parameter.schema)),
     ),
     [],
     [getSerializerOptions(parameter)],
@@ -82,12 +82,12 @@ function createSerializerFactoryCall(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): CallExpression {
-  const { accessor } = context
+  const { nameOf } = context
   const parameters = data[location]
 
   return factory.createCallExpression(
     factory.createIdentifier(getParameterSerializerFactoryName(location)),
-    [factory.createTypeReferenceNode(accessor.name(data.operation, getParameterTypeGeneratorTarget(location)))],
+    [factory.createTypeReferenceNode(nameOf(data.operation, getParameterTypeGeneratorTarget(location)))],
     [
       ...(location === 'path' ? [factory.createStringLiteral(data.url)] : []),
       createSerializersObject(parameters, context),
@@ -101,13 +101,13 @@ function createSerializerConstant(
   context: OpenAPIGeneratorContext,
   target: OpenAPIGeneratorTarget,
 ): VariableStatement {
-  const { accessor } = context
+  const { nameOf } = context
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          accessor.name(data.operation, target),
+          nameOf(data.operation, target),
           undefined,
           undefined,
           createSerializerFactoryCall(location, data, context),
@@ -122,11 +122,11 @@ const generateOperationParameterTypeSerializer =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
   (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
     const parameters = data[location]
-    const { accessor } = context
+    const { pathOf, dependenciesOf } = context
     if (parameters.length === 0) {
       return undefined
     }
-    const serializerPath = accessor.path(data.operation, target)
+    const serializerPath = pathOf(data.operation, target)
     return {
       path: serializerPath,
       dependencies: [
@@ -134,7 +134,7 @@ const generateOperationParameterTypeSerializer =
           location,
           getParameterSerializerFactoryName(location),
         ]),
-        ...accessor.dependencies(serializerPath, data.operation, typeTarget),
+        ...dependenciesOf(serializerPath, data.operation, typeTarget),
       ],
       content: [createSerializerConstant(location, data, context, target)],
     }

@@ -22,13 +22,11 @@ const validator = object(
 )
 
 export const validateContent = (data: ContentObject, context: OpenAPIGeneratorContext): Issue[] => {
-  const { accessor } = context
-  const structuralIssues = validator(data, { append, path: accessor.uri(data) })
-
+  const { uriOf } = context
   return ordered(() =>
     validator(data, {
       append,
-      path: accessor.uri(data),
+      path: uriOf(data),
     }),
   )(() =>
     flatMap(entries(data), ([contentType, mediaType]): Issue[] => {
@@ -36,7 +34,7 @@ export const validateContent = (data: ContentObject, context: OpenAPIGeneratorCo
       if (contentType !== 'application/json') {
         issues.push({
           message: `MIME type "${contentType}" might not be compatible with JSON schema`,
-          path: accessor.uri(mediaType),
+          path: uriOf(mediaType),
           severity: 'warning',
           type: 'other',
         })

@@ -9,13 +9,13 @@ export function getValidatorAst(
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ) {
-  const { accessor } = context
+  const { nameOf } = context
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          accessor.name(schema, 'openapi/validator'),
+          nameOf(schema, 'openapi/validator'),
           undefined,
           undefined,
           getRightHandSideValidatorAst(schema, context, config),

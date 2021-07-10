@@ -10,9 +10,9 @@ export function getTypeImports(
   context: OpenAPIGeneratorContext,
   referenceOnly: boolean,
 ): ImportDeclaration[] {
-  const { accessor } = context
-  const schema = accessor.dereference(schemaOrRef)
-  const name = accessor.name(schema, 'openapi/type')
+  const { dereference, nameOf } = context
+  const schema = dereference(schemaOrRef)
+  const name = nameOf(schema, 'openapi/type')
   if (referenceOnly && !isNil(name)) {
     return getModelImports(fromPath, 'openapi/type', [schema], context)
   }

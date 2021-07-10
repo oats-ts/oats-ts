@@ -9,8 +9,8 @@ export function getDictionaryTypeAst(
   context: OpenAPIGeneratorContext,
   config: TypesGeneratorConfig,
 ) {
-  const { accessor } = context
-  const { additionalProperties } = accessor.dereference(data)
+  const { dereference } = context
+  const { additionalProperties } = dereference(data)
   const schema = typeof additionalProperties === 'boolean' ? null : additionalProperties
   return factory.createTypeReferenceNode(factory.createIdentifier('Record'), [
     factory.createKeywordTypeNode(SyntaxKind.StringKeyword),

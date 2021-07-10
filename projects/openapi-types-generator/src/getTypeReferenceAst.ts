@@ -10,12 +10,12 @@ export function getTypeReferenceAst(
   context: OpenAPIGeneratorContext,
   config: TypesGeneratorConfig,
 ) {
-  const { accessor } = context
-  const schema = isNil(data) ? null : accessor.dereference(data)
+  const { dereference, nameOf } = context
+  const schema = isNil(data) ? null : dereference(data)
   if (isNil(schema)) {
     return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)
   }
-  const name = accessor.name(schema, 'openapi/type')
+  const name = nameOf(schema, 'openapi/type')
   if (isNil(name)) {
     return getRighthandSideTypeAst(schema, context, config)
   }

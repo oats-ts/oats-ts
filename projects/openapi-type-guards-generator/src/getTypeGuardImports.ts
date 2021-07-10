@@ -54,13 +54,13 @@ export function getTypeGuardImports(
   context: OpenAPIGeneratorContext,
   config: FullTypeGuardGeneratorConfig,
 ): ImportDeclaration[] {
-  const { accessor } = context
+  const { dereference, nameOf, pathOf, dependenciesOf } = context
   const refs = new Set<string>()
   getImportedRefs(data, context, config, refs)
   const importedSchemas = sortBy(
-    Array.from(refs).map((ref) => accessor.dereference<SchemaObject>(ref)),
-    (schema) => accessor.name(schema, 'openapi/type-guard'),
+    Array.from(refs).map((ref) => dereference<SchemaObject>(ref)),
+    (schema) => nameOf(schema, 'openapi/type-guard'),
   )
-  const path = accessor.path(data, 'openapi/type-guard')
-  return flatMap(importedSchemas, (schema) => accessor.dependencies(path, schema, 'openapi/type-guard'))
+  const path = pathOf(data, 'openapi/type-guard')
+  return flatMap(importedSchemas, (schema) => dependenciesOf(path, schema, 'openapi/type-guard'))
 }

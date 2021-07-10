@@ -6,14 +6,14 @@ export function getOperationInputUnionTypeAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): TypeAliasDeclaration {
-  const { accessor } = context
+  const { nameOf, referenceOf } = context
   const bodies = entries(getRequestBodyContent(data, context))
-  const typeName = accessor.name(data.operation, 'openapi/input-type')
+  const typeName = nameOf(data.operation, 'openapi/input-type')
   const baseTypeName = `_${typeName}`
   const types = bodies.map(([contentType, mediaType]) => {
     return factory.createTypeReferenceNode(baseTypeName, [
       factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
-      accessor.reference(mediaType.schema, 'openapi/type'),
+      referenceOf(mediaType.schema, 'openapi/type'),
     ])
   })
   return factory.createTypeAliasDeclaration(

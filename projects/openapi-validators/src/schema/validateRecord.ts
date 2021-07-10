@@ -23,14 +23,15 @@ const validator = object(
 export const validateRecord =
   (additionalProperties: SchemaValidator = validateSchema): SchemaValidator =>
   (data: SchemaObject | ReferenceObject, context: OpenAPIGeneratorContext, validated: Set<SchemaObject>): Issue[] => {
-    const input = context.accessor.dereference(data)
+    const { uriOf, dereference } = context
+    const input = dereference(data)
     if (validated.has(input)) {
       return []
     }
     validated.add(input)
     return ordered(() =>
       validator(input, {
-        path: context.accessor.uri(input),
+        path: uriOf(input),
         append,
       }),
     )(() => additionalProperties(input.additionalProperties as SchemaObject | ReferenceObject, context, validated))

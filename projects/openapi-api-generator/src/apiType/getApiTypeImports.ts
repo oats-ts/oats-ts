@@ -9,11 +9,11 @@ export function getApiTypeImports(
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
-  const { accessor } = context
-  const apiPath = accessor.path(doc, 'openapi/api-type')
+  const { dependenciesOf, pathOf } = context
+  const apiPath = pathOf(doc, 'openapi/api-type')
   const imports = flatMap(operations, (data) => [
-    ...accessor.dependencies(apiPath, data.operation, 'openapi/input-type'),
-    ...accessor.dependencies(apiPath, data.operation, 'openapi/response-type'),
+    ...dependenciesOf(apiPath, data.operation, 'openapi/input-type'),
+    ...dependenciesOf(apiPath, data.operation, 'openapi/response-type'),
   ])
   return operations.length > 0
     ? [...imports, getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig])]

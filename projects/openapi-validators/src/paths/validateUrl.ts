@@ -6,19 +6,20 @@ import { getOperations } from './getOperations'
 import { flatMap } from 'lodash'
 
 function getPathParams(params: (ParameterObject | ReferenceObject)[], context: OpenAPIGeneratorContext) {
-  return (params || []).map((param) => context.accessor.dereference(param)).filter((param) => param.in === 'path')
+  const { dereference } = context
+  return (params || []).map((param) => dereference(param)).filter((param) => param.in === 'path')
 }
 
 export function validateUrl(urlTemplate: string, path: PathItemObject, context: OpenAPIGeneratorContext): Issue[] {
   let segments: PathSegment[]
-  const { accessor } = context
+  const { uriOf } = context
   try {
     segments = parsePathToSegments(urlTemplate)
   } catch (e) {
     return [
       {
         message: `invalid path: "${urlTemplate}" (${e.message})`,
-        path: accessor.uri(path),
+        path: uriOf(path),
         severity: 'error',
         type: 'other',
       },
@@ -34,7 +35,7 @@ export function validateUrl(urlTemplate: string, path: PathItemObject, context: 
       .map(
         (segment): Issue => ({
           message: `parameter "${segment.name}" is missing`,
-          path: accessor.uri(operation),
+          path: uriOf(operation),
           severity: 'error',
           type: 'other',
         }),
@@ -44,7 +45,7 @@ export function validateUrl(urlTemplate: string, path: PathItemObject, context: 
       .map(
         (param): Issue => ({
           message: `parameter "${param.name}" is not defined in "${urlTemplate}"`,
-          path: accessor.uri(operation),
+          path: uriOf(operation),
           severity: 'error',
           type: 'other',
         }),

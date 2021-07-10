@@ -13,7 +13,8 @@ export function validateSchema(
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
-  const data = context.accessor.dereference(schema)
+  const { dereference } = context
+  const data = dereference(schema)
   switch (getInferredType(data)) {
     case 'array':
       return validateArray()(data, context, validated)

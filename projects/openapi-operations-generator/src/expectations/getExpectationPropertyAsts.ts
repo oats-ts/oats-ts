@@ -9,11 +9,11 @@ export function getExpectationPropertyAsts(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): PropertyAssignment[] {
-  const { accessor } = context
+  const { referenceOf } = context
   const { content } = data
   return entries(content || {}).map(([contentType, mediaTypeObj]) => {
     const validator: Expression = config.validate
-      ? accessor.reference(mediaTypeObj.schema, 'openapi/validator')
+      ? referenceOf(mediaTypeObj.schema, 'openapi/validator')
       : factory.createIdentifier('undefined')
     return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validator)
   })

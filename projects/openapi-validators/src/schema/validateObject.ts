@@ -25,14 +25,15 @@ const validator = object(
 export const validateObject =
   (properties: SchemaValidator = validateSchema): SchemaValidator =>
   (data: SchemaObject | ReferenceObject, context: OpenAPIGeneratorContext, validated: Set<SchemaObject>): Issue[] => {
-    const input = context.accessor.dereference(data)
+    const { dereference, uriOf } = context
+    const input = dereference(data)
     if (validated.has(input)) {
       return []
     }
     validated.add(input)
     return ordered(() =>
       validator(input, {
-        path: context.accessor.uri(input),
+        path: uriOf(input),
         append,
       }),
     )(() => flatMap(values(input.properties), (schema) => properties(schema, context, validated)))

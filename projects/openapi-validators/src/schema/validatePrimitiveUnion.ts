@@ -26,7 +26,7 @@ export function validatePrimitiveUnion(
   context: OpenAPIGeneratorContext,
   validated: Set<SchemaObject>,
 ): Issue[] {
-  const { accessor } = context
+  const { uriOf } = context
   if (validated.has(input)) {
     return []
   }
@@ -34,7 +34,7 @@ export function validatePrimitiveUnion(
   return ordered(() =>
     validator(input, {
       append,
-      path: accessor.uri(input),
+      path: uriOf(input),
     }),
   )(() =>
     flatMap(input.oneOf, (schema: SchemaObject): Issue[] => {
@@ -49,7 +49,7 @@ export function validatePrimitiveUnion(
           return [
             {
               message: 'should be either a primitive type or an enum',
-              path: accessor.uri(schema),
+              path: uriOf(schema),
               severity: 'error',
               type: 'other',
             },

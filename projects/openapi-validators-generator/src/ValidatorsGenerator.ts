@@ -39,23 +39,24 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    const schemas = sortBy(getNamedSchemas(context), (schema) => context.accessor.name(schema, 'openapi/type'))
+    const { nameOf } = context
+    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'openapi/type'))
     const data = mergeTypeScriptModules(
       schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config)),
     )
     return {
       data,
-      isOk: isOk(context.issues),
-      issues: context.issues,
+      isOk: true,
+      issues: [],
     }
   }
 
   public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Expression {
     const { context, config } = this
-    const { accessor } = context
+    const { uriOf } = context
     switch (target) {
       case 'openapi/validator':
-        const ref = isReferenceObject(input) ? input : { $ref: accessor.uri(input) }
+        const ref = isReferenceObject(input) ? input : { $ref: uriOf(input) }
         return getReferenceValidatorAst(ref, context, config, false, true)
       default:
         return undefined

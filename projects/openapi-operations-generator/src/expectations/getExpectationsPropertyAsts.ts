@@ -12,16 +12,14 @@ export function getExpectationsPropertyAsts(
 ): PropertyAssignment[] {
   const { operation } = data
   const { default: defaultResponse, ...responses } = operation.responses || {}
-  const { accessor } = context
+  const { dereference } = context
   const properties: PropertyAssignment[] = []
   properties.push(
     ...entries(responses).map(
       ([statusCode, response]): PropertyAssignment =>
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
-          factory.createObjectLiteralExpression(
-            getExpectationPropertyAsts(accessor.dereference(response), context, config),
-          ),
+          factory.createObjectLiteralExpression(getExpectationPropertyAsts(dereference(response), context, config)),
         ),
     ),
   )
@@ -30,7 +28,7 @@ export function getExpectationsPropertyAsts(
       factory.createPropertyAssignment(
         'default',
         factory.createObjectLiteralExpression(
-          getExpectationPropertyAsts(accessor.dereference(defaultResponse), context, config),
+          getExpectationPropertyAsts(dereference(defaultResponse), context, config),
         ),
       ),
     )

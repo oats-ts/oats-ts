@@ -4,10 +4,11 @@ import { ParameterObject } from 'openapi3-ts'
 import { append } from '../append'
 
 export function validateCookie(input: ParameterObject, context: OpenAPIGeneratorContext): Issue[] {
+  const { uriOf } = context
   return [
     {
       message: '"cookie" parameters are ignored',
-      path: append(context.accessor.uri(input), 'in'),
+      path: append(uriOf(input), 'in'),
       severity: 'warning',
       type: 'other',
     },

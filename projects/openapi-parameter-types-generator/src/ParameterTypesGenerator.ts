@@ -45,8 +45,9 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
-    this.operations = sortBy(getEnhancedOperations(this.context.accessor.document(), this.context), ({ operation }) =>
-      this.context.accessor.name(operation, 'openapi/operation'),
+    const { document, nameOf } = this.context
+    this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
+      nameOf(operation, 'openapi/operation'),
     )
   }
 
@@ -94,18 +95,19 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
 
   public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode {
     const { context } = this
+    const { nameOf } = context
     switch (target) {
       case 'openapi/headers-type': {
         const { header } = this.enhance(input)
-        return isEmpty(header) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
+        return isEmpty(header) ? undefined : factory.createTypeReferenceNode(nameOf(input, target))
       }
       case 'openapi/path-type': {
         const { path } = this.enhance(input)
-        return isEmpty(path) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
+        return isEmpty(path) ? undefined : factory.createTypeReferenceNode(nameOf(input, target))
       }
       case 'openapi/query-type':
         const { query } = this.enhance(input)
-        return isEmpty(query) ? undefined : factory.createTypeReferenceNode(context.accessor.name(input, target))
+        return isEmpty(query) ? undefined : factory.createTypeReferenceNode(nameOf(input, target))
       default:
         return undefined
     }

@@ -11,20 +11,20 @@ export function generateOperationFunction(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): TypeScriptModule {
-  const { accessor } = context
+  const { dependenciesOf, pathOf } = context
   const { operation } = data
-  const path = accessor.path(operation, 'openapi/operation')
+  const path = pathOf(operation, 'openapi/operation')
   return {
     path,
     dependencies: [
       getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig, RuntimePackages.Http.execute]),
-      ...accessor.dependencies(path, data.operation, 'openapi/input-type'),
-      ...accessor.dependencies(path, data.operation, 'openapi/response-type'),
-      ...accessor.dependencies(path, data.operation, 'openapi/path-serializer'),
-      ...accessor.dependencies(path, data.operation, 'openapi/query-serializer'),
-      ...accessor.dependencies(path, data.operation, 'openapi/headers-serializer'),
-      ...(config.validate ? accessor.dependencies(path, data.operation, 'openapi/expectations') : []),
+      ...dependenciesOf(path, data.operation, 'openapi/input-type'),
+      ...dependenciesOf(path, data.operation, 'openapi/response-type'),
+      ...dependenciesOf(path, data.operation, 'openapi/path-serializer'),
+      ...dependenciesOf(path, data.operation, 'openapi/query-serializer'),
+      ...dependenciesOf(path, data.operation, 'openapi/headers-serializer'),
+      ...(config.validate ? dependenciesOf(path, data.operation, 'openapi/expectations') : []),
     ],
     content: [getOperationFunctionAst(data, context, config)],
   }

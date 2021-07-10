@@ -10,10 +10,10 @@ export function getExpectationsAst(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): Statement {
-  const { accessor } = context
+  const { nameOf } = context
   const { operation } = data
 
-  const varName = accessor.name(operation, 'openapi/expectations')
+  const varName = nameOf(operation, 'openapi/expectations')
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

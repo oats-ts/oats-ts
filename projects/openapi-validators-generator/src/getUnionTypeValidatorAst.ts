@@ -12,10 +12,10 @@ function getUnionProperties(
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): PropertyAssignment[] {
-  const { accessor } = context
+  const { dereference, nameOf } = context
   if (isNil(data.discriminator)) {
     return data.oneOf.map((schemaOrRef) => {
-      const schema = accessor.dereference(schemaOrRef)
+      const schema = dereference(schemaOrRef)
       const rightHandSide =
         PrimitiveTypes.indexOf(schema.type) >= 0
           ? getRightHandSideValidatorAst(schema, context, config)
@@ -26,7 +26,7 @@ function getUnionProperties(
   const discriminators = values(data.discriminator.mapping || {})
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
-      factory.createIdentifier(accessor.name(accessor.dereference($ref), 'openapi/type')),
+      factory.createIdentifier(nameOf(dereference($ref), 'openapi/type')),
       getReferenceValidatorAst({ $ref }, context, config, true, config.references || config.unionReferences),
     )
   })

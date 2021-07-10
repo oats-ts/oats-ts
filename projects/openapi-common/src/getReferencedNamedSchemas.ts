@@ -25,9 +25,9 @@ function collect(
   context: OpenAPIGeneratorContext,
   schemas: SchemaObject[],
 ): void {
-  const { accessor } = context
-  const schema = accessor.dereference(input)
-  if (!isNil(accessor.name(schema, 'openapi/type'))) {
+  const { dereference, nameOf } = context
+  const schema = dereference(input)
+  if (!isNil(nameOf(schema, 'openapi/type'))) {
     schemas.push(schema)
   } else {
     collectInChildren(schema, context, schemas)

@@ -9,7 +9,7 @@ export function getApiTypeMethodSignatureAst(
   context: OpenAPIGeneratorContext,
   config: ApiGeneratorConfig,
 ): MethodSignature {
-  const { accessor } = context
+  const { nameOf } = context
 
   const parameters: ParameterDeclaration[] = []
 
@@ -21,7 +21,7 @@ export function getApiTypeMethodSignatureAst(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/input-type')),
+        factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/input-type')),
       ),
     )
   }
@@ -38,12 +38,12 @@ export function getApiTypeMethodSignatureAst(
   )
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/response-type')),
+    factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
   ])
 
   const node = factory.createMethodSignature(
     [],
-    accessor.name(data.operation, 'openapi/operation'),
+    nameOf(data.operation, 'openapi/operation'),
     undefined,
     [],
     parameters,

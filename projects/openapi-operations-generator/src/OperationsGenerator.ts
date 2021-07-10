@@ -61,8 +61,9 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
-    this.operations = sortBy(getEnhancedOperations(this.context.accessor.document(), this.context), ({ operation }) =>
-      this.context.accessor.name(operation, 'openapi/operation'),
+    const { document, nameOf } = this.context
+    this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
+      nameOf(operation, 'openapi/operation'),
     )
   }
 
@@ -76,13 +77,8 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
   private getModules() {
     const { context, config } = this
-    const { accessor } = context
 
-    const operations = sortBy(getEnhancedOperations(accessor.document(), context), ({ operation }) =>
-      accessor.name(operation, 'openapi/operation'),
-    )
-
-    const modules: TypeScriptModule[] = flatMap(operations, (operation: EnhancedOperation): TypeScriptModule[] =>
+    const modules: TypeScriptModule[] = flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
       [
         generateOperationReturnType(operation, context),
         generateOperationInputType(operation, context),
@@ -99,9 +95,9 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    const { accessor } = context
+    const { document } = context
 
-    const issues = config.skipValidation ? [] : validatePaths(accessor.document().paths, context)
+    const issues = config.skipValidation ? [] : validatePaths(document.paths, context)
     const data = isOk(issues) ? this.getModules() : undefined
 
     return {
@@ -113,32 +109,32 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
   public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
     const { context } = this
-    const { accessor } = context
+    const { nameOf } = context
     switch (target) {
       case 'openapi/operation': {
-        return factory.createIdentifier(accessor.name(input, target))
+        return factory.createIdentifier(nameOf(input, target))
       }
       case 'openapi/response-type': {
-        return hasResponses(input, context) ? factory.createTypeReferenceNode(accessor.name(input, target)) : undefined
+        return hasResponses(input, context) ? factory.createTypeReferenceNode(nameOf(input, target)) : undefined
       }
       case 'openapi/input-type': {
         return hasInput(this.enhance(input), context)
-          ? factory.createTypeReferenceNode(accessor.name(input, target))
+          ? factory.createTypeReferenceNode(nameOf(input, target))
           : undefined
       }
       case 'openapi/headers-serializer': {
         const { header } = this.enhance(input)
-        return isEmpty(header) ? undefined : factory.createIdentifier(context.accessor.name(input, target))
+        return isEmpty(header) ? undefined : factory.createIdentifier(nameOf(input, target))
       }
       case 'openapi/path-serializer': {
         const { path } = this.enhance(input)
-        return isEmpty(path) ? undefined : factory.createIdentifier(context.accessor.name(input, target))
+        return isEmpty(path) ? undefined : factory.createIdentifier(nameOf(input, target))
       }
       case 'openapi/query-serializer':
         const { query } = this.enhance(input)
-        return isEmpty(query) ? undefined : factory.createIdentifier(context.accessor.name(input, target))
+        return isEmpty(query) ? undefined : factory.createIdentifier(nameOf(input, target))
       case 'openapi/expectations': {
-        return hasResponses(input, context) ? factory.createIdentifier(context.accessor.name(input, target)) : undefined
+        return hasResponses(input, context) ? factory.createIdentifier(nameOf(input, target)) : undefined
       }
       default:
         return undefined

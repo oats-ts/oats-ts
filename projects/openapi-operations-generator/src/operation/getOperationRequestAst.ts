@@ -1,8 +1,6 @@
-import { entries } from 'lodash'
-import { Expression, factory, PropertyAssignment, SpreadAssignment } from 'typescript'
-import { OpenAPIGeneratorContext, getRequestBodyContent } from '@oats-ts/openapi-common'
+import { Expression, factory } from 'typescript'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getUrlAst } from './getUrlAst'
 import { OperationsGeneratorConfig } from '../typings'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { getOperationRequestLiteralAst } from './getOperationRequestLiteralAst'
@@ -12,16 +10,14 @@ export function getOperationExecuteAst(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): Expression {
-  const { accessor } = context
+  const { nameOf } = context
   return factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Http.execute),
     [],
     [
       getOperationRequestLiteralAst(data, context),
       factory.createIdentifier('config'),
-      ...(config.validate
-        ? [factory.createIdentifier(accessor.name(data.operation, 'openapi/expectations'))]
-        : []),
+      ...(config.validate ? [factory.createIdentifier(nameOf(data.operation, 'openapi/expectations'))] : []),
     ],
   )
 }

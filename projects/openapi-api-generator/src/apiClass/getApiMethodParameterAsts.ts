@@ -7,7 +7,7 @@ export function getApiMethodParameterAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): ParameterDeclaration[] {
-  const { accessor } = context
+  const { nameOf } = context
 
   const parameters: ParameterDeclaration[] = []
 
@@ -19,7 +19,7 @@ export function getApiMethodParameterAsts(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(accessor.name(data.operation, 'openapi/input-type')),
+        factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/input-type')),
       ),
     )
   }
