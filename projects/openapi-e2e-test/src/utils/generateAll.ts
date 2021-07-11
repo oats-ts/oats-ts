@@ -17,6 +17,7 @@ const common: OpenAPIGeneratorConfig = {
 export async function generateAll() {
   return generate({
     log: true,
+    validator: null,
     reader: openAPIReader({ path: 'kitchenSink.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
     generators: [
       types({
@@ -46,7 +47,6 @@ export async function generateAll() {
         ...common,
         validate: true,
         documentation: true,
-        skipValidation: true,
       }),
       api({
         ...common,
