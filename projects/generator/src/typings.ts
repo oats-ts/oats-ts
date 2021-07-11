@@ -7,6 +7,7 @@ export type Result<T> = {
 }
 
 export type ContentReader<R> = () => Promise<Result<R>>
+export type ContentValidator<R> = (data: R) => Promise<Result<R>>
 export type Writer<G> = (data: G[]) => Promise<Result<G[]>>
 
 export type Module<C = any, D = any> = {
@@ -27,6 +28,7 @@ export type CodeGenerator<R, G extends Module<C, D>, C = any, D = any> = {
 
 export type GeneratorInput<R, G extends Module> = {
   reader: ContentReader<R>
+  validator: ContentValidator<R>
   generators: CodeGenerator<R, G>[]
   writer: Writer<G>
   log?: boolean

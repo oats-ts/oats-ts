@@ -1,6 +1,5 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { validateParameters } from '@oats-ts/openapi-validators'
 import { flatMap, isEmpty, isNil, negate, sortBy } from 'lodash'
 import {
   generateHeaderParametersType,
@@ -20,7 +19,6 @@ import { Result } from '@oats-ts/generator'
 import { OperationObject } from 'openapi3-ts/dist'
 import { TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
-import { isOk } from '@oats-ts/validators'
 
 export class ParameterTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameterTypes'
@@ -54,33 +52,19 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
 
-    const issues = config.skipValidation
-      ? []
-      : validateParameters(
-          flatMap(this.operations, (operation) => [
-            ...operation.cookie,
-            ...operation.header,
-            ...operation.path,
-            ...operation.query,
-          ]),
-          context,
-        )
-
-    const data: TypeScriptModule[] = isOk(issues)
-      ? mergeTypeScriptModules(
-          flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] => {
-            return [
-              generatePathParametersType(operation, context, config),
-              generateQueryParametersType(operation, context, config),
-              generateHeaderParametersType(operation, context, config),
-            ].filter(negate(isNil))
-          }),
-        )
-      : undefined
+    const data: TypeScriptModule[] = mergeTypeScriptModules(
+      flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] => {
+        return [
+          generatePathParametersType(operation, context, config),
+          generateQueryParametersType(operation, context, config),
+          generateHeaderParametersType(operation, context, config),
+        ].filter(negate(isNil))
+      }),
+    )
 
     return {
-      isOk: isOk(issues),
-      issues,
+      isOk: true,
+      issues: [],
       data,
     }
   }

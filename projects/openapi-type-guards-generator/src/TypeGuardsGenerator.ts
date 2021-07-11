@@ -11,8 +11,6 @@ import {
 import { Result } from '@oats-ts/generator'
 import { generateTypeGuard } from './generateTypeGuard'
 import { TypeGuardGeneratorConfig } from './typings'
-import { validateSchemas } from '@oats-ts/openapi-validators'
-import { isOk } from '@oats-ts/validators'
 
 export class TypeGuardsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/typeGuards'
@@ -38,15 +36,13 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
     const { context, config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'openapi/type'))
-    const issues = config.skipValidation ? [] : validateSchemas(schemas, context)
-    const data = isOk(issues)
-      ? mergeTypeScriptModules(
-          schemas.map((schema) => generateTypeGuard(schema, context, config)).filter(negate(isNil)),
-        )
-      : undefined
+    const data = mergeTypeScriptModules(
+      schemas.map((schema) => generateTypeGuard(schema, context, config)).filter(negate(isNil)),
+    )
+    // TODO maybe try catch
     return {
-      isOk: isOk(issues),
-      issues,
+      isOk: true,
+      issues: [],
       data,
     }
   }

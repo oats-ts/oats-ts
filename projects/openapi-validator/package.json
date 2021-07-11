@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/openapi-validators",
+  "name": "@oats-ts/openapi-validator",
   "version": "0.0.0",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
@@ -35,6 +35,7 @@
     "lodash": "4.17.21",
     "openapi3-ts": "2.0.1",
     "typescript": "4.3.2",
+    "@oats-ts/generator": "0.0.0",
     "@oats-ts/validators": "0.0.0",
     "@oats-ts/openapi-reader": "0.0.0",
     "@oats-ts/openapi-common": "0.0.0",

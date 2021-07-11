@@ -26,7 +26,6 @@ import {
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
-import { validatePaths } from '@oats-ts/openapi-validators'
 
 export class OperationsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/operations'
@@ -75,34 +74,27 @@ export class OperationsGenerator implements OpenAPIGenerator {
     return operation
   }
 
-  private getModules() {
-    const { context, config } = this
-
-    const modules: TypeScriptModule[] = flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-      [
-        generateOperationReturnType(operation, context),
-        generateOperationInputType(operation, context),
-        generatePathParameterTypeSerializer(operation, context),
-        generateQueryParameterTypeSerializer(operation, context),
-        generateHeaderParameterTypeSerializer(operation, context),
-        ...(config.validate ? [generateResponseParserHint(operation, context, config)] : []),
-        generateOperationFunction(operation, context, config),
-      ].filter(negate(isNil)),
-    )
-
-    return mergeTypeScriptModules(modules)
-  }
-
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    const { document } = context
 
-    const issues = config.skipValidation ? [] : validatePaths(document.paths, context)
-    const data = isOk(issues) ? this.getModules() : undefined
+    const data: TypeScriptModule[] = mergeTypeScriptModules(
+      flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
+        [
+          generateOperationReturnType(operation, context),
+          generateOperationInputType(operation, context),
+          generatePathParameterTypeSerializer(operation, context),
+          generateQueryParameterTypeSerializer(operation, context),
+          generateHeaderParameterTypeSerializer(operation, context),
+          ...(config.validate ? [generateResponseParserHint(operation, context, config)] : []),
+          generateOperationFunction(operation, context, config),
+        ].filter(negate(isNil)),
+      ),
+    )
 
+    // TODO maybe try-catch?
     return {
-      isOk: isOk(issues),
-      issues,
+      isOk: true,
+      issues: [],
       data,
     }
   }

@@ -2,7 +2,6 @@ import { ReferenceObject, SchemaObject } from 'openapi3-ts'
 import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { validateSchemas } from '@oats-ts/openapi-validators'
 import { sortBy } from 'lodash'
 import {
   getNamedSchemas,
@@ -15,7 +14,6 @@ import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { getTypeImports } from './getTypeImports'
-import { isOk, Issue } from '@oats-ts/validators'
 import { Result } from '@oats-ts/generator'
 
 export class TypesGenerator implements OpenAPIGenerator {
@@ -42,14 +40,14 @@ export class TypesGenerator implements OpenAPIGenerator {
     const { context, config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'openapi/type'))
-    const issues = config.skipValidation ? [] : validateSchemas(schemas, context)
-    const data = isOk(issues)
-      ? mergeTypeScriptModules(schemas.map((schema): TypeScriptModule => generateType(schema, context, config)))
-      : undefined
+    const data = mergeTypeScriptModules(
+      schemas.map((schema): TypeScriptModule => generateType(schema, context, config)),
+    )
+    // TODO maybe try catch
     return {
-      isOk: isOk(issues),
+      isOk: true,
       data,
-      issues,
+      issues: [],
     }
   }
 
