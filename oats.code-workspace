@@ -1,16 +1,40 @@
 {
   "folders": [
     {
-      "name": "root",
-      "path": "."
-    },
-    {
       "name": "generator",
       "path": "projects/generator"
     },
     {
+      "name": "http",
+      "path": "projects/http"
+    },
+    {
+      "name": "openapi",
+      "path": "projects/openapi"
+    },
+    {
+      "name": "openapi-api-generator",
+      "path": "projects/openapi-api-generator"
+    },
+    {
+      "name": "openapi-common",
+      "path": "projects/openapi-common"
+    },
+    {
+      "name": "openapi-e2e-test",
+      "path": "projects/openapi-e2e-test"
+    },
+    {
+      "name": "openapi-operations-generator",
+      "path": "projects/openapi-operations-generator"
+    },
+    {
       "name": "openapi-parameter-serialization",
       "path": "projects/openapi-parameter-serialization"
+    },
+    {
+      "name": "openapi-parameter-types-generator",
+      "path": "projects/openapi-parameter-types-generator"
     },
     {
       "name": "openapi-reader",
@@ -25,24 +49,16 @@
       "path": "projects/openapi-types-generator"
     },
     {
-      "name": "openapi-parameter-types-generator",
-      "path": "projects/openapi-parameter-types-generator"
+      "name": "openapi-validator",
+      "path": "projects/openapi-validator"
     },
     {
       "name": "openapi-validators-generator",
       "path": "projects/openapi-validators-generator"
     },
     {
-      "name": "openapi-api-generator",
-      "path": "projects/openapi-api-generator"
-    },
-    {
-      "name": "openapi-common",
-      "path": "projects/openapi-common"
-    },
-    {
-      "name": "openapi-operations-generator",
-      "path": "projects/openapi-operations-generator"
+      "name": "root",
+      "path": "."
     },
     {
       "name": "typescript-common",
@@ -55,22 +71,6 @@
     {
       "name": "validators",
       "path": "projects/validators"
-    },
-    {
-      "name": "http",
-      "path": "projects/http"
-    },
-    {
-      "name": "openapi-e2e-test",
-      "path": "projects/openapi-e2e-test"
-    },
-    {
-      "name": "openapi",
-      "path": "projects/openapi"
-    },
-    {
-      "name": "openapi-validator",
-      "path": "projects/openapi-validator"
-    },
+    }
   ]
 }

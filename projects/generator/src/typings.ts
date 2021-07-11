@@ -7,7 +7,7 @@ export type Result<T> = {
 }
 
 export type ContentReader<R> = () => Promise<Result<R>>
-export type ContentValidator<R> = (data: R) => Promise<Result<R>>
+export type ContentValidator<R> = (data: R) => Promise<Issue[]>
 export type Writer<G> = (data: G[]) => Promise<Result<G[]>>
 
 export type Module<C = any, D = any> = {
