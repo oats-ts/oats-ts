@@ -1,3 +1,3 @@
-import { generateAll } from '../utils/generateAll'
+import { generateAll } from '../generateAll'
 
 generateAll()

@@ -8,6 +8,7 @@ import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
 import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
 import { singleFile, nameProvider, OpenAPIGeneratorConfig, byTarget } from '@oats-ts/openapi'
+import { validator } from '@oats-ts/openapi-validator'
 
 const common: OpenAPIGeneratorConfig = {
   name: nameProvider,
@@ -17,7 +18,7 @@ const common: OpenAPIGeneratorConfig = {
 export async function generateAll() {
   return generate({
     log: true,
-    validator: null,
+    validator: validator(),
     reader: openAPIReader({ path: 'kitchenSink.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
     generators: [
       types({
