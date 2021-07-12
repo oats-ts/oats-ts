@@ -6,6 +6,7 @@ import { ignore } from '../utils/ignore'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { referenceable } from './referenceable'
 
 const validator = object(
   record(
@@ -30,7 +31,7 @@ export function contentObject(
     context,
     data,
   )(() => {
-    const { uriOf, dereference } = context
+    const { uriOf } = context
     const { schemaObject } = config
     return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
       flatMap(entries(data), ([contentType, mediaType]): Issue[] => {
@@ -43,7 +44,7 @@ export function contentObject(
             type: 'other',
           })
         }
-        issues.push(...schemaObject(dereference(mediaType.schema), context, config))
+        issues.push(...referenceable(schemaObject)(mediaType.schema, context, config))
         return issues
       }),
     )

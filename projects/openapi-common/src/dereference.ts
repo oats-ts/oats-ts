@@ -4,9 +4,9 @@ import { OpenAPIReadOutput } from '../../openapi-reader/lib'
 export function dereference(data: OpenAPIReadOutput) {
   return function _dereference<T>(input: T | ReferenceObject | string): T {
     if (typeof input === 'string') {
-      return data.uriToObject.get(input)
+      return _dereference(data.uriToObject.get(input))
     } else if (isReferenceObject(input)) {
-      return data.uriToObject.get(input.$ref)
+      return _dereference(data.uriToObject.get(input.$ref))
     }
     return input
   }

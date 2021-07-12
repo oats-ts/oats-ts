@@ -1,12 +1,12 @@
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { SchemaObject } from 'openapi3-ts'
 import { Issue, object, optional, shape, combine, literal } from '@oats-ts/validators'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../utils/append'
-import { validateSchema } from './schemaObject'
+import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext, OpenAPIValidatorFn } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { referenceable } from './referenceable'
 
 const validator = object(
   combine(
@@ -32,19 +32,18 @@ const validator = object(
 )
 
 export const arraySchemaObject =
-  (items: OpenAPIValidatorFn<SchemaObject> = validateSchema): OpenAPIValidatorFn<SchemaObject> =>
+  (items: OpenAPIValidatorFn<SchemaObject> = schemaObject): OpenAPIValidatorFn<SchemaObject> =>
   (data: SchemaObject, context: OpenAPIValidatorContext, config: OpenAPIValidatorConfig): Issue[] => {
     return ifNotValidated(
       context,
       data,
     )(() => {
-      const { uriOf, dereference } = context
-      const schema = dereference(data)
+      const { uriOf } = context
       return ordered(() =>
-        validator(schema, {
-          path: uriOf(schema),
+        validator(data, {
+          path: uriOf(data),
           append,
         }),
-      )(() => items(schema.items, context, config))
+      )(() => referenceable(items)(data.items, context, config))
     })
   }

@@ -1,11 +1,11 @@
-import { arraySchemaObject } from '../schema/arraySchemaObject'
-import { objectSchemaObject } from '../schema/objectSchemaObject'
-import { primitiveSchemaObject } from '../schema/primitiveSchemaObject'
-import { recordSchemaObject } from '../schema/recordSchemaObject'
+import { arraySchemaObject } from './arraySchemaObject'
+import { objectSchemaObject } from './objectSchemaObject'
+import { primitiveSchemaObject } from './primitiveSchemaObject'
+import { recordSchemaObject } from './recordSchemaObject'
 import { SchemaObject } from 'openapi3-ts'
 import { Issue } from '@oats-ts/validators'
 import { getInferredType } from '@oats-ts/openapi-common'
-import { enumSchemaObject } from '../schema/enumSchemaObject'
+import { enumSchemaObject } from './enumSchemaObject'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 
 function parameterObjectEnumOrPrimitiveSchema(
@@ -13,12 +13,10 @@ function parameterObjectEnumOrPrimitiveSchema(
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,
 ): Issue[] {
-  const { dereference } = context
-  const input = dereference(data)
-  if (getInferredType(input) === 'enum') {
-    return enumSchemaObject(input, context, config)
+  if (getInferredType(data) === 'enum') {
+    return enumSchemaObject(data, context, config)
   } else {
-    return primitiveSchemaObject(input, context, config)
+    return primitiveSchemaObject(data, context, config)
   }
 }
 

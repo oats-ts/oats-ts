@@ -5,7 +5,7 @@ import { discriminatedUnionSchemaObject } from './discriminatedUnionSchemaObject
 import { primitiveUnionSchemaObject } from './primitiveUnionSchemaObject'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 
-export function validateUnion(
+export function unionSchemaObject(
   input: SchemaObject,
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,

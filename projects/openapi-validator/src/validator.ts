@@ -10,6 +10,7 @@ export function validator(configuration: Partial<OpenAPIValidatorConfig> = {}): 
   return async function _validator(data: OpenAPIReadOutput): Promise<Issue[]> {
     const config = createOpenAPIValidatorConfig(configuration)
     const context = createOpenAPIValidatorContext(data)
-    return flatMap(context.documents, (document) => config.openApiObject(document, context, config))
+    const { openApiObject } = config
+    return flatMap(context.documents, (document) => openApiObject(document, context, config))
   }
 }

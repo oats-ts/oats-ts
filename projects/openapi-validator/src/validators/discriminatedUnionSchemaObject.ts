@@ -59,28 +59,27 @@ export function discriminatedUnionSchemaObject(
     context,
     data,
   )(() => {
-    const { dereference, nameOf, uriOf } = context
-    const schema = dereference(data)
-    const name = nameOf(schema)
+    const { nameOf, uriOf, dereference } = context
+    const name = nameOf(data)
     if (isNil(name)) {
       return [
         {
           message: `only named schemas can have the "discriminator" field`,
-          path: uriOf(schema),
+          path: uriOf(data),
           type: 'other',
           severity: 'error',
         },
       ]
     }
 
-    const { discriminator, oneOf } = schema
+    const { discriminator, oneOf } = data
     const discriminatorValues = entries(discriminator.mapping || {})
     const oneOfRefs = (oneOf || []) as ReferenceObject[]
 
     return ordered(() =>
-      validator(schema, {
+      validator(data, {
         append,
-        path: uriOf(schema),
+        path: uriOf(data),
       }),
     )(
       () =>
@@ -107,6 +106,7 @@ export function discriminatedUnionSchemaObject(
           ),
       () =>
         flatMap(oneOf, (ref): Issue[] => {
+          // TODO validating refs here is a pain, need a different solution
           const schema = dereference(ref)
           switch (getInferredType(schema)) {
             case 'object':

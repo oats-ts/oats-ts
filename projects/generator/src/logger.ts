@@ -2,16 +2,17 @@ import { Module, Result } from './typings'
 import { red, green, blue, yellow } from 'chalk'
 import { noop } from 'lodash'
 import { Issue, Severity } from '../../validators/lib'
+import { issueComparator, severityOf } from './issueUtils'
 
 export type Logger = {
-  failure: (message: string, issues: Issue[]) => void
+  issues: (message: string, issues: Issue[]) => void
   readSuccess(): void
   generatorSuccess(name: string, result: Result<Module[]>): void
   writerSuccess(modules: Module[]): void
 }
 
 export const noopLogger: Logger = {
-  failure: noop,
+  issues: noop,
   readSuccess: noop,
   generatorSuccess: noop,
   writerSuccess: noop,
@@ -41,8 +42,10 @@ const moduleToString = (m: Module) =>
 const issueToString = (issue: Issue) => `    ${severityIcon(issue.severity)} ${issue.message} at "${issue.path}"`
 
 export const consoleLogger: Logger = {
-  failure: (message: string, issues: Issue[]): void => {
-    const lines = [`${x} ${message}:`, ...issues.map(issueToString), '']
+  issues: (message: string, issues: Issue[]): void => {
+    const maxSeverity = severityOf(issues)
+    const icon = severityIcon(maxSeverity)
+    const lines = [`${icon} ${message}:`, ...Array.from(issues).sort(issueComparator).map(issueToString), '']
     console.log(lines.join('\n'))
   },
   readSuccess(): void {

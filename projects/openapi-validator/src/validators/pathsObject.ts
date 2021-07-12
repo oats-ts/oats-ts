@@ -18,12 +18,11 @@ export function pathsObject(
     context,
     data,
   )(() => {
+    const { pathItemObject } = config
     const { uriOf } = context
     return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
       flatMap(entries(data), ([url, pathObj]) =>
-        ordered(() => config.pathItemObject(pathObj, context, config))(() =>
-          pathItemObjectUrl(url, pathObj, context, config),
-        ),
+        ordered(() => pathItemObject(pathObj, context, config))(() => pathItemObjectUrl(url, pathObj, context, config)),
       ),
     )
   })

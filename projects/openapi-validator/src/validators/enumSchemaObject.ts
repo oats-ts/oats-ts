@@ -48,8 +48,7 @@ export function enumSchemaObject(
     context,
     data,
   )(() => {
-    const { uriOf, dereference } = context
-    const schema = dereference(data)
-    return validator(schema, { path: uriOf(schema), append })
+    const { uriOf } = context
+    return validator(data, { path: uriOf(data), append })
   })
 }

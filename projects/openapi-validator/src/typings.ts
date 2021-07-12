@@ -34,6 +34,7 @@ export type OpenAPIValidatorConfig = {
   componentsObject: OpenAPIValidatorFn<HeaderObject>
   responsesObject: OpenAPIValidatorFn<ResponsesObject>
   contentObject: OpenAPIValidatorFn<ContentObject>
+  referenceObject: OpenAPIValidatorFn<ReferenceObject>
 }
 
 export type OpenAPIValidatorContext = {

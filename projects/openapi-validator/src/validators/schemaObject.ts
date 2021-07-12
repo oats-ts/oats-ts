@@ -1,7 +1,7 @@
 import { SchemaObject } from 'openapi3-ts'
 import { Issue } from '@oats-ts/validators'
 import { getInferredType } from '@oats-ts/openapi-common'
-import { validateUnion } from './unionSchemaObject'
+import { unionSchemaObject } from './unionSchemaObject'
 import { enumSchemaObject } from './enumSchemaObject'
 import { primitiveSchemaObject } from './primitiveSchemaObject'
 import { recordSchemaObject } from './recordSchemaObject'
@@ -10,7 +10,7 @@ import { arraySchemaObject } from './arraySchemaObject'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { intersectionSchemaObject } from './intersectionSchemaObject'
 
-export function validateSchema(
+export function schemaObject(
   data: SchemaObject,
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,
@@ -29,7 +29,7 @@ export function validateSchema(
     case 'record':
       return recordSchemaObject()(data, context, config)
     case 'union':
-      return validateUnion(data, context, config)
+      return unionSchemaObject(data, context, config)
     case 'intersection':
       return intersectionSchemaObject()(data, context, config)
     default:

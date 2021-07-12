@@ -1,4 +1,5 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
+import { isOk } from '../../validators/lib'
 import { ensureDependencies } from './ensureDependencies'
 import { consoleLogger, noopLogger } from './logger'
 import { GeneratorInput, Module, Result } from './typings'
@@ -9,15 +10,24 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
 
   const readResult = await reader()
   if (!readResult.isOk) {
-    logger.failure(`Read step failed`, readResult.issues)
+    logger.issues(`Read step failed`, readResult.issues)
     return { ...readResult, data: undefined }
   }
   logger.readSuccess()
 
+  const issues = isNil(input.validator) ? [] : await input.validator(readResult.data)
+
+  if (!isEmpty(issues)) {
+    logger.issues(`Input validation finished with ${issues.length} issues`, issues)
+    if (!isOk(issues)) {
+      return { isOk: false, issues }
+    }
+  }
+
   const depIssues = ensureDependencies(generators)
   if (!isEmpty(depIssues)) {
-    logger.failure(
-      'Some generators have unresolved dependencies. You can fix this by adding the appropriate generator!',
+    logger.issues(
+      'Some generators have unresolved dependencies. You can fix this by adding the appropriate generator',
       depIssues,
     )
     return { isOk: false, issues: depIssues }
@@ -32,7 +42,7 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
   for (const generator of generators) {
     const result = await generator.generate()
     if (!result.isOk) {
-      logger.failure(`Generator step "${generator.id}" failed`, result.issues)
+      logger.issues(`Generator step "${generator.id}" failed`, result.issues)
       return result
     }
     logger.generatorSuccess(generator.id, result)
@@ -41,7 +51,7 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
 
   const writeResult = await writer(modules)
   if (!writeResult.isOk) {
-    logger.failure(`Writer step failed`, writeResult.issues)
+    logger.issues(`Writer step failed`, writeResult.issues)
     return writeResult
   }
   logger.writerSuccess(writeResult.data)

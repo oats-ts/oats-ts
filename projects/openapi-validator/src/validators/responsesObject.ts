@@ -5,6 +5,7 @@ import { entries, flatMap } from 'lodash'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { referenceable } from './referenceable'
 
 const validator = object(record(string(), object()))
 
@@ -17,7 +18,8 @@ export function responsesObject(
     context,
     data,
   )(() => {
-    const { uriOf, dereference } = context
+    const { responseObject } = config
+    const { uriOf } = context
     return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
       flatMap(entries(data), ([statusCode, response]): Issue[] => {
         const issues: Issue[] = []
@@ -33,7 +35,7 @@ export function responsesObject(
             type: 'other',
           })
         }
-        issues.push(...config.responseObject(dereference(response), context, config))
+        issues.push(...referenceable(responseObject)(response, context, config))
         return issues
       }),
     )

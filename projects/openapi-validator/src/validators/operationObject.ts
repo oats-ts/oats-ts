@@ -7,6 +7,7 @@ import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { parametersOf } from '../utils/modelUtils'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { referenceable } from './referenceable'
 
 const validator = object(
   combine(
@@ -32,11 +33,11 @@ export function operationObject(
     context,
     data,
   )(() => {
-    const { uriOf, dereference } = context
+    const { uriOf } = context
     const { parameterObject, requestBodyObject, responsesObject } = config
     return ordered(() => validator(data, { append, path: uriOf(data) }))(
-      () => flatMap(parametersOf(data, context), (param) => parameterObject(dereference(param), context, config)),
-      () => (isNil(data.requestBody) ? [] : requestBodyObject(dereference(data.requestBody), context, config)),
+      () => flatMap(parametersOf(data, context), (p) => referenceable(parameterObject, true)(p, context, config)),
+      () => (isNil(data.requestBody) ? [] : referenceable(requestBodyObject)(data.requestBody, context, config)),
       () => responsesObject(data.responses, context, config),
     )
   })
