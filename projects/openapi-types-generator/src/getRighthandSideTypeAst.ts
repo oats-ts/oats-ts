@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject } from 'openapi3-ts'
 import { factory, SyntaxKind, TypeNode } from 'typescript'
 import { OpenAPIGeneratorContext, getInferredType } from '@oats-ts/openapi-common'
 import { getArrayTypeAst } from './getArrayTypeAst'
@@ -8,13 +8,16 @@ import { getObjectTypeAst } from './getObjectTypeAst'
 import { getUnionTypeAst } from './getUnionTypeAst'
 import { TypesGeneratorConfig } from './typings'
 import { getIntersectionTypeAst } from './getIntersectionTypeAst'
+import { getTypeReferenceAst } from './getTypeReferenceAst'
 
 export function getRighthandSideTypeAst(
-  data: SchemaObject,
+  data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeNode {
   switch (getInferredType(data)) {
+    case 'ref':
+      return getTypeReferenceAst(data, context, config)
     case 'array':
       return getArrayTypeAst(data, context, config)
     case 'enum':

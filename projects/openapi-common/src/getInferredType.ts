@@ -1,8 +1,16 @@
 import { InferredType } from './typings'
 import { isNil } from 'lodash'
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
 
-export function getInferredType(data: SchemaObject): InferredType {
+export function getInferredType(data: SchemaObject | ReferenceObject): InferredType {
+  if (isNil(data)) {
+    return undefined
+  }
+
+  if (isReferenceObject(data)) {
+    return 'ref'
+  }
+
   if (!isNil(data.oneOf)) {
     return 'union'
   }

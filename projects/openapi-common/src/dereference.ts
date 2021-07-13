@@ -2,11 +2,11 @@ import { isReferenceObject, ReferenceObject } from 'openapi3-ts'
 import { OpenAPIReadOutput } from '../../openapi-reader/lib'
 
 export function dereference(data: OpenAPIReadOutput) {
-  return function _dereference<T>(input: T | ReferenceObject | string): T {
+  return function _dereference<T>(input: T | ReferenceObject | string, deep: boolean = false): T {
     if (typeof input === 'string') {
-      return _dereference(data.uriToObject.get(input))
+      return deep ? _dereference(data.uriToObject.get(input)) : data.uriToObject.get(input)
     } else if (isReferenceObject(input)) {
-      return _dereference(data.uriToObject.get(input.$ref))
+      return deep ? _dereference(data.uriToObject.get(input.$ref)) : data.uriToObject.get(input.$ref)
     }
     return input
   }

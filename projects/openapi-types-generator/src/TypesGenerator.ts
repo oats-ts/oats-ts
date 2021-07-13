@@ -12,9 +12,9 @@ import {
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
-import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { getTypeImports } from './getTypeImports'
 import { Result } from '@oats-ts/generator'
+import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 
 export class TypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/types'
@@ -55,7 +55,7 @@ export class TypesGenerator implements OpenAPIGenerator {
     const { context, config } = this
     switch (target) {
       case 'openapi/type':
-        return getTypeReferenceAst(input, context, config)
+        return getExternalTypeReferenceAst(input, context, config)
       default:
         return undefined
     }

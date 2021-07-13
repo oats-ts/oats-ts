@@ -1,14 +1,14 @@
 import {
   enumeration,
-  boolean,
-  any,
+  lazy,
   array,
   items,
   object,
   optional,
   shape,
   string,
-  lazy,
+  boolean,
+  record,
   union,
   number,
   literal,
@@ -29,6 +29,13 @@ export enum AdditionalServiceType {
   MEALS = 'MEALS',
   SEATS = 'SEATS',
   OTHER_SERVICES = 'OTHER_SERVICES',
+}
+
+export type ExternalNamedSchema = AdditionalServiceType
+
+export type ExternalSchema = {
+  flightOfferIds?: string[]
+  originDestinationId?: string
 }
 
 export type NamedBoolean = boolean
@@ -102,18 +109,31 @@ export type NamedUnionLeaf3 = {
   namedUnionLeaf3Property?: boolean
 }
 
+export type RefOfExternalNamedSchema = ExternalNamedSchema
+
+export type RefOfRefOfExternalNamedSchema = RefOfExternalNamedSchema
+
 export const additionalServiceTypeValidator = enumeration(['CHECKED_BAGS', 'MEALS', 'SEATS', 'OTHER_SERVICES'])
+
+export const externalNamedSchemaValidator = lazy(() => additionalServiceTypeValidator)
+
+export const externalSchemaValidator = object(
+  shape({
+    flightOfferIds: optional(array(items(string()))),
+    originDestinationId: optional(string()),
+  }),
+)
 
 export const namedBooleanValidator = boolean()
 
 export const namedComplexObjectValidator = object(
   shape({
     enumProperty: optional(enumeration(['Racoon', 'Dog', 'Cat'])),
-    enumReferenceProperty: optional(any),
+    enumReferenceProperty: optional(lazy(() => namedEnumValidator)),
     'non-identifier * property}': optional(string()),
-    recordProperty: optional(object()),
-    referenceArrayProperty: optional(array(items(any))),
-    referenceProperty: optional(any),
+    recordProperty: optional(object(record(string(), boolean()))),
+    referenceArrayProperty: optional(array(items(lazy(() => namedRecordValidator)))),
+    referenceProperty: optional(lazy(() => namedRecordValidator)),
     stringArrayProperty: optional(array(items(string()))),
   }),
 )
@@ -135,7 +155,7 @@ export const namedPrimitiveUnionValidator = union({
   boolean: boolean(),
 })
 
-export const namedRecordValidator = object()
+export const namedRecordValidator = object(record(string(), number()))
 
 export const namedSimpleObjectValidator = object(
   shape({
@@ -180,8 +200,29 @@ export const namedUnionLeaf3Validator = object(
   }),
 )
 
+export const refOfExternalNamedSchemaValidator = lazy(() => externalNamedSchemaValidator)
+
+export const refOfRefOfExternalNamedSchemaValidator = lazy(() => refOfExternalNamedSchemaValidator)
+
 export function isAdditionalServiceType(input: any): input is AdditionalServiceType {
   return input === 'CHECKED_BAGS' || input === 'MEALS' || input === 'SEATS' || input === 'OTHER_SERVICES'
+}
+
+export function isExternalNamedSchema(input: any): input is ExternalNamedSchema {
+  return isAdditionalServiceType(input)
+}
+
+export function isExternalSchema(input: any): input is ExternalSchema {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    (input.flightOfferIds === null ||
+      input.flightOfferIds === undefined ||
+      (Array.isArray(input.flightOfferIds) && input.flightOfferIds.every((item: any) => typeof item === 'string'))) &&
+    (input.originDestinationId === null ||
+      input.originDestinationId === undefined ||
+      typeof input.originDestinationId === 'string')
+  )
 }
 
 export function isNamedBoolean(input: any): input is NamedBoolean {
@@ -320,6 +361,14 @@ export function isNamedUnionLeaf3(input: any): input is NamedUnionLeaf3 {
   )
 }
 
+export function isRefOfExternalNamedSchema(input: any): input is RefOfExternalNamedSchema {
+  return isExternalNamedSchema(input)
+}
+
+export function isRefOfRefOfExternalNamedSchema(input: any): input is RefOfRefOfExternalNamedSchema {
+  return isRefOfExternalNamedSchema(input)
+}
+
 export type GetWithHeaderParamsHeaderParameters = {
   'X-String-In-Headers': string
   'X-Number-In-Headers': number
@@ -414,7 +463,7 @@ export type GetWithMultipleResponsesResponse =
 
 export const getWithMultipleResponsesExpectations: ResponseExpectations = {
   200: { 'application/json': namedSimpleObjectValidator },
-  201: { 'application/json': object(shape({ test: optional(any) })) },
+  201: { 'application/json': object(shape({ test: optional(lazy(() => namedSimpleObjectValidator)) })) },
   205: { 'application/json': namedDeprecatedObjectValidator },
   default: { 'application/json': namedComplexObjectValidator },
 }

@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
@@ -15,7 +15,7 @@ function isUnionTypeGuardGeneratorConfig(input: any): input is UnionTypeGuardGen
 }
 
 export function generateTypeGuard(
-  schema: SchemaObject,
+  schema: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: TypeGuardGeneratorConfig,
 ): TypeScriptModule {
@@ -23,6 +23,9 @@ export function generateTypeGuard(
   const path = pathOf(schema, 'openapi/type-guard')
   const typeImports = dependenciesOf(path, schema, 'openapi/type')
   if (isUnionTypeGuardGeneratorConfig(config)) {
+    if (isReferenceObject(schema)) {
+      return undefined
+    }
     const discriminators = getDiscriminators(schema, context)
     if (keys(discriminators).length === 0 || (!isNil(schema.oneOf) && schema.oneOf.length > 0)) {
       return undefined

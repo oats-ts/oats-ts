@@ -10,7 +10,6 @@ import { getRecordTypeAssertionAst } from './getRecordTypeAssertionAst'
 import { getReferenceAssertionAst } from './getReferenceAssertionAst'
 import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
 import { FullTypeGuardGeneratorConfig } from './typings'
-import { PrimitiveTypes } from '@oats-ts/typescript-common'
 
 export function getTypeAssertionAst(
   data: SchemaObject | ReferenceObject,

@@ -16,13 +16,13 @@ export type OpenAPIGeneratorContext = {
    * @param input Either a string ref, a ReferenceObject, the desired target value.
    * @returns The dereferenced value (in case its not a string or a ReferenceObject the value itself).
    */
-  dereference<T>(input: string | T | ReferenceObject): T
+  dereference<T>(input: string | T | ReferenceObject, deep?: boolean): T
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).
    * @returns The name of the value.
    */
-  nameOf(input: any, target: OpenAPIGeneratorTarget): string
+  nameOf(input: any, target?: OpenAPIGeneratorTarget): string
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).
@@ -77,3 +77,4 @@ export type InferredType =
   | 'union'
   | 'intersection'
   | 'unknown'
+  | 'ref'

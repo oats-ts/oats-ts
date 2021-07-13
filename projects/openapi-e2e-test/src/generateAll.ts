@@ -28,9 +28,9 @@ export async function generateAll() {
       }),
       validators({
         ...common,
-        references: false,
+        references: true,
         arrays: true,
-        records: false,
+        records: true,
         unionReferences: true,
       }),
       typeGuards({
