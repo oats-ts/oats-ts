@@ -12,7 +12,7 @@ import { validator } from '@oats-ts/openapi-validator'
 
 const common: OpenAPIGeneratorConfig = {
   name: nameProvider,
-  path: byTarget('src/generated/byTarget'), // singleFile('src/generated/api.ts'),
+  path: byTarget('src/generated'), // singleFile('src/generated/api.ts'),
 }
 
 export async function generateAll() {
