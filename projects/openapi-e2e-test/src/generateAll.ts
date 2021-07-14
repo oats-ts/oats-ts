@@ -7,12 +7,12 @@ import { api } from '@oats-ts/openapi-api-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
 import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
-import { singleFile, nameProvider, OpenAPIGeneratorConfig, byTarget } from '@oats-ts/openapi'
+import { nameProvider, OpenAPIGeneratorConfig, byTarget } from '@oats-ts/openapi'
 import { validator } from '@oats-ts/openapi-validator'
 
 const common: OpenAPIGeneratorConfig = {
   name: nameProvider,
-  path: singleFile('src/generated/api.ts'), // byTarget('src/generated/byTarget'),
+  path: byTarget('src/generated/byTarget'), // singleFile('src/generated/api.ts'),
 }
 
 export async function generateAll() {

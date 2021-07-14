@@ -7,6 +7,7 @@
     "target": "es6",
     "sourceMap": true,
     "esModuleInterop": true,
+    "noUnusedLocals": true,
     "lib": [
       "es6"
     ]

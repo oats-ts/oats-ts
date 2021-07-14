@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ExternalSchema": {
+        "$ref": "https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json#/components/schemas/Collection_Meta/properties/oneWayCombinations/items"
+      },
+      "ExternalNamedSchema": {
+        "$ref": "https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json#/components/schemas/AdditionalServiceType"
+      },
+      "RefOfExternalNamedSchema": {
+        "$ref": "#/components/schemas/ExternalNamedSchema"
+      },
+      "RefOfRefOfExternalNamedSchema": {
+        "$ref": "#/components/schemas/RefOfExternalNamedSchema"
+      }
+    }
+  },
+  "paths": {}
+}
