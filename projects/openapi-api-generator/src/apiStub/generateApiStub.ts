@@ -18,7 +18,9 @@ export function generateApiStub(
   return {
     path,
     dependencies: [
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
+      ...(operations.length === 0
+        ? []
+        : [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig])]),
       ...getApiTypeImports(doc, operations, context),
       ...dependenciesOf(path, doc, 'openapi/api-type'),
     ],

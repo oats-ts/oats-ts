@@ -14,7 +14,7 @@ export function getApiClassAst(
 
   const configField = factory.createPropertyDeclaration(
     [],
-    [factory.createModifier(SyntaxKind.PrivateKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
+    [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
     'config',
     undefined,
     factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),

@@ -6,12 +6,11 @@ import { OpenAPIGeneratorContext, getReferencedNamedSchemas } from '@oats-ts/ope
 
 export function getTypeImports(
   fromPath: string,
-  schemaOrRef: SchemaObject | ReferenceObject,
+  schema: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   referenceOnly: boolean,
 ): ImportDeclaration[] {
-  const { dereference, nameOf } = context
-  const schema = dereference(schemaOrRef)
+  const { nameOf } = context
   const name = nameOf(schema, 'openapi/type')
   if (referenceOnly && !isNil(name)) {
     return getModelImports(fromPath, 'openapi/type', [schema], context)

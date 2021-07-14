@@ -82,6 +82,7 @@ export function collectRecordImports(
   names.add(RuntimePackages.Validators.object)
   if (config.records) {
     names.add(RuntimePackages.Validators.record)
+    names.add(RuntimePackages.Validators.string)
     collectImports(data.additionalProperties as SchemaObject | ReferenceObject, config, context, names, refs)
   }
 }

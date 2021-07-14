@@ -1,5 +1,5 @@
 import { entries, isNil } from 'lodash'
-import { ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject, isReferenceObject } from 'openapi3-ts'
 import { OpenAPIGeneratorContext } from './typings'
 
 function collectInChildren(input: SchemaObject, context: OpenAPIGeneratorContext, schemas: SchemaObject[]) {
@@ -30,12 +30,23 @@ function collect(
   if (!isNil(nameOf(schema, 'openapi/type'))) {
     schemas.push(schema)
   } else {
-    collectInChildren(schema, context, schemas)
+    if (isReferenceObject(schema)) {
+      collect(schema, context, schemas)
+    } else {
+      collectInChildren(schema, context, schemas)
+    }
   }
 }
 
-export function getReferencedNamedSchemas(schema: SchemaObject, context: OpenAPIGeneratorContext): SchemaObject[] {
+export function getReferencedNamedSchemas(
+  schema: SchemaObject | ReferenceObject,
+  context: OpenAPIGeneratorContext,
+): SchemaObject[] {
   const schemas: SchemaObject[] = []
-  collectInChildren(schema, context, schemas)
+  if (isReferenceObject(schema)) {
+    collect(schema, context, schemas)
+  } else {
+    collectInChildren(schema, context, schemas)
+  }
   return schemas
 }
