@@ -1,14 +1,14 @@
 import { generate } from '@oats-ts/generator'
-import { openAPIReader } from '@oats-ts/openapi-reader'
+import { reader } from '@oats-ts/openapi-reader'
+import { prettierStringify, writer } from '@oats-ts/typescript-writer'
+import { validator } from '@oats-ts/openapi-validator'
 import { parameterTypes } from '@oats-ts/openapi-parameter-types-generator'
 import { validators } from '@oats-ts/openapi-validators-generator'
 import { types } from '@oats-ts/openapi-types-generator'
 import { api } from '@oats-ts/openapi-api-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
-import { prettierStringify, typeScriptWriter } from '@oats-ts/typescript-writer'
 import { nameProvider, OpenAPIGeneratorConfig, byTarget } from '@oats-ts/openapi'
-import { validator } from '@oats-ts/openapi-validator'
 
 const common: OpenAPIGeneratorConfig = {
   name: nameProvider,
@@ -19,7 +19,7 @@ export async function generateAll() {
   return generate({
     log: true,
     validator: validator(),
-    reader: openAPIReader({ path: 'kitchenSink.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
+    reader: reader({ path: 'kitchenSink.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
     generators: [
       types({
         ...common,
@@ -57,7 +57,7 @@ export async function generateAll() {
         documentation: true,
       }),
     ],
-    writer: typeScriptWriter({
+    writer: writer({
       purge: true,
       stringify: prettierStringify({
         parser: 'typescript',
