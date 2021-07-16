@@ -37,7 +37,7 @@ async function resolveAll(resolved: Set<string>, context: ReadContext) {
   await resolveAll(resolved, context)
 }
 
-export const openAPIReader = (config: OpenAPIReadConfig) => async (): Promise<Result<OpenAPIReadOutput>> => {
+export const reader = (config: OpenAPIReadConfig) => async (): Promise<Result<OpenAPIReadOutput>> => {
   const { path, resolve, uriManipulator } = defaultOpenAPIReadConfig(config)
 
   const documentUri = uriManipulator.sanitize(path)

@@ -1,5 +1,5 @@
 export { TypeScriptModule, TypeScriptWriterConfig } from './typings'
 export { prettierStringify } from './prettierStringify'
-export { typeScriptWriter } from './typeScriptWriter'
+export { writer } from './writer'
 export { defaultWrite } from './defaults/defaultWrite'
 export { mergeTypeScriptModules } from './mergeTypeScriptModules'

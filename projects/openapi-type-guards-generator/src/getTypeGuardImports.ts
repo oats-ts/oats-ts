@@ -70,10 +70,6 @@ export function getTypeGuardImports(
     Array.from(refs).map((ref) => dereference<SchemaObject>(ref)),
     (schema) => nameOf(schema, 'openapi/type-guard'),
   )
-  console.log(data)
-  console.log(refs)
-  console.log(importedSchemas.map((s) => nameOf(s, 'openapi/type-guard')))
-  console.log('---')
   const path = pathOf(data, 'openapi/type-guard')
   return getModelImports(path, 'openapi/type-guard', importedSchemas, context)
 }

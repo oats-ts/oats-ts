@@ -4,7 +4,7 @@ import { mergeTypeScriptModules } from './mergeTypeScriptModules'
 import { purgeDirectories } from './purgeDirectories'
 import { TypeScriptModule, TypeScriptWriterConfig } from './typings'
 
-export const typeScriptWriter =
+export const writer =
   (config: TypeScriptWriterConfig) =>
   async (modules: TypeScriptModule[]): Promise<Result<TypeScriptModule[]>> => {
     const { stringify, write, purge } = defaultTypeScriptWriterConfig(config)

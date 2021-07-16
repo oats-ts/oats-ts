@@ -74,7 +74,7 @@ export async function resolveReference<T>(
     context,
   )
 
-  if (isReferenceObject(result.data)) {
+  if (isReferenceObject(result.data) && !context.uriToObject.has(result.data.$ref)) {
     return resolveReference(result as ReadInput<ReferenceObject>, context)
   }
 
