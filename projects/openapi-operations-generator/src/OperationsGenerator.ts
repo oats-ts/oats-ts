@@ -1,7 +1,6 @@
 import { Result } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { isOk } from '@oats-ts/validators'
 import { OperationObject } from 'openapi3-ts'
 import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
 import { generateOperationFunction } from './operation/generateOperationFunction'
@@ -99,7 +98,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
     }
   }
 
-  public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
     switch (target) {
@@ -133,7 +132,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
     }
   }
 
-  public dependencies(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
       case 'openapi/operation': {

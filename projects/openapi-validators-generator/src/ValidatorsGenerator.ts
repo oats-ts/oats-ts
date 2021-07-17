@@ -51,7 +51,7 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
     }
   }
 
-  public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Expression {
+  public referenceOf(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Expression {
     const { context, config } = this
     const { uriOf } = context
     switch (target) {
@@ -63,7 +63,7 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
     }
   }
 
-  public dependencies(
+  public dependenciesOf(
     fromPath: string,
     input: SchemaObject | ReferenceObject,
     target: OpenAPIGeneratorTarget,

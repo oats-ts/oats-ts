@@ -51,7 +51,7 @@ export class TypesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public reference(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
+  public referenceOf(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
     const { context, config } = this
     switch (target) {
       case 'openapi/type':
@@ -61,7 +61,7 @@ export class TypesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public dependencies(
+  public dependenciesOf(
     fromPath: string,
     input: SchemaObject | ReferenceObject,
     target: OpenAPIGeneratorTarget,

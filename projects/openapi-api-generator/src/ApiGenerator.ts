@@ -16,7 +16,6 @@ import { Result } from '@oats-ts/generator'
 import { OpenAPIObject } from 'openapi3-ts'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '../../typescript-common/lib'
-import { isOk } from '@oats-ts/validators'
 
 export class ApiGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -69,7 +68,7 @@ export class ApiGenerator implements OpenAPIGenerator {
     }
   }
 
-  public reference(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
     const { context, config } = this
     const { nameOf } = context
     switch (target) {
@@ -87,7 +86,7 @@ export class ApiGenerator implements OpenAPIGenerator {
     }
   }
 
-  public dependencies(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context, config } = this
     switch (target) {
       case 'openapi/api-type': {

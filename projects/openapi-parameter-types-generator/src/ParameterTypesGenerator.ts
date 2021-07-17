@@ -77,7 +77,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
     return operation
   }
 
-  public reference(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode {
+  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode {
     const { context } = this
     const { nameOf } = context
     switch (target) {
@@ -97,7 +97,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public dependencies(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     switch (target) {
       case 'openapi/headers-type': {
         const { header } = this.enhance(input)

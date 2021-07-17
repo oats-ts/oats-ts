@@ -11,6 +11,8 @@ import {
 import { Result } from '@oats-ts/generator'
 import { generateTypeGuard } from './generateTypeGuard'
 import { TypeGuardGeneratorConfig } from './typings'
+import { ImportDeclaration, Identifier, factory } from 'typescript'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 export class TypeGuardsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/typeGuards'
@@ -44,6 +46,25 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
       isOk: true,
       issues: [],
       data,
+    }
+  }
+
+  referenceOf(input: any, target: OpenAPIGeneratorTarget): Identifier {
+    switch (target) {
+      case 'openapi/type-guard':
+        const { nameOf } = this.context
+        return factory.createIdentifier(nameOf(input, target))
+      default:
+        return undefined
+    }
+  }
+
+  dependenciesOf(fromPath: string, input: any, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+    switch (target) {
+      case 'openapi/type-guard':
+        return getModelImports(fromPath, target, [input], this.context)
+      default:
+        return []
     }
   }
 }
