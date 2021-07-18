@@ -16,14 +16,14 @@ export type Module<C = any, D = any> = {
   dependencies: D[]
 }
 
-export type CodeGenerator<R, G extends Module<C, D>, C = any, D = any> = {
+export type CodeGenerator<R, G extends Module> = {
   id: string
   produces: string[]
   consumes: string[]
   initialize: (data: R, generators: CodeGenerator<R, G>[]) => void
   generate: () => Promise<Result<G[]>>
-  referenceOf: (input: any, target: string) => C
-  dependenciesOf: (fromPath: string, input: any, target: string) => D[]
+  referenceOf: (input: any, target: string) => any
+  dependenciesOf: (fromPath: string, input: any, target: string) => any[]
 }
 
 export type GeneratorInput<R, G extends Module> = {
