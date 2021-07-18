@@ -20,7 +20,11 @@ const defaultFolderName: NameByTarget = {
   'openapi/api-class': 'api',
 }
 
-export function byNameAndTarget(path: string, folder: NameByTarget = defaultFolderName): GeneratorPathProvider {
+export function byNameAndTarget(
+  path: string,
+  folder: Partial<NameByTarget> = defaultFolderName,
+): GeneratorPathProvider {
+  const mergedFolder: NameByTarget = { ...defaultFolderName, ...folder }
   return (input: any, name: NameProvider, target: string) =>
-    resolve(join(path, folder[target as OpenAPIGeneratorTarget], `${name(input, target)}.ts`))
+    resolve(join(path, mergedFolder[target as OpenAPIGeneratorTarget], `${name(input, target)}.ts`))
 }
