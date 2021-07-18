@@ -1,7 +1,7 @@
 import { join, resolve } from 'path'
 import { GeneratorPathProvider, NameByTarget, NameProvider, OpenAPIGeneratorTarget } from './typings'
 
-const defaultName: NameByTarget = {
+const defaultFolderName: NameByTarget = {
   'openapi/type': 'types',
   'openapi/type-guard': 'typeGuards',
   'openapi/operation': 'operations',
@@ -15,12 +15,12 @@ const defaultName: NameByTarget = {
   'openapi/headers-serializer': 'headerSerializers',
   'openapi/expectations': 'expectations',
   'openapi/validator': 'validators',
-  'openapi/api-type': 'apiType',
-  'openapi/api-stub': 'apiStub',
-  'openapi/api-class': 'apiClass',
+  'openapi/api-type': 'api',
+  'openapi/api-stub': 'api',
+  'openapi/api-class': 'api',
 }
 
-export function byTarget(path: string, nameByTarget: NameByTarget = defaultName): GeneratorPathProvider {
+export function byNameAndTarget(path: string, folder: NameByTarget = defaultFolderName): GeneratorPathProvider {
   return (input: any, name: NameProvider, target: string) =>
-    resolve(join(path, `${nameByTarget[target as OpenAPIGeneratorTarget]}.ts`))
+    resolve(join(path, folder[target as OpenAPIGeneratorTarget], `${name(input, target)}.ts`))
 }

@@ -33,6 +33,7 @@ export type OpenAPIGeneratorConfig = {
 
 export type GeneratorPathProvider = OpenAPIGeneratorConfig['path']
 export type GeneratorNameProvider = OpenAPIGeneratorConfig['name']
+export type NameByTarget = Record<OpenAPIGeneratorTarget, string>
 
 export type OpenAPIGeneratorTarget =
   | 'openapi/type'

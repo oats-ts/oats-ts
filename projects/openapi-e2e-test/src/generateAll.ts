@@ -8,11 +8,11 @@ import { types } from '@oats-ts/openapi-types-generator'
 import { api } from '@oats-ts/openapi-api-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
-import { nameProvider, OpenAPIGeneratorConfig, byTarget } from '@oats-ts/openapi'
+import { nameProvider, OpenAPIGeneratorConfig, byNameAndTarget } from '@oats-ts/openapi'
 
 const common: OpenAPIGeneratorConfig = {
   name: nameProvider,
-  path: byTarget('src/generated'), // singleFile('src/generated/api.ts'),
+  path: byNameAndTarget('src/generated'),
 }
 
 export async function generateAll() {
