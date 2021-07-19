@@ -48,7 +48,7 @@ export function getArrayTypeAssertionAst(
       undefined,
       [variable],
     ),
-    ...(config.records ? [getArrayItemAsserterAst(data, context, variable, config)] : []),
+    ...(config.arrays ? [getArrayItemAsserterAst(data, context, variable, config)] : []),
   ]
   return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
 }
