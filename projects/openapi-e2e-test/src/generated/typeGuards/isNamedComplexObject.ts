@@ -29,6 +29,13 @@ export function isNamedComplexObject(input: any): input is NamedComplexObject {
     (input.referenceProperty === null ||
       input.referenceProperty === undefined ||
       isNamedRecord(input.referenceProperty)) &&
+    (input.referenceRecordProperty === null ||
+      input.referenceRecordProperty === undefined ||
+      (input.referenceRecordProperty !== null &&
+        typeof input.referenceRecordProperty === 'object' &&
+        Object.keys(input.referenceRecordProperty).every((key) =>
+          isNamedRecord(input.referenceRecordProperty[key]),
+        ))) &&
     (input.stringArrayProperty === null ||
       input.stringArrayProperty === undefined ||
       (Array.isArray(input.stringArrayProperty) &&

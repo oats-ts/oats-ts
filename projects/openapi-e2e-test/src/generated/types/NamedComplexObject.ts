@@ -8,5 +8,6 @@ export type NamedComplexObject = {
   recordProperty?: Record<string, boolean>
   referenceArrayProperty?: NamedRecord[]
   referenceProperty?: NamedRecord
+  referenceRecordProperty?: Record<string, NamedRecord>
   stringArrayProperty?: string[]
 }

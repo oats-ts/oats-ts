@@ -11,14 +11,16 @@ export function getUnionTypeAssertionAst(
   context: OpenAPIGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
+  level: number,
 ): Expression {
   const { dereference, nameOf } = context
-  if (isNil(data.discriminator) || !config.unionReferences) {
+  if (isNil(data.discriminator)) {
     return reduceLogicalExpressions(
       SyntaxKind.BarBarToken,
-      data.oneOf.map((refOrSchema) => getTypeAssertionAst(refOrSchema, context, variable, config)),
+      data.oneOf.map((refOrSchema) => getTypeAssertionAst(refOrSchema, context, variable, config, level)),
     )
   }
+  // Should be just schema objects at this point.
   return reduceLogicalExpressions(
     SyntaxKind.BarBarToken,
     data.oneOf.map((refOrSchema) => {

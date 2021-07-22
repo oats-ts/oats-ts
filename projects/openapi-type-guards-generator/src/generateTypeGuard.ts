@@ -43,7 +43,7 @@ export function generateTypeGuard(
       getTypeGuardFunctionAst(
         schema,
         context,
-        getTypeAssertionAst(schema, context, factory.createIdentifier('input'), config),
+        getTypeAssertionAst(schema, context, factory.createIdentifier('input'), config, 0),
       ),
     ],
   }

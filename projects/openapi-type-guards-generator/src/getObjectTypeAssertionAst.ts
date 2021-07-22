@@ -12,6 +12,7 @@ export function getObjectTypeAssertionAst(
   context: OpenAPIGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
+  level: number,
 ): Expression {
   const discriminators = getDiscriminators(data, context) || {}
   const discriminatorAssertions = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) => {
@@ -25,7 +26,7 @@ export function getObjectTypeAssertionAst(
     .filter(([name]) => !has(discriminators, name))
     .map(([name, schemaOrRef]) => {
       const memberVar = safeMemberAccess(variable, name)
-      const assertion = getTypeAssertionAst(schemaOrRef, context, memberVar, config)
+      const assertion = getTypeAssertionAst(schemaOrRef, context, memberVar, config, level + 1)
       if (assertion.kind === SyntaxKind.TrueKeyword) {
         return assertion
       }

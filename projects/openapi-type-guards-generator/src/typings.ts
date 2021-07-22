@@ -6,11 +6,6 @@ export type FullTypeGuardGeneratorConfig = {
   records: boolean
   /** When true, contents of arrays (items) will be checked, otherwise only their type will be asserted. */
   arrays: boolean
-  /**
-   * When true, union types will validate their type alternatives, even if references is set to false.
-   * If both unionReferences and references are set to false union type validators will simply return true.
-   */
-  unionReferences: boolean
 }
 
 /** When this configuration is used, type guards will be only generated for union types, based on discriminators. */

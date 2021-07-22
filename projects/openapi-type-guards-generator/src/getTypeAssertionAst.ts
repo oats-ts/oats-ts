@@ -16,14 +16,15 @@ export function getTypeAssertionAst(
   context: OpenAPIGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
+  level: number,
 ): Expression {
   if (isReferenceObject(data)) {
-    return getReferenceAssertionAst(data, context, variable, config)
+    return getReferenceAssertionAst(data, context, variable, config, level)
   }
 
   switch (getInferredType(data)) {
     case 'union':
-      return getUnionTypeAssertionAst(data, context, variable, config)
+      return getUnionTypeAssertionAst(data, context, variable, config, level)
     case 'enum':
       return getEnumAssertionAst(data, context, variable, config)
     case 'string':
@@ -31,11 +32,11 @@ export function getTypeAssertionAst(
     case 'boolean':
       return getPrimitiveTypeAssertionAst(data, context, variable, config)
     case 'record':
-      return getRecordTypeAssertionAst(data, context, variable, config)
+      return getRecordTypeAssertionAst(data, context, variable, config, level)
     case 'object':
-      return getObjectTypeAssertionAst(data, context, variable, config)
+      return getObjectTypeAssertionAst(data, context, variable, config, level)
     case 'array':
-      return getArrayTypeAssertionAst(data, context, variable, config)
+      return getArrayTypeAssertionAst(data, context, variable, config, level)
     default:
       return factory.createTrue()
   }

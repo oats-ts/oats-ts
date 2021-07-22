@@ -1,5 +1,5 @@
 import { SchemaObject } from 'openapi3-ts'
-import { CallExpression, Expression, factory, SyntaxKind } from 'typescript'
+import { CallExpression, Expression, factory, SyntaxKind, TrueLiteral } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { FullTypeGuardGeneratorConfig } from './typings'
@@ -10,7 +10,12 @@ function getArrayItemAsserterAst(
   context: OpenAPIGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
-): CallExpression {
+  level: number,
+): CallExpression | TrueLiteral {
+  const itemAssertion = getTypeAssertionAst(data.items, context, factory.createIdentifier('item'), config, level + 1)
+  if (itemAssertion.kind === SyntaxKind.TrueKeyword) {
+    return factory.createTrue()
+  }
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(variable, factory.createIdentifier('every')),
     undefined,
@@ -30,7 +35,7 @@ function getArrayItemAsserterAst(
         ],
         undefined,
         factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-        getTypeAssertionAst(data.items, context, factory.createIdentifier('item'), config),
+        itemAssertion,
       ),
     ],
   )
@@ -41,6 +46,7 @@ export function getArrayTypeAssertionAst(
   context: OpenAPIGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
+  level: number,
 ): Expression {
   const expressions: Expression[] = [
     factory.createCallExpression(
@@ -48,7 +54,7 @@ export function getArrayTypeAssertionAst(
       undefined,
       [variable],
     ),
-    ...(config.arrays ? [getArrayItemAsserterAst(data, context, variable, config)] : []),
+    ...(config.arrays ? [getArrayItemAsserterAst(data, context, variable, config, level)] : []),
   ]
   return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
 }

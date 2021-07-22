@@ -38,7 +38,6 @@ export async function generateAll() {
         references: true,
         arrays: true,
         records: true,
-        unionReferences: true,
       }),
       parameterTypes({
         ...common,

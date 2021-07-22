@@ -52,8 +52,10 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
   referenceOf(input: any, target: OpenAPIGeneratorTarget): Identifier {
     switch (target) {
       case 'openapi/type-guard':
+        // TODO does it make sense to generate the assertion AST for non named type?
+        // We lose the type guard nature at that point.
         const { nameOf } = this.context
-        return factory.createIdentifier(nameOf(input, target))
+        return isNil(nameOf(input)) ? undefined : factory.createIdentifier(nameOf(input, target))
       default:
         return undefined
     }

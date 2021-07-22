@@ -109,6 +109,11 @@
               "$ref": "#/components/schemas/NamedRecord"
             }
           },
+          "referenceRecordProperty": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/NamedRecord"
+            }
+          },
           "non-identifier * property}": {
             "type": "string"
           }

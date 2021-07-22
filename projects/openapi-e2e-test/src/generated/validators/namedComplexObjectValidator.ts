@@ -10,6 +10,14 @@ export const namedComplexObjectValidator = object(
     recordProperty: optional(object(record(string(), boolean()))),
     referenceArrayProperty: optional(array(items(lazy(() => namedRecordValidator)))),
     referenceProperty: optional(lazy(() => namedRecordValidator)),
+    referenceRecordProperty: optional(
+      object(
+        record(
+          string(),
+          lazy(() => namedRecordValidator),
+        ),
+      ),
+    ),
     stringArrayProperty: optional(array(items(string()))),
   }),
 )

@@ -10,50 +10,43 @@ function getImportedRefs(
   context: OpenAPIGeneratorContext,
   config: FullTypeGuardGeneratorConfig,
   refs: Set<ReferenceObject>,
+  level: number,
 ): void {
   const { dereference, nameOf } = context
   if (isReferenceObject(data)) {
-    if (config.references) {
-      const refTarget = dereference(data)
-      const name = nameOf(refTarget, 'openapi/type-guard')
-      if (isNil(name)) {
-        getImportedRefs(refTarget, context, config, refs)
-      } else {
-        refs.add(data)
-      }
+    if (!config.references && level > 0) {
+      return
+    }
+    const refTarget = dereference(data)
+    const name = nameOf(refTarget, 'openapi/type-guard')
+    if (isNil(name)) {
+      getImportedRefs(refTarget, context, config, refs, level)
+    } else {
+      refs.add(data)
     }
     return
   }
 
-  if (!isNil(data.oneOf)) {
-    if (config.references) {
-      for (const s of data.oneOf) {
-        getImportedRefs(s, context, config, refs)
-      }
-    }
-    if (config.unionReferences) {
-      for (const s of data.oneOf) {
-        if (isReferenceObject(s)) {
-          refs.add(s)
-        }
-      }
+  if (!isNil(data.oneOf) && !isNil(data.discriminator)) {
+    for (const s of data.oneOf) {
+      getImportedRefs(s, context, config, refs, level)
     }
     return
   }
 
   if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
-    return getImportedRefs(data.additionalProperties, context, config, refs)
+    return getImportedRefs(data.additionalProperties, context, config, refs, level + 1)
   }
 
   if (!isNil(data.properties)) {
     for (const s of values(data.properties)) {
-      getImportedRefs(s, context, config, refs)
+      getImportedRefs(s, context, config, refs, level + 1)
     }
     return
   }
 
   if (!isNil(data.items)) {
-    return getImportedRefs(data.items, context, config, refs)
+    return getImportedRefs(data.items, context, config, refs, level + 1)
   }
 }
 
@@ -62,9 +55,9 @@ export function getTypeGuardImports(
   context: OpenAPIGeneratorContext,
   config: FullTypeGuardGeneratorConfig,
 ): ImportDeclaration[] {
-  const { dereference, nameOf, pathOf, dependenciesOf } = context
+  const { dereference, nameOf, pathOf } = context
   const refs = new Set<ReferenceObject>()
-  getImportedRefs(data, context, config, refs)
+  getImportedRefs(data, context, config, refs, 0)
 
   const importedSchemas = sortBy(
     Array.from(refs).map((ref) => dereference<SchemaObject>(ref)),
