@@ -8,6 +8,7 @@ export function getRecordValidatorAst(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  level: number,
 ): CallExpression | Identifier {
   return factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.object),
@@ -23,6 +24,7 @@ export function getRecordValidatorAst(
                 data.additionalProperties as SchemaObject | ReferenceObject,
                 context,
                 config,
+                level + 1,
               ),
             ],
           ),

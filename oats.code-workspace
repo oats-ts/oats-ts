@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "root",
+      "path": "."
+    },
+    {
       "name": "generator",
       "path": "projects/generator"
     },
@@ -55,10 +59,6 @@
     {
       "name": "openapi-validators-generator",
       "path": "projects/openapi-validators-generator"
-    },
-    {
-      "name": "root",
-      "path": "."
     },
     {
       "name": "typescript-common",

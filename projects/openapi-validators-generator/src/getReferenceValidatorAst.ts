@@ -9,23 +9,19 @@ export function getReferenceValidatorAst(
   data: ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  lazy: boolean = true,
-  force: boolean = false,
+  level: number,
 ): CallExpression | Identifier {
   const { dereference, nameOf } = context
-  if (!config.references && !force) {
+  if (!config.references && level > 0) {
     return factory.createIdentifier(RuntimePackages.Validators.any)
   }
   const resolved = dereference(data)
   const name = nameOf(resolved, 'openapi/validator')
   if (!isNil(name)) {
     const validator = factory.createIdentifier(name)
-    if (lazy) {
-      return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.lazy), undefined, [
-        factory.createArrowFunction([], [], [], undefined, undefined, validator),
-      ])
-    }
-    return validator
+    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.lazy), undefined, [
+      factory.createArrowFunction([], [], [], undefined, undefined, validator),
+    ])
   }
-  return getRightHandSideValidatorAst(resolved, context, config)
+  return getRightHandSideValidatorAst(resolved, context, config, level)
 }

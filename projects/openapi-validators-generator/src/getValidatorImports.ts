@@ -11,6 +11,7 @@ export type ImportCollector = (
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ) => void
 
 export function collectExternalReferenceImports(
@@ -19,13 +20,14 @@ export function collectExternalReferenceImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   const { dereference, nameOf, uriOf } = context
   const schema = dereference(data)
   if (!isNil(nameOf(schema, 'openapi/validator'))) {
     refs.add(uriOf(schema))
   } else {
-    collectImports(schema, config, context, names, refs)
+    collectImports(schema, config, context, names, refs, level + 1)
   }
 }
 
@@ -35,9 +37,10 @@ export function collectReferenceImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   const { nameOf, dereference } = context
-  if (!config.references) {
+  if (!config.references && level > 0) {
     names.add(RuntimePackages.Validators.any)
   } else {
     const schema = dereference(data)
@@ -45,7 +48,7 @@ export function collectReferenceImports(
       names.add(RuntimePackages.Validators.lazy)
       refs.add(data.$ref)
     } else {
-      collectImports(schema, config, context, names, refs)
+      collectImports(schema, config, context, names, refs, level + 1)
     }
   }
 }
@@ -56,18 +59,19 @@ export function collectUnionImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   names.add(RuntimePackages.Validators.union)
-  if (!isNil(data.discriminator) && (config.references || config.unionReferences)) {
-    // TODO maybe better of collecting discriminators
-    const discRefs = values(data.discriminator.mapping || {})
-    values(data.discriminator.mapping || {}).map((ref) => refs.add(ref))
-    if (discRefs.length > 0) {
+  if (!isNil(data.discriminator)) {
+    for (const schemaOrRef of data.oneOf) {
+      collectImports(schemaOrRef, config, context, names, refs, level)
+    }
+    if (data.oneOf.length > 0) {
       names.add(RuntimePackages.Validators.lazy)
     }
   } else {
     for (const schemaOrRef of data.oneOf) {
-      collectImports(schemaOrRef, config, context, names, refs)
+      collectImports(schemaOrRef, config, context, names, refs, level)
     }
   }
 }
@@ -78,12 +82,13 @@ export function collectRecordImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   names.add(RuntimePackages.Validators.object)
   if (config.records) {
     names.add(RuntimePackages.Validators.record)
     names.add(RuntimePackages.Validators.string)
-    collectImports(data.additionalProperties as SchemaObject | ReferenceObject, config, context, names, refs)
+    collectImports(data.additionalProperties as SchemaObject | ReferenceObject, config, context, names, refs, level + 1)
   }
 }
 
@@ -93,6 +98,7 @@ export function collectObjectTypeImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   const discriminators = getDiscriminators(data, context)
   if (values(discriminators).length > 0) {
@@ -104,7 +110,7 @@ export function collectObjectTypeImports(
     if (isOptional) {
       names.add(RuntimePackages.Validators.optional)
     }
-    collectImports(propSchema, config, context, names, refs)
+    collectImports(propSchema, config, context, names, refs, level + 1)
   }
 }
 
@@ -114,11 +120,12 @@ export function collectArrayTypeImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   names.add(RuntimePackages.Validators.array)
   if (config.arrays) {
     names.add(RuntimePackages.Validators.items)
-    return collectImports(data.items, config, context, names, refs)
+    return collectImports(data.items, config, context, names, refs, level + 1)
   }
 }
 
@@ -128,13 +135,14 @@ export function collectImports(
   context: OpenAPIGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
+  level: number,
 ): void {
   if (isReferenceObject(data)) {
-    return collectReferenceImports(data, config, context, names, refs)
+    return collectReferenceImports(data, config, context, names, refs, level)
   }
   switch (getInferredType(data)) {
     case 'union':
-      return collectUnionImports(data, config, context, names, refs)
+      return collectUnionImports(data, config, context, names, refs, level)
     case 'enum':
       names.add(RuntimePackages.Validators.enumeration)
       return
@@ -148,11 +156,11 @@ export function collectImports(
       names.add(RuntimePackages.Validators.boolean)
       return
     case 'record':
-      return collectRecordImports(data, config, context, names, refs)
+      return collectRecordImports(data, config, context, names, refs, level)
     case 'object':
-      return collectObjectTypeImports(data, config, context, names, refs)
+      return collectObjectTypeImports(data, config, context, names, refs, level)
     case 'array':
-      return collectArrayTypeImports(data, config, context, names, refs)
+      return collectArrayTypeImports(data, config, context, names, refs, level)
     default:
       names.add(RuntimePackages.Validators.any)
       return
@@ -169,7 +177,7 @@ export function getValidatorImports(
   const { dereference } = context
   const nameSet = new Set<string>()
   const refSet = new Set<string>()
-  collector(schema, config, context, nameSet, refSet)
+  collector(schema, config, context, nameSet, refSet, 0)
   const names = Array.from(nameSet)
   const refs = Array.from(refSet)
   return [

@@ -11,6 +11,7 @@ function getUnionProperties(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  level: number,
 ): PropertyAssignment[] {
   const { dereference, nameOf } = context
   if (isNil(data.discriminator)) {
@@ -18,7 +19,7 @@ function getUnionProperties(
       const schema = dereference(schemaOrRef)
       const rightHandSide =
         PrimitiveTypes.indexOf(schema.type) >= 0
-          ? getRightHandSideValidatorAst(schema, context, config)
+          ? getRightHandSideValidatorAst(schema, context, config, level)
           : factory.createIdentifier('any')
       return factory.createPropertyAssignment(getPrimitiveType(schema), rightHandSide)
     })
@@ -27,7 +28,7 @@ function getUnionProperties(
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
       factory.createIdentifier(nameOf(dereference($ref), 'openapi/type')),
-      getReferenceValidatorAst({ $ref }, context, config, true, config.references || config.unionReferences),
+      getReferenceValidatorAst({ $ref }, context, config, level),
     )
   })
 }
@@ -36,11 +37,12 @@ export function getUnionTypeValidatorAst(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  level: number,
 ): CallExpression | Identifier {
-  if (config.unionReferences || config.references) {
-    const properties = getUnionProperties(data, context, config)
-    const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.union), [], [parameters])
+  if (!config.references && level > 0) {
+    return factory.createIdentifier(RuntimePackages.Validators.any)
   }
-  return factory.createIdentifier(RuntimePackages.Validators.any)
+  const properties = getUnionProperties(data, context, config, level)
+  const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
+  return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.union), [], [parameters])
 }

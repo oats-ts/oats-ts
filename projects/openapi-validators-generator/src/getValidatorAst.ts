@@ -18,7 +18,7 @@ export function getValidatorAst(
           nameOf(schema, 'openapi/validator'),
           undefined,
           undefined,
-          getRightHandSideValidatorAst(schema, context, config),
+          getRightHandSideValidatorAst(schema, context, config, 0),
         ),
       ],
       NodeFlags.Const,

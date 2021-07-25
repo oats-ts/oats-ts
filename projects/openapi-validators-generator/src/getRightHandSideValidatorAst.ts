@@ -13,13 +13,14 @@ export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  level: number,
 ): CallExpression | Identifier {
   if (isReferenceObject(data)) {
-    return getReferenceValidatorAst(data, context, config)
+    return getReferenceValidatorAst(data, context, config, level)
   }
   switch (getInferredType(data)) {
     case 'union':
-      return getUnionTypeValidatorAst(data, context, config)
+      return getUnionTypeValidatorAst(data, context, config, level)
     case 'enum':
       return factory.createCallExpression(
         factory.createIdentifier(RuntimePackages.Validators.enumeration),
@@ -33,11 +34,11 @@ export function getRightHandSideValidatorAst(
     case 'boolean':
       return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.boolean), [], [])
     case 'record':
-      return getRecordValidatorAst(data, context, config)
+      return getRecordValidatorAst(data, context, config, level)
     case 'object':
-      return getObjectValidatorAst(data, context, config)
+      return getObjectValidatorAst(data, context, config, level)
     case 'array':
-      return getArrayValidatorAst(data, context, config)
+      return getArrayValidatorAst(data, context, config, level)
     default:
       return factory.createIdentifier(RuntimePackages.Validators.any)
   }

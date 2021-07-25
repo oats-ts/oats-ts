@@ -1,6 +1,6 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { sortBy } from 'lodash'
+import { sortBy, isNil } from 'lodash'
 import {
   getNamedSchemas,
   OpenAPIGenerator,
@@ -11,11 +11,10 @@ import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 import { Result } from '@oats-ts/generator'
-import { Expression, ImportDeclaration } from 'typescript'
-import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
-import { getReferenceValidatorAst } from './getReferenceValidatorAst'
+import { Expression, ImportDeclaration, factory } from 'typescript'
+import { SchemaObject, ReferenceObject } from 'openapi3-ts'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
-import { isOk } from '@oats-ts/validators'
+import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 
 export class ValidatorsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
@@ -53,11 +52,12 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
 
   public referenceOf(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): Expression {
     const { context, config } = this
-    const { uriOf } = context
+    const { nameOf, dereference } = context
     switch (target) {
       case 'openapi/validator':
-        const ref = isReferenceObject(input) ? input : { $ref: uriOf(input) }
-        return getReferenceValidatorAst(ref, context, config, false, true)
+        const schema = dereference(input)
+        const name = nameOf(schema, 'openapi/validator')
+        return isNil(name) ? getRightHandSideValidatorAst(input, context, config, 0) : factory.createIdentifier(name)
       default:
         return undefined
     }

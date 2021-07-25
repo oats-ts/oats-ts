@@ -8,6 +8,7 @@ export function getArrayValidatorAst(
   data: SchemaObject,
   context: OpenAPIGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  level: number,
 ): CallExpression | Identifier {
   const args: Expression[] = []
   if (config.arrays) {
@@ -15,7 +16,7 @@ export function getArrayValidatorAst(
       factory.createCallExpression(
         factory.createIdentifier(RuntimePackages.Validators.items),
         [],
-        [getRightHandSideValidatorAst(data.items, context, config)],
+        [getRightHandSideValidatorAst(data.items, context, config, level + 1)],
       ),
     )
   }
