@@ -9,7 +9,7 @@ import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
 const validator = object(
-  combine(
+  combine([
     shape<PathItemObject>(
       {
         get: optional(object()),
@@ -24,7 +24,7 @@ const validator = object(
       true,
     ),
     ignore(['$ref', 'servers']),
-  ),
+  ]),
 )
 
 export function pathItemObject(

@@ -1,6 +1,5 @@
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { SchemaObject } from 'openapi3-ts'
 import { Issue, object, shape, combine, array, items, minLength } from '@oats-ts/validators'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../utils/append'
 import { flatMap } from 'lodash'
 import { schemaObject } from './schemaObject'
@@ -11,15 +10,15 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from '../validators/referenceable'
 
 const validator = object(
-  combine(
+  combine([
     shape<SchemaObject>(
       {
-        allOf: array(combine(items(object()), minLength(1))),
+        allOf: array(combine([items(object()), minLength(1)])),
       },
       true,
     ),
     ignore(['oneOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'discriminator', 'enum']),
-  ),
+  ]),
 )
 export const intersectionSchemaObject =
   (alternatives: OpenAPIValidatorFn<SchemaObject> = schemaObject): OpenAPIValidatorFn<SchemaObject> =>

@@ -1,6 +1,6 @@
 import { SchemaObject } from 'openapi3-ts'
 import { Issue, object, optional, shape, combine, array, items, literal, minLength } from '@oats-ts/validators'
-import { getInferredType, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getInferredType } from '@oats-ts/openapi-common'
 import { append } from '../utils/append'
 import { flatMap } from 'lodash'
 import { enumSchemaObject } from './enumSchemaObject'
@@ -12,16 +12,16 @@ import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
 const validator = object(
-  combine(
+  combine([
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
-        oneOf: array(combine(items(object(forbidFields(['$ref']))), minLength(1))),
+        oneOf: array(combine([items(object(forbidFields(['$ref']))), minLength(1)])),
       },
       true,
     ),
     ignore(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'discriminator', 'enum']),
-  ),
+  ]),
 )
 export function primitiveUnionSchemaObject(
   input: SchemaObject,

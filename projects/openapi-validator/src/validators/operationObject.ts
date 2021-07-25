@@ -10,7 +10,7 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
 const validator = object(
-  combine(
+  combine([
     shape<OperationObject>(
       {
         operationId: string(minLength(1)),
@@ -21,7 +21,7 @@ const validator = object(
       true,
     ),
     ignore(['security', 'servers', 'callbacks']),
-  ),
+  ]),
 )
 
 export function operationObject(

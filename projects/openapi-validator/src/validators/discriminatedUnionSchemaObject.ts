@@ -22,7 +22,7 @@ import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
 const validator = object(
-  combine(
+  combine([
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
@@ -33,7 +33,7 @@ const validator = object(
           }),
         ),
         oneOf: array(
-          combine(
+          combine([
             items(
               object(
                 shape<ReferenceObject>({
@@ -42,13 +42,13 @@ const validator = object(
               ),
             ),
             minLength(1),
-          ),
+          ]),
         ),
       },
       true,
     ),
     ignore(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'enum']),
-  ),
+  ]),
 )
 export function discriminatedUnionSchemaObject(
   data: SchemaObject,

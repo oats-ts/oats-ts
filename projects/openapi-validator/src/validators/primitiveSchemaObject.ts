@@ -6,7 +6,7 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 
 const validator = object(
-  combine(
+  combine([
     shape(
       {
         type: enumeration(['string', 'boolean', 'number', 'integer']),
@@ -25,7 +25,7 @@ const validator = object(
       'required',
       'enum',
     ]),
-  ),
+  ]),
 )
 
 export function primitiveSchemaObject(
