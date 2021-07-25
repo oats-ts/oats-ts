@@ -10,6 +10,8 @@ import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
 import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
 import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
+import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
+import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 import { Api } from './Api'
 import { getSimpleNamedObject } from '../operations/getSimpleNamedObject'
 import { getWithDefaultResponse } from '../operations/getWithDefaultResponse'
@@ -18,6 +20,7 @@ import { getWithMultipleResponses } from '../operations/getWithMultipleResponses
 import { getWithPathParams } from '../operations/getWithPathParams'
 import { getWithQueryParams } from '../operations/getWithQueryParams'
 import { postSimpleNamedObject } from '../operations/postSimpleNamedObject'
+import { sampleOperation } from '../operations/sampleOperation'
 
 export class ApiImpl implements Api {
   protected readonly config: RequestConfig
@@ -58,5 +61,11 @@ export class ApiImpl implements Api {
     config: Partial<RequestConfig> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
     return postSimpleNamedObject(input, { ...this.config, ...config })
+  }
+  public async sampleOperation(
+    input: SampleOperationInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<SampleOperationResponse> {
+    return sampleOperation(input, { ...this.config, ...config })
   }
 }

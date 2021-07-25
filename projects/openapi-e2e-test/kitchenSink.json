@@ -495,6 +495,76 @@
           }
         }
       }
+    },
+    "/sample/path/{pathParam}": {
+      "post": {
+        "parameters": [
+          {
+            "name": "pathParam",
+            "required": true,
+            "in": "path",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "queryParam",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Header-Param",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "sampleOperation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NamedSimpleObject"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sample json response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NamedComplexObject"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Sample string response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

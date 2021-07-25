@@ -10,6 +10,8 @@ import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
 import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
 import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
+import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
+import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 import { Api } from './Api'
 
 export class ApiStub implements Api {
@@ -49,6 +51,12 @@ export class ApiStub implements Api {
     input: PostSimpleNamedObjectInput,
     config: Partial<RequestConfig> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
+    return this.fallback()
+  }
+  public async sampleOperation(
+    input: SampleOperationInput,
+    config: Partial<RequestConfig> = {},
+  ): Promise<SampleOperationResponse> {
     return this.fallback()
   }
 }
