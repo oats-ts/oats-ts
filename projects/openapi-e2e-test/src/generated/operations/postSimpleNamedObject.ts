@@ -12,8 +12,8 @@ export async function postSimpleNamedObject(
     {
       url: joinUrl(config.baseUrl, '/simple-named-object'),
       method: 'post',
-      body: await config.serialize(input.contentType, input.body),
-      headers: { 'content-type': input.contentType },
+      body: await config.serialize(input.mimeType, input.body),
+      headers: { 'content-type': input.mimeType },
     },
     config,
     postSimpleNamedObjectExpectations,

@@ -1,5 +1,4 @@
-import { OpenAPIObject, ReferenceObject, OperationObject, ParameterObject } from 'openapi3-ts'
-import { Issue } from '@oats-ts/validators'
+import { OpenAPIObject, ReferenceObject, OperationObject, ParameterObject, SchemaObject } from 'openapi3-ts'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator } from '@oats-ts/generator'
@@ -64,6 +63,12 @@ export type EnhancedOperation = {
   path: ParameterObject[]
   cookie: ParameterObject[]
   header: ParameterObject[]
+}
+
+export type EnhancedResponse = {
+  schema: SchemaObject | ReferenceObject
+  statusCode: string
+  mediaType: string
 }
 
 export type InferredType =

@@ -24,7 +24,7 @@ function getHeadersParameter(data: EnhancedOperation, context: OpenAPIGeneratorC
     properties.push(
       factory.createPropertyAssignment(
         factory.createStringLiteral('content-type'),
-        factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'contentType'),
+        factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'mimeType'),
       ),
     )
     return factory.createPropertyAssignment(
@@ -56,7 +56,7 @@ export function getOperationRequestLiteralAst(
             factory.createPropertyAccessExpression(factory.createIdentifier('config'), 'serialize'),
             [],
             [
-              factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'contentType'),
+              factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'mimeType'),
               factory.createPropertyAccessExpression(factory.createIdentifier('input'), 'body'),
             ],
           ),

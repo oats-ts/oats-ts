@@ -1,48 +1,48 @@
-import { entries, head, isNil } from 'lodash'
+import { head, isNil } from 'lodash'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeReferenceNode } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { EnhancedOperation, getResponseSchemas } from '@oats-ts/openapi-common'
+import { EnhancedOperation, getEnhancedResponses } from '@oats-ts/openapi-common'
+
+function createDefaultStatusCodeType(knownStatusCodes: string[]): TypeReferenceNode {
+  const statusCodeTypeRef = factory.createTypeReferenceNode(RuntimePackages.Http.StatusCode)
+
+  const knownStatusCodesType = factory.createUnionTypeNode(
+    knownStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
+  )
+  return knownStatusCodes.length > 0
+    ? factory.createTypeReferenceNode('Exclude', [statusCodeTypeRef, knownStatusCodesType])
+    : statusCodeTypeRef
+}
 
 export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
   const { referenceOf } = context
-  const responses = entries(getResponseSchemas(data.operation, context))
+  const responses = getEnhancedResponses(data.operation, context)
   const types: TypeReferenceNode[] = []
   if (responses.length === 0) {
     types.push(
       factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [factory.createTypeReferenceNode('void')]),
     )
+  } else {
+    const knownStatusCodes = responses.map(({ statusCode }) => statusCode).filter((s) => s !== 'default')
+    const responseTypes = responses.map(({ mediaType, schema, statusCode }) => {
+      const bodyType = referenceOf<TypeReferenceNode>(schema, 'openapi/type')
+      const statusCodeType =
+        statusCode === 'default'
+          ? createDefaultStatusCodeType(knownStatusCodes)
+          : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
+      const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
+
+      return factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
+        bodyType,
+        statusCodeType,
+        mediaTypeType,
+      ])
+    })
+
+    types.push(...responseTypes)
   }
 
-  const defaultResponse = responses.find(([status]) => status === 'default')
-  const statusCodeResponses = responses.filter(([status]) => status !== 'default')
-  types.push(
-    ...statusCodeResponses.map(([status, schema]) =>
-      factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
-        referenceOf(schema, 'openapi/type'),
-        factory.createLiteralTypeNode(factory.createNumericLiteral(status)),
-      ]),
-    ),
-  )
-  if (!isNil(defaultResponse)) {
-    const knownStatusCodesType = factory.createUnionTypeNode(
-      statusCodeResponses.map(([status]) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
-    )
-    const statusCodeTypeRef = factory.createTypeReferenceNode(RuntimePackages.Http.StatusCode)
-
-    const statusCodeType =
-      statusCodeResponses.length > 0
-        ? factory.createTypeReferenceNode('Exclude', [statusCodeTypeRef, knownStatusCodesType])
-        : statusCodeTypeRef
-
-    const [, schema] = defaultResponse
-    const type = factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
-      referenceOf(schema, 'openapi/type'),
-      statusCodeType,
-    ])
-
-    types.push(type)
-  }
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],

@@ -52,6 +52,7 @@ export async function execute(
   return {
     body,
     headers,
+    mimeType,
     statusCode,
     url: request.url,
   }

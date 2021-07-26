@@ -36,24 +36,24 @@ export function getOperationInputBaseTypeAst(
       break
     // 1 body, can directly go on the input parameter
     case 1: {
-      const [[contentType, mediaType]] = bodies
+      const [[mediaType, mediaTypeObj]] = bodies
       properties.push(
         factory.createPropertySignature(
           [],
-          'contentType',
+          'mimeType',
           undefined,
-          factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
+          factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
         ),
       )
       properties.push(
-        factory.createPropertySignature([], 'body', undefined, referenceOf(mediaType.schema, 'openapi/type')),
+        factory.createPropertySignature([], 'body', undefined, referenceOf(mediaTypeObj.schema, 'openapi/type')),
       )
       break
     }
     // More than one, we need generics
     default: {
       properties.push(
-        factory.createPropertySignature([], 'contentType', undefined, factory.createTypeReferenceNode('ContentType')),
+        factory.createPropertySignature([], 'mimeType', undefined, factory.createTypeReferenceNode('MimeType')),
       )
       properties.push(factory.createPropertySignature([], 'body', undefined, factory.createTypeReferenceNode('Body')))
       break
@@ -65,7 +65,7 @@ export function getOperationInputBaseTypeAst(
   const typeArgs =
     bodies.length > 1
       ? [
-          factory.createTypeParameterDeclaration('ContentType', factory.createTypeReferenceNode('string')),
+          factory.createTypeParameterDeclaration('MimeType', factory.createTypeReferenceNode('string')),
           factory.createTypeParameterDeclaration('Body'),
         ]
       : []

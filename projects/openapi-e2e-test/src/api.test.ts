@@ -29,7 +29,7 @@ describe('Api', () => {
   it('should postSimpleNamedObject', async () => {
     const response = await api.postSimpleNamedObject({
       body: { booleanProperty: false, numberProperty: 1, stringProperty: 'hi' },
-      contentType: 'application/json',
+      mimeType: 'application/json',
     })
     expect(response.statusCode).toBe(200)
     expect(typeof response.body).toBe('object')

@@ -1,7 +1,6 @@
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { SchemaObject } from 'openapi3-ts'
 import { values, flatMap } from 'lodash'
 import { Issue, object, optional, shape, combine, array, items, string, literal } from '@oats-ts/validators'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../utils/append'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'

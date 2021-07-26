@@ -1,8 +1,8 @@
-import { values, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { OperationObject } from 'openapi3-ts'
-import { getResponseSchemas } from './getResponseSchemas'
+import { getEnhancedResponses } from './getEnhancedResponses'
 import { OpenAPIGeneratorContext } from './typings'
 
 export function hasResponses(operation: OperationObject, context: OpenAPIGeneratorContext): boolean {
-  return !isEmpty(values(getResponseSchemas(operation, context)))
+  return !isEmpty(getEnhancedResponses(operation, context))
 }

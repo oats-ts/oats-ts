@@ -1,4 +1,10 @@
-export type { OpenAPIGeneratorContext, EnhancedOperation, OpenAPIGenerator, InferredType } from './typings'
+export type {
+  OpenAPIGeneratorContext,
+  EnhancedOperation,
+  EnhancedResponse,
+  OpenAPIGenerator,
+  InferredType,
+} from './typings'
 
 export { getDiscriminators } from './getDiscriminators'
 export { getEnhancedOperations } from './getEnhancedOperations'
@@ -6,7 +12,7 @@ export { getInferredType } from './getInferredType'
 export { getNamedSchemas } from './getNamedSchemas'
 export { getReferencedNamedSchemas } from './getReferencedNamedSchemas'
 export { createOpenAPIGeneratorContext } from './createOpenAPIGeneratorContext'
-export { getResponseSchemas } from './getResponseSchemas'
+export { getEnhancedResponses } from './getEnhancedResponses'
 export { hasInput } from './hasInput'
 export { hasResponses } from './hasResponses'
 export { getRequestBodyContent } from './getRequestBodyContent'

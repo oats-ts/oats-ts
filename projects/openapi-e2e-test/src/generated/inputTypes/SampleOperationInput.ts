@@ -3,11 +3,11 @@ import { SampleOperationPathParameters } from '../pathTypes/SampleOperationPathP
 import { SampleOperationQueryParameters } from '../queryTypes/SampleOperationQueryParameters'
 import { SampleOperationHeaderParameters } from '../headerTypes/SampleOperationHeaderParameters'
 
-type _SampleOperationInput<ContentType extends string, Body> = {
+type _SampleOperationInput<MimeType extends string, Body> = {
   headers: SampleOperationHeaderParameters
   query: SampleOperationQueryParameters
   path: SampleOperationPathParameters
-  contentType: ContentType
+  mimeType: MimeType
   body: Body
 }
 

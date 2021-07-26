@@ -1,6 +1,5 @@
 import { SchemaObject, ReferenceObject } from 'openapi3-ts'
 import { Issue, object, optional, shape, combine, literal } from '@oats-ts/validators'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { append } from '../utils/append'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'

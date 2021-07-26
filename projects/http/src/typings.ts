@@ -73,11 +73,12 @@ export type StatusCode =
   | 507
   | 511
 
-export type HttpResponse<Body = any, Status = any> = {
+export type HttpResponse<Body = any, Status = any, MimeType extends string = any> = {
   url: string
   body: Body
   statusCode: Status
   headers: HttpHeaders
+  mimeType: MimeType
 }
 
 export type ResponseExpectation<V = unknown> = {
