@@ -6,10 +6,10 @@ export type TypeScriptModule = Module<Statement, ImportDeclaration>
 /** Configuration object for writing OpenAPI generated artifacts to file. */
 export type TypeScriptWriterConfig = {
   /**
-   * @param babelModule A module containing ast, imports and full file path.
+   * @param module A module containing ast, imports and full file path.
    * @returns The module as a source code string.
    */
-  stringify(babelModule: TypeScriptModule): Promise<string>
+  stringify(module: TypeScriptModule): Promise<string>
   /**
    * Writes the given content to the given path.
    * Creating possibly missing folders is part of it's responsibilty.
