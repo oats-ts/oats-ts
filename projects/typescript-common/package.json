@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/typescript-common",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -34,7 +34,7 @@
   "dependencies": {
     "typescript": "4.3.2",
     "openapi3-ts": "2.0.1",
-    "@oats-ts/openapi-common": "0.0.0",
-    "@oats-ts/openapi": "0.0.0"
+    "@oats-ts/openapi-common": "0.0.2",
+    "@oats-ts/openapi": "0.0.2"
   }
 }
