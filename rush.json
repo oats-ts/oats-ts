@@ -21,7 +21,8 @@
     {
       "packageName": "@oats-ts/asyncapi-model",
       "projectFolder": "projects/asyncapi-model",
-      "shouldPublish": false
+      "versionPolicyName": "oats",
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/generator",
@@ -32,6 +33,12 @@
     {
       "packageName": "@oats-ts/http",
       "projectFolder": "projects/http",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/jsonschema-model",
+      "projectFolder": "projects/jsonschema-model",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -57,6 +64,12 @@
       "packageName": "@oats-ts/openapi-e2e-test",
       "projectFolder": "projects/openapi-e2e-test",
       "shouldPublish": false
+    },
+    {
+      "packageName": "@oats-ts/openapi-model",
+      "projectFolder": "projects/openapi-model",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-operations-generator",

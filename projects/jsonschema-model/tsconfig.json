@@ -12,7 +12,7 @@
     ]
   },
   "include": [
-    "index.d.ts"
+    "./src"
   ],
   "exclude": [
     "node_modules",

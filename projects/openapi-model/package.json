@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/asyncapi-model",
+  "name": "@oats-ts/openapi-model",
   "version": "0.0.0",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",

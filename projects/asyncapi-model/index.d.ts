@@ -1,3 +1,5 @@
+import { Referenceable, SchemaObject } from '@oats-ts/jsonschema-model'
+
 export type AsyncApiObject = {
   asyncapi: string
   id?: string
@@ -7,10 +9,6 @@ export type AsyncApiObject = {
   components?: ComponentsObject
   tags?: TagObject[]
   externalDocs?: ExternalDocumentationObject
-}
-
-export type ReferenceObject = {
-  $ref: string
 }
 
 export type InfoObject = {
@@ -54,7 +52,7 @@ export type ServerVariableObject = {
 
 export type SecurityRequirementObject = Record<string, string[]>
 
-export type ChannelsObject = Record<string, ChannelItemObject | ReferenceObject>
+export type ChannelsObject = Record<string, Referenceable<ChannelItemObject>>
 
 export type ChannelItemObject = {
   description?: string
@@ -75,7 +73,7 @@ export type OperationObject = {
   message?: MessageObject
 }
 
-export type ParametersObject = Record<string, ParameterObject | ReferenceObject>
+export type ParametersObject = Record<string, Referenceable<ParameterObject>>
 
 export type ParameterObject = {
   description?: string
@@ -104,9 +102,9 @@ export type OperationTraitObject = {
 }
 
 export type MessageObject = {
-  headers?: SchemaObject | ReferenceObject
+  headers?: Referenceable<SchemaObject>
   payload?: any
-  correlationId?: CorrelationIDObject | ReferenceObject
+  correlationId?: Referenceable<CorrelationIDObject>
   schemaFormat?: string
   contentType?: string
   name?: string
@@ -126,8 +124,8 @@ export type CorrelationIDObject = {
 }
 
 export type MessageTraitObject = {
-  headers?: SchemaObject | ReferenceObject
-  correlationId?: CorrelationIDObject | ReferenceObject
+  headers?: Referenceable<SchemaObject>
+  correlationId?: Referenceable<CorrelationIDObject>
   schemaFormat?: string
   contentType?: string
   name?: string
@@ -141,10 +139,10 @@ export type MessageTraitObject = {
 }
 
 export type ComponentsObject = {
-  schemas?: Record<string, SchemaObject | ReferenceObject>
-  messages?: Record<string, MessageObject | ReferenceObject>
-  securitySchemes?: Record<string, SecuritySchemeObject | ReferenceObject>
-  parameters?: Record<string, ParameterObject | ReferenceObject>
+  schemas?: Record<string, Referenceable<SchemaObject>>
+  messages?: Record<string, Referenceable<MessageObject>>
+  securitySchemes?: Record<string, Referenceable<SecuritySchemeObject>>
+  parameters?: Record<string, Referenceable<ParameterObject>>
   correlationIds?: Record<string, CorrelationIDObject>
   operationTraits?: Record<string, OperationTraitObject>
   messageTraits?: Record<string, MessageTraitObject>
@@ -192,62 +190,6 @@ export type OAuthFlowObject = {
   tokenUrl?: string
   refreshUrl?: string
   scopes?: Record<string, string>
-}
-
-export type SchemaObjectType = 'integer' | 'number' | 'string' | 'boolean' | 'object' | 'null' | 'array'
-
-export type SchemaObject = {
-  // From JSON schema V7 draft
-  title?: string
-  type?: SchemaObjectType
-  required?: string[]
-  multipleOf?: number
-  maximum?: number
-  exclusiveMaximum?: boolean
-  minimum?: number
-  exclusiveMinimum?: boolean
-  maxLength?: number
-  minLength?: number
-  pattern?: string
-  maxItems?: number
-  minItems?: number
-  uniqueItems?: boolean
-  maxProperties?: number
-  minProperties?: number
-  enum?: any[]
-  const?: any
-  examples?: any[]
-  if?: SchemaObject | ReferenceObject
-  then?: SchemaObject | ReferenceObject
-  else?: SchemaObject | ReferenceObject
-  readOnly?: boolean
-  writeOnly?: boolean
-  properties?: Record<string, SchemaObject | ReferenceObject>
-  patternProperties?: Record<string, SchemaObject | ReferenceObject>
-  additionalProperties?: SchemaObject | ReferenceObject | boolean
-  additionalItems?: SchemaObject | ReferenceObject | boolean
-  items?: SchemaObject | ReferenceObject
-  propertyNames?: SchemaObject | ReferenceObject
-  contains?: SchemaObject | ReferenceObject
-  allOf?: (SchemaObject | ReferenceObject)[]
-  oneOf?: (SchemaObject | ReferenceObject)[]
-  anyOf?: (SchemaObject | ReferenceObject)[]
-  not?: SchemaObject | ReferenceObject
-
-  // Adjusted
-  description?: string
-  format?: string
-  default?: any
-
-  // Extra fields
-  discriminator?: DiscriminatorObject
-  externalDocs?: ExternalDocumentationObject
-  deprecated?: boolean
-}
-
-export interface DiscriminatorObject {
-  propertyName?: string
-  mapping?: Record<string, string>
 }
 
 export type ServerBindingsObject = {
@@ -342,8 +284,8 @@ export type WebSocketsChannelBindingMethod = 'GET' | 'POST'
 
 export type WebSocketsChannelBinding = {
   method: WebSocketsChannelBindingMethod
-  query: SchemaObject | ReferenceObject
-  headers: SchemaObject | ReferenceObject
+  query: Referenceable<SchemaObject>
+  headers: Referenceable<SchemaObject>
   bindingVersion: string
 }
 
@@ -436,15 +378,15 @@ export type HTTPOperationBindingMethod =
 export type HTTPOperationBinding = {
   type?: HTTPOperationBindingType
   method?: HTTPOperationBindingMethod
-  query?: SchemaObject | ReferenceObject
+  query?: Referenceable<SchemaObject>
   bindingVersion?: string
 }
 
 export type WebSocketsOperationBinding = {}
 
 export type KafkaOperationBinding = {
-  groupId?: SchemaObject | ReferenceObject
-  clientId?: SchemaObject | ReferenceObject
+  groupId?: Referenceable<SchemaObject>
+  clientId?: Referenceable<SchemaObject>
   bindingVersion?: string
 }
 
@@ -516,14 +458,14 @@ export type MessageBindingsObject = {
 }
 
 export type HTTPMessageBinding = {
-  headers: SchemaObject | ReferenceObject
+  headers: Referenceable<SchemaObject>
   bindingVersion: string
 }
 
 export type WebSocketsMessageBinding = {}
 
 export type KafkaMessageBinding = {
-  key?: SchemaObject | ReferenceObject
+  key?: Referenceable<SchemaObject>
   bindingVersion?: string
 }
 
