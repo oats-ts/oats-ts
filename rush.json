@@ -37,8 +37,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/jsonschema-model",
-      "projectFolder": "projects/jsonschema-model",
+      "packageName": "@oats-ts/json-schema-model",
+      "projectFolder": "projects/json-schema-model",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

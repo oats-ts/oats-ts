@@ -1,4 +1,4 @@
-import { Referenceable, SchemaObject } from '@oats-ts/jsonschema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
 export type AsyncApiObject = {
   asyncapi: string

@@ -4,7 +4,7 @@ specifiers:
   '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/http': file:./projects/http.tgz
-  '@rush-temp/jsonschema-model': file:./projects/jsonschema-model.tgz
+  '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
   '@rush-temp/openapi': file:./projects/openapi.tgz
   '@rush-temp/openapi-api-generator': file:./projects/openapi-api-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
@@ -57,7 +57,7 @@ dependencies:
   '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
-  '@rush-temp/jsonschema-model': file:projects/jsonschema-model.tgz
+  '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.0.0
   '@rush-temp/openapi-api-generator': file:projects/openapi-api-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
@@ -3719,7 +3719,7 @@ packages:
     dev: false
 
   file:projects/asyncapi-model.tgz:
-    resolution: {integrity: sha512-K4Pdgr8fGq7C0Kd5czeBHAFAIAKGi2/VzEyk9KJdSPT7lch+wjXhoLIUYn0ldld7A5c8cmzqPAIWH4rU8tM6Dg==, tarball: file:projects/asyncapi-model.tgz}
+    resolution: {integrity: sha512-+I+rqem8QPAyCfQJ2uO5nfrGJelMQp7dOUjRo3bUwyKWX1z5Hc2LivGVp7JVfQ7ZuNEcw8paQ6S/G3dhls2xLw==, tarball: file:projects/asyncapi-model.tgz}
     name: '@rush-temp/asyncapi-model'
     version: 0.0.0
     dev: false
@@ -3773,9 +3773,9 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/jsonschema-model.tgz:
-    resolution: {integrity: sha512-RbXxrybr35JR+HB65bhHpP2eWxpyxN/8iiuwj5VUYUfTpDTnFGH9zvEQWrH6vPRMHj/otftu1YOAB91qTaYb/w==, tarball: file:projects/jsonschema-model.tgz}
-    name: '@rush-temp/jsonschema-model'
+  file:projects/json-schema-model.tgz:
+    resolution: {integrity: sha512-bALvSiuf4y9BfIET9bXBeX0bgdkqcN0K34zEUE2QmxRpw+vqW1eXAyAX3Awe5vJi06YqnyTO5+S9GeUYWqoG+g==, tarball: file:projects/json-schema-model.tgz}
+    name: '@rush-temp/json-schema-model'
     version: 0.0.0
     dependencies:
       typescript: 4.3.2
@@ -3871,7 +3871,7 @@ packages:
     dev: false
 
   file:projects/openapi-model.tgz:
-    resolution: {integrity: sha512-x4RbyQ/qLR1Fe/OroijFnKby0jXPTZBqpdONnAaXQm+reoKs+9YaDLw900fnpDjVs3VBLXVApvd45tiGlifkfg==, tarball: file:projects/openapi-model.tgz}
+    resolution: {integrity: sha512-wOE+Bxp0U8o5Yg+3SRzXqfLPKqQLJdhvRtgvLd+5CE7iVjqOkrAhw6AHoIWs9CN2o2ZtnVNnsZ+l0jU0ufLpgg==, tarball: file:projects/openapi-model.tgz}
     name: '@rush-temp/openapi-model'
     version: 0.0.0
     dev: false

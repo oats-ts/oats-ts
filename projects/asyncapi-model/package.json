@@ -20,6 +20,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@oats-ts/jsonschema-model": "0.0.0"
+    "@oats-ts/json-schema-model": "0.0.0"
   }
 }
