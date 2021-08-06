@@ -1,4 +1,4 @@
-import { ParameterObject } from 'openapi3-ts'
+import { ParameterObject } from '@oats-ts/openapi-model'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { factory, SyntaxKind, TypeLiteralNode } from 'typescript'

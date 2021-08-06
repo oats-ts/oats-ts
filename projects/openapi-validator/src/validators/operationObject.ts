@@ -1,4 +1,4 @@
-import { OperationObject } from 'openapi3-ts'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { isNil, flatMap } from 'lodash'
 import { Issue, object, optional, shape, combine, record, string, minLength, array } from '@oats-ts/validators'
 import { append } from '../utils/append'

@@ -1,4 +1,4 @@
-import { ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'

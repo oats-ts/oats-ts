@@ -1,4 +1,4 @@
-import { ParameterLocation } from 'openapi3-ts'
+import { ParameterLocation } from '@oats-ts/openapi-model'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '@oats-ts/openapi-common'

@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypesGeneratorConfig } from './typings'

@@ -1,4 +1,4 @@
-import { PathItemObject } from 'openapi3-ts'
+import { PathItemObject } from '@oats-ts/openapi-model'
 import { flatMap } from 'lodash'
 import { Issue, object, optional, shape, combine, array } from '@oats-ts/validators'
 import { append } from '../utils/append'

@@ -1,16 +1,15 @@
 import { factory, SyntaxKind } from 'typescript'
-import { ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 
 export function getDictionaryTypeAst(
-  data: SchemaObject | ReferenceObject,
+  data: SchemaObject,
   context: OpenAPIGeneratorContext,
   config: TypesGeneratorConfig,
 ) {
-  const { dereference } = context
-  const { additionalProperties } = dereference(data)
+  const { additionalProperties } = data
   const schema = typeof additionalProperties === 'boolean' ? null : additionalProperties
   return factory.createTypeReferenceNode(factory.createIdentifier('Record'), [
     factory.createKeywordTypeNode(SyntaxKind.StringKeyword),

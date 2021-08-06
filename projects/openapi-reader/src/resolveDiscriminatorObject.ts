@@ -1,4 +1,4 @@
-import { DiscriminatorObject, SchemaObject } from 'openapi3-ts'
+import { DiscriminatorObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { discriminatorObject } from './validators/discriminatorObject'

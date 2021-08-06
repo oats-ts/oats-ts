@@ -1,4 +1,4 @@
-import { OperationObject } from 'openapi3-ts'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { boolean, shape, object, optional, string, array, items } from '@oats-ts/validators'
 
 export const operationObject = object(

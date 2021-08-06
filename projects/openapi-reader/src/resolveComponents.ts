@@ -4,8 +4,8 @@ import {
   ParameterObject,
   RequestBodyObject,
   ResponseObject,
-  SchemaObject,
-} from 'openapi3-ts'
+} from '@oats-ts/openapi-model'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { componentsObject } from './validators/componentsObject'

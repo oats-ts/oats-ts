@@ -1,4 +1,4 @@
-import { ReferenceObject, SchemaObject, isReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { factory, PropertySignature, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeReferenceAst } from './getTypeReferenceAst'

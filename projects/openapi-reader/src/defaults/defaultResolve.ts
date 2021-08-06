@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 import http, { RequestOptions, IncomingHttpHeaders } from 'http'
 import https from 'https'
 import { URL } from 'url'
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 
 const YAMLContentTypes = [
   'text/x-yaml',

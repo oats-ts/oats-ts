@@ -1,5 +1,5 @@
 import type { Validator } from '@oats-ts/validators'
-import { BaseParameterObject, HeaderObject, ParameterObject } from 'openapi3-ts'
+import { BaseParameterObject, HeaderObject, ParameterObject } from '@oats-ts/openapi-model'
 import { register } from './register'
 import { resolveMediaTypeObject } from './resolveMediaTypeObject'
 import { resolveReferenceable } from './resolveReferenceable'

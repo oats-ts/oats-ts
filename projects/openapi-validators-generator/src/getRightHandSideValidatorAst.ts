@@ -1,4 +1,4 @@
-import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { isReferenceObject, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { RuntimePackages, OpenAPIGeneratorContext, getInferredType } from '@oats-ts/openapi-common'
 import { getObjectValidatorAst } from './getObjectValidatorAst'

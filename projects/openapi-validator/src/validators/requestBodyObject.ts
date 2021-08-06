@@ -1,4 +1,4 @@
-import { RequestBodyObject } from 'openapi3-ts'
+import { RequestBodyObject } from '@oats-ts/openapi-model'
 import { Issue, object, optional, shape, literal, record, string } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { ordered } from '../utils/ordered'

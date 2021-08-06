@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { ParameterObject, ParameterStyle } from 'openapi3-ts'
+import { ParameterObject, ParameterStyle } from '@oats-ts/openapi-model'
 
 export function getParameterStyle(parameter: ParameterObject): ParameterStyle {
   switch (parameter.in) {

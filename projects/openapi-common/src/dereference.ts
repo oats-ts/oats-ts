@@ -1,4 +1,4 @@
-import { isReferenceObject, ReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { OpenAPIReadOutput } from '../../openapi-reader/lib'
 
 export function dereference(data: OpenAPIReadOutput) {

@@ -1,4 +1,4 @@
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Issue, object, optional, shape } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { ordered } from '../utils/ordered'

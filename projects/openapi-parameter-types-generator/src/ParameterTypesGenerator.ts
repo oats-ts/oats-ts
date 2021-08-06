@@ -16,7 +16,7 @@ import {
 import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { Result } from '@oats-ts/generator'
-import { OperationObject } from 'openapi3-ts/dist'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 

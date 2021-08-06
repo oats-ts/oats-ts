@@ -1,4 +1,4 @@
-import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { isReferenceObject, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { isEmpty, entries, isNil, sortBy, values } from 'lodash'
 import { RuntimePackages, OpenAPIGeneratorContext, getDiscriminators, getInferredType } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
@@ -32,7 +32,7 @@ export function collectExternalReferenceImports(
 }
 
 export function collectReferenceImports(
-  data: SchemaObject | ReferenceObject,
+  data: ReferenceObject,
   config: ValidatorsGeneratorConfig,
   context: OpenAPIGeneratorContext,
   names: Set<string>,

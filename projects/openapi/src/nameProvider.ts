@@ -1,7 +1,7 @@
 import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { OpenAPIGeneratorTarget } from './typings'
-import { OperationObject } from 'openapi3-ts'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { isNil } from 'lodash'
 
 export function nameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {

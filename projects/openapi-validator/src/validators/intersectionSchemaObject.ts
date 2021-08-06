@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, shape, combine, array, items, minLength } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { flatMap } from 'lodash'

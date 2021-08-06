@@ -13,7 +13,7 @@ import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
 import { Result } from '@oats-ts/generator'
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '../../typescript-common/lib'
 

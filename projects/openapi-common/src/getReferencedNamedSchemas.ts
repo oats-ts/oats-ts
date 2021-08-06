@@ -1,5 +1,5 @@
 import { entries, isNil } from 'lodash'
-import { ReferenceObject, SchemaObject, isReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { OpenAPIGeneratorContext } from './typings'
 
 function collectInChildren(input: SchemaObject, context: OpenAPIGeneratorContext, schemas: SchemaObject[]) {

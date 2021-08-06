@@ -1,4 +1,4 @@
-import { PathItemObject } from 'openapi3-ts'
+import { PathItemObject } from '@oats-ts/openapi-model'
 import { shape, object, optional, string, array, items } from '@oats-ts/validators'
 
 export const pathItemObject = object(

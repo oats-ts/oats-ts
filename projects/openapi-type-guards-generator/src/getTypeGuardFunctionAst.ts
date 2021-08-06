@@ -1,9 +1,9 @@
-import { SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, FunctionDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
 export function getTypeGuardFunctionAst(
-  schema: SchemaObject,
+  schema: SchemaObject | ReferenceObject,
   context: OpenAPIGeneratorContext,
   assertion: Expression,
 ): FunctionDeclaration {

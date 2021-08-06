@@ -2,7 +2,7 @@ import { Result } from '@oats-ts/generator'
 import { isOk } from '@oats-ts/validators'
 import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadContext } from './internalTypings'
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
 import { defaultOpenAPIReadConfig } from './defaults/defaultOpenAPIReadConfig'
 

@@ -1,5 +1,5 @@
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext, OpenAPIValidatorFn } from '../typings'
-import { ReferenceObject, isReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { Issue, isOk } from '@oats-ts/validators'
 import { isNil } from 'lodash'
 

@@ -1,4 +1,4 @@
-import { RequestBodyObject } from 'openapi3-ts'
+import { RequestBodyObject } from '@oats-ts/openapi-model'
 import { boolean, shape, object, optional, string } from '@oats-ts/validators'
 
 export const requestBodyObject = object(

@@ -1,4 +1,4 @@
-import { ParameterObject, PathItemObject } from 'openapi3-ts'
+import { ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'

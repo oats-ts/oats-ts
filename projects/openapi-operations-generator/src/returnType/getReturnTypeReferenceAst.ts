@@ -1,4 +1,4 @@
-import { OperationObject } from 'openapi3-ts'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { factory, TypeReferenceNode } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 

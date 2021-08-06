@@ -1,5 +1,5 @@
 import { factory, ClassDeclaration, SyntaxKind } from 'typescript'
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { RuntimePackages, EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiClassMethodAst } from './getApiClassMethodAst'
 import { ApiGeneratorConfig } from '../typings'

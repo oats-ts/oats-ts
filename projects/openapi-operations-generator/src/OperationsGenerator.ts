@@ -1,7 +1,7 @@
 import { Result } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { OperationObject } from 'openapi3-ts'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
 import { generateOperationFunction } from './operation/generateOperationFunction'
 import { generateOperationReturnType } from './returnType/generateOperationReturnType'

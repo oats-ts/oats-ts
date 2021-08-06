@@ -1,4 +1,4 @@
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 
 /** Configuration object for reading OpenAPI documents. */
 export type OpenAPIReadConfig = {

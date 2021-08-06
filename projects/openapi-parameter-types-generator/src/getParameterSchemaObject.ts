@@ -1,4 +1,5 @@
-import { ParameterObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ParameterObject } from '@oats-ts/openapi-model'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 
 export function getParameterSchemaObject(params: ParameterObject[]): SchemaObject {
   return {

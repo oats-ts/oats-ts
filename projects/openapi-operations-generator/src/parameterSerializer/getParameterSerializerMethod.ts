@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 
 export function getParameterSerializerMethod(schema: SchemaObject): 'primitive' | 'object' | 'array' {
   switch (schema.type) {

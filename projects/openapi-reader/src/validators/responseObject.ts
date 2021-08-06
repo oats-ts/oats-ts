@@ -1,4 +1,4 @@
-import { ResponseObject } from 'openapi3-ts'
+import { ResponseObject } from '@oats-ts/openapi-model'
 import { shape, object, optional, string } from '@oats-ts/validators'
 
 export const responseObject = object(

@@ -1,8 +1,8 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, getPrimitiveType } from '@oats-ts/openapi-common'
 import { FullTypeGuardGeneratorConfig } from './typings'
-import { getPrimitiveType } from '@oats-ts/typescript-common'
+import {} from '@oats-ts/typescript-common'
 
 export function getPrimitiveTypeAssertionAst(
   data: SchemaObject,

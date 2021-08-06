@@ -1,4 +1,4 @@
-import { ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 import { isNil } from 'lodash'

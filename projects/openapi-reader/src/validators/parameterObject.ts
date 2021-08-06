@@ -1,4 +1,4 @@
-import { BaseParameterObject, HeaderObject, ParameterObject } from 'openapi3-ts'
+import { BaseParameterObject, HeaderObject, ParameterObject } from '@oats-ts/openapi-model'
 import { boolean, shape, object, optional, string, enumeration, any, Validator } from '@oats-ts/validators'
 
 const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any>> = {

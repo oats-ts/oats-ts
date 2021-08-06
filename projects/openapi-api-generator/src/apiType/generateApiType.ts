@@ -1,4 +1,4 @@
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getApiTypeAst } from './getApiTypeAst'

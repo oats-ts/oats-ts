@@ -12,7 +12,7 @@ import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 import { Result } from '@oats-ts/generator'
 import { Expression, ImportDeclaration, factory } from 'typescript'
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 

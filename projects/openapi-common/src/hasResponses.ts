@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash'
-import { OperationObject } from 'openapi3-ts'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { getEnhancedResponses } from './getEnhancedResponses'
 import { OpenAPIGeneratorContext } from './typings'
 

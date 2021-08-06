@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, SyntaxKind } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'

@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { EnumDeclaration, factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { getInferredType, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getNamedEnumAst } from './getNamedEnumAst'

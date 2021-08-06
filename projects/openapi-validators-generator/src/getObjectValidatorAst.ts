@@ -1,5 +1,5 @@
 import { entries, has, sortBy } from 'lodash'
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { getDiscriminators } from '@oats-ts/openapi-common'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'

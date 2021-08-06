@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { isReferenceObject, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory } from 'typescript'
 import { getInferredType, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getArrayTypeAssertionAst } from './getArrayTypeAssertion'

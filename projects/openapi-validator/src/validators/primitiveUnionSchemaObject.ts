@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, array, items, literal, minLength } from '@oats-ts/validators'
 import { getInferredType } from '@oats-ts/openapi-common'
 import { append } from '../utils/append'

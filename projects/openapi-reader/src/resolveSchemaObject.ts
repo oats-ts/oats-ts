@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { register } from './register'
 import { resolveDiscriminatorObject } from './resolveDiscriminatorObject'
 import { resolveReferenceable } from './resolveReferenceable'

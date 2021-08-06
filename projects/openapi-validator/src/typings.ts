@@ -1,4 +1,4 @@
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { Issue } from '@oats-ts/validators'
 import {
   OpenAPIObject,
@@ -8,12 +8,10 @@ import {
   ParameterObject,
   RequestBodyObject,
   ResponseObject,
-  SchemaObject,
   HeaderObject,
   ResponsesObject,
   ContentObject,
-  ReferenceObject,
-} from 'openapi3-ts'
+} from '@oats-ts/openapi-model'
 
 export type OpenAPIValidatorFn<T> = (
   input: T,

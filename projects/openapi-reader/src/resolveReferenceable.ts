@@ -1,4 +1,4 @@
-import { ReferenceObject, isReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { resolveReference } from './resolveReference'
 import { ReadContext, ReadInput } from './internalTypings'
 

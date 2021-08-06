@@ -33,7 +33,8 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
-    "openapi3-ts": "2.0.1",
+    "@oats-ts/json-schema-model": "0.0.0",
+    "@oats-ts/openapi-model": "0.0.0",
     "typescript": "4.3.2",
     "@oats-ts/generator": "0.0.2",
     "@oats-ts/validators": "0.0.2",

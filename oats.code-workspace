@@ -13,6 +13,10 @@
       "path": "projects/http"
     },
     {
+      "name": "json-schema-model",
+      "path": "projects/json-schema-model"
+    },
+    {
       "name": "openapi",
       "path": "projects/openapi"
     },
@@ -27,6 +31,10 @@
     {
       "name": "openapi-e2e-test",
       "path": "projects/openapi-e2e-test"
+    },
+    {
+      "name": "openapi-model",
+      "path": "projects/openapi-model"
     },
     {
       "name": "openapi-operations-generator",

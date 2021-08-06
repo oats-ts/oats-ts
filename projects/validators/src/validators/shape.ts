@@ -3,9 +3,13 @@ import { getConfig, getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'extra-key'
 
+type ShapeInput<T> = {
+  [P in keyof T]?: Validator<any>
+}
+
 export const shape =
   <T extends Record<string, any>>(
-    validators: Record<keyof T, Validator<any>>,
+    validators: ShapeInput<T>,
     allowExtraFields = false,
   ): Validator<Record<string, any>> =>
   (input: object, config?: Partial<ValidatorConfig>) => {

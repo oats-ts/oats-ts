@@ -1,5 +1,5 @@
 import { entries, isNil, values } from 'lodash'
-import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { OpenAPIGeneratorContext } from './typings'
 
 function collectFromSchema(

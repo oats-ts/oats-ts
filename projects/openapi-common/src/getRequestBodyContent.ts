@@ -1,5 +1,5 @@
 import { isNil } from 'lodash'
-import { ContentObject } from 'openapi3-ts'
+import { ContentObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from './typings'
 
 export function getRequestBodyContent(data: EnhancedOperation, context: OpenAPIGeneratorContext): ContentObject {

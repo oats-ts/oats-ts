@@ -1,4 +1,4 @@
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { factory, SyntaxKind, TypeNode } from 'typescript'
 import { OpenAPIGeneratorContext, getInferredType } from '@oats-ts/openapi-common'
 import { getArrayTypeAst } from './getArrayTypeAst'
@@ -19,17 +19,17 @@ export function getRighthandSideTypeAst(
     case 'ref':
       return getTypeReferenceAst(data, context, config)
     case 'array':
-      return getArrayTypeAst(data, context, config)
+      return getArrayTypeAst(data as SchemaObject, context, config)
     case 'enum':
-      return getLiteralUnionTypeAst(data, context)
+      return getLiteralUnionTypeAst(data as SchemaObject, context)
     case 'object':
-      return getObjectTypeAst(data, context, config)
+      return getObjectTypeAst(data as SchemaObject, context, config)
     case 'record':
-      return getDictionaryTypeAst(data, context, config)
+      return getDictionaryTypeAst(data as SchemaObject, context, config)
     case 'union':
-      return getUnionTypeAst(data, context, config)
+      return getUnionTypeAst(data as SchemaObject, context, config)
     case 'intersection':
-      return getIntersectionTypeAst(data, context, config)
+      return getIntersectionTypeAst(data as SchemaObject, context, config)
     case 'string':
       return factory.createKeywordTypeNode(SyntaxKind.StringKeyword)
     case 'boolean':

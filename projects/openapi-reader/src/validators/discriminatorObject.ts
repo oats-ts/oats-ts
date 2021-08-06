@@ -1,4 +1,4 @@
-import { DiscriminatorObject } from 'openapi3-ts'
+import { DiscriminatorObject } from '@oats-ts/json-schema-model'
 import { shape, object, optional, string } from '@oats-ts/validators'
 
 export const discriminatorObject = object(

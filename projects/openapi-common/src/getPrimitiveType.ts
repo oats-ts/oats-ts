@@ -1,5 +1,5 @@
-import { SchemaObject } from 'openapi3-ts'
-import { PrimitiveType } from './typings'
+import { SchemaObject } from '@oats-ts/json-schema-model'
+import { PrimitiveType } from './primitiveTypes'
 
 export function getPrimitiveType(schema: SchemaObject): PrimitiveType {
   switch (schema.type) {

@@ -1,4 +1,4 @@
-import { MediaTypeObject } from 'openapi3-ts'
+import { MediaTypeObject } from '@oats-ts/openapi-model'
 import { register } from './register'
 import { resolveReferenceable } from './resolveReferenceable'
 import { resolveSchemaObject } from './resolveSchemaObject'

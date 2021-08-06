@@ -1,5 +1,5 @@
 import { isNil, entries } from 'lodash'
-import { OperationObject, ResponseObject } from 'openapi3-ts'
+import { OperationObject, ResponseObject } from '@oats-ts/openapi-model'
 import { EnhancedResponse, OpenAPIGeneratorContext } from './typings'
 
 export function getEnhancedResponses(operation: OperationObject, context: OpenAPIGeneratorContext): EnhancedResponse[] {

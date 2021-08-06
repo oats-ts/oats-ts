@@ -1,4 +1,4 @@
-import { SchemaObject, ReferenceObject } from 'openapi3-ts'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, literal } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { schemaObject } from './schemaObject'
@@ -6,6 +6,7 @@ import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext, OpenAPIValidatorFn } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { referenceable } from './referenceable'
 
 const validator = object(
   combine([
@@ -33,6 +34,12 @@ export const recordSchemaObject =
           path: uriOf(data),
           append,
         }),
-      )(() => additionalProperties(data.additionalProperties as SchemaObject | ReferenceObject, context, config))
+      )(() =>
+        referenceable(additionalProperties)(
+          data.additionalProperties as SchemaObject | ReferenceObject,
+          context,
+          config,
+        ),
+      )
     })
   }

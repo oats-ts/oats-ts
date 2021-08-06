@@ -1,4 +1,4 @@
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { ReadContext, ReadInput } from './internalTypings'
 import { resolveComponents } from './resolveComponents'
 import { resolvePaths } from './resolvePaths'

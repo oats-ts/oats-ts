@@ -1,4 +1,4 @@
-import { ReferenceObject } from 'openapi3-ts'
+import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { Expression, factory } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { FullTypeGuardGeneratorConfig } from './typings'

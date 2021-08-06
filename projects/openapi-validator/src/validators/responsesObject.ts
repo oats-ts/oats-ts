@@ -1,4 +1,4 @@
-import { ResponsesObject } from 'openapi3-ts'
+import { ResponsesObject } from '@oats-ts/openapi-model'
 import { Issue, object, record, string } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { entries, flatMap } from 'lodash'

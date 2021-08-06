@@ -1,4 +1,4 @@
-import { ComponentsObject } from 'openapi3-ts'
+import { ComponentsObject } from '@oats-ts/openapi-model'
 import { shape, object, optional } from '@oats-ts/validators'
 import { recordOfObjects } from './recordOfObjects'
 

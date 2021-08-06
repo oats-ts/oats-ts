@@ -1,6 +1,6 @@
 import { InferredType } from './typings'
 import { isNil } from 'lodash'
-import { SchemaObject, ReferenceObject, isReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
 
 export function getInferredType(data: SchemaObject | ReferenceObject): InferredType {
   if (isNil(data)) {

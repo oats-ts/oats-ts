@@ -1,5 +1,5 @@
 import { flatMap } from 'lodash'
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { getNamedImports } from '@oats-ts/typescript-common'

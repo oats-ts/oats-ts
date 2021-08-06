@@ -3,10 +3,10 @@ import {
   OperationObject,
   ParameterObject,
   ComponentsObject,
-  SchemaObject,
   ResponseObject,
   RequestBodyObject,
-} from 'openapi3-ts'
+} from '@oats-ts/openapi-model'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { isNil, negate, values } from 'lodash'
 import { OpenAPIValidatorContext } from '../typings'
 

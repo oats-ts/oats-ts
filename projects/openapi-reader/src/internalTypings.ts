@@ -1,5 +1,5 @@
 import type { Issue } from '@oats-ts/validators'
-import { OpenAPIObject } from 'openapi3-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { URIManipulator } from './typings'
 
 export type ReadContext = {

@@ -1,4 +1,4 @@
-import { ParameterLocation } from 'openapi3-ts'
+import { ParameterLocation } from '@oats-ts/openapi-model'
 import { flatMap } from 'lodash'
 import { getReferencedNamedSchemas } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'

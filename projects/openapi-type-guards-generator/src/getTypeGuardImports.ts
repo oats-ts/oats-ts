@@ -1,6 +1,6 @@
-import { isNil, sortBy, values, flatMap } from 'lodash'
+import { isNil, sortBy, values } from 'lodash'
 import { ImportDeclaration } from 'typescript'
-import { isReferenceObject, ReferenceObject, SchemaObject } from 'openapi3-ts'
+import { isReferenceObject, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { FullTypeGuardGeneratorConfig } from './typings'
 import { getModelImports } from '../../typescript-common/lib'

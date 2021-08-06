@@ -1,5 +1,5 @@
 import { Issue } from '@oats-ts/validators'
-import { ParameterObject } from 'openapi3-ts'
+import { ParameterObject } from '@oats-ts/openapi-model'
 import { append } from '../utils/append'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 

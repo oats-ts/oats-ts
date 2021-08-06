@@ -1,4 +1,4 @@
-import { isNil, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { OpenAPIGenerator } from './typings'
 
 export function dependenciesOf(generators: OpenAPIGenerator[]) {

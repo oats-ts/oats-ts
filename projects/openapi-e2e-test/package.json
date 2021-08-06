@@ -36,7 +36,7 @@
     "@types/yamljs": "0.2.31",
     "express": "4.17.1",
     "lodash": "4.17.21",
-    "openapi3-ts": "2.0.1",
+    "@oats-ts/json-schema-model": "0.0.0",
     "ts-node": "10.0.0",
     "urijs": "1.19.6",
     "valid-url": "1.0.9",

@@ -1,4 +1,4 @@
-import { ContentObject, MediaTypeObject } from 'openapi3-ts'
+import { ContentObject, MediaTypeObject } from '@oats-ts/openapi-model'
 import { Issue, object, shape, combine, record, string } from '@oats-ts/validators'
 import { entries, flatMap } from 'lodash'
 import { append } from '../utils/append'

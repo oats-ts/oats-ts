@@ -1,5 +1,5 @@
-import { SchemaObject } from 'openapi3-ts'
-import { boolean, shape, object, optional, string, number, array, items, any } from '@oats-ts/validators'
+import { SchemaObject } from '@oats-ts/json-schema-model'
+import { boolean, shape, object, optional, string, number, array, items, any, record } from '@oats-ts/validators'
 
 export const schemaObject = object(
   shape<SchemaObject>(
@@ -29,17 +29,22 @@ export const schemaObject = object(
       items: optional(object()),
       additionalProperties: optional(object()),
       default: optional(any),
-      example: optional(any),
       examples: optional(array()),
       externalDocs: optional(object()),
       maxProperties: optional(number()),
       minProperties: optional(number()),
       not: optional(object()),
-      nullable: optional(boolean()),
       readOnly: optional(boolean()),
       title: optional(string()),
       writeOnly: optional(boolean()),
-      xml: optional(object()),
+      if: optional(object()),
+      then: optional(object()),
+      else: optional(object()),
+      contains: optional(object()),
+      patternProperties: optional(object(record(string(), object()))),
+      additionalItems: optional(object()),
+      propertyNames: optional(object()),
+      const: optional(any),
     },
     true,
   ),

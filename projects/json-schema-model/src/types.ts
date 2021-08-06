@@ -41,7 +41,7 @@ export type SchemaObject = {
   patternProperties?: Record<string, Referenceable<SchemaObject>>
   additionalProperties?: Referenceable<SchemaObject> | boolean
   additionalItems?: Referenceable<SchemaObject> | boolean
-  items?: Referenceable<SchemaObject> | Referenceable<SchemaObject>[]
+  items?: Referenceable<SchemaObject>
   propertyNames?: Referenceable<SchemaObject>
   contains?: Referenceable<SchemaObject>
   allOf?: Referenceable<SchemaObject>[]

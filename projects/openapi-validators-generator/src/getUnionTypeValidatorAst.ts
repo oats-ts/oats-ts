@@ -1,10 +1,9 @@
 import { isNil, values } from 'lodash'
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
-import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { RuntimePackages, OpenAPIGeneratorContext, getPrimitiveType, PrimitiveTypes } from '@oats-ts/openapi-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
-import { getPrimitiveType, PrimitiveTypes } from '@oats-ts/typescript-common'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 
 function getUnionProperties(

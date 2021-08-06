@@ -1,4 +1,4 @@
-import { ReferenceObject, isReferenceObject } from 'openapi3-ts'
+import { ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
 import { ReadContext, ReadInput } from './internalTypings'
 import { findByFragments } from './findByFragments'
 import { register } from './register'

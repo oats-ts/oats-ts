@@ -1,5 +1,5 @@
 import { Issue } from '@oats-ts/validators'
-import { ParameterObject } from 'openapi3-ts'
+import { ParameterObject } from '@oats-ts/openapi-model'
 import { cookieParameterObject } from './cookieParameterObject'
 import { headerParameterObject } from './headerParameterObject'
 import { pathParameterObject } from './pathParameterObject'

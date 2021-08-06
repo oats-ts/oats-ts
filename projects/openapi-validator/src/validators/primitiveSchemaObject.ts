@@ -1,4 +1,4 @@
-import { SchemaObject } from 'openapi3-ts'
+import { SchemaObject } from '@oats-ts/json-schema-model'
 import { combine, enumeration, Issue, object, shape } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { ignore } from '../utils/ignore'

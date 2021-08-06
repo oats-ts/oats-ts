@@ -1,4 +1,4 @@
-import { ParameterLocation } from 'openapi3-ts'
+import { ParameterLocation } from '@oats-ts/openapi-model'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 
 export function getParameterSerializerFactoryName(location: ParameterLocation) {

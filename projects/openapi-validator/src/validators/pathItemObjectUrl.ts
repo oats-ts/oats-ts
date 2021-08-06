@@ -2,12 +2,13 @@ import { Issue } from '@oats-ts/validators'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { flatMap } from 'lodash'
 import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
-import { PathItemObject, ParameterObject, ReferenceObject } from 'openapi3-ts'
+import { PathItemObject, ParameterObject } from '@oats-ts/openapi-model'
+import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { operationsOf } from '../utils/modelUtils'
 
 function getPathParams(params: (ParameterObject | ReferenceObject)[], context: OpenAPIValidatorContext) {
   const { dereference } = context
-  return (params || []).map((param) => dereference(param)).filter((param) => param.in === 'path')
+  return (params || []).map((param) => dereference<ParameterObject>(param)).filter((param) => param.in === 'path')
 }
 
 export function pathItemObjectUrl(

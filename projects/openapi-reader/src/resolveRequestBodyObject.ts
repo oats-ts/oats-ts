@@ -1,4 +1,4 @@
-import { RequestBodyObject } from 'openapi3-ts'
+import { RequestBodyObject } from '@oats-ts/openapi-model'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
