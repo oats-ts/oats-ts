@@ -1,9 +1,10 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { PathProvider, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { PathProvider } from '@oats-ts/openapi'
+import { GeneratorConfig } from '@oats-ts/generator'
 import { nameOf } from './nameOf'
 import { isNil } from 'lodash'
 
-export function pathOf(data: OpenAPIReadOutput, config: OpenAPIGeneratorConfig): PathProvider {
+export function pathOf(data: OpenAPIReadOutput, config: GeneratorConfig): PathProvider {
   const nameProvider = nameOf(data, config)
   return function _pathOf(input: any, target: string) {
     if (isNil(config) || isNil(target)) {

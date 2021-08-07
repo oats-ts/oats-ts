@@ -1,17 +1,16 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getNamedTypeAst } from './getNamedTypeAst'
-import { TypesGeneratorConfig } from './typings'
+import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { getTypeImports } from './getTypeImports'
 
 export function generateType(
-  schema: SchemaObject | ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  schema: Referenceable<SchemaObject>,
+  context: TypesGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeScriptModule {
-  const { pathOf } = context
-  const path = pathOf(schema, 'openapi/type')
+  const { pathOf, target } = context
+  const path = pathOf(schema, target)
   return {
     path,
     content: [getNamedTypeAst(schema, context, config)],

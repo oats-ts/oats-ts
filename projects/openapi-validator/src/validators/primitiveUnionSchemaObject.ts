@@ -1,6 +1,6 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, array, items, literal, minLength } from '@oats-ts/validators'
-import { getInferredType } from '@oats-ts/openapi-common'
+import { getInferredType } from '@oats-ts/json-schema-common'
 import { append } from '../utils/append'
 import { flatMap } from 'lodash'
 import { enumSchemaObject } from './enumSchemaObject'

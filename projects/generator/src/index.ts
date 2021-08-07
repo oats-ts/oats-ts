@@ -7,4 +7,8 @@ export {
   Module,
   GeneratorInput,
   ContentValidator,
+  GeneratorNameProvider,
+  GeneratorPathProvider,
+  NameProvider,
+  GeneratorConfig,
 } from './typings'

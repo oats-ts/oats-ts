@@ -1,15 +1,15 @@
-import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { factory, PropertySignature, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
-import { TypesGeneratorConfig } from './typings'
+import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { documentNode, safeName } from '@oats-ts/typescript-common'
 
 export function getObjectPropertyAst(
   name: string,
   isOptional: boolean,
-  data: SchemaObject | ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  data: Referenceable<SchemaObject>,
+  context: TypesGeneratorContext,
   config: TypesGeneratorConfig,
 ): PropertySignature {
   const node = factory.createPropertySignature(

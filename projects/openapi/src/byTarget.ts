@@ -1,5 +1,6 @@
 import { join, resolve } from 'path'
-import { GeneratorPathProvider, NameByTarget, NameProvider, OpenAPIGeneratorTarget } from './typings'
+import { GeneratorPathProvider, NameProvider } from '@oats-ts/generator'
+import { NameByTarget, OpenAPIGeneratorTarget } from './typings'
 
 const defaultName: NameByTarget = {
   'openapi/type': 'types',

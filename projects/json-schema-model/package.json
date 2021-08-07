@@ -5,8 +5,7 @@
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
   "license": "ISC",
-  "typings": "lib/index.d.ts",
-  "main": "lib/index.js",
+  "typings": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bali182/oats.git"
@@ -14,7 +13,7 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf lib && tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "echo 'Nothing to build'"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"

@@ -1,5 +1,6 @@
 import { isNil, values } from 'lodash'
-import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { OpenAPIGeneratorContext } from './typings'
 
 /* TODO prevent recursion */

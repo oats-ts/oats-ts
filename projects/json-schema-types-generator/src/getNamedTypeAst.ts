@@ -1,23 +1,23 @@
 import { isNil } from 'lodash'
-import { SchemaObject, ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
+import { SchemaObject, Referenceable } from '@oats-ts/json-schema-model'
+import { getInferredType, isReferenceObject } from '@oats-ts/json-schema-common'
 import { EnumDeclaration, factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
-import { getInferredType, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getNamedEnumAst } from './getNamedEnumAst'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
-import { TypesGeneratorConfig } from './typings'
+import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { documentNode } from '@oats-ts/typescript-common'
 
 export function getNamedTypeAst(
-  schema: SchemaObject | ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  schema: Referenceable<SchemaObject>,
+  context: TypesGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeAliasDeclaration | EnumDeclaration {
-  const { nameOf } = context
+  const { nameOf, target } = context
   if (isReferenceObject(schema) || getInferredType(schema) !== 'enum') {
     const node = factory.createTypeAliasDeclaration(
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      factory.createIdentifier(nameOf(schema, 'openapi/type')),
+      factory.createIdentifier(nameOf(schema, target)),
       undefined,
       getRighthandSideTypeAst(schema, context, config),
     )

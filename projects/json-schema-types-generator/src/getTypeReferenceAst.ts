@@ -1,13 +1,12 @@
 import { isNil } from 'lodash'
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, SyntaxKind } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
-import { TypesGeneratorConfig } from './typings'
+import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 
 export function getTypeReferenceAst(
-  data: SchemaObject | ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  data: Referenceable<SchemaObject>,
+  context: TypesGeneratorContext,
   config: TypesGeneratorConfig,
 ) {
   const { dereference, nameOf } = context
@@ -15,7 +14,7 @@ export function getTypeReferenceAst(
   if (isNil(schema)) {
     return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)
   }
-  const name = nameOf(schema, 'openapi/type')
+  const name = nameOf(schema)
   if (isNil(name)) {
     return getRighthandSideTypeAst(schema, context, config)
   }

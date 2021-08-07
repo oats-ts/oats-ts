@@ -13,8 +13,16 @@
       "path": "projects/http"
     },
     {
+      "name": "json-schema-common",
+      "path": "projects/json-schema-common"
+    },
+    {
       "name": "json-schema-model",
       "path": "projects/json-schema-model"
+    },
+    {
+      "name": "json-schema-types-generator",
+      "path": "projects/json-schema-types-generator"
     },
     {
       "name": "openapi",

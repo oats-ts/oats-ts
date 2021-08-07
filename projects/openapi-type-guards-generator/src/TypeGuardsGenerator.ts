@@ -1,14 +1,14 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isNil, negate, sortBy } from 'lodash'
-import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import {
   getNamedSchemas,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { Result } from '@oats-ts/generator'
+import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { generateTypeGuard } from './generateTypeGuard'
 import { TypeGuardGeneratorConfig } from './typings'
 import { ImportDeclaration, Identifier, factory } from 'typescript'
@@ -20,13 +20,13 @@ export class TypeGuardsGenerator implements OpenAPIGenerator {
   private static produces: OpenAPIGeneratorTarget[] = ['openapi/type-guard']
 
   private context: OpenAPIGeneratorContext = null
-  private config: OpenAPIGeneratorConfig & TypeGuardGeneratorConfig
+  private config: GeneratorConfig & TypeGuardGeneratorConfig
 
   public readonly id: string = TypeGuardsGenerator.id
   public readonly produces: string[] = TypeGuardsGenerator.produces
   public readonly consumes: string[] = TypeGuardsGenerator.consumes
 
-  constructor(config: OpenAPIGeneratorConfig & TypeGuardGeneratorConfig) {
+  constructor(config: GeneratorConfig & TypeGuardGeneratorConfig) {
     this.config = config
   }
 

@@ -1,5 +1,5 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator, OpenAPIGeneratorContext } from './typings'
 import { dependenciesOf } from './dependenciesOf'
 import { dereference } from './dereference'
@@ -8,7 +8,7 @@ import { pathOf } from './pathOf'
 import { referenceOf } from './referenceOf'
 import { uriOf } from './uriOf'
 
-export function createOpenAPIGeneratorContext<T extends OpenAPIGeneratorConfig>(
+export function createOpenAPIGeneratorContext<T extends GeneratorConfig>(
   data: OpenAPIReadOutput,
   config: T,
   generators: OpenAPIGenerator[],

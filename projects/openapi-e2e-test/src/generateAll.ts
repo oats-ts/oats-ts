@@ -1,4 +1,4 @@
-import { generate } from '@oats-ts/generator'
+import { generate, GeneratorConfig } from '@oats-ts/generator'
 import { reader } from '@oats-ts/openapi-reader'
 import { prettierStringify, writer } from '@oats-ts/typescript-writer'
 import { validator } from '@oats-ts/openapi-validator'
@@ -8,9 +8,9 @@ import { types } from '@oats-ts/openapi-types-generator'
 import { api } from '@oats-ts/openapi-api-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
-import { nameProvider, OpenAPIGeneratorConfig, byNameAndTarget } from '@oats-ts/openapi'
+import { nameProvider, byNameAndTarget } from '@oats-ts/openapi'
 
-const common: OpenAPIGeneratorConfig = {
+const common: GeneratorConfig = {
   name: nameProvider,
   path: byNameAndTarget('src/generated'),
 }

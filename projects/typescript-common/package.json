@@ -33,8 +33,6 @@
   },
   "dependencies": {
     "typescript": "4.3.2",
-    "@oats-ts/json-schema-model": "0.0.0",
-    "@oats-ts/openapi-common": "0.0.2",
-    "@oats-ts/openapi": "0.0.2"
+    "@oats-ts/json-schema-model": "0.0.0"
   }
 }

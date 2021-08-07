@@ -38,6 +38,7 @@
     "lodash": "4.17.21",
     "@oats-ts/json-schema-model": "0.0.0",
     "@oats-ts/openapi-model": "0.0.0",
+    "@oats-ts/generator": "0.0.2",
     "pascalcase": "1.0.0"
   }
 }

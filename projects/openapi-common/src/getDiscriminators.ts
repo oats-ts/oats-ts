@@ -1,10 +1,11 @@
 import { entries, isNil, values } from 'lodash'
-import { ReferenceObject, SchemaObject, isReferenceObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { OpenAPIGeneratorContext } from './typings'
 
 function collectFromSchema(
   uri: string,
-  input: SchemaObject | ReferenceObject,
+  input: Referenceable<SchemaObject>,
   context: OpenAPIGeneratorContext,
   discriminators: Record<string, string>,
 ): string {
@@ -47,7 +48,10 @@ function collectFromDocuments(
 }
 
 /** @returns Discriminators in a propertyName -> value format */
-export function getDiscriminators(input: SchemaObject, context: OpenAPIGeneratorContext): Record<string, string> {
+export function getDiscriminators(
+  input: Referenceable<SchemaObject>,
+  context: OpenAPIGeneratorContext,
+): Record<string, string> {
   const { uriOf } = context
   const schemaUri = uriOf(input)
   const discriminators: Record<string, string> = {}

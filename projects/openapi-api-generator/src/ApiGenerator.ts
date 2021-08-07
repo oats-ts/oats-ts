@@ -7,12 +7,12 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { generateApiType } from './apiType/generateApiType'
 import { ApiGeneratorConfig } from './typings'
-import { Result } from '@oats-ts/generator'
+import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '../../typescript-common/lib'
@@ -23,13 +23,13 @@ export class ApiGenerator implements OpenAPIGenerator {
   private static produces: OpenAPIGeneratorTarget[] = ['openapi/api-class', 'openapi/api-stub', 'openapi/api-type']
 
   private context: OpenAPIGeneratorContext = null
-  private config: OpenAPIGeneratorConfig & ApiGeneratorConfig
+  private config: GeneratorConfig & ApiGeneratorConfig
 
   public readonly id: string = ApiGenerator.id
   public readonly produces: string[] = ApiGenerator.produces
   public readonly consumes: string[] = ApiGenerator.consumes
 
-  public constructor(config: OpenAPIGeneratorConfig & ApiGeneratorConfig) {
+  public constructor(config: GeneratorConfig & ApiGeneratorConfig) {
     this.config = config
     this.produces = ApiGenerator.produces.filter((target) => {
       switch (target) {

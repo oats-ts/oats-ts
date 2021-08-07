@@ -1,76 +1,39 @@
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { TypeNode, ImportDeclaration } from 'typescript'
-import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
+import {
+  JsonSchemaTypesGenerator,
+  TypesGeneratorConfig,
+  TypesGeneratorContext,
+} from '@oats-ts/json-schema-types-generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { sortBy } from 'lodash'
+import { CodeGenerator, GeneratorConfig } from '@oats-ts/generator'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
+import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import {
   getNamedSchemas,
-  OpenAPIGenerator,
-  OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
+  getDiscriminators,
+  getReferencedNamedSchemas,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
-import { TypesGeneratorConfig } from './typings'
-import { generateType } from './generateType'
-import { getTypeImports } from './getTypeImports'
-import { Result } from '@oats-ts/generator'
-import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
-export class TypesGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/types'
-  private static consumes: OpenAPIGeneratorTarget[] = []
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/type']
+export class TypesGenerator extends JsonSchemaTypesGenerator<OpenAPIReadOutput> {
+  public readonly id = 'openapi/types'
+  public readonly consumes: OpenAPIGeneratorTarget[] = []
+  public readonly produces: OpenAPIGeneratorTarget[] = ['openapi/type']
 
-  private context: OpenAPIGeneratorContext = null
-  private config: OpenAPIGeneratorConfig & TypesGeneratorConfig
-
-  public readonly id: string = TypesGenerator.id
-  public readonly produces: string[] = TypesGenerator.produces
-  public readonly consumes: string[] = TypesGenerator.consumes
-
-  public constructor(config: OpenAPIGeneratorConfig & TypesGeneratorConfig) {
-    this.config = config
-  }
-
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
-  }
-
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
-    const { nameOf } = context
-    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'openapi/type'))
-    const data = mergeTypeScriptModules(
-      schemas.map((schema): TypeScriptModule => generateType(schema, context, config)),
-    )
-    // TODO maybe try catch
+  createContext(
+    config: GeneratorConfig & TypesGeneratorConfig,
+    data: OpenAPIReadOutput,
+    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
+  ): TypesGeneratorContext {
+    const context = createOpenAPIGeneratorContext(data, config, generators)
     return {
-      isOk: true,
-      data,
-      issues: [],
-    }
-  }
-
-  public referenceOf(input: SchemaObject | ReferenceObject, target: OpenAPIGeneratorTarget): TypeNode {
-    const { context, config } = this
-    switch (target) {
-      case 'openapi/type':
-        return getExternalTypeReferenceAst(input, context, config)
-      default:
-        return undefined
-    }
-  }
-
-  public dependenciesOf(
-    fromPath: string,
-    input: SchemaObject | ReferenceObject,
-    target: OpenAPIGeneratorTarget,
-  ): ImportDeclaration[] {
-    switch (target) {
-      case 'openapi/type':
-        return getTypeImports(fromPath, input, this.context, true)
-      default:
-        return []
+      target: 'openapi/type',
+      schemas: getNamedSchemas(context),
+      dereference: context.dereference,
+      nameOf: context.nameOf,
+      pathOf: context.pathOf,
+      discriminatorsOf: (schema: Referenceable<SchemaObject>) => getDiscriminators(schema, context),
+      namedReferencesOf: (schema: Referenceable<SchemaObject>) => getReferencedNamedSchemas(schema, context),
     }
   }
 }

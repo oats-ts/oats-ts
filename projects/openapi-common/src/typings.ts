@@ -71,16 +71,3 @@ export type EnhancedResponse = {
   statusCode: string
   mediaType: string
 }
-
-export type InferredType =
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'enum'
-  | 'object'
-  | 'array'
-  | 'record'
-  | 'union'
-  | 'intersection'
-  | 'unknown'
-  | 'ref'

@@ -12,7 +12,7 @@ import {
   record,
   minLength,
 } from '@oats-ts/validators'
-import { getInferredType } from '@oats-ts/openapi-common'
+import { getInferredType } from '@oats-ts/json-schema-common'
 import { append } from '../utils/append'
 import { entries, isNil, flatMap } from 'lodash'
 import { objectSchemaObject } from './objectSchemaObject'

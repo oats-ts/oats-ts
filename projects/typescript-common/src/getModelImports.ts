@@ -1,13 +1,16 @@
 import { ImportDeclaration } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRelativeImports } from './getRelativeImports'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
+
+type ModelImportsContext = {
+  pathOf(model: any, target: string): string
+  nameOf(model: any, target: string): string
+}
 
 export function getModelImports(
   fromPath: string,
-  target: OpenAPIGeneratorTarget,
+  target: string,
   referencedModel: any[],
-  context: OpenAPIGeneratorContext,
+  context: ModelImportsContext,
 ): ImportDeclaration[] {
   const { pathOf, nameOf } = context
   return getRelativeImports(

@@ -1,18 +1,18 @@
-import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
+import { SchemaObject, Referenceable } from '@oats-ts/json-schema-model'
 import { factory, SyntaxKind, TypeNode } from 'typescript'
-import { OpenAPIGeneratorContext, getInferredType } from '@oats-ts/openapi-common'
 import { getArrayTypeAst } from './getArrayTypeAst'
 import { getDictionaryTypeAst } from './getDictionaryTypeAst'
 import { getLiteralUnionTypeAst } from './getLiteralUnionTypeAst'
 import { getObjectTypeAst } from './getObjectTypeAst'
 import { getUnionTypeAst } from './getUnionTypeAst'
-import { TypesGeneratorConfig } from './typings'
+import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { getIntersectionTypeAst } from './getIntersectionTypeAst'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
+import { getInferredType } from '@oats-ts/json-schema-common'
 
 export function getRighthandSideTypeAst(
-  data: SchemaObject | ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  data: Referenceable<SchemaObject>,
+  context: TypesGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeNode {
   switch (getInferredType(data)) {

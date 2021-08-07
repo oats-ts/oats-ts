@@ -7,10 +7,10 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
-import { Result } from '@oats-ts/generator'
+import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { Expression, ImportDeclaration, factory } from 'typescript'
 import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
@@ -22,13 +22,13 @@ export class ValidatorsGenerator implements OpenAPIGenerator {
   private static produces: OpenAPIGeneratorTarget[] = ['openapi/validator']
 
   private context: OpenAPIGeneratorContext = null
-  private config: OpenAPIGeneratorConfig & ValidatorsGeneratorConfig
+  private config: GeneratorConfig & ValidatorsGeneratorConfig
 
   public readonly id: string = ValidatorsGenerator.id
   public readonly produces: string[] = ValidatorsGenerator.produces
   public readonly consumes: string[] = ValidatorsGenerator.consumes
 
-  public constructor(config: OpenAPIGeneratorConfig & ValidatorsGeneratorConfig) {
+  public constructor(config: GeneratorConfig & ValidatorsGeneratorConfig) {
     this.config = config
   }
 

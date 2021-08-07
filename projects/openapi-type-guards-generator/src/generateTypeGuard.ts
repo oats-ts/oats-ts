@@ -1,4 +1,5 @@
-import { SchemaObject, ReferenceObject, isReferenceObject } from '@oats-ts/json-schema-model'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
+import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'

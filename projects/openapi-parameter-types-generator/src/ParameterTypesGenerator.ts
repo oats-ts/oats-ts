@@ -13,9 +13,9 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig } from './typings'
-import { Result } from '@oats-ts/generator'
+import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
@@ -30,14 +30,14 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
   ]
 
   private context: OpenAPIGeneratorContext = null
-  private config: OpenAPIGeneratorConfig & ParameterTypesGeneratorConfig
+  private config: GeneratorConfig & ParameterTypesGeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id: string = ParameterTypesGenerator.id
   public readonly produces: string[] = ParameterTypesGenerator.produces
   public readonly consumes: string[] = ParameterTypesGenerator.consumes
 
-  public constructor(config: OpenAPIGeneratorConfig & ParameterTypesGeneratorConfig) {
+  public constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
     this.config = config
   }
 

@@ -1,4 +1,4 @@
-import { Result } from '@oats-ts/generator'
+import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
@@ -22,7 +22,7 @@ import {
   hasInput,
   hasResponses,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget, OpenAPIGeneratorConfig } from '@oats-ts/openapi'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
@@ -44,14 +44,14 @@ export class OperationsGenerator implements OpenAPIGenerator {
   ]
 
   private context: OpenAPIGeneratorContext = null
-  private config: OpenAPIGeneratorConfig & OperationsGeneratorConfig
+  private config: GeneratorConfig & OperationsGeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id: string = OperationsGenerator.id
   public readonly produces: string[] = OperationsGenerator.produces
   public readonly consumes: string[]
 
-  public constructor(config: OpenAPIGeneratorConfig & OperationsGeneratorConfig) {
+  public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
     this.config = config
     this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['openapi/validator'] : [])
     this.produces = OperationsGenerator.produces.concat(config.validate ? ['openapi/expectations'] : [])
