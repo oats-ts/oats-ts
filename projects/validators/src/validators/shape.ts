@@ -3,7 +3,7 @@ import { getConfig, getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'extra-key'
 
-type ShapeInput<T> = {
+export type ShapeInput<T> = {
   [P in keyof T]?: Validator<any>
 }
 

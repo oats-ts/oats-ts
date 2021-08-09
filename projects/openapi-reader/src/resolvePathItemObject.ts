@@ -40,9 +40,11 @@ export async function resolvePathItemObject(input: ReadInput<PathItemObject>, co
     await resolveOperation({ data: options, uri: context.uri.append(uri, 'options') }, context)
   }
   if (!isNil(parameters)) {
+    const parametersUri = context.uri.append(uri, 'parameters')
+    register({ data: parameters, uri: parametersUri }, context)
     for (const [name, paramOrRef] of entries(parameters)) {
       await resolveReferenceable<ParameterObject>(
-        { data: paramOrRef, uri: context.uri.append(uri, 'parameters', name) },
+        { data: paramOrRef, uri: context.uri.append(parametersUri, name) },
         context,
         resolveParameterObject,
       )

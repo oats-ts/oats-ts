@@ -5,6 +5,14 @@
       "path": "."
     },
     {
+      "name": "asyncapi-model",
+      "path": "projects/asyncapi-model"
+    },
+    {
+      "name": "asyncapi-reader",
+      "path": "projects/asyncapi-reader"
+    },
+    {
       "name": "generator",
       "path": "projects/generator"
     },

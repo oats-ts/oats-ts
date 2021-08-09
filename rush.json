@@ -25,6 +25,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/asyncapi-reader",
+      "projectFolder": "projects/asyncapi-reader",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/generator",
       "projectFolder": "projects/generator",
       "versionPolicyName": "oats",
