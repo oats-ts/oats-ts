@@ -77,7 +77,7 @@ export type ParametersObject = Record<string, Referenceable<ParameterObject>>
 
 export type ParameterObject = {
   description?: string
-  schema?: SchemaObject
+  schema?: Referenceable<SchemaObject>
   location?: string
 }
 
@@ -98,12 +98,12 @@ export type OperationTraitObject = {
   description?: string
   tags?: TagObject[]
   externalDocs?: ExternalDocumentationObject
-  bindings?: Record<string, OperationBindingsObject>
+  bindings?: OperationBindingsObject
 }
 
 export type MessageObject = {
   headers?: Referenceable<SchemaObject>
-  payload?: any
+  payload?: Referenceable<SchemaObject>
   correlationId?: Referenceable<CorrelationIDObject>
   schemaFormat?: string
   contentType?: string
@@ -115,7 +115,7 @@ export type MessageObject = {
   externalDocs?: ExternalDocumentationObject
   bindings?: MessageBindingsObject
   examples?: Record<string, any>[]
-  traits?: MessageTraitObject
+  traits?: MessageTraitObject[]
 }
 
 export type CorrelationIDObject = {
@@ -280,10 +280,7 @@ export type ChannelBindingsObject = {
 
 export type HTTPChannelBinding = {}
 
-export type WebSocketsChannelBindingMethod = 'GET' | 'POST'
-
 export type WebSocketsChannelBinding = {
-  method: WebSocketsChannelBindingMethod
   query: Referenceable<SchemaObject>
   headers: Referenceable<SchemaObject>
   bindingVersion: string
