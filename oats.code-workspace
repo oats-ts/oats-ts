@@ -13,6 +13,10 @@
       "path": "projects/asyncapi-reader"
     },
     {
+      "name": "asyncapi-ws-client",
+      "path": "projects/asyncapi-ws-client"
+    },
+    {
       "name": "generator",
       "path": "projects/generator"
     },
