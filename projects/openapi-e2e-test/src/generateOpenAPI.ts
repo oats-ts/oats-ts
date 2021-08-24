@@ -12,14 +12,14 @@ import { nameProvider, byNameAndTarget } from '@oats-ts/openapi'
 
 const common: GeneratorConfig = {
   name: nameProvider,
-  path: byNameAndTarget('src/generated'),
+  path: byNameAndTarget('src/openapi'),
 }
 
 export async function generateAll() {
   return generate({
     log: true,
     validator: validator(),
-    reader: reader({ path: 'kitchenSink.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
+    reader: reader({ path: 'kitchenSink-openapi.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
     generators: [
       types({
         ...common,
