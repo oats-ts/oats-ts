@@ -1,8 +1,8 @@
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/json-schema-common'
-import { OpenAPIReadOutput } from '../../openapi-reader/lib'
+import { ReadOutput } from './types'
 
-export function dereference(data: OpenAPIReadOutput) {
+export function dereference(data: ReadOutput<any>) {
   return function _dereference<T>(input: T | ReferenceObject | string, deep: boolean = false): T {
     if (typeof input === 'string') {
       return deep ? _dereference(data.uriToObject.get(input)) : data.uriToObject.get(input)

@@ -3,8 +3,8 @@ import { isOk } from '@oats-ts/validators'
 import { resolveOpenAPIObject } from './resolveAsyncAPIObject'
 import { ReadContext } from './internalTypings'
 import { AsyncApiObject } from '@oats-ts/asyncapi-model'
-import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
-import { defaultOpenAPIReadConfig } from './defaults/defaultOpenAPIReadConfig'
+import { AsyncAPIReadConfig, AsyncAPIReadOutput } from './typings'
+import { defaultAsyncAPIReadConfig } from './defaults/defaultOpenAPIReadConfig'
 
 function getUnresolved(resolved: Set<string>, documents: Map<string, AsyncApiObject>): Map<string, AsyncApiObject> {
   const unresolved: Map<string, AsyncApiObject> = new Map()
@@ -37,8 +37,8 @@ async function resolveAll(resolved: Set<string>, context: ReadContext) {
   await resolveAll(resolved, context)
 }
 
-export const reader = (config: OpenAPIReadConfig) => async (): Promise<Result<OpenAPIReadOutput>> => {
-  const { path, resolve, uriManipulator } = defaultOpenAPIReadConfig(config)
+export const reader = (config: AsyncAPIReadConfig) => async (): Promise<Result<AsyncAPIReadOutput>> => {
+  const { path, resolve, uriManipulator } = defaultAsyncAPIReadConfig(config)
 
   const documentUri = uriManipulator.sanitize(path)
 

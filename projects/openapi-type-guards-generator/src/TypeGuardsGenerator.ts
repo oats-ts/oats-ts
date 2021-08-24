@@ -2,12 +2,8 @@ import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isNil, negate, sortBy } from 'lodash'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
-import {
-  getNamedSchemas,
-  OpenAPIGenerator,
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-} from '@oats-ts/openapi-common'
+import { OpenAPIGenerator, OpenAPIGeneratorContext, createOpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getNamedSchemas } from '@oats-ts/model-common'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { generateTypeGuard } from './generateTypeGuard'
 import { TypeGuardGeneratorConfig } from './typings'

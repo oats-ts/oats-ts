@@ -1,7 +1,7 @@
 import { entries, has, sortBy } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier } from 'typescript'
-import { getDiscriminators } from '@oats-ts/openapi-common'
+import { getDiscriminators } from '@oats-ts/model-common'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'

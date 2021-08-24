@@ -5,12 +5,28 @@
       "path": "."
     },
     {
+      "name": "asyncapi",
+      "path": "projects/asyncapi"
+    },
+    {
+      "name": "asyncapi-channels-generator",
+      "path": "projects/asyncapi-channels-generator"
+    },
+    {
+      "name": "asyncapi-common",
+      "path": "projects/asyncapi-common"
+    },
+    {
       "name": "asyncapi-model",
       "path": "projects/asyncapi-model"
     },
     {
       "name": "asyncapi-reader",
       "path": "projects/asyncapi-reader"
+    },
+    {
+      "name": "asyncapi-types-generator",
+      "path": "projects/asyncapi-types-generator"
     },
     {
       "name": "asyncapi-ws-client",
@@ -35,6 +51,10 @@
     {
       "name": "json-schema-types-generator",
       "path": "projects/json-schema-types-generator"
+    },
+    {
+      "name": "model-common",
+      "path": "projects/model-common"
     },
     {
       "name": "openapi",

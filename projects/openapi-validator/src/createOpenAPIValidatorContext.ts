@@ -1,4 +1,4 @@
-import { dereference, uriOf } from '@oats-ts/openapi-common'
+import { dereference, uriOf } from '@oats-ts/model-common'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OpenAPIValidatorContext } from './typings'
 

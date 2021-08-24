@@ -1,7 +1,7 @@
 import { entries, isNil } from 'lodash'
 import { OpenAPIObject, OperationObject, ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
-import { HttpMethod } from '../../http/lib'
+import { HttpMethod } from '@oats-ts/http'
 import { OpenAPIGeneratorContext } from './typings'
 import { EnhancedOperation } from './typings'
 

@@ -1,9 +1,9 @@
 import { isNil } from 'lodash'
-import { OpenAPIReadConfig } from '../typings'
+import { AsyncAPIReadConfig } from '../typings'
 import { defaultResolve } from './defaultResolve'
 import { DefaultURIManipulator } from './DefaultURIManipulator'
 
-export function defaultOpenAPIReadConfig(config: OpenAPIReadConfig): OpenAPIReadConfig {
+export function defaultAsyncAPIReadConfig(config: AsyncAPIReadConfig): AsyncAPIReadConfig {
   const { resolve, path, uriManipulator } = config
 
   return {

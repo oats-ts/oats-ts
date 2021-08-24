@@ -1,0 +1,26 @@
+{
+  "name": "@oats-ts/asyncapi-channels-generator",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf lib && tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {
+    "typescript": "4.3.2"
+  },
+  "dependencies": {}
+}

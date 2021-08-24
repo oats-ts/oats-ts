@@ -19,6 +19,24 @@
   "telemetryEnabled": false,
   "projects": [
     {
+      "packageName": "@oats-ts/asyncapi",
+      "projectFolder": "projects/asyncapi",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/asyncapi-channels-generator",
+      "projectFolder": "projects/asyncapi-channels-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/asyncapi-common",
+      "projectFolder": "projects/asyncapi-common",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/asyncapi-model",
       "projectFolder": "projects/asyncapi-model",
       "versionPolicyName": "oats",
@@ -27,6 +45,12 @@
     {
       "packageName": "@oats-ts/asyncapi-reader",
       "projectFolder": "projects/asyncapi-reader",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/asyncapi-types-generator",
+      "projectFolder": "projects/asyncapi-types-generator",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -63,6 +87,12 @@
     {
       "packageName": "@oats-ts/json-schema-types-generator",
       "projectFolder": "projects/json-schema-types-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/model-common",
+      "projectFolder": "projects/model-common",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

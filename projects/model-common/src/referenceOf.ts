@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
-import { OpenAPIGenerator } from './typings'
+import { CodeGenerator } from '@oats-ts/generator'
 
-export function referenceOf(generators: OpenAPIGenerator[]) {
+export function referenceOf(generators: CodeGenerator<any, any>[]) {
   return function _referenceOf<T>(input: any, target: string): T {
     for (const generator of generators) {
       const result = generator.referenceOf(input, target)

@@ -7,12 +7,8 @@ import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import {
-  getNamedSchemas,
-  createOpenAPIGeneratorContext,
-  getDiscriminators,
-  getReferencedNamedSchemas,
-} from '@oats-ts/openapi-common'
+import { createOpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getNamedSchemas, getDiscriminators, getReferencedNamedSchemas } from '@oats-ts/model-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
 export class TypesGenerator extends JsonSchemaTypesGenerator<OpenAPIReadOutput> {

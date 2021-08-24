@@ -1,4 +1,4 @@
-import { Issue } from '../../../validators/lib'
+import { Issue } from '@oats-ts/validators'
 import { OpenAPIValidatorContext } from '../typings'
 
 export const ifNotValidated =

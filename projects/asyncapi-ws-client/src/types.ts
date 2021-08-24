@@ -24,6 +24,10 @@ export type HasSubscribe<T> = {
   unsubscribeAll(): void
 }
 
+export type PubSocket<P> = HasConnect & HasPublish<P>
+export type SubSocket<S> = HasConnect & HasSubscribe<S>
+export type PubSubSocket<P, S> = HasConnect & HasSubscribe<S> & HasPublish<P>
+
 export type W3CCloseEvent = {
   code: number
   reason: string

@@ -1,5 +1,5 @@
 import { isEmpty, isNil } from 'lodash'
-import { isOk } from '../../validators/lib'
+import { isOk } from '@oats-ts/validators'
 import { ensureDependencies } from './ensureDependencies'
 import { consoleLogger, noopLogger } from './logger'
 import { GeneratorInput, Module, Result } from './typings'

@@ -1,7 +1,7 @@
 import { Module, Result } from './typings'
 import { red, green, blue, yellow } from 'chalk'
 import { noop } from 'lodash'
-import { Issue, Severity } from '../../validators/lib'
+import { Issue, Severity } from '@oats-ts/validators'
 import { issueComparator, severityOf } from './issueUtils'
 
 export type Logger = {

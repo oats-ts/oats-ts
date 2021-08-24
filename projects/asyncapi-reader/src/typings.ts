@@ -1,7 +1,7 @@
 import { AsyncApiObject } from '@oats-ts/asyncapi-model'
 
 /** Configuration object for reading OpenAPI documents. */
-export type OpenAPIReadConfig = {
+export type AsyncAPIReadConfig = {
   /** The path of the documents. Either a full URI or local file path. */
   path: string
   /**
@@ -44,7 +44,7 @@ export type URIManipulator = {
   fragments(uri: string): string[]
 }
 
-export type OpenAPIReadOutput = {
+export type AsyncAPIReadOutput = {
   /** The full URI of the root document */
   documentUri: string
   /** The root AsyncApi document */

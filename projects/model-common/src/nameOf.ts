@@ -1,8 +1,8 @@
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { NameProvider, GeneratorConfig } from '@oats-ts/generator'
 import { isNil } from 'lodash'
+import { ReadOutput } from './types'
 
-export function nameOf(data: OpenAPIReadOutput, config: GeneratorConfig): NameProvider {
+export function nameOf(data: ReadOutput<any>, config: GeneratorConfig): NameProvider {
   return function _nameOf(input: any, target?: string): string {
     if (isNil(config) || isNil(target)) {
       return data.objectToName.get(input)

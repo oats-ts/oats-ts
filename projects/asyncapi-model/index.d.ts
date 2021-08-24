@@ -55,6 +55,8 @@ export type SecurityRequirementObject = Record<string, string[]>
 export type ChannelsObject = Record<string, Referenceable<ChannelItemObject>>
 
 export type ChannelItemObject = {
+  // TODO non standard
+  name?: string
   description?: string
   subscribe?: OperationObject
   publish?: OperationObject

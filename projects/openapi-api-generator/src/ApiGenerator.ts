@@ -15,7 +15,7 @@ import { ApiGeneratorConfig } from './typings'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
-import { getModelImports } from '../../typescript-common/lib'
+import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ApiGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'

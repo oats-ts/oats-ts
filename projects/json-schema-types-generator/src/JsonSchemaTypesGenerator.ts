@@ -2,11 +2,10 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { sortBy } from 'lodash'
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig, Result, CodeGenerator } from '@oats-ts/generator'
 import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
-import { Result, CodeGenerator } from '@oats-ts/generator'
 import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 
 export abstract class JsonSchemaTypesGenerator<T> implements CodeGenerator<T, TypeScriptModule> {

@@ -1,7 +1,7 @@
 import { entries, sortBy } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { getDiscriminators } from '@oats-ts/openapi-common'
+import { getDiscriminators } from '@oats-ts/model-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { reduceLogicalExpressions, safeMemberAccess } from '@oats-ts/typescript-common'
 
