@@ -4,14 +4,14 @@ import { factory, PropertySignature } from 'typescript'
 import { getObjectPropertyAst } from './getObjectPropertyAst'
 import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { safeName } from '@oats-ts/typescript-common'
+import { getDiscriminators } from '@oats-ts/model-common'
 
 export function getObjectPropertiesAst(
   data: SchemaObject,
   context: TypesGeneratorContext,
   config: TypesGeneratorConfig,
 ): PropertySignature[] {
-  const { discriminatorsOf } = context
-  const discriminators = discriminatorsOf(data) || {}
+  const discriminators = getDiscriminators(data, context) || {}
 
   const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(
     ([name, value]): PropertySignature => {

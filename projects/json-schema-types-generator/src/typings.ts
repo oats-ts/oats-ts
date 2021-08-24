@@ -1,4 +1,4 @@
-import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { GeneratorContext, HasSchemas } from '@oats-ts/model-common'
 
 export type TypesGeneratorConfig = {
   /**
@@ -13,12 +13,6 @@ export type TypesGeneratorConfig = {
   enums: boolean
 }
 
-export type TypesGeneratorContext = {
+export type TypesGeneratorContext = GeneratorContext<HasSchemas> & {
   target: string
-  schemas: Referenceable<SchemaObject>[]
-  dereference(input: string | Referenceable<SchemaObject>, deep?: boolean): Referenceable<SchemaObject>
-  nameOf(input: Referenceable<SchemaObject>, target?: string): string
-  pathOf(input: any, target: string): string
-  discriminatorsOf(input: Referenceable<SchemaObject>): Record<string, string>
-  namedReferencesOf(input: Referenceable<SchemaObject>): SchemaObject[]
 }
