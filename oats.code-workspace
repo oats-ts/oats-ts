@@ -9,20 +9,12 @@
       "path": "projects/asyncapi"
     },
     {
-      "name": "asyncapi-channels-generator",
-      "path": "projects/asyncapi-channels-generator"
-    },
-    {
       "name": "asyncapi-common",
       "path": "projects/asyncapi-common"
     },
     {
       "name": "asyncapi-model",
       "path": "projects/asyncapi-model"
-    },
-    {
-      "name": "asyncapi-parameter-serialization",
-      "path": "projects/asyncapi-parameter-serialization"
     },
     {
       "name": "asyncapi-reader",
@@ -35,6 +27,14 @@
     {
       "name": "asyncapi-ws-api-generator",
       "path": "projects/asyncapi-ws-api-generator"
+    },
+    {
+      "name": "asyncapi-ws-channels-generator",
+      "path": "projects/asyncapi-ws-channels-generator"
+    },
+    {
+      "name": "asyncapi-ws-parameter-serialization",
+      "path": "projects/asyncapi-ws-parameter-serialization"
     },
     {
       "name": "asyncapi-ws-client",

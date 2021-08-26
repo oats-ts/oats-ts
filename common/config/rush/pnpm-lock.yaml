@@ -2,14 +2,14 @@ lockfileVersion: 5.3
 
 specifiers:
   '@rush-temp/asyncapi': file:./projects/asyncapi.tgz
-  '@rush-temp/asyncapi-channels-generator': file:./projects/asyncapi-channels-generator.tgz
   '@rush-temp/asyncapi-common': file:./projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
-  '@rush-temp/asyncapi-parameter-serialization': file:./projects/asyncapi-parameter-serialization.tgz
   '@rush-temp/asyncapi-reader': file:./projects/asyncapi-reader.tgz
   '@rush-temp/asyncapi-types-generator': file:./projects/asyncapi-types-generator.tgz
   '@rush-temp/asyncapi-ws-api-generator': file:./projects/asyncapi-ws-api-generator.tgz
+  '@rush-temp/asyncapi-ws-channels-generator': file:./projects/asyncapi-ws-channels-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:./projects/asyncapi-ws-client.tgz
+  '@rush-temp/asyncapi-ws-parameter-serialization': file:./projects/asyncapi-ws-parameter-serialization.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/http': file:./projects/http.tgz
   '@rush-temp/json-schema-common': file:./projects/json-schema-common.tgz
@@ -64,14 +64,14 @@ specifiers:
 
 dependencies:
   '@rush-temp/asyncapi': file:projects/asyncapi.tgz
-  '@rush-temp/asyncapi-channels-generator': file:projects/asyncapi-channels-generator.tgz
   '@rush-temp/asyncapi-common': file:projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
-  '@rush-temp/asyncapi-parameter-serialization': file:projects/asyncapi-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-reader': file:projects/asyncapi-reader.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-types-generator': file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-ws-api-generator': file:projects/asyncapi-ws-api-generator.tgz
+  '@rush-temp/asyncapi-ws-channels-generator': file:projects/asyncapi-ws-channels-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:projects/asyncapi-ws-client.tgz
+  '@rush-temp/asyncapi-ws-parameter-serialization': file:projects/asyncapi-ws-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-common': file:projects/json-schema-common.tgz
@@ -3888,18 +3888,6 @@ packages:
     resolution: {integrity: sha512-yvcO3FZ8URR+LliMGqaW7tlVOOTzmup3vzKEe9Ds7twyJtdhvYa7dIYr0FbD1wVfWC1OuS83vZfHtCKslPuRhA==}
     dev: false
 
-  file:projects/asyncapi-channels-generator.tgz:
-    resolution: {integrity: sha512-a3CTSsSKU62Gij0cPLiKmjKN20FUITMZ2PBRyChzqgDCCsoupZMFZBRlpGI03tsgUc1uRXnLPdFYwfSnjzU4Zw==, tarball: file:projects/asyncapi-channels-generator.tgz}
-    name: '@rush-temp/asyncapi-channels-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/lodash': 4.14.172
-      '@types/websocket': 1.0.4
-      lodash: 4.17.21
-      typescript: 4.3.2
-      websocket: 1.0.34
-    dev: false
-
   file:projects/asyncapi-common.tgz:
     resolution: {integrity: sha512-Ssk8gcFP57vlVrwSEmNm1JtD0+0tx5CULjeJS3ddFp7xdLgk5BlybN7NG3tOKdGmX8qo6WBXLbEXu6SensM49Q==, tarball: file:projects/asyncapi-common.tgz}
     name: '@rush-temp/asyncapi-common'
@@ -3916,27 +3904,6 @@ packages:
     resolution: {integrity: sha512-+I+rqem8QPAyCfQJ2uO5nfrGJelMQp7dOUjRo3bUwyKWX1z5Hc2LivGVp7JVfQ7ZuNEcw8paQ6S/G3dhls2xLw==, tarball: file:projects/asyncapi-model.tgz}
     name: '@rush-temp/asyncapi-model'
     version: 0.0.0
-    dev: false
-
-  file:projects/asyncapi-parameter-serialization.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-1yr4pVht7mGJuYYItpJ7OXD2J323RGJYIOr4doL6fMlCdD8h4SFoJrftndpWRQUWTeRwrLtoqrvpuM5m7Wtlgg==, tarball: file:projects/asyncapi-parameter-serialization.tgz}
-    id: file:projects/asyncapi-parameter-serialization.tgz
-    name: '@rush-temp/asyncapi-parameter-serialization'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/node': 15.12.0
-      jest: 27.0.4_ts-node@10.0.0
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.2
-      typescript: 4.3.2
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
     dev: false
 
   file:projects/asyncapi-reader.tgz_ts-node@10.0.0:
@@ -4001,6 +3968,16 @@ packages:
       typescript: 4.3.2
     dev: false
 
+  file:projects/asyncapi-ws-channels-generator.tgz:
+    resolution: {integrity: sha512-cj58ZV2kMTNp7RDo4PHYqk0f3XPFVVjWnlIT9b5Ae6K/03oSw2HZKML+1/obr4U/XKhPgz4YK8kUoEChT+XbzQ==, tarball: file:projects/asyncapi-ws-channels-generator.tgz}
+    name: '@rush-temp/asyncapi-ws-channels-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/lodash': 4.14.172
+      lodash: 4.17.21
+      typescript: 4.3.2
+    dev: false
+
   file:projects/asyncapi-ws-client.tgz:
     resolution: {integrity: sha512-YUfWf7kBbN0Au93Yk01ukN9kRVP0cb9o9/eJxStwZT4X//x5eb4WDqb5W8EUWSQEqpWpLViAziCp0gX55pnqeQ==, tarball: file:projects/asyncapi-ws-client.tgz}
     name: '@rush-temp/asyncapi-ws-client'
@@ -4009,6 +3986,27 @@ packages:
       '@types/websocket': 1.0.4
       typescript: 4.3.2
       websocket: 1.0.34
+    dev: false
+
+  file:projects/asyncapi-ws-parameter-serialization.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-ou/Y25du3kStmFyn6TP606yvD3GmsJzXwGUTaBj7bycqGtlNCxC0MPnLcbOlRa/C8teaWQkOScC6TIWlvBOh2g==, tarball: file:projects/asyncapi-ws-parameter-serialization.tgz}
+    id: file:projects/asyncapi-ws-parameter-serialization.tgz
+    name: '@rush-temp/asyncapi-ws-parameter-serialization'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/node': 15.12.0
+      jest: 27.0.4_ts-node@10.0.0
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
     dev: false
 
   file:projects/asyncapi.tgz:
@@ -4183,7 +4181,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-0EkXS80ICrHBHvy9fauFssJjtTemxwBqIeZ0hgyicEw6sPW3IDwl4/oW84B+1mM93Kc8s1/Xo6pc0DFwQqyxVw==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-pR56VkGpJBy0igf18S3sBe1qBZIE1DZVvYO25xFuqWu0W61VAKjVq4WT3EjSAUoNQcuHUgSTZtxkAUIkvzj5QQ==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:

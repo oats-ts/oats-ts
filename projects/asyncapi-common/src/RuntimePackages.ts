@@ -7,7 +7,7 @@ const Ws = {
 }
 
 const Param = {
-  name: '@oats-ts/asyncapi-parameter-serialization',
+  name: '@oats-ts/asyncapi-ws-parameter-serialization',
   serializeQuery: 'serializeQuery',
   createPathSerializer: 'createPathSerializer',
   parsePathToSegments: 'parsePathToSegments',

@@ -25,12 +25,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/asyncapi-channels-generator",
-      "projectFolder": "projects/asyncapi-channels-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/asyncapi-common",
       "projectFolder": "projects/asyncapi-common",
       "versionPolicyName": "oats",
@@ -39,12 +33,6 @@
     {
       "packageName": "@oats-ts/asyncapi-model",
       "projectFolder": "projects/asyncapi-model",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-parameter-serialization",
-      "projectFolder": "projects/asyncapi-parameter-serialization",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -63,6 +51,18 @@
     {
       "packageName": "@oats-ts/asyncapi-ws-api-generator",
       "projectFolder": "projects/asyncapi-ws-api-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/asyncapi-ws-channels-generator",
+      "projectFolder": "projects/asyncapi-ws-channels-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/asyncapi-ws-parameter-serialization",
+      "projectFolder": "projects/asyncapi-ws-parameter-serialization",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
