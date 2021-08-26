@@ -61,6 +61,7 @@
     "@oats-ts/asyncapi-types-generator": "0.0.0",
     "@oats-ts/asyncapi-channels-generator": "0.0.0",
     "@oats-ts/asyncapi-parameter-serialization": "0.0.0",
+    "@oats-ts/asyncapi-ws-api-generator": "0.0.0",
     "@oats-ts/asyncapi-ws-client": "0.0.0",
     "@oats-ts/asyncapi-reader": "0.0.0",
     "@oats-ts/validators": "0.0.2",

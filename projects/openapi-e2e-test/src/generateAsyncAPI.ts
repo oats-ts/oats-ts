@@ -3,6 +3,7 @@ import { reader } from '@oats-ts/asyncapi-reader'
 import { prettierStringify, writer } from '@oats-ts/typescript-writer'
 import { types } from '@oats-ts/asyncapi-types-generator'
 import { channels } from '@oats-ts/asyncapi-channels-generator'
+import { api } from '@oats-ts/asyncapi-ws-api-generator'
 import { nameProvider, byNameAndTarget } from '@oats-ts/asyncapi'
 
 const common: GeneratorConfig = {
@@ -23,6 +24,13 @@ export async function generateAll() {
       }),
       channels({
         ...common,
+      }),
+      api({
+        ...common,
+        class: true,
+        stub: true,
+        type: true,
+        documentation: true,
       }),
     ],
     writer: writer({
