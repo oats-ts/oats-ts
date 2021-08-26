@@ -1,4 +1,4 @@
-import { ApiImpl } from './generated/api/ApiImpl'
+import { ApiImpl } from './openapi/api/ApiImpl'
 import { validate } from '@oats-ts/validators'
 import { body, headers, mimeType, statusCode, serialize, request } from '@oats-ts/http/lib/node-fetch'
 

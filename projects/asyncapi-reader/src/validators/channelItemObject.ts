@@ -4,6 +4,7 @@ import { recordOfObjects } from './recordOfObjects'
 
 export const channelItemObject = object(
   shape<ChannelItemObject>({
+    name: optional(string()),
     description: optional(string()),
     parameters: optional(recordOfObjects),
     bindings: optional(object()),

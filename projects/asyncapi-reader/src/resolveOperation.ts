@@ -4,8 +4,8 @@ import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
 import { operationObject } from './validators/operationObject'
 import { resolveReferenceable } from './resolveReferenceable'
-import { resolveParameterObject } from './resolveParameterObject'
 import { isNil } from 'lodash'
+import { resolveMessageObject } from './resolveMessageObject'
 
 export async function resolveOperation(input: ReadInput<OperationObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, operationObject)) {
@@ -18,7 +18,7 @@ export async function resolveOperation(input: ReadInput<OperationObject>, contex
     await resolveReferenceable(
       { data: message, uri: context.uri.append(uri, 'message') },
       context,
-      resolveParameterObject,
+      resolveMessageObject,
     )
   }
 

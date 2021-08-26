@@ -5,6 +5,7 @@ specifiers:
   '@rush-temp/asyncapi-channels-generator': file:./projects/asyncapi-channels-generator.tgz
   '@rush-temp/asyncapi-common': file:./projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
+  '@rush-temp/asyncapi-parameter-serialization': file:./projects/asyncapi-parameter-serialization.tgz
   '@rush-temp/asyncapi-reader': file:./projects/asyncapi-reader.tgz
   '@rush-temp/asyncapi-types-generator': file:./projects/asyncapi-types-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:./projects/asyncapi-ws-client.tgz
@@ -65,6 +66,7 @@ dependencies:
   '@rush-temp/asyncapi-channels-generator': file:projects/asyncapi-channels-generator.tgz
   '@rush-temp/asyncapi-common': file:projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
+  '@rush-temp/asyncapi-parameter-serialization': file:projects/asyncapi-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-reader': file:projects/asyncapi-reader.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-types-generator': file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-ws-client': file:projects/asyncapi-ws-client.tgz
@@ -3885,21 +3887,25 @@ packages:
     dev: false
 
   file:projects/asyncapi-channels-generator.tgz:
-    resolution: {integrity: sha512-40g6GYkN+BA/QK5Zv9DjgRqfIVz0GQXr4Lg0E4BfbOn8fTnws86kJSgEN+4TbjJZnT7WZRX90YMn2NUGLqSqFQ==, tarball: file:projects/asyncapi-channels-generator.tgz}
+    resolution: {integrity: sha512-a3CTSsSKU62Gij0cPLiKmjKN20FUITMZ2PBRyChzqgDCCsoupZMFZBRlpGI03tsgUc1uRXnLPdFYwfSnjzU4Zw==, tarball: file:projects/asyncapi-channels-generator.tgz}
     name: '@rush-temp/asyncapi-channels-generator'
     version: 0.0.0
     dependencies:
+      '@types/lodash': 4.14.172
       '@types/websocket': 1.0.4
+      lodash: 4.17.21
       typescript: 4.3.2
       websocket: 1.0.34
     dev: false
 
   file:projects/asyncapi-common.tgz:
-    resolution: {integrity: sha512-LQjJ+Qq5PLMzLD+9iSgIZS0jpF6KPbuACa+OE4FT8hi7JxuCHlexiSqwXWaKYiAt6+3B8VK/HWRF6fEQSJayiw==, tarball: file:projects/asyncapi-common.tgz}
+    resolution: {integrity: sha512-Ssk8gcFP57vlVrwSEmNm1JtD0+0tx5CULjeJS3ddFp7xdLgk5BlybN7NG3tOKdGmX8qo6WBXLbEXu6SensM49Q==, tarball: file:projects/asyncapi-common.tgz}
     name: '@rush-temp/asyncapi-common'
     version: 0.0.0
     dependencies:
+      '@types/lodash': 4.14.172
       '@types/websocket': 1.0.4
+      lodash: 4.17.21
       typescript: 4.3.2
       websocket: 1.0.34
     dev: false
@@ -3908,6 +3914,27 @@ packages:
     resolution: {integrity: sha512-+I+rqem8QPAyCfQJ2uO5nfrGJelMQp7dOUjRo3bUwyKWX1z5Hc2LivGVp7JVfQ7ZuNEcw8paQ6S/G3dhls2xLw==, tarball: file:projects/asyncapi-model.tgz}
     name: '@rush-temp/asyncapi-model'
     version: 0.0.0
+    dev: false
+
+  file:projects/asyncapi-parameter-serialization.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-1yr4pVht7mGJuYYItpJ7OXD2J323RGJYIOr4doL6fMlCdD8h4SFoJrftndpWRQUWTeRwrLtoqrvpuM5m7Wtlgg==, tarball: file:projects/asyncapi-parameter-serialization.tgz}
+    id: file:projects/asyncapi-parameter-serialization.tgz
+    name: '@rush-temp/asyncapi-parameter-serialization'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/node': 15.12.0
+      jest: 27.0.4_ts-node@10.0.0
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
     dev: false
 
   file:projects/asyncapi-reader.tgz_ts-node@10.0.0:
@@ -3940,7 +3967,7 @@ packages:
     dev: false
 
   file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-Lk8Yx3mnmVR3FMCJC67tUlqQIfpNLnWfx1ZTaTxHTKUb1T1D8fGcD0oLHXc2ZXrzzEggA00lgXNCDpJzEPJ0UQ==, tarball: file:projects/asyncapi-types-generator.tgz}
+    resolution: {integrity: sha512-8sK4cnrEenQVkQjken38/vMdEW1aMF86f0Fzd1s+Fx6xfZ8AqtZUegIHezY4/dxD/N3U6vjT7XbJLnVfpesn0Q==, tarball: file:projects/asyncapi-types-generator.tgz}
     id: file:projects/asyncapi-types-generator.tgz
     name: '@rush-temp/asyncapi-types-generator'
     version: 0.0.0
@@ -4056,7 +4083,7 @@ packages:
     dev: false
 
   file:projects/json-schema-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-Nop7f30HXuAHiSn+sxs3WDMUmJAooAbv+Z+ejKHIxQ3AM14Nnz7rSB/B4FSykqFh+jNSzl7bncaHm5PpLhd4nA==, tarball: file:projects/json-schema-types-generator.tgz}
+    resolution: {integrity: sha512-wCL+nPNewRyW6m5T1zJe4d74HU9cg6lgb/fWVGmqe5XTuppwpuejKJw29ptofWbW1jjAp4gkNOjrQP2Y4rg4Mg==, tarball: file:projects/json-schema-types-generator.tgz}
     id: file:projects/json-schema-types-generator.tgz
     name: '@rush-temp/json-schema-types-generator'
     version: 0.0.0
@@ -4144,7 +4171,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-cOj9AYrrXLnWp435AGD/2r8r2fKRGKBOswQrgrNNL8LILNlhM3lzwnQYRoWH8zu5r99/9+6hbeGOI3bHvq4X4A==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-ljTMdL2nHAiKXd9BNY0fYvCPMQZBC834OUmE/fOmKcl3Pm1reGz2FHG6Qv8esAm9hz5tRhndflFGDJKLU5CriA==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4230,7 +4257,7 @@ packages:
     dev: false
 
   file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-9F876tyfYsfYLYdIxJitkfY/yz1g8SljXeVec7pDE746z6C9LYULGpYrj38dfIQuQtr3gP471QTDZB+1x4qAhQ==, tarball: file:projects/openapi-parameter-types-generator.tgz}
+    resolution: {integrity: sha512-/qpmvvkdo/+HVbP6KiR6RlkIO2TTo23e77UtWLej0xVqf1i4enkXrL6iKodGC3l8hzf4OXqreglcWQBAl2Rq0w==, tarball: file:projects/openapi-parameter-types-generator.tgz}
     id: file:projects/openapi-parameter-types-generator.tgz
     name: '@rush-temp/openapi-parameter-types-generator'
     version: 0.0.0
@@ -4284,7 +4311,7 @@ packages:
     dev: false
 
   file:projects/openapi-type-guards-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-eYXvi8dJ/iT/GeblUeBpoT80ATuee9bcgKMJvbIF+fSTmnVeHk52AqUBCBxSmb4lN/p5ypgCRJuTqO2cDWcPLA==, tarball: file:projects/openapi-type-guards-generator.tgz}
+    resolution: {integrity: sha512-DdKHUyV9s858q34SDxtKasS9ImIuDb/pyd4fj2l6WLWu3IzvxfaBwyj8+Bbii++0UeVlSGJwWq9n0T+N3Jo2Tg==, tarball: file:projects/openapi-type-guards-generator.tgz}
     id: file:projects/openapi-type-guards-generator.tgz
     name: '@rush-temp/openapi-type-guards-generator'
     version: 0.0.0
@@ -4308,7 +4335,7 @@ packages:
     dev: false
 
   file:projects/openapi-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-qcNj3nSVtFmBDxjF8I5kPIAivFqrNw23FJUBr31nLrUtwP9tEFzxXzOhYSihVLHB6qmaGZMEp5s6wrVktcJgYQ==, tarball: file:projects/openapi-types-generator.tgz}
+    resolution: {integrity: sha512-2sCXsEmwZstMQZHJ67Ki6qoKQdgo2au1v6WBK2CLmefYtDTNwiG6YwgJFGcATwIUNNs+fpI+fKEZQNHKc8dsUw==, tarball: file:projects/openapi-types-generator.tgz}
     id: file:projects/openapi-types-generator.tgz
     name: '@rush-temp/openapi-types-generator'
     version: 0.0.0
@@ -4332,7 +4359,7 @@ packages:
     dev: false
 
   file:projects/openapi-validator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-059VkpIuD/cBwWHXIngM6CUpPRqlK+76IdzvwctBSGG+h7s1NCYWLKGqnqFcRtKBXFskqP+3N/1Tyu3vWDjPlg==, tarball: file:projects/openapi-validator.tgz}
+    resolution: {integrity: sha512-oBKXYZwOZMa4xgcXeAP1Fxr4p+qG8/ayRCNzYe3vCp/kFao2rNsNGpHiv7IfuKxGVQ4ZD+B3TanZNP+S4Me6qw==, tarball: file:projects/openapi-validator.tgz}
     id: file:projects/openapi-validator.tgz
     name: '@rush-temp/openapi-validator'
     version: 0.0.0
@@ -4356,7 +4383,7 @@ packages:
     dev: false
 
   file:projects/openapi-validators-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-EQXkWqkUYtwqjsNz9ZN+nxHqpRcFGugSa79Lqoq5nYkhm1//tKNfsvNc/1AvWoH5A7jvM+L5Og7BKc08di0m3w==, tarball: file:projects/openapi-validators-generator.tgz}
+    resolution: {integrity: sha512-nLxnF+9QDzX4HsD0DQSpFJf5KNhGkYsg/FBvV0xl9YSwhmrFijkL+ek4EcMilsAnDuOR5Lii5PyYCZubofnxXg==, tarball: file:projects/openapi-validators-generator.tgz}
     id: file:projects/openapi-validators-generator.tgz
     name: '@rush-temp/openapi-validators-generator'
     version: 0.0.0

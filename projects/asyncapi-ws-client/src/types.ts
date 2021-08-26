@@ -3,6 +3,7 @@ export type WebsocketListener<S> = (message: S) => void
 export type WebsocketAdapter = HasSubscribe<any> & HasPublish<any> & HasConnect
 
 export type WebsocketConfig = {
+  baseUrl: string
   serialize(input: any): any
   deserialize(input: any): any
   socket(url: string): W3CWebsocket

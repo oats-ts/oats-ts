@@ -21,7 +21,7 @@ export const messageTraitObject = object(shape<MessageTraitObject>(messageTraits
 export const messageObject = object(
   shape<MessageObject>({
     ...messageTraitsShape,
-    title: optional(string()),
+    payload: object(),
     traits: optional(array()),
   }),
 )

@@ -72,7 +72,7 @@ export type OperationObject = {
   externalDocs?: ExternalDocumentationObject
   bindings?: Record<string, OperationBindingsObject>
   traits?: OperationTraitObject[]
-  message?: MessageObject
+  message: MessageObject
 }
 
 export type ParametersObject = Record<string, Referenceable<ParameterObject>>
@@ -105,7 +105,7 @@ export type OperationTraitObject = {
 
 export type MessageObject = {
   headers?: Referenceable<SchemaObject>
-  payload?: Referenceable<SchemaObject>
+  payload: Referenceable<SchemaObject>
   correlationId?: Referenceable<CorrelationIDObject>
   schemaFormat?: string
   contentType?: string

@@ -21,6 +21,10 @@
       "path": "projects/asyncapi-model"
     },
     {
+      "name": "asyncapi-parameter-serialization",
+      "path": "projects/asyncapi-parameter-serialization"
+    },
+    {
       "name": "asyncapi-reader",
       "path": "projects/asyncapi-reader"
     },

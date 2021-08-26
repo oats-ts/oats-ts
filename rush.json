@@ -43,6 +43,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/asyncapi-parameter-serialization",
+      "projectFolder": "projects/asyncapi-parameter-serialization",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/asyncapi-reader",
       "projectFolder": "projects/asyncapi-reader",
       "versionPolicyName": "oats",

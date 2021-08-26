@@ -14,7 +14,7 @@ export function nameProvider(input: any, name: string, target: AsyncAPIGenerator
     case 'asyncapi/type-guard': {
       return isNil(name) ? undefined : camelCase(`is-${name}`)
     }
-    case 'asyncapi/channel': {
+    case 'asyncapi/channel-factory': {
       const channel: ChannelItemObject = input
       if (isNil(channel)) {
         return undefined
@@ -22,31 +22,37 @@ export function nameProvider(input: any, name: string, target: AsyncAPIGenerator
       if (!isNil(channel.name)) {
         return camelCase(channel.name)
       }
-      return [channel.subscribe?.operationId, channel.publish?.operationId].filter(nonNil).map(pascalCase).join('')
+      return camelCase(
+        [channel.subscribe?.operationId, channel.publish?.operationId].filter(nonNil).map(pascalCase).join('-'),
+      )
+    }
+    case 'asyncapi/channel': {
+      const fnName = nameProvider(input, name, 'asyncapi/channel-factory')
+      return isNil(fnName) ? undefined : pascalCase(fnName)
+    }
+    case 'asyncapi/input-type': {
+      const channelName = nameProvider(input, name, 'asyncapi/channel')
+      return isNil(channelName) ? undefined : pascalCase(`${channelName}Input`)
     }
     case 'asyncapi/query-type': {
-      const operationName = nameProvider(input, name, 'asyncapi/channel')
-      return isNil(operationName) ? undefined : pascalCase(`${operationName}QueryParameters`)
+      const channelName = nameProvider(input, name, 'asyncapi/channel')
+      return isNil(channelName) ? undefined : pascalCase(`${channelName}QueryParameters`)
     }
     case 'asyncapi/path-type': {
-      const operationName = nameProvider(input, name, 'asyncapi/channel')
-      return isNil(operationName) ? undefined : pascalCase(`${operationName}PathParameters`)
+      const channelName = nameProvider(input, name, 'asyncapi/channel')
+      return isNil(channelName) ? undefined : pascalCase(`${channelName}PathParameters`)
     }
     case 'asyncapi/subscribe-type': {
-      const operationName = nameProvider(input, name, 'asyncapi/channel')
-      return isNil(operationName) ? undefined : pascalCase(`${operationName}SubType`)
+      const channelName = nameProvider(input, name, 'asyncapi/channel')
+      return isNil(channelName) ? undefined : pascalCase(`${channelName}SubType`)
     }
     case 'asyncapi/publish-type': {
-      const operationName = nameProvider(input, name, 'asyncapi/channel')
-      return isNil(operationName) ? undefined : pascalCase(`${operationName}PubType`)
+      const channelName = nameProvider(input, name, 'asyncapi/channel')
+      return isNil(channelName) ? undefined : pascalCase(`${channelName}PubType`)
     }
     case 'asyncapi/path-serializer': {
-      const operationName = nameProvider(input, name, 'asyncapi/channel')
-      return isNil(operationName) ? undefined : `${operationName}PathSerializer`
-    }
-    case 'asyncapi/query-serializer': {
-      const operationName = nameProvider(input, name, 'asyncapi/channel')
-      return isNil(operationName) ? undefined : `${operationName}QuerySerializer`
+      const channelName = nameProvider(input, name, 'asyncapi/channel')
+      return isNil(channelName) ? undefined : camelCase(`${channelName}PathSerializer`)
     }
     /**
      * No need to incorporate anything in the name as these should be singletons.

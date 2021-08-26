@@ -15,7 +15,7 @@ export const operationTraitObject = object(shape<OperationTraitObject>(operation
 export const operationObject = object(
   shape<OperationObject>({
     ...operationTraitShape,
-    message: optional(object()),
+    message: object(),
     traits: optional(object()),
   }),
 )

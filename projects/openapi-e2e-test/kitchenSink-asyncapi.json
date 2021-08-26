@@ -191,5 +191,52 @@
         }
       }
     }
+  },
+  "channels": {
+    "/test/{test}": {
+      "name": "testChannel",
+      "parameters": {
+        "test": {
+          "description": "test parameter",
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "bindings": {
+        "ws": {
+          "bindingVersion": "0.1.0",
+          "query": {
+            "type": "object",
+            "properties": {
+              "foo": {
+                "type": "string"
+              },
+              "bar": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "subscribe": {
+        "operationId": "subToTest",
+        "summary": "Sub to test",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/NamedSimpleObject"
+          }
+        }
+      },
+      "publish": {
+        "operationId": "pubToTest",
+        "summary": "Pub to test",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/NamedSimpleObject"
+          }
+        }
+      }
+    }
   }
 }
