@@ -1,11 +1,15 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages } from '@oats-ts/asyncapi-common'
+import {
+  AsyncAPIGeneratorContext,
+  EnhancedChannel,
+  RuntimePackages,
+  hasPublish,
+  hasSubscribe,
+} from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { ChannelsGeneratorConfig } from '../types'
 import { getChannelTypeAst } from './getChannelTypeAst'
 import { ImportDeclaration } from 'typescript'
 import { getNamedImports } from '@oats-ts/typescript-common'
-import { hasPublish } from './hasPublish'
-import { hasSubscribe } from './hasSubscribe'
 
 export function getBaseTypeImport(data: EnhancedChannel): ImportDeclaration {
   const { channel } = data

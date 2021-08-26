@@ -33,6 +33,10 @@
       "path": "projects/asyncapi-types-generator"
     },
     {
+      "name": "asyncapi-ws-api-generator",
+      "path": "projects/asyncapi-ws-api-generator"
+    },
+    {
       "name": "asyncapi-ws-client",
       "path": "projects/asyncapi-ws-client"
     },

@@ -61,6 +61,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/asyncapi-ws-api-generator",
+      "projectFolder": "projects/asyncapi-ws-api-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/asyncapi-ws-client",
       "projectFolder": "projects/asyncapi-ws-client",
       "versionPolicyName": "oats",

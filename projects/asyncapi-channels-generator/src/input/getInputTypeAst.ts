@@ -1,8 +1,6 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages } from '@oats-ts/asyncapi-common'
+import { AsyncAPIGeneratorContext, EnhancedChannel, hasPathParams, hasQueryParams } from '@oats-ts/asyncapi-common'
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
-import { hasPathParams } from '../factory/hasPathParams'
-import { hasQueryParams } from '../factory/hasQueryParams'
 import { negate, isNil } from 'lodash'
 
 export function getInputTypeAst(

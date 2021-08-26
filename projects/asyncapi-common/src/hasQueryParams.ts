@@ -1,6 +1,6 @@
-import { AsyncAPIGeneratorContext } from '@oats-ts/asyncapi-common'
 import { isNil, keys } from 'lodash'
 import { ChannelItemObject } from '@oats-ts/asyncapi-model'
+import { AsyncAPIGeneratorContext } from './typings'
 
 export function hasQueryParams(channel: ChannelItemObject, context: AsyncAPIGeneratorContext): boolean {
   const { dereference } = context

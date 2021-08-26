@@ -1,8 +1,7 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel } from '@oats-ts/asyncapi-common'
+import { AsyncAPIGeneratorContext, EnhancedChannel, hasPublish } from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, SyntaxKind } from 'typescript'
-import { hasPublish } from '../channel/hasPublish'
 
 export function generatePubType(
   data: EnhancedChannel,

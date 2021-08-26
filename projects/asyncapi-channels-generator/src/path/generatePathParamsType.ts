@@ -1,6 +1,5 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel } from '@oats-ts/asyncapi-common'
+import { AsyncAPIGeneratorContext, EnhancedChannel, hasPathParams } from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { hasPathParams } from '../factory/hasPathParams'
 import { ChannelsGeneratorConfig } from '../types'
 import { getPathParamsTypeAst } from './getPathParamsTypeAst'
 import { values, flatMap } from 'lodash'

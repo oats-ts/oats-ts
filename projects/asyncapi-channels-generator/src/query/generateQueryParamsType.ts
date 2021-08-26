@@ -1,8 +1,7 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel } from '@oats-ts/asyncapi-common'
+import { AsyncAPIGeneratorContext, EnhancedChannel, hasQueryParams } from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, SyntaxKind } from 'typescript'
-import { hasQueryParams } from '../factory/hasQueryParams'
 
 export function generateQueryParamsType(
   data: EnhancedChannel,

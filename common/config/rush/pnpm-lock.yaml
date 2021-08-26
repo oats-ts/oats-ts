@@ -8,6 +8,7 @@ specifiers:
   '@rush-temp/asyncapi-parameter-serialization': file:./projects/asyncapi-parameter-serialization.tgz
   '@rush-temp/asyncapi-reader': file:./projects/asyncapi-reader.tgz
   '@rush-temp/asyncapi-types-generator': file:./projects/asyncapi-types-generator.tgz
+  '@rush-temp/asyncapi-ws-api-generator': file:./projects/asyncapi-ws-api-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:./projects/asyncapi-ws-client.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/http': file:./projects/http.tgz
@@ -69,6 +70,7 @@ dependencies:
   '@rush-temp/asyncapi-parameter-serialization': file:projects/asyncapi-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-reader': file:projects/asyncapi-reader.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-types-generator': file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0
+  '@rush-temp/asyncapi-ws-api-generator': file:projects/asyncapi-ws-api-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:projects/asyncapi-ws-client.tgz
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
@@ -3989,6 +3991,16 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/asyncapi-ws-api-generator.tgz:
+    resolution: {integrity: sha512-pnWoF0+ufcaPkct22H1DtH0Z3B9gTF3xBN8WPzVWs7eJnCN7XXaEx85S9CoclGc23BgEExY1iWlxk4M5HxiZTA==, tarball: file:projects/asyncapi-ws-api-generator.tgz}
+    name: '@rush-temp/asyncapi-ws-api-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/lodash': 4.14.172
+      lodash: 4.17.21
+      typescript: 4.3.2
+    dev: false
+
   file:projects/asyncapi-ws-client.tgz:
     resolution: {integrity: sha512-YUfWf7kBbN0Au93Yk01ukN9kRVP0cb9o9/eJxStwZT4X//x5eb4WDqb5W8EUWSQEqpWpLViAziCp0gX55pnqeQ==, tarball: file:projects/asyncapi-ws-client.tgz}
     name: '@rush-temp/asyncapi-ws-client'
@@ -4171,7 +4183,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-ljTMdL2nHAiKXd9BNY0fYvCPMQZBC834OUmE/fOmKcl3Pm1reGz2FHG6Qv8esAm9hz5tRhndflFGDJKLU5CriA==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-0EkXS80ICrHBHvy9fauFssJjtTemxwBqIeZ0hgyicEw6sPW3IDwl4/oW84B+1mM93Kc8s1/Xo6pc0DFwQqyxVw==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:

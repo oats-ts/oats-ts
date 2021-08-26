@@ -1,10 +1,14 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages } from '@oats-ts/asyncapi-common'
+import {
+  AsyncAPIGeneratorContext,
+  EnhancedChannel,
+  RuntimePackages,
+  hasPathParams,
+  hasQueryParams,
+} from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getChannelFactoryAst } from './getChannelFactoryAst'
 import { ChannelsGeneratorConfig } from '../types'
 import { getNamedImports } from '@oats-ts/typescript-common'
-import { hasPathParams } from './hasPathParams'
-import { hasQueryParams } from './hasQueryParams'
 
 export function generateChannelFactory(
   data: EnhancedChannel,

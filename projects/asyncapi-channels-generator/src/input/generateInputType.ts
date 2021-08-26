@@ -1,8 +1,6 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel } from '@oats-ts/asyncapi-common'
+import { AsyncAPIGeneratorContext, EnhancedChannel, hasPathParams, hasQueryParams } from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { ChannelsGeneratorConfig } from '../types'
-import { hasPathParams } from '../factory/hasPathParams'
-import { hasQueryParams } from '../factory/hasQueryParams'
 import { getInputTypeAst } from './getInputTypeAst'
 
 export function generateInputType(

@@ -1,8 +1,12 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages } from '@oats-ts/asyncapi-common'
+import {
+  AsyncAPIGeneratorContext,
+  EnhancedChannel,
+  RuntimePackages,
+  hasPathParams,
+  hasQueryParams,
+} from '@oats-ts/asyncapi-common'
 import { ChannelsGeneratorConfig } from '../types'
 import { Expression, factory } from 'typescript'
-import { hasPathParams } from './hasPathParams'
-import { hasQueryParams } from './hasQueryParams'
 
 function getPathUrlExpression(data: EnhancedChannel, context: AsyncAPIGeneratorContext): Expression {
   const { referenceOf } = context

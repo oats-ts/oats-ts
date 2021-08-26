@@ -1,6 +1,5 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages } from '@oats-ts/asyncapi-common'
+import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages, hasPathParams } from '@oats-ts/asyncapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { hasPathParams } from '../factory/hasPathParams'
 import { ChannelsGeneratorConfig } from '../types'
 import { getPathSerializerAst } from './getPathSerializerAst'
 import { getNamedImports } from '@oats-ts/typescript-common'

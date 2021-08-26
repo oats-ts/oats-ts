@@ -7,21 +7,22 @@ import {
   AsyncAPIGeneratorContext,
   createAsyncAPIGeneratorContext,
   getEnhancedChannels,
+  hasPublish,
+  hasSubscribe,
+  hasPathParams,
+  hasQueryParams,
+  hasInput,
 } from '@oats-ts/asyncapi-common'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { ImportDeclaration, Identifier, factory } from 'typescript'
 import { ChannelsGeneratorConfig } from './types'
 import { generateChannelFactory } from './factory/generateChannelFactory'
 import { generateChannelType } from './channel/generateChannelType'
-import { hasPathParams } from './factory/hasPathParams'
 import { getModelImports } from '@oats-ts/typescript-common'
 import { generateInputType } from './input/generateInputType'
-import { hasQueryParams } from './factory/hasQueryParams'
 import { generatePathParamsType } from './path/generatePathParamsType'
 import { generateQueryParamsType } from './query/generateQueryParamsType'
 import { ChannelItemObject } from '@oats-ts/asyncapi-model'
-import { hasSubscribe } from './channel/hasSubscribe'
-import { hasPublish } from './channel/hasPublish'
 import { generateSubType } from './subType/generateSubType'
 import { generatePubType } from './pubType/generatePubType'
 import { generatePathSerializer } from './pathSerializer/generatePathSerializer'
@@ -84,10 +85,8 @@ export class ChannelsGenerator implements AsyncAPIGenerator {
         return isNil(name) ? undefined : factory.createIdentifier(name)
       }
       case 'asyncapi/input-type': {
-        const hasPath = hasPathParams(input, this.context)
-        const hasQuery = hasQueryParams(input, this.context)
         const name = nameOf(input, target)
-        return isNil(name) || (!hasPath && !hasQuery) ? undefined : factory.createIdentifier(name)
+        return isNil(name) || !hasInput(input, this.context) ? undefined : factory.createIdentifier(name)
       }
       case 'asyncapi/query-type': {
         const name = nameOf(input, target)
@@ -109,9 +108,7 @@ export class ChannelsGenerator implements AsyncAPIGenerator {
       case 'asyncapi/channel':
         return getModelImports(fromPath, target, [input], this.context)
       case 'asyncapi/input-type': {
-        const hasPath = hasPathParams(input, this.context)
-        const hasQuery = hasQueryParams(input, this.context)
-        return hasPath || hasQuery ? getModelImports(fromPath, target, [input], this.context) : []
+        return hasInput(input, this.context) ? getModelImports(fromPath, target, [input], this.context) : []
       }
       case 'asyncapi/path-type':
       case 'asyncapi/path-serializer': {

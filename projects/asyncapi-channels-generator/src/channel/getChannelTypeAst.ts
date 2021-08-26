@@ -1,8 +1,12 @@
-import { AsyncAPIGeneratorContext, EnhancedChannel, RuntimePackages } from '@oats-ts/asyncapi-common'
+import {
+  AsyncAPIGeneratorContext,
+  EnhancedChannel,
+  RuntimePackages,
+  hasPublish,
+  hasSubscribe,
+} from '@oats-ts/asyncapi-common'
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
-import { hasPublish } from './hasPublish'
-import { hasSubscribe } from './hasSubscribe'
 
 export function getBaseType(data: EnhancedChannel, context: AsyncAPIGeneratorContext): TypeNode {
   const { channel } = data
