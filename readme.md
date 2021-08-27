@@ -1,20 +1,8 @@
 # @oats
 
-Comprehensive typescript code generators.
-
-## how does it work?
-
-Code generation works in 3 steps:
-
-1. **READ** your input
-2. **GENERATE** into intermedate representation (AST, or your choice in case of custom generators)
-3. **WRITE** to the disk
-
-Each step takes the output of the previous steps and produces the input of the next step
+Comprehensive typescript code generators for OpenAPI and AsyncAPI.
 
 ## usage
-
-This example generates code based on OpenAPI (currently the only fully working pipeline):
 
 ```ts
 import { generate } from '@oats-ts/generator'
@@ -68,8 +56,6 @@ export async function generateAll() {
 }
 ```
 
-For more information see the individual packages!
+## Docs
 
-## add your own
-
-TODO docs about custom readers, writers and generators.
+[https://github.com/bali182/oats/wiki](https://github.com/bali182/oats/wiki)

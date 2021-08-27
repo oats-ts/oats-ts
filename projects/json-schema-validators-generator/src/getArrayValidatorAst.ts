@@ -1,13 +1,12 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier, Expression } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { ValidatorsGeneratorConfig } from './typings'
+import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
 
 export function getArrayValidatorAst(
   data: SchemaObject,
-  context: OpenAPIGeneratorContext,
+  context: ValidatorsGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {

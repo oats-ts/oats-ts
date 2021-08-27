@@ -1,21 +1,3 @@
-const Validators = {
-  name: '@oats-ts/validators',
-  string: 'string',
-  enumeration: 'enumeration',
-  number: 'number',
-  boolean: 'boolean',
-  array: 'array',
-  object: 'object',
-  optional: 'optional',
-  shape: 'shape',
-  items: 'items',
-  record: 'record',
-  any: 'any',
-  union: 'union',
-  lazy: 'lazy',
-  literal: 'literal',
-}
-
 const Http = {
   name: '@oats-ts/http',
   ResponseExpectations: 'ResponseExpectations',
@@ -38,7 +20,6 @@ const ParameterSerialization = {
 }
 
 export const RuntimePackages = {
-  Validators,
   Http,
   ParameterSerialization,
 }

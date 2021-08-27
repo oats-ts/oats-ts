@@ -1,14 +1,13 @@
 import { ReferenceObject } from '@oats-ts/json-schema-model'
-import { factory, CallExpression, Identifier } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/model-common'
-import { ValidatorsGeneratorConfig } from './typings'
+import { factory, CallExpression, Identifier } from 'typescript'
+import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
 import { isNil } from 'lodash'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 
 export function getReferenceValidatorAst(
   data: ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  context: ValidatorsGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {
@@ -17,7 +16,7 @@ export function getReferenceValidatorAst(
     return factory.createIdentifier(RuntimePackages.Validators.any)
   }
   const resolved = dereference(data)
-  const name = nameOf(resolved, 'openapi/validator')
+  const name = nameOf(resolved, context.produces)
   if (!isNil(name)) {
     const validator = factory.createIdentifier(name)
     return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.lazy), undefined, [

@@ -1,16 +1,14 @@
 import { isNil, values } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { RuntimePackages } from '@oats-ts/model-common'
-import { getPrimitiveType, PrimitiveTypes } from '@oats-ts/model-common'
+import { getPrimitiveType, PrimitiveTypes, RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { ValidatorsGeneratorConfig } from './typings'
+import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 
 function getUnionProperties(
   data: SchemaObject,
-  context: OpenAPIGeneratorContext,
+  context: ValidatorsGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): PropertyAssignment[] {
@@ -28,7 +26,7 @@ function getUnionProperties(
   const discriminators = values(data.discriminator.mapping || {})
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
-      factory.createIdentifier(nameOf(dereference($ref), 'openapi/type')),
+      factory.createIdentifier(nameOf(dereference($ref), context.consumes)),
       getReferenceValidatorAst({ $ref }, context, config, level),
     )
   })
@@ -36,7 +34,7 @@ function getUnionProperties(
 
 export function getUnionTypeValidatorAst(
   data: SchemaObject,
-  context: OpenAPIGeneratorContext,
+  context: ValidatorsGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {

@@ -4,7 +4,5 @@ import { AsyncAPIGeneratorTarget } from '@oats-ts/asyncapi'
 
 export class TypesGenerator extends JsonSchemaTypesGenerator<AsyncAPIReadOutput> {
   public readonly id = 'asyncapi/types'
-  public readonly target: AsyncAPIGeneratorTarget = 'asyncapi/type'
-  public readonly consumes: AsyncAPIGeneratorTarget[] = []
-  public readonly produces: AsyncAPIGeneratorTarget[] = ['asyncapi/type']
+  public readonly produces: [AsyncAPIGeneratorTarget] = ['asyncapi/type']
 }

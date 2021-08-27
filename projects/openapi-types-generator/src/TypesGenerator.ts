@@ -4,7 +4,5 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 
 export class TypesGenerator extends JsonSchemaTypesGenerator<OpenAPIReadOutput> {
   public readonly id = 'openapi/types'
-  public readonly target: OpenAPIGeneratorTarget = 'openapi/type'
-  public readonly consumes: OpenAPIGeneratorTarget[] = []
-  public readonly produces: OpenAPIGeneratorTarget[] = ['openapi/type']
+  public readonly produces: [OpenAPIGeneratorTarget] = ['openapi/type']
 }

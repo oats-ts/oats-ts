@@ -1,20 +1,19 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { factory, CallExpression, Identifier } from 'typescript'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getInferredType } from '@oats-ts/json-schema-common'
 import { getObjectValidatorAst } from './getObjectValidatorAst'
 import { getRecordValidatorAst } from './getRecordValidatorAst'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
 import { getUnionTypeValidatorAst } from './getUnionTypeValidatorAst'
-import { ValidatorsGeneratorConfig } from './typings'
+import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
 import { getLiteralAst } from '@oats-ts/typescript-common'
 import { getArrayValidatorAst } from './getArrayValidatorAst'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
-  context: OpenAPIGeneratorContext,
+  context: ValidatorsGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {

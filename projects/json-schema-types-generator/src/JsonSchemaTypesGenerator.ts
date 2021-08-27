@@ -20,11 +20,10 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
 {
   private context: TypesGeneratorContext = null
   private config: GeneratorConfig & TypesGeneratorConfig
+  public readonly consumes: string[] = []
 
-  abstract readonly target: string
   abstract readonly id: string
-  abstract readonly produces: string[]
-  abstract readonly consumes: string[]
+  abstract readonly produces: [string]
 
   public constructor(config: GeneratorConfig & TypesGeneratorConfig) {
     this.config = config
@@ -33,7 +32,7 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
   public initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
       ...createGeneratorContext(data, this.config, generators),
-      target: this.target,
+      target: this.produces[0],
     }
   }
 

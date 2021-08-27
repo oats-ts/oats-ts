@@ -2,15 +2,14 @@ import { entries, has, sortBy } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { getDiscriminators } from '@oats-ts/model-common'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { ValidatorsGeneratorConfig } from './typings'
+import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
 import { safeName } from '@oats-ts/typescript-common'
 
 export function getObjectValidatorAst(
   data: SchemaObject,
-  context: OpenAPIGeneratorContext,
+  context: ValidatorsGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {
