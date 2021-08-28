@@ -7,6 +7,10 @@
   "license": "ISC",
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
+  "directories": {},
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bali182/oats.git"

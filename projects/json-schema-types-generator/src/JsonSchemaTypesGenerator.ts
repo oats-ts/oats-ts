@@ -3,13 +3,7 @@ import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { sortBy } from 'lodash'
 import { GeneratorConfig, Result, CodeGenerator } from '@oats-ts/generator'
-import {
-  createGeneratorContext,
-  GeneratorContext,
-  getNamedSchemas,
-  HasSchemas,
-  ReadOutput,
-} from '@oats-ts/model-common'
+import { createGeneratorContext, getNamedSchemas, HasSchemas, ReadOutput } from '@oats-ts/model-common'
 import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
 import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
