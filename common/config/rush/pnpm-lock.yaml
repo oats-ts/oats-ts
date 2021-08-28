@@ -5,6 +5,7 @@ specifiers:
   '@rush-temp/asyncapi-common': file:./projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
   '@rush-temp/asyncapi-reader': file:./projects/asyncapi-reader.tgz
+  '@rush-temp/asyncapi-type-guards-generator': file:./projects/asyncapi-type-guards-generator.tgz
   '@rush-temp/asyncapi-types-generator': file:./projects/asyncapi-types-generator.tgz
   '@rush-temp/asyncapi-validators-generator': file:./projects/asyncapi-validators-generator.tgz
   '@rush-temp/asyncapi-ws-api-generator': file:./projects/asyncapi-ws-api-generator.tgz
@@ -70,6 +71,7 @@ dependencies:
   '@rush-temp/asyncapi-common': file:projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
   '@rush-temp/asyncapi-reader': file:projects/asyncapi-reader.tgz_ts-node@10.0.0
+  '@rush-temp/asyncapi-type-guards-generator': file:projects/asyncapi-type-guards-generator.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-types-generator': file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-validators-generator': file:projects/asyncapi-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-ws-api-generator': file:projects/asyncapi-ws-api-generator.tgz
@@ -3941,6 +3943,29 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/asyncapi-type-guards-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-2z/0+xRXvzx0IYw+MunJYJlUty9EkYVoqbdyQjNeGAn0eiQo78eSN/2S161w32tVjtLNc4wyZki/LeCunrVPQg==, tarball: file:projects/asyncapi-type-guards-generator.tgz}
+    id: file:projects/asyncapi-type-guards-generator.tgz
+    name: '@rush-temp/asyncapi-type-guards-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.0
+      jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-8sK4cnrEenQVkQjken38/vMdEW1aMF86f0Fzd1s+Fx6xfZ8AqtZUegIHezY4/dxD/N3U6vjT7XbJLnVfpesn0Q==, tarball: file:projects/asyncapi-types-generator.tgz}
     id: file:projects/asyncapi-types-generator.tgz
@@ -4395,7 +4420,7 @@ packages:
     dev: false
 
   file:projects/openapi-type-guards-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-DdKHUyV9s858q34SDxtKasS9ImIuDb/pyd4fj2l6WLWu3IzvxfaBwyj8+Bbii++0UeVlSGJwWq9n0T+N3Jo2Tg==, tarball: file:projects/openapi-type-guards-generator.tgz}
+    resolution: {integrity: sha512-HyLhKpz8NM7IrwXGYK3sDIDNEJ2yPFHSTxOz1ytzE+xWu7TjgwGmBXUXYnkVVsSw+2QPex7G0/RmMPD9WGMRKA==, tarball: file:projects/openapi-type-guards-generator.tgz}
     id: file:projects/openapi-type-guards-generator.tgz
     name: '@rush-temp/openapi-type-guards-generator'
     version: 0.0.0

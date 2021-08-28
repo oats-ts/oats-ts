@@ -21,6 +21,10 @@
       "path": "projects/asyncapi-reader"
     },
     {
+      "name": "asyncapi-type-guards-generator",
+      "path": "projects/asyncapi-type-guards-generator"
+    },
+    {
       "name": "asyncapi-types-generator",
       "path": "projects/asyncapi-types-generator"
     },
