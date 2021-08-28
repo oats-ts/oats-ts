@@ -15,6 +15,7 @@ specifiers:
   '@rush-temp/http': file:./projects/http.tgz
   '@rush-temp/json-schema-common': file:./projects/json-schema-common.tgz
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
+  '@rush-temp/json-schema-type-guards-generator': file:./projects/json-schema-type-guards-generator.tgz
   '@rush-temp/json-schema-types-generator': file:./projects/json-schema-types-generator.tgz
   '@rush-temp/json-schema-validators-generator': file:./projects/json-schema-validators-generator.tgz
   '@rush-temp/model-common': file:./projects/model-common.tgz
@@ -79,6 +80,7 @@ dependencies:
   '@rush-temp/http': file:projects/http.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-common': file:projects/json-schema-common.tgz
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
+  '@rush-temp/json-schema-type-guards-generator': file:projects/json-schema-type-guards-generator.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-types-generator': file:projects/json-schema-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-validators-generator': file:projects/json-schema-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/model-common': file:projects/model-common.tgz
@@ -4118,6 +4120,29 @@ packages:
       typescript: 4.3.2
     dev: false
 
+  file:projects/json-schema-type-guards-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-OZc8b6mkwz5S0PkY2+TFxe0K+8Zf9ZMujBXmqoypKIQod/pDhHxjRmTWjOdqpJsiObQy2NpfKXpzn0DnHC1aYw==, tarball: file:projects/json-schema-type-guards-generator.tgz}
+    id: file:projects/json-schema-type-guards-generator.tgz
+    name: '@rush-temp/json-schema-type-guards-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.0
+      jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.2
+      typescript: 4.3.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/json-schema-types-generator.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-wCL+nPNewRyW6m5T1zJe4d74HU9cg6lgb/fWVGmqe5XTuppwpuejKJw29ptofWbW1jjAp4gkNOjrQP2Y4rg4Mg==, tarball: file:projects/json-schema-types-generator.tgz}
     id: file:projects/json-schema-types-generator.tgz
@@ -4230,7 +4255,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-pR56VkGpJBy0igf18S3sBe1qBZIE1DZVvYO25xFuqWu0W61VAKjVq4WT3EjSAUoNQcuHUgSTZtxkAUIkvzj5QQ==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-KMZDNUkV7DznJ5YQj+7zIpzZzUU6XkoZeU3U1WvR3D9slkvMDv0WgiBFPqfqCxXAC4FBPMbDCS77qHgwHQBpVQ==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:

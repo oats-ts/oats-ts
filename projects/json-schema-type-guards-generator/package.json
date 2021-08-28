@@ -1,0 +1,45 @@
+{
+  "name": "@oats-ts/json-schema-type-guards-generator",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "directories": {},
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf lib && tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "26.0.23",
+    "@types/node": "15.12.0",
+    "@types/lodash": "4.14.170",
+    "jest": "27.0.4",
+    "ts-jest": "27.0.2",
+    "rimraf": "3.0.2"
+  },
+  "dependencies": {
+    "typescript": "4.3.2",
+    "lodash": "4.17.21",
+    "@oats-ts/json-schema-model": "0.0.0",
+    "@oats-ts/json-schema-common": "0.0.0",
+    "@oats-ts/validators": "0.0.2",
+    "@oats-ts/typescript-writer": "0.0.2",
+    "@oats-ts/generator": "0.0.2",
+    "@oats-ts/typescript-common": "0.0.2",
+    "@oats-ts/model-common": "0.0.0"
+  }
+}

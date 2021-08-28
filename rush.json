@@ -103,6 +103,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/json-schema-type-guards-generator",
+      "projectFolder": "projects/json-schema-type-guards-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/json-schema-types-generator",
       "projectFolder": "projects/json-schema-types-generator",
       "versionPolicyName": "oats",

@@ -61,6 +61,10 @@
       "path": "projects/json-schema-model"
     },
     {
+      "name": "json-schema-type-guards-generator",
+      "path": "projects/json-schema-type-guards-generator"
+    },
+    {
       "name": "json-schema-types-generator",
       "path": "projects/json-schema-types-generator"
     },
