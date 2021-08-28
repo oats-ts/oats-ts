@@ -25,6 +25,10 @@
       "path": "projects/asyncapi-types-generator"
     },
     {
+      "name": "asyncapi-validators-generator",
+      "path": "projects/asyncapi-validators-generator"
+    },
+    {
       "name": "asyncapi-ws-api-generator",
       "path": "projects/asyncapi-ws-api-generator"
     },

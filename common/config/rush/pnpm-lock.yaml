@@ -6,6 +6,7 @@ specifiers:
   '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
   '@rush-temp/asyncapi-reader': file:./projects/asyncapi-reader.tgz
   '@rush-temp/asyncapi-types-generator': file:./projects/asyncapi-types-generator.tgz
+  '@rush-temp/asyncapi-validators-generator': file:./projects/asyncapi-validators-generator.tgz
   '@rush-temp/asyncapi-ws-api-generator': file:./projects/asyncapi-ws-api-generator.tgz
   '@rush-temp/asyncapi-ws-channels-generator': file:./projects/asyncapi-ws-channels-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:./projects/asyncapi-ws-client.tgz
@@ -69,6 +70,7 @@ dependencies:
   '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
   '@rush-temp/asyncapi-reader': file:projects/asyncapi-reader.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-types-generator': file:projects/asyncapi-types-generator.tgz_ts-node@10.0.0
+  '@rush-temp/asyncapi-validators-generator': file:projects/asyncapi-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/asyncapi-ws-api-generator': file:projects/asyncapi-ws-api-generator.tgz
   '@rush-temp/asyncapi-ws-channels-generator': file:projects/asyncapi-ws-channels-generator.tgz
   '@rush-temp/asyncapi-ws-client': file:projects/asyncapi-ws-client.tgz
@@ -3960,6 +3962,28 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/asyncapi-validators-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-HLhYtQPR5CQRRmScuzBx8flqQpc3ykuuzdjKkxnHZjZo42xA+qrm5PY7TYC3VoczujR6KYmV2LeTZkjiDSDyPQ==, tarball: file:projects/asyncapi-validators-generator.tgz}
+    id: file:projects/asyncapi-validators-generator.tgz
+    name: '@rush-temp/asyncapi-validators-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.170
+      '@types/node': 15.12.0
+      jest: 27.0.4_ts-node@10.0.0
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - typescript
+      - utf-8-validate
+    dev: false
+
   file:projects/asyncapi-ws-api-generator.tgz:
     resolution: {integrity: sha512-pnWoF0+ufcaPkct22H1DtH0Z3B9gTF3xBN8WPzVWs7eJnCN7XXaEx85S9CoclGc23BgEExY1iWlxk4M5HxiZTA==, tarball: file:projects/asyncapi-ws-api-generator.tgz}
     name: '@rush-temp/asyncapi-ws-api-generator'
@@ -4418,7 +4442,7 @@ packages:
     dev: false
 
   file:projects/openapi-validators-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-nLxnF+9QDzX4HsD0DQSpFJf5KNhGkYsg/FBvV0xl9YSwhmrFijkL+ek4EcMilsAnDuOR5Lii5PyYCZubofnxXg==, tarball: file:projects/openapi-validators-generator.tgz}
+    resolution: {integrity: sha512-XbsESsKJU7LhICRrZosNX+moP7tF6uPJl036ug+DHkhlaxul2BUUd7TC5F//YI1F9b7IJHXXRO9ATDktb5oLUA==, tarball: file:projects/openapi-validators-generator.tgz}
     id: file:projects/openapi-validators-generator.tgz
     name: '@rush-temp/openapi-validators-generator'
     version: 0.0.0
@@ -4430,7 +4454,7 @@ packages:
       lodash: 4.17.21
       openapi3-ts: 2.0.1
       rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.2
+      ts-jest: 27.0.2_jest@27.0.4
       typescript: 4.3.2
     transitivePeerDependencies:
       - bufferutil
@@ -4438,6 +4462,7 @@ packages:
       - node-notifier
       - supports-color
       - ts-node
+      - typescript
       - utf-8-validate
     dev: false
 

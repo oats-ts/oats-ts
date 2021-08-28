@@ -49,6 +49,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/asyncapi-validators-generator",
+      "projectFolder": "projects/asyncapi-validators-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/asyncapi-ws-api-generator",
       "projectFolder": "projects/asyncapi-ws-api-generator",
       "versionPolicyName": "oats",
