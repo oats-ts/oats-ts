@@ -21,7 +21,7 @@ export function generateTypeGuard(
 ): TypeScriptModule {
   const { pathOf, dependenciesOf } = context
   const path = pathOf(schema, context.produces)
-  const typeImports = dependenciesOf(path, schema, context.produces)
+  const typeImports = dependenciesOf(path, schema, context.consumes)
   if (isUnionTypeGuardGeneratorConfig(config)) {
     if (isReferenceObject(schema)) {
       return undefined
