@@ -5,6 +5,7 @@ import { types } from '@oats-ts/asyncapi-types-generator'
 import { validators } from '@oats-ts/asyncapi-validators-generator'
 import { channels } from '@oats-ts/asyncapi-ws-channels-generator'
 import { api } from '@oats-ts/asyncapi-ws-api-generator'
+import { typeGuards } from '@oats-ts/asyncapi-type-guards-generator'
 import { nameProvider, byNameAndTarget } from '@oats-ts/asyncapi'
 
 const common: GeneratorConfig = {
@@ -16,7 +17,7 @@ export async function generateAll() {
   return generate({
     log: true,
     validator: null,
-    reader: reader({ path: 'kitchenSink-asyncapi.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
+    reader: reader({ path: 'kitchenSink-asyncapi.json' }),
     generators: [
       types({
         ...common,
@@ -25,6 +26,12 @@ export async function generateAll() {
       }),
       channels({
         ...common,
+      }),
+      typeGuards({
+        ...common,
+        arrays: true,
+        records: true,
+        references: true,
       }),
       validators({
         ...common,
