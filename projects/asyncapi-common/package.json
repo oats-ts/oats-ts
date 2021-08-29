@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/asyncapi-common",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -28,13 +28,13 @@
     "@types/lodash": "4.14.172"
   },
   "dependencies": {
-    "@oats-ts/asyncapi": "0.0.0",
-    "@oats-ts/generator": "0.0.2",
-    "@oats-ts/typescript-writer": "0.0.2",
-    "@oats-ts/json-schema-model": "0.0.0",
-    "@oats-ts/asyncapi-model": "0.0.0",
-    "@oats-ts/asyncapi-reader": "0.0.0",
-    "@oats-ts/model-common": "0.0.0",
+    "@oats-ts/asyncapi": "0.0.3",
+    "@oats-ts/generator": "0.0.3",
+    "@oats-ts/typescript-writer": "0.0.3",
+    "@oats-ts/json-schema-model": "0.0.3",
+    "@oats-ts/asyncapi-model": "0.0.3",
+    "@oats-ts/asyncapi-reader": "0.0.3",
+    "@oats-ts/model-common": "0.0.3",
     "lodash": "4.17.21"
   }
 }
