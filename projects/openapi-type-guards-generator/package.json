@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-type-guards-generator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -32,10 +32,10 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/json-schema-type-guards-generator": "0.0.3",
-    "@oats-ts/openapi-reader": "0.0.3",
-    "@oats-ts/generator": "0.0.3",
-    "@oats-ts/openapi-common": "0.0.3",
-    "@oats-ts/openapi": "0.0.3"
+    "@oats-ts/json-schema-type-guards-generator": "0.0.4",
+    "@oats-ts/openapi-reader": "0.0.4",
+    "@oats-ts/generator": "0.0.4",
+    "@oats-ts/openapi-common": "0.0.4",
+    "@oats-ts/openapi": "0.0.4"
   }
 }
