@@ -7,6 +7,7 @@ import {
 } from '@oats-ts/asyncapi-common'
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
+import { documentNode } from '@oats-ts/typescript-common'
 
 export function getBaseType(data: EnhancedChannel, context: AsyncAPIGeneratorContext): TypeNode {
   const { channel } = data
@@ -36,11 +37,13 @@ export function getChannelTypeAst(
 ): TypeAliasDeclaration {
   const { nameOf } = context
   const type = getBaseType(data, context)
-  return factory.createTypeAliasDeclaration(
+  const typeDecl = factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     nameOf(data.channel, 'asyncapi/channel'),
     undefined,
     type,
   )
+
+  return config.documentation ? documentNode(typeDecl, data.channel) : typeDecl
 }

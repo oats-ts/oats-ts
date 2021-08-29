@@ -8,6 +8,7 @@ import {
 import { ChannelsGeneratorConfig } from '../types'
 import { FunctionDeclaration, factory, SyntaxKind, ParameterDeclaration } from 'typescript'
 import { getChannelFactoryReturnAst } from './getChannelFactoryReturnAst'
+import { documentNode } from '@oats-ts/typescript-common'
 
 export function getChannelFactoryAst(
   data: EnhancedChannel,
@@ -52,5 +53,5 @@ export function getChannelFactoryAst(
     referenceOf(channel, 'asyncapi/channel'),
     factory.createBlock([factory.createReturnStatement(getChannelFactoryReturnAst(data, context, config))]),
   )
-  return node
+  return config.documentation ? documentNode(node, channel) : node
 }

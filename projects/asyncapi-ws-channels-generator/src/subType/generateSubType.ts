@@ -2,6 +2,7 @@ import { AsyncAPIGeneratorContext, EnhancedChannel, hasSubscribe } from '@oats-t
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, SyntaxKind } from 'typescript'
+import { documentNode } from '@oats-ts/typescript-common'
 
 export function generateSubType(
   data: EnhancedChannel,
@@ -16,17 +17,18 @@ export function generateSubType(
   }
 
   const path = pathOf(data.channel, 'asyncapi/subscribe-type')
-  const schema = channel.subscribe.message.payload
+  const message = channel.subscribe.message
+  const schema = message.payload
 
-  const content = [
-    factory.createTypeAliasDeclaration(
-      [],
-      [factory.createModifier(SyntaxKind.ExportKeyword)],
-      nameOf(data.channel, 'asyncapi/subscribe-type'),
-      [],
-      referenceOf(schema, 'asyncapi/type'),
-    ),
-  ]
+  const type = factory.createTypeAliasDeclaration(
+    [],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
+    nameOf(data.channel, 'asyncapi/subscribe-type'),
+    [],
+    referenceOf(schema, 'asyncapi/type'),
+  )
+
+  const content = [config.documentation ? documentNode(type, message) : type]
 
   return {
     content,

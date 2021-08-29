@@ -194,6 +194,7 @@
   },
   "channels": {
     "/test/{test}": {
+      "description": "Test channel docs",
       "name": "testChannel",
       "parameters": {
         "test": {

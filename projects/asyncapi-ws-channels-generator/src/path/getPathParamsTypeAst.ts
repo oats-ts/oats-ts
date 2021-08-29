@@ -2,7 +2,7 @@ import { AsyncAPIGeneratorContext, EnhancedChannel } from '@oats-ts/asyncapi-com
 import { ChannelsGeneratorConfig } from '../types'
 import { factory, PropertySignature, SyntaxKind } from 'typescript'
 import { entries } from 'lodash'
-import { safeName } from '@oats-ts/typescript-common'
+import { safeName, documentNode } from '@oats-ts/typescript-common'
 
 export function getPathParamsTypeAst(
   data: EnhancedChannel,
@@ -15,7 +15,13 @@ export function getPathParamsTypeAst(
   const typeLiteral = factory.createTypeLiteralNode(
     entries(parameters).map(([name, paramOrRef]): PropertySignature => {
       const param = dereference(paramOrRef, true)
-      return factory.createPropertySignature([], safeName(name), undefined, referenceOf(param.schema, 'asyncapi/type'))
+      const property = factory.createPropertySignature(
+        [],
+        safeName(name),
+        undefined,
+        referenceOf(param.schema, 'asyncapi/type'),
+      )
+      return config.documentation ? documentNode(property, param) : property
     }),
   )
 

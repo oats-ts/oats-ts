@@ -39,7 +39,7 @@ export class ChannelsGenerator implements AsyncAPIGenerator {
   public readonly produces: string[] = ChannelsGenerator.produces
   public readonly consumes: string[] = ChannelsGenerator.consumes
 
-  constructor(config: GeneratorConfig) {
+  constructor(config: GeneratorConfig & ChannelsGeneratorConfig) {
     this.config = config
   }
 

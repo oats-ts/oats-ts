@@ -4,6 +4,9 @@ import { TestChannel } from '../channels/TestChannel'
 import { TestChannelInput } from '../inputTypes/TestChannelInput'
 import { testChannelPathSerializer } from '../pathSerializers/testChannelPathSerializer'
 
+/**
+ * Test channel docs
+ */
 export function testChannel(input: TestChannelInput, config: WebsocketConfig): TestChannel {
   return config.adapter(
     joinUrl(config.baseUrl, testChannelPathSerializer(input.path), serializeQuery(input.query)),

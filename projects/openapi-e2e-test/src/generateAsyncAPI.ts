@@ -26,6 +26,7 @@ export async function generateAll() {
       }),
       channels({
         ...common,
+        documentation: true,
       }),
       typeGuards({
         ...common,
