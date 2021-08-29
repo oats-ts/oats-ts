@@ -2,11 +2,11 @@ import { GeneratorContext, HasSchemas } from '@oats-ts/model-common'
 
 export type ValidatorsGeneratorConfig = {
   /** When true nested $refs will be validated, when false these checks will be ommited. */
-  references: boolean
+  references?: boolean
   /** When true, contents of records (additionalProperties) will be checked, otherwise only their type will be asserted. */
-  records: boolean
+  records?: boolean
   /** When true, contents of arrays (items) will be checked, otherwise only their type will be asserted. */
-  arrays: boolean
+  arrays?: boolean
 }
 
 export type ValidatorsGeneratorContext = GeneratorContext<HasSchemas> & {
