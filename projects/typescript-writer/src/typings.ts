@@ -17,11 +17,4 @@ export type TypeScriptWriterConfig = {
    * @param content The contents of the file.
    */
   write?(path: string, content: string): Promise<void>
-
-  /**
-   * If set to true, parent folder of each module will be deleted.
-   * This is ideal if you want to prevent keeping around stale artifacts,
-   * that since have been removed from your schema.
-   */
-  purge?: boolean
 }

@@ -6,11 +6,13 @@ import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
   const { nameOf } = context
 
-  const returnStatement = factory.createReturnStatement(
-    factory.createCallExpression(
-      factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'fallback'),
+  const name = nameOf(data.operation, 'openapi/operation')
+
+  const throwStatement = factory.createThrowStatement(
+    factory.createNewExpression(
+      factory.createIdentifier('Error'),
       [],
-      [],
+      [factory.createStringLiteral(`"${name}" is not implemented`)],
     ),
   )
 
@@ -18,11 +20,11 @@ export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGen
     [],
     [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    nameOf(data.operation, 'openapi/operation'),
+    name,
     undefined,
     [],
     getApiMethodParameterAsts(data, context),
     getApiMethodReturnTypeAst(data, context),
-    factory.createBlock([returnStatement]),
+    factory.createBlock([throwStatement]),
   )
 }

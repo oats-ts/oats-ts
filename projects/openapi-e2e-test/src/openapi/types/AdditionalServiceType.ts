@@ -1,3 +1,6 @@
+/**
+ * additional service type
+ */
 export enum AdditionalServiceType {
   CHECKED_BAGS = 'CHECKED_BAGS',
   MEALS = 'MEALS',

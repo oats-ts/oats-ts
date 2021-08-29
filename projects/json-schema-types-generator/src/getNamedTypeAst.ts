@@ -13,19 +13,18 @@ export function getNamedTypeAst(
   config: TypesGeneratorConfig,
 ): TypeAliasDeclaration | EnumDeclaration {
   const { nameOf, target } = context
-  if (isReferenceObject(schema) || getInferredType(schema) !== 'enum') {
-    const node = factory.createTypeAliasDeclaration(
-      undefined,
-      [factory.createModifier(SyntaxKind.ExportKeyword)],
-      factory.createIdentifier(nameOf(schema, target)),
-      undefined,
-      getRighthandSideTypeAst(schema, context, config),
-    )
-
-    return config.documentation && !isReferenceObject(schema) ? documentNode(node, schema) : node
+  if (getInferredType(schema) === 'enum' && config.enums) {
+    const node = getNamedEnumAst(schema as SchemaObject, context)
+    return config.documentation ? documentNode(node, schema as SchemaObject) : node
   }
 
-  if (!isNil(schema.enum) && config.enums) {
-    return getNamedEnumAst(schema, context)
-  }
+  const node = factory.createTypeAliasDeclaration(
+    undefined,
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
+    factory.createIdentifier(nameOf(schema, target)),
+    undefined,
+    getRighthandSideTypeAst(schema, context, config),
+  )
+
+  return config.documentation && !isReferenceObject(schema) ? documentNode(node, schema) : node
 }

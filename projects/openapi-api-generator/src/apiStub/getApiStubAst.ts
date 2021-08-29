@@ -12,26 +12,6 @@ export function getApiStubAst(
 ): ClassDeclaration {
   const { nameOf } = context
 
-  const fallback = factory.createMethodDeclaration(
-    [],
-    [factory.createModifier(SyntaxKind.ProtectedKeyword)],
-    undefined,
-    'fallback',
-    undefined,
-    [],
-    [],
-    factory.createTypeReferenceNode('never'),
-    factory.createBlock([
-      factory.createThrowStatement(
-        factory.createNewExpression(
-          factory.createIdentifier('Error'),
-          [],
-          [factory.createStringLiteral('Not implemented.')],
-        ),
-      ),
-    ]),
-  )
-
   const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
@@ -46,6 +26,6 @@ export function getApiStubAst(
     nameOf(document, 'openapi/api-stub'),
     [],
     heritageClauses,
-    [fallback, ...operations.map((operation) => getApiStubMethodAst(operation, context))],
+    operations.map((operation) => getApiStubMethodAst(operation, context)),
   )
 }

@@ -9,17 +9,22 @@ import { api } from '@oats-ts/openapi-api-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
 import { nameProvider, byNameAndTarget } from '@oats-ts/openapi'
+import { promises as fs } from 'fs'
+import { resolve } from 'path'
+
+const dir = 'src/openapi'
 
 const common: GeneratorConfig = {
   name: nameProvider,
-  path: byNameAndTarget('src/openapi'),
+  path: byNameAndTarget(dir),
 }
 
 export async function generateAll() {
+  await fs.rm(resolve(dir), { recursive: true, force: true })
   return generate({
     log: true,
     validator: validator(),
-    reader: reader({ path: 'kitchenSink-openapi.json' }), // https://api.apis.guru/v2/specs/amadeus.com/2.2.0/openapi.json
+    reader: reader({ path: 'kitchenSink-openapi.json' }),
     generators: [
       types({
         ...common,
@@ -56,7 +61,6 @@ export async function generateAll() {
       }),
     ],
     writer: writer({
-      purge: true,
       stringify: prettierStringify({
         parser: 'typescript',
         arrowParens: 'always',

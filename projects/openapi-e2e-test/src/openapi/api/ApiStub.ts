@@ -15,48 +15,45 @@ import { SampleOperationResponse } from '../responseTypes/SampleOperationRespons
 import { Api } from './Api'
 
 export class ApiStub implements Api {
-  protected fallback(): never {
-    throw new Error('Not implemented.')
-  }
   public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
-    return this.fallback()
+    throw new Error('"getSimpleNamedObject" is not implemented')
   }
   public async getWithDefaultResponse(config: Partial<RequestConfig> = {}): Promise<GetWithDefaultResponseResponse> {
-    return this.fallback()
+    throw new Error('"getWithDefaultResponse" is not implemented')
   }
   public async getWithHeaderParams(
     input: GetWithHeaderParamsInput,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithHeaderParamsResponse> {
-    return this.fallback()
+    throw new Error('"getWithHeaderParams" is not implemented')
   }
   public async getWithMultipleResponses(
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithMultipleResponsesResponse> {
-    return this.fallback()
+    throw new Error('"getWithMultipleResponses" is not implemented')
   }
   public async getWithPathParams(
     input: GetWithPathParamsInput,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithPathParamsResponse> {
-    return this.fallback()
+    throw new Error('"getWithPathParams" is not implemented')
   }
   public async getWithQueryParams(
     input: GetWithQueryParamsInput,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithQueryParamsResponse> {
-    return this.fallback()
+    throw new Error('"getWithQueryParams" is not implemented')
   }
   public async postSimpleNamedObject(
     input: PostSimpleNamedObjectInput,
     config: Partial<RequestConfig> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
-    return this.fallback()
+    throw new Error('"postSimpleNamedObject" is not implemented')
   }
   public async sampleOperation(
     input: SampleOperationInput,
     config: Partial<RequestConfig> = {},
   ): Promise<SampleOperationResponse> {
-    return this.fallback()
+    throw new Error('"sampleOperation" is not implemented')
   }
 }

@@ -7,13 +7,18 @@ import { channels } from '@oats-ts/asyncapi-ws-channels-generator'
 import { api } from '@oats-ts/asyncapi-ws-api-generator'
 import { typeGuards } from '@oats-ts/asyncapi-type-guards-generator'
 import { nameProvider, byNameAndTarget } from '@oats-ts/asyncapi'
+import { promises as fs } from 'fs'
+import { resolve } from 'path'
+
+const dir = 'src/asyncapi'
 
 const common: GeneratorConfig = {
   name: nameProvider,
-  path: byNameAndTarget('src/asyncapi'),
+  path: byNameAndTarget(dir),
 }
 
 export async function generateAll() {
+  await fs.rm(resolve(dir), { recursive: true, force: true })
   return generate({
     log: true,
     validator: null,
@@ -49,7 +54,6 @@ export async function generateAll() {
       }),
     ],
     writer: writer({
-      purge: true,
       stringify: prettierStringify({
         parser: 'typescript',
         arrowParens: 'always',
