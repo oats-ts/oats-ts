@@ -6,6 +6,7 @@ import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 export function getApiMethodParameterAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
+  unused: boolean,
 ): ParameterDeclaration[] {
   const { nameOf } = context
 
@@ -17,7 +18,7 @@ export function getApiMethodParameterAsts(
         [],
         [],
         undefined,
-        'input',
+        unused ? '_input' : 'input',
         undefined,
         factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/input-type')),
       ),
@@ -29,7 +30,7 @@ export function getApiMethodParameterAsts(
       [],
       [],
       undefined,
-      'config',
+      unused ? '_config' : 'config',
       undefined,
       factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig)]),
       factory.createObjectLiteralExpression([]),

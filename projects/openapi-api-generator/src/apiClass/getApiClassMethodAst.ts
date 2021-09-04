@@ -30,8 +30,8 @@ export function getApiClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
     nameOf(data.operation, 'openapi/operation'),
     undefined,
     [],
-    getApiMethodParameterAsts(data, context), // TODO parameters
-    getApiMethodReturnTypeAst(data, context), // TODO type
+    getApiMethodParameterAsts(data, context, false),
+    getApiMethodReturnTypeAst(data, context),
     factory.createBlock([returnStatement]),
   )
 }

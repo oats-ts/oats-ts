@@ -1,4 +1,4 @@
-import { query, createQuerySerializer } from '@oats-ts/openapi-parameter-serialization'
+import { createQuerySerializer, query } from '@oats-ts/openapi-parameter-serialization'
 import { GetWithQueryParamsQueryParameters } from '../queryTypes/GetWithQueryParamsQueryParameters'
 
 export const getWithQueryParamsQuerySerializer = createQuerySerializer<GetWithQueryParamsQueryParameters>({

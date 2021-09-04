@@ -1,7 +1,7 @@
-import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { RequestConfig, execute } from '@oats-ts/http'
-import { GetWithMultipleResponsesResponse } from '../responseTypes/GetWithMultipleResponsesResponse'
+import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { getWithMultipleResponsesExpectations } from '../expectations/getWithMultipleResponsesExpectations'
+import { GetWithMultipleResponsesResponse } from '../responseTypes/GetWithMultipleResponsesResponse'
 
 export async function getWithMultipleResponses(config: RequestConfig): Promise<GetWithMultipleResponsesResponse> {
   return execute(

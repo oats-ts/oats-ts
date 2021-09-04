@@ -1,6 +1,6 @@
 import { ResponseExpectations } from '@oats-ts/http'
-import { namedComplexObjectValidator } from '../validators/namedComplexObjectValidator'
 import { string } from '@oats-ts/validators'
+import { namedComplexObjectValidator } from '../validators/namedComplexObjectValidator'
 
 export const sampleOperationExpectations: ResponseExpectations = {
   200: { 'application/json': namedComplexObjectValidator },

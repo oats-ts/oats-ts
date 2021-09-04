@@ -1,4 +1,4 @@
-import { path, createPathSerializer } from '@oats-ts/openapi-parameter-serialization'
+import { createPathSerializer, path } from '@oats-ts/openapi-parameter-serialization'
 import { GetWithPathParamsPathParameters } from '../pathTypes/GetWithPathParamsPathParameters'
 
 export const getWithPathParamsPathSerializer = createPathSerializer<GetWithPathParamsPathParameters>(

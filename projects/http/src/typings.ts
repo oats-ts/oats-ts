@@ -73,11 +73,17 @@ export type StatusCode =
   | 507
   | 511
 
+/** Generic type representing a HTTP response */
 export type HttpResponse<Body = any, Status = any, MimeType extends string = any> = {
+  /** The full request url */
   url: string
+  /** The response body */
   body: Body
+  /** The response status code */
   statusCode: Status
+  /** The response headers (might become strictly typed in the future) */
   headers: HttpHeaders
+  /** The mime type of the response */
   mimeType: MimeType
 }
 
@@ -90,13 +96,22 @@ export type ResponseExpectations<V = unknown> = {
   default?: ResponseExpectation<V>
 }
 
+/** Configuration for performing a HTTP request */
 export type RequestConfig<R = unknown, V = unknown> = {
+  /** The common base of the url */
   baseUrl: string
+  /** Performs the HTTP request and returns a Promise with a value that the rest of the methods will receive */
   request(request: HttpRequest): Promise<R>
+  /** Serializes the request body */
   serialize(contentType: string, body: any): Promise<any>
+  /** Retrieves the status code from the response */
   statusCode(response: R): Promise<number>
+  /** Retrieves the mime type from the response (usually using the content-type header) */
   mimeType(response: R): Promise<string>
+  /** Retrieves and parses the request body from the response */
   body(response: R, mimeType: string): Promise<unknown>
+  /** Retrieves the response headers from the response */
   headers(response: R): Promise<HttpHeaders>
+  /** Validates the response body */
   validate(body: unknown, validator: V): void
 }

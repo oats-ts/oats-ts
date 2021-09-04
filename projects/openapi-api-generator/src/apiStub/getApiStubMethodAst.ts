@@ -23,7 +23,7 @@ export function getApiStubMethodAst(data: EnhancedOperation, context: OpenAPIGen
     name,
     undefined,
     [],
-    getApiMethodParameterAsts(data, context),
+    getApiMethodParameterAsts(data, context, true),
     getApiMethodReturnTypeAst(data, context),
     factory.createBlock([throwStatement]),
   )

@@ -1,4 +1,4 @@
-import { header, createHeaderSerializer } from '@oats-ts/openapi-parameter-serialization'
+import { createHeaderSerializer, header } from '@oats-ts/openapi-parameter-serialization'
 import { GetWithHeaderParamsHeaderParameters } from '../headerTypes/GetWithHeaderParamsHeaderParameters'
 
 export const getWithHeaderParamsHeadersSerializer = createHeaderSerializer<GetWithHeaderParamsHeaderParameters>({

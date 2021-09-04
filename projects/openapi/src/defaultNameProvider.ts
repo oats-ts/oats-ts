@@ -4,7 +4,7 @@ import { OpenAPIGeneratorTarget } from './typings'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { isNil } from 'lodash'
 
-export function nameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
+export function defaultNameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
   switch (target) {
     case 'openapi/type': {
       return isNil(name) ? undefined : pascalCase(name)
@@ -17,39 +17,39 @@ export function nameProvider(input: any, name: string, target: OpenAPIGeneratorT
       return isNil(operation.operationId) ? undefined : camelCase(operation.operationId)
     }
     case 'openapi/query-type': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}QueryParameters`)
     }
     case 'openapi/headers-type': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}HeaderParameters`)
     }
     case 'openapi/path-type': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}PathParameters`)
     }
     case 'openapi/response-type': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}Response`)
     }
     case 'openapi/input-type': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}Input`)
     }
     case 'openapi/path-serializer': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}PathSerializer`
     }
     case 'openapi/query-serializer': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}QuerySerializer`
     }
     case 'openapi/headers-serializer': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}HeadersSerializer`
     }
     case 'openapi/expectations': {
-      const operationName = nameProvider(input, name, 'openapi/operation')
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}Expectations`
     }
     /**

@@ -1,8 +1,8 @@
-import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { RequestConfig, execute } from '@oats-ts/http'
+import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
+import { postSimpleNamedObjectExpectations } from '../expectations/postSimpleNamedObjectExpectations'
 import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
-import { postSimpleNamedObjectExpectations } from '../expectations/postSimpleNamedObjectExpectations'
 
 export async function postSimpleNamedObject(
   input: PostSimpleNamedObjectInput,

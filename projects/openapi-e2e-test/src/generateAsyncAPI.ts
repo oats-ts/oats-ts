@@ -21,7 +21,7 @@ export async function generateAll() {
   await fs.rm(resolve(dir), { recursive: true, force: true })
   return generate({
     log: true,
-    validator: null,
+    validator: undefined,
     reader: reader({ path: 'kitchenSink-asyncapi.json' }),
     generators: [
       types({

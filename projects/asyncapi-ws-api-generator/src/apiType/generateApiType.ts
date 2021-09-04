@@ -14,7 +14,7 @@ export function generateApiType(
   const { pathOf } = context
   return {
     path: pathOf(doc, 'asyncapi/api-type'),
-    dependencies: getApiTypeImports(doc, channels, context),
+    dependencies: getApiTypeImports(doc, channels, context, true),
     content: [getApiTypeAst(doc, channels, context, config)],
   }
 }

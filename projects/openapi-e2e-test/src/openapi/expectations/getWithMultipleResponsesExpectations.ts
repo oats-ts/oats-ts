@@ -1,8 +1,8 @@
 import { ResponseExpectations } from '@oats-ts/http'
-import { namedSimpleObjectValidator } from '../validators/namedSimpleObjectValidator'
 import { lazy, object, optional, shape } from '@oats-ts/validators'
-import { namedDeprecatedObjectValidator } from '../validators/namedDeprecatedObjectValidator'
 import { namedComplexObjectValidator } from '../validators/namedComplexObjectValidator'
+import { namedDeprecatedObjectValidator } from '../validators/namedDeprecatedObjectValidator'
+import { namedSimpleObjectValidator } from '../validators/namedSimpleObjectValidator'
 
 export const getWithMultipleResponsesExpectations: ResponseExpectations = {
   200: { 'application/json': namedSimpleObjectValidator },

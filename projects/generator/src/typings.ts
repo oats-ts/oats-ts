@@ -28,7 +28,7 @@ export type CodeGenerator<R, G extends Module> = {
 
 export type GeneratorInput<R, G extends Module> = {
   reader: ContentReader<R>
-  validator: ContentValidator<R>
+  validator?: ContentValidator<R>
   generators: CodeGenerator<R, G>[]
   writer: ContentWriter<G>
   log?: boolean

@@ -1,9 +1,9 @@
-import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { RequestConfig, execute } from '@oats-ts/http'
-import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
-import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
-import { getWithQueryParamsQuerySerializer } from '../querySerializers/getWithQueryParamsQuerySerializer'
+import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { getWithQueryParamsExpectations } from '../expectations/getWithQueryParamsExpectations'
+import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
+import { getWithQueryParamsQuerySerializer } from '../querySerializers/getWithQueryParamsQuerySerializer'
+import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
 
 export async function getWithQueryParams(
   input: GetWithQueryParamsInput,

@@ -14,7 +14,7 @@ export function generateApiType(
   const { pathOf } = context
   return {
     path: pathOf(doc, 'openapi/api-type'),
-    dependencies: getApiTypeImports(doc, operations, context),
+    dependencies: getApiTypeImports(doc, operations, context, true),
     content: [getApiTypeAst(doc, operations, context, config)],
   }
 }

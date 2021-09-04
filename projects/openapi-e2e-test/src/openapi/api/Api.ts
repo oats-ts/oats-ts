@@ -1,17 +1,17 @@
+import { RequestConfig } from '@oats-ts/http'
+import { GetWithHeaderParamsInput } from '../inputTypes/GetWithHeaderParamsInput'
+import { GetWithPathParamsInput } from '../inputTypes/GetWithPathParamsInput'
+import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
+import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
+import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
 import { GetSimpleNamedObjectResponse } from '../responseTypes/GetSimpleNamedObjectResponse'
 import { GetWithDefaultResponseResponse } from '../responseTypes/GetWithDefaultResponseResponse'
-import { GetWithHeaderParamsInput } from '../inputTypes/GetWithHeaderParamsInput'
 import { GetWithHeaderParamsResponse } from '../responseTypes/GetWithHeaderParamsResponse'
 import { GetWithMultipleResponsesResponse } from '../responseTypes/GetWithMultipleResponsesResponse'
-import { GetWithPathParamsInput } from '../inputTypes/GetWithPathParamsInput'
 import { GetWithPathParamsResponse } from '../responseTypes/GetWithPathParamsResponse'
-import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
 import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
-import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
-import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
-import { RequestConfig } from '@oats-ts/http'
 
 export type Api = {
   getSimpleNamedObject(config?: Partial<RequestConfig>): Promise<GetSimpleNamedObjectResponse>

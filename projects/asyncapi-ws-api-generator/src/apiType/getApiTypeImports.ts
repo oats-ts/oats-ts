@@ -8,14 +8,15 @@ export function getApiTypeImports(
   doc: AsyncApiObject,
   operations: EnhancedChannel[],
   context: AsyncAPIGeneratorContext,
+  params: boolean,
 ): ImportDeclaration[] {
   const { dependenciesOf, pathOf } = context
   const apiPath = pathOf(doc, 'asyncapi/type')
   const imports = flatMap(operations, (data) => [
-    ...dependenciesOf(apiPath, data.channel, 'asyncapi/input-type'),
+    ...(params ? dependenciesOf(apiPath, data.channel, 'asyncapi/input-type') : []),
     ...dependenciesOf(apiPath, data.channel, 'asyncapi/channel'),
   ])
   return operations.length > 0
-    ? [...imports, getNamedImports(RuntimePackages.Ws.name, [RuntimePackages.Ws.WebsocketConfig])]
+    ? [...imports, ...(params ? [getNamedImports(RuntimePackages.Ws.name, [RuntimePackages.Ws.WebsocketConfig])] : [])]
     : imports
 }

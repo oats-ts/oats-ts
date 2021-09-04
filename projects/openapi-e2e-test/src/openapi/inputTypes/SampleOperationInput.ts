@@ -1,7 +1,7 @@
-import { NamedSimpleObject } from '../types/NamedSimpleObject'
+import { SampleOperationHeaderParameters } from '../headerTypes/SampleOperationHeaderParameters'
 import { SampleOperationPathParameters } from '../pathTypes/SampleOperationPathParameters'
 import { SampleOperationQueryParameters } from '../queryTypes/SampleOperationQueryParameters'
-import { SampleOperationHeaderParameters } from '../headerTypes/SampleOperationHeaderParameters'
+import { NamedSimpleObject } from '../types/NamedSimpleObject'
 
 type _SampleOperationInput<MimeType extends string, Body> = {
   headers: SampleOperationHeaderParameters

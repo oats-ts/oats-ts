@@ -4,6 +4,7 @@
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "target": "es6",
     "sourceMap": true,
     "esModuleInterop": true,

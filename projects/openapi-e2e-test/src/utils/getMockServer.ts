@@ -4,7 +4,7 @@ const OpenAPIMocker = require('open-api-mocker')
 export async function getMockServer() {
   const server = new OpenAPIMocker({
     port: 3000,
-    schema: resolve('kitchenSink.json'),
+    schema: resolve('kitchenSink-openapi.json'),
     watch: false,
   })
 

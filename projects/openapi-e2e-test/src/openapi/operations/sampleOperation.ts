@@ -1,11 +1,11 @@
-import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { RequestConfig, execute } from '@oats-ts/http'
+import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
+import { sampleOperationExpectations } from '../expectations/sampleOperationExpectations'
+import { sampleOperationHeadersSerializer } from '../headerSerializers/sampleOperationHeadersSerializer'
 import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
-import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 import { sampleOperationPathSerializer } from '../pathSerializers/sampleOperationPathSerializer'
 import { sampleOperationQuerySerializer } from '../querySerializers/sampleOperationQuerySerializer'
-import { sampleOperationHeadersSerializer } from '../headerSerializers/sampleOperationHeadersSerializer'
-import { sampleOperationExpectations } from '../expectations/sampleOperationExpectations'
+import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 
 export async function sampleOperation(
   input: SampleOperationInput,

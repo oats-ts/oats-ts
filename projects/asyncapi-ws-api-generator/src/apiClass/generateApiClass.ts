@@ -20,7 +20,7 @@ export function generateApiClass(
     path,
     dependencies: [
       getNamedImports(RuntimePackages.Ws.name, [RuntimePackages.Ws.WebsocketConfig]),
-      ...getApiTypeImports(doc, operations, context),
+      ...getApiTypeImports(doc, operations, context, true),
       ...dependenciesOf(path, doc, 'asyncapi/api-type'),
       ...flatMap(operations, ({ channel }) => dependenciesOf(path, channel, 'asyncapi/channel-factory')),
     ],

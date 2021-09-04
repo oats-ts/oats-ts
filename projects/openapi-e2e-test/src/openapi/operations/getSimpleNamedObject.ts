@@ -1,7 +1,7 @@
-import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { RequestConfig, execute } from '@oats-ts/http'
-import { GetSimpleNamedObjectResponse } from '../responseTypes/GetSimpleNamedObjectResponse'
+import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { getSimpleNamedObjectExpectations } from '../expectations/getSimpleNamedObjectExpectations'
+import { GetSimpleNamedObjectResponse } from '../responseTypes/GetSimpleNamedObjectResponse'
 
 export async function getSimpleNamedObject(config: RequestConfig): Promise<GetSimpleNamedObjectResponse> {
   return execute(

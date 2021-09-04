@@ -1,7 +1,7 @@
 import { HttpResponse, StatusCode } from '@oats-ts/http'
-import { NamedSimpleObject } from '../types/NamedSimpleObject'
-import { NamedDeprecatedObject } from '../types/NamedDeprecatedObject'
 import { NamedComplexObject } from '../types/NamedComplexObject'
+import { NamedDeprecatedObject } from '../types/NamedDeprecatedObject'
+import { NamedSimpleObject } from '../types/NamedSimpleObject'
 
 export type GetWithMultipleResponsesResponse =
   | HttpResponse<NamedSimpleObject, 200, 'application/json'>

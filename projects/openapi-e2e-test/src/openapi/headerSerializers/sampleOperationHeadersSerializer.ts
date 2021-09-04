@@ -1,4 +1,4 @@
-import { header, createHeaderSerializer } from '@oats-ts/openapi-parameter-serialization'
+import { createHeaderSerializer, header } from '@oats-ts/openapi-parameter-serialization'
 import { SampleOperationHeaderParameters } from '../headerTypes/SampleOperationHeaderParameters'
 
 export const sampleOperationHeadersSerializer = createHeaderSerializer<SampleOperationHeaderParameters>({
