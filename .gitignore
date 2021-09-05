@@ -63,5 +63,10 @@ common/deploy/
 common/temp/
 common/autoinstallers/*/.npmrc
 **/.rush/temp/
+
 # Actual interesting stuff...
 lib/
+
+# Changelogs, don't care...
+CHANGELOG.json
+CHANGELOG.md
