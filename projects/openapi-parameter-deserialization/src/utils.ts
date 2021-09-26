@@ -10,6 +10,10 @@ export function decode(value: string): string {
   return isNil(value) ? value : decodeURIComponent(value)
 }
 
+export function encode(value: string): string {
+  return isNil(value) ? '' : encodeURIComponent(value)
+}
+
 export function has(input: Record<string, any>, key: string): boolean {
   return Object.prototype.hasOwnProperty.call(input, key)
 }

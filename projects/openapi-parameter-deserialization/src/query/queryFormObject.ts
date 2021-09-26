@@ -1,5 +1,4 @@
-import { FieldParsers, Primitive, RawQueryParams } from '..'
-import { QueryOptions, PrimitiveRecord } from '../types'
+import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
 import { decode, has, isNil } from '../utils'
 
 export const queryFormObject =

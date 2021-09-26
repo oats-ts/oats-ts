@@ -1,5 +1,4 @@
-import { RawQueryParams } from '..'
-import { Primitive, ValueParser, QueryOptions } from '../types'
+import { Primitive, ValueParser, QueryOptions, RawQueryParams } from '../types'
 import { decode } from '../utils'
 import { getQueryValue } from './queryUtils'
 

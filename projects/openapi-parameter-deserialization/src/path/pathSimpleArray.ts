@@ -1,5 +1,4 @@
-import { ValueParser, RawPathParams, PathOptions } from '../types'
-import { Primitive } from '../types'
+import { ValueParser, RawPathParams, PathOptions, Primitive } from '../types'
 import { decode } from '../utils'
 import { getPathValue } from './pathUtils'
 

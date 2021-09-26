@@ -4,9 +4,9 @@ import { queryFormPrimitive } from './queryFormPrimitive'
 
 export const query = {
   form: {
+    primitive: queryFormPrimitive,
     array: queryDelimitedArray(','),
     object: queryFormObject,
-    primitive: queryFormPrimitive,
   },
   spaceDelimited: {
     array: queryDelimitedArray(encodeURIComponent(' ')),

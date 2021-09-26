@@ -1,5 +1,4 @@
-import { RawQueryParams } from '..'
-import { QueryOptions } from '../types'
+import { QueryOptions, RawQueryParams } from '../types'
 
 export function getQueryValue(name: string, params: RawQueryParams, options: QueryOptions): string {
   const values = params[name] || []

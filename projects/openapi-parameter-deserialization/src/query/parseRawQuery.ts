@@ -1,4 +1,4 @@
-import { RawQueryParams } from '..'
+import { RawQueryParams } from '../types'
 import { has } from '../utils'
 
 export function parseRawQuery(query: string): RawQueryParams {

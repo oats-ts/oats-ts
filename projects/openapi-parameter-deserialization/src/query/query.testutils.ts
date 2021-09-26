@@ -1,5 +1,5 @@
-import { createQueryParser, QueryDeserializers, QueryOptions } from '..'
-import { ParameterObject } from '../types'
+import { createQueryParser } from './createQueryParser'
+import { ParameterObject, QueryDeserializers } from '../types'
 
 type QuerySuccessData<Data extends ParameterObject> = [Data, string, QueryDeserializers<Data>]
 type ErrorData<Data extends ParameterObject> = [string, QueryDeserializers<Data>]

@@ -1,5 +1,4 @@
-import { FieldParsers, PrimitiveRecord } from '..'
-import { RawPathParams, PathOptions } from '../types'
+import { RawPathParams, PathOptions, FieldParsers, PrimitiveRecord } from '../types'
 import { getPathValue, parseFromRecord, parseKeyValuePairRecord, parseSeparatedRecord } from './pathUtils'
 
 export const pathSimpleObject =

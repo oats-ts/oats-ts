@@ -1,4 +1,4 @@
-import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '..'
+import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '../types'
 import { has, isNil, decode } from '../utils'
 
 export function getPathValue(name: string, raw: RawPathParams): string {
