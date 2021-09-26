@@ -57,6 +57,10 @@
       "path": "projects/http"
     },
     {
+      "name": "http-server",
+      "path": "projects/http-server"
+    },
+    {
       "name": "json-schema-common",
       "path": "projects/json-schema-common"
     },
@@ -103,6 +107,14 @@
     {
       "name": "openapi-operations-generator",
       "path": "projects/openapi-operations-generator"
+    },
+    {
+      "name": "openapi-parameter-common",
+      "path": "projects/openapi-parameter-common"
+    },
+    {
+      "name": "openapi-parameter-deserialization",
+      "path": "projects/openapi-parameter-deserialization"
     },
     {
       "name": "openapi-parameter-serialization",

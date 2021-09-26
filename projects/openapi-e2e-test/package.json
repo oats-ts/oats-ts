@@ -17,7 +17,8 @@
     "typecheck": "tsc --noEmit",
     "serve": "ts-node src/scripts/serve.ts",
     "o": "ts-node src/scripts/generateOpenAPI.ts",
-    "a": "ts-node src/scripts/generateAsyncAPI.ts"
+    "a": "ts-node src/scripts/generateAsyncAPI.ts",
+    "s": "ts-node src/serverExperiments.ts"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"

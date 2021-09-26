@@ -1,7 +1,7 @@
 import { Issue } from '@oats-ts/validators'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { flatMap } from 'lodash'
-import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
+import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-common'
 import { PathItemObject, ParameterObject } from '@oats-ts/openapi-model'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { operationsOf } from '../utils/modelUtils'

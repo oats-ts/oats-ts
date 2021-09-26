@@ -97,6 +97,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/http-server",
+      "projectFolder": "projects/http-server",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/json-schema-common",
       "projectFolder": "projects/json-schema-common",
       "versionPolicyName": "oats",
@@ -164,6 +170,18 @@
     {
       "packageName": "@oats-ts/openapi-operations-generator",
       "projectFolder": "projects/openapi-operations-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-parameter-common",
+      "projectFolder": "projects/openapi-parameter-common",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-parameter-deserialization",
+      "projectFolder": "projects/openapi-parameter-deserialization",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

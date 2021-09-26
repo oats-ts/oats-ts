@@ -1,4 +1,4 @@
-import { PathSegment } from '../types'
+import { PathSegment } from './types'
 import { parsePathToSegments } from './parsePathToSegments'
 
 const data: [string, PathSegment[]][] = [

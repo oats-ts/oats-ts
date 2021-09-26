@@ -29,19 +29,6 @@ export type PathOptions<T> = {
 export type PathSerializer<T extends ParameterValue> = (name: string) => (value: T) => string
 export type PathSerializers<T extends ParameterObject> = { [P in keyof T]: PathSerializer<T[P]> }
 
-/** Path parsing, represents path segments */
-export type ParameterSegment = {
-  type: 'parameter'
-  name: string
-}
-
-export type TextSegment = {
-  type: 'text'
-  value: string
-}
-
-export type PathSegment = ParameterSegment | TextSegment
-
 /** Header related types */
 export type HeaderOptions<T> = {
   defaultValue?: T

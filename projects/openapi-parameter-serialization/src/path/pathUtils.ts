@@ -1,3 +1,4 @@
+import { ParameterSegment, PathSegment } from '@oats-ts/openapi-parameter-common'
 import {
   ParameterValue,
   PathOptions,
@@ -5,8 +6,6 @@ import {
   PrimitiveArray,
   PrimitiveRecord,
   ParameterObject,
-  ParameterSegment,
-  PathSegment,
   PathSerializers,
 } from '../types'
 import { isNil } from '../utils'

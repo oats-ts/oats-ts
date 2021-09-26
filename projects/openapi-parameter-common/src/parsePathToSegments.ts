@@ -1,5 +1,5 @@
-import { PathSegment } from '../types'
-import { isNil } from '../utils'
+import { PathSegment } from './types'
+import { isNil } from './utils'
 
 export function parsePathToSegments(path: string): PathSegment[] {
   if (isNil(path) || path.length === 0) {
