@@ -6,12 +6,12 @@ export type PrimitiveRecord = Record<string, Primitive>
 /** Union type for above */
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 
-export type ObjectDeserializer<T extends PrimitiveRecord> = { [P in keyof T]: PrimitiveParser<string, T[P]> }
+export type FieldParsers<T extends PrimitiveRecord> = { [P in keyof T]: ValueParser<string, T[P]> }
 
 /** Object, collection of named parameter values */
 export type ParameterObject = Record<string, ParameterValue>
 
-export type PrimitiveParser<I extends Primitive, O extends Primitive> = (name: string, input: I) => O
+export type ValueParser<I extends Primitive, O extends Primitive> = (name: string, input: I) => O
 
 /** Query related types */
 export type QueryOptions = {
@@ -24,12 +24,12 @@ export type QueryDeserializer<T extends ParameterValue> = (name: string) => (val
 export type QueryDeserializers<T extends ParameterObject> = { [P in keyof T]: QueryDeserializer<T[P]> }
 
 /** Path related types */
-export type PathOptions<T> = {
-  defaultValue?: T
+export type PathOptions = {
   explode?: boolean
 }
 
-export type PathDeserializer<T extends ParameterValue> = (name: string) => (value: T) => string
+export type RawPathParams = Record<string, string>
+export type PathDeserializer<T extends ParameterValue> = (name: string) => (value: RawPathParams) => T
 export type PathDeserializers<T extends ParameterObject> = { [P in keyof T]: PathDeserializer<T[P]> }
 
 /** Path parsing, represents path segments */

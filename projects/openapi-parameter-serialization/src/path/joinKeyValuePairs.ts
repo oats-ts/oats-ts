@@ -1,4 +1,4 @@
-import { Primitive, PrimitiveArray } from '../types'
+import { Primitive } from '../types'
 import { encode } from '../utils'
 
 export function joinKeyValuePairs(

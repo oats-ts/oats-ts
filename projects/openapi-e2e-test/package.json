@@ -69,6 +69,7 @@
     "@oats-ts/asyncapi-reader": "0.0.5",
     "@oats-ts/validators": "0.0.5",
     "open-api-mocker": "1.7.2",
-    "@oats-ts/openapi": "0.0.5"
+    "@oats-ts/openapi": "0.0.5",
+    "path-to-regexp": "6.2.0"
   }
 }

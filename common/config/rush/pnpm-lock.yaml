@@ -59,6 +59,7 @@ specifiers:
   node-fetch: 2.6.1
   open-api-mocker: 1.7.2
   pascalcase: 1.0.0
+  path-to-regexp: 6.2.0
   prettier: 2.3.1
   rimraf: 3.0.2
   ts-jest: 27.0.2
@@ -131,6 +132,7 @@ dependencies:
   node-fetch: 2.6.1
   open-api-mocker: 1.7.2
   pascalcase: 1.0.0
+  path-to-regexp: 6.2.0
   prettier: 2.3.1
   rimraf: 3.0.2
   ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
@@ -3065,6 +3067,10 @@ packages:
     resolution: {integrity: sha1-32BBeABfUi8V60SQ5yR6G/qmf4w=}
     dev: false
 
+  /path-to-regexp/6.2.0:
+    resolution: {integrity: sha512-f66KywYG6+43afgE/8j/GoiNyygk/bnoCbps++3ErRKsIYkGGupyv07R2Ok5m9i67Iqc+T2g1eAUGUPzWhYTyg==}
+    dev: false
+
   /picomatch/2.3.0:
     resolution: {integrity: sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==}
     engines: {node: '>=8.6'}
@@ -4254,7 +4260,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-bQunF0jZrlxAFuKGuT3pZ6JCym1+HWj9l+tcPI7ilIob8CauTtrLEu5TqujZymPKHqgYc1pBRPz3rD/5hmhtyg==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-7xqW42kQNa3iHoj2pj1n73Rmys9GtSatRxtdx7tySIk61+Lws7rDg8rM/KOn04Z1DJgt7ydizeWhOJeylw0Ixw==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4270,6 +4276,7 @@ packages:
       lodash: 4.17.21
       open-api-mocker: 1.7.2
       openapi3-ts: 2.0.1
+      path-to-regexp: 6.2.0
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
       ts-node: 10.0.0_f50b86b1778cd2aa4e5405c08bb39559
       typescript: 4.3.5
@@ -4361,7 +4368,7 @@ packages:
     dev: false
 
   file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-y2xue2VcHun091YBLVyycoKDsH6WoIveXeGdeLR43GuGMGETaflm3TMF3bMU7avZHkfNh932W/5XUuRyq4c0sg==, tarball: file:projects/openapi-parameter-serialization.tgz}
+    resolution: {integrity: sha512-+2OFQXoUU/qazEkC9T0sjx3UwqFnyBhPHeuV2t/0XWJHjJIxEuiGmlb5TQqYy+PpFWhGAjJBlDSx2zW4MDMjoA==, tarball: file:projects/openapi-parameter-serialization.tgz}
     id: file:projects/openapi-parameter-serialization.tgz
     name: '@rush-temp/openapi-parameter-serialization'
     version: 0.0.0
@@ -4482,7 +4489,7 @@ packages:
     dev: false
 
   file:projects/openapi-validator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-iHDOL+bnJWH4ksWOutoINM/Edil7xrSoMatRvTDpsq7akvlVfECg8F2tigHs86A/d5rC1FEueziEg2XZ3M+6TA==, tarball: file:projects/openapi-validator.tgz}
+    resolution: {integrity: sha512-CBX85wnqkqk2di0b9ud6wJcLSF2M4Dx8pRHdNRucwx7lXqjzA7S52BU6jLH2Bp+QWzD0tcSLk5N5akbIQ6uLjQ==, tarball: file:projects/openapi-validator.tgz}
     id: file:projects/openapi-validator.tgz
     name: '@rush-temp/openapi-validator'
     version: 0.0.0

@@ -4,12 +4,12 @@ import { ParameterObject } from '../types'
 type QuerySuccessData<Data extends ParameterObject> = [Data, string, QueryDeserializers<Data>]
 type ErrorData<Data extends ParameterObject> = [string, QueryDeserializers<Data>]
 
-export type TestData<Data extends ParameterObject> = {
+export type QueryTestData<Data extends ParameterObject> = {
   data: QuerySuccessData<Data>[]
   error: ErrorData<Data>[]
 }
 
-export const createQueryParserTest = <Data extends ParameterObject>(name: string, data: TestData<Data>): void => {
+export const createQueryParserTest = <Data extends ParameterObject>(name: string, data: QueryTestData<Data>): void => {
   describe(name, () => {
     if (data.data.length > 0) {
       it.each(data.data)(

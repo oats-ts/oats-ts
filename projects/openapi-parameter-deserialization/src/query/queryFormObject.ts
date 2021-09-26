@@ -1,9 +1,9 @@
-import { ObjectDeserializer, Primitive, RawQueryParams } from '..'
+import { FieldParsers, Primitive, RawQueryParams } from '..'
 import { QueryOptions, PrimitiveRecord } from '../types'
 import { decode, has, isNil } from '../utils'
 
 export const queryFormObject =
-  <T extends PrimitiveRecord>(parsers: ObjectDeserializer<T>, opts: QueryOptions = {}) =>
+  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, opts: QueryOptions = {}) =>
   (name: string) =>
   (data: RawQueryParams): T => {
     const options: QueryOptions = { explode: true, ...opts }

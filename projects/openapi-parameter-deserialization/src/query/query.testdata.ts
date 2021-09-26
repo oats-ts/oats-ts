@@ -1,9 +1,21 @@
-import { query } from '.'
-import { ObjectDeserializer, QueryDeserializers } from '..'
-import { TestData } from './query.testutils'
+import { query } from './index'
+import { FieldParsers, QueryDeserializers } from '../types'
+import { QueryTestData } from './query.testutils'
+import {
+  enumParser,
+  stringParser,
+  numberParser,
+  booleanParser,
+  literalParser,
+  optionalBooleanParser,
+  optionalEnumParser,
+  optionalLiteralParser,
+  optionalNumberParser,
+  optionalStringParser,
+  EnumType,
+  LiteralType,
+} from '../value/value.testdata'
 
-type LiteralType = 'cat'
-type EnumType = 'cat' | 'dog' | 'racoon'
 type ObjType = {
   s: string
   n: number
@@ -30,13 +42,7 @@ type OptObjectFieldObj = {
   foo: OptObjType
 }
 
-const stringParser = query.string(query.identity)
-const numberParser = query.number(query.identity)
-const booleanParser = query.boolean(query.identity)
-const literalParser = query.string(query.literal<string, LiteralType>('cat'))
-const enumParser = query.string(query.enumeration<string, EnumType>(['cat', 'dog', 'racoon']))
-
-const objParser: ObjectDeserializer<ObjType> = {
+const objParser: FieldParsers<ObjType> = {
   s: stringParser,
   n: numberParser,
   b: booleanParser,
@@ -44,12 +50,12 @@ const objParser: ObjectDeserializer<ObjType> = {
   e: enumParser,
 }
 
-const optObjParser: ObjectDeserializer<OptObjType> = {
-  s: query.optional(stringParser),
-  n: query.optional(numberParser),
-  b: query.optional(booleanParser),
-  l: query.optional(literalParser),
-  e: query.optional(enumParser),
+const optObjParser: FieldParsers<OptObjType> = {
+  s: optionalStringParser,
+  n: optionalNumberParser,
+  b: optionalBooleanParser,
+  l: optionalLiteralParser,
+  e: optionalEnumParser,
 }
 
 const stringFieldObjParser: QueryDeserializers<StringFieldObj> = {
@@ -74,7 +80,7 @@ const optObjFieldObjParser: QueryDeserializers<OptObjectFieldObj> = {
   foo: query.form.object(optObjParser, { required: true }),
 }
 
-export const queryFormStringData: TestData<StringFieldObj> = {
+export const queryFormStringData: QueryTestData<StringFieldObj> = {
   data: [
     [{ foo: 'hello' }, '?foo=hello', stringFieldObjParser],
     [{ foo: 'hello test' }, '?foo=hello%20test', stringFieldObjParser],
@@ -82,7 +88,7 @@ export const queryFormStringData: TestData<StringFieldObj> = {
   error: [['', stringFieldObjParser]],
 }
 
-export const queryFormNumberData: TestData<NumberFieldObj> = {
+export const queryFormNumberData: QueryTestData<NumberFieldObj> = {
   data: [
     [{ foo: 10 }, '?foo=10', numberFieldObjParser],
     [{ foo: 10.27 }, '?foo=10.27', numberFieldObjParser],
@@ -90,7 +96,7 @@ export const queryFormNumberData: TestData<NumberFieldObj> = {
   error: [['?foo=cat', numberFieldObjParser]],
 }
 
-export const queryFormBooleanData: TestData<BooleanFieldObj> = {
+export const queryFormBooleanData: QueryTestData<BooleanFieldObj> = {
   data: [
     [{ foo: false }, '?foo=false', booleanFieldObjParser],
     [{ foo: true }, '?foo=true', booleanFieldObjParser],
@@ -98,12 +104,12 @@ export const queryFormBooleanData: TestData<BooleanFieldObj> = {
   error: [['?foo=cat', booleanFieldObjParser]],
 }
 
-export const queryFormLiteralData: TestData<LiteralFieldObj> = {
+export const queryFormLiteralData: QueryTestData<LiteralFieldObj> = {
   data: [[{ foo: 'cat' }, '?foo=cat', literalFieldObjParser]],
   error: [['?foo=dog', literalFieldObjParser]],
 }
 
-export const queryFormEnumData: TestData<EnumFieldObj> = {
+export const queryFormEnumData: QueryTestData<EnumFieldObj> = {
   data: [
     [{ foo: 'cat' }, '?foo=cat', enumFieldObjParser],
     [{ foo: 'dog' }, '?foo=dog', enumFieldObjParser],
@@ -115,7 +121,7 @@ export const queryFormEnumData: TestData<EnumFieldObj> = {
   ],
 }
 
-export const queryFormObjectData: TestData<ObjectFieldObj> = {
+export const queryFormObjectData: QueryTestData<ObjectFieldObj> = {
   data: [
     [{ foo: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?s=str&n=10&b=true&e=dog&l=cat', objectFieldObjParser],
   ],
@@ -129,7 +135,7 @@ export const queryFormObjectData: TestData<ObjectFieldObj> = {
   ],
 }
 
-export const queryFormOptionalObjectData: TestData<OptObjectFieldObj> = {
+export const queryFormOptionalObjectData: QueryTestData<OptObjectFieldObj> = {
   data: [
     [{ foo: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?s=str&n=10&b=true&e=dog&l=cat', optObjFieldObjParser],
     [{ foo: { n: 10, b: true, e: 'dog', l: 'cat' } }, '?n=10&b=true&e=dog&l=cat', optObjFieldObjParser],
