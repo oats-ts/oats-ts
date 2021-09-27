@@ -13,7 +13,7 @@ export function getApiTypeImports(
   const { dependenciesOf, pathOf } = context
   const apiPath = pathOf(doc, 'openapi/api-type')
   const imports = flatMap(operations, (data) => [
-    ...(params ? dependenciesOf(apiPath, data.operation, 'openapi/input-type') : []),
+    ...(params ? dependenciesOf(apiPath, data.operation, 'openapi/request-type') : []),
     ...dependenciesOf(apiPath, data.operation, 'openapi/response-type'),
   ])
   return operations.length > 0

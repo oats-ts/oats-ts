@@ -21,7 +21,7 @@ export function getApiTypeMethodSignatureAst(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/input-type')),
+        factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
       ),
     )
   }

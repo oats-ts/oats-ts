@@ -1,5 +1,5 @@
 import { GetWithPathParamsPathParameters } from '../pathTypes/GetWithPathParamsPathParameters'
 
-export type GetWithPathParamsInput = {
+export type GetWithPathParamsRequest = {
   path: GetWithPathParamsPathParameters
 }

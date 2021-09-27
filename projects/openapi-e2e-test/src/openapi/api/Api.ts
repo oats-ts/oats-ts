@@ -1,9 +1,9 @@
 import { RequestConfig } from '@oats-ts/http'
-import { GetWithHeaderParamsInput } from '../inputTypes/GetWithHeaderParamsInput'
-import { GetWithPathParamsInput } from '../inputTypes/GetWithPathParamsInput'
-import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
-import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
-import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
+import { GetWithHeaderParamsRequest } from '../requestTypes/GetWithHeaderParamsRequest'
+import { GetWithPathParamsRequest } from '../requestTypes/GetWithPathParamsRequest'
+import { GetWithQueryParamsRequest } from '../requestTypes/GetWithQueryParamsRequest'
+import { PostSimpleNamedObjectRequest } from '../requestTypes/PostSimpleNamedObjectRequest'
+import { SampleOperationRequest } from '../requestTypes/SampleOperationRequest'
 import { GetSimpleNamedObjectResponse } from '../responseTypes/GetSimpleNamedObjectResponse'
 import { GetWithDefaultResponseResponse } from '../responseTypes/GetWithDefaultResponseResponse'
 import { GetWithHeaderParamsResponse } from '../responseTypes/GetWithHeaderParamsResponse'
@@ -17,18 +17,21 @@ export type Api = {
   getSimpleNamedObject(config?: Partial<RequestConfig>): Promise<GetSimpleNamedObjectResponse>
   getWithDefaultResponse(config?: Partial<RequestConfig>): Promise<GetWithDefaultResponseResponse>
   getWithHeaderParams(
-    input: GetWithHeaderParamsInput,
+    input: GetWithHeaderParamsRequest,
     config?: Partial<RequestConfig>,
   ): Promise<GetWithHeaderParamsResponse>
   getWithMultipleResponses(config?: Partial<RequestConfig>): Promise<GetWithMultipleResponsesResponse>
-  getWithPathParams(input: GetWithPathParamsInput, config?: Partial<RequestConfig>): Promise<GetWithPathParamsResponse>
+  getWithPathParams(
+    input: GetWithPathParamsRequest,
+    config?: Partial<RequestConfig>,
+  ): Promise<GetWithPathParamsResponse>
   getWithQueryParams(
-    input: GetWithQueryParamsInput,
+    input: GetWithQueryParamsRequest,
     config?: Partial<RequestConfig>,
   ): Promise<GetWithQueryParamsResponse>
   postSimpleNamedObject(
-    input: PostSimpleNamedObjectInput,
+    input: PostSimpleNamedObjectRequest,
     config?: Partial<RequestConfig>,
   ): Promise<PostSimpleNamedObjectResponse>
-  sampleOperation(input: SampleOperationInput, config?: Partial<RequestConfig>): Promise<SampleOperationResponse>
+  sampleOperation(input: SampleOperationRequest, config?: Partial<RequestConfig>): Promise<SampleOperationResponse>
 }

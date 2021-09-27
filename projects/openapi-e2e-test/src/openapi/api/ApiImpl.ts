@@ -1,9 +1,4 @@
 import { RequestConfig } from '@oats-ts/http'
-import { GetWithHeaderParamsInput } from '../inputTypes/GetWithHeaderParamsInput'
-import { GetWithPathParamsInput } from '../inputTypes/GetWithPathParamsInput'
-import { GetWithQueryParamsInput } from '../inputTypes/GetWithQueryParamsInput'
-import { PostSimpleNamedObjectInput } from '../inputTypes/PostSimpleNamedObjectInput'
-import { SampleOperationInput } from '../inputTypes/SampleOperationInput'
 import { getSimpleNamedObject } from '../operations/getSimpleNamedObject'
 import { getWithDefaultResponse } from '../operations/getWithDefaultResponse'
 import { getWithHeaderParams } from '../operations/getWithHeaderParams'
@@ -12,6 +7,11 @@ import { getWithPathParams } from '../operations/getWithPathParams'
 import { getWithQueryParams } from '../operations/getWithQueryParams'
 import { postSimpleNamedObject } from '../operations/postSimpleNamedObject'
 import { sampleOperation } from '../operations/sampleOperation'
+import { GetWithHeaderParamsRequest } from '../requestTypes/GetWithHeaderParamsRequest'
+import { GetWithPathParamsRequest } from '../requestTypes/GetWithPathParamsRequest'
+import { GetWithQueryParamsRequest } from '../requestTypes/GetWithQueryParamsRequest'
+import { PostSimpleNamedObjectRequest } from '../requestTypes/PostSimpleNamedObjectRequest'
+import { SampleOperationRequest } from '../requestTypes/SampleOperationRequest'
 import { GetSimpleNamedObjectResponse } from '../responseTypes/GetSimpleNamedObjectResponse'
 import { GetWithDefaultResponseResponse } from '../responseTypes/GetWithDefaultResponseResponse'
 import { GetWithHeaderParamsResponse } from '../responseTypes/GetWithHeaderParamsResponse'
@@ -34,7 +34,7 @@ export class ApiImpl implements Api {
     return getWithDefaultResponse({ ...this.config, ...config })
   }
   public async getWithHeaderParams(
-    input: GetWithHeaderParamsInput,
+    input: GetWithHeaderParamsRequest,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithHeaderParamsResponse> {
     return getWithHeaderParams(input, { ...this.config, ...config })
@@ -45,25 +45,25 @@ export class ApiImpl implements Api {
     return getWithMultipleResponses({ ...this.config, ...config })
   }
   public async getWithPathParams(
-    input: GetWithPathParamsInput,
+    input: GetWithPathParamsRequest,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithPathParamsResponse> {
     return getWithPathParams(input, { ...this.config, ...config })
   }
   public async getWithQueryParams(
-    input: GetWithQueryParamsInput,
+    input: GetWithQueryParamsRequest,
     config: Partial<RequestConfig> = {},
   ): Promise<GetWithQueryParamsResponse> {
     return getWithQueryParams(input, { ...this.config, ...config })
   }
   public async postSimpleNamedObject(
-    input: PostSimpleNamedObjectInput,
+    input: PostSimpleNamedObjectRequest,
     config: Partial<RequestConfig> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
     return postSimpleNamedObject(input, { ...this.config, ...config })
   }
   public async sampleOperation(
-    input: SampleOperationInput,
+    input: SampleOperationRequest,
     config: Partial<RequestConfig> = {},
   ): Promise<SampleOperationResponse> {
     return sampleOperation(input, { ...this.config, ...config })

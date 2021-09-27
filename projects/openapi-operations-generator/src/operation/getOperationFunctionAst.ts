@@ -24,7 +24,7 @@ export function getOperationFunctionAst(
         undefined,
         'input',
         undefined,
-        factory.createTypeReferenceNode(nameOf(operation, 'openapi/input-type')),
+        factory.createTypeReferenceNode(nameOf(operation, 'openapi/request-type')),
       ),
     )
   }

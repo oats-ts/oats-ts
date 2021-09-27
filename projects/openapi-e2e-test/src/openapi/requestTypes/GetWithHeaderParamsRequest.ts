@@ -1,5 +1,5 @@
 import { GetWithHeaderParamsHeaderParameters } from '../headerTypes/GetWithHeaderParamsHeaderParameters'
 
-export type GetWithHeaderParamsInput = {
+export type GetWithHeaderParamsRequest = {
   headers: GetWithHeaderParamsHeaderParameters
 }

@@ -3,7 +3,7 @@ import { SampleOperationPathParameters } from '../pathTypes/SampleOperationPathP
 import { SampleOperationQueryParameters } from '../queryTypes/SampleOperationQueryParameters'
 import { NamedSimpleObject } from '../types/NamedSimpleObject'
 
-type _SampleOperationInput<MimeType extends string, Body> = {
+type _SampleOperationRequest<MimeType extends string, Body> = {
   headers: SampleOperationHeaderParameters
   query: SampleOperationQueryParameters
   path: SampleOperationPathParameters
@@ -11,6 +11,6 @@ type _SampleOperationInput<MimeType extends string, Body> = {
   body: Body
 }
 
-export type SampleOperationInput =
-  | _SampleOperationInput<'application/json', NamedSimpleObject>
-  | _SampleOperationInput<'text/plain', string>
+export type SampleOperationRequest =
+  | _SampleOperationRequest<'application/json', NamedSimpleObject>
+  | _SampleOperationRequest<'text/plain', string>

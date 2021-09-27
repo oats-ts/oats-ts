@@ -27,7 +27,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
     'openapi/query-type',
     'openapi/path-type',
     'openapi/response-type',
-    'openapi/input-type',
+    'openapi/request-type',
     'openapi/headers-serializer',
     'openapi/path-serializer',
     'openapi/query-serializer',

@@ -1,5 +1,5 @@
 import { GetWithQueryParamsQueryParameters } from '../queryTypes/GetWithQueryParamsQueryParameters'
 
-export type GetWithQueryParamsInput = {
+export type GetWithQueryParamsRequest = {
   query: GetWithQueryParamsQueryParameters
 }

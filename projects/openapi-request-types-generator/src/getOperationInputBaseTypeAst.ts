@@ -60,7 +60,7 @@ export function getOperationInputBaseTypeAst(
     }
   }
 
-  const baseTypeName = nameOf(operation, 'openapi/input-type')
+  const baseTypeName = nameOf(operation, 'openapi/request-type')
   const typeName = bodies.length > 1 ? `_${baseTypeName}` : baseTypeName
   const typeArgs =
     bodies.length > 1

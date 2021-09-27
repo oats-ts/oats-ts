@@ -16,7 +16,7 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/type-guard':
         return resolve(join(path, 'typeGuards', `${name(input, target)}.ts`))
       case 'openapi/operation':
-      case 'openapi/input-type':
+      case 'openapi/request-type':
       case 'openapi/response-type':
       case 'openapi/expectations':
       case 'openapi/headers-type':

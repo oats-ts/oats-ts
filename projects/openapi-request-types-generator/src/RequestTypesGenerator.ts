@@ -25,7 +25,7 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
     'openapi/query-type',
     'openapi/path-type',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/input-type']
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/request-type']
 
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & RequestTypesGeneratorConfig
@@ -78,7 +78,7 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/input-type': {
+      case 'openapi/request-type': {
         return hasInput(this.enhance(input), context)
           ? factory.createTypeReferenceNode(nameOf(input, target))
           : undefined
@@ -91,7 +91,7 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'openapi/input-type': {
+      case 'openapi/request-type': {
         return hasInput(this.enhance(input), context)
           ? getModelImports(fromPath, target, [input], this.context)
           : undefined

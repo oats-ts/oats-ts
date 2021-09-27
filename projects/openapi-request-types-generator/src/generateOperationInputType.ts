@@ -17,7 +17,7 @@ export function generateOperationInputType(
   const { pathOf, dependenciesOf } = context
   const { operation } = data
 
-  const path = pathOf(operation, 'openapi/input-type')
+  const path = pathOf(operation, 'openapi/request-type')
   const bodies = values(getRequestBodyContent(data, context))
     .map(({ schema }) => schema)
     .filter(negate(isNil))

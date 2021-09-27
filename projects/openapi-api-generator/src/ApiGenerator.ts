@@ -19,7 +19,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ApiGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
-  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/operation', 'openapi/input-type']
+  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/operation', 'openapi/request-type']
   private static produces: OpenAPIGeneratorTarget[] = ['openapi/api-class', 'openapi/api-stub', 'openapi/api-type']
 
   private context: OpenAPIGeneratorContext = null
