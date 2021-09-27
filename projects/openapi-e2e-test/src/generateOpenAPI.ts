@@ -8,6 +8,9 @@ import { types } from '@oats-ts/openapi-types-generator'
 import { api } from '@oats-ts/openapi-api-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
+import { requestTypes } from '@oats-ts/openapi-request-types-generator'
+import { responseTypes } from '@oats-ts/openapi-response-types-generator'
+import { parameterSerializers } from '@oats-ts/openapi-parameter-serializers-generator'
 import { nameProviders, pathProviders } from '@oats-ts/openapi'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -47,6 +50,9 @@ export async function generateAll() {
         ...common,
         documentation: true,
       }),
+      requestTypes(common),
+      responseTypes(common),
+      parameterSerializers(common),
       operations({
         ...common,
         validate: true,
