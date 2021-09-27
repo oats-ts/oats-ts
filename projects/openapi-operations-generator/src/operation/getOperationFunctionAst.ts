@@ -1,7 +1,6 @@
 import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
-import { getOperationReturnTypeReferenceAst } from '../returnType/getReturnTypeReferenceAst'
 import { OperationsGeneratorConfig } from '../typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { documentNode } from '@oats-ts/typescript-common'
@@ -12,7 +11,7 @@ export function getOperationFunctionAst(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): FunctionDeclaration {
-  const { nameOf } = context
+  const { nameOf, referenceOf } = context
   const { operation } = data
 
   const params: ParameterDeclaration[] = []
@@ -48,7 +47,7 @@ export function getOperationFunctionAst(
     nameOf(operation, 'openapi/operation'),
     [],
     params,
-    factory.createTypeReferenceNode('Promise', [getOperationReturnTypeReferenceAst(operation, context)]),
+    factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'openapi/response-type')]),
     factory.createBlock([factory.createReturnStatement(getOperationExecuteAst(data, context, config))]),
   )
   return config.documentation ? documentNode(node, operation) : node

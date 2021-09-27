@@ -2,10 +2,9 @@ import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
-import { generateOperationFunction } from './operation/generateOperationFunction'
-import { generateResponseParserHint } from './expectations/generateExpectations'
-import { OperationsGeneratorConfig } from './typings'
+import { flatMap, isNil, negate, sortBy } from 'lodash'
+import { generateOperationInputType } from './generateOperationInputType'
+import { RequestTypesGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
   getEnhancedOperations,
@@ -13,39 +12,33 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   hasInput,
-  hasResponses,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class OperationsGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/operations'
+export class RequestTypesGenerator implements OpenAPIGenerator {
+  public static id = 'openapi/request-types'
   private static consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
     'openapi/headers-type',
     'openapi/query-type',
     'openapi/path-type',
-    'openapi/response-type',
-    'openapi/input-type',
-    'openapi/headers-serializer',
-    'openapi/path-serializer',
-    'openapi/query-serializer',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/operation', 'openapi/expectations']
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/input-type']
 
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & OperationsGeneratorConfig
+  private config: GeneratorConfig & RequestTypesGeneratorConfig
   private operations: EnhancedOperation[]
 
-  public readonly id: string = OperationsGenerator.id
-  public readonly produces: string[] = OperationsGenerator.produces
+  public readonly id: string = RequestTypesGenerator.id
+  public readonly produces: string[] = RequestTypesGenerator.produces
   public readonly consumes: string[]
 
-  public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
+  public constructor(config: GeneratorConfig & RequestTypesGeneratorConfig) {
     this.config = config
-    this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['openapi/validator'] : [])
-    this.produces = OperationsGenerator.produces.concat(config.validate ? ['openapi/expectations'] : [])
+    this.consumes = RequestTypesGenerator.consumes
+    this.produces = RequestTypesGenerator.produces
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -56,15 +49,20 @@ export class OperationsGenerator implements OpenAPIGenerator {
     )
   }
 
+  private enhance(input: OperationObject): EnhancedOperation {
+    const operation = this.operations.find(({ operation }) => operation === input)
+    if (isNil(operation)) {
+      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
+    }
+    return operation
+  }
+
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [
-          ...(config.validate ? [generateResponseParserHint(operation, context, config)] : []),
-          generateOperationFunction(operation, context, config),
-        ].filter(negate(isNil)),
+        [generateOperationInputType(operation, context)].filter(negate(isNil)),
       ),
     )
 
@@ -80,11 +78,10 @@ export class OperationsGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/operation': {
-        return factory.createIdentifier(nameOf(input, target))
-      }
-      case 'openapi/expectations': {
-        return hasResponses(input, context) ? factory.createIdentifier(nameOf(input, target)) : undefined
+      case 'openapi/input-type': {
+        return hasInput(this.enhance(input), context)
+          ? factory.createTypeReferenceNode(nameOf(input, target))
+          : undefined
       }
       default:
         return undefined
@@ -94,11 +91,10 @@ export class OperationsGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'openapi/operation': {
-        return getModelImports(fromPath, target, [input], this.context)
-      }
-      case 'openapi/expectations': {
-        return hasResponses(input, context) ? getModelImports(fromPath, target, [input], this.context) : undefined
+      case 'openapi/input-type': {
+        return hasInput(this.enhance(input), context)
+          ? getModelImports(fromPath, target, [input], this.context)
+          : undefined
       }
       default:
         return []

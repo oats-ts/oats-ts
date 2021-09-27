@@ -121,12 +121,24 @@
       "path": "projects/openapi-parameter-serialization"
     },
     {
+      "name": "openapi-parameter-serializers-generator",
+      "path": "projects/openapi-parameter-serializers-generator"
+    },
+    {
       "name": "openapi-parameter-types-generator",
       "path": "projects/openapi-parameter-types-generator"
     },
     {
       "name": "openapi-reader",
       "path": "projects/openapi-reader"
+    },
+    {
+      "name": "openapi-request-types-generator",
+      "path": "projects/openapi-request-types-generator"
+    },
+    {
+      "name": "openapi-response-types-generator",
+      "path": "projects/openapi-response-types-generator"
     },
     {
       "name": "openapi-type-guards-generator",

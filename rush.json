@@ -192,6 +192,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-parameter-serializers-generator",
+      "projectFolder": "projects/openapi-parameter-serializers-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-parameter-types-generator",
       "projectFolder": "projects/openapi-parameter-types-generator",
       "versionPolicyName": "oats",
@@ -200,6 +206,18 @@
     {
       "packageName": "@oats-ts/openapi-reader",
       "projectFolder": "projects/openapi-reader",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-request-types-generator",
+      "projectFolder": "projects/openapi-request-types-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-response-types-generator",
+      "projectFolder": "projects/openapi-response-types-generator",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
