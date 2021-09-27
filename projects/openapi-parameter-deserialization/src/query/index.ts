@@ -1,3 +1,4 @@
+import { queryDeepObjectObject } from './queryDeepObjectObject'
 import { queryDelimitedArray } from './queryDelmitedArray'
 import { queryFormObject } from './queryFormObject'
 import { queryFormPrimitive } from './queryFormPrimitive'
@@ -15,6 +16,6 @@ export const query = {
     array: queryDelimitedArray('|'),
   },
   deepObject: {
-    // object: queryDeepObjectObject,
+    object: queryDeepObjectObject,
   },
 }

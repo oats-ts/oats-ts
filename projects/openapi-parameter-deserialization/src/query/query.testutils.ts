@@ -1,27 +1,28 @@
 import { createQueryParser } from './createQueryParser'
 import { ParameterObject, QueryDeserializers } from '../types'
 
-type QuerySuccessData<Data extends ParameterObject> = [Data, string, QueryDeserializers<Data>]
-type ErrorData<Data extends ParameterObject> = [string, QueryDeserializers<Data>]
+type QuerySuccessData<Data extends ParameterObject> = [Data, string]
+type QueryErrorData = [string]
 
 export type QueryTestData<Data extends ParameterObject> = {
   data: QuerySuccessData<Data>[]
-  error: ErrorData<Data>[]
+  error: QueryErrorData[]
 }
 
-export const createQueryParserTest = <Data extends ParameterObject>(name: string, data: QueryTestData<Data>): void => {
+export const createQueryParserTest = <Data extends ParameterObject>(
+  name: string,
+  data: QueryTestData<Data>,
+  config: QueryDeserializers<Data>,
+): void => {
   describe(name, () => {
     if (data.data.length > 0) {
-      it.each(data.data)(
-        'should be "%s", given url: %s, config %s',
-        (expected: Data, url: string, config: QueryDeserializers<Data>) => {
-          const parser = createQueryParser(config)
-          expect(parser(url)).toEqual(expected)
-        },
-      )
+      it.each(data.data)('should parse to %j, given query: %j', (expected: Data, url: string) => {
+        const parser = createQueryParser(config)
+        expect(parser(url)).toEqual(expected)
+      })
     }
     if (data.error.length > 0) {
-      it.each(data.error)('should throw, given url: %s, config %s', (url: string, config: QueryDeserializers<Data>) => {
+      it.each(data.error)('should throw, given query: %j', (url: string) => {
         const parser = createQueryParser(config)
         expect(() => parser(url)).toThrowError()
       })

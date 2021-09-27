@@ -1,8 +1,6 @@
+import { EnumType, LiteralType } from '../testTypes'
 import { value } from './index'
 import { ValueErrorData, ValueSuccessData, ValueTestData } from './value.testutils'
-
-export type LiteralType = 'cat'
-export type EnumType = 'cat' | 'dog' | 'racoon'
 
 export const stringParser = value.string()
 export const numberParser = value.number()

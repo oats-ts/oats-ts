@@ -15,12 +15,12 @@ export const createValueParserTest = <Input extends Primitive, Output extends Pr
 ): void => {
   describe(name, () => {
     if (data.data.length > 0) {
-      it.each(data.data)('should parse to "%s", given input: %s', (expected: Output, input: Input) => {
+      it.each(data.data)('should parse to %j, given input: %j', (expected: Output, input: Input) => {
         expect(parser('test', input)).toEqual(expected)
       })
     }
     if (data.error.length > 0) {
-      it.each(data.error)('should throw, given url: %s, config %s', (input: Input) => {
+      it.each(data.error)('should throw, given input: %j', (input: Input) => {
         expect(() => parser('test', input)).toThrowError()
       })
     }

@@ -1,7 +1,7 @@
 import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
 import { decode, encode, isNil } from '../utils'
 
-export const queryDeepObject =
+export const queryDeepObjectObject =
   <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}) =>
   (name: string) =>
   (data: RawQueryParams): T => {

@@ -22,14 +22,14 @@ import {
 } from './value.testdata'
 import { createValueParserTest } from './value.testutils'
 
-createValueParserTest('string', stringValueData, stringParser)
-createValueParserTest('number', numberValueData, numberParser)
-createValueParserTest('boolean', booleanValueData, booleanParser)
-createValueParserTest('literal', literalValueData, literalParser)
-createValueParserTest('enum', enumValueData, enumParser)
+createValueParserTest('value.string', stringValueData, stringParser)
+createValueParserTest('value.number', numberValueData, numberParser)
+createValueParserTest('value.boolean', booleanValueData, booleanParser)
+createValueParserTest('value.literal', literalValueData, literalParser)
+createValueParserTest('value.enum', enumValueData, enumParser)
 
-createValueParserTest('string (optional)', optStringValueData, optionalStringParser)
-createValueParserTest('number (optional)', optNumberValueData, optionalNumberParser)
-createValueParserTest('boolean (optional)', optBooleanValueData, optionalBooleanParser)
-createValueParserTest('literal (optional)', optLiteralValueData, optionalLiteralParser)
-createValueParserTest('enum (optional)', optEnumValueData, optionalEnumParser)
+createValueParserTest('value.string (optional)', optStringValueData, optionalStringParser)
+createValueParserTest('value.number (optional)', optNumberValueData, optionalNumberParser)
+createValueParserTest('value.boolean (optional)', optBooleanValueData, optionalBooleanParser)
+createValueParserTest('value.literal (optional)', optLiteralValueData, optionalLiteralParser)
+createValueParserTest('value.enum (optional)', optEnumValueData, optionalEnumParser)
