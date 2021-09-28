@@ -101,6 +101,10 @@
       "path": "projects/openapi-e2e-test"
     },
     {
+      "name": "openapi-http",
+      "path": "projects/openapi-http"
+    },
+    {
       "name": "openapi-model",
       "path": "projects/openapi-model"
     },
@@ -135,6 +139,10 @@
     {
       "name": "openapi-request-types-generator",
       "path": "projects/openapi-request-types-generator"
+    },
+    {
+      "name": "openapi-response-expectations-generator",
+      "path": "projects/openapi-response-expectations-generator"
     },
     {
       "name": "openapi-response-types-generator",

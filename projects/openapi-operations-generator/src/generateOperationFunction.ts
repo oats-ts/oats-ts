@@ -1,7 +1,7 @@
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getOperationFunctionAst } from './getOperationFunctionAst'
-import { OperationsGeneratorConfig } from '../typings'
+import { OperationsGeneratorConfig } from './typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { getNamedImports } from '@oats-ts/typescript-common'

@@ -1,7 +1,7 @@
 import { Expression, factory } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { OperationsGeneratorConfig } from '../typings'
+import { OperationsGeneratorConfig } from './typings'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { getOperationRequestLiteralAst } from './getOperationRequestLiteralAst'
 

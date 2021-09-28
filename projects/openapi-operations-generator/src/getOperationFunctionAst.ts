@@ -1,7 +1,7 @@
 import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
-import { OperationsGeneratorConfig } from '../typings'
+import { OperationsGeneratorConfig } from './typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { documentNode } from '@oats-ts/typescript-common'
 import { getOperationExecuteAst } from './getOperationRequestAst'

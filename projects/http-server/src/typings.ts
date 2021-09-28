@@ -115,3 +115,5 @@ export type RequestConfig<R = unknown, V = unknown> = {
   /** Validates the response body */
   validate(body: unknown, validator: V): void
 }
+
+type OmmitNever<T> = { [K in keyof T as T[K] extends never ? never : K]: T[K] }

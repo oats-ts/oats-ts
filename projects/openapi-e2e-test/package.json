@@ -61,6 +61,7 @@
     "@oats-ts/openapi-parameter-serializers-generator": "0.0.0",
     "@oats-ts/openapi-request-types-generator": "0.0.0",
     "@oats-ts/openapi-response-types-generator": "0.0.0",
+    "@oats-ts/openapi-response-expectations-generator": "0.0.0",
     "@oats-ts/asyncapi": "0.0.5",
     "@oats-ts/asyncapi-types-generator": "0.0.5",
     "@oats-ts/asyncapi-type-guards-generator": "0.0.5",

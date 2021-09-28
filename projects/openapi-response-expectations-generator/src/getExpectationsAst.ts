@@ -3,13 +3,8 @@ import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getExpectationsPropertyAsts } from './getExpectationsPropertyAsts'
-import { OperationsGeneratorConfig } from '../typings'
 
-export function getExpectationsAst(
-  data: EnhancedOperation,
-  context: OpenAPIGeneratorContext,
-  config: OperationsGeneratorConfig,
-): Statement {
+export function getExpectationsAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
   const { nameOf } = context
   const { operation } = data
 
@@ -23,7 +18,7 @@ export function getExpectationsAst(
           varName,
           undefined,
           factory.createTypeReferenceNode(RuntimePackages.Http.ResponseExpectations),
-          factory.createObjectLiteralExpression(getExpectationsPropertyAsts(data, context, config)),
+          factory.createObjectLiteralExpression(getExpectationsPropertyAsts(data, context)),
         ),
       ],
       NodeFlags.Const,

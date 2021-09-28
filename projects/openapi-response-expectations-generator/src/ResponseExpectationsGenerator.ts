@@ -3,46 +3,37 @@ import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { generateOperationFunction } from './generateOperationFunction'
-import { OperationsGeneratorConfig } from './typings'
+import { generateResponseParserHint } from './generateExpectations'
+import { ResponseExpectationsGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
   getEnhancedOperations,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
+  hasResponses,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class OperationsGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/operations'
-  private static consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/type',
-    'openapi/headers-type',
-    'openapi/query-type',
-    'openapi/path-type',
-    'openapi/response-type',
-    'openapi/request-type',
-    'openapi/headers-serializer',
-    'openapi/path-serializer',
-    'openapi/query-serializer',
-  ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/operation']
+export class ResponseExpectationsGenerator implements OpenAPIGenerator {
+  public static id = 'openapi/response-expectations'
+  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/validator']
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/expectations']
 
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & OperationsGeneratorConfig
+  private config: GeneratorConfig & ResponseExpectationsGeneratorConfig
   private operations: EnhancedOperation[]
 
-  public readonly id: string = OperationsGenerator.id
-  public readonly produces: string[] = OperationsGenerator.produces
+  public readonly id: string = ResponseExpectationsGenerator.id
+  public readonly produces: string[] = ResponseExpectationsGenerator.produces
   public readonly consumes: string[]
 
-  public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
+  public constructor(config: GeneratorConfig & ResponseExpectationsGeneratorConfig) {
     this.config = config
-    this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['openapi/expectations'] : [])
-    this.produces = OperationsGenerator.produces
+    this.consumes = ResponseExpectationsGenerator.consumes
+    this.produces = ResponseExpectationsGenerator.produces
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -58,7 +49,7 @@ export class OperationsGenerator implements OpenAPIGenerator {
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateOperationFunction(operation, context, config)].filter(negate(isNil)),
+        [generateResponseParserHint(operation, context, config)].filter(negate(isNil)),
       ),
     )
 
@@ -74,8 +65,8 @@ export class OperationsGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/operation': {
-        return factory.createIdentifier(nameOf(input, target))
+      case 'openapi/expectations': {
+        return hasResponses(input, context) ? factory.createIdentifier(nameOf(input, target)) : undefined
       }
       default:
         return undefined
@@ -85,8 +76,8 @@ export class OperationsGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'openapi/operation': {
-        return getModelImports(fromPath, target, [input], context)
+      case 'openapi/expectations': {
+        return hasResponses(input, context) ? getModelImports(fromPath, target, [input], this.context) : undefined
       }
       default:
         return []
