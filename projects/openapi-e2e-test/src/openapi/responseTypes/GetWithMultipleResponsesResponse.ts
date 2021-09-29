@@ -1,4 +1,4 @@
-import { HttpResponse, StatusCode } from '@oats-ts/http'
+import { HttpResponse, StatusCode } from '@oats-ts/openapi-http'
 import { NamedComplexObject } from '../types/NamedComplexObject'
 import { NamedDeprecatedObject } from '../types/NamedDeprecatedObject'
 import { NamedSimpleObject } from '../types/NamedSimpleObject'

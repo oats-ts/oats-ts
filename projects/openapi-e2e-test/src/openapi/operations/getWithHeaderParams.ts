@@ -1,4 +1,5 @@
-import { RequestConfig, execute } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
+import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { getWithHeaderParamsExpectations } from '../expectations/getWithHeaderParamsExpectations'
 import { getWithHeaderParamsHeadersSerializer } from '../headerSerializers/getWithHeaderParamsHeadersSerializer'
@@ -7,7 +8,7 @@ import { GetWithHeaderParamsResponse } from '../responseTypes/GetWithHeaderParam
 
 export async function getWithHeaderParams(
   input: GetWithHeaderParamsRequest,
-  config: RequestConfig,
+  config: ClientConfiguration,
 ): Promise<GetWithHeaderParamsResponse> {
   return execute(
     {

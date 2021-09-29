@@ -32,7 +32,7 @@ export function getApiMethodParameterAsts(
       undefined,
       unused ? '_config' : 'config',
       undefined,
-      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig)]),
+      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration)]),
       factory.createObjectLiteralExpression([]),
     ),
   )

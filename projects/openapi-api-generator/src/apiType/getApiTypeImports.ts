@@ -19,7 +19,7 @@ export function getApiTypeImports(
   return operations.length > 0
     ? [
         ...imports,
-        ...(params ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig])] : []),
+        ...(params ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration])] : []),
       ]
     : imports
 }

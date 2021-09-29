@@ -1,4 +1,4 @@
-import { RequestConfig } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
 import { getSimpleNamedObject } from '../operations/getSimpleNamedObject'
 import { getWithDefaultResponse } from '../operations/getWithDefaultResponse'
 import { getWithHeaderParams } from '../operations/getWithHeaderParams'
@@ -23,48 +23,50 @@ import { SampleOperationResponse } from '../responseTypes/SampleOperationRespons
 import { Api } from './Api'
 
 export class ApiImpl implements Api {
-  protected readonly config: RequestConfig
-  public constructor(config: RequestConfig) {
+  protected readonly config: ClientConfiguration
+  public constructor(config: ClientConfiguration) {
     this.config = config
   }
-  public async getSimpleNamedObject(config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
+  public async getSimpleNamedObject(config: Partial<ClientConfiguration> = {}): Promise<GetSimpleNamedObjectResponse> {
     return getSimpleNamedObject({ ...this.config, ...config })
   }
-  public async getWithDefaultResponse(config: Partial<RequestConfig> = {}): Promise<GetWithDefaultResponseResponse> {
+  public async getWithDefaultResponse(
+    config: Partial<ClientConfiguration> = {},
+  ): Promise<GetWithDefaultResponseResponse> {
     return getWithDefaultResponse({ ...this.config, ...config })
   }
   public async getWithHeaderParams(
     input: GetWithHeaderParamsRequest,
-    config: Partial<RequestConfig> = {},
+    config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithHeaderParamsResponse> {
     return getWithHeaderParams(input, { ...this.config, ...config })
   }
   public async getWithMultipleResponses(
-    config: Partial<RequestConfig> = {},
+    config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithMultipleResponsesResponse> {
     return getWithMultipleResponses({ ...this.config, ...config })
   }
   public async getWithPathParams(
     input: GetWithPathParamsRequest,
-    config: Partial<RequestConfig> = {},
+    config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithPathParamsResponse> {
     return getWithPathParams(input, { ...this.config, ...config })
   }
   public async getWithQueryParams(
     input: GetWithQueryParamsRequest,
-    config: Partial<RequestConfig> = {},
+    config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithQueryParamsResponse> {
     return getWithQueryParams(input, { ...this.config, ...config })
   }
   public async postSimpleNamedObject(
     input: PostSimpleNamedObjectRequest,
-    config: Partial<RequestConfig> = {},
+    config: Partial<ClientConfiguration> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
     return postSimpleNamedObject(input, { ...this.config, ...config })
   }
   public async sampleOperation(
     input: SampleOperationRequest,
-    config: Partial<RequestConfig> = {},
+    config: Partial<ClientConfiguration> = {},
   ): Promise<SampleOperationResponse> {
     return sampleOperation(input, { ...this.config, ...config })
   }

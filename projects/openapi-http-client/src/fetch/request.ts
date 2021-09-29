@@ -1,8 +1,8 @@
-import { HttpRequest } from '../typings'
+import { RawHttpRequest } from '@oats-ts/openapi-http'
 import { mergeHeaders } from '../common/mergeHeaders'
 
 export function request(init: RequestInit = {}) {
-  return async function browserFetch(request: HttpRequest): Promise<Response> {
+  return async function browserFetch(request: RawHttpRequest): Promise<Response> {
     const fetchRequest: RequestInit = {
       ...(init || {}),
       headers: mergeHeaders(init?.headers, request.headers),

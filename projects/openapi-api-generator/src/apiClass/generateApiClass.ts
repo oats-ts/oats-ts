@@ -19,7 +19,7 @@ export function generateApiClass(
   return {
     path,
     dependencies: [
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration]),
       ...getApiTypeImports(doc, operations, context, true),
       ...dependenciesOf(path, doc, 'openapi/api-type'),
       ...flatMap(operations, ({ operation }) => dependenciesOf(path, operation, 'openapi/operation')),

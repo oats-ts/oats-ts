@@ -53,14 +53,6 @@
       "path": "projects/generator"
     },
     {
-      "name": "http",
-      "path": "projects/http"
-    },
-    {
-      "name": "http-server",
-      "path": "projects/http-server"
-    },
-    {
       "name": "json-schema-common",
       "path": "projects/json-schema-common"
     },
@@ -103,6 +95,10 @@
     {
       "name": "openapi-http",
       "path": "projects/openapi-http"
+    },
+    {
+      "name": "openapi-http-client",
+      "path": "projects/openapi-http-client"
     },
     {
       "name": "openapi-model",

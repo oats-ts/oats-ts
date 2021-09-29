@@ -1,4 +1,4 @@
-import { ResponseExpectations } from '@oats-ts/http'
+import { ResponseExpectations } from '@oats-ts/openapi-http'
 import { lazy, object, optional, shape } from '@oats-ts/validators'
 import { namedComplexObjectValidator } from '../validators/namedComplexObjectValidator'
 import { namedDeprecatedObjectValidator } from '../validators/namedDeprecatedObjectValidator'

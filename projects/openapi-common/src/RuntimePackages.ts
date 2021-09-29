@@ -1,13 +1,22 @@
 const Http = {
-  name: '@oats-ts/http',
-  ResponseExpectations: 'ResponseExpectations',
-  ResponseExpectation: 'ResponseExpectation',
-  RequestConfig: 'RequestConfig',
-  HttpResponse: 'HttpResponse',
-  StatusCode: 'StatusCode',
-  HttpRequest: 'HttpRequest',
-  HttpHeaders: 'HttpHeaders',
+  name: '@oats-ts/openapi-http',
+  ClientConfiguration: 'ClientConfiguration',
+  HasHeaders: 'HasHeaders',
+  HasPathParameters: 'HasPathParameters',
+  HasQueryParameters: 'HasQueryParameters',
+  HasRequestBody: 'HasRequestBody',
   HttpMethod: 'HttpMethod',
+  HttpResponse: 'HttpResponse',
+  RawHttpHeaders: 'RawHttpHeaders',
+  RawHttpRequest: 'RawHttpRequest',
+  RawHttpResponse: 'RawHttpResponse',
+  ResponseExpectation: 'ResponseExpectation',
+  ResponseExpectations: 'ResponseExpectations',
+  StatusCode: 'StatusCode',
+}
+
+const HttpClient = {
+  name: '@oats-ts/openapi-http-client',
   execute: 'execute',
 }
 
@@ -21,5 +30,6 @@ const ParameterSerialization = {
 
 export const RuntimePackages = {
   Http,
+  HttpClient,
   ParameterSerialization,
 }

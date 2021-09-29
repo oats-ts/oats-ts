@@ -1,4 +1,4 @@
-import { RequestConfig } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
 import { GetWithHeaderParamsRequest } from '../requestTypes/GetWithHeaderParamsRequest'
 import { GetWithPathParamsRequest } from '../requestTypes/GetWithPathParamsRequest'
 import { GetWithQueryParamsRequest } from '../requestTypes/GetWithQueryParamsRequest'
@@ -15,44 +15,46 @@ import { SampleOperationResponse } from '../responseTypes/SampleOperationRespons
 import { Api } from './Api'
 
 export class ApiStub implements Api {
-  public async getSimpleNamedObject(_config: Partial<RequestConfig> = {}): Promise<GetSimpleNamedObjectResponse> {
+  public async getSimpleNamedObject(_config: Partial<ClientConfiguration> = {}): Promise<GetSimpleNamedObjectResponse> {
     throw new Error('"getSimpleNamedObject" is not implemented')
   }
-  public async getWithDefaultResponse(_config: Partial<RequestConfig> = {}): Promise<GetWithDefaultResponseResponse> {
+  public async getWithDefaultResponse(
+    _config: Partial<ClientConfiguration> = {},
+  ): Promise<GetWithDefaultResponseResponse> {
     throw new Error('"getWithDefaultResponse" is not implemented')
   }
   public async getWithHeaderParams(
     _input: GetWithHeaderParamsRequest,
-    _config: Partial<RequestConfig> = {},
+    _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithHeaderParamsResponse> {
     throw new Error('"getWithHeaderParams" is not implemented')
   }
   public async getWithMultipleResponses(
-    _config: Partial<RequestConfig> = {},
+    _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithMultipleResponsesResponse> {
     throw new Error('"getWithMultipleResponses" is not implemented')
   }
   public async getWithPathParams(
     _input: GetWithPathParamsRequest,
-    _config: Partial<RequestConfig> = {},
+    _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithPathParamsResponse> {
     throw new Error('"getWithPathParams" is not implemented')
   }
   public async getWithQueryParams(
     _input: GetWithQueryParamsRequest,
-    _config: Partial<RequestConfig> = {},
+    _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithQueryParamsResponse> {
     throw new Error('"getWithQueryParams" is not implemented')
   }
   public async postSimpleNamedObject(
     _input: PostSimpleNamedObjectRequest,
-    _config: Partial<RequestConfig> = {},
+    _config: Partial<ClientConfiguration> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
     throw new Error('"postSimpleNamedObject" is not implemented')
   }
   public async sampleOperation(
     _input: SampleOperationRequest,
-    _config: Partial<RequestConfig> = {},
+    _config: Partial<ClientConfiguration> = {},
   ): Promise<SampleOperationResponse> {
     throw new Error('"sampleOperation" is not implemented')
   }

@@ -18,7 +18,8 @@ export function generateOperationFunction(
     path,
     dependencies: [
       getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RequestConfig, RuntimePackages.Http.execute]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration]),
+      getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.execute]),
       ...dependenciesOf(path, data.operation, 'openapi/request-type'),
       ...dependenciesOf(path, data.operation, 'openapi/response-type'),
       ...dependenciesOf(path, data.operation, 'openapi/path-serializer'),

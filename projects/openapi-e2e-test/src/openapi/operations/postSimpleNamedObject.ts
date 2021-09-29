@@ -1,4 +1,5 @@
-import { RequestConfig, execute } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
+import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { postSimpleNamedObjectExpectations } from '../expectations/postSimpleNamedObjectExpectations'
 import { PostSimpleNamedObjectRequest } from '../requestTypes/PostSimpleNamedObjectRequest'
@@ -6,7 +7,7 @@ import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedO
 
 export async function postSimpleNamedObject(
   input: PostSimpleNamedObjectRequest,
-  config: RequestConfig,
+  config: ClientConfiguration,
 ): Promise<PostSimpleNamedObjectResponse> {
   return execute(
     {

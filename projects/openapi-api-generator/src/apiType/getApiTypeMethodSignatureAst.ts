@@ -33,7 +33,7 @@ export function getApiTypeMethodSignatureAst(
       undefined,
       'config',
       factory.createToken(SyntaxKind.QuestionToken),
-      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig)]),
+      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration)]),
     ),
   )
 

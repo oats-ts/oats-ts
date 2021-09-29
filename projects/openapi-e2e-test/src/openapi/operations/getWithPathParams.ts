@@ -1,4 +1,5 @@
-import { RequestConfig, execute } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
+import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { getWithPathParamsExpectations } from '../expectations/getWithPathParamsExpectations'
 import { getWithPathParamsPathSerializer } from '../pathSerializers/getWithPathParamsPathSerializer'
@@ -7,7 +8,7 @@ import { GetWithPathParamsResponse } from '../responseTypes/GetWithPathParamsRes
 
 export async function getWithPathParams(
   input: GetWithPathParamsRequest,
-  config: RequestConfig,
+  config: ClientConfiguration,
 ): Promise<GetWithPathParamsResponse> {
   return execute(
     { url: joinUrl(config.baseUrl, getWithPathParamsPathSerializer(input.path)), method: 'get' },

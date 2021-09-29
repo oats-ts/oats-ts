@@ -1,4 +1,4 @@
-import { HttpResponse } from '@oats-ts/http'
+import { HttpResponse } from '@oats-ts/openapi-http'
 import { NamedComplexObject } from '../types/NamedComplexObject'
 
 export type SampleOperationResponse =

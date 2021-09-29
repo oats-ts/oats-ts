@@ -1,13 +1,13 @@
 /** Generic type representing a HTTP response */
-export type HttpResponse<Body, Headers, Status, MimeType> = {
+export type HttpResponse<B, S, M, H> = {
   /** The full request url */
   url: string
   /** The parsed response body */
-  body: Body
+  body: B
   /** The response status code */
-  statusCode: Status
-  /** The parsed response headers */
-  headers: Headers
+  statusCode: S
   /** The mime type of the response */
-  mimeType: MimeType
+  mimeType: M
+  /** The response headers */
+  headers: H
 }

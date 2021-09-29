@@ -1,4 +1,4 @@
-import { RequestConfig } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
 import { GetWithHeaderParamsRequest } from '../requestTypes/GetWithHeaderParamsRequest'
 import { GetWithPathParamsRequest } from '../requestTypes/GetWithPathParamsRequest'
 import { GetWithQueryParamsRequest } from '../requestTypes/GetWithQueryParamsRequest'
@@ -14,24 +14,27 @@ import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedO
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 
 export type Api = {
-  getSimpleNamedObject(config?: Partial<RequestConfig>): Promise<GetSimpleNamedObjectResponse>
-  getWithDefaultResponse(config?: Partial<RequestConfig>): Promise<GetWithDefaultResponseResponse>
+  getSimpleNamedObject(config?: Partial<ClientConfiguration>): Promise<GetSimpleNamedObjectResponse>
+  getWithDefaultResponse(config?: Partial<ClientConfiguration>): Promise<GetWithDefaultResponseResponse>
   getWithHeaderParams(
     input: GetWithHeaderParamsRequest,
-    config?: Partial<RequestConfig>,
+    config?: Partial<ClientConfiguration>,
   ): Promise<GetWithHeaderParamsResponse>
-  getWithMultipleResponses(config?: Partial<RequestConfig>): Promise<GetWithMultipleResponsesResponse>
+  getWithMultipleResponses(config?: Partial<ClientConfiguration>): Promise<GetWithMultipleResponsesResponse>
   getWithPathParams(
     input: GetWithPathParamsRequest,
-    config?: Partial<RequestConfig>,
+    config?: Partial<ClientConfiguration>,
   ): Promise<GetWithPathParamsResponse>
   getWithQueryParams(
     input: GetWithQueryParamsRequest,
-    config?: Partial<RequestConfig>,
+    config?: Partial<ClientConfiguration>,
   ): Promise<GetWithQueryParamsResponse>
   postSimpleNamedObject(
     input: PostSimpleNamedObjectRequest,
-    config?: Partial<RequestConfig>,
+    config?: Partial<ClientConfiguration>,
   ): Promise<PostSimpleNamedObjectResponse>
-  sampleOperation(input: SampleOperationRequest, config?: Partial<RequestConfig>): Promise<SampleOperationResponse>
+  sampleOperation(
+    input: SampleOperationRequest,
+    config?: Partial<ClientConfiguration>,
+  ): Promise<SampleOperationResponse>
 }

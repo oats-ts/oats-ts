@@ -91,18 +91,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/http",
-      "projectFolder": "projects/http",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/http-server",
-      "projectFolder": "projects/http-server",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/json-schema-common",
       "projectFolder": "projects/json-schema-common",
       "versionPolicyName": "oats",
@@ -164,7 +152,14 @@
     {
       "packageName": "@oats-ts/openapi-http",
       "projectFolder": "projects/openapi-http",
-      "shouldPublish": false
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-http-client",
+      "projectFolder": "projects/openapi-http-client",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-model",

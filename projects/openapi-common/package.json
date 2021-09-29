@@ -41,8 +41,8 @@
     "@oats-ts/openapi-reader": "0.0.5",
     "@oats-ts/typescript-writer": "0.0.5",
     "@oats-ts/generator": "0.0.5",
-    "@oats-ts/http": "0.0.5",
     "@oats-ts/openapi": "0.0.5",
+    "@oats-ts/openapi-http": "0.0.0",
     "@oats-ts/model-common": "0.0.5"
   }
 }

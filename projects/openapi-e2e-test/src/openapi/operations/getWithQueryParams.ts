@@ -1,4 +1,5 @@
-import { RequestConfig, execute } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
+import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { getWithQueryParamsExpectations } from '../expectations/getWithQueryParamsExpectations'
 import { getWithQueryParamsQuerySerializer } from '../querySerializers/getWithQueryParamsQuerySerializer'
@@ -7,7 +8,7 @@ import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsR
 
 export async function getWithQueryParams(
   input: GetWithQueryParamsRequest,
-  config: RequestConfig,
+  config: ClientConfiguration,
 ): Promise<GetWithQueryParamsResponse> {
   return execute(
     { url: joinUrl(config.baseUrl, '/query-params', getWithQueryParamsQuerySerializer(input.query)), method: 'get' },

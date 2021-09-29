@@ -36,7 +36,7 @@ export function getOperationFunctionAst(
       undefined,
       'config',
       undefined,
-      factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),
+      factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
     ),
   )
 

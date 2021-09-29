@@ -12,7 +12,7 @@ export function getOperationExecuteAst(
 ): Expression {
   const { nameOf } = context
   return factory.createCallExpression(
-    factory.createIdentifier(RuntimePackages.Http.execute),
+    factory.createIdentifier(RuntimePackages.HttpClient.execute),
     [],
     [
       getOperationRequestLiteralAst(data, context),

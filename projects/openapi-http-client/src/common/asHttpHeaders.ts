@@ -1,7 +1,7 @@
+import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { HeadersInitLike } from './typings'
-import { HttpHeaders } from '../typings'
 
-export function asHttpHeaders(headers: HeadersInitLike): HttpHeaders {
+export function asHttpHeaders(headers: HeadersInitLike): RawHttpHeaders {
   if (headers === null || headers === undefined) {
     return {}
   } else if (Array.isArray(headers)) {

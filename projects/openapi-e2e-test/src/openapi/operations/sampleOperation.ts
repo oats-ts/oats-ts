@@ -1,4 +1,5 @@
-import { RequestConfig, execute } from '@oats-ts/http'
+import { ClientConfiguration } from '@oats-ts/openapi-http'
+import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
 import { sampleOperationExpectations } from '../expectations/sampleOperationExpectations'
 import { sampleOperationHeadersSerializer } from '../headerSerializers/sampleOperationHeadersSerializer'
@@ -9,7 +10,7 @@ import { SampleOperationResponse } from '../responseTypes/SampleOperationRespons
 
 export async function sampleOperation(
   input: SampleOperationRequest,
-  config: RequestConfig,
+  config: ClientConfiguration,
 ): Promise<SampleOperationResponse> {
   return execute(
     {

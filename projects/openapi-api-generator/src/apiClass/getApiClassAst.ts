@@ -17,7 +17,7 @@ export function getApiClassAst(
     [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
     'config',
     undefined,
-    factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),
+    factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
     undefined,
   )
 
@@ -31,7 +31,7 @@ export function getApiClassAst(
         undefined,
         'config',
         undefined,
-        factory.createTypeReferenceNode(RuntimePackages.Http.RequestConfig),
+        factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
       ),
     ],
     factory.createBlock([

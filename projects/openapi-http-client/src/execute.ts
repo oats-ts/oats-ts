@@ -1,4 +1,4 @@
-import { HttpRequest, HttpResponse, RequestConfig, ResponseExpectations } from './typings'
+import { HttpResponse, ClientConfiguration, ResponseExpectations, RawHttpRequest } from '@oats-ts/openapi-http'
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 
@@ -34,10 +34,10 @@ function getResponseValidator(statusCode: number, mimeType: string, expectations
 }
 
 export async function execute(
-  request: HttpRequest,
-  config: RequestConfig,
+  request: RawHttpRequest,
+  config: ClientConfiguration<any, any>,
   expectations?: ResponseExpectations,
-): Promise<HttpResponse> {
+): Promise<HttpResponse<any, any, any, any>> {
   const response = await config.request(request)
   const statusCode = await config.statusCode(response)
   const mimeType = await config.mimeType(response)

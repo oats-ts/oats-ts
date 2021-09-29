@@ -3,7 +3,7 @@ import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator } from '@oats-ts/generator'
-import { HttpMethod } from '@oats-ts/http'
+import { HttpMethod } from '@oats-ts/openapi-http'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { GeneratorContext } from '@oats-ts/model-common'
 
