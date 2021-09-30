@@ -3,7 +3,7 @@ import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { generateOperationInputType } from './generateOperationInputType'
+import { generateRequestType } from './generateRequestType'
 import { RequestTypesGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
@@ -62,7 +62,7 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateOperationInputType(operation, context)].filter(negate(isNil)),
+        [generateRequestType(operation, context)].filter(negate(isNil)),
       ),
     )
 

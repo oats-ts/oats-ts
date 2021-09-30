@@ -2,7 +2,7 @@ import { RawHttpHeaders } from './RawHttpHeaders'
 import { RawHttpRequest } from './RawHttpRequest'
 
 /** Configuration for performing a HTTP request */
-export type ClientConfiguration<R, V> = {
+export type ClientConfiguration<R = any, V = any> = {
   /** The common base of the url */
   baseUrl: string
   /** Performs the HTTP request and returns a Promise with a value that the rest of the methods will receive */

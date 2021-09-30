@@ -21,7 +21,9 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   const types: TypeReferenceNode[] = []
   if (responses.length === 0) {
     types.push(
-      factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [factory.createTypeReferenceNode('void')]),
+      factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
+        factory.createTypeReferenceNode('undefined'),
+      ]),
     )
   } else {
     const knownStatusCodes = responses.map(({ statusCode }) => statusCode).filter((s) => s !== 'default')
@@ -32,11 +34,16 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
           ? createDefaultStatusCodeType(knownStatusCodes)
           : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
       const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
+      const headersType = factory.createTypeReferenceNode('Record', [
+        factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
+        factory.createKeywordTypeNode(SyntaxKind.AnyKeyword),
+      ])
 
       return factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
         bodyType,
         statusCodeType,
         mediaTypeType,
+        headersType,
       ])
     })
 
