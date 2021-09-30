@@ -1,6 +1,6 @@
-import { ApiImpl } from './openapi/api/ApiImpl'
 import { validate } from '@oats-ts/validators'
-import { body, headers, mimeType, statusCode, serialize, request } from '@oats-ts/http/lib/node-fetch'
+import { body, headers, mimeType, statusCode, serialize, request } from '@oats-ts/openapi-http-client/lib/node-fetch'
+import { ApiImpl } from './openapi/api/ApiImpl'
 
 describe('Api', () => {
   const api = new ApiImpl({
@@ -75,7 +75,9 @@ describe('Api', () => {
   })
 
   it('should getWithMultipleResponses', async () => {
-    // TODO need a way to test other responses
-    await api.getWithMultipleResponses()
+    const result = await api.getWithMultipleResponses()
+    if (result.statusCode === 200) {
+      expect(typeof result.body).toBe('object')
+    }
   })
 })
