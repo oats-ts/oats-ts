@@ -4,14 +4,14 @@ import { NamedDeprecatedObject } from '../types/NamedDeprecatedObject'
 import { NamedSimpleObject } from '../types/NamedSimpleObject'
 
 export type GetWithMultipleResponsesResponse =
-  | HttpResponse<NamedSimpleObject, 200, 'application/json', Record<string, any>>
+  | HttpResponse<NamedSimpleObject, 200, 'application/json', undefined>
   | HttpResponse<
       {
         test?: NamedSimpleObject
       },
       201,
       'application/json',
-      Record<string, any>
+      undefined
     >
-  | HttpResponse<NamedDeprecatedObject, 205, 'application/json', Record<string, any>>
-  | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 201 | 205>, 'application/json', Record<string, any>>
+  | HttpResponse<NamedDeprecatedObject, 205, 'application/json', undefined>
+  | HttpResponse<NamedComplexObject, Exclude<StatusCode, 200 | 201 | 205>, 'application/json', undefined>

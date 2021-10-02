@@ -14,6 +14,7 @@ export function getEnhancedResponses(operation: OperationObject, context: OpenAP
           mediaType,
           statusCode,
           schema: dereference(mediaTypeObj.schema),
+          headers: repsonse.headers || {},
         })
       }
     }

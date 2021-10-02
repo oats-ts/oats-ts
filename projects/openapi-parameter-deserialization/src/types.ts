@@ -32,25 +32,12 @@ export type RawPathParams = Record<string, string>
 export type PathDeserializer<T extends ParameterValue> = (name: string) => (value: RawPathParams) => T
 export type PathDeserializers<T extends ParameterObject> = { [P in keyof T]: PathDeserializer<T[P]> }
 
-/** Path parsing, represents path segments */
-export type ParameterSegment = {
-  type: 'parameter'
-  name: string
-}
-
-export type TextSegment = {
-  type: 'text'
-  value: string
-}
-
-export type PathSegment = ParameterSegment | TextSegment
-
 /** Header related types */
-export type HeaderOptions<T> = {
-  defaultValue?: T
+export type HeaderOptions = {
   explode?: boolean
   required?: boolean
 }
 
-export type HeaderDeserializer<T extends ParameterValue> = (name: string) => (value: T) => string
+export type RawHeaders = Record<string, string>
+export type HeaderDeserializer<T extends ParameterValue> = (name: string) => (value: RawHeaders) => T
 export type HeaderDeserializers<T extends ParameterObject> = { [P in keyof T]: HeaderDeserializer<T[P]> }

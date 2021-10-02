@@ -1,5 +1,9 @@
 import { RawPathParams, PathOptions, FieldParsers, PrimitiveRecord } from '../types'
-import { getPathValue, parseFromRecord, parseKeyValuePairRecord, parseSeparatedRecord } from './pathUtils'
+import { createKeyValuePairRecordParser, createDelimitedRecordParser } from '../utils'
+import { getPathValue, parsePathFromRecord } from './pathUtils'
+
+const parseKeyValuePairRecord = createKeyValuePairRecordParser('path', ',', '=')
+const parseDelimitedRecord = createDelimitedRecordParser('path', ',')
 
 export const pathSimpleObject =
   <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: PathOptions = {}) =>
@@ -7,7 +11,7 @@ export const pathSimpleObject =
   (data: RawPathParams): T => {
     const rawDataStr = getPathValue(name, data)
     const rawRecord = options.explode
-      ? parseKeyValuePairRecord(name, rawDataStr, ',', '=')
-      : parseSeparatedRecord(name, rawDataStr, ',')
-    return parseFromRecord(name, parsers, rawRecord)
+      ? parseKeyValuePairRecord(name, rawDataStr)
+      : parseDelimitedRecord(name, rawDataStr)
+    return parsePathFromRecord(name, parsers, rawRecord)
   }

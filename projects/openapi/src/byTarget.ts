@@ -9,6 +9,7 @@ const defaultName: NameByTarget = {
   'openapi/query-type': 'queryTypes',
   'openapi/headers-type': 'headerTypes',
   'openapi/path-type': 'pathTypes',
+  'openapi/response-headers-type': '',
   'openapi/response-type': 'responseTypes',
   'openapi/request-type': 'requestTypes',
   'openapi/path-serializer': 'pathSerializers',

@@ -1,4 +1,4 @@
-import { OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
+import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
@@ -28,4 +28,5 @@ export type EnhancedResponse = {
   schema: SchemaObject | ReferenceObject
   statusCode: string
   mediaType: string
+  headers: HeadersObject
 }

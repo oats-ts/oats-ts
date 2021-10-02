@@ -25,6 +25,7 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/query-serializer':
       case 'openapi/path-type':
       case 'openapi/path-serializer':
+      case 'openapi/response-headers-type':
         return resolve(join(path, 'operations', `${name(input, 'openapi/operation')}.ts`))
     }
   }

@@ -5,4 +5,5 @@ export * from './types'
 
 export { query } from './query'
 export { path } from './path'
+export { header } from './header'
 export { value } from './value'

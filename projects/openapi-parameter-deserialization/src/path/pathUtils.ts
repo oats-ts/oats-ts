@@ -16,7 +16,7 @@ export function getPrefixedValue(name: string, value: string, prefix: string): s
   return value.slice(1)
 }
 
-export function parseFromRecord<T extends PrimitiveRecord>(
+export function parsePathFromRecord<T extends PrimitiveRecord>(
   name: string,
   parsers: FieldParsers<T>,
   paramData: Record<string, string>,
@@ -30,41 +30,7 @@ export function parseFromRecord<T extends PrimitiveRecord>(
       throw new TypeError(`Missing field "${key}" in path parameter "${name}"`)
     }
     const value = paramData[key]
-    result[decode(key)] = parser(key, decode(value))
+    result[decode(key)] = parser(`${name}.${key}`, decode(value))
   }
   return result as T
-}
-
-export function parseSeparatedRecord(name: string, value: string, separator: string): Record<string, string> {
-  const parts = value.split(separator)
-  if (parts.length % 2 !== 0) {
-    throw new TypeError(`Malformed value "${value}" for path parameter "${name}"`)
-  }
-  const record: Record<string, string> = {}
-  for (let i = 0; i < parts.length; i += 2) {
-    const key = parts[i]
-    const value = parts[i + 1]
-    record[key] = value
-  }
-  return record
-}
-
-export function parseKeyValuePairRecord(
-  name: string,
-  value: string,
-  separator: string,
-  kvSeparator: string,
-): Record<string, string> {
-  const kvPairStrs = value.split(separator)
-  const record: Record<string, string> = {}
-  for (let i = 0; i < kvPairStrs.length; i += 1) {
-    const kvPairStr = kvPairStrs[i]
-    const pair = kvPairStr.split(kvSeparator)
-    if (pair.length !== 2) {
-      throw new TypeError(`Unexpected content "${value}" in path parameter "${name}"`)
-    }
-    const [rawKey, rawValue] = pair
-    record[rawKey] = rawValue
-  }
-  return record
 }

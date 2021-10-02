@@ -49,7 +49,7 @@ export type ComponentsObject = {
   parameters?: Record<string, Referenceable<ParameterObject>>
   examples?: Record<string, Referenceable<ExampleObject>>
   requestBodies?: Record<string, Referenceable<RequestBodyObject>>
-  headers?: Record<string, Referenceable<HeaderObject>>
+  headers?: HeadersObject
   securitySchemes?: Record<string, Referenceable<SecuritySchemeObject>>
   links?: Record<string, LinkObject>
   callbacks?: Record<string, Referenceable<CallbackObject>>
@@ -142,7 +142,7 @@ export type MediaTypeObject = {
 
 export type EncodingPropertyObject = {
   contentType?: string
-  headers?: Record<string, Referenceable<HeaderObject>>
+  headers?: HeadersObject
   style?: string
   explode?: boolean
   allowReserved?: boolean
@@ -155,7 +155,7 @@ export type ResponsesObject = {
 
 export type ResponseObject = {
   description: string
-  headers?: Record<string, Referenceable<HeaderObject>>
+  headers?: HeadersObject
   content?: ContentObject
   links?: Record<string, Referenceable<LinkObject>>
 }
@@ -180,6 +180,8 @@ export type LinkObject = {
 }
 
 export type HeaderObject = BaseParameterObject
+
+export type HeadersObject = Record<string, Referenceable<HeaderObject>>
 
 export type TagObject = {
   name: string

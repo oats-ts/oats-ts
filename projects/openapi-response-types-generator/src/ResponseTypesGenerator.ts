@@ -3,7 +3,7 @@ import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { generateOperationReturnType } from './generateOperationReturnType'
+import { generateOperationReturnType } from './generateResponseType'
 import { ResponseTypesGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
@@ -19,7 +19,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ResponseTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/response-types'
-  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/response-headers-type']
   private static produces: OpenAPIGeneratorTarget[] = ['openapi/response-type']
 
   private context: OpenAPIGeneratorContext = null

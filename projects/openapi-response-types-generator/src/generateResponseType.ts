@@ -1,6 +1,6 @@
 import { getEnhancedResponses, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { getReturnTypeAst } from './getReturnTypeAst'
+import { getReturnTypeAst } from './getResponseTypeAst'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { flatMap } from 'lodash'
