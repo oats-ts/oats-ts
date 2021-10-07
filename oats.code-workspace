@@ -117,6 +117,10 @@
       "path": "projects/openapi-parameter-deserialization"
     },
     {
+      "name": "openapi-parameter-deserializers-generator",
+      "path": "projects/openapi-parameter-deserializers-generator"
+    },
+    {
       "name": "openapi-parameter-serialization",
       "path": "projects/openapi-parameter-serialization"
     },

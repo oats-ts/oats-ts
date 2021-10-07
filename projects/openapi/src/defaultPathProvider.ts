@@ -21,10 +21,13 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/expectations':
       case 'openapi/headers-type':
       case 'openapi/headers-serializer':
+      case 'openapi/headers-deserializer':
       case 'openapi/query-type':
       case 'openapi/query-serializer':
+      case 'openapi/query-deserializer':
       case 'openapi/path-type':
       case 'openapi/path-serializer':
+      case 'openapi/path-deserializer':
       case 'openapi/response-headers-type':
         return resolve(join(path, 'operations', `${name(input, 'openapi/operation')}.ts`))
     }

@@ -2,6 +2,8 @@ export type { EnhancedOperation, EnhancedResponse, OpenAPIGenerator, OpenAPIGene
 
 export { getEnhancedOperations } from './getEnhancedOperations'
 export { getEnhancedResponses } from './getEnhancedResponses'
+export { getParameterKind } from './getParameterKind'
+export { getParameterStyle } from './getParameterStyle'
 export { hasInput } from './hasInput'
 export { hasResponses } from './hasResponses'
 export { getRequestBodyContent } from './getRequestBodyContent'

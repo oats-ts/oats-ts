@@ -48,6 +48,18 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}HeadersSerializer`
     }
+    case 'openapi/path-deserializer': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${operationName}PathDeserializer`
+    }
+    case 'openapi/query-deserializer': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${operationName}QueryDeserializer`
+    }
+    case 'openapi/headers-deserializer': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${operationName}HeadersDeserializer`
+    }
     case 'openapi/expectations': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}Expectations`

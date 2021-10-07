@@ -2,11 +2,11 @@ import { ParameterObject, PathDeserializers } from '../types'
 import { createRawPathParser } from './createRawPathParser'
 
 export const createPathParser = <T extends ParameterObject>(
-  template: string,
+  parameterNames: string[],
   regex: RegExp,
   deserializers: PathDeserializers<T>,
 ) => {
-  const parseRawPath = createRawPathParser(template, regex)
+  const parseRawPath = createRawPathParser(parameterNames, regex)
   return (input: string): T => {
     const raw = parseRawPath(input)
     const output: ParameterObject = {}

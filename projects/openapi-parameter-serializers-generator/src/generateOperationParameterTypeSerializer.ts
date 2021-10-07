@@ -2,10 +2,8 @@ import { ParameterLocation, ParameterObject } from '@oats-ts/openapi-model'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { has, isNil, negate } from 'lodash'
-import { getParameterSerializerMethod } from './getParameterSerializerMethod'
-import { getParameterStyle } from './getParameterStyle'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
-import { RuntimePackages } from '@oats-ts/openapi-common'
+import { RuntimePackages, getParameterStyle, getParameterKind } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import {
   CallExpression,
@@ -16,7 +14,7 @@ import {
   SyntaxKind,
   VariableStatement,
 } from 'typescript'
-import { getNamedImports, getRelativeImports, isIdentifier } from '@oats-ts/typescript-common'
+import { getNamedImports, isIdentifier } from '@oats-ts/typescript-common'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 
@@ -54,7 +52,7 @@ function createParameterSerializer(parameter: ParameterObject, context: OpenAPIG
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(
       factory.createPropertyAccessExpression(factory.createIdentifier(parameter.in), getParameterStyle(parameter)),
-      getParameterSerializerMethod(dereference(parameter.schema)),
+      getParameterKind(dereference(parameter.schema)),
     ),
     [],
     [getSerializerOptions(parameter)],

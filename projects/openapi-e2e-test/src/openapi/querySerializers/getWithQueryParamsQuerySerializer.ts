@@ -6,4 +6,6 @@ export const getWithQueryParamsQuerySerializer = createQuerySerializer<GetWithQu
   numberInQuery: query.form.primitive({ required: true }),
   booleanInQuery: query.form.primitive({ required: true }),
   enumInQuery: query.form.primitive({ required: true }),
+  objectInQuery: query.form.object({ required: true }),
+  arrayInQuery: query.form.array({ required: true }),
 })

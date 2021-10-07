@@ -28,8 +28,20 @@ const ParameterSerialization = {
   createQuerySerializer: 'createQuerySerializer',
 }
 
+const ParameterDeserialization = {
+  name: '@oats-ts/openapi-parameter-deserialization',
+  createQueryParser: 'createQueryParser',
+  createPathParser: 'createPathParser',
+  createHeaderParser: 'createHeaderParser',
+  query: 'query',
+  path: 'path',
+  header: 'header',
+  value: 'value',
+}
+
 export const RuntimePackages = {
   Http,
   HttpClient,
   ParameterSerialization,
+  ParameterDeserialization,
 }

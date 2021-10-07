@@ -11,6 +11,7 @@ import { operations } from '@oats-ts/openapi-operations-generator'
 import { requestTypes } from '@oats-ts/openapi-request-types-generator'
 import { responseTypes } from '@oats-ts/openapi-response-types-generator'
 import { parameterSerializers } from '@oats-ts/openapi-parameter-serializers-generator'
+import { parameterDeserializers } from '@oats-ts/openapi-parameter-deserializers-generator'
 import { responseExpectations } from '@oats-ts/openapi-response-expectations-generator'
 import { nameProviders, pathProviders } from '@oats-ts/openapi'
 import { promises as fs } from 'fs'
@@ -55,6 +56,7 @@ export async function generateAll() {
       responseTypes(common),
       parameterSerializers(common),
       responseExpectations(common),
+      parameterDeserializers(common),
       operations({
         ...common,
         validate: true,

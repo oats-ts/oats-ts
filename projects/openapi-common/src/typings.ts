@@ -30,3 +30,5 @@ export type EnhancedResponse = {
   mediaType: string
   headers: HeadersObject
 }
+
+export type ParameterKind = 'primitive' | 'object' | 'array' | 'unknown'
