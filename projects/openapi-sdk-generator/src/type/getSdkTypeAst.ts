@@ -1,23 +1,23 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getApiTypeMethodSignatureAst } from './getApiTypeMethodSignatureAst'
+import { getSdkTypeMethodSignatureAst } from './getSdkTypeMethodSignatureAst'
 import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
-import { ApiGeneratorConfig } from '../typings'
+import { SdkGeneratorConfig } from '../typings'
 
-export function getApiTypeAst(
+export function getSdkTypeAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: ApiGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): TypeAliasDeclaration {
   const { nameOf } = context
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'openapi/api-type'),
+    nameOf(document, 'openapi/sdk-type'),
     [],
     factory.createTypeLiteralNode(
-      operations.map((operation) => getApiTypeMethodSignatureAst(operation, context, config)),
+      operations.map((operation) => getSdkTypeMethodSignatureAst(operation, context, config)),
     ),
   )
 }

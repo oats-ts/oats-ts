@@ -8,36 +8,40 @@ import {
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
-import { generateApiClass } from './apiClass/generateApiClass'
-import { generateApiStub } from './apiStub/generateApiStub'
-import { generateApiType } from './apiType/generateApiType'
-import { ApiGeneratorConfig } from './typings'
+import { generateSdkClass } from './implementation/generateSdkClass'
+import { generateSdkStub } from './stub/generateSdkStub'
+import { generateSdkType } from './type/generateSdkType'
+import { SdkGeneratorConfig } from './typings'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class ApiGenerator implements OpenAPIGenerator {
+export class SdkGenerator implements OpenAPIGenerator {
   public static id = 'openapi/validators'
   private static consumes: OpenAPIGeneratorTarget[] = ['openapi/operation', 'openapi/request-type']
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/api-class', 'openapi/api-stub', 'openapi/api-type']
+  private static produces: OpenAPIGeneratorTarget[] = [
+    'openapi/sdk-implementation',
+    'openapi/sdk-stub',
+    'openapi/sdk-type',
+  ]
 
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ApiGeneratorConfig
+  private config: GeneratorConfig & SdkGeneratorConfig
 
-  public readonly id: string = ApiGenerator.id
-  public readonly produces: string[] = ApiGenerator.produces
-  public readonly consumes: string[] = ApiGenerator.consumes
+  public readonly id: string = SdkGenerator.id
+  public readonly produces: string[] = SdkGenerator.produces
+  public readonly consumes: string[] = SdkGenerator.consumes
 
-  public constructor(config: GeneratorConfig & ApiGeneratorConfig) {
+  public constructor(config: GeneratorConfig & SdkGeneratorConfig) {
     this.config = config
-    this.produces = ApiGenerator.produces.filter((target) => {
+    this.produces = SdkGenerator.produces.filter((target) => {
       switch (target) {
-        case 'openapi/api-type':
+        case 'openapi/sdk-type':
           return config.type
-        case 'openapi/api-class':
-          return config.class
-        case 'openapi/api-stub':
+        case 'openapi/sdk-implementation':
+          return config.implementation
+        case 'openapi/sdk-stub':
           return config.stub
         default:
           return false
@@ -56,9 +60,9 @@ export class ApiGenerator implements OpenAPIGenerator {
       nameOf(operation, 'openapi/operation'),
     )
     const data: TypeScriptModule[] = mergeTypeScriptModules([
-      ...(config.type ? [generateApiType(document, operations, context, config)] : []),
-      ...(config.class ? [generateApiClass(document, operations, context, config)] : []),
-      ...(config.stub ? [generateApiStub(document, operations, context, config)] : []),
+      ...(config.type ? [generateSdkType(document, operations, context, config)] : []),
+      ...(config.implementation ? [generateSdkClass(document, operations, context, config)] : []),
+      ...(config.stub ? [generateSdkStub(document, operations, context, config)] : []),
     ])
 
     return {
@@ -72,13 +76,13 @@ export class ApiGenerator implements OpenAPIGenerator {
     const { context, config } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/api-type': {
+      case 'openapi/sdk-type': {
         return config.type ? factory.createTypeReferenceNode(nameOf(input, target)) : undefined
       }
-      case 'openapi/api-class': {
-        return config.class ? factory.createIdentifier(nameOf(input, target)) : undefined
+      case 'openapi/sdk-implementation': {
+        return config.implementation ? factory.createIdentifier(nameOf(input, target)) : undefined
       }
-      case 'openapi/api-stub': {
+      case 'openapi/sdk-stub': {
         return config.stub ? factory.createIdentifier(nameOf(input, target)) : undefined
       }
       default:
@@ -89,13 +93,13 @@ export class ApiGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context, config } = this
     switch (target) {
-      case 'openapi/api-type': {
+      case 'openapi/sdk-type': {
         return config.type ? getModelImports(fromPath, target, [input], context) : []
       }
-      case 'openapi/api-class': {
-        return config.class ? getModelImports(fromPath, target, [input], context) : []
+      case 'openapi/sdk-implementation': {
+        return config.implementation ? getModelImports(fromPath, target, [input], context) : []
       }
-      case 'openapi/api-stub': {
+      case 'openapi/sdk-stub': {
         return config.stub ? getModelImports(fromPath, target, [input], context) : []
       }
       default:

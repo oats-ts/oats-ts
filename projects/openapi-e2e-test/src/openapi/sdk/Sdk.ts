@@ -13,7 +13,7 @@ import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsR
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 
-export type Api = {
+export type Sdk = {
   getSimpleNamedObject(config?: Partial<ClientConfiguration>): Promise<GetSimpleNamedObjectResponse>
   getWithDefaultResponse(config?: Partial<ClientConfiguration>): Promise<GetWithDefaultResponseResponse>
   getWithHeaderParams(

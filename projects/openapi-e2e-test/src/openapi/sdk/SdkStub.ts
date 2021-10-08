@@ -12,9 +12,9 @@ import { GetWithPathParamsResponse } from '../responseTypes/GetWithPathParamsRes
 import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
-import { Api } from './Api'
+import { Sdk } from './Sdk'
 
-export class ApiStub implements Api {
+export class SdkStub implements Sdk {
   public async getSimpleNamedObject(_config: Partial<ClientConfiguration> = {}): Promise<GetSimpleNamedObjectResponse> {
     throw new Error('"getSimpleNamedObject" is not implemented')
   }

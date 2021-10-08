@@ -1,9 +1,9 @@
 import { validate } from '@oats-ts/validators'
 import { body, headers, mimeType, statusCode, serialize, request } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { ApiImpl } from './openapi/api/ApiImpl'
+import { SdkImpl } from './openapi/sdk/SdkImpl'
 
 describe('Api', () => {
-  const api = new ApiImpl({
+  const api = new SdkImpl({
     baseUrl: 'http://localhost:3000',
     body,
     headers,
@@ -42,6 +42,12 @@ describe('Api', () => {
         numberInPath: 1,
         booleanInPath: true,
         enumInPath: 'racoon',
+        arrayInPath: [],
+        objectInPath: {
+          booleanProperty: true,
+          numberProperty: 1,
+          stringProperty: 'foo',
+        },
       },
     })
     expect(response.statusCode).toBe(200)
@@ -55,6 +61,12 @@ describe('Api', () => {
         numberInQuery: 1,
         booleanInQuery: true,
         enumInQuery: 'cat',
+        arrayInQuery: [],
+        objectInQuery: {
+          booleanProperty: true,
+          numberProperty: 1,
+          stringProperty: 'foo',
+        },
       },
     })
     expect(response.statusCode).toBe(200)
@@ -68,6 +80,12 @@ describe('Api', () => {
         'X-Number-In-Headers': 12,
         'X-Boolean-In-Headers': true,
         'X-Enum-In-Headers': 'bear',
+        'X-Array-In-Headers': [],
+        'X-Object-In-Headers': {
+          booleanProperty: true,
+          numberProperty: 1,
+          stringProperty: 'foo',
+        },
       },
     })
     expect(response.statusCode).toBe(200)

@@ -1,16 +1,16 @@
-export type ApiGeneratorConfig = {
+export type SdkGeneratorConfig = {
   /**
    * When true, a type (interface) will be generated with all the operations.
    * This is reuseable, where you only need type signatures, but no implementation detail.
    */
   type?: boolean
   /**
-   * When true, a class will be generated with all the operations. The class takes
+   * When true, a class implementation will be generated with all the operations. The class takes
    * A configuration as constructor argument, and has all the operation methods with
    * a simplified signature (config can be ommited). If type set to true, it also
    * declares that it implements above type.
    */
-  class?: boolean
+  implementation?: boolean
   /**
    * When true, a class will be generated with all the operations. The methods call
    * A fallback method that does nothing just throws an exception. This is ideal for testing,

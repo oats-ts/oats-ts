@@ -3,7 +3,7 @@ import { hasInput, RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 
-export function getApiMethodParameterAsts(
+export function getSdkMethodParameterAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   unused: boolean,

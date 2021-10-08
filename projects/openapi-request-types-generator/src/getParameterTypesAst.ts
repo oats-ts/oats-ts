@@ -8,8 +8,6 @@ export function getParameterTypesAst(data: EnhancedOperation, context: OpenAPIGe
 
   const commonTypes: TypeReferenceType[] = []
 
-  console.log(data)
-
   if (header.length > 0) {
     commonTypes.push(
       factory.createTypeReferenceNode(RuntimePackages.Http.HasHeaders, [

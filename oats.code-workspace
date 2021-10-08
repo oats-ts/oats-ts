@@ -81,10 +81,6 @@
       "path": "projects/openapi"
     },
     {
-      "name": "openapi-api-generator",
-      "path": "projects/openapi-api-generator"
-    },
-    {
       "name": "openapi-common",
       "path": "projects/openapi-common"
     },
@@ -147,6 +143,10 @@
     {
       "name": "openapi-response-types-generator",
       "path": "projects/openapi-response-types-generator"
+    },
+    {
+      "name": "openapi-sdk-generator",
+      "path": "projects/openapi-sdk-generator"
     },
     {
       "name": "openapi-type-guards-generator",

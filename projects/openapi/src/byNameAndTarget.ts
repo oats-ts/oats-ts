@@ -22,7 +22,13 @@ const defaultFolderName: NameByTarget = {
   'openapi/validator': 'validators',
   'openapi/api-type': 'api',
   'openapi/api-stub': 'api',
-  'openapi/api-class': 'api',
+  'openapi/api-implementation': 'api',
+  'openapi/sdk-type': 'sdk',
+  'openapi/sdk-stub': 'sdk',
+  'openapi/sdk-implementation': 'sdk',
+  'openapi/request-handler-type': 'requestHandlers',
+  'openapi/request-listener': 'requestListener',
+  'openapi/request-matcher': 'requestMatchers',
 }
 
 export function byNameAndTarget(

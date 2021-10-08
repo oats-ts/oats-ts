@@ -20,9 +20,9 @@ import { GetWithPathParamsResponse } from '../responseTypes/GetWithPathParamsRes
 import { GetWithQueryParamsResponse } from '../responseTypes/GetWithQueryParamsResponse'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
-import { Api } from './Api'
+import { Sdk } from './Sdk'
 
-export class ApiImpl implements Api {
+export class SdkImpl implements Sdk {
   protected readonly config: ClientConfiguration
   public constructor(config: ClientConfiguration) {
     this.config = config

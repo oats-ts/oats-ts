@@ -8,9 +8,10 @@ export type PathProvider = (input: any, target: string) => string
 export type NameByTarget = Record<OpenAPIGeneratorTarget, string>
 
 export type OpenAPIGeneratorTarget =
+  // Common
   | 'openapi/type'
   | 'openapi/type-guard'
-  | 'openapi/operation'
+  | 'openapi/validator'
   | 'openapi/query-type'
   | 'openapi/path-type'
   | 'openapi/headers-type'
@@ -23,8 +24,16 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/headers-deserializer'
   | 'openapi/query-deserializer'
   | 'openapi/path-deserializer'
+  // Client
   | 'openapi/expectations'
+  | 'openapi/operation'
+  | 'openapi/sdk-type'
+  | 'openapi/sdk-implementation'
+  | 'openapi/sdk-stub'
+  // Server
+  | 'openapi/request-handler-type'
+  | 'openapi/request-matcher'
+  | 'openapi/request-listener'
   | 'openapi/api-type'
-  | 'openapi/api-class'
+  | 'openapi/api-implementation'
   | 'openapi/api-stub'
-  | 'openapi/validator'

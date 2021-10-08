@@ -10,7 +10,6 @@ export function getParameterTypeLiteralAst(
   config: ParameterTypesGeneratorConfig,
 ): TypeLiteralNode {
   const { referenceOf, nameOf } = context
-  console.log(parameters)
   return factory.createTypeLiteralNode(
     parameters.map((parameter) => {
       const name = (parameter as ParameterObject).name ?? nameOf(parameter)

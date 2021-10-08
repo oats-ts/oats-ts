@@ -1,29 +1,29 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getApiTypeImports } from '../apiType/getApiTypeImports'
-import { getApiClassAst } from './getApiClassAst'
+import { getSdkTypeImports } from '../type/getSdkTypeImports'
+import { getSdkClassAst } from './getSdkClassAst'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { ApiGeneratorConfig } from '../typings'
+import { SdkGeneratorConfig } from '../typings'
 import { flatMap } from 'lodash'
 import { getNamedImports } from '@oats-ts/typescript-common'
 
-export function generateApiClass(
+export function generateSdkClass(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: ApiGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): TypeScriptModule {
   const { dependenciesOf, pathOf } = context
-  const path = pathOf(doc, 'openapi/api-class')
+  const path = pathOf(doc, 'openapi/sdk-implementation')
   return {
     path,
     dependencies: [
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration]),
-      ...getApiTypeImports(doc, operations, context, true),
-      ...dependenciesOf(path, doc, 'openapi/api-type'),
+      ...getSdkTypeImports(doc, operations, context, true),
+      ...dependenciesOf(path, doc, 'openapi/sdk-type'),
       ...flatMap(operations, ({ operation }) => dependenciesOf(path, operation, 'openapi/operation')),
     ],
-    content: [getApiClassAst(doc, operations, context, config)],
+    content: [getSdkClassAst(doc, operations, context, config)],
   }
 }

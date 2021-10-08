@@ -64,6 +64,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}Expectations`
     }
+    case 'openapi/validator': {
+      return isNil(name) ? undefined : `${camelCase(name)}Validator`
+    }
     /**
      * No need to incorporate anything in the name as these should be singletons.
      * Change that in case multi-root schema generation is added.
@@ -71,14 +74,31 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     case 'openapi/api-type': {
       return 'Api'
     }
-    case 'openapi/api-class': {
+    case 'openapi/api-implementation': {
       return 'ApiImpl'
     }
     case 'openapi/api-stub': {
       return 'ApiStub'
     }
-    case 'openapi/validator': {
-      return isNil(name) ? undefined : `${camelCase(name)}Validator`
+    case 'openapi/sdk-type': {
+      return 'Sdk'
+    }
+    case 'openapi/sdk-stub': {
+      return 'SdkStub'
+    }
+    case 'openapi/sdk-implementation': {
+      return 'SdkImpl'
+    }
+    case 'openapi/request-handler-type': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${pascalCase(operationName)}RequestHandler`
+    }
+    case 'openapi/request-matcher': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${camelCase(operationName)}RequestMatcher`
+    }
+    case 'openapi/request-listener': {
+      return 'createRequestListener'
     }
     default:
       return name

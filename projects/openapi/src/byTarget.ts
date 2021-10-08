@@ -22,7 +22,13 @@ const defaultName: NameByTarget = {
   'openapi/validator': 'validators',
   'openapi/api-type': 'apiType',
   'openapi/api-stub': 'apiStub',
-  'openapi/api-class': 'apiClass',
+  'openapi/api-implementation': 'apiImpl',
+  'openapi/sdk-type': 'sdkType',
+  'openapi/sdk-stub': 'sdkStub',
+  'openapi/sdk-implementation': 'sdkImpl',
+  'openapi/request-handler-type': 'requestHandlers',
+  'openapi/request-listener': 'requestListener',
+  'openapi/request-matcher': 'requestMatchers',
 }
 
 export function byTarget(path: string, nameByTarget: Partial<NameByTarget> = {}): GeneratorPathProvider {

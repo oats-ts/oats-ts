@@ -1,21 +1,21 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getApiStubMethodAst } from './getApiStubMethodAst'
+import { getSdkStubMethodAst } from './getSdkStubMethodAst'
 import { ClassDeclaration, factory, SyntaxKind } from 'typescript'
-import { ApiGeneratorConfig } from '../typings'
+import { SdkGeneratorConfig } from '../typings'
 
-export function getApiStubAst(
+export function getSdkStubAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: ApiGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): ClassDeclaration {
   const { nameOf } = context
 
   const heritageClauses = config.type
     ? [
         factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-          factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/api-type')), []),
+          factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/sdk-type')), []),
         ]),
       ]
     : []
@@ -23,9 +23,9 @@ export function getApiStubAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'openapi/api-stub'),
+    nameOf(document, 'openapi/sdk-stub'),
     [],
     heritageClauses,
-    operations.map((operation) => getApiStubMethodAst(operation, context)),
+    operations.map((operation) => getSdkStubMethodAst(operation, context)),
   )
 }
