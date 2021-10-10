@@ -2,13 +2,13 @@ import { factory, ClassDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { RuntimePackages, EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getSdkClassMethodAst } from './getSdkClassMethodAst'
-import { SdkGeneratorConfig } from '../typings'
+import { ClientSdkGeneratorConfig } from './typings'
 
 export function getSdkClassAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: SdkGeneratorConfig,
+  config: ClientSdkGeneratorConfig,
 ): ClassDeclaration {
   const { nameOf } = context
 
@@ -45,20 +45,16 @@ export function getSdkClassAst(
     ]),
   )
 
-  const heritageClauses = config.type
-    ? [
-        factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-          factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/sdk-type')), []),
-        ]),
-      ]
-    : []
-
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     nameOf(document, 'openapi/sdk-implementation'),
     [],
-    heritageClauses,
+    [
+      factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
+        factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/sdk-type')), []),
+      ]),
+    ],
     [configField, constructor, ...operations.map((operation) => getSdkClassMethodAst(operation, context))],
   )
 }

@@ -54,6 +54,5 @@ export async function execute(
     headers,
     mimeType,
     statusCode,
-    url: request.url,
   }
 }

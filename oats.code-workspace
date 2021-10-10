@@ -149,8 +149,16 @@
       "path": "projects/openapi-response-types-generator"
     },
     {
-      "name": "openapi-sdk-generator",
-      "path": "projects/openapi-sdk-generator"
+      "name": "openapi-sdk-type-generator",
+      "path": "projects/openapi-sdk-type-generator"
+    },
+    {
+      "name": "openapi-client-sdk-generator",
+      "path": "projects/openapi-client-sdk-generator"
+    },
+    {
+      "name": "openapi-sdk-stub-generator",
+      "path": "projects/openapi-sdk-stub-generator"
     },
     {
       "name": "openapi-type-guards-generator",

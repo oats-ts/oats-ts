@@ -2,7 +2,6 @@ import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 import { hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getSdkMethodParameterAsts } from './getSdkMethodParameterAsts'
-import { getApiMethodReturnTypeAst } from './getSdkMethodReturnTypeAst'
 
 export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
   const { nameOf } = context
@@ -31,7 +30,9 @@ export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
     undefined,
     [],
     getSdkMethodParameterAsts(data, context, false),
-    getApiMethodReturnTypeAst(data, context),
+    factory.createTypeReferenceNode('Promise', [
+      factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
+    ]),
     factory.createBlock([returnStatement]),
   )
 }

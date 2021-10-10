@@ -5,7 +5,9 @@ import { validator } from '@oats-ts/openapi-validator'
 import { parameterTypes } from '@oats-ts/openapi-parameter-types-generator'
 import { validators } from '@oats-ts/openapi-validators-generator'
 import { types } from '@oats-ts/openapi-types-generator'
-import { sdk } from '@oats-ts/openapi-sdk-generator'
+import { sdkStub } from '@oats-ts/openapi-sdk-stub-generator'
+import { sdkType } from '@oats-ts/openapi-sdk-type-generator'
+import { clientSdk } from '@oats-ts/openapi-client-sdk-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
 import { requestTypes } from '@oats-ts/openapi-request-types-generator'
@@ -62,13 +64,15 @@ export async function generateAll() {
         validate: true,
         documentation: true,
       }),
-      sdk({
+      sdkType({
         ...common,
-        type: true,
-        stub: true,
-        implementation: true,
         documentation: true,
       }),
+      clientSdk({
+        ...common,
+        documentation: true,
+      }),
+      sdkStub(common),
     ],
     writer: writer({
       stringify: prettierStringify({

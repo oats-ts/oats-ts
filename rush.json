@@ -234,8 +234,20 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi-sdk-generator",
-      "projectFolder": "projects/openapi-sdk-generator",
+      "packageName": "@oats-ts/openapi-sdk-type-generator",
+      "projectFolder": "projects/openapi-sdk-type-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-sdk-stub-generator",
+      "projectFolder": "projects/openapi-sdk-stub-generator",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-client-sdk-generator",
+      "projectFolder": "projects/openapi-client-sdk-generator",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

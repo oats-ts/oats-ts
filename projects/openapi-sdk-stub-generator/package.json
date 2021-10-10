@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/openapi-sdk-generator",
+  "name": "@oats-ts/openapi-sdk-stub-generator",
   "version": "0.0.0",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",

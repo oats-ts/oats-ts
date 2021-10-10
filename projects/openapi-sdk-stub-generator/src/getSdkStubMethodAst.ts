@@ -1,6 +1,5 @@
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getSdkMethodParameterAsts } from '../implementation/getSdkMethodParameterAsts'
-import { getApiMethodReturnTypeAst } from '../implementation/getSdkMethodReturnTypeAst'
+import { getSdkMethodParameterAsts } from './getSdkMethodParameterAsts'
 import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 
 export function getSdkStubMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
@@ -12,7 +11,11 @@ export function getSdkStubMethodAst(data: EnhancedOperation, context: OpenAPIGen
     factory.createNewExpression(
       factory.createIdentifier('Error'),
       [],
-      [factory.createStringLiteral(`"${name}" is not implemented`)],
+      [
+        factory.createStringLiteral(
+          `Stub method "${name}" called. You should implement this method if you want to use it.`,
+        ),
+      ],
     ),
   )
 
@@ -24,7 +27,9 @@ export function getSdkStubMethodAst(data: EnhancedOperation, context: OpenAPIGen
     undefined,
     [],
     getSdkMethodParameterAsts(data, context, true),
-    getApiMethodReturnTypeAst(data, context),
+    factory.createTypeReferenceNode('Promise', [
+      factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
+    ]),
     factory.createBlock([throwStatement]),
   )
 }

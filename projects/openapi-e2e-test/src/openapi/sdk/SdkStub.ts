@@ -16,46 +16,54 @@ import { Sdk } from './Sdk'
 
 export class SdkStub implements Sdk {
   public async getSimpleNamedObject(_config: Partial<ClientConfiguration> = {}): Promise<GetSimpleNamedObjectResponse> {
-    throw new Error('"getSimpleNamedObject" is not implemented')
+    throw new Error(
+      'Stub method "getSimpleNamedObject" called. You should implement this method if you want to use it.',
+    )
   }
   public async getWithDefaultResponse(
     _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithDefaultResponseResponse> {
-    throw new Error('"getWithDefaultResponse" is not implemented')
+    throw new Error(
+      'Stub method "getWithDefaultResponse" called. You should implement this method if you want to use it.',
+    )
   }
   public async getWithHeaderParams(
     _input: GetWithHeaderParamsRequest,
     _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithHeaderParamsResponse> {
-    throw new Error('"getWithHeaderParams" is not implemented')
+    throw new Error('Stub method "getWithHeaderParams" called. You should implement this method if you want to use it.')
   }
   public async getWithMultipleResponses(
     _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithMultipleResponsesResponse> {
-    throw new Error('"getWithMultipleResponses" is not implemented')
+    throw new Error(
+      'Stub method "getWithMultipleResponses" called. You should implement this method if you want to use it.',
+    )
   }
   public async getWithPathParams(
     _input: GetWithPathParamsRequest,
     _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithPathParamsResponse> {
-    throw new Error('"getWithPathParams" is not implemented')
+    throw new Error('Stub method "getWithPathParams" called. You should implement this method if you want to use it.')
   }
   public async getWithQueryParams(
     _input: GetWithQueryParamsRequest,
     _config: Partial<ClientConfiguration> = {},
   ): Promise<GetWithQueryParamsResponse> {
-    throw new Error('"getWithQueryParams" is not implemented')
+    throw new Error('Stub method "getWithQueryParams" called. You should implement this method if you want to use it.')
   }
   public async postSimpleNamedObject(
     _input: PostSimpleNamedObjectRequest,
     _config: Partial<ClientConfiguration> = {},
   ): Promise<PostSimpleNamedObjectResponse> {
-    throw new Error('"postSimpleNamedObject" is not implemented')
+    throw new Error(
+      'Stub method "postSimpleNamedObject" called. You should implement this method if you want to use it.',
+    )
   }
   public async sampleOperation(
     _input: SampleOperationRequest,
     _config: Partial<ClientConfiguration> = {},
   ): Promise<SampleOperationResponse> {
-    throw new Error('"sampleOperation" is not implemented')
+    throw new Error('Stub method "sampleOperation" called. You should implement this method if you want to use it.')
   }
 }

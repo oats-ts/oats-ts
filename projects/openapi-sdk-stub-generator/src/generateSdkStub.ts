@@ -1,16 +1,16 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getSdkTypeImports } from '../type/getSdkTypeImports'
+import { getSdkTypeImports } from './getSdkTypeImports'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getSdkStubAst } from './getSdkStubAst'
-import { SdkGeneratorConfig } from '../typings'
+import { SdkStubGeneratorConfig } from './typings'
 
 export function generateSdkStub(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: SdkGeneratorConfig,
+  config: SdkStubGeneratorConfig,
 ): TypeScriptModule {
   const { dependenciesOf, pathOf } = context
   const path = pathOf(doc, 'openapi/sdk-stub')
