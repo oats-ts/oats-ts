@@ -25,6 +25,7 @@ specifiers:
   '@rush-temp/openapi-e2e-test': file:./projects/openapi-e2e-test.tgz
   '@rush-temp/openapi-http': file:./projects/openapi-http.tgz
   '@rush-temp/openapi-http-client': file:./projects/openapi-http-client.tgz
+  '@rush-temp/openapi-http-server': file:./projects/openapi-http-server.tgz
   '@rush-temp/openapi-model': file:./projects/openapi-model.tgz
   '@rush-temp/openapi-operations-generator': file:./projects/openapi-operations-generator.tgz
   '@rush-temp/openapi-parameter-common': file:./projects/openapi-parameter-common.tgz
@@ -104,6 +105,7 @@ dependencies:
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
   '@rush-temp/openapi-http': file:projects/openapi-http.tgz_ts-node@10.0.0
   '@rush-temp/openapi-http-client': file:projects/openapi-http-client.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-http-server': file:projects/openapi-http-server.tgz_ts-node@10.0.0
   '@rush-temp/openapi-model': file:projects/openapi-model.tgz
   '@rush-temp/openapi-operations-generator': file:projects/openapi-operations-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-common': file:projects/openapi-parameter-common.tgz_ts-node@10.0.0
@@ -4329,7 +4331,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-3K5WeeXbA56tGwW/3cmkIrKncoyv59qQJCAtOFVvoisOYtx86N4lf3ZvW+ukO+eLGRQ4+AV/CZyGuFUKQhpXyA==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-HzaGW/YlpWEVO2/YELyX7VikMucS2GcrUmtLPDQX2V/ph1CGM1RXZG77wFb3lJmHq5VDtq823vQYBXchl4F2mA==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4370,6 +4372,31 @@ packages:
     resolution: {integrity: sha512-K2tHAgCdLWftg3v9rf2CMnoV/lFF/gOsxRiGmgMaXD0UnkC43xeZUM6g6v6w4Cma9i8zGPkbjtjDM6dSx+quMA==, tarball: file:projects/openapi-http-client.tgz}
     id: file:projects/openapi-http-client.tgz
     name: '@rush-temp/openapi-http-client'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/node': 16.7.1
+      '@types/node-fetch': 2.5.10
+      '@types/whatwg-mimetype': 2.1.0
+      jest: 27.0.4_ts-node@10.0.0
+      node-fetch: 2.6.1
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
+      typescript: 4.3.5
+      whatwg-mimetype: 2.3.0
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/openapi-http-server.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-3KI1iaIwHvnAO+3mFEt0IbKk7IBx+kT8vLsvCCnVBoMJHpgU3kI/ga7mYs6MkZsQ1HccWJesYIHz7tyvpV+O0A==, tarball: file:projects/openapi-http-server.tgz}
+    id: file:projects/openapi-http-server.tgz
+    name: '@rush-temp/openapi-http-server'
     version: 0.0.0
     dependencies:
       '@types/jest': 26.0.23

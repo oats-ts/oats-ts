@@ -156,6 +156,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-http-server",
+      "projectFolder": "projects/openapi-http-server",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-model",
       "projectFolder": "projects/openapi-model",
       "versionPolicyName": "oats",

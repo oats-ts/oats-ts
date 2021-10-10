@@ -97,6 +97,10 @@
       "path": "projects/openapi-http-client"
     },
     {
+      "name": "openapi-http-server",
+      "path": "projects/openapi-http-server"
+    },
+    {
       "name": "openapi-model",
       "path": "projects/openapi-model"
     },
