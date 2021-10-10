@@ -71,23 +71,14 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
      * No need to incorporate anything in the name as these should be singletons.
      * Change that in case multi-root schema generation is added.
      */
-    case 'openapi/api-type': {
-      return 'Api'
-    }
-    case 'openapi/api-implementation': {
-      return 'ApiImpl'
-    }
-    case 'openapi/api-stub': {
-      return 'ApiStub'
-    }
     case 'openapi/sdk-type': {
       return 'Sdk'
     }
     case 'openapi/sdk-stub': {
       return 'SdkStub'
     }
-    case 'openapi/sdk-implementation': {
-      return 'SdkImpl'
+    case 'openapi/client-sdk': {
+      return 'ClientSdk'
     }
     case 'openapi/request-handler-type': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')

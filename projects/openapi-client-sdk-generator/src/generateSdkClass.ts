@@ -15,7 +15,7 @@ export function generateSdkClass(
   config: ClientSdkGeneratorConfig,
 ): TypeScriptModule {
   const { dependenciesOf, pathOf } = context
-  const path = pathOf(doc, 'openapi/sdk-implementation')
+  const path = pathOf(doc, 'openapi/client-sdk')
   return {
     path,
     dependencies: [

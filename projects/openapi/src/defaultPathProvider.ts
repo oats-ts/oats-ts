@@ -5,14 +5,11 @@ import { OpenAPIGeneratorTarget } from './typings'
 export function defaultPathProvider(path: string): GeneratorPathProvider {
   return (input: any, name: NameProvider, target: OpenAPIGeneratorTarget): string => {
     switch (target) {
-      case 'openapi/api-implementation':
-      case 'openapi/api-stub':
-      case 'openapi/api-type':
-        return resolve(join(path, 'api', `${name(input, target)}.ts`))
-      case 'openapi/sdk-implementation':
       case 'openapi/sdk-stub':
       case 'openapi/sdk-type':
         return resolve(join(path, 'sdk', `${name(input, target)}.ts`))
+      case 'openapi/client-sdk':
+        return resolve(join(path, 'clientSdk', `${name(input, target)}.ts`))
       case 'openapi/request-handler-type':
         return resolve(join(path, 'requestHandlers', `${name(input, target)}.ts`))
       case 'openapi/request-listener':

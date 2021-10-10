@@ -23,7 +23,7 @@ export class ClientSdkGenerator implements OpenAPIGenerator {
     'openapi/response-type',
     'openapi/sdk-type',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/sdk-implementation']
+  private static produces: OpenAPIGeneratorTarget[] = ['openapi/client-sdk']
 
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & ClientSdkGeneratorConfig
@@ -59,7 +59,7 @@ export class ClientSdkGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/sdk-implementation': {
+      case 'openapi/client-sdk': {
         return factory.createIdentifier(nameOf(input, target))
       }
       default:
@@ -70,7 +70,7 @@ export class ClientSdkGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'openapi/sdk-implementation': {
+      case 'openapi/client-sdk': {
         return getModelImports(fromPath, target, [input], context)
       }
       default:

@@ -48,7 +48,7 @@ export function getSdkClassAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'openapi/sdk-implementation'),
+    nameOf(document, 'openapi/client-sdk'),
     [],
     [
       factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
