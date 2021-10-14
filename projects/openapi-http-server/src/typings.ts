@@ -1,8 +1,12 @@
-import { HttpMethod, RawHttpRequest, RawHttpResponse } from '@oats-ts/openapi-http'
+import { HttpMethod, HttpResponse, RawHttpHeaders } from '@oats-ts/openapi-http'
 
-export type PathConfiguration = {
+export type PathConfiguration<P = any, Q = any, H = any, R = any> = {
   matches(method: HttpMethod, path: string): boolean
-  handle(request: RawHttpRequest): Promise<RawHttpResponse>
+  handle(request: any): Promise<HttpResponse>
+  deserializePath?(path: string): P
+  deserializeQuery?(query: string): Q
+  deserializeRequestHeaders?(headers: RawHttpHeaders): H
+  serializeResponseHeaders?(headers: R): RawHttpHeaders
 }
 
 export type ServerIssueType = 'path' | 'query' | 'request-headers' | 'response-headers' | 'handler' | 'unknown'

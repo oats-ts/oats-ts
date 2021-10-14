@@ -28,13 +28,6 @@ export type ServerConfiguration<Req = any, Res = any> = {
   serializeResponseBody(contentType: string, body: any): Promise<any>
 }
 
-export type ServerParameterConfiguration<P = any, Q = any, H = any, R = any> = {
-  deserializePath?(path: string): P
-  deserializeQuery?(query: string): Q
-  deserializeRequestHeaders?(headers: RawHttpHeaders): H
-  serializeResponseHeaders?(headers: R): RawHttpHeaders
-}
-
 export type HasHeaders<T> = {
   headers: T
 }
