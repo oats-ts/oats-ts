@@ -1,5 +1,5 @@
 export { generate } from './generate'
-export {
+export type {
   ContentReader,
   CodeGenerator,
   ContentWriter,

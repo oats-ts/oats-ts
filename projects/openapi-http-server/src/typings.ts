@@ -1,4 +1,5 @@
 import { HttpMethod, HttpResponse, RawHttpHeaders } from '@oats-ts/openapi-http'
+import { Issue } from '@oats-ts/validators'
 
 export type PathConfiguration<P = any, Q = any, H = any, R = any> = {
   matches(method: HttpMethod, path: string): boolean
@@ -9,9 +10,8 @@ export type PathConfiguration<P = any, Q = any, H = any, R = any> = {
   serializeResponseHeaders?(headers: R): RawHttpHeaders
 }
 
-export type ServerIssueType = 'path' | 'query' | 'request-headers' | 'response-headers' | 'handler' | 'unknown'
+export type ParameterIssueType = 'path' | 'query' | 'request-headers'
 
-export type ServerIssue = {
-  cause: any
-  type: ServerIssueType
+export type ParameterIssues = {
+  issues: Issue<ParameterIssueType>[]
 }

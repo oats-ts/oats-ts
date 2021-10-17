@@ -80,6 +80,12 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     case 'openapi/client-sdk': {
       return 'ClientSdk'
     }
+    case 'openapi/api-type': {
+      return 'Api'
+    }
+    case 'openapi/api-stub': {
+      return 'ApiStub'
+    }
     case 'openapi/request-handler-type': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${pascalCase(operationName)}RequestHandler`

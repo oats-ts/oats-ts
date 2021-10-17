@@ -1,4 +1,4 @@
-export { TypeScriptModule, TypeScriptWriterConfig } from './typings'
+export type { TypeScriptModule, TypeScriptWriterConfig } from './typings'
 export { prettierStringify } from './prettierStringify'
 export { writer } from './writer'
 export { defaultWrite } from './defaults/defaultWrite'

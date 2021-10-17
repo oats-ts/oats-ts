@@ -3,7 +3,22 @@ export { createPathSerializer } from './path/createPathSerializer'
 export { createHeaderSerializer } from './header/createHeaderSerializer'
 export { joinUrl } from './joinUrl'
 
-export * from './types'
+export type {
+  HeaderSerializers,
+  QueryOptions,
+  PathOptions,
+  ParameterValue,
+  ParameterObject,
+  HeaderOptions,
+  Primitive,
+  PrimitiveArray,
+  PrimitiveRecord,
+  HeaderSerializer,
+  PathSerializer,
+  PathSerializers,
+  QuerySerializer,
+  QuerySerializers,
+} from './types'
 
 export { path } from './path'
 export { header } from './header'

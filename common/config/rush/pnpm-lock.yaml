@@ -21,6 +21,7 @@ specifiers:
   '@rush-temp/json-schema-validators-generator': file:./projects/json-schema-validators-generator.tgz
   '@rush-temp/model-common': file:./projects/model-common.tgz
   '@rush-temp/openapi': file:./projects/openapi.tgz
+  '@rush-temp/openapi-api-type-generator': file:./projects/openapi-api-type-generator.tgz
   '@rush-temp/openapi-client-sdk-generator': file:./projects/openapi-client-sdk-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-e2e-test': file:./projects/openapi-e2e-test.tgz
@@ -104,6 +105,7 @@ dependencies:
   '@rush-temp/json-schema-validators-generator': file:projects/json-schema-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/model-common': file:projects/model-common.tgz
   '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-api-type-generator': file:projects/openapi-api-type-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-client-sdk-generator': file:projects/openapi-client-sdk-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
@@ -4305,8 +4307,31 @@ packages:
       typescript: 4.3.5
     dev: false
 
+  file:projects/openapi-api-type-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-J8aFM8PoZmqj5eConLqr/bsFd4IBNq53RecPCLW5ERgOQUNmwfgzzrkyBgvcXMiF1e292/VuCG02131yYRRZDQ==, tarball: file:projects/openapi-api-type-generator.tgz}
+    id: file:projects/openapi-api-type-generator.tgz
+    name: '@rush-temp/openapi-api-type-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.172
+      '@types/node': 16.7.1
+      jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
+      typescript: 4.3.5
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/openapi-client-sdk-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-4tw92zwvmHs1O7Gni0BWCfaRBbsFIh6s0+C4Qk9XcFBRYjsQuXn/Bke33dwVMGoXIdM8tTc9u64tvpwaJZT8QQ==, tarball: file:projects/openapi-client-sdk-generator.tgz}
+    resolution: {integrity: sha512-MvNUwo84BxKpObRJ4nAsRlf+W7UWiVTrRFt+F7WoWJJsUrzfNtX22mv4FMXzFWWOna6R2Oin57pBGXkP+quelA==, tarball: file:projects/openapi-client-sdk-generator.tgz}
     id: file:projects/openapi-client-sdk-generator.tgz
     name: '@rush-temp/openapi-client-sdk-generator'
     version: 0.0.0
@@ -4759,7 +4784,7 @@ packages:
     dev: false
 
   file:projects/openapi-sdk-stub-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-HEYa255GiFW5DpAe5GymxlHHe9CBu7QEgWWlGUOcngSbTiTK+25n4nQbuWVBpUZ5ZGhET4z3J6V3pmzQNFThcw==, tarball: file:projects/openapi-sdk-stub-generator.tgz}
+    resolution: {integrity: sha512-YdYX6nBhgqQKUXJQigT2lzXk3S1tcCpC/Y0BeYnUMlXz6UgUUmiJ3UiHuhRZxoZFOWJBv+Zi2t6f3OKnJrJGbQ==, tarball: file:projects/openapi-sdk-stub-generator.tgz}
     id: file:projects/openapi-sdk-stub-generator.tgz
     name: '@rush-temp/openapi-sdk-stub-generator'
     version: 0.0.0
@@ -4782,7 +4807,7 @@ packages:
     dev: false
 
   file:projects/openapi-sdk-type-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-FkrccPIJ6KA9ViKg9mOVP3YXwfXHaf4/OhweMxSEQdb0LP6tEcESvrSD4GU4WuY9ZWQ5QF4IjZMPGwY6qtVGpA==, tarball: file:projects/openapi-sdk-type-generator.tgz}
+    resolution: {integrity: sha512-zHxIVIojTk1jDuOyGA4cSd4yDDZohcm++opAjf/yZxozJpF7Dji1YJfHRy6WJ463hZEo/I7C8NmbDmwaEUzTZA==, tarball: file:projects/openapi-sdk-type-generator.tgz}
     id: file:projects/openapi-sdk-type-generator.tgz
     name: '@rush-temp/openapi-sdk-type-generator'
     version: 0.0.0

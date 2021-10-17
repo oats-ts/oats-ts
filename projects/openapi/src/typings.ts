@@ -24,13 +24,15 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/headers-deserializer'
   | 'openapi/query-deserializer'
   | 'openapi/path-deserializer'
-  | 'openapi/sdk-type'
-  | 'openapi/client-sdk'
-  | 'openapi/sdk-stub'
   // Client
   | 'openapi/expectations'
   | 'openapi/operation'
+  | 'openapi/sdk-type'
+  | 'openapi/client-sdk'
+  | 'openapi/sdk-stub'
   // Server
   | 'openapi/request-handler-type'
   | 'openapi/request-matcher'
   | 'openapi/request-listener'
+  | 'openapi/api-type'
+  | 'openapi/api-stub'

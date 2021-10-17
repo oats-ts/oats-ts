@@ -81,6 +81,10 @@
       "path": "projects/openapi"
     },
     {
+      "name": "openapi-api-type-generator",
+      "path": "projects/openapi-api-type-generator"
+    },
+    {
       "name": "openapi-common",
       "path": "projects/openapi-common"
     },

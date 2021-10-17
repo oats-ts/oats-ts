@@ -1,5 +1,5 @@
 export { reader } from './reader'
-export { OpenAPIReadConfig, OpenAPIReadOutput, URIManipulator } from './typings'
+export type { OpenAPIReadConfig, OpenAPIReadOutput, URIManipulator } from './typings'
 export { DefaultURIManipulator } from './defaults/DefaultURIManipulator'
 export { defaultResolve } from './defaults/defaultResolve'
 export { defaultOpenAPIReadConfig } from './defaults/defaultOpenAPIReadConfig'

@@ -3,4 +3,4 @@ export { createPathSerializer } from './createPathSerializer'
 export { parsePathToSegments } from './parsePathToSegments'
 export { joinUrl } from './joinUrl'
 
-export * from './types'
+export type { ParameterSegment, PathSegment, Primitive, PrimitiveArray, PrimitiveRecord, TextSegment } from './types'

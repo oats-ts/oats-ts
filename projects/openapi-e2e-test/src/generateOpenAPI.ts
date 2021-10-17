@@ -5,6 +5,7 @@ import { validator } from '@oats-ts/openapi-validator'
 import { parameterTypes } from '@oats-ts/openapi-parameter-types-generator'
 import { validators } from '@oats-ts/openapi-validators-generator'
 import { types } from '@oats-ts/openapi-types-generator'
+import { apiType } from '@oats-ts/openapi-api-type-generator'
 import { sdkStub } from '@oats-ts/openapi-sdk-stub-generator'
 import { sdkType } from '@oats-ts/openapi-sdk-type-generator'
 import { clientSdk } from '@oats-ts/openapi-client-sdk-generator'
@@ -73,6 +74,10 @@ export async function generateAll() {
         documentation: true,
       }),
       sdkStub(common),
+      apiType({
+        ...common,
+        documentation: true,
+      }),
     ],
     writer: writer({
       stringify: prettierStringify({

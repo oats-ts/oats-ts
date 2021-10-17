@@ -23,6 +23,8 @@ const defaultFolderName: NameByTarget = {
   'openapi/sdk-type': 'sdk',
   'openapi/sdk-stub': 'sdk',
   'openapi/client-sdk': 'sdk',
+  'openapi/api-type': 'api',
+  'openapi/api-stub': 'api',
   'openapi/request-handler-type': 'requestHandlers',
   'openapi/request-listener': 'requestListener',
   'openapi/request-matcher': 'requestMatchers',

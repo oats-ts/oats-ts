@@ -4,7 +4,7 @@ import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oa
 import { ImportDeclaration } from 'typescript'
 import { getNamedImports } from '@oats-ts/typescript-common'
 
-export function getSdkTypeImports(
+export function getApiTypeImports(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
@@ -17,6 +17,11 @@ export function getSdkTypeImports(
     ...dependenciesOf(apiPath, data.operation, 'openapi/response-type'),
   ])
   return operations.length > 0
-    ? [...imports, getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration])]
+    ? [
+        ...imports,
+        ...(params
+          ? [getNamedImports(RuntimePackages.HttpServer.name, [RuntimePackages.HttpServer.ParameterIssues])]
+          : []),
+      ]
     : imports
 }

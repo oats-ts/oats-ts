@@ -3,7 +3,7 @@ import { GeneratorConfig } from '@oats-ts/generator'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { ParameterTypesGenerator } from './ParameterTypesGenerator'
 
-export { ParameterTypesGeneratorConfig } from './typings'
+export type { ParameterTypesGeneratorConfig } from './typings'
 export { ParameterTypesGenerator } from './ParameterTypesGenerator'
 
 export function parameterTypes(config: GeneratorConfig & ParameterTypesGeneratorConfig): OpenAPIGenerator {

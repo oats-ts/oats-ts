@@ -20,6 +20,11 @@ const HttpClient = {
   execute: 'execute',
 }
 
+const HttpServer = {
+  name: '@oats-ts/openapi-http-server',
+  ParameterIssues: 'ParameterIssues',
+}
+
 const ParameterSerialization = {
   name: '@oats-ts/openapi-parameter-serialization',
   joinUrl: 'joinUrl',
@@ -42,6 +47,7 @@ const ParameterDeserialization = {
 export const RuntimePackages = {
   Http,
   HttpClient,
+  HttpServer,
   ParameterSerialization,
   ParameterDeserialization,
 }
