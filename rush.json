@@ -234,6 +234,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-sdk-common",
+      "projectFolder": "projects/openapi-sdk-common",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-sdk-type-generator",
       "projectFolder": "projects/openapi-sdk-type-generator",
       "versionPolicyName": "oats",

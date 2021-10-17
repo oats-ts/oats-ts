@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/openapi-client-sdk-generator",
+  "name": "@oats-ts/openapi-sdk-common",
   "version": "0.0.0",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
@@ -42,7 +42,6 @@
     "@oats-ts/generator": "0.0.5",
     "@oats-ts/openapi-common": "0.0.5",
     "@oats-ts/typescript-common": "0.0.5",
-    "@oats-ts/openapi-sdk-common": "0.0.0",
     "@oats-ts/openapi": "0.0.5"
   }
 }

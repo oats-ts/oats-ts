@@ -1,5 +1,5 @@
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getSdkMethodParameterAsts } from './getSdkMethodParameterAsts'
+import { getSdkMethodParameterAsts } from '@oats-ts/openapi-sdk-common'
 import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 
 export function getSdkStubMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {

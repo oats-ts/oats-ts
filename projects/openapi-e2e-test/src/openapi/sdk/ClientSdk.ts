@@ -22,7 +22,7 @@ import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedO
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 import { Sdk } from './Sdk'
 
-export class SdkImpl implements Sdk {
+export class ClientSdk implements Sdk {
   protected readonly config: ClientConfiguration
   public constructor(config: ClientConfiguration) {
     this.config = config

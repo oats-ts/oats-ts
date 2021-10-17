@@ -149,6 +149,10 @@
       "path": "projects/openapi-response-types-generator"
     },
     {
+      "name": "openapi-sdk-common",
+      "path": "projects/openapi-sdk-common"
+    },
+    {
       "name": "openapi-sdk-type-generator",
       "path": "projects/openapi-sdk-type-generator"
     },
