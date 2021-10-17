@@ -6,6 +6,10 @@ import { ExpressRouteGeneratorConfig } from './typings'
 export type { ExpressRouteGeneratorConfig } from './typings'
 export { ExpressRoutesGenerator } from './ExpressRoutesGenerator'
 
-export function expressRoute(config: GeneratorConfig & ExpressRouteGeneratorConfig): OpenAPIGenerator {
-  return new ExpressRoutesGenerator(config)
+export function expressRoute(config: GeneratorConfig & Partial<ExpressRouteGeneratorConfig>): OpenAPIGenerator {
+  return new ExpressRoutesGenerator({
+    ...config,
+    apiImplKey: config.apiImplKey ?? '__oats_api',
+    configurationKey: config.configurationKey ?? '__oats_configuration',
+  })
 }

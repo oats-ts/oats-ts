@@ -23,6 +23,12 @@ const HttpClient = {
 const HttpServer = {
   name: '@oats-ts/openapi-http-server',
   ParameterIssues: 'ParameterIssues',
+  ServerConfiguration: 'ServerConfiguration',
+}
+
+const HttpServerExpress = {
+  name: '@oats-ts/openapi-http-server/lib/express',
+  ExpressParameters: 'ExpressParameters',
 }
 
 const ParameterSerialization = {
@@ -57,6 +63,7 @@ export const RuntimePackages = {
   HttpClient,
   HttpServer,
   Express,
+  HttpServerExpress,
   ParameterSerialization,
   ParameterDeserialization,
 }

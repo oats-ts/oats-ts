@@ -1,8 +1,16 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, VariableStatement, SyntaxKind, NodeFlags } from 'typescript'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
+import { ExpressRouteGeneratorConfig } from '.'
 import { getPathTemplate } from './getPathTemplate'
+import { getExpressRouteHandlerAst } from './handler/getExpressRouteHandlerAst'
 
-export function getExpressRouteAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): VariableStatement {
+export function getExpressRouteAst(
+  doc: OpenAPIObject,
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  config: ExpressRouteGeneratorConfig,
+): VariableStatement {
   const { nameOf } = context
   const { operation, url } = data
 
@@ -12,42 +20,7 @@ export function getExpressRouteAst(data: EnhancedOperation, context: OpenAPIGene
       data.method.toLowerCase(),
     ),
     [],
-    [
-      factory.createStringLiteral(getPathTemplate(url)),
-      factory.createArrowFunction(
-        [factory.createModifier(SyntaxKind.AsyncKeyword)],
-        [],
-        [
-          factory.createParameterDeclaration(
-            [],
-            [],
-            undefined,
-            'request',
-            undefined,
-            factory.createTypeReferenceNode(RuntimePackages.Express.Request),
-          ),
-          factory.createParameterDeclaration(
-            [],
-            [],
-            undefined,
-            'response',
-            undefined,
-            factory.createTypeReferenceNode(RuntimePackages.Express.Response),
-          ),
-          factory.createParameterDeclaration(
-            [],
-            [],
-            undefined,
-            'next',
-            undefined,
-            factory.createTypeReferenceNode(RuntimePackages.Express.NextFunction),
-          ),
-        ],
-        factory.createTypeReferenceNode('Promise', [factory.createKeywordTypeNode(SyntaxKind.VoidKeyword)]),
-        factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-        factory.createBlock([]),
-      ),
-    ],
+    [factory.createStringLiteral(getPathTemplate(url)), getExpressRouteHandlerAst(doc, data, context, config)],
   )
 
   return factory.createVariableStatement(

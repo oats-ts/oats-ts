@@ -15,3 +15,9 @@ export type ParameterIssueType = 'path' | 'query' | 'request-headers'
 export type ParameterIssues = {
   issues: Issue<ParameterIssueType>[]
 }
+
+export type ServerConfiguration<Req, Res> = {
+  getPathParameters<Path>(request: Req, deserializer: (input: string) => Path): [Issue[], Path?]
+  getQueryParameters<Query>(request: Req, deserializer: (input: string) => Query): [Issue[], Query?]
+  getHeaderParameters<Headers>(request: Req, deserializer: (input: RawHttpHeaders) => Headers): [Issue[], Headers?]
+}

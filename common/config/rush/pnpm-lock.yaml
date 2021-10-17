@@ -50,7 +50,6 @@ specifiers:
   '@rush-temp/typescript-common': file:./projects/typescript-common.tgz
   '@rush-temp/typescript-writer': file:./projects/typescript-writer.tgz
   '@rush-temp/validators': file:./projects/validators.tgz
-  '@types/express': 4.17.12
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
@@ -134,7 +133,6 @@ dependencies:
   '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.0.0
   '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
   '@rush-temp/validators': file:projects/validators.tgz_ts-node@10.0.0
-  '@types/express': 4.17.12
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
@@ -928,7 +926,7 @@ packages:
     resolution: {integrity: sha512-W98JrE0j2K78swW4ukqMleo8R7h/pFETjM2DQ90MF6XK2i4LO4W3gQ71Lt4w3bfm2EvVSyWHplECvB5sK22yFQ==}
     dependencies:
       '@types/connect': 3.4.34
-      '@types/node': 15.12.5
+      '@types/node': 16.7.1
     dev: false
 
   /@types/camelcase/5.2.0:
@@ -941,19 +939,28 @@ packages:
   /@types/connect/3.4.34:
     resolution: {integrity: sha512-ePPA/JuI+X0vb+gSWlPKOY0NdNAie/rPUqX2GUPpbZwiKTkSPhjXWuee47E4MtE54QVzGCQMQkAL6JhV2E1+cQ==}
     dependencies:
-      '@types/node': 15.12.5
+      '@types/node': 16.7.1
     dev: false
 
   /@types/express-serve-static-core/4.17.21:
     resolution: {integrity: sha512-gwCiEZqW6f7EoR8TTEfalyEhb1zA5jQJnRngr97+3pzMaO1RKoI1w2bw07TK72renMUVWcWS5mLI6rk1NqN0nA==}
     dependencies:
-      '@types/node': 15.12.5
+      '@types/node': 16.7.1
       '@types/qs': 6.9.6
       '@types/range-parser': 1.2.3
     dev: false
 
   /@types/express/4.17.12:
     resolution: {integrity: sha512-pTYas6FrP15B1Oa0bkN5tQMNqOcVXa9j4FTFtO8DWI9kppKib+6NJtfTOOLcwxuuYvcX2+dVG6et1SxW/Kc17Q==}
+    dependencies:
+      '@types/body-parser': 1.19.0
+      '@types/express-serve-static-core': 4.17.21
+      '@types/qs': 6.9.6
+      '@types/serve-static': 1.13.9
+    dev: false
+
+  /@types/express/4.17.13:
+    resolution: {integrity: sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==}
     dependencies:
       '@types/body-parser': 1.19.0
       '@types/express-serve-static-core': 4.17.21
@@ -1041,7 +1048,7 @@ packages:
     resolution: {integrity: sha512-ZFqF6qa48XsPdjXV5Gsz0Zqmux2PerNd3a/ktL45mHpa19cuMi/cL8tcxdAx497yRh+QtYPuofjT9oWw9P7nkA==}
     dependencies:
       '@types/mime': 1.3.2
-      '@types/node': 15.12.5
+      '@types/node': 16.7.1
     dev: false
 
   /@types/stack-utils/2.0.0:
@@ -4385,7 +4392,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-IHVBz2TCGdAxY4fkipuNtpKmhbiqANgYSQjjUMjFIH0CRwHBrM4kiTqg5ir9pyLsFCapVTYZeRguQ5kgWHB/Hg==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-dnhi2FsUhRYbnvT+Oce6Se8TafN2XjqIiD3XJNayljKPqVnE3Pwzvf42LNjAZey+2wTgkZMUpBg+fniBFNvvXQ==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4423,7 +4430,7 @@ packages:
     dev: false
 
   file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-ULTcDVHR53bo/1stHTtQgyesfqHBHpwe9slsvaHEFIkPpwEG7rdz2PUIBXGhRi7K9hDYVVr3ctYJ2juLWR0qcw==, tarball: file:projects/openapi-express-routes-generator.tgz}
+    resolution: {integrity: sha512-mhSx3PJw7AgoHcEymgH9Sbh3dqL27dmMXRAtzKkywKWjiSB7M1VAhl5YJ6YX+85qk/BUdjMdHsCngGl1CCAlDg==, tarball: file:projects/openapi-express-routes-generator.tgz}
     id: file:projects/openapi-express-routes-generator.tgz
     name: '@rush-temp/openapi-express-routes-generator'
     version: 0.0.0
@@ -4471,15 +4478,17 @@ packages:
     dev: false
 
   file:projects/openapi-http-server.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-uwvej4eyQRNkrcw5utCIwcMzDAUfilQKfxuhx4k8s175yVKYT7ZW1aQMXz9jsYXCt5opvq2tEKYctxReQNwjmg==, tarball: file:projects/openapi-http-server.tgz}
+    resolution: {integrity: sha512-7cu2WuaVsN8bK43q+BpTZsjITxT8AKf9+gA0oZxYrNUr7ziQVx/DDBi59DiH0sQitsBH1KIuWq0H3C1tEh4PmQ==, tarball: file:projects/openapi-http-server.tgz}
     id: file:projects/openapi-http-server.tgz
     name: '@rush-temp/openapi-http-server'
     version: 0.0.0
     dependencies:
+      '@types/express': 4.17.13
       '@types/jest': 26.0.23
       '@types/node': 16.7.1
       '@types/node-fetch': 2.5.10
       '@types/whatwg-mimetype': 2.1.0
+      express: 4.17.1
       jest: 27.0.4_ts-node@10.0.0
       node-fetch: 2.6.1
       rimraf: 3.0.2

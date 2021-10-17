@@ -1,2 +1,2 @@
 export { createRequestListener } from './createRequestListener'
-export type { ParameterIssues, ParameterIssueType } from './typings'
+export type { ParameterIssues, ParameterIssueType, ServerConfiguration } from './typings'
