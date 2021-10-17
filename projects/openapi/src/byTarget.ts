@@ -25,6 +25,7 @@ const defaultName: NameByTarget = {
   'openapi/client-sdk': 'clientSdk',
   'openapi/api-type': 'apiType',
   'openapi/api-stub': 'apiStub',
+  'openapi/express-route': 'routes',
   'openapi/request-handler-type': 'requestHandlers',
   'openapi/request-listener': 'requestListener',
   'openapi/request-matcher': 'requestMatchers',

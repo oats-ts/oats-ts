@@ -150,6 +150,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/openapi-express-routes-generator",
+      "projectFolder": "projects/openapi-express-routes-generator",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/openapi-http",
       "projectFolder": "projects/openapi-http",
       "versionPolicyName": "oats",

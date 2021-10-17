@@ -25,6 +25,7 @@ const defaultFolderName: NameByTarget = {
   'openapi/client-sdk': 'sdk',
   'openapi/api-type': 'api',
   'openapi/api-stub': 'api',
+  'openapi/express-route': 'routes',
   'openapi/request-handler-type': 'requestHandlers',
   'openapi/request-listener': 'requestListener',
   'openapi/request-matcher': 'requestMatchers',

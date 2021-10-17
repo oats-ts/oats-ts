@@ -64,6 +64,10 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}Expectations`
     }
+    case 'openapi/express-route': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${camelCase(operationName)}Route`
+    }
     case 'openapi/validator': {
       return isNil(name) ? undefined : `${camelCase(name)}Validator`
     }

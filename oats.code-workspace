@@ -93,6 +93,10 @@
       "path": "projects/openapi-e2e-test"
     },
     {
+      "name": "openapi-express-routes-generator",
+      "path": "projects/openapi-express-routes-generator"
+    },
+    {
       "name": "openapi-http",
       "path": "projects/openapi-http"
     },

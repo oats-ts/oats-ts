@@ -8,6 +8,8 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/api-type':
       case 'openapi/api-stub':
         return resolve(join(path, 'api', `${name(input, target)}.ts`))
+      case 'openapi/express-route':
+        return resolve(join(path, 'routes', `${name(input, target)}.ts`))
       case 'openapi/sdk-type':
       case 'openapi/sdk-stub':
       case 'openapi/client-sdk':

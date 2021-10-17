@@ -16,6 +16,7 @@ import { responseTypes } from '@oats-ts/openapi-response-types-generator'
 import { parameterSerializers } from '@oats-ts/openapi-parameter-serializers-generator'
 import { parameterDeserializers } from '@oats-ts/openapi-parameter-deserializers-generator'
 import { responseExpectations } from '@oats-ts/openapi-response-expectations-generator'
+import { expressRoute } from '@oats-ts/openapi-express-routes-generator'
 import { nameProviders, pathProviders } from '@oats-ts/openapi'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -78,6 +79,7 @@ export async function generateAll() {
         ...common,
         documentation: true,
       }),
+      expressRoute(common),
     ],
     writer: writer({
       stringify: prettierStringify({

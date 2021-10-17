@@ -1,7 +1,6 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@oats-ts/openapi-api-generator': 0.0.5
   '@rush-temp/asyncapi': file:./projects/asyncapi.tgz
   '@rush-temp/asyncapi-common': file:./projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
@@ -25,6 +24,7 @@ specifiers:
   '@rush-temp/openapi-client-sdk-generator': file:./projects/openapi-client-sdk-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-e2e-test': file:./projects/openapi-e2e-test.tgz
+  '@rush-temp/openapi-express-routes-generator': file:./projects/openapi-express-routes-generator.tgz
   '@rush-temp/openapi-http': file:./projects/openapi-http.tgz
   '@rush-temp/openapi-http-client': file:./projects/openapi-http-client.tgz
   '@rush-temp/openapi-http-server': file:./projects/openapi-http-server.tgz
@@ -85,7 +85,6 @@ specifiers:
   zod: 3.2.0
 
 dependencies:
-  '@oats-ts/openapi-api-generator': 0.0.5
   '@rush-temp/asyncapi': file:projects/asyncapi.tgz
   '@rush-temp/asyncapi-common': file:projects/asyncapi-common.tgz
   '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
@@ -109,6 +108,7 @@ dependencies:
   '@rush-temp/openapi-client-sdk-generator': file:projects/openapi-client-sdk-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
+  '@rush-temp/openapi-express-routes-generator': file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-http': file:projects/openapi-http.tgz_ts-node@10.0.0
   '@rush-temp/openapi-http-client': file:projects/openapi-http-client.tgz_ts-node@10.0.0
   '@rush-temp/openapi-http-server': file:projects/openapi-http-server.tgz_ts-node@10.0.0
@@ -4308,7 +4308,7 @@ packages:
     dev: false
 
   file:projects/openapi-api-type-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-J8aFM8PoZmqj5eConLqr/bsFd4IBNq53RecPCLW5ERgOQUNmwfgzzrkyBgvcXMiF1e292/VuCG02131yYRRZDQ==, tarball: file:projects/openapi-api-type-generator.tgz}
+    resolution: {integrity: sha512-8MDuZgDaeMY+pV0x79cEW9oE8htZkmTjEJtDBNECZyj1+F7O4TZmc/RUZwdWQV8RLqhWBjsoeDn/dQMBaGcGow==, tarball: file:projects/openapi-api-type-generator.tgz}
     id: file:projects/openapi-api-type-generator.tgz
     name: '@rush-temp/openapi-api-type-generator'
     version: 0.0.0
@@ -4385,7 +4385,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-3iagOEtxMr0yNbQz9EjlDS/jhFeM6Hsc3b8pIQWS067FDz31d+baG+guh+LQ5RZUTociF9FGPtk8jUZxDwRWlA==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-IHVBz2TCGdAxY4fkipuNtpKmhbiqANgYSQjjUMjFIH0CRwHBrM4kiTqg5ir9pyLsFCapVTYZeRguQ5kgWHB/Hg==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4422,6 +4422,29 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-ULTcDVHR53bo/1stHTtQgyesfqHBHpwe9slsvaHEFIkPpwEG7rdz2PUIBXGhRi7K9hDYVVr3ctYJ2juLWR0qcw==, tarball: file:projects/openapi-express-routes-generator.tgz}
+    id: file:projects/openapi-express-routes-generator.tgz
+    name: '@rush-temp/openapi-express-routes-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.172
+      '@types/node': 16.7.1
+      jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
+      typescript: 4.3.5
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/openapi-http-client.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-K2tHAgCdLWftg3v9rf2CMnoV/lFF/gOsxRiGmgMaXD0UnkC43xeZUM6g6v6w4Cma9i8zGPkbjtjDM6dSx+quMA==, tarball: file:projects/openapi-http-client.tgz}
     id: file:projects/openapi-http-client.tgz
@@ -4448,7 +4471,7 @@ packages:
     dev: false
 
   file:projects/openapi-http-server.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-lejDsDa9mBv5b8B0R7NEMwQuTSad4pY/4dP3RWpwPbCop+lkeOkKStNJ+Di2jekUSr/wZLp6AlO8RsLjFuikNQ==, tarball: file:projects/openapi-http-server.tgz}
+    resolution: {integrity: sha512-uwvej4eyQRNkrcw5utCIwcMzDAUfilQKfxuhx4k8s175yVKYT7ZW1aQMXz9jsYXCt5opvq2tEKYctxReQNwjmg==, tarball: file:projects/openapi-http-server.tgz}
     id: file:projects/openapi-http-server.tgz
     name: '@rush-temp/openapi-http-server'
     version: 0.0.0

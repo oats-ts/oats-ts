@@ -44,10 +44,19 @@ const ParameterDeserialization = {
   value: 'value',
 }
 
+const Express = {
+  name: 'express',
+  Router: 'Router',
+  Request: 'Request',
+  Response: 'Response',
+  NextFunction: 'NextFunction',
+}
+
 export const RuntimePackages = {
   Http,
   HttpClient,
   HttpServer,
+  Express,
   ParameterSerialization,
   ParameterDeserialization,
 }

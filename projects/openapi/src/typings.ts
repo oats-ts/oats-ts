@@ -36,3 +36,4 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/request-listener'
   | 'openapi/api-type'
   | 'openapi/api-stub'
+  | 'openapi/express-route'
