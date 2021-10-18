@@ -64,6 +64,10 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}Expectations`
     }
+    case 'openapi/request-body-expectations': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${operationName}RequestBodyExpectations`
+    }
     case 'openapi/express-route': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${camelCase(operationName)}Route`
@@ -89,17 +93,6 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
     }
     case 'openapi/api-stub': {
       return 'ApiStub'
-    }
-    case 'openapi/request-handler-type': {
-      const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${pascalCase(operationName)}RequestHandler`
-    }
-    case 'openapi/request-matcher': {
-      const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${camelCase(operationName)}RequestMatcher`
-    }
-    case 'openapi/request-listener': {
-      return 'createRequestListener'
     }
     default:
       return name

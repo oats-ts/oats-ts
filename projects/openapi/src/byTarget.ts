@@ -26,9 +26,7 @@ const defaultName: NameByTarget = {
   'openapi/api-type': 'apiType',
   'openapi/api-stub': 'apiStub',
   'openapi/express-route': 'routes',
-  'openapi/request-handler-type': 'requestHandlers',
-  'openapi/request-listener': 'requestListener',
-  'openapi/request-matcher': 'requestMatchers',
+  'openapi/request-body-expectations': 'requestBodyExpectations',
 }
 
 export function byTarget(path: string, nameByTarget: Partial<NameByTarget> = {}): GeneratorPathProvider {

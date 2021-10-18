@@ -31,9 +31,7 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/client-sdk'
   | 'openapi/sdk-stub'
   // Server
-  | 'openapi/request-handler-type'
-  | 'openapi/request-matcher'
-  | 'openapi/request-listener'
+  | 'openapi/request-body-expectations'
   | 'openapi/api-type'
   | 'openapi/api-stub'
   | 'openapi/express-route'

@@ -9,17 +9,12 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/api-stub':
         return resolve(join(path, 'api', `${name(input, target)}.ts`))
       case 'openapi/express-route':
+      case 'openapi/request-body-expectations':
         return resolve(join(path, 'routes', `${name(input, target)}.ts`))
       case 'openapi/sdk-type':
       case 'openapi/sdk-stub':
       case 'openapi/client-sdk':
         return resolve(join(path, 'sdk', `${name(input, target)}.ts`))
-      case 'openapi/request-handler-type':
-        return resolve(join(path, 'requestHandlers', `${name(input, target)}.ts`))
-      case 'openapi/request-listener':
-        return resolve(join(path, `${name(input, target)}.ts`))
-      case 'openapi/request-matcher':
-        return resolve(join(path, 'requestMatchers', `${name(input, target)}.ts`))
       case 'openapi/sdk-type':
         return resolve(join(path, 'sdk', `${name(input, target)}.ts`))
       case 'openapi/type':
