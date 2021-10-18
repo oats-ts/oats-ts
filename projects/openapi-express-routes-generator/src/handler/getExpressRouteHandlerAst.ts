@@ -3,6 +3,7 @@ import { factory, SyntaxKind } from 'typescript'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { getExpressRouteHandlerBodyAst } from './getExpressRouteHandlerBodyAst'
 import { ExpressRouteGeneratorConfig } from '../typings'
+import { Names } from './names'
 
 export function getExpressRouteHandlerAst(
   doc: OpenAPIObject,
@@ -18,7 +19,7 @@ export function getExpressRouteHandlerAst(
         [],
         [],
         undefined,
-        'request',
+        Names.request,
         undefined,
         factory.createTypeReferenceNode(RuntimePackages.Express.Request),
       ),
@@ -26,7 +27,7 @@ export function getExpressRouteHandlerAst(
         [],
         [],
         undefined,
-        'response',
+        Names.response,
         undefined,
         factory.createTypeReferenceNode(RuntimePackages.Express.Response),
       ),
@@ -34,7 +35,7 @@ export function getExpressRouteHandlerAst(
         [],
         [],
         undefined,
-        'next',
+        Names.next,
         undefined,
         factory.createTypeReferenceNode(RuntimePackages.Express.NextFunction),
       ),

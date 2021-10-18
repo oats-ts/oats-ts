@@ -4,8 +4,9 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { ExpressRouteGeneratorConfig } from '../typings'
 import { getConfigurationStatementAst } from './getConfigurationStatementAst'
 import { getApiStatementAst } from './getApiStatementAst'
-import { getExpressParamsStatementAst } from './getExpressParamsStatementAst'
 import { getParametersStatementAst } from './getParametersStatementAst'
+import { getBodyStatementAst } from './getBodyStatementAst'
+import { getApiHandlerCallResultStatementAst } from './getApiHandlerCallResultStatementAst'
 
 export function getExpressRouteHandlerBodyAst(
   doc: OpenAPIObject,
@@ -17,9 +18,11 @@ export function getExpressRouteHandlerBodyAst(
   return factory.createBlock([
     getConfigurationStatementAst(config.configurationKey),
     getApiStatementAst(nameOf(doc, 'openapi/api-type'), config.apiImplKey),
-    getExpressParamsStatementAst(),
+    // getExpressParamsStatementAst(),
     ...getParametersStatementAst('path', data, context),
     ...getParametersStatementAst('query', data, context),
     ...getParametersStatementAst('header', data, context),
+    ...getBodyStatementAst(data, context),
+    getApiHandlerCallResultStatementAst(data, context),
   ])
 }

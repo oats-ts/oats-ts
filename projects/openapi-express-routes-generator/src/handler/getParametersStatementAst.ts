@@ -2,6 +2,7 @@ import { ParameterLocation } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, VariableStatement } from 'typescript'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
+import { Names } from './names'
 
 const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget> = {
   query: 'openapi/query-deserializer',
@@ -11,22 +12,22 @@ const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget> = {
 }
 
 const issuesNameMap: Record<ParameterLocation, string> = {
-  query: 'queryIssues',
-  header: 'headerIssues',
-  path: 'pathIssues',
+  query: Names.queryIssues,
+  header: Names.headerIssues,
+  path: Names.pathIssues,
   cookie: undefined,
 }
 
 const valueNameMap: Record<ParameterLocation, string> = {
-  query: 'query',
-  header: 'headers',
-  path: 'path',
+  query: Names.query,
+  header: Names.headers,
+  path: Names.path,
   cookie: undefined,
 }
 
 const configGetterNameMap: Record<ParameterLocation, string> = {
   query: 'getQueryParameters',
-  header: 'getHeaderParameters',
+  header: 'getRequestHeaders',
   path: 'getPathParameters',
   cookie: undefined,
 }
@@ -64,11 +65,11 @@ export function getParametersStatementAst(
             undefined,
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier('configuration'),
+                factory.createIdentifier(Names.configuration),
                 factory.createIdentifier(configGetterNameMap[location]),
               ),
               undefined,
-              [factory.createIdentifier('request'), referenceOf(data.operation, deserializerMap[location])],
+              [factory.createIdentifier(Names.request), referenceOf(data.operation, deserializerMap[location])],
             ),
           ),
         ],

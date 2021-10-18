@@ -1,5 +1,6 @@
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, NodeFlags } from 'typescript'
+import { Names } from './names'
 
 export function getConfigurationStatementAst(configurationKey: string) {
   return factory.createVariableStatement(
@@ -7,7 +8,7 @@ export function getConfigurationStatementAst(configurationKey: string) {
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          factory.createIdentifier('configuration'),
+          factory.createIdentifier(Names.configuration),
           undefined,
           factory.createTypeReferenceNode(RuntimePackages.HttpServer.ServerConfiguration, [
             factory.createTypeReferenceNode(RuntimePackages.Express.Request),
@@ -15,7 +16,7 @@ export function getConfigurationStatementAst(configurationKey: string) {
           ]),
           factory.createElementAccessExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier('response'),
+              factory.createIdentifier(Names.response),
               factory.createIdentifier('locals'),
             ),
             factory.createStringLiteral(configurationKey),
