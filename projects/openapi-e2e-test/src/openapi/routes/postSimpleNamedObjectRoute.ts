@@ -8,6 +8,10 @@ export const postSimpleNamedObjectRoute: Router = Router().post(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const configuration: ServerConfiguration<Request, Response> = response.locals['__oats_configuration']
     const api: Api<ExpressParameters> = response.locals['__oats_api']
-    const expressParameters: ExpressParameters = { request, response, next }
+    const [bodyIssues, body, mimeType] = configuration.getRequestBody(request, undefined)
+    const handlerResults = await api.postSimpleNamedObject(
+      { mimeType, body, issues: [...bodyIssues] },
+      { request, response, next },
+    )
   },
 )

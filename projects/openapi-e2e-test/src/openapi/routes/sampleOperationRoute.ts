@@ -11,9 +11,13 @@ export const sampleOperationRoute: Router = Router().post(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const configuration: ServerConfiguration<Request, Response> = response.locals['__oats_configuration']
     const api: Api<ExpressParameters> = response.locals['__oats_api']
-    const expressParameters: ExpressParameters = { request, response, next }
     const [pathIssues, path] = configuration.getPathParameters(request, sampleOperationPathDeserializer)
     const [queryIssues, query] = configuration.getQueryParameters(request, sampleOperationQueryDeserializer)
-    const [headerIssues, headers] = configuration.getHeaderParameters(request, sampleOperationHeadersDeserializer)
+    const [headerIssues, headers] = configuration.getRequestHeaders(request, sampleOperationHeadersDeserializer)
+    const [bodyIssues, body, mimeType] = configuration.getRequestBody(request, undefined)
+    const handlerResults = await api.sampleOperation(
+      { path, query, headers, mimeType, body, issues: [...pathIssues, ...queryIssues, ...headerIssues, ...bodyIssues] },
+      { request, response, next },
+    )
   },
 )
