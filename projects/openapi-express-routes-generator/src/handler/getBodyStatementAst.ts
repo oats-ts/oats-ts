@@ -19,13 +19,15 @@ export function getBodyStatementAst(data: EnhancedOperation, context: OpenAPIGen
             ]),
             undefined,
             undefined,
-            factory.createCallExpression(
-              factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
-                factory.createIdentifier('getRequestBody'),
+            factory.createAwaitExpression(
+              factory.createCallExpression(
+                factory.createPropertyAccessExpression(
+                  factory.createIdentifier(Names.configuration),
+                  factory.createIdentifier('getRequestBody'),
+                ),
+                undefined,
+                [factory.createIdentifier(Names.request), factory.createIdentifier('undefined')],
               ),
-              undefined,
-              [factory.createIdentifier(Names.request), factory.createIdentifier('undefined')],
             ),
           ),
         ],

@@ -9,7 +9,11 @@ export const getWithPathParamsRoute: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const configuration: ServerConfiguration<Request, Response> = response.locals['__oats_configuration']
     const api: Api<ExpressParameters> = response.locals['__oats_api']
-    const [pathIssues, path] = configuration.getPathParameters(request, getWithPathParamsPathDeserializer)
-    const handlerResults = await api.getWithPathParams({ path, issues: [...pathIssues] }, { request, response, next })
+    const expressParams: ExpressParameters = { request, response, next }
+    const [pathIssues, path] = await configuration.getPathParameters(request, getWithPathParamsPathDeserializer)
+    const handlerResults = await api.getWithPathParams({ path, issues: [...pathIssues] }, expressParams)
+    const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)
+    await configuration.setStatusCode(response, handlerResults.statusCode)
+    await configuration.setResponseHeaders(response, responseHeaders)
   },
 )

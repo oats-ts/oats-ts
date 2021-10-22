@@ -11,13 +11,17 @@ export const sampleOperationRoute: Router = Router().post(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const configuration: ServerConfiguration<Request, Response> = response.locals['__oats_configuration']
     const api: Api<ExpressParameters> = response.locals['__oats_api']
-    const [pathIssues, path] = configuration.getPathParameters(request, sampleOperationPathDeserializer)
-    const [queryIssues, query] = configuration.getQueryParameters(request, sampleOperationQueryDeserializer)
-    const [headerIssues, headers] = configuration.getRequestHeaders(request, sampleOperationHeadersDeserializer)
-    const [bodyIssues, body, mimeType] = configuration.getRequestBody(request, undefined)
+    const expressParams: ExpressParameters = { request, response, next }
+    const [pathIssues, path] = await configuration.getPathParameters(request, sampleOperationPathDeserializer)
+    const [queryIssues, query] = await configuration.getQueryParameters(request, sampleOperationQueryDeserializer)
+    const [headerIssues, headers] = await configuration.getRequestHeaders(request, sampleOperationHeadersDeserializer)
+    const [bodyIssues, body, mimeType] = await configuration.getRequestBody(request, undefined)
     const handlerResults = await api.sampleOperation(
       { path, query, headers, mimeType, body, issues: [...pathIssues, ...queryIssues, ...headerIssues, ...bodyIssues] },
-      { request, response, next },
+      expressParams,
     )
+    const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)
+    await configuration.setStatusCode(response, handlerResults.statusCode)
+    await configuration.setResponseHeaders(response, responseHeaders)
   },
 )

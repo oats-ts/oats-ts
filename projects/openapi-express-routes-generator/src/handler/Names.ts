@@ -18,4 +18,7 @@ export const Names = {
   headerIssues: 'headerIssues',
 
   handlerResult: 'handlerResults',
+  statusCode: 'statusCode',
+  responseHeaders: 'responseHeaders',
+  responseBody: 'responseBody',
 }

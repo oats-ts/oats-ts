@@ -1,10 +1,47 @@
 import { factory, NodeFlags } from 'typescript'
 import { Names } from './names'
-import { EnhancedOperation, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, hasInput, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { isEmpty } from 'lodash'
 
 export function getApiHandlerCallResultStatementAst(data: EnhancedOperation, context: OpenAPIGeneratorContext) {
   const { nameOf } = context
+  const requestAst = factory.createObjectLiteralExpression(
+    [
+      ...(!isEmpty(data.path)
+        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.path), undefined)]
+        : []),
+      ...(!isEmpty(data.query)
+        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.query), undefined)]
+        : []),
+      ...(!isEmpty(data.header)
+        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.headers), undefined)]
+        : []),
+      ...(hasRequestBody(data, context)
+        ? [
+            factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.mimeType), undefined),
+            factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.body), undefined),
+          ]
+        : []),
+      factory.createPropertyAssignment(
+        factory.createIdentifier(Names.issues),
+        factory.createArrayLiteralExpression(
+          [
+            ...(!isEmpty(data.path) ? [factory.createSpreadElement(factory.createIdentifier(Names.pathIssues))] : []),
+            ...(!isEmpty(data.query) ? [factory.createSpreadElement(factory.createIdentifier(Names.queryIssues))] : []),
+            ...(!isEmpty(data.header)
+              ? [factory.createSpreadElement(factory.createIdentifier(Names.headerIssues))]
+              : []),
+            ...(hasRequestBody(data, context)
+              ? [factory.createSpreadElement(factory.createIdentifier(Names.bodyIssues))]
+              : []),
+          ],
+          false,
+        ),
+      ),
+    ],
+    false,
+  )
+
   return factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -20,56 +57,7 @@ export function getApiHandlerCallResultStatementAst(data: EnhancedOperation, con
                 factory.createIdentifier(nameOf(data.operation, 'openapi/operation')),
               ),
               undefined,
-              [
-                factory.createObjectLiteralExpression(
-                  [
-                    ...(!isEmpty(data.path)
-                      ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.path), undefined)]
-                      : []),
-                    ...(!isEmpty(data.query)
-                      ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.query), undefined)]
-                      : []),
-                    ...(!isEmpty(data.header)
-                      ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.headers), undefined)]
-                      : []),
-                    ...(hasRequestBody(data, context)
-                      ? [
-                          factory.createShorthandPropertyAssignment(
-                            factory.createIdentifier(Names.mimeType),
-                            undefined,
-                          ),
-                          factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.body), undefined),
-                        ]
-                      : []),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier(Names.issues),
-                      factory.createArrayLiteralExpression(
-                        [
-                          ...(!isEmpty(data.path)
-                            ? [factory.createSpreadElement(factory.createIdentifier(Names.pathIssues))]
-                            : []),
-                          ...(!isEmpty(data.query)
-                            ? [factory.createSpreadElement(factory.createIdentifier(Names.queryIssues))]
-                            : []),
-                          ...(!isEmpty(data.header)
-                            ? [factory.createSpreadElement(factory.createIdentifier(Names.headerIssues))]
-                            : []),
-                          ...(hasRequestBody(data, context)
-                            ? [factory.createSpreadElement(factory.createIdentifier(Names.bodyIssues))]
-                            : []),
-                        ],
-                        false,
-                      ),
-                    ),
-                  ],
-                  false,
-                ),
-                factory.createObjectLiteralExpression([
-                  factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.request), undefined),
-                  factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.response), undefined),
-                  factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.next), undefined),
-                ]),
-              ],
+              [...(hasInput(data, context) ? [requestAst] : []), factory.createIdentifier(Names.expressParams)],
             ),
           ),
         ),

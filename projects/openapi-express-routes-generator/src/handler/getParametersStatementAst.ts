@@ -63,13 +63,15 @@ export function getParametersStatementAst(
             ]),
             undefined,
             undefined,
-            factory.createCallExpression(
-              factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
-                factory.createIdentifier(configGetterNameMap[location]),
+            factory.createAwaitExpression(
+              factory.createCallExpression(
+                factory.createPropertyAccessExpression(
+                  factory.createIdentifier(Names.configuration),
+                  factory.createIdentifier(configGetterNameMap[location]),
+                ),
+                undefined,
+                [factory.createIdentifier(Names.request), referenceOf(data.operation, deserializerMap[location])],
               ),
-              undefined,
-              [factory.createIdentifier(Names.request), referenceOf(data.operation, deserializerMap[location])],
             ),
           ),
         ],
