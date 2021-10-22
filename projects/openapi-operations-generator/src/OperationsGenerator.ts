@@ -20,12 +20,12 @@ export class OperationsGenerator implements OpenAPIGenerator {
   public static id = 'openapi/operations'
   private static consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
-    'openapi/headers-type',
+    'openapi/request-headers-type',
     'openapi/query-type',
     'openapi/path-type',
     'openapi/response-type',
     'openapi/request-type',
-    'openapi/headers-serializer',
+    'openapi/request-headers-serializer',
     'openapi/path-serializer',
     'openapi/query-serializer',
   ]

@@ -20,9 +20,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}QueryParameters`)
     }
-    case 'openapi/headers-type': {
+    case 'openapi/request-headers-type': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : pascalCase(`${operationName}HeaderParameters`)
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}RequestHeaderParameters`)
     }
     case 'openapi/path-type': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
@@ -44,9 +44,13 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}QuerySerializer`
     }
-    case 'openapi/headers-serializer': {
+    case 'openapi/request-headers-serializer': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${operationName}HeadersSerializer`
+      return isNil(operationName) ? undefined : `${operationName}RequestHeadersSerializer`
+    }
+    case 'openapi/response-headers-serializer': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${operationName}ResponseHeaderSerializer`
     }
     case 'openapi/path-deserializer': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
@@ -56,9 +60,13 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}QueryDeserializer`
     }
-    case 'openapi/headers-deserializer': {
+    case 'openapi/request-headers-deserializer': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${operationName}HeadersDeserializer`
+      return isNil(operationName) ? undefined : `${operationName}RequestHeadersDeserializer`
+    }
+    case 'openapi/response-headers-deserializer': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${operationName}ResponseHeadersDeserializer`
     }
     case 'openapi/expectations': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')

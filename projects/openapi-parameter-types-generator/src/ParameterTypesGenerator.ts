@@ -27,7 +27,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameterTypes'
   private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
   private static produces: OpenAPIGeneratorTarget[] = [
-    'openapi/headers-type',
+    'openapi/request-headers-type',
     'openapi/path-type',
     'openapi/query-type',
     'openapi/response-headers-type',
@@ -85,7 +85,7 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf, dereference } = context
     switch (target) {
-      case 'openapi/headers-type': {
+      case 'openapi/request-headers-type': {
         const { header } = this.enhance(input as OperationObject)
         return isEmpty(header) ? undefined : factory.createTypeReferenceNode(nameOf(input, target))
       }
@@ -113,9 +113,9 @@ export class ParameterTypesGenerator implements OpenAPIGenerator {
     const { context } = this
     const { dereference, dependenciesOf } = context
     switch (target) {
-      case 'openapi/headers-type': {
+      case 'openapi/request-headers-type': {
         const { header } = this.enhance(input)
-        return isEmpty(header) ? [] : getModelImports(fromPath, 'openapi/headers-type', [input], this.context)
+        return isEmpty(header) ? [] : getModelImports(fromPath, 'openapi/request-headers-type', [input], this.context)
       }
       case 'openapi/path-type': {
         const { path } = this.enhance(input)

@@ -10,7 +10,7 @@ function getHeadersParameter(data: EnhancedOperation, context: OpenAPIGeneratorC
   const { header } = data
   const bodies = entries(getRequestBodyContent(data, context))
   const headerSerializerAst = getParameterSerializerCallAst(
-    nameOf(data.operation, 'openapi/headers-serializer'),
+    nameOf(data.operation, 'openapi/request-headers-serializer'),
     'headers',
   )
   if (header.length > 0 && bodies.length === 0) {

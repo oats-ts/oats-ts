@@ -24,7 +24,7 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator {
     'openapi/api-type',
     'openapi/path-deserializer',
     'openapi/query-deserializer',
-    'openapi/headers-deserializer',
+    'openapi/request-headers-deserializer',
   ]
   private static produces: OpenAPIGeneratorTarget[] = ['openapi/express-route']
 

@@ -1,4 +1,4 @@
 import { HasHeaders } from '@oats-ts/openapi-http'
-import { GetWithHeaderParamsHeaderParameters } from '../headerTypes/GetWithHeaderParamsHeaderParameters'
+import { GetWithHeaderParamsRequestHeaderParameters } from '../requestHeaderTypes/GetWithHeaderParamsRequestHeaderParameters'
 
-export type GetWithHeaderParamsRequest = HasHeaders<GetWithHeaderParamsHeaderParameters>
+export type GetWithHeaderParamsRequest = HasHeaders<GetWithHeaderParamsRequestHeaderParameters>

@@ -27,9 +27,11 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/request-type':
       case 'openapi/response-type':
       case 'openapi/expectations':
-      case 'openapi/headers-type':
-      case 'openapi/headers-serializer':
-      case 'openapi/headers-deserializer':
+      case 'openapi/request-headers-type':
+      case 'openapi/request-headers-serializer':
+      case 'openapi/request-headers-deserializer':
+      case 'openapi/response-headers-serializer':
+      case 'openapi/response-headers-deserializer':
       case 'openapi/query-type':
       case 'openapi/query-serializer':
       case 'openapi/query-deserializer':

@@ -1,6 +1,6 @@
 import { NamedSimpleObject } from '../types/NamedSimpleObject'
 
-export type GetWithHeaderParamsHeaderParameters = {
+export type GetWithHeaderParamsRequestHeaderParameters = {
   'X-String-In-Headers': string
   'X-Number-In-Headers': number
   'X-Boolean-In-Headers': boolean

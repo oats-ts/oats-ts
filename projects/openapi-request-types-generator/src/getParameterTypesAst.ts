@@ -11,7 +11,7 @@ export function getParameterTypesAst(data: EnhancedOperation, context: OpenAPIGe
   if (header.length > 0) {
     commonTypes.push(
       factory.createTypeReferenceNode(RuntimePackages.Http.HasHeaders, [
-        referenceOf(operation, 'openapi/headers-type'),
+        referenceOf(operation, 'openapi/request-headers-type'),
       ]),
     )
   }

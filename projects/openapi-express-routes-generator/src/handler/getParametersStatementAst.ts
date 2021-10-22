@@ -6,7 +6,7 @@ import { Names } from './names'
 
 const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget> = {
   query: 'openapi/query-deserializer',
-  header: 'openapi/headers-deserializer',
+  header: 'openapi/request-headers-deserializer',
   path: 'openapi/path-deserializer',
   cookie: undefined,
 }

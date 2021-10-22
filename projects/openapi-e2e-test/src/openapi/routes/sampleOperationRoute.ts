@@ -2,9 +2,9 @@ import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
 import { NextFunction, Request, Response, Router } from 'express'
 import { Api } from '../api/Api'
-import { sampleOperationHeadersDeserializer } from '../headerDeserializers/sampleOperationHeadersDeserializer'
 import { sampleOperationPathDeserializer } from '../pathDeserializers/sampleOperationPathDeserializer'
 import { sampleOperationQueryDeserializer } from '../queryDeserializers/sampleOperationQueryDeserializer'
+import { sampleOperationRequestHeadersDeserializer } from '../requestHeaderDeserializers/sampleOperationRequestHeadersDeserializer'
 
 export const sampleOperationRoute: Router = Router().post(
   '/sample/path/:pathParam',
@@ -14,7 +14,10 @@ export const sampleOperationRoute: Router = Router().post(
     const expressParams: ExpressParameters = { request, response, next }
     const [pathIssues, path] = await configuration.getPathParameters(request, sampleOperationPathDeserializer)
     const [queryIssues, query] = await configuration.getQueryParameters(request, sampleOperationQueryDeserializer)
-    const [headerIssues, headers] = await configuration.getRequestHeaders(request, sampleOperationHeadersDeserializer)
+    const [headerIssues, headers] = await configuration.getRequestHeaders(
+      request,
+      sampleOperationRequestHeadersDeserializer,
+    )
     const [bodyIssues, body, mimeType] = await configuration.getRequestBody(request, undefined)
     const handlerResults = await api.sampleOperation(
       { path, query, headers, mimeType, body, issues: [...pathIssues, ...queryIssues, ...headerIssues, ...bodyIssues] },

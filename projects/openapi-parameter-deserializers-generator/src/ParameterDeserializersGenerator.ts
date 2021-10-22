@@ -24,13 +24,13 @@ export class ParameterDeserializersGenerator implements OpenAPIGenerator {
   public static id = 'openapi/parameter-deserializers'
   private static consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
-    'openapi/headers-type',
+    'openapi/request-headers-type',
     'openapi/query-type',
     'openapi/path-type',
     'openapi/operation',
   ]
   private static produces: OpenAPIGeneratorTarget[] = [
-    'openapi/headers-deserializer',
+    'openapi/request-headers-deserializer',
     'openapi/path-deserializer',
     'openapi/query-deserializer',
   ]
@@ -90,7 +90,7 @@ export class ParameterDeserializersGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/headers-deserializer': {
+      case 'openapi/request-headers-deserializer': {
         const { header } = this.enhance(input)
         return isEmpty(header) ? undefined : factory.createIdentifier(nameOf(input, target))
       }
@@ -109,7 +109,7 @@ export class ParameterDeserializersGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'openapi/headers-deserializer': {
+      case 'openapi/request-headers-deserializer': {
         const { header } = this.enhance(input)
         return isEmpty(header) ? undefined : getModelImports(fromPath, target, [input], context)
       }

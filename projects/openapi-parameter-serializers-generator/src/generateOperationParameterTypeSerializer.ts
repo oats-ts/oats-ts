@@ -150,6 +150,6 @@ export const generatePathParameterTypeSerializer = generateOperationParameterTyp
 )
 export const generateHeaderParameterTypeSerializer = generateOperationParameterTypeSerializer(
   'header',
-  'openapi/headers-serializer',
-  'openapi/headers-type',
+  'openapi/request-headers-serializer',
+  'openapi/request-headers-type',
 )

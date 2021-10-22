@@ -22,6 +22,6 @@ export function getExpressRouterImports(
     ...dependenciesOf(path, doc, 'openapi/api-type'),
     ...dependenciesOf(path, operation.operation, 'openapi/path-deserializer'),
     ...dependenciesOf(path, operation.operation, 'openapi/query-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'openapi/headers-deserializer'),
+    ...dependenciesOf(path, operation.operation, 'openapi/request-headers-deserializer'),
   ]
 }

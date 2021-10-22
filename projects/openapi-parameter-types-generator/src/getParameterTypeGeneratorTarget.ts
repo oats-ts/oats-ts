@@ -4,7 +4,7 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 export function getParameterTypeGeneratorTarget(location: ParameterLocation): OpenAPIGeneratorTarget {
   switch (location) {
     case 'header':
-      return 'openapi/headers-type'
+      return 'openapi/request-headers-type'
     case 'path':
       return 'openapi/path-type'
     case 'query':

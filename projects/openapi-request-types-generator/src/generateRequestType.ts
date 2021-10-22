@@ -31,7 +31,7 @@ export function generateRequestType(data: EnhancedOperation, context: OpenAPIGen
       ...flatMap(bodies, (schema) => dependenciesOf(path, schema, 'openapi/type')),
       ...dependenciesOf(path, operation, 'openapi/path-type'),
       ...dependenciesOf(path, operation, 'openapi/query-type'),
-      ...dependenciesOf(path, operation, 'openapi/headers-type'),
+      ...dependenciesOf(path, operation, 'openapi/request-headers-type'),
     ],
     content: isNil(ast) ? [] : [ast],
   }

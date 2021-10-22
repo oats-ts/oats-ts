@@ -160,6 +160,6 @@ export const generatePathParameterTypeDeserializer = generateOperationParameterT
 )
 export const generateHeaderParameterTypeDeserializer = generateOperationParameterTypeDeserializer(
   'header',
-  'openapi/headers-deserializer',
-  'openapi/headers-type',
+  'openapi/request-headers-deserializer',
+  'openapi/request-headers-type',
 )

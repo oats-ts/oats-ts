@@ -21,7 +21,7 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
   public static id = 'openapi/request-types'
   private static consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
-    'openapi/headers-type',
+    'openapi/request-headers-type',
     'openapi/query-type',
     'openapi/path-type',
   ]
