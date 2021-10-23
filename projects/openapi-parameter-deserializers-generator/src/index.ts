@@ -5,27 +5,21 @@ import { InputParameterDeserializersGenerator } from './InputParameterDeserializ
 
 export type { ParameterDeserializersGeneratorConfig } from './typings'
 
-export class QueryParameterDeserializersGenerator extends InputParameterDeserializersGenerator {
+export class QueryParameterDeserializersGenerator extends InputParameterDeserializersGenerator<'openapi/query-deserializer'> {
   constructor(config: GeneratorConfig & ParameterDeserializersGeneratorConfig) {
-    super('openapi/query-parameter-deserializers', 'openapi/query-type', 'openapi/query-deserializer', 'query', config)
+    super('openapi/query-deserializer', 'openapi/query-type', 'query', config)
   }
 }
 
-export class PathParameterDeserializersGenerator extends InputParameterDeserializersGenerator {
+export class PathParameterDeserializersGenerator extends InputParameterDeserializersGenerator<'openapi/path-deserializer'> {
   constructor(config: GeneratorConfig & ParameterDeserializersGeneratorConfig) {
-    super('openapi/path-parameter-deserializers', 'openapi/path-type', 'openapi/path-deserializer', 'path', config)
+    super('openapi/path-deserializer', 'openapi/path-type', 'path', config)
   }
 }
 
-export class RequestHeaderParameterDeserializersGenerator extends InputParameterDeserializersGenerator {
+export class RequestHeaderParameterDeserializersGenerator extends InputParameterDeserializersGenerator<'openapi/request-headers-deserializer'> {
   constructor(config: GeneratorConfig & ParameterDeserializersGeneratorConfig) {
-    super(
-      'openapi/request-header-parameter-deserializers',
-      'openapi/request-headers-type',
-      'openapi/request-headers-deserializer',
-      'header',
-      config,
-    )
+    super('openapi/request-headers-deserializer', 'openapi/request-headers-type', 'header', config)
   }
 }
 

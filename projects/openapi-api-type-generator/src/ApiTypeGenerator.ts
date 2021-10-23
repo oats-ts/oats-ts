@@ -15,21 +15,16 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class ApiTypeGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/api-type'
-  private static consumes: OpenAPIGeneratorTarget[] = [
+export class ApiTypeGenerator implements OpenAPIGenerator<'openapi/api-type'> {
+  private context: OpenAPIGeneratorContext = null
+  private config: GeneratorConfig & ApiTypeGeneratorConfig
+
+  public readonly id = 'openapi/api-type'
+  public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
     'openapi/request-type',
     'openapi/response-type',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/api-type']
-
-  private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ApiTypeGeneratorConfig
-
-  public readonly id: string = ApiTypeGenerator.id
-  public readonly produces: string[] = ApiTypeGenerator.produces
-  public readonly consumes: string[] = ApiTypeGenerator.consumes
 
   public constructor(config: GeneratorConfig & ApiTypeGeneratorConfig) {
     this.config = config
@@ -54,24 +49,14 @@ export class ApiTypeGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/api-type': {
-        return factory.createTypeReferenceNode(nameOf(input, target))
-      }
-    }
+    return factory.createTypeReferenceNode(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case 'openapi/api-type': {
-        return getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+    return getModelImports(fromPath, this.id, [input], context)
   }
 }

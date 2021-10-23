@@ -15,22 +15,17 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class SdkStubGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/sdk-stub'
-  private static consumes: OpenAPIGeneratorTarget[] = [
+export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
+  private context: OpenAPIGeneratorContext = null
+  private config: GeneratorConfig & SdkStubGeneratorConfig
+
+  public readonly id = 'openapi/sdk-stub'
+  public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
     'openapi/request-type',
     'openapi/response-type',
     'openapi/sdk-type',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/sdk-stub']
-
-  private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & SdkStubGeneratorConfig
-
-  public readonly id: string = SdkStubGenerator.id
-  public readonly produces: string[] = SdkStubGenerator.produces
-  public readonly consumes: string[] = SdkStubGenerator.consumes
 
   public constructor(config: GeneratorConfig & SdkStubGeneratorConfig) {
     this.config = config
@@ -55,26 +50,14 @@ export class SdkStubGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
-    const { context, config } = this
+  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
+    const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/sdk-stub': {
-        return factory.createIdentifier(nameOf(input, target))
-      }
-      default:
-        return undefined
-    }
+    return factory.createIdentifier(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
-    const { context, config } = this
-    switch (target) {
-      case 'openapi/sdk-stub': {
-        return getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
+    const { context } = this
+    return getModelImports(fromPath, this.id, [input], context)
   }
 }

@@ -9,15 +9,13 @@ import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
 import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 
-export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
+export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
   implements CodeGenerator<T, TypeScriptModule>
 {
   private context: TypesGeneratorContext = null
   private config: GeneratorConfig & TypesGeneratorConfig
-  public readonly consumes: string[] = []
-
-  abstract readonly id: string
-  abstract readonly produces: [string]
+  public readonly consumes: C[] = []
+  abstract readonly id: Id
 
   public constructor(config: GeneratorConfig & TypesGeneratorConfig) {
     this.config = config
@@ -26,7 +24,7 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
   public initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
       ...createGeneratorContext(data, this.config, generators),
-      target: this.produces[0],
+      target: this.id,
     }
   }
 
@@ -44,23 +42,13 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
     }
   }
 
-  public referenceOf(input: Referenceable<SchemaObject>, target: string): TypeNode {
+  public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
     const { context, config } = this
-    switch (target) {
-      case context.target:
-        return getExternalTypeReferenceAst(input, context, config)
-      default:
-        return undefined
-    }
+    return getExternalTypeReferenceAst(input, context, config)
   }
 
-  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>, target: string): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case context.target:
-        return getTypeImports(fromPath, input, context, true)
-      default:
-        return []
-    }
+    return getTypeImports(fromPath, input, context, true)
   }
 }

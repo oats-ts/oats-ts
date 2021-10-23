@@ -9,15 +9,17 @@ import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 
-export abstract class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>>
-  implements CodeGenerator<T, TypeScriptModule>
+export abstract class JsonSchemaValidatorsGenerator<
+  T extends ReadOutput<HasSchemas>,
+  Id extends string,
+  C extends string,
+> implements CodeGenerator<T, TypeScriptModule>
 {
   private context: ValidatorsGeneratorContext = null
   private config: GeneratorConfig & ValidatorsGeneratorConfig
 
-  public abstract readonly id: string
-  public abstract readonly produces: [string]
-  public abstract readonly consumes: [string]
+  public abstract readonly id: Id
+  public abstract readonly consumes: [C]
 
   public constructor(config: GeneratorConfig & ValidatorsGeneratorConfig) {
     this.config = config
@@ -26,7 +28,7 @@ export abstract class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSche
   public initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
       ...createGeneratorContext(data, this.config, generators),
-      produces: this.produces[0],
+      produces: this.id,
       consumes: this.consumes[0],
     }
   }
@@ -45,26 +47,16 @@ export abstract class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSche
     }
   }
 
-  public referenceOf(input: SchemaObject | ReferenceObject, target: string): Expression {
+  public referenceOf(input: SchemaObject | ReferenceObject): Expression {
     const { context, config } = this
     const { nameOf, dereference } = context
-    switch (target) {
-      case context.produces:
-        const schema = dereference(input)
-        const name = nameOf(schema, context.produces)
-        return isNil(name) ? getRightHandSideValidatorAst(input, context, config, 0) : factory.createIdentifier(name)
-      default:
-        return undefined
-    }
+    const schema = dereference(input)
+    const name = nameOf(schema, context.produces)
+    return isNil(name) ? getRightHandSideValidatorAst(input, context, config, 0) : factory.createIdentifier(name)
   }
 
-  public dependenciesOf(fromPath: string, input: SchemaObject | ReferenceObject, target: string): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: SchemaObject | ReferenceObject): ImportDeclaration[] {
     const { context, config } = this
-    switch (target) {
-      case context.produces:
-        return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
-      default:
-        return []
-    }
+    return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
   }
 }

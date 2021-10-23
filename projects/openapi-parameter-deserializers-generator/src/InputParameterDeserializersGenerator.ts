@@ -21,31 +21,26 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class InputParameterDeserializersGenerator implements OpenAPIGenerator {
+export class InputParameterDeserializersGenerator<Id extends OpenAPIGeneratorTarget> implements OpenAPIGenerator<Id> {
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & ParameterDeserializersGeneratorConfig
   private operations: EnhancedOperation[]
   private readonly location: ParameterLocation
-  private readonly produced: OpenAPIGeneratorTarget
   private readonly consumed: OpenAPIGeneratorTarget
   private generator: (data: EnhancedOperation, context: OpenAPIGeneratorContext) => TypeScriptModule
 
-  public readonly id: string
-  public readonly produces: string[]
-  public readonly consumes: string[]
+  public readonly id: Id
+  public readonly consumes: OpenAPIGeneratorTarget[]
 
   public constructor(
-    id: string,
+    id: Id,
     consumed: OpenAPIGeneratorTarget,
-    produced: OpenAPIGeneratorTarget,
     location: ParameterLocation,
     config: GeneratorConfig & ParameterDeserializersGeneratorConfig,
   ) {
     this.id = id
-    this.produced = produced
     this.consumed = consumed
     this.consumes = ['openapi/type', consumed]
-    this.produces = [produced]
     this.location = location
     this.config = config
   }
@@ -54,9 +49,9 @@ export class InputParameterDeserializersGenerator implements OpenAPIGenerator {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, this.produced),
+      nameOf(operation, this.id),
     )
-    this.generator = generateOperationParameterTypeDeserializer(this.location, this.produced, this.consumed)
+    this.generator = generateOperationParameterTypeDeserializer(this.location, this.id, this.consumed)
   }
 
   private enhance(input: OperationObject): EnhancedOperation {
@@ -84,28 +79,16 @@ export class InputParameterDeserializersGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case this.produced: {
-        const params = this.enhance(input)[this.location]
-        return isEmpty(params) ? undefined : factory.createIdentifier(nameOf(input, target))
-      }
-      default:
-        return undefined
-    }
+    const params = this.enhance(input)[this.location]
+    return isEmpty(params) ? undefined : factory.createIdentifier(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case this.produced: {
-        const params = this.enhance(input)[this.location]
-        return isEmpty(params) ? undefined : getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+    const params = this.enhance(input)[this.location]
+    return isEmpty(params) ? undefined : getModelImports(fromPath, this.id, [input], context)
   }
 }

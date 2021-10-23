@@ -15,9 +15,12 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class ExpressRoutesGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/express-routes'
-  private static consumes: OpenAPIGeneratorTarget[] = [
+export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express-route'> {
+  private context: OpenAPIGeneratorContext = null
+  private config: GeneratorConfig & ExpressRouteGeneratorConfig
+
+  public readonly id = 'openapi/express-route'
+  public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
     'openapi/request-type',
     'openapi/response-type',
@@ -26,14 +29,6 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator {
     'openapi/query-deserializer',
     'openapi/request-headers-deserializer',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/express-route']
-
-  private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ExpressRouteGeneratorConfig
-
-  public readonly id: string = ExpressRoutesGenerator.id
-  public readonly produces: string[] = ExpressRoutesGenerator.produces
-  public readonly consumes: string[] = ExpressRoutesGenerator.consumes
 
   public constructor(config: GeneratorConfig & ExpressRouteGeneratorConfig) {
     this.config = config
@@ -60,24 +55,14 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/api-type': {
-        return factory.createTypeReferenceNode(nameOf(input, target))
-      }
-    }
+    return factory.createTypeReferenceNode(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case 'openapi/api-type': {
-        return getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+    return getModelImports(fromPath, this.id, [input], context)
   }
 }

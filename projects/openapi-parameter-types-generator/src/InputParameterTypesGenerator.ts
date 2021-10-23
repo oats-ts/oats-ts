@@ -16,32 +16,23 @@ import { getModelImports } from '@oats-ts/typescript-common'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { generateOperationParameterType } from './generateOperationParameterType'
 
-export class InputParameterTypesGenerator implements OpenAPIGenerator {
+export class InputParameterTypesGenerator<Id extends OpenAPIGeneratorTarget> implements OpenAPIGenerator<Id> {
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & ParameterTypesGeneratorConfig
   private operations: EnhancedOperation[]
   private readonly location: ParameterLocation
-  private readonly produced: OpenAPIGeneratorTarget
   private generator: (
     data: EnhancedOperation,
     context: OpenAPIGeneratorContext,
     config: ParameterTypesGeneratorConfig,
   ) => TypeScriptModule
 
-  public readonly id: string
-  public readonly produces: OpenAPIGeneratorTarget[]
+  public readonly id: Id
   public readonly consumes: OpenAPIGeneratorTarget[]
 
-  public constructor(
-    id: string,
-    produced: OpenAPIGeneratorTarget,
-    location: ParameterLocation,
-    config: GeneratorConfig & ParameterTypesGeneratorConfig,
-  ) {
+  public constructor(id: Id, location: ParameterLocation, config: GeneratorConfig & ParameterTypesGeneratorConfig) {
     this.id = id
-    this.produced = produced
     this.consumes = ['openapi/type']
-    this.produces = [produced]
     this.location = location
     this.config = config
   }
@@ -50,7 +41,7 @@ export class InputParameterTypesGenerator implements OpenAPIGenerator {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, this.produced),
+      nameOf(operation, this.id),
     )
     this.generator = generateOperationParameterType(this.location)
   }
@@ -80,28 +71,16 @@ export class InputParameterTypesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case this.produced: {
-        const params = this.enhance(input)[this.location]
-        return isEmpty(params) ? undefined : factory.createTypeReferenceNode(nameOf(input, target))
-      }
-      default:
-        return undefined
-    }
+    const params = this.enhance(input)[this.location]
+    return isEmpty(params) ? undefined : factory.createTypeReferenceNode(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case this.produced: {
-        const params = this.enhance(input)[this.location]
-        return isEmpty(params) ? undefined : getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+    const params = this.enhance(input)[this.location]
+    return isEmpty(params) ? undefined : getModelImports(fromPath, this.id, [input], context)
   }
 }

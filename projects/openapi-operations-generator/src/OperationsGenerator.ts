@@ -16,9 +16,13 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class OperationsGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/operations'
-  private static consumes: OpenAPIGeneratorTarget[] = [
+export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'> {
+  private context: OpenAPIGeneratorContext = null
+  private config: GeneratorConfig & OperationsGeneratorConfig
+  private operations: EnhancedOperation[]
+
+  public readonly id = 'openapi/operation'
+  public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
     'openapi/request-headers-type',
     'openapi/query-type',
@@ -29,20 +33,12 @@ export class OperationsGenerator implements OpenAPIGenerator {
     'openapi/path-serializer',
     'openapi/query-serializer',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/operation']
-
-  private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & OperationsGeneratorConfig
-  private operations: EnhancedOperation[]
-
-  public readonly id: string = OperationsGenerator.id
-  public readonly produces: string[] = OperationsGenerator.produces
-  public readonly consumes: string[]
 
   public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
     this.config = config
-    this.consumes = OperationsGenerator.consumes.concat(config.validate ? ['openapi/expectations'] : [])
-    this.produces = OperationsGenerator.produces
+    if (config.validate) {
+      this.consumes.push('openapi/expectations')
+    }
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -70,26 +66,14 @@ export class OperationsGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/operation': {
-        return factory.createIdentifier(nameOf(input, target))
-      }
-      default:
-        return undefined
-    }
+    return factory.createIdentifier(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case 'openapi/operation': {
-        return getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+    return getModelImports(fromPath, this.id, [input], context)
   }
 }

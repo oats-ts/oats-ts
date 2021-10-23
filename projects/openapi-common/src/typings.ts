@@ -7,7 +7,12 @@ import { HttpMethod } from '@oats-ts/openapi-http'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { GeneratorContext } from '@oats-ts/model-common'
 
-export type OpenAPIGenerator = CodeGenerator<OpenAPIReadOutput, TypeScriptModule>
+export type OpenAPIGenerator<P extends OpenAPIGeneratorTarget = OpenAPIGeneratorTarget> = CodeGenerator<
+  OpenAPIReadOutput,
+  TypeScriptModule,
+  P,
+  OpenAPIGeneratorTarget
+>
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
 /**

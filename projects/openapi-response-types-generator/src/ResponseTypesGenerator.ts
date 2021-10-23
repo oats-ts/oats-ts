@@ -17,23 +17,16 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class ResponseTypesGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/response-types'
-  private static consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/response-headers-type']
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/response-type']
-
+export class ResponseTypesGenerator implements OpenAPIGenerator<'openapi/response-type'> {
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & ResponseTypesGeneratorConfig
   private operations: EnhancedOperation[]
 
-  public readonly id: string = ResponseTypesGenerator.id
-  public readonly produces: string[] = ResponseTypesGenerator.produces
-  public readonly consumes: string[]
+  public readonly id = 'openapi/response-type'
+  public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/response-headers-type']
 
   public constructor(config: GeneratorConfig & ResponseTypesGeneratorConfig) {
     this.config = config
-    this.consumes = ResponseTypesGenerator.consumes
-    this.produces = ResponseTypesGenerator.produces
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -61,26 +54,14 @@ export class ResponseTypesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/response-type': {
-        return hasResponses(input, context) ? factory.createTypeReferenceNode(nameOf(input, target)) : undefined
-      }
-      default:
-        return undefined
-    }
+    return hasResponses(input, context) ? factory.createTypeReferenceNode(nameOf(input, this.id)) : undefined
   }
 
-  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case 'openapi/response-type': {
-        return hasResponses(input, context) ? getModelImports(fromPath, target, [input], this.context) : []
-      }
-      default:
-        return []
-    }
+    return hasResponses(input, context) ? getModelImports(fromPath, this.id, [input], this.context) : []
   }
 }

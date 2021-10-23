@@ -15,21 +15,18 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class SdkTypeGenerator implements OpenAPIGenerator {
+export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
   public static id = 'openapi/sdk-type'
-  private static consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/operation',
-    'openapi/request-type',
-    'openapi/response-type',
-  ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/sdk-type']
 
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & SdkTypeGeneratorConfig
 
-  public readonly id: string = SdkTypeGenerator.id
-  public readonly produces: string[] = SdkTypeGenerator.produces
-  public readonly consumes: string[] = SdkTypeGenerator.consumes
+  public readonly id = 'openapi/sdk-type'
+  public readonly consumes: OpenAPIGeneratorTarget[] = [
+    'openapi/operation',
+    'openapi/request-type',
+    'openapi/response-type',
+  ]
 
   public constructor(config: GeneratorConfig & SdkTypeGeneratorConfig) {
     this.config = config
@@ -54,24 +51,14 @@ export class SdkTypeGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OpenAPIObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/sdk-type': {
-        return factory.createTypeReferenceNode(nameOf(input, target))
-      }
-    }
+    return factory.createTypeReferenceNode(nameOf(input, this.id))
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case 'openapi/sdk-type': {
-        return getModelImports(fromPath, target, [input], context)
-      }
-      default:
-        return []
-    }
+    return getModelImports(fromPath, this.id, [input], context)
   }
 }

@@ -17,28 +17,21 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class RequestTypesGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/request-types'
-  private static consumes: OpenAPIGeneratorTarget[] = [
+export class RequestTypesGenerator implements OpenAPIGenerator<'openapi/request-type'> {
+  private context: OpenAPIGeneratorContext = null
+  private config: GeneratorConfig & RequestTypesGeneratorConfig
+  private operations: EnhancedOperation[]
+
+  public readonly id = 'openapi/request-type'
+  public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/type',
     'openapi/request-headers-type',
     'openapi/query-type',
     'openapi/path-type',
   ]
-  private static produces: OpenAPIGeneratorTarget[] = ['openapi/request-type']
-
-  private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & RequestTypesGeneratorConfig
-  private operations: EnhancedOperation[]
-
-  public readonly id: string = RequestTypesGenerator.id
-  public readonly produces: string[] = RequestTypesGenerator.produces
-  public readonly consumes: string[]
 
   public constructor(config: GeneratorConfig & RequestTypesGeneratorConfig) {
     this.config = config
-    this.consumes = RequestTypesGenerator.consumes
-    this.produces = RequestTypesGenerator.produces
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
@@ -58,7 +51,7 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context } = this
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
@@ -74,30 +67,16 @@ export class RequestTypesGenerator implements OpenAPIGenerator {
     }
   }
 
-  public referenceOf(input: OperationObject, target: OpenAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    switch (target) {
-      case 'openapi/request-type': {
-        return hasInput(this.enhance(input), context)
-          ? factory.createTypeReferenceNode(nameOf(input, target))
-          : undefined
-      }
-      default:
-        return undefined
-    }
+    return hasInput(this.enhance(input), context) ? factory.createTypeReferenceNode(nameOf(input, this.id)) : undefined
   }
 
-  public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case 'openapi/request-type': {
-        return hasInput(this.enhance(input), context)
-          ? getModelImports(fromPath, target, [input], this.context)
-          : undefined
-      }
-      default:
-        return []
-    }
+    return hasInput(this.enhance(input), context)
+      ? getModelImports(fromPath, this.id, [input], this.context)
+      : undefined
   }
 }

@@ -6,21 +6,21 @@ import { ResponseHeaderTypesGenerator } from './ResponseHeaderTypesGenerator'
 
 export type { ParameterTypesGeneratorConfig } from './typings'
 
-export class QueryParameterTypesGenerator extends InputParameterTypesGenerator {
+export class QueryParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/query-type'> {
   constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
-    super('openapi/query-parameter-types', 'openapi/query-type', 'query', config)
+    super('openapi/query-type', 'query', config)
   }
 }
 
-export class PathParameterTypesGenerator extends InputParameterTypesGenerator {
+export class PathParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/path-type'> {
   constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
-    super('openapi/path-parameter-types', 'openapi/path-type', 'path', config)
+    super('openapi/path-type', 'path', config)
   }
 }
 
-export class RequestHeaderParameterTypesGenerator extends InputParameterTypesGenerator {
+export class RequestHeaderParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/request-headers-type'> {
   constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
-    super('openapi/request-header-parameter-types', 'openapi/request-headers-type', 'header', config)
+    super('openapi/request-headers-type', 'header', config)
   }
 }
 
