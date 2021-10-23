@@ -124,7 +124,7 @@ function createDeserializerConstant(
   )
 }
 
-const generateOperationParameterTypeDeserializer =
+export const generateOperationParameterTypeDeserializer =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
   (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
     const parameters = data[location]

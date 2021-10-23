@@ -116,7 +116,7 @@ function createSerializerConstant(
   )
 }
 
-const generateOperationParameterTypeSerializer =
+export const generateOperationParameterTypeSerializer =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
   (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
     const parameters = data[location]
@@ -137,19 +137,3 @@ const generateOperationParameterTypeSerializer =
       content: [createSerializerConstant(location, data, context, target)],
     }
   }
-
-export const generateQueryParameterTypeSerializer = generateOperationParameterTypeSerializer(
-  'query',
-  'openapi/query-serializer',
-  'openapi/query-type',
-)
-export const generatePathParameterTypeSerializer = generateOperationParameterTypeSerializer(
-  'path',
-  'openapi/path-serializer',
-  'openapi/path-type',
-)
-export const generateHeaderParameterTypeSerializer = generateOperationParameterTypeSerializer(
-  'header',
-  'openapi/request-headers-serializer',
-  'openapi/request-headers-type',
-)

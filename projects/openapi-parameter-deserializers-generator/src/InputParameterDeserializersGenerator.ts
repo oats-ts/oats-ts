@@ -1,10 +1,11 @@
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { OperationObject } from '@oats-ts/openapi-model'
+import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
 import {
   generateHeaderParameterTypeDeserializer,
+  generateOperationParameterTypeDeserializer,
   generatePathParameterTypeDeserializer,
   generateQueryParameterTypeDeserializer,
 } from './generateOperationParameterTypeDeserializer'
@@ -20,41 +21,42 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class ParameterDeserializersGenerator implements OpenAPIGenerator {
-  public static id = 'openapi/parameter-deserializers'
-  private static consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/type',
-    'openapi/request-headers-type',
-    'openapi/query-type',
-    'openapi/path-type',
-    'openapi/operation',
-  ]
-  private static produces: OpenAPIGeneratorTarget[] = [
-    'openapi/request-headers-deserializer',
-    'openapi/path-deserializer',
-    'openapi/query-deserializer',
-  ]
-
+export class InputParameterDeserializersGenerator implements OpenAPIGenerator {
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & ParameterDeserializersGeneratorConfig
   private operations: EnhancedOperation[]
+  private readonly location: ParameterLocation
+  private readonly produced: OpenAPIGeneratorTarget
+  private readonly consumed: OpenAPIGeneratorTarget
+  private generator: (data: EnhancedOperation, context: OpenAPIGeneratorContext) => TypeScriptModule
 
-  public readonly id: string = ParameterDeserializersGenerator.id
-  public readonly produces: string[] = ParameterDeserializersGenerator.produces
+  public readonly id: string
+  public readonly produces: string[]
   public readonly consumes: string[]
 
-  public constructor(config: GeneratorConfig & ParameterDeserializersGeneratorConfig) {
+  public constructor(
+    id: string,
+    consumed: OpenAPIGeneratorTarget,
+    produced: OpenAPIGeneratorTarget,
+    location: ParameterLocation,
+    config: GeneratorConfig & ParameterDeserializersGeneratorConfig,
+  ) {
+    this.id = id
+    this.produced = produced
+    this.consumed = consumed
+    this.consumes = ['openapi/type', consumed]
+    this.produces = [produced]
+    this.location = location
     this.config = config
-    this.consumes = ParameterDeserializersGenerator.consumes
-    this.produces = ParameterDeserializersGenerator.produces
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, 'openapi/operation'),
+      nameOf(operation, this.produced),
     )
+    this.generator = generateOperationParameterTypeDeserializer(this.location, this.produced, this.consumed)
   }
 
   private enhance(input: OperationObject): EnhancedOperation {
@@ -66,15 +68,11 @@ export class ParameterDeserializersGenerator implements OpenAPIGenerator {
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context } = this
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [
-          generatePathParameterTypeDeserializer(operation, context),
-          generateQueryParameterTypeDeserializer(operation, context),
-          generateHeaderParameterTypeDeserializer(operation, context),
-        ].filter(negate(isNil)),
+        [this.generator(operation, context)].filter(negate(isNil)),
       ),
     )
 
@@ -90,17 +88,10 @@ export class ParameterDeserializersGenerator implements OpenAPIGenerator {
     const { context } = this
     const { nameOf } = context
     switch (target) {
-      case 'openapi/request-headers-deserializer': {
-        const { header } = this.enhance(input)
-        return isEmpty(header) ? undefined : factory.createIdentifier(nameOf(input, target))
+      case this.produced: {
+        const params = this.enhance(input)[this.location]
+        return isEmpty(params) ? undefined : factory.createIdentifier(nameOf(input, target))
       }
-      case 'openapi/path-deserializer': {
-        const { path } = this.enhance(input)
-        return isEmpty(path) ? undefined : factory.createIdentifier(nameOf(input, target))
-      }
-      case 'openapi/query-deserializer':
-        const { query } = this.enhance(input)
-        return isEmpty(query) ? undefined : factory.createIdentifier(nameOf(input, target))
       default:
         return undefined
     }
@@ -109,17 +100,10 @@ export class ParameterDeserializersGenerator implements OpenAPIGenerator {
   public dependenciesOf(fromPath: string, input: OperationObject, target: OpenAPIGeneratorTarget): ImportDeclaration[] {
     const { context } = this
     switch (target) {
-      case 'openapi/request-headers-deserializer': {
-        const { header } = this.enhance(input)
-        return isEmpty(header) ? undefined : getModelImports(fromPath, target, [input], context)
+      case this.produced: {
+        const params = this.enhance(input)[this.location]
+        return isEmpty(params) ? undefined : getModelImports(fromPath, target, [input], context)
       }
-      case 'openapi/path-deserializer': {
-        const { path } = this.enhance(input)
-        return isEmpty(path) ? undefined : getModelImports(fromPath, target, [input], context)
-      }
-      case 'openapi/query-deserializer':
-        const { query } = this.enhance(input)
-        return isEmpty(query) ? undefined : getModelImports(fromPath, target, [input], context)
       default:
         return []
     }

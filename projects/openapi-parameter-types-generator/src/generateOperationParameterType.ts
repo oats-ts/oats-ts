@@ -8,7 +8,7 @@ import { factory, SyntaxKind } from 'typescript'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { getParameterTypeLiteralAst } from './getParameterTypeLiteralAst'
 
-const generateOperationParameterType =
+export const generateOperationParameterType =
   (location: ParameterLocation) =>
   (
     data: EnhancedOperation,
@@ -37,7 +37,3 @@ const generateOperationParameterType =
       ],
     }
   }
-
-export const generateQueryParametersType = generateOperationParameterType('query')
-export const generatePathParametersType = generateOperationParameterType('path')
-export const generateHeaderParametersType = generateOperationParameterType('header')
