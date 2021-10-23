@@ -14,7 +14,7 @@ import { apiType } from '@oats-ts/openapi-api-type-generator'
 import { sdkStub, sdkType, sdkImplementation } from '@oats-ts/openapi-sdk-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
-import { requestTypes } from '@oats-ts/openapi-request-types-generator'
+import { requestTypes, requestServerTypes } from '@oats-ts/openapi-request-types-generator'
 import { responseTypes } from '@oats-ts/openapi-response-types-generator'
 import {
   pathParameterSerializers,
@@ -80,6 +80,7 @@ export async function generateAll() {
         documentation: true,
       }),
       requestTypes(common),
+      requestServerTypes(common),
       responseExpectations(common),
       responseTypes(common),
       // Serializers

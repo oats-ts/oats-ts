@@ -1,9 +1,8 @@
-import { ParameterIssues } from '@oats-ts/openapi-http-server'
-import { GetWithHeaderParamsRequest } from '../requestTypes/GetWithHeaderParamsRequest'
-import { GetWithPathParamsRequest } from '../requestTypes/GetWithPathParamsRequest'
-import { GetWithQueryParamsRequest } from '../requestTypes/GetWithQueryParamsRequest'
-import { PostSimpleNamedObjectRequest } from '../requestTypes/PostSimpleNamedObjectRequest'
-import { SampleOperationRequest } from '../requestTypes/SampleOperationRequest'
+import { GetWithHeaderParamsServerRequest } from '../requestServerTypes/GetWithHeaderParamsServerRequest'
+import { GetWithPathParamsServerRequest } from '../requestServerTypes/GetWithPathParamsServerRequest'
+import { GetWithQueryParamsServerRequest } from '../requestServerTypes/GetWithQueryParamsServerRequest'
+import { PostSimpleNamedObjectServerRequest } from '../requestServerTypes/PostSimpleNamedObjectServerRequest'
+import { SampleOperationServerRequest } from '../requestServerTypes/SampleOperationServerRequest'
 import { GetSimpleNamedObjectResponse } from '../responseTypes/GetSimpleNamedObjectResponse'
 import { GetWithDefaultResponseResponse } from '../responseTypes/GetWithDefaultResponseResponse'
 import { GetWithHeaderParamsResponse } from '../responseTypes/GetWithHeaderParamsResponse'
@@ -16,16 +15,10 @@ import { SampleOperationResponse } from '../responseTypes/SampleOperationRespons
 export type Api<T> = {
   getSimpleNamedObject(extra: T): Promise<GetSimpleNamedObjectResponse>
   getWithDefaultResponse(extra: T): Promise<GetWithDefaultResponseResponse>
-  getWithHeaderParams(
-    input: GetWithHeaderParamsRequest | ParameterIssues,
-    extra: T,
-  ): Promise<GetWithHeaderParamsResponse>
+  getWithHeaderParams(input: GetWithHeaderParamsServerRequest, extra: T): Promise<GetWithHeaderParamsResponse>
   getWithMultipleResponses(extra: T): Promise<GetWithMultipleResponsesResponse>
-  getWithPathParams(input: GetWithPathParamsRequest | ParameterIssues, extra: T): Promise<GetWithPathParamsResponse>
-  getWithQueryParams(input: GetWithQueryParamsRequest | ParameterIssues, extra: T): Promise<GetWithQueryParamsResponse>
-  postSimpleNamedObject(
-    input: PostSimpleNamedObjectRequest | ParameterIssues,
-    extra: T,
-  ): Promise<PostSimpleNamedObjectResponse>
-  sampleOperation(input: SampleOperationRequest | ParameterIssues, extra: T): Promise<SampleOperationResponse>
+  getWithPathParams(input: GetWithPathParamsServerRequest, extra: T): Promise<GetWithPathParamsResponse>
+  getWithQueryParams(input: GetWithQueryParamsServerRequest, extra: T): Promise<GetWithQueryParamsResponse>
+  postSimpleNamedObject(input: PostSimpleNamedObjectServerRequest, extra: T): Promise<PostSimpleNamedObjectResponse>
+  sampleOperation(input: SampleOperationServerRequest, extra: T): Promise<SampleOperationResponse>
 }

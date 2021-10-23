@@ -14,7 +14,11 @@ export const getWithHeaderParamsRoute: Router = Router().get(
       request,
       getWithHeaderParamsRequestHeadersDeserializer,
     )
-    const handlerResults = await api.getWithHeaderParams({ headers, issues: [...headerIssues] }, expressParams)
+    const issues = [...headerIssues]
+    const handlerResults = await api.getWithHeaderParams(
+      { headers, issues: issues.length === 0 ? undefined : issues },
+      expressParams,
+    )
     const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)
     await configuration.setStatusCode(response, handlerResults.statusCode)
     await configuration.setResponseHeaders(response, responseHeaders)

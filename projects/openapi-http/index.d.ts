@@ -1,3 +1,5 @@
+import type { Issue } from '@oats-ts/validators'
+
 /** Configuration for performing a HTTP request */
 export type ClientConfiguration<R = any, V = any> = {
   /** The common base of the url */
@@ -38,6 +40,14 @@ export type HasPathParameters<T> = {
 
 export type HasQueryParameters<T> = {
   query: T
+}
+
+export type HasIssues = {
+  issues: Issue[]
+}
+
+export type HasNoIssues = {
+  issues?: undefined
 }
 
 export type HasRequestBody<C extends string, T> = {

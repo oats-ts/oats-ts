@@ -1,6 +1,6 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getSdkTypeMethodSignatureAst } from './getApiTypeMethodSignatureAst'
+import { getApiTypeMethodSignatureAst } from './getApiTypeMethodSignatureAst'
 import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
 import { ApiTypeGeneratorConfig } from './typings'
 
@@ -17,7 +17,7 @@ export function getApiTypeAst(
     nameOf(document, 'openapi/api-type'),
     [factory.createTypeParameterDeclaration('T')],
     factory.createTypeLiteralNode(
-      operations.map((operation) => getSdkTypeMethodSignatureAst(operation, context, config)),
+      operations.map((operation) => getApiTypeMethodSignatureAst(operation, context, config)),
     ),
   )
 }

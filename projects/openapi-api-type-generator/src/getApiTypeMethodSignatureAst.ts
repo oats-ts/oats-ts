@@ -1,15 +1,14 @@
 import { EnhancedOperation, hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
-import { RuntimePackages } from '@oats-ts/openapi-common'
+import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
 import { documentNode } from '@oats-ts/typescript-common'
 import { ApiTypeGeneratorConfig } from './typings'
 
-export function getSdkTypeMethodSignatureAst(
+export function getApiTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ApiTypeGeneratorConfig,
 ): MethodSignature {
-  const { nameOf } = context
+  const { nameOf, referenceOf } = context
 
   const parameters: ParameterDeclaration[] = []
 
@@ -21,10 +20,7 @@ export function getSdkTypeMethodSignatureAst(
         undefined,
         'input',
         undefined,
-        factory.createUnionTypeNode([
-          factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
-          factory.createTypeReferenceNode('ParameterIssues'),
-        ]),
+        referenceOf(data.operation, 'openapi/request-server-type'),
       ),
     )
   }

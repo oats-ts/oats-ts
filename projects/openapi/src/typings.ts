@@ -17,6 +17,7 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/request-headers-type'
   | 'openapi/response-type'
   | 'openapi/request-type'
+  | 'openapi/request-server-type'
   | 'openapi/response-headers-type'
   | 'openapi/request-headers-serializer'
   | 'openapi/response-headers-serializer'

@@ -1,4 +1,4 @@
-import { factory, NodeFlags } from 'typescript'
+import { factory, NodeFlags, SyntaxKind } from 'typescript'
 import { Names } from './names'
 import { EnhancedOperation, hasInput, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { isEmpty } from 'lodash'
@@ -24,18 +24,19 @@ export function getApiHandlerCallResultStatementAst(data: EnhancedOperation, con
         : []),
       factory.createPropertyAssignment(
         factory.createIdentifier(Names.issues),
-        factory.createArrayLiteralExpression(
-          [
-            ...(!isEmpty(data.path) ? [factory.createSpreadElement(factory.createIdentifier(Names.pathIssues))] : []),
-            ...(!isEmpty(data.query) ? [factory.createSpreadElement(factory.createIdentifier(Names.queryIssues))] : []),
-            ...(!isEmpty(data.header)
-              ? [factory.createSpreadElement(factory.createIdentifier(Names.headerIssues))]
-              : []),
-            ...(hasRequestBody(data, context)
-              ? [factory.createSpreadElement(factory.createIdentifier(Names.bodyIssues))]
-              : []),
-          ],
-          false,
+        factory.createConditionalExpression(
+          factory.createBinaryExpression(
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(Names.issues),
+              factory.createIdentifier('length'),
+            ),
+            factory.createToken(SyntaxKind.EqualsEqualsEqualsToken),
+            factory.createNumericLiteral('0'),
+          ),
+          factory.createToken(SyntaxKind.QuestionToken),
+          factory.createIdentifier('undefined'),
+          factory.createToken(SyntaxKind.ColonToken),
+          factory.createIdentifier(Names.issues),
         ),
       ),
     ],

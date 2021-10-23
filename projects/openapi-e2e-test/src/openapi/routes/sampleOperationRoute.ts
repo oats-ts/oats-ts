@@ -19,8 +19,9 @@ export const sampleOperationRoute: Router = Router().post(
       sampleOperationRequestHeadersDeserializer,
     )
     const [bodyIssues, body, mimeType] = await configuration.getRequestBody(request, undefined)
+    const issues = [...pathIssues, ...queryIssues, ...headerIssues, ...bodyIssues]
     const handlerResults = await api.sampleOperation(
-      { path, query, headers, mimeType, body, issues: [...pathIssues, ...queryIssues, ...headerIssues, ...bodyIssues] },
+      { path, query, headers, mimeType, body, issues: issues.length === 0 ? undefined : issues },
       expressParams,
     )
     const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)

@@ -36,6 +36,10 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : pascalCase(`${operationName}Request`)
     }
+    case 'openapi/request-server-type': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : pascalCase(`${operationName}ServerRequest`)
+    }
     case 'openapi/path-serializer': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}PathSerializer`

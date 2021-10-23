@@ -11,6 +11,7 @@ import { getResponseBodySetterStatementAst } from './getResponseBodySetterStatem
 import { getResponseHeaderSetterStatementAst } from './getResponseHeaderSetterStatementAst'
 import { getResponseHeadersStatementAst } from './getResponseHeadersStatementAst'
 import { getExpressParamsStatementAst } from './getExpressParamsStatementAst'
+import { getIssuesStatementAst } from './getIssuesStatementAst'
 
 export function getExpressRouteHandlerBodyAst(
   doc: OpenAPIObject,
@@ -27,6 +28,7 @@ export function getExpressRouteHandlerBodyAst(
     ...getParametersStatementAst('query', data, context),
     ...getParametersStatementAst('header', data, context),
     ...getBodyStatementAst(data, context),
+    getIssuesStatementAst(data, context),
     getApiHandlerCallResultStatementAst(data, context),
     getResponseHeadersStatementAst(data, context),
     getResponseBodySetterStatementAst(data, context),

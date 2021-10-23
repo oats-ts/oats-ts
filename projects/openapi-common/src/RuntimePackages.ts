@@ -5,6 +5,8 @@ const Http = {
   HasPathParameters: 'HasPathParameters',
   HasQueryParameters: 'HasQueryParameters',
   HasRequestBody: 'HasRequestBody',
+  HasIssues: 'HasIssues',
+  HasNoIssues: 'HasNoIssues',
   HttpMethod: 'HttpMethod',
   HttpResponse: 'HttpResponse',
   RawHttpHeaders: 'RawHttpHeaders',

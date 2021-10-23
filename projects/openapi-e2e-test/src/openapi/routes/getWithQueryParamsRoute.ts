@@ -11,7 +11,11 @@ export const getWithQueryParamsRoute: Router = Router().get(
     const api: Api<ExpressParameters> = response.locals['__oats_api']
     const expressParams: ExpressParameters = { request, response, next }
     const [queryIssues, query] = await configuration.getQueryParameters(request, getWithQueryParamsQueryDeserializer)
-    const handlerResults = await api.getWithQueryParams({ query, issues: [...queryIssues] }, expressParams)
+    const issues = [...queryIssues]
+    const handlerResults = await api.getWithQueryParams(
+      { query, issues: issues.length === 0 ? undefined : issues },
+      expressParams,
+    )
     const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)
     await configuration.setStatusCode(response, handlerResults.statusCode)
     await configuration.setResponseHeaders(response, responseHeaders)

@@ -22,7 +22,7 @@ export class ApiTypeGenerator implements OpenAPIGenerator<'openapi/api-type'> {
   public readonly id = 'openapi/api-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
-    'openapi/request-type',
+    'openapi/request-server-type',
     'openapi/response-type',
   ]
 

@@ -9,6 +9,7 @@ export const getWithDefaultResponseRoute: Router = Router().get(
     const configuration: ServerConfiguration<Request, Response> = response.locals['__oats_configuration']
     const api: Api<ExpressParameters> = response.locals['__oats_api']
     const expressParams: ExpressParameters = { request, response, next }
+    const issues = []
     const handlerResults = await api.getWithDefaultResponse(expressParams)
     const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)
     await configuration.setStatusCode(response, handlerResults.statusCode)

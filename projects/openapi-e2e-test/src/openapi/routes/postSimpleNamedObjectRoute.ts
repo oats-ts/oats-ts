@@ -10,7 +10,11 @@ export const postSimpleNamedObjectRoute: Router = Router().post(
     const api: Api<ExpressParameters> = response.locals['__oats_api']
     const expressParams: ExpressParameters = { request, response, next }
     const [bodyIssues, body, mimeType] = await configuration.getRequestBody(request, undefined)
-    const handlerResults = await api.postSimpleNamedObject({ mimeType, body, issues: [...bodyIssues] }, expressParams)
+    const issues = [...bodyIssues]
+    const handlerResults = await api.postSimpleNamedObject(
+      { mimeType, body, issues: issues.length === 0 ? undefined : issues },
+      expressParams,
+    )
     const responseHeaders = await configuration.getResponseHeaders(handlerResults.headers, undefined)
     await configuration.setStatusCode(response, handlerResults.statusCode)
     await configuration.setResponseHeaders(response, responseHeaders)
