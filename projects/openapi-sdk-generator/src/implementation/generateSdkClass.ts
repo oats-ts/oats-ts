@@ -1,18 +1,18 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getSdkTypeImports } from '@oats-ts/openapi-sdk-common'
 import { getSdkClassAst } from './getSdkClassAst'
 import { RuntimePackages, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { ClientSdkGeneratorConfig } from './typings'
+import { SdkGeneratorConfig } from '../typings'
 import { flatMap } from 'lodash'
 import { getNamedImports } from '@oats-ts/typescript-common'
+import { getSdkTypeImports } from '../getSdkTypeImports'
 
 export function generateSdkClass(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: ClientSdkGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): TypeScriptModule {
   const { dependenciesOf, pathOf } = context
   const path = pathOf(doc, 'openapi/client-sdk')

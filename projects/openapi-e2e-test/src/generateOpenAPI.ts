@@ -11,9 +11,7 @@ import {
 import { validators } from '@oats-ts/openapi-validators-generator'
 import { types } from '@oats-ts/openapi-types-generator'
 import { apiType } from '@oats-ts/openapi-api-type-generator'
-import { sdkStub } from '@oats-ts/openapi-sdk-stub-generator'
-import { sdkType } from '@oats-ts/openapi-sdk-type-generator'
-import { clientSdk } from '@oats-ts/openapi-client-sdk-generator'
+import { sdkStub, sdkType, sdkImplementation } from '@oats-ts/openapi-sdk-generator'
 import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
 import { requestTypes } from '@oats-ts/openapi-request-types-generator'
@@ -101,7 +99,7 @@ export async function generateAll() {
         ...common,
         documentation: true,
       }),
-      clientSdk({
+      sdkImplementation({
         ...common,
         documentation: true,
       }),

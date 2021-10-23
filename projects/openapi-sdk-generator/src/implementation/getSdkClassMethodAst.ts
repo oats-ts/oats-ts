@@ -1,7 +1,7 @@
 import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 import { hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getSdkMethodParameterAsts } from '@oats-ts/openapi-sdk-common'
+import { getSdkMethodParameterAsts } from '../getSdkMethodParameterAsts'
 
 export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
   const { nameOf } = context

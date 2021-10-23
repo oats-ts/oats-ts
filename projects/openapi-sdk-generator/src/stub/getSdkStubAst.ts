@@ -2,13 +2,11 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getSdkStubMethodAst } from './getSdkStubMethodAst'
 import { ClassDeclaration, factory, SyntaxKind } from 'typescript'
-import { SdkStubGeneratorConfig } from './typings'
 
 export function getSdkStubAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: SdkStubGeneratorConfig,
 ): ClassDeclaration {
   const { nameOf } = context
 

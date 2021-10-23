@@ -2,12 +2,12 @@ import { EnhancedOperation, hasInput, OpenAPIGeneratorContext } from '@oats-ts/o
 import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { documentNode } from '@oats-ts/typescript-common'
-import { SdkTypeGeneratorConfig } from './typings'
+import { SdkGeneratorConfig } from '../typings'
 
 export function getSdkTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  config: SdkTypeGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): MethodSignature {
   const { nameOf } = context
 

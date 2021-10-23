@@ -8,27 +8,26 @@ import {
   createOpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
-import { generateSdkType } from './generateSdkType'
-import { SdkTypeGeneratorConfig } from './typings'
+import { generateSdkClass } from './generateSdkClass'
+import { SdkGeneratorConfig } from '../typings'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
-  public static id = 'openapi/sdk-type'
-
+export class SdkImplementationGenerator implements OpenAPIGenerator<'openapi/client-sdk'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & SdkTypeGeneratorConfig
+  private config: GeneratorConfig & SdkGeneratorConfig
 
-  public readonly id = 'openapi/sdk-type'
+  public readonly id = 'openapi/client-sdk'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
     'openapi/request-type',
     'openapi/response-type',
+    'openapi/sdk-type',
   ]
 
-  public constructor(config: GeneratorConfig & SdkTypeGeneratorConfig) {
+  public constructor(config: GeneratorConfig & SdkGeneratorConfig) {
     this.config = config
   }
 
@@ -42,7 +41,7 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkType(document, operations, context, config)])
+    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkClass(document, operations, context, config)])
 
     return {
       isOk: true,
@@ -54,7 +53,7 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
   public referenceOf(input: OpenAPIObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    return factory.createTypeReferenceNode(nameOf(input, this.id))
+    return factory.createIdentifier(nameOf(input, this.id))
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {

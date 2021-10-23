@@ -2,13 +2,13 @@ import { factory, ClassDeclaration, SyntaxKind } from 'typescript'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { RuntimePackages, EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getSdkClassMethodAst } from './getSdkClassMethodAst'
-import { ClientSdkGeneratorConfig } from './typings'
+import { SdkGeneratorConfig } from '../typings'
 
 export function getSdkClassAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: ClientSdkGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): ClassDeclaration {
   const { nameOf } = context
 

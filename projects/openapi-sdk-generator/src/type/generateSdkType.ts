@@ -1,15 +1,15 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getSdkTypeImports } from '@oats-ts/openapi-sdk-common'
 import { getSdkTypeAst } from './getSdkTypeAst'
-import { SdkTypeGeneratorConfig } from './typings'
+import { SdkGeneratorConfig } from '../typings'
+import { getSdkTypeImports } from '../getSdkTypeImports'
 
 export function generateSdkType(
   doc: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: SdkTypeGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): TypeScriptModule {
   const { pathOf } = context
   return {

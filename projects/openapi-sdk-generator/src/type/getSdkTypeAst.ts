@@ -2,13 +2,13 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getSdkTypeMethodSignatureAst } from './getSdkTypeMethodSignatureAst'
 import { factory, SyntaxKind, TypeAliasDeclaration } from 'typescript'
-import { SdkTypeGeneratorConfig } from './typings'
+import { SdkGeneratorConfig } from '../typings'
 
 export function getSdkTypeAst(
   document: OpenAPIObject,
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
-  config: SdkTypeGeneratorConfig,
+  config: SdkGeneratorConfig,
 ): TypeAliasDeclaration {
   const { nameOf } = context
   return factory.createTypeAliasDeclaration(

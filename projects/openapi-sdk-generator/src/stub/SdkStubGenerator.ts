@@ -9,7 +9,7 @@ import {
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { generateSdkStub } from './generateSdkStub'
-import { SdkStubGeneratorConfig } from './typings'
+import { SdkGeneratorConfig } from '../typings'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
@@ -17,7 +17,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & SdkStubGeneratorConfig
+  private config: GeneratorConfig
 
   public readonly id = 'openapi/sdk-stub'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
@@ -27,7 +27,7 @@ export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
     'openapi/sdk-type',
   ]
 
-  public constructor(config: GeneratorConfig & SdkStubGeneratorConfig) {
+  public constructor(config: GeneratorConfig) {
     this.config = config
   }
 
@@ -41,7 +41,7 @@ export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkStub(document, operations, context, config)])
+    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkStub(document, operations, context)])
 
     return {
       isOk: true,
