@@ -8,7 +8,7 @@ import {
   requestHeaderParameterTypes,
   responseHeaderParameterTypes,
 } from '@oats-ts/openapi-parameter-types-generator'
-import { typeValidators, responseBodyValidators } from '@oats-ts/openapi-validators-generator'
+import { typeValidators, responseBodyValidators, requestBodyValidators } from '@oats-ts/openapi-validators-generator'
 import { types } from '@oats-ts/openapi-types-generator'
 import { apiType } from '@oats-ts/openapi-api-type-generator'
 import { sdkStub, sdkType, sdkImplementation } from '@oats-ts/openapi-sdk-generator'
@@ -81,6 +81,7 @@ export async function generateAll() {
       requestTypes(common),
       requestServerTypes(common),
       responseBodyValidators(common),
+      requestBodyValidators(common),
       responseTypes(common),
       // Serializers
       pathParameterSerializers(common),

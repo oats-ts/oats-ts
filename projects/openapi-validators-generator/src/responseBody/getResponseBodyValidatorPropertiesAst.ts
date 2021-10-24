@@ -2,7 +2,7 @@ import { entries, isNil } from 'lodash'
 import { factory, PropertyAssignment } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { getResponseBodyValidatorPropertyAst } from './getResponseBodyValidatorPropertyAst'
+import { getContentTypeBasedValidatorsAst } from '../getContentTypeBasedValidatorsAst'
 
 export function getResponseBodyValidatorPropertiesAst(
   data: EnhancedOperation,
@@ -17,7 +17,9 @@ export function getResponseBodyValidatorPropertiesAst(
       ([statusCode, response]): PropertyAssignment =>
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
-          factory.createObjectLiteralExpression(getResponseBodyValidatorPropertyAst(dereference(response), context)),
+          factory.createObjectLiteralExpression(
+            getContentTypeBasedValidatorsAst(dereference(response).content || {}, context),
+          ),
         ),
     ),
   )
@@ -25,7 +27,9 @@ export function getResponseBodyValidatorPropertiesAst(
     properties.push(
       factory.createPropertyAssignment(
         'default',
-        factory.createObjectLiteralExpression(getResponseBodyValidatorPropertyAst(dereference(defaultResponse), context)),
+        factory.createObjectLiteralExpression(
+          getContentTypeBasedValidatorsAst(dereference(defaultResponse).content || {}, context),
+        ),
       ),
     )
   }
