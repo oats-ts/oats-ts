@@ -37,7 +37,6 @@ specifiers:
   '@rush-temp/openapi-parameter-types-generator': file:./projects/openapi-parameter-types-generator.tgz
   '@rush-temp/openapi-reader': file:./projects/openapi-reader.tgz
   '@rush-temp/openapi-request-types-generator': file:./projects/openapi-request-types-generator.tgz
-  '@rush-temp/openapi-response-expectations-generator': file:./projects/openapi-response-expectations-generator.tgz
   '@rush-temp/openapi-response-types-generator': file:./projects/openapi-response-types-generator.tgz
   '@rush-temp/openapi-sdk-generator': file:./projects/openapi-sdk-generator.tgz
   '@rush-temp/openapi-type-guards-generator': file:./projects/openapi-type-guards-generator.tgz
@@ -117,13 +116,12 @@ dependencies:
   '@rush-temp/openapi-parameter-types-generator': file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.0.0
   '@rush-temp/openapi-request-types-generator': file:projects/openapi-request-types-generator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-response-expectations-generator': file:projects/openapi-response-expectations-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-response-types-generator': file:projects/openapi-response-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-sdk-generator': file:projects/openapi-sdk-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-type-guards-generator': file:projects/openapi-type-guards-generator.tgz_ts-node@10.0.0+typescript@4.3.5
   '@rush-temp/openapi-types-generator': file:projects/openapi-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-validator': file:projects/openapi-validator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-validators-generator': file:projects/openapi-validators-generator.tgz_ts-node@10.0.0+typescript@4.3.5
+  '@rush-temp/openapi-validators-generator': file:projects/openapi-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.0.0
   '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
   '@rush-temp/validators': file:projects/validators.tgz_ts-node@10.0.0
@@ -4363,7 +4361,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-YX+nKv7tP3tlbuDWvvMIM0xTwWaH+heUTlmY42WoilAqGyarxN83Lkq2M69pwqIFVAJYa5wvpIGRFrxZyJj8cg==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-rfH6UA8zCBzu82gt7PHs+dB5GDNAlL2B1/MHyuKJgf66I8k8OznQLTAMQavPBcOhQPVWE9qcovKZogz9vtCnRQ==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4476,7 +4474,7 @@ packages:
     dev: false
 
   file:projects/openapi-http.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-nJ1rzAu8I7gPwwd1zLucB7HOjzHHH4nQ0zTdM/kBnONSFpmyGcJY6u/VkE6bkIhU9QrH2LP5HxpoIxH5Epwd0A==, tarball: file:projects/openapi-http.tgz}
+    resolution: {integrity: sha512-fFiGf9MVN5sfTyYpZmR+oYvmi2bw/HPXL0bqm6A2jlmaUXvxJLJ9MJrDkUYqxVC0dqLcGDcGGVFBxPz0amnLNA==, tarball: file:projects/openapi-http.tgz}
     id: file:projects/openapi-http.tgz
     name: '@rush-temp/openapi-http'
     version: 0.0.0
@@ -4715,30 +4713,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-response-expectations-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-6eBCwx5S3oiHSPHe2bBDLgP2hde5gaqCU1TBQDpWcBFu88/TAGFJfxb6w02MfbkKb5uIaFhcRoCRjsoHEeQD3g==, tarball: file:projects/openapi-response-expectations-generator.tgz}
-    id: file:projects/openapi-response-expectations-generator.tgz
-    name: '@rush-temp/openapi-response-expectations-generator'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/http': 0.0.5
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
   file:projects/openapi-response-types-generator.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-0CFcDNX3HBWa1oR0BA2JO0pQTru342g/PmSj3WIXTrUrtFxi2SUYC8v+NA/N2XoBdIrwN33/htvOyV1beCehDA==, tarball: file:projects/openapi-response-types-generator.tgz}
     id: file:projects/openapi-response-types-generator.tgz
@@ -4856,8 +4830,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-validators-generator.tgz_ts-node@10.0.0+typescript@4.3.5:
-    resolution: {integrity: sha512-KxV+Obd+hYI2M5Eqzqwprpd+WjeGooCK1WmCiuJi0KpBWIwaK9vAam9Gk0yDyp0DaRyI16ngI0mK/Y770/cvWg==, tarball: file:projects/openapi-validators-generator.tgz}
+  file:projects/openapi-validators-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-T/pxnluloyAl2YAzdCf1+O7JKC9w8MMoaucBZChTOrHfoddwnC13h5xSFyJpYbhuj/DGBjrZ7JnaTJgoJNj+gQ==, tarball: file:projects/openapi-validators-generator.tgz}
     id: file:projects/openapi-validators-generator.tgz
     name: '@rush-temp/openapi-validators-generator'
     version: 0.0.0
@@ -4866,15 +4840,16 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
+      typescript: 4.3.5
     transitivePeerDependencies:
       - bufferutil
       - canvas
       - node-notifier
       - supports-color
       - ts-node
-      - typescript
       - utf-8-validate
     dev: false
 

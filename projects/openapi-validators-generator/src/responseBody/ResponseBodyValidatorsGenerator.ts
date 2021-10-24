@@ -3,62 +3,48 @@ import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { generateOperationFunction } from './generateOperationFunction'
-import { OperationsGeneratorConfig } from './typings'
+import { generateResponseBodyValidator } from './generateResponseBodyValidator'
 import {
   EnhancedOperation,
   getEnhancedOperations,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
+  hasResponses,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'> {
+export class ResponseBodyValidatorsGenerator implements OpenAPIGenerator<'openapi/response-body-validator'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & OperationsGeneratorConfig
+  private config: GeneratorConfig
   private operations: EnhancedOperation[]
 
-  public readonly id = 'openapi/operation'
-  public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/type',
-    'openapi/request-headers-type',
-    'openapi/query-type',
-    'openapi/path-type',
-    'openapi/response-type',
-    'openapi/request-type',
-    'openapi/request-headers-serializer',
-    'openapi/path-serializer',
-    'openapi/query-serializer',
-  ]
+  public readonly id = 'openapi/response-body-validator'
+  public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/type-validator']
 
-  public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
+  public constructor(config: GeneratorConfig) {
     this.config = config
-    if (config.validate) {
-      this.consumes.push('openapi/response-body-validator')
-    }
   }
 
   public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, this.config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, 'openapi/operation'),
+      nameOf(operation, 'openapi/response-body-validator'),
     )
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context } = this
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateOperationFunction(operation, context, config)].filter(negate(isNil)),
+        [generateResponseBodyValidator(operation, context)].filter(negate(isNil)),
       ),
     )
 
-    // TODO maybe try-catch?
     return {
       isOk: true,
       issues: [],
@@ -69,11 +55,11 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
   public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    return factory.createIdentifier(nameOf(input, this.id))
+    return hasResponses(input, context) ? factory.createIdentifier(nameOf(input, this.id)) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return hasResponses(input, context) ? getModelImports(fromPath, this.id, [input], this.context) : undefined
   }
 }

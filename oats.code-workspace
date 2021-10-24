@@ -149,10 +149,6 @@
       "path": "projects/openapi-request-types-generator"
     },
     {
-      "name": "openapi-response-expectations-generator",
-      "path": "projects/openapi-response-expectations-generator"
-    },
-    {
       "name": "openapi-response-types-generator",
       "path": "projects/openapi-response-types-generator"
     },

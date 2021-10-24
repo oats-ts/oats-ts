@@ -1,8 +1,8 @@
 import { ClientConfiguration } from '@oats-ts/openapi-http'
 import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
-import { postSimpleNamedObjectExpectations } from '../expectations/postSimpleNamedObjectExpectations'
 import { PostSimpleNamedObjectRequest } from '../requestTypes/PostSimpleNamedObjectRequest'
+import { postSimpleNamedObjectResponseBodyValidator } from '../responseBodyValidators/postSimpleNamedObjectResponseBodyValidator'
 import { PostSimpleNamedObjectResponse } from '../responseTypes/PostSimpleNamedObjectResponse'
 
 export async function postSimpleNamedObject(
@@ -17,6 +17,6 @@ export async function postSimpleNamedObject(
       headers: { 'content-type': input.mimeType },
     },
     config,
-    postSimpleNamedObjectExpectations,
+    postSimpleNamedObjectResponseBodyValidator,
   )
 }

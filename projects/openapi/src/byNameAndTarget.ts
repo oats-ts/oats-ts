@@ -21,15 +21,15 @@ const defaultFolderName: NameByTarget = {
   'openapi/query-deserializer': 'queryDeserializers',
   'openapi/request-headers-deserializer': 'requestHeaderDeserializers',
   'openapi/response-headers-deserializer': 'responseHeaderDeserializers',
-  'openapi/expectations': 'expectations',
-  'openapi/validator': 'validators',
+  'openapi/type-validator': 'typeValidators',
+  'openapi/request-body-validator': 'requestBodyValidators',
+  'openapi/response-body-validator': 'responseBodyValidators',
   'openapi/sdk-type': 'sdk',
   'openapi/sdk-stub': 'sdk',
   'openapi/client-sdk': 'sdk',
   'openapi/api-type': 'api',
   'openapi/api-stub': 'api',
   'openapi/express-route': 'routes',
-  'openapi/request-body-expectations': 'requestBodyExpectations',
 }
 
 export function byNameAndTarget(

@@ -11,7 +11,9 @@ export type OpenAPIGeneratorTarget =
   // Common
   | 'openapi/type'
   | 'openapi/type-guard'
-  | 'openapi/validator'
+  | 'openapi/type-validator'
+  | 'openapi/request-body-validator'
+  | 'openapi/response-body-validator'
   | 'openapi/query-type'
   | 'openapi/path-type'
   | 'openapi/request-headers-type'
@@ -28,13 +30,11 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/query-deserializer'
   | 'openapi/path-deserializer'
   // Client
-  | 'openapi/expectations'
   | 'openapi/operation'
   | 'openapi/sdk-type'
   | 'openapi/client-sdk'
   | 'openapi/sdk-stub'
   // Server
-  | 'openapi/request-body-expectations'
   | 'openapi/api-type'
   | 'openapi/api-stub'
   | 'openapi/express-route'

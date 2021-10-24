@@ -9,8 +9,8 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/api-stub':
         return resolve(join(path, 'api', `${name(input, target)}.ts`))
       case 'openapi/express-route':
-      case 'openapi/request-body-expectations':
       case 'openapi/request-server-type':
+      case 'openapi/request-body-validator':
         return resolve(join(path, 'routes', `${name(input, target)}.ts`))
       case 'openapi/sdk-type':
       case 'openapi/sdk-stub':
@@ -20,14 +20,14 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
         return resolve(join(path, 'sdk', `${name(input, target)}.ts`))
       case 'openapi/type':
         return resolve(join(path, 'types', `${name(input, target)}.ts`))
-      case 'openapi/validator':
+      case 'openapi/type-validator':
         return resolve(join(path, 'validators', `${name(input, target)}.ts`))
       case 'openapi/type-guard':
         return resolve(join(path, 'typeGuards', `${name(input, target)}.ts`))
       case 'openapi/operation':
       case 'openapi/request-type':
       case 'openapi/response-type':
-      case 'openapi/expectations':
+      case 'openapi/response-body-validator':
       case 'openapi/request-headers-type':
       case 'openapi/request-headers-serializer':
       case 'openapi/request-headers-deserializer':

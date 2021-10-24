@@ -17,7 +17,7 @@ export function getOperationExecuteAst(
     [
       getOperationRequestLiteralAst(data, context),
       factory.createIdentifier('config'),
-      ...(config.validate ? [factory.createIdentifier(nameOf(data.operation, 'openapi/expectations'))] : []),
+      ...(config.validate ? [factory.createIdentifier(nameOf(data.operation, 'openapi/response-body-validator'))] : []),
     ],
   )
 }

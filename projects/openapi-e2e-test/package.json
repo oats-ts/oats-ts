@@ -62,7 +62,6 @@
     "@oats-ts/openapi-parameter-deserializers-generator": "0.0.0",
     "@oats-ts/openapi-request-types-generator": "0.0.0",
     "@oats-ts/openapi-response-types-generator": "0.0.0",
-    "@oats-ts/openapi-response-expectations-generator": "0.0.0",
     "@oats-ts/openapi-api-type-generator": "0.0.0",
     "@oats-ts/openapi-http": "0.0.0",
     "@oats-ts/openapi-http-client": "0.0.0",

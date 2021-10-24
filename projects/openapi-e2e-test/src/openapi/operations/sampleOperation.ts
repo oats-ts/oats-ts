@@ -1,11 +1,11 @@
 import { ClientConfiguration } from '@oats-ts/openapi-http'
 import { execute } from '@oats-ts/openapi-http-client'
 import { joinUrl } from '@oats-ts/openapi-parameter-serialization'
-import { sampleOperationExpectations } from '../expectations/sampleOperationExpectations'
 import { sampleOperationPathSerializer } from '../pathSerializers/sampleOperationPathSerializer'
 import { sampleOperationQuerySerializer } from '../querySerializers/sampleOperationQuerySerializer'
 import { sampleOperationRequestHeadersSerializer } from '../requestHeaderSerializers/sampleOperationRequestHeadersSerializer'
 import { SampleOperationRequest } from '../requestTypes/SampleOperationRequest'
+import { sampleOperationResponseBodyValidator } from '../responseBodyValidators/sampleOperationResponseBodyValidator'
 import { SampleOperationResponse } from '../responseTypes/SampleOperationResponse'
 
 export async function sampleOperation(
@@ -24,6 +24,6 @@ export async function sampleOperation(
       headers: { ...sampleOperationRequestHeadersSerializer(input.headers), 'content-type': input.mimeType },
     },
     config,
-    sampleOperationExpectations,
+    sampleOperationResponseBodyValidator,
   )
 }

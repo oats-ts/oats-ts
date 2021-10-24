@@ -72,20 +72,20 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${operationName}ResponseHeadersDeserializer`
     }
-    case 'openapi/expectations': {
-      const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${operationName}Expectations`
-    }
-    case 'openapi/request-body-expectations': {
-      const operationName = defaultNameProvider(input, name, 'openapi/operation')
-      return isNil(operationName) ? undefined : `${operationName}RequestBodyExpectations`
-    }
     case 'openapi/express-route': {
       const operationName = defaultNameProvider(input, name, 'openapi/operation')
       return isNil(operationName) ? undefined : `${camelCase(operationName)}Route`
     }
-    case 'openapi/validator': {
-      return isNil(name) ? undefined : `${camelCase(name)}Validator`
+    case 'openapi/type-validator': {
+      return isNil(name) ? undefined : `${camelCase(name)}TypeValidator`
+    }
+    case 'openapi/request-body-validator': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${camelCase(operationName)}RequestBodyValidator`
+    }
+    case 'openapi/response-body-validator': {
+      const operationName = defaultNameProvider(input, name, 'openapi/operation')
+      return isNil(operationName) ? undefined : `${camelCase(operationName)}ResponseBodyValidator`
     }
     /**
      * No need to incorporate anything in the name as these should be singletons.
