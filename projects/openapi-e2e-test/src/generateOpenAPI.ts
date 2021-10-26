@@ -20,6 +20,7 @@ import {
   pathParameterSerializers,
   queryParameterSerializers,
   requestHeaderParameterSerializers,
+  responseHeaderParameterSerializers,
 } from '@oats-ts/openapi-parameter-serializers-generator'
 import {
   pathParameterDeserializers,
@@ -91,6 +92,7 @@ export async function generateAll() {
       pathParameterDeserializers(common),
       queryParameterDeserializers(common),
       requestHeaderParameterDeserializers(common),
+      responseHeaderParameterSerializers(common),
       operations({
         ...common,
         validate: true,

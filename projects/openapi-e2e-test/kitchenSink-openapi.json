@@ -614,6 +614,15 @@
                   "$ref": "#/components/schemas/NamedComplexObject"
                 }
               }
+            },
+            "headers": {
+              "X-Test-Response-Headers": {
+                "required": true,
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
             }
           },
           "201": {
