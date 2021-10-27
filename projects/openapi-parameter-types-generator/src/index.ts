@@ -2,7 +2,7 @@ import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { GeneratorConfig } from '@oats-ts/generator'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { InputParameterTypesGenerator } from './InputParameterTypesGenerator'
-import { ResponseHeaderTypesGenerator } from './ResponseHeaderTypesGenerator'
+import { ResponseHeaderTypesGenerator } from './response/ResponseHeaderTypesGenerator'
 
 export type { ParameterTypesGeneratorConfig } from './typings'
 

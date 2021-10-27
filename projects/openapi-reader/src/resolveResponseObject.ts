@@ -7,6 +7,7 @@ import { resolveHeaderObject } from './resolveParameterObject'
 import { responseObject } from './validators/responseObject'
 import { resolveContentObject } from './resolveContentObject'
 import { entries, isNil } from 'lodash'
+import { registerNamed } from './registerNamed'
 
 export async function resolveResponseObject(input: ReadInput<ResponseObject>, context: ReadContext): Promise<void> {
   if (!validate(input, context, responseObject)) {
@@ -22,6 +23,7 @@ export async function resolveResponseObject(input: ReadInput<ResponseObject>, co
         context,
         resolveHeaderObject,
       )
+      registerNamed(name, headerOrRef, context)
     }
   }
 

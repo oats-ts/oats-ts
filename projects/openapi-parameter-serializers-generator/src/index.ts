@@ -2,8 +2,10 @@ import { ParameterSerializersGeneratorConfig } from './typings'
 import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { InputParameterSerializerGenerator } from './InputParameterSerializerGenerator'
+import { ResponseHeadersParameterSerializersGenerator } from './responseHeaders/ResponseHeadersParameterSerializersGenerator'
 
 export type { ParameterSerializersGeneratorConfig } from './typings'
+export { ResponseHeadersParameterSerializersGenerator } from './responseHeaders/ResponseHeadersParameterSerializersGenerator'
 
 export class QueryParameterSerializersGenerator extends InputParameterSerializerGenerator<'openapi/query-serializer'> {
   constructor(config: GeneratorConfig & ParameterSerializersGeneratorConfig) {
@@ -39,4 +41,8 @@ export function requestHeaderParameterSerializers(
   config: GeneratorConfig & ParameterSerializersGeneratorConfig,
 ): OpenAPIGenerator {
   return new RequestHeaderParameterSerializersGenerator(config)
+}
+
+export function responseHeaderParameterSerializers(config: GeneratorConfig): OpenAPIGenerator {
+  return new ResponseHeadersParameterSerializersGenerator(config)
 }

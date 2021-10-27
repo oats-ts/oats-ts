@@ -20,7 +20,10 @@ export function generateOperationReturnType(
       ...(responses.some(({ statusCode }) => statusCode === 'default')
         ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.StatusCode])]
         : []),
-      ...flatMap(responses, ({ schema }) => dependenciesOf(path, schema, 'openapi/type')),
+      ...flatMap(responses, ({ schema, statusCode }) => [
+        ...dependenciesOf(path, schema, 'openapi/type'),
+        ...dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),
+      ]),
     ],
     content: [getReturnTypeAst(data, context)],
   }

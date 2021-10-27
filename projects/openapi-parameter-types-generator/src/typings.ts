@@ -1,3 +1,5 @@
+import { OperationObject } from '@oats-ts/openapi-model'
+
 export type ParameterTypesGeneratorConfig = {
   /**
    * If set to true, the description and deprecated fields in ParameterObjects will be used
@@ -5,3 +7,5 @@ export type ParameterTypesGeneratorConfig = {
    */
   documentation?: boolean
 }
+
+export type ResponseParameterInput = [OperationObject, string]

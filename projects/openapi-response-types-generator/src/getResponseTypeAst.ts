@@ -34,7 +34,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
           ? createDefaultStatusCodeType(knownStatusCodes)
           : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
       const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
-      const headersType = referenceOf<TypeNode>(headers, 'openapi/response-headers-type')
+      const headersType = referenceOf<TypeNode>([data.operation, statusCode], 'openapi/response-headers-type')
 
       return factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
         bodyType,

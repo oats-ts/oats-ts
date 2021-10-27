@@ -9,7 +9,7 @@ const defaultFolderName: NameByTarget = {
   'openapi/query-type': 'queryTypes',
   'openapi/request-headers-type': 'requestHeaderTypes',
   'openapi/path-type': 'pathTypes',
-  'openapi/response-headers-type': '',
+  'openapi/response-headers-type': 'responseHeaderTypes',
   'openapi/response-type': 'responseTypes',
   'openapi/request-type': 'requestTypes',
   'openapi/request-server-type': 'requestServerTypes',
