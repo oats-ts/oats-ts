@@ -26,6 +26,7 @@ import {
   pathParameterDeserializers,
   queryParameterDeserializers,
   requestHeaderParameterDeserializers,
+  responseHeaderParameterDeserializers,
 } from '@oats-ts/openapi-parameter-deserializers-generator'
 import { expressRoute } from '@oats-ts/openapi-express-routes-generator'
 import { nameProviders, pathProviders } from '@oats-ts/openapi'
@@ -88,11 +89,12 @@ export async function generateAll() {
       pathParameterSerializers(common),
       queryParameterSerializers(common),
       requestHeaderParameterSerializers(common),
+      responseHeaderParameterSerializers(common),
       // Deserializers
       pathParameterDeserializers(common),
       queryParameterDeserializers(common),
       requestHeaderParameterDeserializers(common),
-      responseHeaderParameterSerializers(common),
+      responseHeaderParameterDeserializers(common),
       operations({
         ...common,
         validate: true,

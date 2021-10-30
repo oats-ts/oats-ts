@@ -1,12 +1,11 @@
 import { BaseParameterObject, ParameterLocation, ParameterObject } from '@oats-ts/openapi-model'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getParameterName, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
 import { getParameterStyle, getParameterKind } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { CallExpression, factory, ObjectLiteralExpression, PropertyAssignment, TypeReferenceType } from 'typescript'
 import { isIdentifier } from '@oats-ts/typescript-common'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Referenceable } from '@oats-ts/json-schema-model'
 
 function getSerializerOptionProperty(
@@ -53,16 +52,6 @@ function createParameterSerializer(parameter: BaseParameterObject, context: Open
     [],
     [getSerializerOptions(parameter)],
   )
-}
-
-function getParameterName(parameter: Referenceable<BaseParameterObject>, context: OpenAPIGeneratorContext): string {
-  const { nameOf, dereference } = context
-  const name = nameOf(parameter)
-  if (!isNil(name)) {
-    return name
-  }
-  const param = dereference(parameter, true) as ParameterObject
-  return param.name
 }
 
 function createSerializerProperty(

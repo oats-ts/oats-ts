@@ -12,10 +12,10 @@ export function generateResponseHeadersSerializer(
     return undefined
   }
   const { pathOf } = context
-  const serializerPath = pathOf(data.operation, 'openapi/response-headers-serializer')
+  const serializerPath = pathOf(data.operation, 'openapi/response-headers-deserializer')
   const staticImports = getNamedImports(RuntimePackages.ParameterSerialization.name, [
     'header',
-    RuntimePackages.ParameterSerialization.createHeaderSerializer,
+    RuntimePackages.ParameterDeserialization.createHeaderParser,
   ])
   return {
     path: serializerPath,

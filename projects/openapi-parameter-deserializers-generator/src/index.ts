@@ -2,6 +2,7 @@ import { ParameterDeserializersGeneratorConfig } from './typings'
 import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { InputParameterDeserializersGenerator } from './InputParameterDeserializersGenerator'
+import { ResponseHeadersParameterDeserializersGenerator } from './responseHeaders/ResponseHeadersParameterSerializersGenerator'
 
 export type { ParameterDeserializersGeneratorConfig } from './typings'
 
@@ -39,4 +40,8 @@ export function requestHeaderParameterDeserializers(
   config: GeneratorConfig & ParameterDeserializersGeneratorConfig,
 ): OpenAPIGenerator {
   return new RequestHeaderParameterDeserializersGenerator(config)
+}
+
+export function responseHeaderParameterDeserializers(config: GeneratorConfig): OpenAPIGenerator {
+  return new ResponseHeadersParameterDeserializersGenerator(config)
 }
