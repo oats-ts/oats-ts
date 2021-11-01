@@ -11,6 +11,7 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   hasResponses,
+  hasRequestBody,
 } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
@@ -52,14 +53,22 @@ export class RequestBodyValidatorsGenerator implements OpenAPIGenerator<'openapi
     }
   }
 
+  private enhance(input: OperationObject): EnhancedOperation {
+    const operation = this.operations.find(({ operation }) => operation === input)
+    if (isNil(operation)) {
+      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
+    }
+    return operation
+  }
+
   public referenceOf(input: OperationObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    return hasResponses(input, context) ? factory.createIdentifier(nameOf(input, this.id)) : undefined
+    return hasRequestBody(this.enhance(input), context) ? factory.createIdentifier(nameOf(input, this.id)) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    return hasResponses(input, context) ? getModelImports(fromPath, this.id, [input], this.context) : undefined
+    return hasRequestBody(this.enhance(input), context) ? getModelImports(fromPath, this.id, [input], this.context) : []
   }
 }

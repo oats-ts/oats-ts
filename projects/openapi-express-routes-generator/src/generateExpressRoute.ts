@@ -6,7 +6,6 @@ import { getExpressRouterImports } from './getExpressRouterImports'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 
 export function generateExpressRoute(
-  doc: OpenAPIObject,
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ExpressRouteGeneratorConfig,
@@ -14,7 +13,7 @@ export function generateExpressRoute(
   const { pathOf } = context
   return {
     path: pathOf(data.operation, 'openapi/express-route'),
-    dependencies: getExpressRouterImports(doc, data, context),
-    content: [getExpressRouteAst(doc, data, context, config)],
+    dependencies: getExpressRouterImports(data, context),
+    content: [getExpressRouteAst(data, context, config)],
   }
 }

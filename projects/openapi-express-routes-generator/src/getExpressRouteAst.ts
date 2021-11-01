@@ -1,12 +1,10 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, VariableStatement, SyntaxKind, NodeFlags } from 'typescript'
-import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { ExpressRouteGeneratorConfig } from '.'
 import { getPathTemplate } from './getPathTemplate'
-import { getExpressRouteHandlerAst } from './handler/getExpressRouteHandlerAst'
+import { getExpressRouteHandlerAst } from './getExpressRouteHandlerAst'
 
 export function getExpressRouteAst(
-  doc: OpenAPIObject,
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ExpressRouteGeneratorConfig,
@@ -20,7 +18,7 @@ export function getExpressRouteAst(
       data.method.toLowerCase(),
     ),
     [],
-    [factory.createStringLiteral(getPathTemplate(url)), getExpressRouteHandlerAst(doc, data, context, config)],
+    [factory.createStringLiteral(getPathTemplate(url)), getExpressRouteHandlerAst(data, context, config)],
   )
 
   return factory.createVariableStatement(

@@ -1,12 +1,10 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, SyntaxKind } from 'typescript'
-import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { getExpressRouteHandlerBodyAst } from './getExpressRouteHandlerBodyAst'
-import { ExpressRouteGeneratorConfig } from '../typings'
-import { Names } from './names'
+import { ExpressRouteGeneratorConfig } from './typings'
+import { Names } from './Names'
+import { getHandlerBodyAst } from './getHandlerBodyAst'
 
 export function getExpressRouteHandlerAst(
-  doc: OpenAPIObject,
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ExpressRouteGeneratorConfig,
@@ -42,6 +40,6 @@ export function getExpressRouteHandlerAst(
     ],
     factory.createTypeReferenceNode('Promise', [factory.createKeywordTypeNode(SyntaxKind.VoidKeyword)]),
     factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-    getExpressRouteHandlerBodyAst(doc, data, context, config),
+    getHandlerBodyAst(data, context, config),
   )
 }

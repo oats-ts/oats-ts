@@ -2,12 +2,14 @@ export const Names = {
   request: 'request',
   response: 'response',
   next: 'next',
+  locals: 'locals',
 
   api: 'api',
   configuration: 'configuration',
-  expressParams: 'expressParams',
+  frameworkInput: 'frameworkInput',
   issues: 'issues',
   mimeType: 'mimeType',
+  mimeTypeIssues: 'mimeTypeIssues',
   body: 'body',
   bodyIssues: 'bodyIssues',
   query: 'query',
@@ -17,7 +19,10 @@ export const Names = {
   headers: 'headers',
   headerIssues: 'headerIssues',
 
-  handlerResult: 'handlerResults',
+  typedRequest: 'typedRequest',
+  typedResponse: 'typedResponse',
+  rawResponse: 'rawResponse',
+
   statusCode: 'statusCode',
   responseHeaders: 'responseHeaders',
   responseBody: 'responseBody',

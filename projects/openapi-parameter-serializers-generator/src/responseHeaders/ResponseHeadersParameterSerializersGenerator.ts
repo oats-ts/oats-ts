@@ -4,6 +4,7 @@ import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
   getEnhancedOperations,
+  hasResponseHeaders,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
@@ -36,6 +37,7 @@ export class ResponseHeadersParameterSerializersGenerator
       nameOf(operation, this.id),
     )
   }
+
   async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context } = this
 
@@ -55,11 +57,11 @@ export class ResponseHeadersParameterSerializersGenerator
   public referenceOf(input: OperationObject): Identifier {
     const { context } = this
     const { nameOf } = context
-    return factory.createIdentifier(nameOf(input, this.id))
+    return hasResponseHeaders(input, context) ? factory.createIdentifier(nameOf(input, this.id)) : undefined
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return hasResponseHeaders(input, context) ? getModelImports(fromPath, this.id, [input], context) : []
   }
 }

@@ -45,7 +45,7 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express
       nameOf(operation, 'openapi/operation'),
     )
     const data: TypeScriptModule[] = mergeTypeScriptModules(
-      operations.map((operation) => generateExpressRoute(document, operation, context, config)),
+      operations.map((operation) => generateExpressRoute(operation, context, config)),
     )
 
     return {
