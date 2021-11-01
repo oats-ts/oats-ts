@@ -3,7 +3,6 @@ import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-com
 import { ExpressRouteGeneratorConfig } from './typings'
 import { getExpressRouteAst } from './getExpressRouteAst'
 import { getExpressRouterImports } from './getExpressRouterImports'
-import { OpenAPIObject } from '@oats-ts/openapi-model'
 
 export function generateExpressRoute(
   data: EnhancedOperation,

@@ -13,7 +13,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
 import { factory, Identifier, ImportDeclaration } from 'typescript'
-import { generateResponseHeadersSerializer as generateResponseHeadersDeserializer } from './generateResponseHeadersSerializer'
+import { generateResponseHeadersDeserializer as generateResponseHeadersDeserializer } from './generateResponseHeadersDeserializer'
 
 export class ResponseHeadersParameterDeserializersGenerator
   implements OpenAPIGenerator<'openapi/response-headers-deserializer'>

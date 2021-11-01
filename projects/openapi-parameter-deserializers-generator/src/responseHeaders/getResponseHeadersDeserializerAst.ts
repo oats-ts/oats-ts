@@ -4,7 +4,7 @@ import { entries, values } from 'lodash'
 import { factory, NodeFlags, PropertyAssignment, SyntaxKind } from 'typescript'
 import { getParameterDeserializerFactoryCallAst } from '../getParameterDeserializerFactoryCallAst'
 
-export function getResponseHeadersSerializerAst(data: EnhancedOperation, context: OpenAPIGeneratorContext) {
+export function getResponseHeadersDeserializerAst(data: EnhancedOperation, context: OpenAPIGeneratorContext) {
   const { nameOf, referenceOf } = context
   const headers = entries(getResponseHeaders(data.operation, context))
   const props = headers

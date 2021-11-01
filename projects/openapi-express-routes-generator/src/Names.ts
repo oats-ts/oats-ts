@@ -26,4 +26,6 @@ export const Names = {
   statusCode: 'statusCode',
   responseHeaders: 'responseHeaders',
   responseBody: 'responseBody',
+
+  routes: 'routes',
 }

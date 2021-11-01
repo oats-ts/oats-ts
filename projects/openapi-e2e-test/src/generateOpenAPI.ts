@@ -28,7 +28,7 @@ import {
   requestHeaderParameterDeserializers,
   responseHeaderParameterDeserializers,
 } from '@oats-ts/openapi-parameter-deserializers-generator'
-import { expressRoute } from '@oats-ts/openapi-express-routes-generator'
+import { expressRoute, expressRoutesType, expressMainRouteFactory } from '@oats-ts/openapi-express-routes-generator'
 import { nameProviders, pathProviders } from '@oats-ts/openapi'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -114,6 +114,8 @@ export async function generateAll() {
         documentation: true,
       }),
       expressRoute(common),
+      expressRoutesType(common),
+      expressMainRouteFactory(common),
     ],
     writer: writer({
       stringify: prettierStringify({

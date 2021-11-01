@@ -106,17 +106,18 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
 
   async getResponseHeaders(
     input: ExpressParameters,
-    resp: HttpResponse,
+    { mimeType, statusCode, headers }: HttpResponse,
     serializers?: ResponseHeadersSerializer,
   ): Promise<RawHttpHeaders> {
+    const mimeTypeHeaders = mimeType === null || mimeType === undefined ? {} : { 'content-type': mimeType }
     if (serializers === null || serializers === undefined) {
-      return {}
+      return mimeTypeHeaders
     }
-    const serializer = serializers[resp.statusCode]
+    const serializer = serializers[statusCode]
     if (serializers === null || serializers === undefined) {
-      return {}
+      return mimeTypeHeaders
     }
-    return serializer(resp.headers)
+    return { ...serializer(headers), ...mimeTypeHeaders }
   }
 
   async respond({ response, next }: ExpressParameters, rawResponse: RawHttpResponse): Promise<void> {

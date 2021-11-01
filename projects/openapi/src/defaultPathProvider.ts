@@ -9,6 +9,8 @@ export function defaultPathProvider(path: string): GeneratorPathProvider {
       case 'openapi/api-stub':
         return resolve(join(path, 'api', `${name(input, target)}.ts`))
       case 'openapi/express-route':
+      case 'openapi/express-main-route-factory':
+      case 'openapi/express-routes-type':
       case 'openapi/request-server-type':
       case 'openapi/request-body-validator':
       case 'openapi/response-headers-type':

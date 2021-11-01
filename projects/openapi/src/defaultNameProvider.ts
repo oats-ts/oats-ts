@@ -1,7 +1,7 @@
 import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { OpenAPIGeneratorTarget } from './typings'
-import { OperationObject } from '@oats-ts/openapi-model'
+import { OpenAPIObject, OperationObject } from '@oats-ts/openapi-model'
 import { isNil } from 'lodash'
 
 export function defaultNameProvider(input: any, name: string, target: OpenAPIGeneratorTarget): string {
@@ -99,19 +99,32 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
      * Change that in case multi-root schema generation is added.
      */
     case 'openapi/sdk-type': {
-      return 'Sdk'
+      const doc: OpenAPIObject = input
+      return `${pascalCase(doc.info?.title || '')}Sdk`
     }
     case 'openapi/sdk-stub': {
-      return 'SdkStub'
+      const doc: OpenAPIObject = input
+      return `${pascalCase(doc.info?.title || '')}SdkStub`
     }
     case 'openapi/client-sdk': {
-      return 'ClientSdk'
+      const doc: OpenAPIObject = input
+      return `${pascalCase(doc.info?.title || '')}ClientSdk`
     }
     case 'openapi/api-type': {
-      return 'Api'
+      const doc: OpenAPIObject = input
+      return `${pascalCase(doc.info?.title || '')}Api`
     }
     case 'openapi/api-stub': {
-      return 'ApiStub'
+      const doc: OpenAPIObject = input
+      return `${pascalCase(doc.info?.title || '')}ApiStub`
+    }
+    case 'openapi/express-main-route-factory': {
+      const doc: OpenAPIObject = input
+      return `create${pascalCase(doc.info?.title || '')}MainRoute`
+    }
+    case 'openapi/express-routes-type': {
+      const doc: OpenAPIObject = input
+      return `${pascalCase(doc.info?.title || '')}Routes`
     }
     default:
       return name

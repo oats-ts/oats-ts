@@ -38,3 +38,5 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/api-type'
   | 'openapi/api-stub'
   | 'openapi/express-route'
+  | 'openapi/express-routes-type'
+  | 'openapi/express-main-route-factory'
