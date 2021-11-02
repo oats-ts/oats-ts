@@ -1,4 +1,4 @@
-import type { Issue } from '@oats-ts/validators'
+import type { Issue, Validator } from '@oats-ts/validators'
 
 /** Configuration for performing a HTTP request */
 export type ClientConfiguration<R = any, V = any> = {
@@ -19,15 +19,22 @@ export type ClientConfiguration<R = any, V = any> = {
   /** Validates the response body */
   validate(body: unknown, validator: V): void
 }
-/** Configuration for handling a HTTP request server side */
-export type ServerConfiguration<Req = any, Res = any> = {
-  getPath(request: RawHttpRequest): Promise<string>
-  getQuery(request: RawHttpRequest): Promise<string>
-  getRequestHeaders(request: RawHttpRequest): Promise<RawHttpHeaders>
-  getRequest(req: Req): Promise<RawHttpRequest>
-  respond(res: Res, raw: RawHttpResponse): Promise<void>
-  deserializeRequestBody(contentType: string, body: any): Promise<any>
-  serializeResponseBody(contentType: string, body: any): Promise<any>
+
+export type RequestBodyValidators<C extends string = string> = {
+  [contentType in C]: Validator<any>
+}
+
+export type ResponseHeadersSerializer<S extends string = string> = {
+  [statusCode in S]: (input: any) => RawHttpHeaders
+}
+
+export type ResponseBodyValidators<V = unknown> = {
+  [statusCode: number]: {
+    [contentType: string]: V
+  }
+  default?: {
+    [contentType: string]: V
+  }
 }
 
 export type HasHeaders<T> = {
@@ -92,15 +99,6 @@ export type RawHttpResponse = {
   body?: any
   /** Headers, content-type will be filled by default */
   headers?: RawHttpHeaders
-}
-
-export type ResponseExpectation<V> = {
-  [contentType: string]: V
-}
-
-export type ResponseExpectations<V = unknown> = {
-  [statusCode: number]: ResponseExpectation<V>
-  default?: ResponseExpectation<V>
 }
 
 /** Union of know status codes */

@@ -1,11 +1,11 @@
-import { HttpResponse, RawHttpHeaders, RawHttpResponse } from '@oats-ts/openapi-http'
-import { Issue, Validator } from '@oats-ts/validators'
-
-export type RequestBodyValidators<C extends string> = Record<C, Validator<any>>
-
-export type ResponseHeadersSerializer = {
-  [statusCode: string]: (input: any) => RawHttpHeaders
-}
+import {
+  HttpResponse,
+  RawHttpHeaders,
+  RawHttpResponse,
+  RequestBodyValidators,
+  ResponseHeadersSerializer,
+} from '@oats-ts/openapi-http'
+import { Issue } from '@oats-ts/validators'
 
 export type Try<T> = [[], T] | [Issue[], undefined]
 

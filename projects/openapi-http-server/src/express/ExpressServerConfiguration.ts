@@ -1,6 +1,12 @@
-import { RawHttpHeaders, HttpResponse, RawHttpResponse } from '@oats-ts/openapi-http'
+import {
+  RawHttpHeaders,
+  HttpResponse,
+  RawHttpResponse,
+  RequestBodyValidators,
+  ResponseHeadersSerializer,
+} from '@oats-ts/openapi-http'
 import { Issue } from '@oats-ts/validators'
-import { RequestBodyValidators, ResponseHeadersSerializer, ServerConfiguration, Try } from '../typings'
+import { ServerConfiguration, Try } from '../typings'
 import { ExpressParameters } from './typings'
 
 export class ExpressServerConfiguration implements ServerConfiguration<ExpressParameters> {
@@ -63,11 +69,12 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     }
     if (validator[contentType] === null || validator[contentType] === undefined) {
       const issue: Issue = {
-        message: `Unexpected request "Content-Type" header "${contentType}"`,
+        message: `Unexpected "Content-Type" request header "${contentType}"`,
         severity: 'error',
         path: '',
         type: '',
       }
+      return [[issue], undefined]
     }
     return [[], contentType]
   }
@@ -122,7 +129,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
 
   async respond({ response, next }: ExpressParameters, rawResponse: RawHttpResponse): Promise<void> {
     response.status(rawResponse.statusCode)
-    if (rawResponse.headers !== null && rawResponse.headers !== undefined) {
+    if (rawResponse.headers !== null && rawResponse.headers !== undefined && !response.headersSent) {
       const headerNames = Object.keys(rawResponse.headers)
       for (let i = 0; i < headerNames.length; i += 1) {
         const headerName = headerNames[i]
@@ -130,7 +137,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
         response.header(headerName, headerValue)
       }
     }
-    if (rawResponse.body !== null && rawResponse.body !== undefined) {
+    if (rawResponse.body !== null && rawResponse.body !== undefined && response.writable) {
       response.send(rawResponse.body)
     }
     next()
