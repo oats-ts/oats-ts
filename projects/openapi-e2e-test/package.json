@@ -15,10 +15,7 @@
     "test": "jest",
     "build": "echo 'Nothing to build'",
     "typecheck": "tsc --noEmit",
-    "serve": "ts-node src/scripts/serve.ts",
-    "o": "ts-node src/scripts/generateOpenAPI.ts",
-    "a": "ts-node src/scripts/generateAsyncAPI.ts",
-    "s": "ts-node src/serverExperiments.ts"
+    "o": "ts-node src/runGenerator.ts"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"

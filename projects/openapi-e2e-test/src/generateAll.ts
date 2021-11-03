@@ -45,12 +45,11 @@ export async function generateAll() {
   return generate({
     log: true,
     validator: validator(),
-    reader: reader({ path: 'kitchenSink-openapi.json' }),
+    reader: reader({ path: 'api.json' }),
     generators: [
       types({
         ...common,
         documentation: true,
-        enums: true,
       }),
       typeValidators({
         ...common,

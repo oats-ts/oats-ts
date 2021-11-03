@@ -1,0 +1,128 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Test",
+    "version": "1.0.0"
+  },
+  "servers": [],
+  "components": {
+    "schemas": {
+      "SimpleEnum": {
+        "type": "string",
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "NumberArray": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "SimpleObject": {
+        "type": "object",
+        "properties": {
+          "s": {
+            "type": "string"
+          },
+          "n": {
+            "type": "number"
+          },
+          "b": {
+            "type": "boolean"
+          },
+          "e": {
+            "$ref": "#/components/schemas/SimpleEnum"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/simple-path-params/{s}/{n}/{b}/{e}/{a}/{o}/{oe}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "required": true,
+            "name": "s",
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "n",
+            "style": "simple",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "b",
+            "style": "simple",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "e",
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/schemas/SimpleEnum"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "a",
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/schemas/NumberArray"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "name": "o",
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/schemas/SimpleObject"
+            }
+          },
+          {
+            "in": "path",
+            "required": true,
+            "explode": true,
+            "name": "oe",
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/schemas/SimpleObject"
+            }
+          }
+        ],
+        "operationId": "simplePathParameters",
+        "responses": {
+          "200": {
+            "description": "Operation taking path parameters of all types with 'simple' serialization method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleObject"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
