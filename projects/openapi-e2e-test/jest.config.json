@@ -1,5 +1,7 @@
 {
   "preset": "ts-jest",
   "globalSetup": "./src/globalSetup.ts",
-  "globalTeardown": "./src/globalTeardown.ts"
+  "globalTeardown": "./src/globalTeardown.ts",
+  "silent": false,
+  "verbose": true
 }

@@ -1,4 +1,10 @@
-module.exports = async function globalTeardown() {
+import { HttpTerminator } from 'http-terminator'
+
+module.exports = async function stop(): Promise<void> {
   const _global = global as any
-  await _global.server.shutdown()
+  const server: HttpTerminator = _global._server
+  if (!server) {
+    throw new TypeError('Server or terminator not created')
+  }
+  return server.terminate()
 }
