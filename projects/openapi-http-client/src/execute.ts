@@ -1,8 +1,8 @@
-import { HttpResponse, ClientConfiguration, ResponseExpectations, RawHttpRequest } from '@oats-ts/openapi-http'
+import { HttpResponse, ClientConfiguration, RawHttpRequest, ResponseBodyValidators } from '@oats-ts/openapi-http'
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 
-function getResponseValidator(statusCode: number, mimeType: string, expectations?: ResponseExpectations): any {
+function getResponseValidator(statusCode: number, mimeType: string, expectations?: ResponseBodyValidators): any {
   // If expectations not provided, return undefined, nothing to validate.
   if (expectations === null || expectations === undefined) {
     return undefined
@@ -36,7 +36,7 @@ function getResponseValidator(statusCode: number, mimeType: string, expectations
 export async function execute(
   request: RawHttpRequest,
   config: ClientConfiguration<any, any>,
-  expectations?: ResponseExpectations,
+  expectations?: ResponseBodyValidators,
 ): Promise<HttpResponse<any, any, any, any>> {
   const response = await config.request(request)
   const statusCode = await config.statusCode(response)

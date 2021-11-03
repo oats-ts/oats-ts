@@ -8,6 +8,10 @@ import { getNamedImports } from '@oats-ts/typescript-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { getParameterDeserializerFactoryCallAst } from './getParameterDeserializerFactoryCallAst'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
+import { flatMap, isNil, negate, values } from 'lodash'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { getInferredType, isReferenceObject } from '@oats-ts/json-schema-common'
+import { collectEnumSchemas } from './collectEnumSchemas'
 
 function createDeserializerConstant(
   location: ParameterLocation,
@@ -42,21 +46,28 @@ export const generateOperationParameterTypeDeserializer =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
   (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
     const parameters = data[location]
-    const { pathOf, dependenciesOf } = context
+    const { pathOf, dependenciesOf, dereference } = context
     if (parameters.length === 0) {
       return undefined
     }
-    const serializerPath = pathOf(data.operation, target)
+    const schemas = flatMap(
+      parameters
+        .map((parameter) => dereference(parameter, true))
+        .map((parameter) => parameter?.schema)
+        .filter(negate(isNil)),
+      (schema) => collectEnumSchemas(schema, context),
+    )
+    const path = pathOf(data.operation, target)
     return {
-      path: serializerPath,
+      path,
       dependencies: [
         getNamedImports(RuntimePackages.ParameterDeserialization.name, [
           getParameterDeserializerFactoryName(location),
           location,
-          // Primitive deserialization is needed in any case.
           RuntimePackages.ParameterDeserialization.value,
         ]),
-        ...dependenciesOf(serializerPath, data.operation, typeTarget),
+        ...dependenciesOf(path, data.operation, typeTarget),
+        ...flatMap(schemas, (schema) => dependenciesOf(path, schema, 'openapi/type')),
       ],
       content: [createDeserializerConstant(location, data, context, target)],
     }

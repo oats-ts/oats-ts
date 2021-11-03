@@ -1,5 +1,5 @@
 import { Expression, factory } from 'typescript'
-import { SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getInferredType } from '@oats-ts/json-schema-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getLiteralAst, isIdentifier } from '@oats-ts/typescript-common'
@@ -21,8 +21,12 @@ function createOptional(expr: Expression): Expression {
   )
 }
 
-export function getDeserializerAst(schema: SchemaObject, context: OpenAPIGeneratorContext): Expression {
-  const { dereference } = context
+export function getDeserializerAst(
+  schemaOrRef: Referenceable<SchemaObject>,
+  context: OpenAPIGeneratorContext,
+): Expression {
+  const { dereference, referenceOf } = context
+  const schema = dereference(schemaOrRef, true)
   const inferredType = getInferredType(schema)
   switch (inferredType) {
     case 'string':
@@ -35,18 +39,18 @@ export function getDeserializerAst(schema: SchemaObject, context: OpenAPIGenerat
       return createPrimitiveDeserializer(type, [
         factory.createCallExpression(
           factory.createPropertyAccessExpression(factory.createIdentifier('value'), 'enumeration'),
-          [],
+          [factory.createTypeReferenceNode(type), referenceOf(schemaOrRef, 'openapi/type')],
           [factory.createArrayLiteralExpression(schema.enum.map((v) => getLiteralAst(v)))],
         ),
       ])
     }
     case 'array': {
-      return getDeserializerAst(dereference(schema.items, true), context)
+      return getDeserializerAst(schema.items, context)
     }
     case 'object': {
       const properties = entries(schema.properties).map(([name, propSchema]) => {
         const isRequired = (schema.required || []).indexOf(name) >= 0
-        const deserializer = getDeserializerAst(dereference(propSchema, true), context)
+        const deserializer = getDeserializerAst(propSchema, context)
         return factory.createPropertyAssignment(
           isIdentifier(name) ? name : factory.createStringLiteral(name),
           isRequired ? deserializer : createOptional(deserializer),
