@@ -7,7 +7,7 @@ export const pathMatrixArray =
   (name: string) =>
   (data: RawPathParams): T[] => {
     if (options.explode) {
-      const rawString = getPrefixedValue(name, getPathValue(name, data), ',')
+      const rawString = getPrefixedValue(name, getPathValue(name, data), ';')
       const kvPairStrings = rawString.split(';')
       return kvPairStrings.map((kvPair) => {
         const parts = kvPair.split('=')

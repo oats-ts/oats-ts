@@ -13,7 +13,7 @@ export function getPrefixedValue(name: string, value: string, prefix: string): s
   if (value.indexOf(prefix) !== 0) {
     throw new TypeError(`Path parameter "${name}" should start with a "${prefix}"`)
   }
-  return value.slice(1)
+  return value.slice(prefix.length)
 }
 
 export function parsePathFromRecord<T extends PrimitiveRecord>(

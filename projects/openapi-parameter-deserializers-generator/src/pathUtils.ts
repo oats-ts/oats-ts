@@ -3,10 +3,8 @@ import { pathToRegexp } from 'path-to-regexp'
 
 export function createPathRegex(path: string): RegExp {
   const segments = parsePathToSegments(path)
-  const regexpInput = segments.map((segment) => (segment.type === 'text' ? segment.value : `:${segment.name}`))
-  return pathToRegexp(regexpInput, [], {
-    sensitive: true,
-  })
+  const regexpInput = segments.map((segment) => (segment.type === 'text' ? segment.value : `:${segment.name}`)).join('')
+  return pathToRegexp(regexpInput, [])
 }
 
 export function getPathParameterNames(path: string) {

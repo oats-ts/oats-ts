@@ -12,7 +12,7 @@ import { ExpressParameters } from './typings'
 export class ExpressServerConfiguration implements ServerConfiguration<ExpressParameters> {
   async getPathParameters<P>({ request }: ExpressParameters, deserializer: (input: string) => P): Promise<Try<P>> {
     try {
-      return [[], deserializer(new URL(request.url).pathname)]
+      return [[], deserializer(request.url)]
     } catch (e) {
       const issue: Issue = {
         message: e.message,
