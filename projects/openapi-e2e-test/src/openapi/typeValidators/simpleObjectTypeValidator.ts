@@ -1,11 +1,11 @@
-import { boolean, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { boolean, lazy, number, object, shape, string } from '@oats-ts/validators'
 import { simpleEnumTypeValidator } from './simpleEnumTypeValidator'
 
 export const simpleObjectTypeValidator = object(
   shape({
-    b: optional(boolean()),
-    e: optional(lazy(() => simpleEnumTypeValidator)),
-    n: optional(number()),
-    s: optional(string()),
+    b: boolean(),
+    e: lazy(() => simpleEnumTypeValidator),
+    n: number(),
+    s: string(),
   }),
 )

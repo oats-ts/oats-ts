@@ -2,7 +2,7 @@ import { NumberArray } from '../types/NumberArray'
 import { SimpleEnum } from '../types/SimpleEnum'
 import { SimpleObject } from '../types/SimpleObject'
 
-export type SimplePathParametersPathParameters = {
+export type LabelPathParametersPathParameters = {
   s: string
   se: string
   n: number
