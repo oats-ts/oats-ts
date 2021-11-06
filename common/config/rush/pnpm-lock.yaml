@@ -46,6 +46,7 @@ specifiers:
   '@rush-temp/typescript-common': file:./projects/typescript-common.tgz
   '@rush-temp/typescript-writer': file:./projects/typescript-writer.tgz
   '@rush-temp/validators': file:./projects/validators.tgz
+  '@types/faker': 5.5.9
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
@@ -127,6 +128,7 @@ dependencies:
   '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.0.0
   '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
   '@rush-temp/validators': file:projects/validators.tgz_ts-node@10.0.0
+  '@types/faker': 5.5.9
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
@@ -962,6 +964,10 @@ packages:
       '@types/express-serve-static-core': 4.17.21
       '@types/qs': 6.9.6
       '@types/serve-static': 1.13.9
+    dev: false
+
+  /@types/faker/5.5.9:
+    resolution: {integrity: sha512-uCx6mP3UY5SIO14XlspxsGjgaemrxpssJI0Ol+GfhxtcKpv9pgRZYsS4eeKeHVLje6Qtc8lGszuBI461+gVZBA==}
     dev: false
 
   /@types/graceful-fs/4.1.5:
@@ -4477,13 +4483,14 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-j5uAW/UJH0oBYk5B6WcT2DTHc0cgnJpNPDJQJS5x3Um9FYNwpORJ22j+gtalrfNdYRUhFq8hE/iFaCNYMImN2w==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-zjB2xJeFacwDkO3En3sIKVr0N+oCU8tWR/SUC0v6zONSo5VA85+emUsjcDFX7S8Z48Qv0ShSk/8EEo71izJRhw==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
       '@oats-ts/http': 0.0.5
       '@oats-ts/openapi-api-generator': 0.0.5
       '@types/express': 4.17.12
+      '@types/faker': 5.5.9
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1

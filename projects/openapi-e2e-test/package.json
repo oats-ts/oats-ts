@@ -36,6 +36,7 @@
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
     "@types/pascalcase": "1.0.0",
+    "@types/faker": "5.5.9",
     "express": "4.17.1",
     "lodash": "4.17.21",
     "ts-node": "10.0.0",

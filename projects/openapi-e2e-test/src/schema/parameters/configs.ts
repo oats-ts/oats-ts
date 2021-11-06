@@ -1,6 +1,6 @@
-import { ParameterGeneratorInput } from './typings'
+import { ParameterGeneratorConfig } from './typings'
 
-export const configs: ParameterGeneratorInput[] = [
+export const configs: ParameterGeneratorConfig[] = [
   {
     location: 'path',
     style: 'simple',

@@ -2,7 +2,7 @@ import { ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
 
 export type SchemaType = 'primitive' | 'array' | 'object'
 
-export type ParameterGeneratorInput = {
+export type ParameterGeneratorConfig = {
   location: ParameterLocation
   style: ParameterStyle
   requiredValues: boolean[]
