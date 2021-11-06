@@ -39,17 +39,15 @@ const ParameterSerialization = {
   createHeaderSerializer: 'createHeaderSerializer',
   createPathSerializer: 'createPathSerializer',
   createQuerySerializer: 'createQuerySerializer',
+  serializers: 'serializers',
 }
 
 const ParameterDeserialization = {
   name: '@oats-ts/openapi-parameter-deserialization',
-  createQueryParser: 'createQueryParser',
-  createPathParser: 'createPathParser',
-  createHeaderParser: 'createHeaderParser',
-  query: 'query',
-  path: 'path',
-  header: 'header',
-  value: 'value',
+  createQueryDeserializer: 'createQueryDeserializer',
+  createPathDeserializer: 'createPathDeserializer',
+  createHeaderDeserializer: 'createHeaderDeserializer',
+  deserializers: 'deserializers',
 }
 
 const Express = {

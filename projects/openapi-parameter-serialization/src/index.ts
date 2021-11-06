@@ -20,6 +20,12 @@ export type {
   QuerySerializers,
 } from './types'
 
-export { path } from './path'
-export { header } from './header'
-export { query } from './query'
+import { path } from './path'
+import { header } from './header'
+import { query } from './query'
+
+export const serializers = {
+  path,
+  query,
+  header,
+}

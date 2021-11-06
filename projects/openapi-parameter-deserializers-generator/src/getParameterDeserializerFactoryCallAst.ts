@@ -1,5 +1,11 @@
 import { BaseParameterObject, ParameterLocation, ParameterObject } from '@oats-ts/openapi-model'
-import { getParameterKind, getParameterName, getParameterStyle, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import {
+  getParameterKind,
+  getParameterName,
+  getParameterStyle,
+  OpenAPIGeneratorContext,
+  RuntimePackages,
+} from '@oats-ts/openapi-common'
 import { has, isNil, negate } from 'lodash'
 import { getParameterDeserializerFactoryName } from './getParameterDeserializerFactoryName'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
@@ -46,8 +52,14 @@ function createParameterDeserializer(parameter: BaseParameterObject, context: Op
 
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(
-      factory.createPropertyAccessExpression(factory.createIdentifier(location), getParameterStyle(parameter)),
-      kind,
+      factory.createPropertyAccessExpression(
+        factory.createPropertyAccessExpression(
+          factory.createIdentifier(RuntimePackages.ParameterDeserialization.deserializers),
+          factory.createIdentifier(location),
+        ),
+        factory.createIdentifier(getParameterStyle(parameter)),
+      ),
+      factory.createIdentifier(kind),
     ),
     [],
     [getDeserializerAst(schema, context), getDeserializerOptions(parameter)],

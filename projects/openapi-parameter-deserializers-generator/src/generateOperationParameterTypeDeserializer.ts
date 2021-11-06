@@ -8,9 +8,7 @@ import { getNamedImports } from '@oats-ts/typescript-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { getParameterDeserializerFactoryCallAst } from './getParameterDeserializerFactoryCallAst'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
-import { flatMap, isNil, negate, values } from 'lodash'
-import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, isReferenceObject } from '@oats-ts/json-schema-common'
+import { flatMap, isNil, negate } from 'lodash'
 import { collectEnumSchemas } from './collectEnumSchemas'
 
 function createDeserializerConstant(
@@ -62,9 +60,8 @@ export const generateOperationParameterTypeDeserializer =
       path,
       dependencies: [
         getNamedImports(RuntimePackages.ParameterDeserialization.name, [
+          RuntimePackages.ParameterDeserialization.deserializers,
           getParameterDeserializerFactoryName(location),
-          location,
-          RuntimePackages.ParameterDeserialization.value,
         ]),
         ...dependenciesOf(path, data.operation, typeTarget),
         ...flatMap(schemas, (schema) => dependenciesOf(path, schema, 'openapi/type')),

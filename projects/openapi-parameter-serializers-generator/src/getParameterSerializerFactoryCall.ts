@@ -1,5 +1,5 @@
 import { BaseParameterObject, ParameterLocation, ParameterObject } from '@oats-ts/openapi-model'
-import { getParameterName, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getParameterName, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
 import { getParameterStyle, getParameterKind } from '@oats-ts/openapi-common'
@@ -42,14 +42,21 @@ function getSerializerOptions(parameter: BaseParameterObject): ObjectLiteralExpr
 }
 
 function createParameterSerializer(parameter: BaseParameterObject, context: OpenAPIGeneratorContext): CallExpression {
-  const { dereference } = context
+  const { dereference, referenceOf } = context
   const { in: location = 'header' } = parameter as ParameterObject
+  const { schema } = parameter
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(
-      factory.createPropertyAccessExpression(factory.createIdentifier(location), getParameterStyle(parameter)),
-      getParameterKind(dereference(parameter.schema)),
+      factory.createPropertyAccessExpression(
+        factory.createPropertyAccessExpression(
+          factory.createIdentifier(RuntimePackages.ParameterSerialization.serializers),
+          factory.createIdentifier(location),
+        ),
+        factory.createIdentifier(getParameterStyle(parameter)),
+      ),
+      factory.createIdentifier(getParameterKind(dereference(schema))),
     ),
-    [],
+    [referenceOf(schema, 'openapi/type')],
     [getSerializerOptions(parameter)],
   )
 }

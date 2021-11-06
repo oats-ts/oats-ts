@@ -1,7 +1,7 @@
 import { ParameterObject, PathDeserializers } from '../types'
 import { createRawPathParser } from './createRawPathParser'
 
-export const createPathParser = <T extends ParameterObject>(
+export const createPathDeserializer = <T extends ParameterObject>(
   parameterNames: string[],
   regex: RegExp,
   deserializers: PathDeserializers<T>,

@@ -1,11 +1,12 @@
+import { HeaderSerializer } from '..'
 import { PrimitiveArray, HeaderOptions } from '../types'
 import { encode, isNil } from '../utils'
 import { getHeaderValue } from './headerUtils'
 
 export const headerSimpleArray =
-  <T extends PrimitiveArray>(options: HeaderOptions<T>) =>
+  <T extends PrimitiveArray>(options: HeaderOptions<T>): HeaderSerializer<T> =>
   (name: string) =>
-  (data: T) => {
+  (data?: T) => {
     const value = getHeaderValue(name, data, options)
     if (isNil(value)) {
       return undefined

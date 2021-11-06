@@ -24,7 +24,7 @@ export function generateResponseHeadersDeserializer(
     dependencies: [
       getNamedImports(RuntimePackages.ParameterSerialization.name, [
         'header',
-        RuntimePackages.ParameterDeserialization.createHeaderParser,
+        RuntimePackages.ParameterDeserialization.createHeaderDeserializer,
       ]),
       ...flatMap(entries(getResponseHeaders(data.operation, context)), ([statusCode]) =>
         dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),

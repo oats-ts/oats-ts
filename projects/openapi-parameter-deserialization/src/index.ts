@@ -1,6 +1,11 @@
-export { createQueryParser } from './query/createQueryParser'
-export { createPathParser } from './path/createPathParser'
-export { createHeaderParser } from './header/createHeaderParser'
+import { header } from './header'
+import { path } from './path'
+import { query } from './query'
+import { value } from './value'
+
+export { createQueryDeserializer } from './query/createQueryDeserializer'
+export { createPathDeserializer } from './path/createPathDeserializer'
+export { createHeaderDeserializer } from './header/createHeaderDeserializer'
 
 export type {
   PathDeserializers,
@@ -24,7 +29,9 @@ export type {
   ValueParser,
 } from './types'
 
-export { query } from './query'
-export { path } from './path'
-export { header } from './header'
-export { value } from './value'
+export const deserializers = {
+  path,
+  query,
+  header,
+  value,
+}

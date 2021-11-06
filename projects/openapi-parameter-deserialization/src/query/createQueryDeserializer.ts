@@ -1,7 +1,7 @@
 import { ParameterObject, QueryDeserializers } from '../types'
 import { parseRawQuery } from './parseRawQuery'
 
-export const createQueryParser =
+export const createQueryDeserializer =
   <T extends ParameterObject>(deserializers: QueryDeserializers<T>) =>
   (input: string): T => {
     const raw = parseRawQuery(input)

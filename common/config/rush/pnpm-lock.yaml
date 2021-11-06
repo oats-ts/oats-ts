@@ -60,6 +60,7 @@ specifiers:
   camelcase: 6.2.0
   chalk: 4.1.1
   express: 4.17.1
+  faker: 5.5.3
   http-terminator: 3.0.3
   jest: 27.0.4
   lodash: 4.17.21
@@ -140,6 +141,7 @@ dependencies:
   camelcase: 6.2.0
   chalk: 4.1.1
   express: 4.17.1
+  faker: 5.5.3
   http-terminator: 3.0.3
   jest: 27.0.4_ts-node@10.0.0
   lodash: 4.17.21
@@ -4475,7 +4477,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-GAZ9new8Tj4ojufNGbDAJ5s+Ul3Mcd9If9hD7VNXQPtTdcPDDqz8hgAupMCyfT9hmXzlWoqDy4NBYbD+jlGoEw==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-j5uAW/UJH0oBYk5B6WcT2DTHc0cgnJpNPDJQJS5x3Um9FYNwpORJ22j+gtalrfNdYRUhFq8hE/iFaCNYMImN2w==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4485,16 +4487,20 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
+      '@types/pascalcase': 1.0.0
       '@types/urijs': 1.19.16
       '@types/valid-url': 1.0.3
       '@types/yamljs': 0.2.31
       body-parser: 1.19.0
+      camelcase: 6.2.0
       express: 4.17.1
+      faker: 5.5.3
       http-terminator: 3.0.3
       jest: 27.0.4_ts-node@10.0.0
       lodash: 4.17.21
       open-api-mocker: 1.7.2
       openapi3-ts: 2.0.1
+      pascalcase: 1.0.0
       path-to-regexp: 6.2.0
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
       ts-node: 10.0.0_f50b86b1778cd2aa4e5405c08bb39559

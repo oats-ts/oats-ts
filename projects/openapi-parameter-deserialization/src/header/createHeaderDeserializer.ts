@@ -1,6 +1,6 @@
 import { HeaderDeserializers, RawHeaders, ParameterObject } from '../types'
 
-export const createHeaderParser = <T extends ParameterObject>(deserializers: HeaderDeserializers<T>) => {
+export const createHeaderDeserializer = <T extends ParameterObject>(deserializers: HeaderDeserializers<T>) => {
   return (input: RawHeaders): T => {
     const output: ParameterObject = {}
     const keys = Object.keys(deserializers)

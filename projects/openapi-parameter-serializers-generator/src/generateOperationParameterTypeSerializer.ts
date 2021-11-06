@@ -21,7 +21,7 @@ export const generateOperationParameterTypeSerializer =
       path: serializerPath,
       dependencies: [
         getNamedImports(RuntimePackages.ParameterSerialization.name, [
-          location,
+          RuntimePackages.ParameterSerialization.serializers,
           getParameterSerializerFactoryName(location),
         ]),
         ...dependenciesOf(serializerPath, data.operation, typeTarget),

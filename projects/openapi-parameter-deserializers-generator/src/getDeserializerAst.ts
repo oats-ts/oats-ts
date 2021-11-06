@@ -1,24 +1,26 @@
-import { Expression, factory } from 'typescript'
+import { Expression, factory, PropertyAccessExpression } from 'typescript'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getInferredType } from '@oats-ts/json-schema-common'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { getLiteralAst, isIdentifier } from '@oats-ts/typescript-common'
 import { entries } from 'lodash'
 
-function createPrimitiveDeserializer(type: 'string' | 'number' | 'boolean', parameters: Expression[] = []) {
-  return factory.createCallExpression(
-    factory.createPropertyAccessExpression(factory.createIdentifier('value'), type),
-    [],
-    parameters,
+function valueAccess(field: string): PropertyAccessExpression {
+  return factory.createPropertyAccessExpression(
+    factory.createPropertyAccessExpression(
+      factory.createIdentifier(RuntimePackages.ParameterDeserialization.deserializers),
+      factory.createIdentifier('value'),
+    ),
+    field,
   )
 }
 
+function createPrimitiveDeserializer(type: 'string' | 'number' | 'boolean', parameters: Expression[] = []) {
+  return factory.createCallExpression(valueAccess(type), [], parameters)
+}
+
 function createOptional(expr: Expression): Expression {
-  return factory.createCallExpression(
-    factory.createPropertyAccessExpression(factory.createIdentifier('value'), 'optional'),
-    [],
-    [expr],
-  )
+  return factory.createCallExpression(valueAccess('optional'), [], [expr])
 }
 
 export function getDeserializerAst(
@@ -38,7 +40,7 @@ export function getDeserializerAst(
       const type = schema.type === 'number' || schema.type === 'integer' ? 'number' : 'string'
       return createPrimitiveDeserializer(type, [
         factory.createCallExpression(
-          factory.createPropertyAccessExpression(factory.createIdentifier('value'), 'enumeration'),
+          valueAccess('enumeration'),
           [factory.createTypeReferenceNode(type), referenceOf(schemaOrRef, 'openapi/type')],
           [factory.createArrayLiteralExpression(schema.enum.map((v) => getLiteralAst(v)))],
         ),
