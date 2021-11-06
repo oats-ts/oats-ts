@@ -33,11 +33,11 @@ import { nameProviders, pathProviders } from '@oats-ts/openapi'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
 
-const dir = 'src/openapi'
+const dir = 'src/generated/Parameters.ts'
 
 const common: GeneratorConfig = {
   name: nameProviders.default,
-  path: pathProviders.byNameAndTarget(dir),
+  path: pathProviders.singleFile(dir),
 }
 
 export async function generateAll() {
@@ -45,7 +45,7 @@ export async function generateAll() {
   return generate({
     log: true,
     validator: validator(),
-    reader: reader({ path: 'api.json' }),
+    reader: reader({ path: 'schemas/parameters.json' }),
     generators: [
       types({
         ...common,

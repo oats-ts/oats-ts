@@ -15,6 +15,7 @@
     "test": "jest",
     "build": "echo 'Nothing to build'",
     "typecheck": "tsc --noEmit",
+    "g": "ts-node src/schema/generate.ts",
     "o": "ts-node src/runGenerator.ts"
   },
   "bugs": {
@@ -34,15 +35,17 @@
     "@types/urijs": "1.19.16",
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
+    "@types/pascalcase": "1.0.0",
     "express": "4.17.1",
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.5",
     "ts-node": "10.0.0",
     "urijs": "1.19.7",
     "valid-url": "1.0.9",
     "yamljs": "0.3.0",
     "yup": "0.32.9",
     "zod": "3.2.0",
+    "@oats-ts/json-schema-model": "0.0.5",
+    "@oats-ts/openapi-model": "0.0.5",
     "@oats-ts/generator": "0.0.5",
     "@oats-ts/openapi-reader": "0.0.5",
     "@oats-ts/typescript-writer": "0.0.5",
@@ -61,6 +64,7 @@
     "@oats-ts/openapi-request-types-generator": "0.0.0",
     "@oats-ts/openapi-response-types-generator": "0.0.0",
     "@oats-ts/openapi-api-type-generator": "0.0.0",
+    "@oats-ts/json-schema-common": "0.0.5",
     "@oats-ts/openapi-http": "0.0.0",
     "@oats-ts/openapi-http-client": "0.0.0",
     "@oats-ts/openapi-http-server": "0.0.0",
@@ -77,6 +81,9 @@
     "@oats-ts/validators": "0.0.5",
     "open-api-mocker": "1.7.2",
     "@oats-ts/openapi": "0.0.5",
-    "path-to-regexp": "6.2.0"
+    "path-to-regexp": "6.2.0",
+    "pascalcase": "1.0.0",
+    "camelcase": "6.2.0",
+    "faker": "5.5.3"
   }
 }

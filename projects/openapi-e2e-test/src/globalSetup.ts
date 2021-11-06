@@ -3,12 +3,12 @@ import express from 'express'
 import { Server } from 'http'
 import { createHttpTerminator } from 'http-terminator'
 import { createTestMainRoute } from './openapi/routes/createTestMainRoute'
-import { TestApiImpl } from './TestApiImpl'
+import { ParametersApiImpl } from './ParametersApiImpl'
 
 module.exports = async function start(): Promise<void> {
   const app = express()
   app.use(express.json())
-  app.use(createTestMainRoute(new TestApiImpl(), new ExpressServerConfiguration()))
+  app.use(createTestMainRoute(new ParametersApiImpl(), new ExpressServerConfiguration()))
   const _global = global as any
   const server = await new Promise<Server>((resolve) => {
     const s = app.listen(3333, () => resolve(s))
