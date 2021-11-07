@@ -12,7 +12,6 @@ export type ParameterObject = Record<string, ParameterValue>
 /** Query related types */
 export type QueryOptions<T> = {
   defaultValue?: T
-  allowReserved?: boolean
   explode?: boolean
   required?: boolean
 }

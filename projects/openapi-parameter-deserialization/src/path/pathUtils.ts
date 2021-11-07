@@ -26,9 +26,6 @@ export function parsePathFromRecord<T extends PrimitiveRecord>(
   for (let i = 0; i < parserKeys.length; i += 1) {
     const key = parserKeys[i]
     const parser = parsers[key]
-    if (!has(paramData, key)) {
-      throw new TypeError(`Missing field "${key}" in path parameter "${name}"`)
-    }
     const value = paramData[key]
     result[decode(key)] = parser(`${name}.${key}`, decode(value))
   }

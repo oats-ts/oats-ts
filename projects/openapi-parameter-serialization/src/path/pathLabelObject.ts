@@ -9,5 +9,5 @@ export const pathLabelObject =
   (name: string) =>
   (data?: T): string => {
     const value = validatePathObject(name, getPathValue(name, data, options))
-    return joinKeyValuePairs('.', options.explode ? '=' : ',', ',', entries(value))
+    return joinKeyValuePairs('.', options.explode ? '=' : ',', options.explode ? '.' : ',', entries(value), true)
   }

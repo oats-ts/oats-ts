@@ -8,5 +8,5 @@ export const pathLabelArray =
   (name: string) =>
   (data?: T): string => {
     const value = validatePathArray(name, getPathValue(name, data, options))
-    return joinArrayItems('.', options.explode ? '.' : ',', value)
+    return joinArrayItems('.', options.explode ? '.' : ',', value, options.explode)
   }

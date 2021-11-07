@@ -13,12 +13,12 @@ export const queryDelimitedArray =
     if (isNil(value)) {
       return []
     }
-    const keyStr = encode(name, options.allowReserved)
+    const keyStr = encode(name)
     if (options.explode) {
       if (value.length === 0) {
         return []
       }
-      return value.map((item) => `${keyStr}=${encode(item, options.allowReserved)}`)
+      return value.map((item) => `${keyStr}=${encode(item)}`)
     }
-    return [`${keyStr}=${value.map((item) => encode(item, options.allowReserved)).join(delimiter)}`]
+    return [`${keyStr}=${value.map((item) => encode(item)).join(delimiter)}`]
   }

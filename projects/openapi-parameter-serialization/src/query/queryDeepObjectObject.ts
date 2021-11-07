@@ -18,12 +18,14 @@ export const queryDeepObjectObject =
       return []
     }
 
-    const nameStr = encode(name, options.allowReserved)
+    const nameStr = encode(name)
     const kvPairs = entries(value)
 
-    return kvPairs.map(([key, value]) => {
-      const keyStr = encode(key, options.allowReserved)
-      const valueStr = encode(value, options.allowReserved)
-      return `${nameStr}[${keyStr}]=${valueStr}`
-    })
+    return kvPairs
+      .filter(([, value]) => !isNil(value))
+      .map(([key, value]) => {
+        const keyStr = encode(key)
+        const valueStr = encode(value)
+        return `${nameStr}[${keyStr}]=${valueStr}`
+      })
   }

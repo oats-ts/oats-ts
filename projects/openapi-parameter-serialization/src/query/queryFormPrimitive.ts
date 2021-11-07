@@ -11,7 +11,7 @@ export const queryFormPrimitive =
     if (isNil(value)) {
       return []
     }
-    const keyStr = encode(name, options.allowReserved)
-    const valStr = encode(value, options.allowReserved)
+    const keyStr = encode(name)
+    const valStr = encode(value)
     return [`${keyStr}=${valStr}`]
   }

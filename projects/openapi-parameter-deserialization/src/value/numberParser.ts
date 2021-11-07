@@ -14,7 +14,7 @@ export const numberParser: NumberParserFn =
     }
     const numValue = Number(value)
     if (value.length === 0 || isNaN(numValue)) {
-      throw new TypeError(`Parameter "${name}" should be a number.`)
+      throw new TypeError(`Parameter "${name}" should be a number, but was ${value}`)
     }
     return parser(name, numValue)
   }
