@@ -201,7 +201,7 @@
             "explode": true,
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
             }
           },
           {
@@ -438,7 +438,7 @@
             "explode": true,
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
             }
           },
           {
@@ -675,7 +675,7 @@
             "explode": true,
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
             }
           },
           {
@@ -1096,7 +1096,7 @@
             "explode": true,
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
             }
           },
           {
@@ -1106,7 +1106,7 @@
             "explode": true,
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
             }
           },
           {
@@ -1126,7 +1126,7 @@
             "explode": false,
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonOptObjectType"
             }
           }
         ],
@@ -1443,7 +1443,7 @@
             "explode": true,
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
             }
           },
           {
@@ -1453,7 +1453,7 @@
             "explode": true,
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
             }
           }
         ],
@@ -1864,7 +1864,7 @@
             "explode": true,
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
             }
           },
           {
@@ -1874,7 +1874,7 @@
             "explode": true,
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
             }
           },
           {
@@ -1894,7 +1894,7 @@
             "explode": false,
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/CommonObjectType"
+              "$ref": "#/components/schemas/CommonOptObjectType"
             }
           }
         ],
@@ -2024,7 +2024,7 @@
             }
           },
           "objExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
           },
           "obj": {
             "$ref": "#/components/schemas/CommonObjectType"
@@ -2127,7 +2127,7 @@
             }
           },
           "objExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
           },
           "obj": {
             "$ref": "#/components/schemas/CommonObjectType"
@@ -2230,7 +2230,7 @@
             }
           },
           "objExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
           },
           "obj": {
             "$ref": "#/components/schemas/CommonObjectType"
@@ -2405,16 +2405,16 @@
             }
           },
           "objExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
           },
           "optObjExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
           },
           "obj": {
             "$ref": "#/components/schemas/CommonObjectType"
           },
           "optObj": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonOptObjectType"
           }
         }
       },
@@ -2543,10 +2543,10 @@
         ],
         "properties": {
           "objExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
           },
           "optObjExpl": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
           }
         }
       },
@@ -2718,16 +2718,16 @@
             }
           },
           "X-ObjExpl-Header": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
           },
           "X-OptObjExpl-Header": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
           },
           "X-Obj-Header": {
             "$ref": "#/components/schemas/CommonObjectType"
           },
           "X-OptObj-Header": {
-            "$ref": "#/components/schemas/CommonObjectType"
+            "$ref": "#/components/schemas/CommonOptObjectType"
           }
         }
       },
@@ -2739,41 +2739,6 @@
           "C"
         ]
       },
-      "CommonObjectType": {
-        "type": "object",
-        "required": [
-          "str",
-          "num",
-          "bool",
-          "enm"
-        ],
-        "properties": {
-          "str": {
-            "type": "string"
-          },
-          "num": {
-            "type": "number"
-          },
-          "bool": {
-            "type": "boolean"
-          },
-          "enm": {
-            "$ref": "#/components/schemas/CommonEnumType"
-          },
-          "optStr": {
-            "type": "string"
-          },
-          "optNum": {
-            "type": "number"
-          },
-          "optBool": {
-            "type": "boolean"
-          },
-          "optEnm": {
-            "$ref": "#/components/schemas/CommonEnumType"
-          }
-        }
-      },
       "ParameterIssue": {
         "type": "object",
         "required": [
@@ -2782,6 +2747,146 @@
         "properties": {
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "CommonObjectType": {
+        "type": "object",
+        "required": [
+          "objStrField",
+          "objNumField",
+          "objBoolField",
+          "objEnmField"
+        ],
+        "properties": {
+          "objStrField": {
+            "type": "string"
+          },
+          "objNumField": {
+            "type": "number"
+          },
+          "objBoolField": {
+            "type": "boolean"
+          },
+          "objEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "objOptStrField": {
+            "type": "string"
+          },
+          "objOptNumField": {
+            "type": "number"
+          },
+          "objOptBoolField": {
+            "type": "boolean"
+          },
+          "objOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      },
+      "CommonObjectTypeExpl": {
+        "type": "object",
+        "required": [
+          "objExplStrField",
+          "objExplNumField",
+          "objExplBoolField",
+          "objExplEnmField"
+        ],
+        "properties": {
+          "objExplStrField": {
+            "type": "string"
+          },
+          "objExplNumField": {
+            "type": "number"
+          },
+          "objExplBoolField": {
+            "type": "boolean"
+          },
+          "objExplEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "objExplOptStrField": {
+            "type": "string"
+          },
+          "objExplOptNumField": {
+            "type": "number"
+          },
+          "objExplOptBoolField": {
+            "type": "boolean"
+          },
+          "objExplOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      },
+      "CommonOptObjectType": {
+        "type": "object",
+        "required": [
+          "optObjStrField",
+          "optObjNumField",
+          "optObjBoolField",
+          "optObjEnmField"
+        ],
+        "properties": {
+          "optObjStrField": {
+            "type": "string"
+          },
+          "optObjNumField": {
+            "type": "number"
+          },
+          "optObjBoolField": {
+            "type": "boolean"
+          },
+          "optObjEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "optObjOptStrField": {
+            "type": "string"
+          },
+          "optObjOptNumField": {
+            "type": "number"
+          },
+          "optObjOptBoolField": {
+            "type": "boolean"
+          },
+          "optObjOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      },
+      "CommonOptObjectTypeExpl": {
+        "type": "object",
+        "required": [
+          "optObjExplStrField",
+          "optObjExplNumField",
+          "optObjExplBoolField",
+          "optObjExplEnmField"
+        ],
+        "properties": {
+          "optObjExplStrField": {
+            "type": "string"
+          },
+          "optObjExplNumField": {
+            "type": "number"
+          },
+          "optObjExplBoolField": {
+            "type": "boolean"
+          },
+          "optObjExplEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "optObjExplOptStrField": {
+            "type": "string"
+          },
+          "optObjExplOptNumField": {
+            "type": "number"
+          },
+          "optObjExplOptBoolField": {
+            "type": "boolean"
+          },
+          "optObjExplOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
           }
         }
       }

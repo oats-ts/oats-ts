@@ -5,7 +5,7 @@ import { ParameterGeneratorConfig } from './typings'
 import { configs } from './configs'
 import { components, parameterIssueSchema } from './schema'
 import pascalCase from 'pascalcase'
-import { camelCase, getFieldName, getSchemas } from './schemaUtils'
+import { camelCase, getFieldName, getSchema } from './schemaUtils'
 
 function getParameterSchemaName({ location, style }: ParameterGeneratorConfig): string {
   return `${pascalCase(style)}${pascalCase(location)}Parameters`
@@ -19,9 +19,10 @@ function generateParameterObjects({
   schemaTypes,
 }: ParameterGeneratorConfig): ParameterObject[] {
   const params: ParameterObject[] = []
-  for (const schema of getSchemas(schemaTypes)) {
+  for (const schemaType of schemaTypes) {
     for (const explode of explodeValues) {
       for (const required of requiredValues) {
+        const schema = getSchema(schemaType, required, explode)
         let name = camelCase(getFieldName(schema, !required), explode ? 'expl' : '')
         name = location === 'header' ? `X-${pascalCase(name)}-Header` : name
         const param: ParameterObject = {
@@ -43,9 +44,10 @@ function generateParametersSchema(input: ParameterGeneratorConfig): SchemaObject
   const { location, explodeValues, requiredValues, schemaTypes } = input
   const properties: Record<string, Referenceable<SchemaObject>> = {}
   const requiredProps: string[] = []
-  for (const schema of getSchemas(schemaTypes)) {
+  for (const schemaType of schemaTypes) {
     for (const explode of explodeValues) {
       for (const required of requiredValues) {
+        const schema = getSchema(schemaType, required, explode)
         let name = camelCase(getFieldName(schema, !required), explode ? 'expl' : '')
         name = location === 'header' ? `X-${pascalCase(name)}-Header` : name
         properties[name] = schema

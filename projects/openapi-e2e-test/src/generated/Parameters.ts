@@ -30,19 +30,52 @@ import { NextFunction, Request, Response, Router } from 'express'
 export type CommonEnumType = 'A' | 'B' | 'C'
 
 export type CommonObjectType = {
-  bool: boolean
-  enm: CommonEnumType
-  num: number
-  optBool?: boolean
-  optEnm?: CommonEnumType
-  optNum?: number
-  optStr?: string
-  str: string
+  objBoolField: boolean
+  objEnmField: CommonEnumType
+  objNumField: number
+  objOptBoolField?: boolean
+  objOptEnmField?: CommonEnumType
+  objOptNumField?: number
+  objOptStrField?: string
+  objStrField: string
+}
+
+export type CommonObjectTypeExpl = {
+  objExplBoolField: boolean
+  objExplEnmField: CommonEnumType
+  objExplNumField: number
+  objExplOptBoolField?: boolean
+  objExplOptEnmField?: CommonEnumType
+  objExplOptNumField?: number
+  objExplOptStrField?: string
+  objExplStrField: string
+}
+
+export type CommonOptObjectType = {
+  optObjBoolField: boolean
+  optObjEnmField: CommonEnumType
+  optObjNumField: number
+  optObjOptBoolField?: boolean
+  optObjOptEnmField?: CommonEnumType
+  optObjOptNumField?: number
+  optObjOptStrField?: string
+  optObjStrField: string
+}
+
+export type CommonOptObjectTypeExpl = {
+  optObjExplBoolField: boolean
+  optObjExplEnmField: CommonEnumType
+  optObjExplNumField: number
+  optObjExplOptBoolField?: boolean
+  optObjExplOptEnmField?: CommonEnumType
+  optObjExplOptNumField?: number
+  optObjExplOptStrField?: string
+  optObjExplStrField: string
 }
 
 export type DeepObjectQueryParameters = {
-  objExpl: CommonObjectType
-  optObjExpl?: CommonObjectType
+  objExpl: CommonObjectTypeExpl
+  optObjExpl?: CommonOptObjectTypeExpl
 }
 
 export type FormQueryParameters = {
@@ -59,7 +92,7 @@ export type FormQueryParameters = {
   numArrExpl: number[]
   numExpl: number
   obj: CommonObjectType
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   optBool?: boolean
   optBoolArr?: boolean[]
   optBoolArrExpl?: boolean[]
@@ -72,8 +105,8 @@ export type FormQueryParameters = {
   optNumArr?: number[]
   optNumArrExpl?: number[]
   optNumExpl?: number
-  optObj?: CommonObjectType
-  optObjExpl?: CommonObjectType
+  optObj?: CommonOptObjectType
+  optObjExpl?: CommonOptObjectTypeExpl
   optStr?: string
   optStrArr?: string[]
   optStrArrExpl?: string[]
@@ -98,7 +131,7 @@ export type LabelPathParameters = {
   numArrExpl: number[]
   numExpl: number
   obj: CommonObjectType
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   str: string
   strArr: string[]
   strArrExpl: string[]
@@ -119,7 +152,7 @@ export type MatrixPathParameters = {
   numArrExpl: number[]
   numExpl: number
   obj: CommonObjectType
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   str: string
   strArr: string[]
   strArrExpl: string[]
@@ -155,7 +188,7 @@ export type SimpleHeaderParameters = {
   'X-NumArrExpl-Header': number[]
   'X-NumExpl-Header': number
   'X-Obj-Header': CommonObjectType
-  'X-ObjExpl-Header': CommonObjectType
+  'X-ObjExpl-Header': CommonObjectTypeExpl
   'X-OptBool-Header'?: boolean
   'X-OptBoolArr-Header'?: boolean[]
   'X-OptBoolArrExpl-Header'?: boolean[]
@@ -168,8 +201,8 @@ export type SimpleHeaderParameters = {
   'X-OptNumArr-Header'?: number[]
   'X-OptNumArrExpl-Header'?: number[]
   'X-OptNumExpl-Header'?: number
-  'X-OptObj-Header'?: CommonObjectType
-  'X-OptObjExpl-Header'?: CommonObjectType
+  'X-OptObj-Header'?: CommonOptObjectType
+  'X-OptObjExpl-Header'?: CommonOptObjectTypeExpl
   'X-OptStr-Header'?: string
   'X-OptStrArr-Header'?: string[]
   'X-OptStrArrExpl-Header'?: string[]
@@ -194,7 +227,7 @@ export type SimplePathParameters = {
   numArrExpl: number[]
   numExpl: number
   obj: CommonObjectType
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   str: string
   strArr: string[]
   strArrExpl: string[]
@@ -214,23 +247,62 @@ export type SpaceDelimitedQueryParameters = {
 
 export const commonEnumTypeTypeValidator = enumeration(['A', 'B', 'C'])
 
+export const commonObjectTypeExplTypeValidator = object(
+  shape({
+    objExplBoolField: boolean(),
+    objExplEnmField: lazy(() => commonEnumTypeTypeValidator),
+    objExplNumField: number(),
+    objExplOptBoolField: optional(boolean()),
+    objExplOptEnmField: optional(lazy(() => commonEnumTypeTypeValidator)),
+    objExplOptNumField: optional(number()),
+    objExplOptStrField: optional(string()),
+    objExplStrField: string(),
+  }),
+)
+
 export const commonObjectTypeTypeValidator = object(
   shape({
-    bool: boolean(),
-    enm: lazy(() => commonEnumTypeTypeValidator),
-    num: number(),
-    optBool: optional(boolean()),
-    optEnm: optional(lazy(() => commonEnumTypeTypeValidator)),
-    optNum: optional(number()),
-    optStr: optional(string()),
-    str: string(),
+    objBoolField: boolean(),
+    objEnmField: lazy(() => commonEnumTypeTypeValidator),
+    objNumField: number(),
+    objOptBoolField: optional(boolean()),
+    objOptEnmField: optional(lazy(() => commonEnumTypeTypeValidator)),
+    objOptNumField: optional(number()),
+    objOptStrField: optional(string()),
+    objStrField: string(),
+  }),
+)
+
+export const commonOptObjectTypeExplTypeValidator = object(
+  shape({
+    optObjExplBoolField: boolean(),
+    optObjExplEnmField: lazy(() => commonEnumTypeTypeValidator),
+    optObjExplNumField: number(),
+    optObjExplOptBoolField: optional(boolean()),
+    optObjExplOptEnmField: optional(lazy(() => commonEnumTypeTypeValidator)),
+    optObjExplOptNumField: optional(number()),
+    optObjExplOptStrField: optional(string()),
+    optObjExplStrField: string(),
+  }),
+)
+
+export const commonOptObjectTypeTypeValidator = object(
+  shape({
+    optObjBoolField: boolean(),
+    optObjEnmField: lazy(() => commonEnumTypeTypeValidator),
+    optObjNumField: number(),
+    optObjOptBoolField: optional(boolean()),
+    optObjOptEnmField: optional(lazy(() => commonEnumTypeTypeValidator)),
+    optObjOptNumField: optional(number()),
+    optObjOptStrField: optional(string()),
+    optObjStrField: string(),
   }),
 )
 
 export const deepObjectQueryParametersTypeValidator = object(
   shape({
-    objExpl: lazy(() => commonObjectTypeTypeValidator),
-    optObjExpl: optional(lazy(() => commonObjectTypeTypeValidator)),
+    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
+    optObjExpl: optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
   }),
 )
 
@@ -249,7 +321,7 @@ export const formQueryParametersTypeValidator = object(
     numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
-    objExpl: lazy(() => commonObjectTypeTypeValidator),
+    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     optBool: optional(boolean()),
     optBoolArr: optional(array(items(boolean()))),
     optBoolArrExpl: optional(array(items(boolean()))),
@@ -262,8 +334,8 @@ export const formQueryParametersTypeValidator = object(
     optNumArr: optional(array(items(number()))),
     optNumArrExpl: optional(array(items(number()))),
     optNumExpl: optional(number()),
-    optObj: optional(lazy(() => commonObjectTypeTypeValidator)),
-    optObjExpl: optional(lazy(() => commonObjectTypeTypeValidator)),
+    optObj: optional(lazy(() => commonOptObjectTypeTypeValidator)),
+    optObjExpl: optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
     optStr: optional(string()),
     optStrArr: optional(array(items(string()))),
     optStrArrExpl: optional(array(items(string()))),
@@ -290,7 +362,7 @@ export const labelPathParametersTypeValidator = object(
     numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
-    objExpl: lazy(() => commonObjectTypeTypeValidator),
+    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     str: string(),
     strArr: array(items(string())),
     strArrExpl: array(items(string())),
@@ -313,7 +385,7 @@ export const matrixPathParametersTypeValidator = object(
     numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
-    objExpl: lazy(() => commonObjectTypeTypeValidator),
+    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     str: string(),
     strArr: array(items(string())),
     strArrExpl: array(items(string())),
@@ -351,7 +423,7 @@ export const simpleHeaderParametersTypeValidator = object(
     'X-NumArrExpl-Header': array(items(number())),
     'X-NumExpl-Header': number(),
     'X-Obj-Header': lazy(() => commonObjectTypeTypeValidator),
-    'X-ObjExpl-Header': lazy(() => commonObjectTypeTypeValidator),
+    'X-ObjExpl-Header': lazy(() => commonObjectTypeExplTypeValidator),
     'X-OptBool-Header': optional(boolean()),
     'X-OptBoolArr-Header': optional(array(items(boolean()))),
     'X-OptBoolArrExpl-Header': optional(array(items(boolean()))),
@@ -364,8 +436,8 @@ export const simpleHeaderParametersTypeValidator = object(
     'X-OptNumArr-Header': optional(array(items(number()))),
     'X-OptNumArrExpl-Header': optional(array(items(number()))),
     'X-OptNumExpl-Header': optional(number()),
-    'X-OptObj-Header': optional(lazy(() => commonObjectTypeTypeValidator)),
-    'X-OptObjExpl-Header': optional(lazy(() => commonObjectTypeTypeValidator)),
+    'X-OptObj-Header': optional(lazy(() => commonOptObjectTypeTypeValidator)),
+    'X-OptObjExpl-Header': optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
     'X-OptStr-Header': optional(string()),
     'X-OptStrArr-Header': optional(array(items(string()))),
     'X-OptStrArrExpl-Header': optional(array(items(string()))),
@@ -392,7 +464,7 @@ export const simplePathParametersTypeValidator = object(
     numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
-    objExpl: lazy(() => commonObjectTypeTypeValidator),
+    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     str: string(),
     strArr: array(items(string())),
     strArrExpl: array(items(string())),
@@ -421,14 +493,85 @@ export function isCommonObjectType(input: any): input is CommonObjectType {
   return (
     input !== null &&
     typeof input === 'object' &&
-    typeof input.bool === 'boolean' &&
-    isCommonEnumType(input.enm) &&
-    typeof input.num === 'number' &&
-    (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
-    (input.optEnm === null || input.optEnm === undefined || isCommonEnumType(input.optEnm)) &&
-    (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
-    (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
-    typeof input.str === 'string'
+    typeof input.objBoolField === 'boolean' &&
+    isCommonEnumType(input.objEnmField) &&
+    typeof input.objNumField === 'number' &&
+    (input.objOptBoolField === null ||
+      input.objOptBoolField === undefined ||
+      typeof input.objOptBoolField === 'boolean') &&
+    (input.objOptEnmField === null || input.objOptEnmField === undefined || isCommonEnumType(input.objOptEnmField)) &&
+    (input.objOptNumField === null || input.objOptNumField === undefined || typeof input.objOptNumField === 'number') &&
+    (input.objOptStrField === null || input.objOptStrField === undefined || typeof input.objOptStrField === 'string') &&
+    typeof input.objStrField === 'string'
+  )
+}
+
+export function isCommonObjectTypeExpl(input: any): input is CommonObjectTypeExpl {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    typeof input.objExplBoolField === 'boolean' &&
+    isCommonEnumType(input.objExplEnmField) &&
+    typeof input.objExplNumField === 'number' &&
+    (input.objExplOptBoolField === null ||
+      input.objExplOptBoolField === undefined ||
+      typeof input.objExplOptBoolField === 'boolean') &&
+    (input.objExplOptEnmField === null ||
+      input.objExplOptEnmField === undefined ||
+      isCommonEnumType(input.objExplOptEnmField)) &&
+    (input.objExplOptNumField === null ||
+      input.objExplOptNumField === undefined ||
+      typeof input.objExplOptNumField === 'number') &&
+    (input.objExplOptStrField === null ||
+      input.objExplOptStrField === undefined ||
+      typeof input.objExplOptStrField === 'string') &&
+    typeof input.objExplStrField === 'string'
+  )
+}
+
+export function isCommonOptObjectType(input: any): input is CommonOptObjectType {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    typeof input.optObjBoolField === 'boolean' &&
+    isCommonEnumType(input.optObjEnmField) &&
+    typeof input.optObjNumField === 'number' &&
+    (input.optObjOptBoolField === null ||
+      input.optObjOptBoolField === undefined ||
+      typeof input.optObjOptBoolField === 'boolean') &&
+    (input.optObjOptEnmField === null ||
+      input.optObjOptEnmField === undefined ||
+      isCommonEnumType(input.optObjOptEnmField)) &&
+    (input.optObjOptNumField === null ||
+      input.optObjOptNumField === undefined ||
+      typeof input.optObjOptNumField === 'number') &&
+    (input.optObjOptStrField === null ||
+      input.optObjOptStrField === undefined ||
+      typeof input.optObjOptStrField === 'string') &&
+    typeof input.optObjStrField === 'string'
+  )
+}
+
+export function isCommonOptObjectTypeExpl(input: any): input is CommonOptObjectTypeExpl {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    typeof input.optObjExplBoolField === 'boolean' &&
+    isCommonEnumType(input.optObjExplEnmField) &&
+    typeof input.optObjExplNumField === 'number' &&
+    (input.optObjExplOptBoolField === null ||
+      input.optObjExplOptBoolField === undefined ||
+      typeof input.optObjExplOptBoolField === 'boolean') &&
+    (input.optObjExplOptEnmField === null ||
+      input.optObjExplOptEnmField === undefined ||
+      isCommonEnumType(input.optObjExplOptEnmField)) &&
+    (input.optObjExplOptNumField === null ||
+      input.optObjExplOptNumField === undefined ||
+      typeof input.optObjExplOptNumField === 'number') &&
+    (input.optObjExplOptStrField === null ||
+      input.optObjExplOptStrField === undefined ||
+      typeof input.optObjExplOptStrField === 'string') &&
+    typeof input.optObjExplStrField === 'string'
   )
 }
 
@@ -436,8 +579,8 @@ export function isDeepObjectQueryParameters(input: any): input is DeepObjectQuer
   return (
     input !== null &&
     typeof input === 'object' &&
-    isCommonObjectType(input.objExpl) &&
-    (input.optObjExpl === null || input.optObjExpl === undefined || isCommonObjectType(input.optObjExpl))
+    isCommonObjectTypeExpl(input.objExpl) &&
+    (input.optObjExpl === null || input.optObjExpl === undefined || isCommonOptObjectTypeExpl(input.optObjExpl))
   )
 }
 
@@ -464,7 +607,7 @@ export function isFormQueryParameters(input: any): input is FormQueryParameters 
     input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
-    isCommonObjectType(input.objExpl) &&
+    isCommonObjectTypeExpl(input.objExpl) &&
     (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
     (input.optBoolArr === null ||
       input.optBoolArr === undefined ||
@@ -489,8 +632,8 @@ export function isFormQueryParameters(input: any): input is FormQueryParameters 
       input.optNumArrExpl === undefined ||
       (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
     (input.optNumExpl === null || input.optNumExpl === undefined || typeof input.optNumExpl === 'number') &&
-    (input.optObj === null || input.optObj === undefined || isCommonObjectType(input.optObj)) &&
-    (input.optObjExpl === null || input.optObjExpl === undefined || isCommonObjectType(input.optObjExpl)) &&
+    (input.optObj === null || input.optObj === undefined || isCommonOptObjectType(input.optObj)) &&
+    (input.optObjExpl === null || input.optObjExpl === undefined || isCommonOptObjectTypeExpl(input.optObjExpl)) &&
     (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
     (input.optStrArr === null ||
       input.optStrArr === undefined ||
@@ -531,7 +674,7 @@ export function isLabelPathParameters(input: any): input is LabelPathParameters 
     input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
-    isCommonObjectType(input.objExpl) &&
+    isCommonObjectTypeExpl(input.objExpl) &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
     input.strArr.every((item: any) => typeof item === 'string') &&
@@ -564,7 +707,7 @@ export function isMatrixPathParameters(input: any): input is MatrixPathParameter
     input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
-    isCommonObjectType(input.objExpl) &&
+    isCommonObjectTypeExpl(input.objExpl) &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
     input.strArr.every((item: any) => typeof item === 'string') &&
@@ -628,7 +771,7 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
     input['X-NumArrExpl-Header'].every((item: any) => typeof item === 'number') &&
     typeof input['X-NumExpl-Header'] === 'number' &&
     isCommonObjectType(input['X-Obj-Header']) &&
-    isCommonObjectType(input['X-ObjExpl-Header']) &&
+    isCommonObjectTypeExpl(input['X-ObjExpl-Header']) &&
     (input['X-OptBool-Header'] === null ||
       input['X-OptBool-Header'] === undefined ||
       typeof input['X-OptBool-Header'] === 'boolean') &&
@@ -673,10 +816,10 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
       typeof input['X-OptNumExpl-Header'] === 'number') &&
     (input['X-OptObj-Header'] === null ||
       input['X-OptObj-Header'] === undefined ||
-      isCommonObjectType(input['X-OptObj-Header'])) &&
+      isCommonOptObjectType(input['X-OptObj-Header'])) &&
     (input['X-OptObjExpl-Header'] === null ||
       input['X-OptObjExpl-Header'] === undefined ||
-      isCommonObjectType(input['X-OptObjExpl-Header'])) &&
+      isCommonOptObjectTypeExpl(input['X-OptObjExpl-Header'])) &&
     (input['X-OptStr-Header'] === null ||
       input['X-OptStr-Header'] === undefined ||
       typeof input['X-OptStr-Header'] === 'string') &&
@@ -723,7 +866,7 @@ export function isSimplePathParameters(input: any): input is SimplePathParameter
     input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
-    isCommonObjectType(input.objExpl) &&
+    isCommonObjectTypeExpl(input.objExpl) &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
     input.strArr.every((item: any) => typeof item === 'string') &&
@@ -761,8 +904,8 @@ export function isSpaceDelimitedQueryParameters(input: any): input is SpaceDelim
 }
 
 export type DeepObjectQueryParametersQueryParameters = {
-  objExpl: CommonObjectType
-  optObjExpl?: CommonObjectType
+  objExpl: CommonObjectTypeExpl
+  optObjExpl?: CommonOptObjectTypeExpl
 }
 
 export type FormQueryParametersQueryParameters = {
@@ -798,10 +941,10 @@ export type FormQueryParametersQueryParameters = {
   optEnmArrExpl?: CommonEnumType[]
   enmArr: CommonEnumType[]
   optEnmArr?: CommonEnumType[]
-  objExpl: CommonObjectType
-  optObjExpl?: CommonObjectType
+  objExpl: CommonObjectTypeExpl
+  optObjExpl?: CommonOptObjectTypeExpl
   obj: CommonObjectType
-  optObj?: CommonObjectType
+  optObj?: CommonOptObjectType
 }
 
 export type PipeDelimitedQueryParametersQueryParameters = {
@@ -843,7 +986,7 @@ export type LabelPathParametersPathParameters = {
   boolArr: boolean[]
   enmArrExpl: CommonEnumType[]
   enmArr: CommonEnumType[]
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   obj: CommonObjectType
 }
 
@@ -864,7 +1007,7 @@ export type MatrixPathParametersPathParameters = {
   boolArr: boolean[]
   enmArrExpl: CommonEnumType[]
   enmArr: CommonEnumType[]
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   obj: CommonObjectType
 }
 
@@ -885,7 +1028,7 @@ export type SimplePathParametersPathParameters = {
   boolArr: boolean[]
   enmArrExpl: CommonEnumType[]
   enmArr: CommonEnumType[]
-  objExpl: CommonObjectType
+  objExpl: CommonObjectTypeExpl
   obj: CommonObjectType
 }
 
@@ -922,10 +1065,10 @@ export type SimpleHeaderParametersRequestHeaderParameters = {
   'X-OptEnmArrExpl-Header'?: CommonEnumType[]
   'X-EnmArr-Header': CommonEnumType[]
   'X-OptEnmArr-Header'?: CommonEnumType[]
-  'X-ObjExpl-Header': CommonObjectType
-  'X-OptObjExpl-Header'?: CommonObjectType
+  'X-ObjExpl-Header': CommonObjectTypeExpl
+  'X-OptObjExpl-Header'?: CommonOptObjectTypeExpl
   'X-Obj-Header': CommonObjectType
-  'X-OptObj-Header'?: CommonObjectType
+  'X-OptObj-Header'?: CommonOptObjectType
 }
 
 export type DeepObjectQueryParametersRequest = HasQueryParameters<DeepObjectQueryParametersQueryParameters>
@@ -1067,7 +1210,7 @@ export const labelPathParametersPathSerializer = createPathSerializer<LabelPathP
     boolArr: serializers.path.label.array<boolean[]>({ explode: false }),
     enmArrExpl: serializers.path.label.array<CommonEnumType[]>({ explode: true }),
     enmArr: serializers.path.label.array<CommonEnumType[]>({ explode: false }),
-    objExpl: serializers.path.label.object<CommonObjectType>({ explode: true }),
+    objExpl: serializers.path.label.object<CommonObjectTypeExpl>({ explode: true }),
     obj: serializers.path.label.object<CommonObjectType>({ explode: false }),
   },
 )
@@ -1091,7 +1234,7 @@ export const matrixPathParametersPathSerializer = createPathSerializer<MatrixPat
     boolArr: serializers.path.matrix.array<boolean[]>({ explode: false }),
     enmArrExpl: serializers.path.matrix.array<CommonEnumType[]>({ explode: true }),
     enmArr: serializers.path.matrix.array<CommonEnumType[]>({ explode: false }),
-    objExpl: serializers.path.matrix.object<CommonObjectType>({ explode: true }),
+    objExpl: serializers.path.matrix.object<CommonObjectTypeExpl>({ explode: true }),
     obj: serializers.path.matrix.object<CommonObjectType>({ explode: false }),
   },
 )
@@ -1115,15 +1258,15 @@ export const simplePathParametersPathSerializer = createPathSerializer<SimplePat
     boolArr: serializers.path.simple.array<boolean[]>({ explode: false }),
     enmArrExpl: serializers.path.simple.array<CommonEnumType[]>({ explode: true }),
     enmArr: serializers.path.simple.array<CommonEnumType[]>({ explode: false }),
-    objExpl: serializers.path.simple.object<CommonObjectType>({ explode: true }),
+    objExpl: serializers.path.simple.object<CommonObjectTypeExpl>({ explode: true }),
     obj: serializers.path.simple.object<CommonObjectType>({ explode: false }),
   },
 )
 
 export const deepObjectQueryParametersQuerySerializer = createQuerySerializer<DeepObjectQueryParametersQueryParameters>(
   {
-    objExpl: serializers.query.deepObject.object<CommonObjectType>({ explode: true, required: true }),
-    optObjExpl: serializers.query.deepObject.object<CommonObjectType>({ explode: true, required: false }),
+    objExpl: serializers.query.deepObject.object<CommonObjectTypeExpl>({ explode: true, required: true }),
+    optObjExpl: serializers.query.deepObject.object<CommonOptObjectTypeExpl>({ explode: true, required: false }),
   },
 )
 
@@ -1160,10 +1303,10 @@ export const formQueryParametersQuerySerializer = createQuerySerializer<FormQuer
   optEnmArrExpl: serializers.query.form.array<CommonEnumType[]>({ explode: true, required: false }),
   enmArr: serializers.query.form.array<CommonEnumType[]>({ explode: false, required: true }),
   optEnmArr: serializers.query.form.array<CommonEnumType[]>({ explode: false, required: false }),
-  objExpl: serializers.query.form.object<CommonObjectType>({ explode: true, required: true }),
-  optObjExpl: serializers.query.form.object<CommonObjectType>({ explode: true, required: false }),
+  objExpl: serializers.query.form.object<CommonObjectTypeExpl>({ explode: true, required: true }),
+  optObjExpl: serializers.query.form.object<CommonOptObjectTypeExpl>({ explode: true, required: false }),
   obj: serializers.query.form.object<CommonObjectType>({ explode: false, required: true }),
-  optObj: serializers.query.form.object<CommonObjectType>({ explode: false, required: false }),
+  optObj: serializers.query.form.object<CommonOptObjectType>({ explode: false, required: false }),
 })
 
 export const pipeDelimitedQueryParametersQuerySerializer =
@@ -1224,10 +1367,13 @@ export const simpleHeaderParametersRequestHeadersSerializer =
     'X-OptEnmArrExpl-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: true, required: false }),
     'X-EnmArr-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: false, required: true }),
     'X-OptEnmArr-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: false, required: false }),
-    'X-ObjExpl-Header': serializers.header.simple.object<CommonObjectType>({ explode: true, required: true }),
-    'X-OptObjExpl-Header': serializers.header.simple.object<CommonObjectType>({ explode: true, required: false }),
+    'X-ObjExpl-Header': serializers.header.simple.object<CommonObjectTypeExpl>({ explode: true, required: true }),
+    'X-OptObjExpl-Header': serializers.header.simple.object<CommonOptObjectTypeExpl>({
+      explode: true,
+      required: false,
+    }),
     'X-Obj-Header': serializers.header.simple.object<CommonObjectType>({ explode: false, required: true }),
-    'X-OptObj-Header': serializers.header.simple.object<CommonObjectType>({ explode: false, required: false }),
+    'X-OptObj-Header': serializers.header.simple.object<CommonOptObjectType>({ explode: false, required: false }),
   })
 
 export const labelPathParametersPathDeserializer = createPathDeserializer<LabelPathParametersPathParameters>(
@@ -1283,14 +1429,16 @@ export const labelPathParametersPathDeserializer = createPathDeserializer<LabelP
     ),
     objExpl: deserializers.path.label.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1298,14 +1446,16 @@ export const labelPathParametersPathDeserializer = createPathDeserializer<LabelP
     ),
     obj: deserializers.path.label.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1367,14 +1517,16 @@ export const matrixPathParametersPathDeserializer = createPathDeserializer<Matri
     ),
     objExpl: deserializers.path.matrix.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1382,14 +1534,16 @@ export const matrixPathParametersPathDeserializer = createPathDeserializer<Matri
     ),
     obj: deserializers.path.matrix.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1451,14 +1605,16 @@ export const simplePathParametersPathDeserializer = createPathDeserializer<Simpl
     ),
     objExpl: deserializers.path.simple.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1466,14 +1622,16 @@ export const simplePathParametersPathDeserializer = createPathDeserializer<Simpl
     ),
     obj: deserializers.path.simple.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1486,14 +1644,16 @@ export const deepObjectQueryParametersQueryDeserializer =
   createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
     objExpl: deserializers.query.deepObject.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1501,14 +1661,16 @@ export const deepObjectQueryParametersQueryDeserializer =
     ),
     optObjExpl: deserializers.query.deepObject.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        optObjExplStrField: deserializers.value.string(),
+        optObjExplNumField: deserializers.value.number(),
+        optObjExplBoolField: deserializers.value.boolean(),
+        optObjExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        optObjExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        optObjExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        optObjExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        optObjExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1575,14 +1737,16 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
   ),
   objExpl: deserializers.query.form.object(
     {
-      str: deserializers.value.string(),
-      num: deserializers.value.number(),
-      bool: deserializers.value.boolean(),
-      enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-      optStr: deserializers.value.optional(deserializers.value.string()),
-      optNum: deserializers.value.optional(deserializers.value.number()),
-      optBool: deserializers.value.optional(deserializers.value.boolean()),
-      optEnm: deserializers.value.optional(
+      objExplStrField: deserializers.value.string(),
+      objExplNumField: deserializers.value.number(),
+      objExplBoolField: deserializers.value.boolean(),
+      objExplEnmField: deserializers.value.string(
+        deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+      ),
+      objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+      objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+      objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      objExplOptEnmField: deserializers.value.optional(
         deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       ),
     },
@@ -1590,14 +1754,16 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
   ),
   optObjExpl: deserializers.query.form.object(
     {
-      str: deserializers.value.string(),
-      num: deserializers.value.number(),
-      bool: deserializers.value.boolean(),
-      enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-      optStr: deserializers.value.optional(deserializers.value.string()),
-      optNum: deserializers.value.optional(deserializers.value.number()),
-      optBool: deserializers.value.optional(deserializers.value.boolean()),
-      optEnm: deserializers.value.optional(
+      optObjExplStrField: deserializers.value.string(),
+      optObjExplNumField: deserializers.value.number(),
+      optObjExplBoolField: deserializers.value.boolean(),
+      optObjExplEnmField: deserializers.value.string(
+        deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+      ),
+      optObjExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+      optObjExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+      optObjExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      optObjExplOptEnmField: deserializers.value.optional(
         deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       ),
     },
@@ -1605,14 +1771,14 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
   ),
   obj: deserializers.query.form.object(
     {
-      str: deserializers.value.string(),
-      num: deserializers.value.number(),
-      bool: deserializers.value.boolean(),
-      enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-      optStr: deserializers.value.optional(deserializers.value.string()),
-      optNum: deserializers.value.optional(deserializers.value.number()),
-      optBool: deserializers.value.optional(deserializers.value.boolean()),
-      optEnm: deserializers.value.optional(
+      objStrField: deserializers.value.string(),
+      objNumField: deserializers.value.number(),
+      objBoolField: deserializers.value.boolean(),
+      objEnmField: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      objOptStrField: deserializers.value.optional(deserializers.value.string()),
+      objOptNumField: deserializers.value.optional(deserializers.value.number()),
+      objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      objOptEnmField: deserializers.value.optional(
         deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       ),
     },
@@ -1620,14 +1786,16 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
   ),
   optObj: deserializers.query.form.object(
     {
-      str: deserializers.value.string(),
-      num: deserializers.value.number(),
-      bool: deserializers.value.boolean(),
-      enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-      optStr: deserializers.value.optional(deserializers.value.string()),
-      optNum: deserializers.value.optional(deserializers.value.number()),
-      optBool: deserializers.value.optional(deserializers.value.boolean()),
-      optEnm: deserializers.value.optional(
+      optObjStrField: deserializers.value.string(),
+      optObjNumField: deserializers.value.number(),
+      optObjBoolField: deserializers.value.boolean(),
+      optObjEnmField: deserializers.value.string(
+        deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+      ),
+      optObjOptStrField: deserializers.value.optional(deserializers.value.string()),
+      optObjOptNumField: deserializers.value.optional(deserializers.value.number()),
+      optObjOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      optObjOptEnmField: deserializers.value.optional(
         deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       ),
     },
@@ -1839,14 +2007,16 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
     ),
     'X-ObjExpl-Header': deserializers.header.simple.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1854,14 +2024,16 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
     ),
     'X-OptObjExpl-Header': deserializers.header.simple.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        optObjExplStrField: deserializers.value.string(),
+        optObjExplNumField: deserializers.value.number(),
+        optObjExplBoolField: deserializers.value.boolean(),
+        optObjExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        optObjExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        optObjExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        optObjExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        optObjExplOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1869,14 +2041,16 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
     ),
     'X-Obj-Header': deserializers.header.simple.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },
@@ -1884,14 +2058,16 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
     ),
     'X-OptObj-Header': deserializers.header.simple.object(
       {
-        str: deserializers.value.string(),
-        num: deserializers.value.number(),
-        bool: deserializers.value.boolean(),
-        enm: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
-        optStr: deserializers.value.optional(deserializers.value.string()),
-        optNum: deserializers.value.optional(deserializers.value.number()),
-        optBool: deserializers.value.optional(deserializers.value.boolean()),
-        optEnm: deserializers.value.optional(
+        optObjStrField: deserializers.value.string(),
+        optObjNumField: deserializers.value.number(),
+        optObjBoolField: deserializers.value.boolean(),
+        optObjEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        optObjOptStrField: deserializers.value.optional(deserializers.value.string()),
+        optObjOptNumField: deserializers.value.optional(deserializers.value.number()),
+        optObjOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        optObjOptEnmField: deserializers.value.optional(
           deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
         ),
       },

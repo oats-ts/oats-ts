@@ -3,8 +3,11 @@ import { getFieldName, referenceOf } from './schemaUtils'
 
 export const components: Record<string, () => SchemaObject> = {
   CommonEnumType: () => _enumSchema,
-  CommonObjectType: () => _objectSchema,
   ParameterIssue: () => _parameterIssueSchema,
+  CommonObjectType: () => _objectSchema,
+  CommonObjectTypeExpl: () => _objectSchemaExpl,
+  CommonOptObjectType: () => _optObjectSchema,
+  CommonOptObjectTypeExpl: () => _optObjectSchemaExpl,
 }
 
 export const numberSchema: SchemaObject = {
@@ -26,29 +29,39 @@ const _enumSchema: SchemaObject = {
 
 export const enumSchema: ReferenceObject = referenceOf(_enumSchema)
 
-export const _objectSchema: SchemaObject = {
-  type: 'object',
-  required: [
-    getFieldName(stringSchema, false),
-    getFieldName(numberSchema, false),
-    getFieldName(booleanSchema, false),
-    getFieldName(_enumSchema, false),
-  ],
-  properties: {
-    // Required
-    [getFieldName(stringSchema, false)]: stringSchema,
-    [getFieldName(numberSchema, false)]: numberSchema,
-    [getFieldName(booleanSchema, false)]: booleanSchema,
-    [getFieldName(_enumSchema, false)]: referenceOf(_enumSchema),
-    // Optional
-    [getFieldName(stringSchema, true)]: stringSchema,
-    [getFieldName(numberSchema, true)]: numberSchema,
-    [getFieldName(booleanSchema, true)]: booleanSchema,
-    [getFieldName(_enumSchema, true)]: referenceOf(_enumSchema),
-  },
+function createObjectSchema(prefix: string): SchemaObject {
+  return {
+    type: 'object',
+    required: [
+      getFieldName(stringSchema, false, true, prefix),
+      getFieldName(numberSchema, false, true, prefix),
+      getFieldName(booleanSchema, false, true, prefix),
+      getFieldName(_enumSchema, false, true, prefix),
+    ],
+    properties: {
+      // Required
+      [getFieldName(stringSchema, false, true, prefix)]: stringSchema,
+      [getFieldName(numberSchema, false, true, prefix)]: numberSchema,
+      [getFieldName(booleanSchema, false, true, prefix)]: booleanSchema,
+      [getFieldName(_enumSchema, false, true, prefix)]: referenceOf(_enumSchema),
+      // Optional
+      [getFieldName(stringSchema, true, true, prefix)]: stringSchema,
+      [getFieldName(numberSchema, true, true, prefix)]: numberSchema,
+      [getFieldName(booleanSchema, true, true, prefix)]: booleanSchema,
+      [getFieldName(_enumSchema, true, true, prefix)]: referenceOf(_enumSchema),
+    },
+  }
 }
 
+export const _objectSchema = createObjectSchema('obj')
+export const _objectSchemaExpl = createObjectSchema('objExpl')
+export const _optObjectSchema = createObjectSchema('optObj')
+export const _optObjectSchemaExpl = createObjectSchema('optObjExpl')
+
 export const objectSchema = referenceOf(_objectSchema)
+export const objectSchemaExpl = referenceOf(_objectSchemaExpl)
+export const optObjectSchema = referenceOf(_optObjectSchema)
+export const optObjectSchemaExpl = referenceOf(_optObjectSchemaExpl)
 
 export const stringArraySchema = arraySchema(stringSchema)
 export const numberArraySchema = arraySchema(numberSchema)

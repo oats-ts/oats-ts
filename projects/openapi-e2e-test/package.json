@@ -12,7 +12,7 @@
     "url": "git+https://github.com/bali182/oats.git"
   },
   "scripts": {
-    "test": "jest",
+    "test": "cross-env REPEATS=100 jest",
     "build": "echo 'Nothing to build'",
     "typecheck": "tsc --noEmit",
     "g": "ts-node src/schema/generate.ts",
@@ -21,15 +21,13 @@
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/jest": "26.0.23",
     "@types/node": "16.7.1",
     "jest": "27.0.4",
     "ts-jest": "27.0.2",
     "typescript": "4.3.5",
-    "http-terminator": "3.0.3"
-  },
-  "dependencies": {
+    "http-terminator": "3.0.3",
     "@types/express": "4.17.12",
     "@types/lodash": "4.14.172",
     "@types/urijs": "1.19.16",
@@ -85,6 +83,7 @@
     "path-to-regexp": "6.2.0",
     "pascalcase": "1.0.0",
     "camelcase": "6.2.0",
-    "faker": "5.5.3"
+    "faker": "5.5.3",
+    "cross-env": "7.0.3"
   }
 }
