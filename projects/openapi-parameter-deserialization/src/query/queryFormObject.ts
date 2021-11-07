@@ -29,7 +29,7 @@ export const queryFormObject =
       }
       return keyValuePairs.length === 0 ? undefined : (output as T)
     } else {
-      const values = data[name]
+      const values = data[name] || []
       switch (values.length) {
         case 0: {
           if (options.required) {
@@ -50,10 +50,10 @@ export const queryFormObject =
       for (let i = 0; i < parts.length; i += 2) {
         const key = decode(parts[i])
         const rawValue = decode(parts[i + 1])
-        if (has(parsers, key)) {
+        const parser = parsers[key]
+        if (isNil(parser)) {
           throw new TypeError(`Unexpected key "${key}" in query parameter "${name}"`)
         }
-        const parser = parsers[key]
         const value = parser(key, rawValue)
         output[key] = value
       }

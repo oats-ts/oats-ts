@@ -2,7 +2,7 @@ import { RawHeaders, PrimitiveRecord, FieldParsers, Primitive } from '../types'
 import { isNil, decode } from '../utils'
 
 export function getHeaderValue(name: string, raw: RawHeaders, required: boolean) {
-  const value = raw[name]
+  const value = raw[name] ?? raw[name.toLowerCase()]
   if (isNil(value) && required) {
     throw new TypeError(`Header parameter "${name}" cannot be ${value}`)
   }

@@ -60,6 +60,7 @@ specifiers:
   '@types/yamljs': 0.2.31
   camelcase: 6.2.0
   chalk: 4.1.1
+  cross-env: 7.0.3
   express: 4.17.1
   faker: 5.5.3
   http-terminator: 3.0.3
@@ -142,6 +143,7 @@ dependencies:
   '@types/yamljs': 0.2.31
   camelcase: 6.2.0
   chalk: 4.1.1
+  cross-env: 7.0.3
   express: 4.17.1
   faker: 5.5.3
   http-terminator: 3.0.3
@@ -1571,6 +1573,14 @@ packages:
 
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+    dev: false
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: false
 
   /cross-spawn/7.0.3:
@@ -4483,7 +4493,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-zjB2xJeFacwDkO3En3sIKVr0N+oCU8tWR/SUC0v6zONSo5VA85+emUsjcDFX7S8Z48Qv0ShSk/8EEo71izJRhw==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-GJpc0Hq+shDyLrENykwogrDXJFZyVZJUnQQqtlV26ktToEbiL/iKi82TetagR7e10Rvu2+qh5sT83G7klhDt7g==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4500,6 +4510,7 @@ packages:
       '@types/yamljs': 0.2.31
       body-parser: 1.19.0
       camelcase: 6.2.0
+      cross-env: 7.0.3
       express: 4.17.1
       faker: 5.5.3
       http-terminator: 3.0.3

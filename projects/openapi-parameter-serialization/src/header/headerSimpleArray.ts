@@ -12,5 +12,8 @@ export const headerSimpleArray =
       return undefined
     }
     // TODO do we need to encode here???
-    return value.map((item) => encode(item)).join(',')
+    return value
+      .filter((item) => !isNil(item))
+      .map((item) => encode(item))
+      .join(',')
   }

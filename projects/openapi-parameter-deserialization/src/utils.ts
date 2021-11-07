@@ -56,5 +56,5 @@ export const createKeyValuePairRecordParser =
 export const createArrayParser =
   (separator: string) =>
   <T extends Primitive>(name: string, value: string, parse: ValueParser<string, T>): T[] => {
-    return value.split(separator).map((value, i) => parse(`${name}[${i}]`, decode(value)))
+    return isNil(value) ? undefined : value.split(separator).map((value, i) => parse(`${name}[${i}]`, decode(value)))
   }

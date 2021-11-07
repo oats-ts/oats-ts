@@ -1,5 +1,5 @@
 import { Primitive, ValueParser, QueryOptions, RawQueryParams } from '../types'
-import { decode } from '../utils'
+import { decode, isNil } from '../utils'
 import { getQueryValue } from './queryUtils'
 
 export const queryDelimitedArray =
@@ -8,6 +8,6 @@ export const queryDelimitedArray =
   (name: string) =>
   (data: RawQueryParams): T[] => {
     const options: QueryOptions = { explode: true, ...opts }
-    const values = options.explode ? data[name] || [] : getQueryValue(name, data, options).split(delimiter)
-    return values.map((value) => parse(name, decode(value)))
+    const values = options.explode ? data[name] : getQueryValue(name, data, options)?.split(delimiter)
+    return isNil(values) ? undefined : values.map((value) => parse(name, decode(value)))
   }

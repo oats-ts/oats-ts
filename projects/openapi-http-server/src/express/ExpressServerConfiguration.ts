@@ -25,7 +25,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
   }
   async getQueryParameters<Q>({ request }: ExpressParameters, deserializer: (input: string) => Q): Promise<Try<Q>> {
     try {
-      return [[], deserializer(new URL(request.url).search)]
+      return [[], deserializer(new URL(request.url, 'http://test.com').search)]
     } catch (e) {
       const issue: Issue = {
         message: e.message,
@@ -41,7 +41,6 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     deserializer: (input: RawHttpHeaders) => H,
   ): Promise<Try<H>> {
     try {
-      // TODO investigate if express does any bs with the headers...
       return [[], deserializer(request.headers as RawHttpHeaders)]
     } catch (e) {
       const issue: Issue = {
