@@ -28,21 +28,21 @@ describe('Parameters', () => {
 
   describe('path', () => {
     describe('simple', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const path = randomPathParameters()
         const response = await sdk.simplePathParameters({ path })
         expect(response.body).toEqual(path)
       })
     })
     describe('label', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const path = randomPathParameters()
         const response = await sdk.labelPathParameters({ path })
         expect(response.body).toEqual(path)
       })
     })
     describe('marix', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const path = randomPathParameters()
         const response = await sdk.matrixPathParameters({ path })
         expect(response.body).toEqual(path)
@@ -51,28 +51,28 @@ describe('Parameters', () => {
   })
   describe('query', () => {
     describe('form', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomFormQueryParameters()
         const response = await sdk.formQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
     describe('spaceDelimited', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomDelimitedQueryParameters()
         const response = await sdk.spaceDelimitedQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
     describe('pipeDelimited', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomDelimitedQueryParameters()
         const response = await sdk.pipeDelimitedQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
     describe('deepObject', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomDeepObjectQueryParameters()
         const response = await sdk.deepObjectQueryParameters({ query })
         expect(response.body).toEqual(query)
@@ -81,7 +81,7 @@ describe('Parameters', () => {
   })
   describe('header', () => {
     describe('simple', () => {
-      it.each(data)('should properly serialize and deserialize with random test data (#%d)', async () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const headers = randomHeaderParameters()
         const response = await sdk.simpleHeaderParameters({ headers })
         expect(response.body).toEqual(headers)

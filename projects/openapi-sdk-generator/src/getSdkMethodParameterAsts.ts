@@ -32,7 +32,9 @@ export function getSdkMethodParameterAsts(
       undefined,
       unused ? '_config' : 'config',
       undefined,
-      factory.createTypeReferenceNode('Partial', [factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration)]),
+      factory.createTypeReferenceNode('Partial', [
+        factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
+      ]),
       factory.createObjectLiteralExpression([]),
     ),
   )

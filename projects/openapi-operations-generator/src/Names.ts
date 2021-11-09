@@ -1,0 +1,20 @@
+export const Names = {
+  configuration: 'configuration',
+  url: 'url',
+  input: 'input',
+  path: 'path',
+  query: 'query',
+  headers: 'headers',
+  body: 'body',
+  method: 'method',
+  requestHeaders: 'requestHeaders',
+  requestBody: 'requestBody',
+  requestUrl: 'requestUrl',
+  rawRequest: 'rawRequest',
+
+  getPath: 'getPath',
+  getQuery: 'getQuery',
+  getUrl: 'getUrl',
+  getRequestHeaders: 'getRequestHeaders',
+  getRequestBody: 'getRequestBody',
+}

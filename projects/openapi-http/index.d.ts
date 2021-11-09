@@ -28,6 +28,10 @@ export type ResponseHeadersSerializer<S extends string = string> = {
   [statusCode in S]: (input: any) => RawHttpHeaders
 }
 
+export type ResponseHeadersDeserializers<S extends string = string> = {
+  [statusCode in S]: (input: RawHttpHeaders) => any
+}
+
 export type ResponseBodyValidators<V = unknown> = {
   [statusCode: number]: {
     [contentType: string]: V
@@ -57,10 +61,15 @@ export type HasNoIssues = {
   issues?: undefined
 }
 
-export type HasRequestBody<C extends string, T> = {
-  mimeType: C
+export type HasRequestBody<M extends string, T> = {
+  mimeType: M
   body: T
 }
+
+export type TypedHttpRequest<P = any, Q = any, H = any, M extends string = any, B = any> = HasHeaders<H> &
+  HasPathParameters<P> &
+  HasQueryParameters<Q> &
+  HasRequestBody<M, B>
 
 /** Http methods which are possible to describe using OpenAPI spec. */
 export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace'

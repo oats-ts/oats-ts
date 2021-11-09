@@ -17,7 +17,7 @@ export function getSdkClassAst(
     [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
     'config',
     undefined,
-    factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
+    factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
     undefined,
   )
 
@@ -31,7 +31,7 @@ export function getSdkClassAst(
         undefined,
         'config',
         undefined,
-        factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
+        factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
       ),
     ],
     factory.createBlock([

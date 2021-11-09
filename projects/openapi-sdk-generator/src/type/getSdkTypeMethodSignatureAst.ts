@@ -34,7 +34,7 @@ export function getSdkTypeMethodSignatureAst(
       'config',
       factory.createToken(SyntaxKind.QuestionToken),
       factory.createTypeReferenceNode('Partial', [
-        factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
+        factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
       ]),
     ),
   )

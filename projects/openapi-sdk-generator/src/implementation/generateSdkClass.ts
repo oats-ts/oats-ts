@@ -19,7 +19,7 @@ export function generateSdkClass(
   return {
     path,
     dependencies: [
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration]),
+      getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.ClientConfiguration]),
       ...getSdkTypeImports(doc, operations, context, true),
       ...dependenciesOf(path, doc, 'openapi/sdk-type'),
       ...flatMap(operations, ({ operation }) => dependenciesOf(path, operation, 'openapi/operation')),

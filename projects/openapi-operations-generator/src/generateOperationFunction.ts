@@ -1,10 +1,10 @@
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { getOperationFunctionAst } from './getOperationFunctionAst'
-import { OperationsGeneratorConfig } from './typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { getNamedImports } from '@oats-ts/typescript-common'
+import { OperationsGeneratorConfig } from './typings'
+import { getOperationFunctionAst } from './getOperationFunctionAst'
 
 export function generateOperationFunction(
   data: EnhancedOperation,
@@ -17,9 +17,8 @@ export function generateOperationFunction(
   return {
     path,
     dependencies: [
-      getNamedImports(RuntimePackages.ParameterSerialization.name, [RuntimePackages.ParameterSerialization.joinUrl]),
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientConfiguration]),
-      getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.execute]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RawHttpRequest]),
+      getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.ClientConfiguration]),
       ...dependenciesOf(path, data.operation, 'openapi/request-type'),
       ...dependenciesOf(path, data.operation, 'openapi/response-type'),
       ...dependenciesOf(path, data.operation, 'openapi/path-serializer'),

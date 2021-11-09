@@ -1,6 +1,5 @@
 const Http = {
   name: '@oats-ts/openapi-http',
-  ClientConfiguration: 'ClientConfiguration',
   HasHeaders: 'HasHeaders',
   HasPathParameters: 'HasPathParameters',
   HasQueryParameters: 'HasQueryParameters',
@@ -20,6 +19,7 @@ const Http = {
 const HttpClient = {
   name: '@oats-ts/openapi-http-client',
   execute: 'execute',
+  ClientConfiguration: 'ClientConfiguration',
 }
 
 const HttpServer = {
@@ -35,7 +35,6 @@ const HttpServerExpress = {
 
 const ParameterSerialization = {
   name: '@oats-ts/openapi-parameter-serialization',
-  joinUrl: 'joinUrl',
   createHeaderSerializer: 'createHeaderSerializer',
   createPathSerializer: 'createPathSerializer',
   createQuerySerializer: 'createQuerySerializer',

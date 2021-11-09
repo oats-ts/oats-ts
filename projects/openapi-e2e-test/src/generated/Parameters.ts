@@ -1,14 +1,14 @@
 import {
-  ClientConfiguration,
   HasHeaders,
   HasIssues,
   HasNoIssues,
   HasPathParameters,
   HasQueryParameters,
   HttpResponse,
+  RawHttpRequest,
   RawHttpResponse,
 } from '@oats-ts/openapi-http'
-import { execute } from '@oats-ts/openapi-http-client'
+import { ClientConfiguration } from '@oats-ts/openapi-http-client'
 import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
 import {
@@ -21,7 +21,6 @@ import {
   createHeaderSerializer,
   createPathSerializer,
   createQuerySerializer,
-  joinUrl,
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
 import { array, boolean, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
@@ -2080,20 +2079,27 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
  */
 export async function deepObjectQueryParameters(
   input: DeepObjectQueryParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<DeepObjectQueryParametersResponse> {
-  return execute(
-    {
-      url: joinUrl(
-        config.baseUrl,
-        '/deepObject-query-parameters',
-        deepObjectQueryParametersQuerySerializer(input.query),
-      ),
-      method: 'get',
-    },
-    config,
-    deepObjectQueryParametersResponseBodyValidator,
-  )
+  const query = await configuration.getQuery(input, deepObjectQueryParametersQuerySerializer)
+  const requestUrl = await configuration.getUrl('/deepObject-query-parameters', query)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as DeepObjectQueryParametersResponse
+  return response
 }
 
 /**
@@ -2101,16 +2107,28 @@ export async function deepObjectQueryParameters(
  */
 export async function formQueryParameters(
   input: FormQueryParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<FormQueryParametersResponse> {
-  return execute(
-    {
-      url: joinUrl(config.baseUrl, '/form-query-parameters', formQueryParametersQuerySerializer(input.query)),
-      method: 'get',
-    },
-    config,
-    formQueryParametersResponseBodyValidator,
-  )
+  const query = await configuration.getQuery(input, formQueryParametersQuerySerializer)
+  const requestUrl = await configuration.getUrl('/form-query-parameters', query)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ResponsType
+  return response
 }
 
 /**
@@ -2118,13 +2136,28 @@ export async function formQueryParameters(
  */
 export async function labelPathParameters(
   input: LabelPathParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<LabelPathParametersResponse> {
-  return execute(
-    { url: joinUrl(config.baseUrl, labelPathParametersPathSerializer(input.path)), method: 'get' },
-    config,
-    labelPathParametersResponseBodyValidator,
-  )
+  const path = await configuration.getPath(input, labelPathParametersPathSerializer)
+  const requestUrl = await configuration.getUrl(path, undefined)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ResponsType
+  return response
 }
 
 /**
@@ -2132,13 +2165,28 @@ export async function labelPathParameters(
  */
 export async function matrixPathParameters(
   input: MatrixPathParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<MatrixPathParametersResponse> {
-  return execute(
-    { url: joinUrl(config.baseUrl, matrixPathParametersPathSerializer(input.path)), method: 'get' },
-    config,
-    matrixPathParametersResponseBodyValidator,
-  )
+  const path = await configuration.getPath(input, matrixPathParametersPathSerializer)
+  const requestUrl = await configuration.getUrl(path, undefined)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ResponsType
+  return response
 }
 
 /**
@@ -2146,20 +2194,28 @@ export async function matrixPathParameters(
  */
 export async function pipeDelimitedQueryParameters(
   input: PipeDelimitedQueryParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<PipeDelimitedQueryParametersResponse> {
-  return execute(
-    {
-      url: joinUrl(
-        config.baseUrl,
-        '/pipeDelimited-query-parameters',
-        pipeDelimitedQueryParametersQuerySerializer(input.query),
-      ),
-      method: 'get',
-    },
-    config,
-    pipeDelimitedQueryParametersResponseBodyValidator,
-  )
+  const query = await configuration.getQuery(input, pipeDelimitedQueryParametersQuerySerializer)
+  const requestUrl = await configuration.getUrl('/pipeDelimited-query-parameters', query)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ResponsType
+  return response
 }
 
 /**
@@ -2167,17 +2223,27 @@ export async function pipeDelimitedQueryParameters(
  */
 export async function simpleHeaderParameters(
   input: SimpleHeaderParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<SimpleHeaderParametersResponse> {
-  return execute(
-    {
-      url: joinUrl(config.baseUrl, '/simple-header-parameters'),
-      method: 'get',
-      headers: simpleHeaderParametersRequestHeadersSerializer(input.headers),
-    },
-    config,
-    simpleHeaderParametersResponseBodyValidator,
-  )
+  const requestUrl = await configuration.getUrl('/simple-header-parameters', undefined)
+  const requestHeaders = await configuration.getRequestHeaders(input, simpleHeaderParametersRequestHeadersSerializer)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as SimpleHeaderParametersResponse
+  return response
 }
 
 /**
@@ -2185,13 +2251,28 @@ export async function simpleHeaderParameters(
  */
 export async function simplePathParameters(
   input: SimplePathParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<SimplePathParametersResponse> {
-  return execute(
-    { url: joinUrl(config.baseUrl, simplePathParametersPathSerializer(input.path)), method: 'get' },
-    config,
-    simplePathParametersResponseBodyValidator,
-  )
+  const path = await configuration.getPath(input, simplePathParametersPathSerializer)
+  const requestUrl = await configuration.getUrl(path, undefined)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ResponsType
+  return response
 }
 
 /**
@@ -2199,20 +2280,28 @@ export async function simplePathParameters(
  */
 export async function spaceDelimitedQueryParameters(
   input: SpaceDelimitedQueryParametersRequest,
-  config: ClientConfiguration,
+  configuration: ClientConfiguration,
 ): Promise<SpaceDelimitedQueryParametersResponse> {
-  return execute(
-    {
-      url: joinUrl(
-        config.baseUrl,
-        '/spaceDelimited-query-parameters',
-        spaceDelimitedQueryParametersQuerySerializer(input.query),
-      ),
-      method: 'get',
-    },
-    config,
-    spaceDelimitedQueryParametersResponseBodyValidator,
-  )
+  const query = await configuration.getQuery(input, spaceDelimitedQueryParametersQuerySerializer)
+  const requestUrl = await configuration.getUrl('/spaceDelimited-query-parameters', query)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
+  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ResponsType
+  return response
 }
 
 export type ParametersSdk = {

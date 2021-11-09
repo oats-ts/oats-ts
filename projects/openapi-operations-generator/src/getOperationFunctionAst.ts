@@ -4,7 +4,8 @@ import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
 import { OperationsGeneratorConfig } from './typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { documentNode } from '@oats-ts/typescript-common'
-import { getOperationExecuteAst } from './getOperationRequestAst'
+import { Names } from './Names'
+import { getOperationBodyAst } from './getOperationBodyAst'
 
 export function getOperationFunctionAst(
   data: EnhancedOperation,
@@ -14,31 +15,28 @@ export function getOperationFunctionAst(
   const { nameOf, referenceOf } = context
   const { operation } = data
 
-  const params: ParameterDeclaration[] = []
-
-  if (hasInput(data, context)) {
-    params.push(
-      factory.createParameterDeclaration(
-        [],
-        [],
-        undefined,
-        'input',
-        undefined,
-        factory.createTypeReferenceNode(nameOf(operation, 'openapi/request-type')),
-      ),
-    )
-  }
-
-  params.push(
+  const params: ParameterDeclaration[] = [
+    ...(hasInput(data, context)
+      ? [
+          factory.createParameterDeclaration(
+            [],
+            [],
+            undefined,
+            Names.input,
+            undefined,
+            factory.createTypeReferenceNode(nameOf(operation, 'openapi/request-type')),
+          ),
+        ]
+      : []),
     factory.createParameterDeclaration(
       [],
       [],
       undefined,
-      'config',
+      Names.configuration,
       undefined,
-      factory.createTypeReferenceNode(RuntimePackages.Http.ClientConfiguration),
+      factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
     ),
-  )
+  ]
 
   const node = factory.createFunctionDeclaration(
     [],
@@ -48,7 +46,7 @@ export function getOperationFunctionAst(
     [],
     params,
     factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'openapi/response-type')]),
-    factory.createBlock([factory.createReturnStatement(getOperationExecuteAst(data, context, config))]),
+    getOperationBodyAst(data, context),
   )
   return config.documentation ? documentNode(node, operation) : node
 }
