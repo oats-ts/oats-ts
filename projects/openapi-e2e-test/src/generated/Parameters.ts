@@ -2092,7 +2092,13 @@ export async function deepObjectQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    deepObjectQueryParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
@@ -2120,14 +2126,19 @@ export async function formQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    formQueryParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as ResponsType
+  } as FormQueryParametersResponse
   return response
 }
 
@@ -2149,14 +2160,19 @@ export async function labelPathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    labelPathParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as ResponsType
+  } as LabelPathParametersResponse
   return response
 }
 
@@ -2178,14 +2194,19 @@ export async function matrixPathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    matrixPathParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as ResponsType
+  } as MatrixPathParametersResponse
   return response
 }
 
@@ -2207,14 +2228,19 @@ export async function pipeDelimitedQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    pipeDelimitedQueryParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as ResponsType
+  } as PipeDelimitedQueryParametersResponse
   return response
 }
 
@@ -2235,8 +2261,13 @@ export async function simpleHeaderParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    simpleHeaderParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
@@ -2264,14 +2295,19 @@ export async function simplePathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    simplePathParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as ResponsType
+  } as SimplePathParametersResponse
   return response
 }
 
@@ -2293,14 +2329,19 @@ export async function spaceDelimitedQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, deserializer)
-  const responseBody = await configuration.getResponseBody(rawResponse, validator)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    spaceDelimitedQueryParametersResponseBodyValidator,
+  )
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as ResponsType
+  } as SpaceDelimitedQueryParametersResponse
   return response
 }
 
@@ -2308,58 +2349,38 @@ export type ParametersSdk = {
   /**
    * Endpoint for testing query parameters with deepObject serialization
    */
-  deepObjectQueryParameters(
-    input: DeepObjectQueryParametersRequest,
-    config?: Partial<ClientConfiguration>,
-  ): Promise<DeepObjectQueryParametersResponse>
+  deepObjectQueryParameters(input: DeepObjectQueryParametersRequest): Promise<DeepObjectQueryParametersResponse>
   /**
    * Endpoint for testing query parameters with form serialization
    */
-  formQueryParameters(
-    input: FormQueryParametersRequest,
-    config?: Partial<ClientConfiguration>,
-  ): Promise<FormQueryParametersResponse>
+  formQueryParameters(input: FormQueryParametersRequest): Promise<FormQueryParametersResponse>
   /**
    * Endpoint for testing path parameters with label serialization
    */
-  labelPathParameters(
-    input: LabelPathParametersRequest,
-    config?: Partial<ClientConfiguration>,
-  ): Promise<LabelPathParametersResponse>
+  labelPathParameters(input: LabelPathParametersRequest): Promise<LabelPathParametersResponse>
   /**
    * Endpoint for testing path parameters with matrix serialization
    */
-  matrixPathParameters(
-    input: MatrixPathParametersRequest,
-    config?: Partial<ClientConfiguration>,
-  ): Promise<MatrixPathParametersResponse>
+  matrixPathParameters(input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse>
   /**
    * Endpoint for testing query parameters with pipeDelimited serialization
    */
   pipeDelimitedQueryParameters(
     input: PipeDelimitedQueryParametersRequest,
-    config?: Partial<ClientConfiguration>,
   ): Promise<PipeDelimitedQueryParametersResponse>
   /**
    * Endpoint for testing header parameters with simple serialization
    */
-  simpleHeaderParameters(
-    input: SimpleHeaderParametersRequest,
-    config?: Partial<ClientConfiguration>,
-  ): Promise<SimpleHeaderParametersResponse>
+  simpleHeaderParameters(input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse>
   /**
    * Endpoint for testing path parameters with simple serialization
    */
-  simplePathParameters(
-    input: SimplePathParametersRequest,
-    config?: Partial<ClientConfiguration>,
-  ): Promise<SimplePathParametersResponse>
+  simplePathParameters(input: SimplePathParametersRequest): Promise<SimplePathParametersResponse>
   /**
    * Endpoint for testing query parameters with spaceDelimited serialization
    */
   spaceDelimitedQueryParameters(
     input: SpaceDelimitedQueryParametersRequest,
-    config?: Partial<ClientConfiguration>,
   ): Promise<SpaceDelimitedQueryParametersResponse>
 }
 
@@ -2370,110 +2391,74 @@ export class ParametersClientSdk implements ParametersSdk {
   }
   public async deepObjectQueryParameters(
     input: DeepObjectQueryParametersRequest,
-    config: Partial<ClientConfiguration> = {},
   ): Promise<DeepObjectQueryParametersResponse> {
-    return deepObjectQueryParameters(input, { ...this.config, ...config })
+    return deepObjectQueryParameters(input, this.config)
   }
-  public async formQueryParameters(
-    input: FormQueryParametersRequest,
-    config: Partial<ClientConfiguration> = {},
-  ): Promise<FormQueryParametersResponse> {
-    return formQueryParameters(input, { ...this.config, ...config })
+  public async formQueryParameters(input: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
+    return formQueryParameters(input, this.config)
   }
-  public async labelPathParameters(
-    input: LabelPathParametersRequest,
-    config: Partial<ClientConfiguration> = {},
-  ): Promise<LabelPathParametersResponse> {
-    return labelPathParameters(input, { ...this.config, ...config })
+  public async labelPathParameters(input: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
+    return labelPathParameters(input, this.config)
   }
-  public async matrixPathParameters(
-    input: MatrixPathParametersRequest,
-    config: Partial<ClientConfiguration> = {},
-  ): Promise<MatrixPathParametersResponse> {
-    return matrixPathParameters(input, { ...this.config, ...config })
+  public async matrixPathParameters(input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
+    return matrixPathParameters(input, this.config)
   }
   public async pipeDelimitedQueryParameters(
     input: PipeDelimitedQueryParametersRequest,
-    config: Partial<ClientConfiguration> = {},
   ): Promise<PipeDelimitedQueryParametersResponse> {
-    return pipeDelimitedQueryParameters(input, { ...this.config, ...config })
+    return pipeDelimitedQueryParameters(input, this.config)
   }
-  public async simpleHeaderParameters(
-    input: SimpleHeaderParametersRequest,
-    config: Partial<ClientConfiguration> = {},
-  ): Promise<SimpleHeaderParametersResponse> {
-    return simpleHeaderParameters(input, { ...this.config, ...config })
+  public async simpleHeaderParameters(input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
+    return simpleHeaderParameters(input, this.config)
   }
-  public async simplePathParameters(
-    input: SimplePathParametersRequest,
-    config: Partial<ClientConfiguration> = {},
-  ): Promise<SimplePathParametersResponse> {
-    return simplePathParameters(input, { ...this.config, ...config })
+  public async simplePathParameters(input: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
+    return simplePathParameters(input, this.config)
   }
   public async spaceDelimitedQueryParameters(
     input: SpaceDelimitedQueryParametersRequest,
-    config: Partial<ClientConfiguration> = {},
   ): Promise<SpaceDelimitedQueryParametersResponse> {
-    return spaceDelimitedQueryParameters(input, { ...this.config, ...config })
+    return spaceDelimitedQueryParameters(input, this.config)
   }
 }
 
 export class ParametersSdkStub implements ParametersSdk {
   public async deepObjectQueryParameters(
     _input: DeepObjectQueryParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
   ): Promise<DeepObjectQueryParametersResponse> {
     throw new Error(
       'Stub method "deepObjectQueryParameters" called. You should implement this method if you want to use it.',
     )
   }
-  public async formQueryParameters(
-    _input: FormQueryParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
-  ): Promise<FormQueryParametersResponse> {
+  public async formQueryParameters(_input: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
     throw new Error('Stub method "formQueryParameters" called. You should implement this method if you want to use it.')
   }
-  public async labelPathParameters(
-    _input: LabelPathParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
-  ): Promise<LabelPathParametersResponse> {
+  public async labelPathParameters(_input: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
     throw new Error('Stub method "labelPathParameters" called. You should implement this method if you want to use it.')
   }
-  public async matrixPathParameters(
-    _input: MatrixPathParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
-  ): Promise<MatrixPathParametersResponse> {
+  public async matrixPathParameters(_input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
     throw new Error(
       'Stub method "matrixPathParameters" called. You should implement this method if you want to use it.',
     )
   }
   public async pipeDelimitedQueryParameters(
     _input: PipeDelimitedQueryParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
   ): Promise<PipeDelimitedQueryParametersResponse> {
     throw new Error(
       'Stub method "pipeDelimitedQueryParameters" called. You should implement this method if you want to use it.',
     )
   }
-  public async simpleHeaderParameters(
-    _input: SimpleHeaderParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
-  ): Promise<SimpleHeaderParametersResponse> {
+  public async simpleHeaderParameters(_input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
     throw new Error(
       'Stub method "simpleHeaderParameters" called. You should implement this method if you want to use it.',
     )
   }
-  public async simplePathParameters(
-    _input: SimplePathParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
-  ): Promise<SimplePathParametersResponse> {
+  public async simplePathParameters(_input: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
     throw new Error(
       'Stub method "simplePathParameters" called. You should implement this method if you want to use it.',
     )
   }
   public async spaceDelimitedQueryParameters(
     _input: SpaceDelimitedQueryParametersRequest,
-    _config: Partial<ClientConfiguration> = {},
   ): Promise<SpaceDelimitedQueryParametersResponse> {
     throw new Error(
       'Stub method "spaceDelimitedQueryParameters" called. You should implement this method if you want to use it.',

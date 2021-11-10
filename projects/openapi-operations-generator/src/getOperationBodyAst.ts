@@ -1,9 +1,21 @@
-import { EnhancedOperation, hasRequestBody, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
+import {
+  EnhancedOperation,
+  hasRequestBody,
+  hasResponseHeaders,
+  hasResponses,
+  OpenAPIGeneratorContext,
+  RuntimePackages,
+} from '@oats-ts/openapi-common'
 import { isNil } from 'lodash'
 import { factory, NodeFlags } from 'typescript'
+import { OperationsGeneratorConfig } from '.'
 import { Names } from './Names'
 
-export function getOperationBodyAst(data: EnhancedOperation, context: OpenAPIGeneratorContext) {
+export function getOperationBodyAst(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  config: OperationsGeneratorConfig,
+) {
   const { referenceOf } = context
   const path =
     data.path.length > 0
@@ -174,6 +186,167 @@ export function getOperationBodyAst(data: EnhancedOperation, context: OpenAPIGen
       NodeFlags.Const,
     ),
   )
+  const rawResponse = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(Names.rawResponse),
+          undefined,
+          undefined,
+          factory.createAwaitExpression(
+            factory.createCallExpression(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.request),
+              ),
+              undefined,
+              [factory.createIdentifier(Names.rawRequest)],
+            ),
+          ),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
+  )
+  const mimeType = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(Names.mimeType),
+          undefined,
+          undefined,
+          factory.createAwaitExpression(
+            factory.createCallExpression(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.getMimeType),
+              ),
+              undefined,
+              [factory.createIdentifier(Names.rawResponse)],
+            ),
+          ),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
+  )
+  const statusCode = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(Names.statusCode),
+          undefined,
+          undefined,
+          factory.createAwaitExpression(
+            factory.createCallExpression(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.getStatusCode),
+              ),
+              undefined,
+              [factory.createIdentifier(Names.rawResponse)],
+            ),
+          ),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
+  )
+  const responseHeaders = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(Names.responseHeaders),
+          undefined,
+          undefined,
+          factory.createAwaitExpression(
+            factory.createCallExpression(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.getResponseHeaders),
+              ),
+              undefined,
+              [
+                factory.createIdentifier(Names.rawResponse),
+                factory.createIdentifier(Names.statusCode),
+                hasResponseHeaders(data.operation, context)
+                  ? referenceOf(data.operation, 'openapi/response-headers-deserializer')
+                  : factory.createIdentifier('undefined'),
+              ],
+            ),
+          ),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
+  )
+
+  const responseBody = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(Names.responseBody),
+          undefined,
+          undefined,
+          factory.createAwaitExpression(
+            factory.createCallExpression(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.getResponseBody),
+              ),
+              undefined,
+              [
+                factory.createIdentifier(Names.rawResponse),
+                factory.createIdentifier(Names.statusCode),
+                factory.createIdentifier(Names.mimeType),
+                config.validate && hasResponses(data.operation, context)
+                  ? referenceOf(data.operation, 'openapi/response-body-validator')
+                  : factory.createIdentifier('undefined'),
+              ],
+            ),
+          ),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
+  )
+  const response = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(Names.response),
+          undefined,
+          undefined,
+          factory.createAsExpression(
+            factory.createObjectLiteralExpression(
+              [
+                factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.mimeType), undefined),
+                factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.statusCode), undefined),
+                factory.createPropertyAssignment(
+                  factory.createIdentifier(Names.headers),
+                  factory.createIdentifier(Names.responseHeaders),
+                ),
+                factory.createPropertyAssignment(
+                  factory.createIdentifier(Names.body),
+                  factory.createIdentifier(Names.responseBody),
+                ),
+              ],
+              true,
+            ),
+            factory.createTypeReferenceNode(referenceOf(data.operation, 'openapi/response-type'), undefined),
+          ),
+        ),
+      ],
+      NodeFlags.Const,
+    ),
+  )
+
   return factory.createBlock(
     [
       ...(isNil(path) ? [] : [path]),
@@ -182,153 +355,13 @@ export function getOperationBodyAst(data: EnhancedOperation, context: OpenAPIGen
       requestHeaders,
       ...(isNil(requestBody) ? [] : [requestBody]),
       rawRequest,
-      factory.createVariableStatement(
-        undefined,
-        factory.createVariableDeclarationList(
-          [
-            factory.createVariableDeclaration(
-              factory.createIdentifier('rawResponse'),
-              undefined,
-              undefined,
-              factory.createAwaitExpression(
-                factory.createCallExpression(
-                  factory.createPropertyAccessExpression(
-                    factory.createIdentifier('configuration'),
-                    factory.createIdentifier('request'),
-                  ),
-                  undefined,
-                  [factory.createIdentifier('rawRequest')],
-                ),
-              ),
-            ),
-          ],
-          NodeFlags.Const,
-        ),
-      ),
-      factory.createVariableStatement(
-        undefined,
-        factory.createVariableDeclarationList(
-          [
-            factory.createVariableDeclaration(
-              factory.createIdentifier('mimeType'),
-              undefined,
-              undefined,
-              factory.createAwaitExpression(
-                factory.createCallExpression(
-                  factory.createPropertyAccessExpression(
-                    factory.createIdentifier('configuration'),
-                    factory.createIdentifier('getMimeType'),
-                  ),
-                  undefined,
-                  [factory.createIdentifier('rawResponse')],
-                ),
-              ),
-            ),
-          ],
-          NodeFlags.Const,
-        ),
-      ),
-      factory.createVariableStatement(
-        undefined,
-        factory.createVariableDeclarationList(
-          [
-            factory.createVariableDeclaration(
-              factory.createIdentifier('statusCode'),
-              undefined,
-              undefined,
-              factory.createAwaitExpression(
-                factory.createCallExpression(
-                  factory.createPropertyAccessExpression(
-                    factory.createIdentifier('configuration'),
-                    factory.createIdentifier('getStatusCode'),
-                  ),
-                  undefined,
-                  [factory.createIdentifier('rawResponse')],
-                ),
-              ),
-            ),
-          ],
-          NodeFlags.Const,
-        ),
-      ),
-      factory.createVariableStatement(
-        undefined,
-        factory.createVariableDeclarationList(
-          [
-            factory.createVariableDeclaration(
-              factory.createIdentifier('responseHeaders'),
-              undefined,
-              undefined,
-              factory.createAwaitExpression(
-                factory.createCallExpression(
-                  factory.createPropertyAccessExpression(
-                    factory.createIdentifier('configuration'),
-                    factory.createIdentifier('getResponseHeaders'),
-                  ),
-                  undefined,
-                  [factory.createIdentifier('rawResponse'), factory.createIdentifier('deserializer')],
-                ),
-              ),
-            ),
-          ],
-          NodeFlags.Const,
-        ),
-      ),
-      factory.createVariableStatement(
-        undefined,
-        factory.createVariableDeclarationList(
-          [
-            factory.createVariableDeclaration(
-              factory.createIdentifier('responseBody'),
-              undefined,
-              undefined,
-              factory.createAwaitExpression(
-                factory.createCallExpression(
-                  factory.createPropertyAccessExpression(
-                    factory.createIdentifier('configuration'),
-                    factory.createIdentifier('getResponseBody'),
-                  ),
-                  undefined,
-                  [factory.createIdentifier('rawResponse'), factory.createIdentifier('validator')],
-                ),
-              ),
-            ),
-          ],
-          NodeFlags.Const,
-        ),
-      ),
-      factory.createVariableStatement(
-        undefined,
-        factory.createVariableDeclarationList(
-          [
-            factory.createVariableDeclaration(
-              factory.createIdentifier('response'),
-              undefined,
-              undefined,
-              factory.createAsExpression(
-                factory.createObjectLiteralExpression(
-                  [
-                    factory.createShorthandPropertyAssignment(factory.createIdentifier('mimeType'), undefined),
-                    factory.createShorthandPropertyAssignment(factory.createIdentifier('statusCode'), undefined),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('headers'),
-                      factory.createIdentifier('responseHeaders'),
-                    ),
-                    factory.createPropertyAssignment(
-                      factory.createIdentifier('body'),
-                      factory.createIdentifier('responseBody'),
-                    ),
-                  ],
-                  true,
-                ),
-                factory.createTypeReferenceNode(factory.createIdentifier('ResponsType'), undefined),
-              ),
-            ),
-          ],
-          NodeFlags.Const,
-        ),
-      ),
-      factory.createReturnStatement(factory.createIdentifier('response')),
+      rawResponse,
+      mimeType,
+      statusCode,
+      responseHeaders,
+      responseBody,
+      response,
+      factory.createReturnStatement(factory.createIdentifier(Names.response)),
     ],
     true,
   )

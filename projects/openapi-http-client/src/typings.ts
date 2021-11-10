@@ -8,8 +8,8 @@ import {
 } from '@oats-ts/openapi-http'
 
 export type ClientConfiguration = {
-  getPath(input: Partial<TypedHttpRequest>, serializer?: (input: any) => string): Promise<string>
-  getQuery(input: Partial<TypedHttpRequest>, serializer: (input: any) => string): Promise<string>
+  getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => string): Promise<string>
+  getQuery(input: Partial<TypedHttpRequest>, serializer?: (input: any) => string): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
   getRequestHeaders(
     input: Partial<TypedHttpRequest>,
@@ -17,8 +17,17 @@ export type ClientConfiguration = {
   ): Promise<RawHttpHeaders>
   getRequestBody(input: Partial<TypedHttpRequest>): Promise<any>
   request(request: RawHttpRequest): Promise<RawHttpResponse>
-  getResponseHeaders(response: RawHttpResponse, deserializers?: ResponseHeadersDeserializers): Promise<any>
-  getResponseBody(response: RawHttpResponse, validators?: ResponseBodyValidators): Promise<any>
-  getStatusCode(response: RawHttpResponse): Promise<number>
-  getMimeType(response: RawHttpResponse): Promise<string>
+  getMimeType(response: RawHttpResponse): Promise<string | undefined>
+  getStatusCode(response: RawHttpResponse): Promise<number | undefined>
+  getResponseHeaders(
+    response: RawHttpResponse,
+    statusCode?: number,
+    deserializers?: ResponseHeadersDeserializers,
+  ): Promise<any>
+  getResponseBody(
+    response: RawHttpResponse,
+    statusCode?: number,
+    mimeType?: string,
+    validators?: ResponseBodyValidators,
+  ): Promise<any>
 }

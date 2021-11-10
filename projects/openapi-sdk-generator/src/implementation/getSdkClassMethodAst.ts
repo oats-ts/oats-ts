@@ -12,12 +12,7 @@ export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
       [],
       [
         ...(hasInput(data, context) ? [factory.createIdentifier('input')] : []),
-        factory.createObjectLiteralExpression([
-          factory.createSpreadAssignment(
-            factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'config'),
-          ),
-          factory.createSpreadAssignment(factory.createIdentifier('config')),
-        ]),
+        factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'config'),
       ],
     ),
   )

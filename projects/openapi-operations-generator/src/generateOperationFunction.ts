@@ -24,6 +24,7 @@ export function generateOperationFunction(
       ...dependenciesOf(path, data.operation, 'openapi/path-serializer'),
       ...dependenciesOf(path, data.operation, 'openapi/query-serializer'),
       ...dependenciesOf(path, data.operation, 'openapi/request-headers-serializer'),
+      ...dependenciesOf(path, data.operation, 'openapi/response-headers-deserializer'),
       ...(config.validate ? dependenciesOf(path, data.operation, 'openapi/response-body-validator') : []),
     ],
     content: [getOperationFunctionAst(data, context, config)],

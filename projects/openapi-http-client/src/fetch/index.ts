@@ -1,7 +1,1 @@
-export { request } from './request'
-export { body } from '../common/body'
-export { headers } from '../common/headers'
-export { mimeType } from '../common/mimeType'
-export { noop } from '../common/noop'
-export { serialize } from '../common/serialize'
-export { statusCode } from '../common/statusCode'
+export { FetchClientConfiguration } from './FetchClientConfiguration'

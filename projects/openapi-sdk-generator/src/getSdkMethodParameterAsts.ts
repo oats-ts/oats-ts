@@ -10,34 +10,16 @@ export function getSdkMethodParameterAsts(
 ): ParameterDeclaration[] {
   const { nameOf } = context
 
-  const parameters: ParameterDeclaration[] = []
-
-  if (hasInput(data, context)) {
-    parameters.unshift(
-      factory.createParameterDeclaration(
-        [],
-        [],
-        undefined,
-        unused ? '_input' : 'input',
-        undefined,
-        factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
-      ),
-    )
-  }
-
-  parameters.push(
-    factory.createParameterDeclaration(
-      [],
-      [],
-      undefined,
-      unused ? '_config' : 'config',
-      undefined,
-      factory.createTypeReferenceNode('Partial', [
-        factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
-      ]),
-      factory.createObjectLiteralExpression([]),
-    ),
-  )
-
-  return parameters
+  return hasInput(data, context)
+    ? [
+        factory.createParameterDeclaration(
+          [],
+          [],
+          undefined,
+          unused ? '_input' : 'input',
+          undefined,
+          factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
+        ),
+      ]
+    : []
 }

@@ -46,7 +46,7 @@ export function getOperationFunctionAst(
     [],
     params,
     factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'openapi/response-type')]),
-    getOperationBodyAst(data, context),
+    getOperationBodyAst(data, context, config),
   )
   return config.documentation ? documentNode(node, operation) : node
 }

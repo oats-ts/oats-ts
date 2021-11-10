@@ -11,33 +11,18 @@ export function getSdkTypeMethodSignatureAst(
 ): MethodSignature {
   const { nameOf } = context
 
-  const parameters: ParameterDeclaration[] = []
-
-  if (hasInput(data, context)) {
-    parameters.push(
-      factory.createParameterDeclaration(
-        [],
-        [],
-        undefined,
-        'input',
-        undefined,
-        factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
-      ),
-    )
-  }
-
-  parameters.push(
-    factory.createParameterDeclaration(
-      [],
-      [],
-      undefined,
-      'config',
-      factory.createToken(SyntaxKind.QuestionToken),
-      factory.createTypeReferenceNode('Partial', [
-        factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
-      ]),
-    ),
-  )
+  const parameters: ParameterDeclaration[] = hasInput(data, context)
+    ? [
+        factory.createParameterDeclaration(
+          [],
+          [],
+          undefined,
+          'input',
+          undefined,
+          factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
+        ),
+      ]
+    : []
 
   const returnType = factory.createTypeReferenceNode('Promise', [
     factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),

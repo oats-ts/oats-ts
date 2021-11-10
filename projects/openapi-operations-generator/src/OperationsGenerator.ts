@@ -32,6 +32,7 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
     'openapi/request-headers-serializer',
     'openapi/path-serializer',
     'openapi/query-serializer',
+    'openapi/response-headers-deserializer',
   ]
 
   public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
