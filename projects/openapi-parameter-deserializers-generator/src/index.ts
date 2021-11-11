@@ -2,7 +2,7 @@ import { ParameterDeserializersGeneratorConfig } from './typings'
 import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { InputParameterDeserializersGenerator } from './InputParameterDeserializersGenerator'
-import { ResponseHeadersParameterDeserializersGenerator } from './responseHeaders/ResponseHeadersParameterSerializersGenerator'
+import { ResponseHeadersParameterDeserializersGenerator } from './responseHeaders/ResponseHeadersParameterDeserializersGenerator'
 
 export type { ParameterDeserializersGeneratorConfig } from './typings'
 

@@ -1924,6 +1924,393 @@
           }
         }
       }
+    },
+    "/simple-response-header-parameters": {
+      "post": {
+        "operationId": "simpleResponseHeaderParameters",
+        "description": "Endpoint for testing response-header parameters with simple serialization",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimpleResponseHeaderParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the response-header parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-StrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-OptStrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Str-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-OptStr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-NumExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-OptNumExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-Num-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-OptNum-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-BoolExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-OptBoolExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-Bool-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-OptBool-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-EnmExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-OptEnmExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-Enm-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-OptEnm-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-StrArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-OptStrArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-StrArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-OptStrArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-NumArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-OptNumArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-NumArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-OptNumArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-BoolArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-OptBoolArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-BoolArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-OptBoolArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-EnmArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-OptEnmArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-EnmArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-OptEnmArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-ObjExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonObjectTypeExpl"
+                }
+              },
+              "X-OptObjExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+                }
+              },
+              "X-Obj-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonObjectType"
+                }
+              },
+              "X-OptObj-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonOptObjectType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2551,6 +2938,187 @@
         }
       },
       "SimpleHeaderParameters": {
+        "type": "object",
+        "required": [
+          "X-StrExpl-Header",
+          "X-Str-Header",
+          "X-NumExpl-Header",
+          "X-Num-Header",
+          "X-BoolExpl-Header",
+          "X-Bool-Header",
+          "X-EnmExpl-Header",
+          "X-Enm-Header",
+          "X-StrArrExpl-Header",
+          "X-StrArr-Header",
+          "X-NumArrExpl-Header",
+          "X-NumArr-Header",
+          "X-BoolArrExpl-Header",
+          "X-BoolArr-Header",
+          "X-EnmArrExpl-Header",
+          "X-EnmArr-Header",
+          "X-ObjExpl-Header",
+          "X-Obj-Header"
+        ],
+        "properties": {
+          "X-StrExpl-Header": {
+            "type": "string"
+          },
+          "X-OptStrExpl-Header": {
+            "type": "string"
+          },
+          "X-Str-Header": {
+            "type": "string"
+          },
+          "X-OptStr-Header": {
+            "type": "string"
+          },
+          "X-NumExpl-Header": {
+            "type": "number"
+          },
+          "X-OptNumExpl-Header": {
+            "type": "number"
+          },
+          "X-Num-Header": {
+            "type": "number"
+          },
+          "X-OptNum-Header": {
+            "type": "number"
+          },
+          "X-BoolExpl-Header": {
+            "type": "boolean"
+          },
+          "X-OptBoolExpl-Header": {
+            "type": "boolean"
+          },
+          "X-Bool-Header": {
+            "type": "boolean"
+          },
+          "X-OptBool-Header": {
+            "type": "boolean"
+          },
+          "X-EnmExpl-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-OptEnmExpl-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-Enm-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-OptEnm-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-StrArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-OptStrArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-StrArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-OptStrArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-NumArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-OptNumArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-NumArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-OptNumArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-BoolArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-OptBoolArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-BoolArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-OptBoolArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-EnmArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-OptEnmArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-EnmArr-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-OptEnmArr-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-ObjExpl-Header": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "X-OptObjExpl-Header": {
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+          },
+          "X-Obj-Header": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          },
+          "X-OptObj-Header": {
+            "$ref": "#/components/schemas/CommonOptObjectType"
+          }
+        }
+      },
+      "SimpleResponseHeaderParameters": {
         "type": "object",
         "required": [
           "X-StrExpl-Header",

@@ -18,6 +18,8 @@ import {
   SimpleHeaderParametersServerRequest,
   SimplePathParametersResponse,
   SimplePathParametersServerRequest,
+  SimpleResponseHeaderParametersResponse,
+  SimpleResponseHeaderParametersServerRequest,
   SpaceDelimitedQueryParametersResponse,
   SpaceDelimitedQueryParametersServerRequest,
 } from './generated/Parameters'
@@ -46,7 +48,24 @@ export class ParametersApiImpl implements ParametersApi<ExpressParameters> {
     }
     throw new TypeError('something wrong')
   }
-
+  async simpleResponseHeaderParameters(
+    input: SimpleResponseHeaderParametersServerRequest,
+  ): Promise<SimpleResponseHeaderParametersResponse> {
+    if (input.issues) {
+      return {
+        mimeType: 'application/json',
+        statusCode: 400,
+        headers: undefined,
+        body: input.issues.map((issue) => ({ message: issue.message })),
+      }
+    }
+    return {
+      body: { ok: true },
+      headers: input.body,
+      mimeType: 'application/json',
+      statusCode: 200,
+    }
+  }
   async deepObjectQueryParameters(
     input: DeepObjectQueryParametersServerRequest,
   ): Promise<DeepObjectQueryParametersResponse> {

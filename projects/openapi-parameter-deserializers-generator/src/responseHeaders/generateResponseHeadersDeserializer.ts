@@ -22,8 +22,8 @@ export function generateResponseHeadersDeserializer(
   return {
     path: path,
     dependencies: [
-      getNamedImports(RuntimePackages.ParameterSerialization.name, [
-        'header',
+      getNamedImports(RuntimePackages.ParameterDeserialization.name, [
+        RuntimePackages.ParameterDeserialization.deserializers,
         RuntimePackages.ParameterDeserialization.createHeaderDeserializer,
       ]),
       ...flatMap(entries(getResponseHeaders(data.operation, context)), ([statusCode]) =>

@@ -1,4 +1,15 @@
-import { ComponentsObject, OpenAPIObject, OperationObject, ParameterObject, PathsObject } from '@oats-ts/openapi-model'
+import {
+  ComponentsObject,
+  ContentObject,
+  HeaderObject,
+  HeadersObject,
+  OpenAPIObject,
+  OperationObject,
+  ParameterLocation,
+  ParameterObject,
+  PathsObject,
+  RequestBodyObject,
+} from '@oats-ts/openapi-model'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { entries, omit } from 'lodash'
 import { ParameterGeneratorConfig } from './typings'
@@ -24,10 +35,10 @@ function generateParameterObjects({
       for (const required of requiredValues) {
         const schema = getSchema(schemaType, required, explode)
         let name = camelCase(getFieldName(schema, !required), explode ? 'expl' : '')
-        name = location === 'header' ? `X-${pascalCase(name)}-Header` : name
+        name = location === 'header' || location === 'response-header' ? `X-${pascalCase(name)}-Header` : name
         const param: ParameterObject = {
           name,
-          in: location,
+          in: location as ParameterLocation,
           style,
           explode,
           required,
@@ -40,6 +51,33 @@ function generateParameterObjects({
   return params
 }
 
+function generateResponseHeaders({
+  location,
+  style,
+  explodeValues,
+  requiredValues,
+  schemaTypes,
+}: ParameterGeneratorConfig): HeadersObject {
+  const headers: HeadersObject = {}
+  for (const schemaType of schemaTypes) {
+    for (const explode of explodeValues) {
+      for (const required of requiredValues) {
+        const schema = getSchema(schemaType, required, explode)
+        let name = camelCase(getFieldName(schema, !required), explode ? 'expl' : '')
+        name = location === 'header' || location === 'response-header' ? `X-${pascalCase(name)}-Header` : name
+        const param: HeaderObject = {
+          style,
+          explode,
+          required,
+          schema,
+        }
+        headers[name] = param
+      }
+    }
+  }
+  return headers
+}
+
 function generateParametersSchema(input: ParameterGeneratorConfig): SchemaObject {
   const { location, explodeValues, requiredValues, schemaTypes } = input
   const properties: Record<string, Referenceable<SchemaObject>> = {}
@@ -49,7 +87,7 @@ function generateParametersSchema(input: ParameterGeneratorConfig): SchemaObject
       for (const required of requiredValues) {
         const schema = getSchema(schemaType, required, explode)
         let name = camelCase(getFieldName(schema, !required), explode ? 'expl' : '')
-        name = location === 'header' ? `X-${pascalCase(name)}-Header` : name
+        name = location === 'header' || location === 'response-header' ? `X-${pascalCase(name)}-Header` : name
         properties[name] = schema
         if (required) {
           requiredProps.push(name)
@@ -66,18 +104,37 @@ function generateParametersSchema(input: ParameterGeneratorConfig): SchemaObject
 }
 
 function generateParameterOperationObject(input: ParameterGeneratorConfig): OperationObject {
+  const parameters = input.location === 'response-header' ? [] : generateParameterObjects(input)
+  const headers = input.location === 'response-header' ? generateResponseHeaders(input) : undefined
+  const content: ContentObject = {
+    'application/json': {
+      schema:
+        input.location === 'response-header'
+          ? { type: 'object', required: ['ok'], properties: { ok: { type: 'boolean' } } }
+          : { $ref: `#/components/schemas/${getParameterSchemaName(input)}` },
+    },
+  }
+  const requestBody: RequestBodyObject | undefined =
+    input.location === 'response-header'
+      ? {
+          content: {
+            'application/json': {
+              schema: { $ref: `#/components/schemas/${getParameterSchemaName(input)}` },
+            },
+          },
+        }
+      : undefined
+
   return {
     operationId: `${input.style}${pascalCase(input.location)}Parameters`,
     description: `Endpoint for testing ${input.location} parameters with ${input.style} serialization`,
-    parameters: generateParameterObjects(input),
+    parameters,
+    requestBody,
     responses: {
       200: {
         description: `Successful response returning all the ${input.location} parameters in an object`,
-        content: {
-          'application/json': {
-            schema: { $ref: `#/components/schemas/${getParameterSchemaName(input)}` },
-          },
-        },
+        content,
+        headers,
       },
       400: {
         description: `Error response on wrong data`,
@@ -109,7 +166,7 @@ function generatePathsObject(): PathsObject {
     return {
       ...paths,
       [url]: {
-        get: operation,
+        [config.location === 'response-header' ? 'post' : 'get']: operation,
       },
     }
   }, {})

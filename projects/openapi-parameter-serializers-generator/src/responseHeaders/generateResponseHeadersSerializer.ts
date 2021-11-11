@@ -23,8 +23,8 @@ export function generateResponseHeadersSerializer(
     path: path,
     dependencies: [
       getNamedImports(RuntimePackages.ParameterSerialization.name, [
-        'header',
         RuntimePackages.ParameterSerialization.createHeaderSerializer,
+        RuntimePackages.ParameterSerialization.serializers,
       ]),
       ...flatMap(entries(getResponseHeaders(data.operation, context)), ([statusCode]) =>
         dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),

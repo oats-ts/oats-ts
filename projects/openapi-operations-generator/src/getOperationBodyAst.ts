@@ -1,5 +1,6 @@
 import {
   EnhancedOperation,
+  hasInput,
   hasRequestBody,
   hasResponseHeaders,
   hasResponses,
@@ -111,7 +112,7 @@ export function getOperationBodyAst(
               ),
               undefined,
               [
-                factory.createIdentifier(Names.input),
+                hasInput(data, context) ? factory.createIdentifier(Names.input) : factory.createIdentifier('undefined'),
                 data.header.length > 0
                   ? referenceOf(data.operation, 'openapi/request-headers-serializer')
                   : factory.createIdentifier('undefined'),

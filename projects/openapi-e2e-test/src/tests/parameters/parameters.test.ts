@@ -78,4 +78,14 @@ describe('Parameters', () => {
       })
     })
   })
+  describe('response headers', () => {
+    describe('simple', () => {
+      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+        const body = randomHeaderParameters()
+        const response = await sdk.simpleResponseHeaderParameters({ body, mimeType: 'application/json' })
+        expect(response.headers).toEqual(body)
+        expect(response.body).toEqual({ ok: true })
+      })
+    })
+  })
 })

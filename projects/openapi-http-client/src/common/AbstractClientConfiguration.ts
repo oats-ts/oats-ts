@@ -31,12 +31,14 @@ export abstract class AbstractClientConfiguration implements ClientConfiguration
     return [typeof this.baseUrl !== 'string' ? '' : this.baseUrl, path, typeof query !== 'string' ? '' : query].join('')
   }
   async getRequestHeaders(
-    input: Partial<TypedHttpRequest>,
+    input?: Partial<TypedHttpRequest>,
     serializer?: (input: any) => RawHttpHeaders,
   ): Promise<RawHttpHeaders> {
     return {
-      ...(serializer === undefined || serializer === null ? {} : serializer(input.headers)),
-      ...(typeof input.mimeType === 'string' ? { 'content-type': input.mimeType } : {}),
+      ...(serializer === undefined || serializer === null || input === undefined || input === null
+        ? {}
+        : serializer(input.headers)),
+      ...(typeof input?.mimeType === 'string' ? { 'content-type': input.mimeType } : {}),
     }
   }
   async getRequestBody(input: Partial<TypedHttpRequest>): Promise<any> {

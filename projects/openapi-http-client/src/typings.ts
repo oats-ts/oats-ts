@@ -12,7 +12,7 @@ export type ClientConfiguration = {
   getQuery(input: Partial<TypedHttpRequest>, serializer?: (input: any) => string): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
   getRequestHeaders(
-    input: Partial<TypedHttpRequest>,
+    input?: Partial<TypedHttpRequest>,
     serializer?: (input: any) => RawHttpHeaders,
   ): Promise<RawHttpHeaders>
   getRequestBody(input: Partial<TypedHttpRequest>): Promise<any>
