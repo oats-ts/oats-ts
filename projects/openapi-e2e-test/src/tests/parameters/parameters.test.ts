@@ -1,6 +1,6 @@
-import { manageParametersLifecycle } from './parameters.hooks'
+import { manageServerLifecycle } from '../common/server.hooks'
 import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { ParametersClientSdk } from '../../generated/Parameters'
+import { createParametersMainRoute, ParametersClientSdk } from '../../generated/Parameters'
 import {
   randomPathParameters,
   randomFormQueryParameters,
@@ -9,9 +9,11 @@ import {
   randomHeaderParameters,
 } from './parameters.testdata'
 import { range } from 'lodash'
+import { ParametersApiImpl } from './ParametersApiImpl'
+import { ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
 
 describe('Parameters', () => {
-  manageParametersLifecycle()
+  manageServerLifecycle(createParametersMainRoute(new ParametersApiImpl(), new ExpressServerConfiguration()))
   const sdk = new ParametersClientSdk(new NodeFetchClientConfiguration('http://localhost:3333'))
 
   const data = range(1, process.env['REPEATS'] ? parseInt(process.env['REPEATS']) + 1 : 11)

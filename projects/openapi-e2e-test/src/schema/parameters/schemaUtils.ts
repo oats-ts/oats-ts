@@ -2,7 +2,6 @@ import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-sche
 import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { entries, isNil, last } from 'lodash'
 import { SchemaType } from './typings'
-import _camelCase from 'camelcase'
 import {
   booleanArraySchema,
   booleanSchema,
@@ -18,6 +17,7 @@ import {
   stringArraySchema,
   stringSchema,
 } from './schema'
+import { camelCase } from '../common/camelCase'
 
 export function referenceOf(schema: SchemaObject): ReferenceObject {
   for (const [name, provider] of entries(components)) {
@@ -26,10 +26,6 @@ export function referenceOf(schema: SchemaObject): ReferenceObject {
     }
   }
   throw new TypeError(`Non-referenceable schema ${schema}`)
-}
-
-export function camelCase(...inputs: string[]): string {
-  return _camelCase(inputs.filter((e) => !isNil(e) && e.length > 0).join('-'))
 }
 
 export function getFieldName(

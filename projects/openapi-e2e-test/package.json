@@ -15,8 +15,7 @@
     "test": "cross-env REPEATS=100 jest",
     "build": "echo 'Nothing to build'",
     "typecheck": "tsc --noEmit",
-    "g": "ts-node src/schema/generate.ts",
-    "o": "ts-node src/runGenerator.ts"
+    "g": "ts-node src/schema/generate.ts"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"

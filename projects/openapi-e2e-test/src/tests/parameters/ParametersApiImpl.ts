@@ -22,7 +22,7 @@ import {
   SimpleResponseHeaderParametersServerRequest,
   SpaceDelimitedQueryParametersResponse,
   SpaceDelimitedQueryParametersServerRequest,
-} from './generated/Parameters'
+} from '../../generated/Parameters'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>

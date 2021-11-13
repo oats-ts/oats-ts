@@ -1,14 +1,11 @@
-import { ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
-import express from 'express'
+import express, { Router } from 'express'
 import { Server } from 'http'
 import { createHttpTerminator, HttpTerminator } from 'http-terminator'
-import { createParametersMainRoute } from '../../generated/Parameters'
-import { ParametersApiImpl } from '../../ParametersApiImpl'
 
-async function start(): Promise<HttpTerminator> {
+async function start(route: Router): Promise<HttpTerminator> {
   const app = express()
   app.use(express.json())
-  app.use(createParametersMainRoute(new ParametersApiImpl(), new ExpressServerConfiguration()))
+  app.use(route)
   const server = await new Promise<Server>((resolve) => {
     const s = app.listen(3333, () => resolve(s))
   })
@@ -25,10 +22,10 @@ async function stop(terminator?: HttpTerminator): Promise<void> {
   return terminator.terminate()
 }
 
-export function manageParametersLifecycle() {
+export function manageServerLifecycle(route: Router) {
   let terminator: HttpTerminator | undefined = undefined
   beforeAll(async () => {
-    terminator = await start()
+    terminator = await start(route)
   })
   afterAll(async () => {
     await stop(terminator)

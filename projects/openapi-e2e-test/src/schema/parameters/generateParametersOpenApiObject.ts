@@ -16,7 +16,8 @@ import { ParameterGeneratorConfig } from './typings'
 import { configs } from './configs'
 import { components, parameterIssueSchema } from './schema'
 import pascalCase from 'pascalcase'
-import { camelCase, getFieldName, getSchema } from './schemaUtils'
+import { getFieldName, getSchema } from './schemaUtils'
+import { camelCase } from '../common/camelCase'
 
 function getParameterSchemaName({ location, style }: ParameterGeneratorConfig): string {
   return `${pascalCase(style)}${pascalCase(location)}Parameters`

@@ -1,14 +1,12 @@
-import { promises as fs } from 'fs'
-import { resolve } from 'path'
-import { generateParametersOpenApiObject } from './parameters/generateParametersOpenApiObject'
+import { generateCode } from './generateCode'
+import { generateSchema } from './generateSchema'
+import { models } from './models'
 
-async function generateFile(input: any, path: string) {
-  const content = typeof input === 'string' ? input : JSON.stringify(input, null, 2)
-  return fs.writeFile(resolve(path), content, { encoding: 'utf-8' })
+async function generate() {
+  for (const model of models) {
+    await generateSchema(model)
+    await generateCode(model)
+  }
 }
 
-async function generateFiles() {
-  await generateFile(generateParametersOpenApiObject(), 'schemas/parameters.json')
-}
-
-generateFiles()
+generate()

@@ -30,22 +30,17 @@ import {
 } from '@oats-ts/openapi-parameter-deserializers-generator'
 import { expressRoute, expressRoutesType, expressMainRouteFactory } from '@oats-ts/openapi-express-routes-generator'
 import { nameProviders, pathProviders } from '@oats-ts/openapi'
-import { promises as fs } from 'fs'
-import { resolve } from 'path'
+import { GeneratorModel } from './GeneratorModel'
 
-const dir = 'src/generated/Parameters.ts'
-
-const common: GeneratorConfig = {
-  name: nameProviders.default,
-  path: pathProviders.singleFile(dir),
-}
-
-export async function generateAll() {
-  await fs.rm(resolve(dir), { recursive: true, force: true })
+export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
+  const common: GeneratorConfig = {
+    name: nameProviders.default,
+    path: pathProviders.singleFile(sourcePath),
+  }
   return generate({
     log: true,
     validator: validator(),
-    reader: reader({ path: 'schemas/parameters.json' }),
+    reader: reader({ path: schemaPath }),
     generators: [
       types({
         ...common,

@@ -1,0 +1,159 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "HttpMethods",
+    "version": "1.0"
+  },
+  "paths": {
+    "/get-method": {
+      "get": {
+        "operationId": "getMethod",
+        "responses": {
+          "200": {
+            "description": "Endpoint using get http method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "methodUsed"
+                  ],
+                  "properties": {
+                    "methodUsed": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post-method": {
+      "post": {
+        "operationId": "postMethod",
+        "responses": {
+          "200": {
+            "description": "Endpoint using post http method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "methodUsed"
+                  ],
+                  "properties": {
+                    "methodUsed": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/put-method": {
+      "put": {
+        "operationId": "putMethod",
+        "responses": {
+          "200": {
+            "description": "Endpoint using put http method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "methodUsed"
+                  ],
+                  "properties": {
+                    "methodUsed": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patch-method": {
+      "patch": {
+        "operationId": "patchMethod",
+        "responses": {
+          "200": {
+            "description": "Endpoint using patch http method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "methodUsed"
+                  ],
+                  "properties": {
+                    "methodUsed": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/options-method": {
+      "options": {
+        "operationId": "optionsMethod",
+        "responses": {
+          "200": {
+            "description": "Endpoint using options http method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "methodUsed"
+                  ],
+                  "properties": {
+                    "methodUsed": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete-method": {
+      "delete": {
+        "operationId": "deleteMethod",
+        "responses": {
+          "200": {
+            "description": "Endpoint using delete http method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "methodUsed"
+                  ],
+                  "properties": {
+                    "methodUsed": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

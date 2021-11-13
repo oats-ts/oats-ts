@@ -1,5 +1,4 @@
 {
   "preset": "ts-jest",
-  "silent": false,
-  "verbose": true
+  "silent": false
 }
