@@ -1,35 +1,14 @@
-import { generate, GeneratorConfig } from '@oats-ts/generator'
-import { reader } from '@oats-ts/openapi-reader'
-import { prettierStringify, writer } from '@oats-ts/typescript-writer'
-import { validator } from '@oats-ts/openapi-validator'
 import {
-  queryParameterTypes,
-  pathParameterTypes,
-  requestHeaderParameterTypes,
-  responseHeaderParameterTypes,
-} from '@oats-ts/openapi-parameter-types-generator'
-import { typeValidators, responseBodyValidators, requestBodyValidators } from '@oats-ts/openapi-validators-generator'
-import { types } from '@oats-ts/openapi-types-generator'
-import { apiType } from '@oats-ts/openapi-api-type-generator'
-import { sdkStub, sdkType, sdkImplementation } from '@oats-ts/openapi-sdk-generator'
-import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
-import { operations } from '@oats-ts/openapi-operations-generator'
-import { requestTypes, requestServerTypes } from '@oats-ts/openapi-request-types-generator'
-import { responseTypes } from '@oats-ts/openapi-response-types-generator'
-import {
-  pathParameterSerializers,
-  queryParameterSerializers,
-  requestHeaderParameterSerializers,
-  responseHeaderParameterSerializers,
-} from '@oats-ts/openapi-parameter-serializers-generator'
-import {
-  pathParameterDeserializers,
-  queryParameterDeserializers,
-  requestHeaderParameterDeserializers,
-  responseHeaderParameterDeserializers,
-} from '@oats-ts/openapi-parameter-deserializers-generator'
-import { expressRoute, expressRoutesType, expressMainRouteFactory } from '@oats-ts/openapi-express-routes-generator'
-import { nameProviders, pathProviders } from '@oats-ts/openapi-common'
+  generators,
+  generate,
+  nameProviders,
+  pathProviders,
+  validator,
+  writer,
+  reader,
+  prettierStringify,
+  GeneratorConfig,
+} from '@oats-ts/openapi'
 import { GeneratorModel } from './GeneratorModel'
 
 export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
@@ -42,74 +21,74 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
     validator: validator(),
     reader: reader({ path: schemaPath }),
     generators: [
-      types({
+      generators.types({
         ...common,
         documentation: true,
       }),
-      typeValidators({
+      generators.typeValidators({
         ...common,
         references: true,
         arrays: true,
         records: true,
       }),
-      typeGuards({
+      generators.typeGuards({
         ...common,
         references: true,
         arrays: true,
         records: true,
       }),
-      queryParameterTypes({
+      generators.queryParameterTypes({
         ...common,
         documentation: true,
       }),
-      pathParameterTypes({
+      generators.pathParameterTypes({
         ...common,
         documentation: true,
       }),
-      requestHeaderParameterTypes({
+      generators.requestHeaderParameterTypes({
         ...common,
         documentation: true,
       }),
-      responseHeaderParameterTypes({
+      generators.responseHeaderParameterTypes({
         ...common,
         documentation: true,
       }),
-      requestTypes(common),
-      requestServerTypes(common),
-      responseBodyValidators(common),
-      requestBodyValidators(common),
-      responseTypes(common),
+      generators.requestTypes(common),
+      generators.requestServerTypes(common),
+      generators.responseBodyValidators(common),
+      generators.requestBodyValidators(common),
+      generators.responseTypes(common),
       // Serializers
-      pathParameterSerializers(common),
-      queryParameterSerializers(common),
-      requestHeaderParameterSerializers(common),
-      responseHeaderParameterSerializers(common),
+      generators.pathParameterSerializers(common),
+      generators.queryParameterSerializers(common),
+      generators.requestHeaderParameterSerializers(common),
+      generators.responseHeaderParameterSerializers(common),
       // Deserializers
-      pathParameterDeserializers(common),
-      queryParameterDeserializers(common),
-      requestHeaderParameterDeserializers(common),
-      responseHeaderParameterDeserializers(common),
-      operations({
+      generators.pathParameterDeserializers(common),
+      generators.queryParameterDeserializers(common),
+      generators.requestHeaderParameterDeserializers(common),
+      generators.responseHeaderParameterDeserializers(common),
+      generators.operations({
         ...common,
         validate: true,
         documentation: true,
       }),
-      sdkType({
+      generators.sdkType({
         ...common,
         documentation: true,
       }),
-      sdkImplementation({
+      generators.sdkImplementation({
         ...common,
         documentation: true,
       }),
-      sdkStub(common),
-      apiType({
+      generators.sdkStub(common),
+      generators.apiType({
         ...common,
         documentation: true,
       }),
-      expressRoute(common),
-      expressRoutesType(common),
-      expressMainRouteFactory(common),
+      generators.expressRoute(common),
+      generators.expressRoutesType(common),
+      generators.expressMainRouteFactory(common),
     ],
     writer: writer({
       stringify: prettierStringify({
