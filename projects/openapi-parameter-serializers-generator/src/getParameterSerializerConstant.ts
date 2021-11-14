@@ -1,8 +1,7 @@
 import { ParameterLocation } from '@oats-ts/openapi-model'
-import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, SyntaxKind, VariableStatement } from 'typescript'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { getParameterSerializerFactoryCall } from './getParameterSerializerFactoryCall'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 

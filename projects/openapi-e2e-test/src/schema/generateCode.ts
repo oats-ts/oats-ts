@@ -29,7 +29,7 @@ import {
   responseHeaderParameterDeserializers,
 } from '@oats-ts/openapi-parameter-deserializers-generator'
 import { expressRoute, expressRoutesType, expressMainRouteFactory } from '@oats-ts/openapi-express-routes-generator'
-import { nameProviders, pathProviders } from '@oats-ts/openapi'
+import { nameProviders, pathProviders } from '@oats-ts/openapi-common'
 import { GeneratorModel } from './GeneratorModel'
 
 export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {

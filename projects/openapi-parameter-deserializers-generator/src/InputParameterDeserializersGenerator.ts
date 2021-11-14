@@ -3,12 +3,7 @@ import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-wr
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
-import {
-  generateHeaderParameterTypeDeserializer,
-  generateOperationParameterTypeDeserializer,
-  generatePathParameterTypeDeserializer,
-  generateQueryParameterTypeDeserializer,
-} from './generateOperationParameterTypeDeserializer'
+import { generateOperationParameterTypeDeserializer } from './generateOperationParameterTypeDeserializer'
 import { ParameterDeserializersGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
@@ -16,8 +11,8 @@ import {
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 

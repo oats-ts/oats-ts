@@ -8,8 +8,8 @@ import {
   EnhancedOperation,
   getEnhancedOperations,
   hasResponseHeaders,
+  OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { ParameterTypesGeneratorConfig, ResponseParameterInput } from '../typings'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { TypeNode, ImportDeclaration, factory } from 'typescript'

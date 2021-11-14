@@ -1,5 +1,4 @@
 import { GeneratorConfig, Result } from '@oats-ts/generator'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
@@ -7,8 +6,9 @@ import {
   hasResponseHeaders,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { OpenAPIObject, OperationObject } from '@oats-ts/openapi-model'
+import { OperationObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { getModelImports } from '@oats-ts/typescript-common'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'

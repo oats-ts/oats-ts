@@ -12,8 +12,8 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   hasInput,
+  OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 

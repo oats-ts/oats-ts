@@ -13,3 +13,8 @@ export { hasResponses } from './hasResponses'
 export { getRequestBodyContent } from './getRequestBodyContent'
 export { RuntimePackages } from './RuntimePackages'
 export { createOpenAPIGeneratorContext } from './createOpenAPIGeneratorContext'
+
+export type { OpenAPIGeneratorTarget, PathProvider } from './typings'
+
+export { nameProviders } from './nameProviders'
+export { pathProviders } from './pathProviders'

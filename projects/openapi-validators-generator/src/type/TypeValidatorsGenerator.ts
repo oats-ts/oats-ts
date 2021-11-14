@@ -1,5 +1,5 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { JsonSchemaValidatorsGenerator } from '@oats-ts/json-schema-validators-generator'
 
 export class TypeValidatorsGenerator extends JsonSchemaValidatorsGenerator<

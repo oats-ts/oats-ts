@@ -51,7 +51,6 @@ specifiers:
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
   '@types/node-fetch': 2.5.10
-  '@types/pascalcase': 1.0.0
   '@types/prettier': 2.2.3
   '@types/urijs': 1.19.16
   '@types/valid-url': 1.0.3
@@ -134,7 +133,6 @@ dependencies:
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
   '@types/node-fetch': 2.5.10
-  '@types/pascalcase': 1.0.0
   '@types/prettier': 2.2.3
   '@types/urijs': 1.19.16
   '@types/valid-url': 1.0.3
@@ -1030,6 +1028,10 @@ packages:
 
   /@types/pascalcase/1.0.0:
     resolution: {integrity: sha512-GUljFjs6pnZuxxmStKR1uDWIcGQSVdmUedFfreyJGU0owXW096kvYxf+6T/e1I6r3N8gNrqk3PETHqZwlR2xVg==}
+    dev: false
+
+  /@types/pascalcase/1.0.1:
+    resolution: {integrity: sha512-JYPox1hbKw66Sv9HtvTp0r5jJkaz6k+V8XjEnZUb7B+4ffIoS+3sjiAtwkX6IMO68UQtQWe9QcAjugn9VR4GJg==}
     dev: false
 
   /@types/prettier/2.2.3:
@@ -4439,7 +4441,7 @@ packages:
     dev: false
 
   file:projects/openapi-api-type-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-8MDuZgDaeMY+pV0x79cEW9oE8htZkmTjEJtDBNECZyj1+F7O4TZmc/RUZwdWQV8RLqhWBjsoeDn/dQMBaGcGow==, tarball: file:projects/openapi-api-type-generator.tgz}
+    resolution: {integrity: sha512-vu60CZNQNLhKqhxy5MO5cVsZfmmTmX/ga1JeudBroe3WHF0wX6jtbINaNnWCXuOVYYS6HrU8Scsl6mCq7DB8rQ==, tarball: file:projects/openapi-api-type-generator.tgz}
     id: file:projects/openapi-api-type-generator.tgz
     name: '@rush-temp/openapi-api-type-generator'
     version: 0.0.0
@@ -4462,7 +4464,7 @@ packages:
     dev: false
 
   file:projects/openapi-common.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-xE9faHpUmY9oingV4laqdczL60a18wBzFZwnRtpeEcF5juVm2lfik7a7rUlAJVHpDMIzqMroNC9puKNj3Sotpw==, tarball: file:projects/openapi-common.tgz}
+    resolution: {integrity: sha512-49Qd2rscq0JdcoDcfdqBV/StR8r5oe5UeLnYP8jJ9bfX39DFFY4Gy/S+kPnDomK1NgKSyoGyxm5p0xlY7oS1Pw==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
     name: '@rush-temp/openapi-common'
     version: 0.0.0
@@ -4474,7 +4476,7 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
-      '@types/pascalcase': 1.0.0
+      '@types/pascalcase': 1.0.1
       camelcase: 6.2.0
       jest: 27.0.4_ts-node@10.0.0
       lodash: 4.17.21
@@ -4493,7 +4495,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-isNPLmQj35u3Zjh9+Q+2nXOwNxpCUN27fbx0XgOXhwHrDX8/UjV/FKzkLjSENYixc1g1n5IDzIXz0LtYMHKGEg==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-Sa5whp9sDpBpV34aOtulIvlVWg9+Saep7OsYa5TOmt6udGLZ4yWB4e+FtaUdFUBP2lpb1+lmEGtrE+5gCvhIkg==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4541,7 +4543,7 @@ packages:
     dev: false
 
   file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-mhSx3PJw7AgoHcEymgH9Sbh3dqL27dmMXRAtzKkywKWjiSB7M1VAhl5YJ6YX+85qk/BUdjMdHsCngGl1CCAlDg==, tarball: file:projects/openapi-express-routes-generator.tgz}
+    resolution: {integrity: sha512-/j8CJ0arpEOtnO2EG2M6SrnmOfg5Awb9glQ89JVFfv75AAfXFsHoyWj7l7+CWAubPfwKP/UQlbeUi+pAkiiCTA==, tarball: file:projects/openapi-express-routes-generator.tgz}
     id: file:projects/openapi-express-routes-generator.tgz
     name: '@rush-temp/openapi-express-routes-generator'
     version: 0.0.0
@@ -4643,7 +4645,7 @@ packages:
     dev: false
 
   file:projects/openapi-operations-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-50fNqUHjWVYL+Sb2YRCZ4KHJknQrFTyQ8LmVBou3dobuf6XY0x35L3M4Qwk1CtYoiCK8Mu4V4oaEnRLiDQjcaQ==, tarball: file:projects/openapi-operations-generator.tgz}
+    resolution: {integrity: sha512-DnZqz13ujKj/DWZ8ePZGhLJ81K4lRNrNAKLNxn6W46PwauuAnBttU0/Bf9UGkRXTvi0d3PMlJ51QpJ6epi2YWw==, tarball: file:projects/openapi-operations-generator.tgz}
     id: file:projects/openapi-operations-generator.tgz
     name: '@rush-temp/openapi-operations-generator'
     version: 0.0.0
@@ -4710,7 +4712,7 @@ packages:
     dev: false
 
   file:projects/openapi-parameter-deserializers-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-MFSK0gwuqbP/5pbrPFSqyhuhJTLPjY2CIU/C4uTfVlLmZhcQsxGfsyTG4mr6REqJebN4OI2PdQCd4Juzx1ja+w==, tarball: file:projects/openapi-parameter-deserializers-generator.tgz}
+    resolution: {integrity: sha512-20IEpYuYSxWX3cF2EO5qmkjoyQlhAGXneRayXnaJiJbWCSypYkSkj/Lcaq0uyC2EVaEdg8YzENsoAAuPMu0mjA==, tarball: file:projects/openapi-parameter-deserializers-generator.tgz}
     id: file:projects/openapi-parameter-deserializers-generator.tgz
     name: '@rush-temp/openapi-parameter-deserializers-generator'
     version: 0.0.0
@@ -4755,7 +4757,7 @@ packages:
     dev: false
 
   file:projects/openapi-parameter-serializers-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-2xRuiydqfw8wKz/66TxZAYZlMdIN2kEkI9IwaW99Kq7n5ITu4rJLPVjtEpw7GNpcQE+0mdaR7Mh1QttxKIG4Aw==, tarball: file:projects/openapi-parameter-serializers-generator.tgz}
+    resolution: {integrity: sha512-xiID1sSsRqyQQ2uYKXNqV8Wr2CtLOuyYwNhdG0iL99SCrdyxLSi5MV+WsB9Wc96QNhs2FrJ8larDIAQeo5v6aQ==, tarball: file:projects/openapi-parameter-serializers-generator.tgz}
     id: file:projects/openapi-parameter-serializers-generator.tgz
     name: '@rush-temp/openapi-parameter-serializers-generator'
     version: 0.0.0
@@ -4779,7 +4781,7 @@ packages:
     dev: false
 
   file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-dPEDr3yicViQqQ2zy6rlvqnXqkIm7ChediCWEoMhVIaitPYJwzs7nkqwb1CP9MKNQpgk1BKV03fkaWwtjLqhaw==, tarball: file:projects/openapi-parameter-types-generator.tgz}
+    resolution: {integrity: sha512-h/uoWtqLzILK+UzQfGvZYx2d7RWU+v5mKleUY+/wM6rbOJdJ67jvOrqa+3C5E9ez6PgRd3M6g77mMaJ4/6cbkw==, tarball: file:projects/openapi-parameter-types-generator.tgz}
     id: file:projects/openapi-parameter-types-generator.tgz
     name: '@rush-temp/openapi-parameter-types-generator'
     version: 0.0.0
@@ -4833,7 +4835,7 @@ packages:
     dev: false
 
   file:projects/openapi-request-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-u+GNFuQ5kBkfljW3/KiR4JQyWUER1MD3f0836QXIU99D1Sn/6shXaXLa0g05zevPnRMDWYUTK3n9jmZI8xKeZw==, tarball: file:projects/openapi-request-types-generator.tgz}
+    resolution: {integrity: sha512-8fyZh3YMkCRkgRtsi1mdeuX1Vt4xx2QRSd3xfrtRSoPADm3SE91DR848uhyM4kD6Z0VBsJK8Ua/8RpBxmzHs6A==, tarball: file:projects/openapi-request-types-generator.tgz}
     id: file:projects/openapi-request-types-generator.tgz
     name: '@rush-temp/openapi-request-types-generator'
     version: 0.0.0
@@ -4856,7 +4858,7 @@ packages:
     dev: false
 
   file:projects/openapi-response-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-0CFcDNX3HBWa1oR0BA2JO0pQTru342g/PmSj3WIXTrUrtFxi2SUYC8v+NA/N2XoBdIrwN33/htvOyV1beCehDA==, tarball: file:projects/openapi-response-types-generator.tgz}
+    resolution: {integrity: sha512-e1QQ8h1mQZ0qlktWiDonfhnJ8yeKPxAwt8QRa7sDjyCyRCs39WASXFfo5ASogZ7abYOKUHQfQfV1UE6eUpfHtA==, tarball: file:projects/openapi-response-types-generator.tgz}
     id: file:projects/openapi-response-types-generator.tgz
     name: '@rush-temp/openapi-response-types-generator'
     version: 0.0.0
@@ -4880,7 +4882,7 @@ packages:
     dev: false
 
   file:projects/openapi-sdk-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-pxV006ifUjuKGRDrS7ms6tyLU8bcv3GlTij7NYIHX4GsRxJT9Z4jfe4bosOeV/IQn/XC+CEx+k1XBQCwO9f2Cw==, tarball: file:projects/openapi-sdk-generator.tgz}
+    resolution: {integrity: sha512-BXS5SS8NnE9gSkF566kUA/BAo39gOyoXmwJcZrJzc8P/7AkEGoLMngVKkAhPoZzzOCdDBb4c4fcLLvHmRy2Uag==, tarball: file:projects/openapi-sdk-generator.tgz}
     id: file:projects/openapi-sdk-generator.tgz
     name: '@rush-temp/openapi-sdk-generator'
     version: 0.0.0
@@ -4903,7 +4905,7 @@ packages:
     dev: false
 
   file:projects/openapi-type-guards-generator.tgz_ts-node@10.0.0+typescript@4.3.5:
-    resolution: {integrity: sha512-W+GXcExaamRlDgTCjMmfA6gkmNgouygM/AkXIQ8eM3XmO3RAAn2vVyDAs0vkiIWZ+AGxK02r58c0o98hYQtgGg==, tarball: file:projects/openapi-type-guards-generator.tgz}
+    resolution: {integrity: sha512-+0Kl7x6oGV37vJIRO+/U/WSnVuUrqZ/FgFBbcTeBmRLVrnqcofxxi4niWeMFZjS0YUy24hdRuN1QuvjsowXI9A==, tarball: file:projects/openapi-type-guards-generator.tgz}
     id: file:projects/openapi-type-guards-generator.tgz
     name: '@rush-temp/openapi-type-guards-generator'
     version: 0.0.0
@@ -4925,7 +4927,7 @@ packages:
     dev: false
 
   file:projects/openapi-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-LUBYJUN5S6CTxeRvYexlXJg0B9iUTfyWFDguGspLTrC7m1a7soaH005QxlWaXaXL/Q8+Rg5eIUMDfV1RcoeMYA==, tarball: file:projects/openapi-types-generator.tgz}
+    resolution: {integrity: sha512-17YOXvIce1yaeh9EsX+oWkrFp+0xhm/rUyAL3yT7ds25EHxZng8C/Za9lAGleGyCW15uLG3hXVLuBjA6s2L63w==, tarball: file:projects/openapi-types-generator.tgz}
     id: file:projects/openapi-types-generator.tgz
     name: '@rush-temp/openapi-types-generator'
     version: 0.0.0
@@ -4973,7 +4975,7 @@ packages:
     dev: false
 
   file:projects/openapi-validators-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-DnJwP+Ilp6PqCRLi5Bcfn73rXZpPkyi5A6FYvK0ZtNQnvDmTlsGRYDFzXKx6EK5Hr9MgY7H8QS0FNhh1kWlQdg==, tarball: file:projects/openapi-validators-generator.tgz}
+    resolution: {integrity: sha512-bixEQon5c6eunvfdp9jAgHxJi5xD2Zak+eBpQbUpzeFPM5R8lBm84S9k+cr2lspUrrYg6ICQRf/v19ztSmIq4g==, tarball: file:projects/openapi-validators-generator.tgz}
     id: file:projects/openapi-validators-generator.tgz
     name: '@rush-temp/openapi-validators-generator'
     version: 0.0.0

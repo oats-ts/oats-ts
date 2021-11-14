@@ -1,11 +1,11 @@
 import { GeneratorConfig, Result } from '@oats-ts/generator'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
   getEnhancedOperations,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import { OpenAPIObject, OperationObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'

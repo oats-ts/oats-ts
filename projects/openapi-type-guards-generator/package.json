@@ -35,7 +35,6 @@
     "@oats-ts/json-schema-type-guards-generator": "0.0.5",
     "@oats-ts/openapi-reader": "0.0.5",
     "@oats-ts/generator": "0.0.5",
-    "@oats-ts/openapi-common": "0.0.5",
-    "@oats-ts/openapi": "0.0.5"
+    "@oats-ts/openapi-common": "0.0.5"
   }
 }

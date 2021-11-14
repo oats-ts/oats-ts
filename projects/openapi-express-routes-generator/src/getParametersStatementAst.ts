@@ -1,7 +1,6 @@
 import { ParameterLocation } from '@oats-ts/openapi-model'
-import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, VariableStatement } from 'typescript'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { Names } from './Names'
 
 const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget> = {
@@ -70,7 +69,10 @@ export function getParametersStatementAst(
                   factory.createIdentifier(configGetterNameMap[location]),
                 ),
                 undefined,
-                [factory.createIdentifier(Names.frameworkInput), referenceOf(data.operation, deserializerMap[location])],
+                [
+                  factory.createIdentifier(Names.frameworkInput),
+                  referenceOf(data.operation, deserializerMap[location]),
+                ],
               ),
             ),
           ),

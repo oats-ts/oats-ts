@@ -1,9 +1,13 @@
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
-import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
+import {
+  EnhancedOperation,
+  OpenAPIGeneratorContext,
+  RuntimePackages,
+  OpenAPIGeneratorTarget,
+} from '@oats-ts/openapi-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { getMainRouteFactoryAst } from './getMainRouteFactoryAst'
 import { ExpressRouteGeneratorConfig } from '../typings'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 
 export function generateRoutesType(
   operations: EnhancedOperation[],

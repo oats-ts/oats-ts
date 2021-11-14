@@ -6,8 +6,8 @@ import {
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi'
 import { generateSdkType } from './generateSdkType'
 import { SdkGeneratorConfig } from '../typings'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
