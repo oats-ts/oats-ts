@@ -133,11 +133,11 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
       for (let i = 0; i < headerNames.length; i += 1) {
         const headerName = headerNames[i]
         const headerValue = rawResponse.headers[headerName]
-        response.header(headerName, headerValue)
+        response.setHeader(headerName, headerValue)
       }
     }
-    if (rawResponse.body !== null && rawResponse.body !== undefined && response.writable) {
-      response.send(rawResponse.body)
+    if (response.writable) {
+      response.send(rawResponse.body ?? '')
     }
     next()
   }

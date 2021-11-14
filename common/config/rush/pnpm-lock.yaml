@@ -1016,7 +1016,7 @@ packages:
   /@types/node-fetch/2.5.10:
     resolution: {integrity: sha512-IpkX0AasN44hgEad0gEF/V6EgR5n69VEqPEgnmoM8GsIGro3PowbWs4tR6IhxUTyPLpOn+fiGG6nrQhcmoCuIQ==}
     dependencies:
-      '@types/node': 15.12.5
+      '@types/node': 16.7.1
       form-data: 3.0.1
     dev: false
 
@@ -4493,7 +4493,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-GJpc0Hq+shDyLrENykwogrDXJFZyVZJUnQQqtlV26ktToEbiL/iKi82TetagR7e10Rvu2+qh5sT83G7klhDt7g==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-isNPLmQj35u3Zjh9+Q+2nXOwNxpCUN27fbx0XgOXhwHrDX8/UjV/FKzkLjSENYixc1g1n5IDzIXz0LtYMHKGEg==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4504,6 +4504,7 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
+      '@types/node-fetch': 2.5.10
       '@types/pascalcase': 1.0.0
       '@types/urijs': 1.19.16
       '@types/valid-url': 1.0.3
@@ -4516,6 +4517,7 @@ packages:
       http-terminator: 3.0.3
       jest: 27.0.4_ts-node@10.0.0
       lodash: 4.17.21
+      node-fetch: 2.6.1
       open-api-mocker: 1.7.2
       openapi3-ts: 2.0.1
       pascalcase: 1.0.0
