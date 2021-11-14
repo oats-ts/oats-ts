@@ -1,32 +1,21 @@
-import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/json-schema-common'
-import { entries, isNil, last } from 'lodash'
+import { isNil, last } from 'lodash'
 import { SchemaType } from './typings'
 import {
   booleanArraySchema,
-  booleanSchema,
-  components,
+  registry,
   enumArraySchema,
   enumSchema,
   numberArraySchema,
-  numberSchema,
   objectSchema,
   objectSchemaExpl,
   optObjectSchema,
   optObjectSchemaExpl,
   stringArraySchema,
-  stringSchema,
 } from './schema'
 import { camelCase } from '../common/camelCase'
-
-export function referenceOf(schema: SchemaObject): ReferenceObject {
-  for (const [name, provider] of entries(components)) {
-    if (provider() === schema) {
-      return { $ref: `#/components/schemas/${name}` }
-    }
-  }
-  throw new TypeError(`Non-referenceable schema ${schema}`)
-}
+import { booleanSchema, numberSchema, stringSchema } from '../common/schema'
 
 export function getFieldName(
   schema: Referenceable<SchemaObject>,
@@ -37,7 +26,7 @@ export function getFieldName(
   if (isReferenceObject(schema)) {
     const { $ref } = schema
     const name = last($ref.split('/')) as string
-    const provider = components[name]
+    const provider = registry[name]
     if (isNil(provider)) {
       throw new TypeError(`Invalid reference ${$ref}`)
     }

@@ -1,10 +1,12 @@
 import express, { Router } from 'express'
 import { Server } from 'http'
 import { createHttpTerminator, HttpTerminator } from 'http-terminator'
+import { customBodyParsers } from './customBodyParsers'
 
 async function start(route: Router): Promise<HttpTerminator> {
   const app = express()
-  app.use(express.json())
+  app.use(customBodyParsers.json())
+  app.use(customBodyParsers.yaml())
   app.use(route)
   const server = await new Promise<Server>((resolve) => {
     const s = app.listen(3333, () => resolve(s))

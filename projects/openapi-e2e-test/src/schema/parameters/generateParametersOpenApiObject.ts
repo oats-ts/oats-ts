@@ -14,7 +14,7 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { entries, omit } from 'lodash'
 import { ParameterGeneratorConfig } from './typings'
 import { configs } from './configs'
-import { components, parameterIssueSchema } from './schema'
+import { registry, parameterIssueSchema } from './schema'
 import pascalCase from 'pascalcase'
 import { getFieldName, getSchema } from './schemaUtils'
 import { camelCase } from '../common/camelCase'
@@ -181,7 +181,7 @@ function generateComponentsObject(): ComponentsObject {
   return {
     schemas: {
       ...schemas,
-      ...entries(components).reduce(
+      ...entries(registry).reduce(
         (schemas: Record<string, SchemaObject>, [name, provider]) => ({
           ...schemas,
           [name]: provider(),

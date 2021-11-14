@@ -14,16 +14,9 @@ import {
   SimplePathParameters,
   SpaceDelimitedQueryParameters,
 } from '../../generated/Parameters'
+import { arrayOf, optional } from '../common/testData'
 
 const enumValues: CommonEnumType[] = ['A', 'B', 'C']
-
-function arrayOf<T>(producer: () => T): T[] {
-  return datatype.array(datatype.number({ min: 1, max: 10 })).map(producer)
-}
-
-function optional<T>(producer: () => T): T | undefined {
-  return datatype.boolean() ? producer() : undefined
-}
 
 function commonObject(): CommonObjectType {
   return {
