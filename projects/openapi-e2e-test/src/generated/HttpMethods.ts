@@ -414,7 +414,7 @@ export type HttpMethodsRoutes = {
   putMethodRoute: Router
 }
 
-export function createHttpMethodsMainRoute(
+export function createHttpMethodsRoute(
   api: HttpMethodsApi<ExpressParameters>,
   configuration: ServerConfiguration<ExpressParameters>,
   routes: Partial<HttpMethodsRoutes> = {},

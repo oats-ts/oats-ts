@@ -3307,7 +3307,7 @@ export type ParametersRoutes = {
   spaceDelimitedQueryParametersRoute: Router
 }
 
-export function createParametersMainRoute(
+export function createParametersRoute(
   api: ParametersApi<ExpressParameters>,
   configuration: ServerConfiguration<ExpressParameters>,
   routes: Partial<ParametersRoutes> = {},

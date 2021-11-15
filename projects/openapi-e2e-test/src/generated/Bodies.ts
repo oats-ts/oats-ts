@@ -977,7 +977,7 @@ export type BodiesRoutes = {
   strRoute: Router
 }
 
-export function createBodiesMainRoute(
+export function createBodiesRoute(
   api: BodiesApi<ExpressParameters>,
   configuration: ServerConfiguration<ExpressParameters>,
   routes: Partial<BodiesRoutes> = {},

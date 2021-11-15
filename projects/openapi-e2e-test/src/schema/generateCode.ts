@@ -88,7 +88,7 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
       }),
       generators.expressRoute(common),
       generators.expressRoutesType(common),
-      generators.expressMainRouteFactory(common),
+      generators.expressRouteFactory(common),
     ],
     writer: writer({
       stringify: prettierStringify({
