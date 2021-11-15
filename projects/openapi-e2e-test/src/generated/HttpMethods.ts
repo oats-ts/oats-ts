@@ -301,12 +301,12 @@ export class HttpMethodsSdkStub implements HttpMethodsSdk {
 }
 
 export type HttpMethodsApi<T> = {
-  deleteMethod(extra: T): Promise<DeleteMethodResponse>
-  getMethod(extra: T): Promise<GetMethodResponse>
-  optionsMethod(extra: T): Promise<OptionsMethodResponse>
-  patchMethod(extra: T): Promise<PatchMethodResponse>
-  postMethod(extra: T): Promise<PostMethodResponse>
-  putMethod(extra: T): Promise<PutMethodResponse>
+  deleteMethod(frameworkInput: T): Promise<DeleteMethodResponse>
+  getMethod(frameworkInput: T): Promise<GetMethodResponse>
+  optionsMethod(frameworkInput: T): Promise<OptionsMethodResponse>
+  patchMethod(frameworkInput: T): Promise<PatchMethodResponse>
+  postMethod(frameworkInput: T): Promise<PostMethodResponse>
+  putMethod(frameworkInput: T): Promise<PutMethodResponse>
 }
 
 export const deleteMethodRoute: Router = Router().delete(

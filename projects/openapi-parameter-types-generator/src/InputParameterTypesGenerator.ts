@@ -18,7 +18,7 @@ import { generateOperationParameterType } from './generateOperationParameterType
 
 export class InputParameterTypesGenerator<Id extends OpenAPIGeneratorTarget> implements OpenAPIGenerator<Id> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ParameterTypesGeneratorConfig
+  private parametersConfig: ParameterTypesGeneratorConfig
   private operations: EnhancedOperation[]
   private readonly location: ParameterLocation
   private generator: (
@@ -30,15 +30,15 @@ export class InputParameterTypesGenerator<Id extends OpenAPIGeneratorTarget> imp
   public readonly id: Id
   public readonly consumes: OpenAPIGeneratorTarget[]
 
-  public constructor(id: Id, location: ParameterLocation, config: GeneratorConfig & ParameterTypesGeneratorConfig) {
+  public constructor(id: Id, location: ParameterLocation, config: ParameterTypesGeneratorConfig) {
     this.id = id
     this.consumes = ['openapi/type']
     this.location = location
-    this.config = config
+    this.parametersConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, this.id),
@@ -55,11 +55,11 @@ export class InputParameterTypesGenerator<Id extends OpenAPIGeneratorTarget> imp
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, parametersConfig } = this
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [this.generator(operation, context, config)].filter(negate(isNil)),
+        [this.generator(operation, context, parametersConfig)].filter(negate(isNil)),
       ),
     )
 

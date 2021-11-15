@@ -19,18 +19,18 @@ import { generateResponseHeaderType } from './generateResponseHeaderType'
 
 export class ResponseHeaderTypesGenerator implements OpenAPIGenerator<'openapi/response-headers-type'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ParameterTypesGeneratorConfig
+  private parametersConfig: ParameterTypesGeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/response-headers-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
 
-  public constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
-    this.config = config
+  public constructor(config: ParameterTypesGeneratorConfig) {
+    this.parametersConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) => nameOf(operation))
   }
@@ -42,7 +42,7 @@ export class ResponseHeaderTypesGenerator implements OpenAPIGenerator<'openapi/r
         return []
       }
       return keys(getResponseHeaders(operation.operation, context)).map((status) =>
-        generateResponseHeaderType(operation, status, context, this.config),
+        generateResponseHeaderType(operation, status, context, this.parametersConfig),
       )
     })
     return {

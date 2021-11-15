@@ -32,14 +32,14 @@ export class ChannelsGenerator implements AsyncAPIGenerator<'asyncapi/channel'> 
   public readonly consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/type']
 
   private context: AsyncAPIGeneratorContext = null
-  private config: GeneratorConfig & ChannelsGeneratorConfig
+  private config: ChannelsGeneratorConfig
 
-  constructor(config: GeneratorConfig & ChannelsGeneratorConfig) {
+  constructor(config: ChannelsGeneratorConfig) {
     this.config = config
   }
 
-  initialize(data: AsyncAPIReadOutput, generators: AsyncAPIGenerator[]): void {
-    this.context = createAsyncAPIGeneratorContext(data, this.config, generators)
+  initialize(data: AsyncAPIReadOutput, config: GeneratorConfig, generators: AsyncAPIGenerator[]): void {
+    this.context = createAsyncAPIGeneratorContext(data, config, generators)
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {

@@ -17,7 +17,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class SdkImplementationGenerator implements OpenAPIGenerator<'openapi/client-sdk'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & SdkGeneratorConfig
+  private sdkConfig: SdkGeneratorConfig
 
   public readonly id = 'openapi/client-sdk'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
@@ -27,21 +27,23 @@ export class SdkImplementationGenerator implements OpenAPIGenerator<'openapi/cli
     'openapi/sdk-type',
   ]
 
-  public constructor(config: GeneratorConfig & SdkGeneratorConfig) {
-    this.config = config
+  public constructor(config: SdkGeneratorConfig) {
+    this.sdkConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, sdkConfig } = this
     const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkClass(document, operations, context, config)])
+    const data: TypeScriptModule[] = mergeTypeScriptModules([
+      generateSdkClass(document, operations, context, sdkConfig),
+    ])
 
     return {
       isOk: true,

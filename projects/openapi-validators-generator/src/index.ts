@@ -9,14 +9,14 @@ export { TypeValidatorsGenerator } from './type/TypeValidatorsGenerator'
 export { ResponseBodyValidatorsGenerator } from './responseBody/ResponseBodyValidatorsGenerator'
 export { RequestBodyValidatorsGenerator } from './requestBody/RequestBodyValidatorsGenerator'
 
-export function typeValidators(config: GeneratorConfig & ValidatorsGeneratorConfig): OpenAPIGenerator {
+export function typeValidators(config: ValidatorsGeneratorConfig): OpenAPIGenerator {
   return new TypeValidatorsGenerator(config)
 }
 
-export function responseBodyValidators(config: GeneratorConfig): OpenAPIGenerator {
-  return new ResponseBodyValidatorsGenerator(config)
+export function responseBodyValidators(): OpenAPIGenerator {
+  return new ResponseBodyValidatorsGenerator()
 }
 
-export function requestBodyValidators(config: GeneratorConfig): OpenAPIGenerator {
-  return new RequestBodyValidatorsGenerator(config)
+export function requestBodyValidators(): OpenAPIGenerator {
+  return new RequestBodyValidatorsGenerator()
 }

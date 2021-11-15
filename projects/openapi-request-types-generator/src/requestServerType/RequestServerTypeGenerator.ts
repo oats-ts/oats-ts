@@ -18,7 +18,6 @@ import { generateRequestServerType } from './generateRequestServerType'
 
 export class RequestServerTypesGenerator implements OpenAPIGenerator<'openapi/request-server-type'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/request-server-type'
@@ -29,12 +28,8 @@ export class RequestServerTypesGenerator implements OpenAPIGenerator<'openapi/re
     'openapi/path-type',
   ]
 
-  public constructor(config: GeneratorConfig) {
-    this.config = config
-  }
-
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),

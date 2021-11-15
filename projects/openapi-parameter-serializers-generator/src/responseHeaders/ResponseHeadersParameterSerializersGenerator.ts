@@ -20,18 +20,13 @@ export class ResponseHeadersParameterSerializersGenerator
   implements OpenAPIGenerator<'openapi/response-headers-serializer'>
 {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/response-headers-serializer'
   public readonly consumes: OpenAPIGeneratorTarget[] = []
 
-  public constructor(config: GeneratorConfig) {
-    this.config = config
-  }
-
-  initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, this.id),

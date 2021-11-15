@@ -1,5 +1,5 @@
 import {
-  generators,
+  generators as g,
   generate,
   nameProviders,
   pathProviders,
@@ -7,88 +7,49 @@ import {
   writer,
   reader,
   prettierStringify,
-  GeneratorConfig,
 } from '@oats-ts/openapi'
 import { GeneratorModel } from './GeneratorModel'
 
 export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
-  const common: GeneratorConfig = {
-    name: nameProviders.default,
-    path: pathProviders.singleFile(sourcePath),
-  }
   return generate({
-    log: true,
+    configuration: {
+      log: true,
+      name: nameProviders.default,
+      path: pathProviders.singleFile(sourcePath),
+    },
     validator: validator(),
     reader: reader({ path: schemaPath }),
     generators: [
-      generators.types({
-        ...common,
-        documentation: true,
-      }),
-      generators.typeValidators({
-        ...common,
-        references: true,
-        arrays: true,
-        records: true,
-      }),
-      generators.typeGuards({
-        ...common,
-        references: true,
-        arrays: true,
-        records: true,
-      }),
-      generators.queryParameterTypes({
-        ...common,
-        documentation: true,
-      }),
-      generators.pathParameterTypes({
-        ...common,
-        documentation: true,
-      }),
-      generators.requestHeaderParameterTypes({
-        ...common,
-        documentation: true,
-      }),
-      generators.responseHeaderParameterTypes({
-        ...common,
-        documentation: true,
-      }),
-      generators.requestTypes(common),
-      generators.requestServerTypes(common),
-      generators.responseBodyValidators(common),
-      generators.requestBodyValidators(common),
-      generators.responseTypes(common),
+      g.types({ documentation: true }),
+      g.typeValidators({ references: true, arrays: true, records: true }),
+      g.typeGuards({ references: true, arrays: true, records: true }),
+      g.queryParameterTypes({ documentation: true }),
+      g.pathParameterTypes({ documentation: true }),
+      g.requestHeaderParameterTypes({ documentation: true }),
+      g.responseHeaderParameterTypes({ documentation: true }),
+      g.requestTypes(),
+      g.requestServerTypes(),
+      g.responseBodyValidators(),
+      g.requestBodyValidators(),
+      g.responseTypes(),
       // Serializers
-      generators.pathParameterSerializers(common),
-      generators.queryParameterSerializers(common),
-      generators.requestHeaderParameterSerializers(common),
-      generators.responseHeaderParameterSerializers(common),
+      g.pathParameterSerializers(),
+      g.queryParameterSerializers(),
+      g.requestHeaderParameterSerializers(),
+      g.responseHeaderParameterSerializers(),
       // Deserializers
-      generators.pathParameterDeserializers(common),
-      generators.queryParameterDeserializers(common),
-      generators.requestHeaderParameterDeserializers(common),
-      generators.responseHeaderParameterDeserializers(common),
-      generators.operations({
-        ...common,
-        validate: true,
-        documentation: true,
-      }),
-      generators.sdkType({
-        ...common,
-        documentation: true,
-      }),
-      generators.sdkImplementation({
-        ...common,
-        documentation: true,
-      }),
-      generators.sdkStub(common),
-      generators.apiType({
-        ...common,
-        documentation: true,
-      }),
-      generators.expressRoute(common),
-      generators.expressRoutesType(common),
-      generators.expressRouteFactory(common),
+      g.pathParameterDeserializers(),
+      g.queryParameterDeserializers(),
+      g.requestHeaderParameterDeserializers(),
+      g.responseHeaderParameterDeserializers(),
+      g.operations({ validate: true, documentation: true }),
+      g.sdkType({ documentation: true }),
+      g.sdkImplementation({ documentation: true }),
+      g.sdkStub(),
+      g.apiType({ documentation: true }),
+      g.expressRoute(),
+      g.expressRoutesType(),
+      g.expressRouteFactory(),
     ],
     writer: writer({
       stringify: prettierStringify({

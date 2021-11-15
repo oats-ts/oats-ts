@@ -17,7 +17,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express-route'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ExpressRouteGeneratorConfig
+  private routeConfig: ExpressRouteGeneratorConfig
 
   public readonly id = 'openapi/express-route'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
@@ -30,22 +30,22 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express
     'openapi/request-headers-deserializer',
   ]
 
-  public constructor(config: GeneratorConfig & ExpressRouteGeneratorConfig) {
-    this.config = config
+  public constructor(config: ExpressRouteGeneratorConfig) {
+    this.routeConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, routeConfig } = this
     const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
     const data: TypeScriptModule[] = mergeTypeScriptModules(
-      operations.map((operation) => generateExpressRoute(operation, context, config)),
+      operations.map((operation) => generateExpressRoute(operation, context, routeConfig)),
     )
 
     return {

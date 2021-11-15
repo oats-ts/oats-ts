@@ -19,7 +19,7 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
   public static id = 'openapi/sdk-type'
 
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & SdkGeneratorConfig
+  private sdkConfig: SdkGeneratorConfig
 
   public readonly id = 'openapi/sdk-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
@@ -28,21 +28,21 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
     'openapi/response-type',
   ]
 
-  public constructor(config: GeneratorConfig & SdkGeneratorConfig) {
-    this.config = config
+  public constructor(config: SdkGeneratorConfig) {
+    this.sdkConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, sdkConfig } = this
     const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkType(document, operations, context, config)])
+    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkType(document, operations, context, sdkConfig)])
 
     return {
       isOk: true,

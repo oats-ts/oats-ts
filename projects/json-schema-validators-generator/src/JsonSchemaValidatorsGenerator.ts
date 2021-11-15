@@ -16,29 +16,29 @@ export abstract class JsonSchemaValidatorsGenerator<
 > implements CodeGenerator<T, TypeScriptModule>
 {
   private context: ValidatorsGeneratorContext = null
-  private config: GeneratorConfig & ValidatorsGeneratorConfig
+  private validatorConfig: ValidatorsGeneratorConfig
 
   public abstract readonly id: Id
   public abstract readonly consumes: [C]
 
-  public constructor(config: GeneratorConfig & ValidatorsGeneratorConfig) {
-    this.config = config
+  public constructor(config: ValidatorsGeneratorConfig) {
+    this.validatorConfig = config
   }
 
-  public initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
+  public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
-      ...createGeneratorContext(data, this.config, generators),
+      ...createGeneratorContext(data, config, generators),
       produces: this.id,
       consumes: this.consumes[0],
     }
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, validatorConfig } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, context.produces))
     const data = mergeTypeScriptModules(
-      schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config)),
+      schemas.map((schema): TypeScriptModule => generateValidator(schema, context, validatorConfig)),
     )
     return {
       data,
@@ -48,7 +48,7 @@ export abstract class JsonSchemaValidatorsGenerator<
   }
 
   public referenceOf(input: SchemaObject | ReferenceObject): Expression {
-    const { context, config } = this
+    const { context, validatorConfig: config } = this
     const { nameOf, dereference } = context
     const schema = dereference(input)
     const name = nameOf(schema, context.produces)
@@ -56,7 +56,7 @@ export abstract class JsonSchemaValidatorsGenerator<
   }
 
   public dependenciesOf(fromPath: string, input: SchemaObject | ReferenceObject): ImportDeclaration[] {
-    const { context, config } = this
+    const { context, validatorConfig: config } = this
     return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
   }
 }

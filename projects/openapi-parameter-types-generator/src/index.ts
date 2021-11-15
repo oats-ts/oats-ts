@@ -7,37 +7,35 @@ import { ResponseHeaderTypesGenerator } from './response/ResponseHeaderTypesGene
 export type { ParameterTypesGeneratorConfig } from './typings'
 
 export class QueryParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/query-type'> {
-  constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
+  constructor(config: ParameterTypesGeneratorConfig) {
     super('openapi/query-type', 'query', config)
   }
 }
 
 export class PathParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/path-type'> {
-  constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
+  constructor(config: ParameterTypesGeneratorConfig) {
     super('openapi/path-type', 'path', config)
   }
 }
 
 export class RequestHeaderParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/request-headers-type'> {
-  constructor(config: GeneratorConfig & ParameterTypesGeneratorConfig) {
+  constructor(config: ParameterTypesGeneratorConfig) {
     super('openapi/request-headers-type', 'header', config)
   }
 }
 
-export function queryParameterTypes(config: GeneratorConfig & ParameterTypesGeneratorConfig): OpenAPIGenerator {
+export function queryParameterTypes(config: ParameterTypesGeneratorConfig): OpenAPIGenerator {
   return new QueryParameterTypesGenerator(config)
 }
 
-export function pathParameterTypes(config: GeneratorConfig & ParameterTypesGeneratorConfig): OpenAPIGenerator {
+export function pathParameterTypes(config: ParameterTypesGeneratorConfig): OpenAPIGenerator {
   return new PathParameterTypesGenerator(config)
 }
 
-export function requestHeaderParameterTypes(config: GeneratorConfig & ParameterTypesGeneratorConfig): OpenAPIGenerator {
+export function requestHeaderParameterTypes(config: ParameterTypesGeneratorConfig): OpenAPIGenerator {
   return new RequestHeaderParameterTypesGenerator(config)
 }
 
-export function responseHeaderParameterTypes(
-  config: GeneratorConfig & ParameterTypesGeneratorConfig,
-): OpenAPIGenerator {
+export function responseHeaderParameterTypes(config: ParameterTypesGeneratorConfig): OpenAPIGenerator {
   return new ResponseHeaderTypesGenerator(config)
 }

@@ -18,18 +18,13 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ResponseBodyValidatorsGenerator implements OpenAPIGenerator<'openapi/response-body-validator'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/response-body-validator'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/type-validator']
 
-  public constructor(config: GeneratorConfig) {
-    this.config = config
-  }
-
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, 'openapi/response-body-validator'),

@@ -18,7 +18,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & OperationsGeneratorConfig
+  private operationsConfig: OperationsGeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/operation'
@@ -35,15 +35,15 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
     'openapi/response-headers-deserializer',
   ]
 
-  public constructor(config: GeneratorConfig & OperationsGeneratorConfig) {
-    this.config = config
+  public constructor(config: OperationsGeneratorConfig) {
+    this.operationsConfig = config
     if (config.validate) {
       this.consumes.push('openapi/response-body-validator')
     }
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
@@ -51,11 +51,11 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, operationsConfig } = this
 
     const data: TypeScriptModule[] = mergeTypeScriptModules(
       flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateOperationFunction(operation, context, config)].filter(negate(isNil)),
+        [generateOperationFunction(operation, context, operationsConfig)].filter(negate(isNil)),
       ),
     )
 

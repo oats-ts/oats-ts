@@ -17,26 +17,28 @@ import { ExpressRouteGeneratorConfig } from '..'
 
 export class ExpressRouteFactoryGenerator implements OpenAPIGenerator<'openapi/express-route-factory'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ExpressRouteGeneratorConfig
+  private routeFactoryConfig: ExpressRouteGeneratorConfig
 
   public readonly id = 'openapi/express-route-factory'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/express-route']
 
-  public constructor(config: GeneratorConfig & ExpressRouteGeneratorConfig) {
-    this.config = config
+  public constructor(config: ExpressRouteGeneratorConfig) {
+    this.routeFactoryConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, routeFactoryConfig } = this
     const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/express-route'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateRoutesType(operations, context, config)])
+    const data: TypeScriptModule[] = mergeTypeScriptModules([
+      generateRoutesType(operations, context, routeFactoryConfig),
+    ])
 
     return {
       isOk: true,

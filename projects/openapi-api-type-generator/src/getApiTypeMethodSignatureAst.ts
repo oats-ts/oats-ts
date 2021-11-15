@@ -26,7 +26,14 @@ export function getApiTypeMethodSignatureAst(
   }
 
   parameters.push(
-    factory.createParameterDeclaration([], [], undefined, 'extra', undefined, factory.createTypeReferenceNode('T')),
+    factory.createParameterDeclaration(
+      [],
+      [],
+      undefined,
+      'frameworkInput',
+      undefined,
+      factory.createTypeReferenceNode('T'),
+    ),
   )
 
   const returnType = factory.createTypeReferenceNode('Promise', [

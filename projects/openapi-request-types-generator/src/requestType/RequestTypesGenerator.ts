@@ -4,7 +4,6 @@ import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
 import { generateRequestType } from './generateRequestType'
-import { RequestTypesGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
   getEnhancedOperations,
@@ -19,7 +18,6 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class RequestTypesGenerator implements OpenAPIGenerator<'openapi/request-type'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & RequestTypesGeneratorConfig
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/request-type'
@@ -30,12 +28,8 @@ export class RequestTypesGenerator implements OpenAPIGenerator<'openapi/request-
     'openapi/path-type',
   ]
 
-  public constructor(config: GeneratorConfig & RequestTypesGeneratorConfig) {
-    this.config = config
-  }
-
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),

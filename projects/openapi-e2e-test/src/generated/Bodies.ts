@@ -682,17 +682,17 @@ export class BodiesSdkStub implements BodiesSdk {
 }
 
 export type BodiesApi<T> = {
-  arrObj(input: ArrObjServerRequest, extra: T): Promise<ArrObjResponse>
-  bool(input: BoolServerRequest, extra: T): Promise<BoolResponse>
-  boolArr(input: BoolArrServerRequest, extra: T): Promise<BoolArrResponse>
-  enm(input: EnmServerRequest, extra: T): Promise<EnmResponse>
-  enmArr(input: EnmArrServerRequest, extra: T): Promise<EnmArrResponse>
-  nestedObj(input: NestedObjServerRequest, extra: T): Promise<NestedObjResponse>
-  num(input: NumServerRequest, extra: T): Promise<NumResponse>
-  numArr(input: NumArrServerRequest, extra: T): Promise<NumArrResponse>
-  primObj(input: PrimObjServerRequest, extra: T): Promise<PrimObjResponse>
-  str(input: StrServerRequest, extra: T): Promise<StrResponse>
-  strArr(input: StrArrServerRequest, extra: T): Promise<StrArrResponse>
+  arrObj(input: ArrObjServerRequest, frameworkInput: T): Promise<ArrObjResponse>
+  bool(input: BoolServerRequest, frameworkInput: T): Promise<BoolResponse>
+  boolArr(input: BoolArrServerRequest, frameworkInput: T): Promise<BoolArrResponse>
+  enm(input: EnmServerRequest, frameworkInput: T): Promise<EnmResponse>
+  enmArr(input: EnmArrServerRequest, frameworkInput: T): Promise<EnmArrResponse>
+  nestedObj(input: NestedObjServerRequest, frameworkInput: T): Promise<NestedObjResponse>
+  num(input: NumServerRequest, frameworkInput: T): Promise<NumResponse>
+  numArr(input: NumArrServerRequest, frameworkInput: T): Promise<NumArrResponse>
+  primObj(input: PrimObjServerRequest, frameworkInput: T): Promise<PrimObjResponse>
+  str(input: StrServerRequest, frameworkInput: T): Promise<StrResponse>
+  strArr(input: StrArrServerRequest, frameworkInput: T): Promise<StrArrResponse>
 }
 
 export const arrObjRoute: Router = Router().post(

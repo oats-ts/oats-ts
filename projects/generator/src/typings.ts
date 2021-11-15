@@ -19,7 +19,7 @@ export type Module<C = any, D = any> = {
 export type CodeGenerator<R, G extends Module, P = string, C = string> = {
   id: P
   consumes: C[]
-  initialize: (data: R, generators: CodeGenerator<R, G>[]) => void
+  initialize: (data: R, configuration: GeneratorConfig, generators: CodeGenerator<R, G>[]) => void
   generate: () => Promise<Result<G[]>>
   referenceOf: (input: any) => any
   dependenciesOf: (fromPath: string, input: any) => any[]
@@ -30,7 +30,7 @@ export type GeneratorInput<R, G extends Module> = {
   validator?: ContentValidator<R>
   generators: CodeGenerator<R, G>[]
   writer: ContentWriter<G>
-  log?: boolean
+  configuration: GeneratorConfig
 }
 
 /**
@@ -42,6 +42,7 @@ export type NameProvider = (input: any, target: string) => string
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type GeneratorConfig = {
+  log: boolean
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param originalName The name of the object as described in the document.

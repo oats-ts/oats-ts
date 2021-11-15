@@ -4,7 +4,6 @@ import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
 import { generateOperationParameterTypeSerializer } from './generateOperationParameterTypeSerializer'
-import { ParameterSerializersGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
   getEnhancedOperations,
@@ -18,7 +17,6 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class InputParameterSerializerGenerator<Id extends OpenAPIGeneratorTarget> implements OpenAPIGenerator<Id> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ParameterSerializersGeneratorConfig
   private operations: EnhancedOperation[]
   private readonly location: ParameterLocation
   private readonly consumed: OpenAPIGeneratorTarget
@@ -27,21 +25,15 @@ export class InputParameterSerializerGenerator<Id extends OpenAPIGeneratorTarget
   public readonly id: Id
   public readonly consumes: OpenAPIGeneratorTarget[]
 
-  public constructor(
-    id: Id,
-    consumed: OpenAPIGeneratorTarget,
-    location: ParameterLocation,
-    config: GeneratorConfig & ParameterSerializersGeneratorConfig,
-  ) {
+  public constructor(id: Id, consumed: OpenAPIGeneratorTarget, location: ParameterLocation) {
     this.id = id
     this.consumed = consumed
     this.consumes = ['openapi/type', consumed]
     this.location = location
-    this.config = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, this.id),

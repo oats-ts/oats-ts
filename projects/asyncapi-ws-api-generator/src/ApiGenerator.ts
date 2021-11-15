@@ -19,17 +19,17 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ApiGenerator implements AsyncAPIGenerator<'asyncapi/api-type'> {
   private context: AsyncAPIGeneratorContext = null
-  private config: GeneratorConfig & ApiGeneratorConfig
+  private config: ApiGeneratorConfig
 
   public readonly id = 'asyncapi/api-type'
   public readonly consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/api-type', 'asyncapi/api-stub', 'asyncapi/api-class']
 
-  constructor(config: GeneratorConfig & ApiGeneratorConfig) {
+  constructor(config: ApiGeneratorConfig) {
     this.config = config
   }
 
-  initialize(data: AsyncAPIReadOutput, generators: AsyncAPIGenerator[]): void {
-    this.context = createAsyncAPIGeneratorContext(data, this.config, generators)
+  initialize(data: AsyncAPIReadOutput, config: GeneratorConfig, generators: AsyncAPIGenerator[]): void {
+    this.context = createAsyncAPIGeneratorContext(data, config, generators)
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {

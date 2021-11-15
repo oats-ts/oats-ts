@@ -16,7 +16,6 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig
 
   public readonly id = 'openapi/sdk-stub'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
@@ -26,16 +25,12 @@ export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
     'openapi/sdk-type',
   ]
 
-  public constructor(config: GeneratorConfig) {
-    this.config = config
-  }
-
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context } = this
     const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),

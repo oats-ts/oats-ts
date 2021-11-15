@@ -14,25 +14,25 @@ export abstract class JsonSchemaTypeGuardsGenerator<
 > implements CodeGenerator<T, TypeScriptModule>
 {
   private context: TypeGuardGeneratorContext = null
-  private config: GeneratorConfig & TypeGuardGeneratorConfig
+  private typeGuardsConfig: TypeGuardGeneratorConfig
 
   public abstract readonly id: Id
   public abstract readonly consumes: [C]
 
-  constructor(config: GeneratorConfig & TypeGuardGeneratorConfig) {
-    this.config = config
+  constructor(config: TypeGuardGeneratorConfig) {
+    this.typeGuardsConfig = config
   }
 
-  initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
+  initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
-      ...createGeneratorContext(data, this.config, generators),
+      ...createGeneratorContext(data, config, generators),
       consumes: this.consumes[0],
       produces: this.id,
     }
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, typeGuardsConfig: config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, context.produces))
     const data = mergeTypeScriptModules(

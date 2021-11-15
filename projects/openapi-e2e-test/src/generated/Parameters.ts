@@ -3015,48 +3015,57 @@ export type ParametersApi<T> = {
    */
   deepObjectQueryParameters(
     input: DeepObjectQueryParametersServerRequest,
-    extra: T,
+    frameworkInput: T,
   ): Promise<DeepObjectQueryParametersResponse>
   /**
    * Endpoint for testing query parameters with form serialization
    */
-  formQueryParameters(input: FormQueryParametersServerRequest, extra: T): Promise<FormQueryParametersResponse>
+  formQueryParameters(input: FormQueryParametersServerRequest, frameworkInput: T): Promise<FormQueryParametersResponse>
   /**
    * Endpoint for testing path parameters with label serialization
    */
-  labelPathParameters(input: LabelPathParametersServerRequest, extra: T): Promise<LabelPathParametersResponse>
+  labelPathParameters(input: LabelPathParametersServerRequest, frameworkInput: T): Promise<LabelPathParametersResponse>
   /**
    * Endpoint for testing path parameters with matrix serialization
    */
-  matrixPathParameters(input: MatrixPathParametersServerRequest, extra: T): Promise<MatrixPathParametersResponse>
+  matrixPathParameters(
+    input: MatrixPathParametersServerRequest,
+    frameworkInput: T,
+  ): Promise<MatrixPathParametersResponse>
   /**
    * Endpoint for testing query parameters with pipeDelimited serialization
    */
   pipeDelimitedQueryParameters(
     input: PipeDelimitedQueryParametersServerRequest,
-    extra: T,
+    frameworkInput: T,
   ): Promise<PipeDelimitedQueryParametersResponse>
   /**
    * Endpoint for testing header parameters with simple serialization
    */
-  simpleHeaderParameters(input: SimpleHeaderParametersServerRequest, extra: T): Promise<SimpleHeaderParametersResponse>
+  simpleHeaderParameters(
+    input: SimpleHeaderParametersServerRequest,
+    frameworkInput: T,
+  ): Promise<SimpleHeaderParametersResponse>
   /**
    * Endpoint for testing path parameters with simple serialization
    */
-  simplePathParameters(input: SimplePathParametersServerRequest, extra: T): Promise<SimplePathParametersResponse>
+  simplePathParameters(
+    input: SimplePathParametersServerRequest,
+    frameworkInput: T,
+  ): Promise<SimplePathParametersResponse>
   /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
     input: SimpleResponseHeaderParametersServerRequest,
-    extra: T,
+    frameworkInput: T,
   ): Promise<SimpleResponseHeaderParametersResponse>
   /**
    * Endpoint for testing query parameters with spaceDelimited serialization
    */
   spaceDelimitedQueryParameters(
     input: SpaceDelimitedQueryParametersServerRequest,
-    extra: T,
+    frameworkInput: T,
   ): Promise<SpaceDelimitedQueryParametersResponse>
 }
 

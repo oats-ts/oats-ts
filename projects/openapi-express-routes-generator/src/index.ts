@@ -10,24 +10,21 @@ export { ExpressRoutesGenerator } from './ExpressRoutesGenerator'
 export { ExpressRoutesTypeGenerator } from './routesType/ExpressRoutesTypeGenerator'
 export { ExpressRouteFactoryGenerator } from './routeFactory/ExpressRouteFactoryGenerator'
 
-function defaultConfig(
-  config: GeneratorConfig & Partial<ExpressRouteGeneratorConfig>,
-): GeneratorConfig & ExpressRouteGeneratorConfig {
+function defaultConfig(config: Partial<ExpressRouteGeneratorConfig>): ExpressRouteGeneratorConfig {
   return {
-    ...config,
     apiImplKey: config.apiImplKey ?? '__oats_api',
     configurationKey: config.configurationKey ?? '__oats_configuration',
   }
 }
 
-export function expressRoute(config: GeneratorConfig & Partial<ExpressRouteGeneratorConfig>): OpenAPIGenerator {
+export function expressRoute(config: Partial<ExpressRouteGeneratorConfig> = {}): OpenAPIGenerator {
   return new ExpressRoutesGenerator(defaultConfig(config))
 }
 
-export function expressRoutesType(config: GeneratorConfig): OpenAPIGenerator {
-  return new ExpressRoutesTypeGenerator(config)
+export function expressRoutesType(): OpenAPIGenerator {
+  return new ExpressRoutesTypeGenerator()
 }
 
-export function expressRouteFactory(config: GeneratorConfig & Partial<ExpressRouteGeneratorConfig>): OpenAPIGenerator {
+export function expressRouteFactory(config: Partial<ExpressRouteGeneratorConfig> = {}): OpenAPIGenerator {
   return new ExpressRouteFactoryGenerator(defaultConfig(config))
 }

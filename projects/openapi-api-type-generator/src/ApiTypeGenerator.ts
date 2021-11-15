@@ -17,7 +17,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 
 export class ApiTypeGenerator implements OpenAPIGenerator<'openapi/api-type'> {
   private context: OpenAPIGeneratorContext = null
-  private config: GeneratorConfig & ApiTypeGeneratorConfig
+  private apiTypeConfig: ApiTypeGeneratorConfig
 
   public readonly id = 'openapi/api-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
@@ -26,21 +26,23 @@ export class ApiTypeGenerator implements OpenAPIGenerator<'openapi/api-type'> {
     'openapi/response-type',
   ]
 
-  public constructor(config: GeneratorConfig & ApiTypeGeneratorConfig) {
-    this.config = config
+  public constructor(config: ApiTypeGeneratorConfig) {
+    this.apiTypeConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, this.config, generators)
+  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, apiTypeConfig } = this
     const { document, nameOf } = context
     const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateApiType(document, operations, context, config)])
+    const data: TypeScriptModule[] = mergeTypeScriptModules([
+      generateApiType(document, operations, context, apiTypeConfig),
+    ])
 
     return {
       isOk: true,
