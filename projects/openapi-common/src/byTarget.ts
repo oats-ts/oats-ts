@@ -31,7 +31,7 @@ const defaultName: NameByTarget = {
   'openapi/api-stub': 'apiStub',
   'openapi/express-route': 'routes',
   'openapi/express-routes-type': 'routes',
-  'openapi/express-main-route-factory': 'routes',
+  'openapi/express-route-factory': 'routes',
 }
 
 export function byTarget(path: string, nameByTarget: Partial<NameByTarget> = {}): GeneratorPathProvider {

@@ -118,9 +118,9 @@ export function defaultNameProvider(input: any, name: string, target: OpenAPIGen
       const doc: OpenAPIObject = input
       return `${pascalCase(doc.info?.title || '')}ApiStub`
     }
-    case 'openapi/express-main-route-factory': {
+    case 'openapi/express-route-factory': {
       const doc: OpenAPIObject = input
-      return `create${pascalCase(doc.info?.title || '')}MainRoute`
+      return `create${pascalCase(doc.info?.title || '')}Route`
     }
     case 'openapi/express-routes-type': {
       const doc: OpenAPIObject = input

@@ -31,7 +31,7 @@ const defaultFolderName: NameByTarget = {
   'openapi/api-stub': 'api',
   'openapi/express-route': 'routes',
   'openapi/express-routes-type': 'routes',
-  'openapi/express-main-route-factory': 'routes',
+  'openapi/express-route-factory': 'routes',
 }
 
 export function byNameAndTarget(

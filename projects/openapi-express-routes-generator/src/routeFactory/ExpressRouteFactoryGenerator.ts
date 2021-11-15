@@ -15,11 +15,11 @@ import { getModelImports } from '@oats-ts/typescript-common'
 import { generateRoutesType } from './generateRoutesType'
 import { ExpressRouteGeneratorConfig } from '..'
 
-export class ExpressMainRouteFactoryGenerator implements OpenAPIGenerator<'openapi/express-main-route-factory'> {
+export class ExpressRouteFactoryGenerator implements OpenAPIGenerator<'openapi/express-route-factory'> {
   private context: OpenAPIGeneratorContext = null
   private config: GeneratorConfig & ExpressRouteGeneratorConfig
 
-  public readonly id = 'openapi/express-main-route-factory'
+  public readonly id = 'openapi/express-route-factory'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/express-route']
 
   public constructor(config: GeneratorConfig & ExpressRouteGeneratorConfig) {

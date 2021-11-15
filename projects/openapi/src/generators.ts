@@ -24,7 +24,7 @@ import {
   requestHeaderParameterDeserializers,
   responseHeaderParameterDeserializers,
 } from '@oats-ts/openapi-parameter-deserializers-generator'
-import { expressRoute, expressRoutesType, expressMainRouteFactory } from '@oats-ts/openapi-express-routes-generator'
+import { expressRoute, expressRoutesType, expressRouteFactory } from '@oats-ts/openapi-express-routes-generator'
 
 export const generators = {
   types,
@@ -54,5 +54,5 @@ export const generators = {
   responseHeaderParameterDeserializers,
   expressRoute,
   expressRoutesType,
-  expressMainRouteFactory,
+  expressRouteFactory,
 }

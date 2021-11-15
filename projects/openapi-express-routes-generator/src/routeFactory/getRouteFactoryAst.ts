@@ -13,7 +13,7 @@ export function getMainRouteFactoryAst(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    factory.createIdentifier(nameOf(document, 'openapi/express-main-route-factory')),
+    factory.createIdentifier(nameOf(document, 'openapi/express-route-factory')),
     undefined,
     [
       factory.createParameterDeclaration(

@@ -6,7 +6,7 @@ import {
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { getMainRouteFactoryAst } from './getMainRouteFactoryAst'
+import { getMainRouteFactoryAst } from './getRouteFactoryAst'
 import { ExpressRouteGeneratorConfig } from '../typings'
 
 export function generateRoutesType(
@@ -15,7 +15,7 @@ export function generateRoutesType(
   config: ExpressRouteGeneratorConfig,
 ): TypeScriptModule {
   const { pathOf, document } = context
-  const path = pathOf(document, 'openapi/express-main-route-factory')
+  const path = pathOf(document, 'openapi/express-route-factory')
   return {
     path,
     dependencies: [

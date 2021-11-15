@@ -47,7 +47,7 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/api-stub'
   | 'openapi/express-route'
   | 'openapi/express-routes-type'
-  | 'openapi/express-main-route-factory'
+  | 'openapi/express-route-factory'
 
 export type OpenAPIGenerator<P extends OpenAPIGeneratorTarget = OpenAPIGeneratorTarget> = CodeGenerator<
   OpenAPIReadOutput,
