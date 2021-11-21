@@ -1,4 +1,10 @@
-export type { EnhancedOperation, EnhancedResponse, OpenAPIGenerator, OpenAPIGeneratorContext } from './typings'
+export type {
+  EnhancedOperation,
+  EnhancedResponse,
+  OpenAPIGenerator,
+  OpenAPIGeneratorContext,
+  ParameterKind,
+} from './typings'
 
 export { getEnhancedOperations } from './getEnhancedOperations'
 export { getEnhancedResponses } from './getEnhancedResponses'

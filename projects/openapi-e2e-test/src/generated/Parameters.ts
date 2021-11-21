@@ -1697,21 +1697,21 @@ export const labelPathParametersPathDeserializer = createPathDeserializer<LabelP
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false },
     ),
-    strArrExpl: deserializers.path.label.array(deserializers.value.string(), { explode: true }),
-    strArr: deserializers.path.label.array(deserializers.value.string(), { explode: false }),
-    numArrExpl: deserializers.path.label.array(deserializers.value.number(), { explode: true }),
-    numArr: deserializers.path.label.array(deserializers.value.number(), { explode: false }),
-    boolArrExpl: deserializers.path.label.array(deserializers.value.boolean(), { explode: true }),
-    boolArr: deserializers.path.label.array(deserializers.value.boolean(), { explode: false }),
-    enmArrExpl: deserializers.path.label.array(
+    strArrExpl: deserializers.path.label.array<string>(deserializers.value.string(), { explode: true }),
+    strArr: deserializers.path.label.array<string>(deserializers.value.string(), { explode: false }),
+    numArrExpl: deserializers.path.label.array<number>(deserializers.value.number(), { explode: true }),
+    numArr: deserializers.path.label.array<number>(deserializers.value.number(), { explode: false }),
+    boolArrExpl: deserializers.path.label.array<boolean>(deserializers.value.boolean(), { explode: true }),
+    boolArr: deserializers.path.label.array<boolean>(deserializers.value.boolean(), { explode: false }),
+    enmArrExpl: deserializers.path.label.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true },
     ),
-    enmArr: deserializers.path.label.array(
+    enmArr: deserializers.path.label.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false },
     ),
-    objExpl: deserializers.path.label.object(
+    objExpl: deserializers.path.label.object<CommonObjectTypeExpl>(
       {
         objExplStrField: deserializers.value.string(),
         objExplNumField: deserializers.value.number(),
@@ -1728,7 +1728,7 @@ export const labelPathParametersPathDeserializer = createPathDeserializer<LabelP
       },
       { explode: true },
     ),
-    obj: deserializers.path.label.object(
+    obj: deserializers.path.label.object<CommonObjectType>(
       {
         objStrField: deserializers.value.string(),
         objNumField: deserializers.value.number(),
@@ -1785,21 +1785,21 @@ export const matrixPathParametersPathDeserializer = createPathDeserializer<Matri
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false },
     ),
-    strArrExpl: deserializers.path.matrix.array(deserializers.value.string(), { explode: true }),
-    strArr: deserializers.path.matrix.array(deserializers.value.string(), { explode: false }),
-    numArrExpl: deserializers.path.matrix.array(deserializers.value.number(), { explode: true }),
-    numArr: deserializers.path.matrix.array(deserializers.value.number(), { explode: false }),
-    boolArrExpl: deserializers.path.matrix.array(deserializers.value.boolean(), { explode: true }),
-    boolArr: deserializers.path.matrix.array(deserializers.value.boolean(), { explode: false }),
-    enmArrExpl: deserializers.path.matrix.array(
+    strArrExpl: deserializers.path.matrix.array<string>(deserializers.value.string(), { explode: true }),
+    strArr: deserializers.path.matrix.array<string>(deserializers.value.string(), { explode: false }),
+    numArrExpl: deserializers.path.matrix.array<number>(deserializers.value.number(), { explode: true }),
+    numArr: deserializers.path.matrix.array<number>(deserializers.value.number(), { explode: false }),
+    boolArrExpl: deserializers.path.matrix.array<boolean>(deserializers.value.boolean(), { explode: true }),
+    boolArr: deserializers.path.matrix.array<boolean>(deserializers.value.boolean(), { explode: false }),
+    enmArrExpl: deserializers.path.matrix.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true },
     ),
-    enmArr: deserializers.path.matrix.array(
+    enmArr: deserializers.path.matrix.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false },
     ),
-    objExpl: deserializers.path.matrix.object(
+    objExpl: deserializers.path.matrix.object<CommonObjectTypeExpl>(
       {
         objExplStrField: deserializers.value.string(),
         objExplNumField: deserializers.value.number(),
@@ -1816,7 +1816,7 @@ export const matrixPathParametersPathDeserializer = createPathDeserializer<Matri
       },
       { explode: true },
     ),
-    obj: deserializers.path.matrix.object(
+    obj: deserializers.path.matrix.object<CommonObjectType>(
       {
         objStrField: deserializers.value.string(),
         objNumField: deserializers.value.number(),
@@ -1873,21 +1873,21 @@ export const simplePathParametersPathDeserializer = createPathDeserializer<Simpl
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false },
     ),
-    strArrExpl: deserializers.path.simple.array(deserializers.value.string(), { explode: true }),
-    strArr: deserializers.path.simple.array(deserializers.value.string(), { explode: false }),
-    numArrExpl: deserializers.path.simple.array(deserializers.value.number(), { explode: true }),
-    numArr: deserializers.path.simple.array(deserializers.value.number(), { explode: false }),
-    boolArrExpl: deserializers.path.simple.array(deserializers.value.boolean(), { explode: true }),
-    boolArr: deserializers.path.simple.array(deserializers.value.boolean(), { explode: false }),
-    enmArrExpl: deserializers.path.simple.array(
+    strArrExpl: deserializers.path.simple.array<string>(deserializers.value.string(), { explode: true }),
+    strArr: deserializers.path.simple.array<string>(deserializers.value.string(), { explode: false }),
+    numArrExpl: deserializers.path.simple.array<number>(deserializers.value.number(), { explode: true }),
+    numArr: deserializers.path.simple.array<number>(deserializers.value.number(), { explode: false }),
+    boolArrExpl: deserializers.path.simple.array<boolean>(deserializers.value.boolean(), { explode: true }),
+    boolArr: deserializers.path.simple.array<boolean>(deserializers.value.boolean(), { explode: false }),
+    enmArrExpl: deserializers.path.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true },
     ),
-    enmArr: deserializers.path.simple.array(
+    enmArr: deserializers.path.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false },
     ),
-    objExpl: deserializers.path.simple.object(
+    objExpl: deserializers.path.simple.object<CommonObjectTypeExpl>(
       {
         objExplStrField: deserializers.value.string(),
         objExplNumField: deserializers.value.number(),
@@ -1904,7 +1904,7 @@ export const simplePathParametersPathDeserializer = createPathDeserializer<Simpl
       },
       { explode: true },
     ),
-    obj: deserializers.path.simple.object(
+    obj: deserializers.path.simple.object<CommonObjectType>(
       {
         objStrField: deserializers.value.string(),
         objNumField: deserializers.value.number(),
@@ -1926,7 +1926,7 @@ export const simplePathParametersPathDeserializer = createPathDeserializer<Simpl
 
 export const deepObjectQueryParametersQueryDeserializer =
   createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
-    objExpl: deserializers.query.deepObject.object(
+    objExpl: deserializers.query.deepObject.object<CommonObjectTypeExpl>(
       {
         objExplStrField: deserializers.value.string(),
         objExplNumField: deserializers.value.number(),
@@ -1943,7 +1943,7 @@ export const deepObjectQueryParametersQueryDeserializer =
       },
       { explode: true, required: true },
     ),
-    optObjExpl: deserializers.query.deepObject.object(
+    optObjExpl: deserializers.query.deepObject.object<CommonOptObjectTypeExpl>(
       {
         optObjExplStrField: deserializers.value.string(),
         optObjExplNumField: deserializers.value.number(),
@@ -1991,35 +1991,50 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
     deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
     { explode: false, required: false },
   ),
-  strArrExpl: deserializers.query.form.array(deserializers.value.string(), { explode: true, required: true }),
-  optStrArrExpl: deserializers.query.form.array(deserializers.value.string(), { explode: true, required: false }),
-  strArr: deserializers.query.form.array(deserializers.value.string(), { explode: false, required: true }),
-  optStrArr: deserializers.query.form.array(deserializers.value.string(), { explode: false, required: false }),
-  numArrExpl: deserializers.query.form.array(deserializers.value.number(), { explode: true, required: true }),
-  optNumArrExpl: deserializers.query.form.array(deserializers.value.number(), { explode: true, required: false }),
-  numArr: deserializers.query.form.array(deserializers.value.number(), { explode: false, required: true }),
-  optNumArr: deserializers.query.form.array(deserializers.value.number(), { explode: false, required: false }),
-  boolArrExpl: deserializers.query.form.array(deserializers.value.boolean(), { explode: true, required: true }),
-  optBoolArrExpl: deserializers.query.form.array(deserializers.value.boolean(), { explode: true, required: false }),
-  boolArr: deserializers.query.form.array(deserializers.value.boolean(), { explode: false, required: true }),
-  optBoolArr: deserializers.query.form.array(deserializers.value.boolean(), { explode: false, required: false }),
-  enmArrExpl: deserializers.query.form.array(
+  strArrExpl: deserializers.query.form.array<string>(deserializers.value.string(), { explode: true, required: true }),
+  optStrArrExpl: deserializers.query.form.array<string>(deserializers.value.string(), {
+    explode: true,
+    required: false,
+  }),
+  strArr: deserializers.query.form.array<string>(deserializers.value.string(), { explode: false, required: true }),
+  optStrArr: deserializers.query.form.array<string>(deserializers.value.string(), { explode: false, required: false }),
+  numArrExpl: deserializers.query.form.array<number>(deserializers.value.number(), { explode: true, required: true }),
+  optNumArrExpl: deserializers.query.form.array<number>(deserializers.value.number(), {
+    explode: true,
+    required: false,
+  }),
+  numArr: deserializers.query.form.array<number>(deserializers.value.number(), { explode: false, required: true }),
+  optNumArr: deserializers.query.form.array<number>(deserializers.value.number(), { explode: false, required: false }),
+  boolArrExpl: deserializers.query.form.array<boolean>(deserializers.value.boolean(), {
+    explode: true,
+    required: true,
+  }),
+  optBoolArrExpl: deserializers.query.form.array<boolean>(deserializers.value.boolean(), {
+    explode: true,
+    required: false,
+  }),
+  boolArr: deserializers.query.form.array<boolean>(deserializers.value.boolean(), { explode: false, required: true }),
+  optBoolArr: deserializers.query.form.array<boolean>(deserializers.value.boolean(), {
+    explode: false,
+    required: false,
+  }),
+  enmArrExpl: deserializers.query.form.array<CommonEnumType>(
     deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
     { explode: true, required: true },
   ),
-  optEnmArrExpl: deserializers.query.form.array(
+  optEnmArrExpl: deserializers.query.form.array<CommonEnumType>(
     deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
     { explode: true, required: false },
   ),
-  enmArr: deserializers.query.form.array(
+  enmArr: deserializers.query.form.array<CommonEnumType>(
     deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
     { explode: false, required: true },
   ),
-  optEnmArr: deserializers.query.form.array(
+  optEnmArr: deserializers.query.form.array<CommonEnumType>(
     deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
     { explode: false, required: false },
   ),
-  objExpl: deserializers.query.form.object(
+  objExpl: deserializers.query.form.object<CommonObjectTypeExpl>(
     {
       objExplStrField: deserializers.value.string(),
       objExplNumField: deserializers.value.number(),
@@ -2036,7 +2051,7 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
     },
     { explode: true, required: true },
   ),
-  optObjExpl: deserializers.query.form.object(
+  optObjExpl: deserializers.query.form.object<CommonOptObjectTypeExpl>(
     {
       optObjExplStrField: deserializers.value.string(),
       optObjExplNumField: deserializers.value.number(),
@@ -2053,7 +2068,7 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
     },
     { explode: true, required: false },
   ),
-  obj: deserializers.query.form.object(
+  obj: deserializers.query.form.object<CommonObjectType>(
     {
       objStrField: deserializers.value.string(),
       objNumField: deserializers.value.number(),
@@ -2068,7 +2083,7 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
     },
     { explode: false, required: true },
   ),
-  optObj: deserializers.query.form.object(
+  optObj: deserializers.query.form.object<CommonOptObjectType>(
     {
       optObjStrField: deserializers.value.string(),
       optObjNumField: deserializers.value.number(),
@@ -2089,35 +2104,35 @@ export const formQueryParametersQueryDeserializer = createQueryDeserializer<Form
 
 export const pipeDelimitedQueryParametersQueryDeserializer =
   createQueryDeserializer<PipeDelimitedQueryParametersQueryParameters>({
-    strArrExpl: deserializers.query.pipeDelimited.array(deserializers.value.string(), {
+    strArrExpl: deserializers.query.pipeDelimited.array<string>(deserializers.value.string(), {
       explode: true,
       required: true,
     }),
-    optStrArrExpl: deserializers.query.pipeDelimited.array(deserializers.value.string(), {
+    optStrArrExpl: deserializers.query.pipeDelimited.array<string>(deserializers.value.string(), {
       explode: true,
       required: false,
     }),
-    numArrExpl: deserializers.query.pipeDelimited.array(deserializers.value.number(), {
+    numArrExpl: deserializers.query.pipeDelimited.array<number>(deserializers.value.number(), {
       explode: true,
       required: true,
     }),
-    optNumArrExpl: deserializers.query.pipeDelimited.array(deserializers.value.number(), {
+    optNumArrExpl: deserializers.query.pipeDelimited.array<number>(deserializers.value.number(), {
       explode: true,
       required: false,
     }),
-    boolArrExpl: deserializers.query.pipeDelimited.array(deserializers.value.boolean(), {
+    boolArrExpl: deserializers.query.pipeDelimited.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: true,
     }),
-    optBoolArrExpl: deserializers.query.pipeDelimited.array(deserializers.value.boolean(), {
+    optBoolArrExpl: deserializers.query.pipeDelimited.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: false,
     }),
-    enmArrExpl: deserializers.query.pipeDelimited.array(
+    enmArrExpl: deserializers.query.pipeDelimited.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: true },
     ),
-    optEnmArrExpl: deserializers.query.pipeDelimited.array(
+    optEnmArrExpl: deserializers.query.pipeDelimited.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: false },
     ),
@@ -2125,35 +2140,35 @@ export const pipeDelimitedQueryParametersQueryDeserializer =
 
 export const spaceDelimitedQueryParametersQueryDeserializer =
   createQueryDeserializer<SpaceDelimitedQueryParametersQueryParameters>({
-    strArrExpl: deserializers.query.spaceDelimited.array(deserializers.value.string(), {
+    strArrExpl: deserializers.query.spaceDelimited.array<string>(deserializers.value.string(), {
       explode: true,
       required: true,
     }),
-    optStrArrExpl: deserializers.query.spaceDelimited.array(deserializers.value.string(), {
+    optStrArrExpl: deserializers.query.spaceDelimited.array<string>(deserializers.value.string(), {
       explode: true,
       required: false,
     }),
-    numArrExpl: deserializers.query.spaceDelimited.array(deserializers.value.number(), {
+    numArrExpl: deserializers.query.spaceDelimited.array<number>(deserializers.value.number(), {
       explode: true,
       required: true,
     }),
-    optNumArrExpl: deserializers.query.spaceDelimited.array(deserializers.value.number(), {
+    optNumArrExpl: deserializers.query.spaceDelimited.array<number>(deserializers.value.number(), {
       explode: true,
       required: false,
     }),
-    boolArrExpl: deserializers.query.spaceDelimited.array(deserializers.value.boolean(), {
+    boolArrExpl: deserializers.query.spaceDelimited.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: true,
     }),
-    optBoolArrExpl: deserializers.query.spaceDelimited.array(deserializers.value.boolean(), {
+    optBoolArrExpl: deserializers.query.spaceDelimited.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: false,
     }),
-    enmArrExpl: deserializers.query.spaceDelimited.array(
+    enmArrExpl: deserializers.query.spaceDelimited.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: true },
     ),
-    optEnmArrExpl: deserializers.query.spaceDelimited.array(
+    optEnmArrExpl: deserializers.query.spaceDelimited.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: false },
     ),
@@ -2225,71 +2240,71 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false, required: false },
     ),
-    'X-StrArrExpl-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-StrArrExpl-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: true,
       required: true,
     }),
-    'X-OptStrArrExpl-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-OptStrArrExpl-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: true,
       required: false,
     }),
-    'X-StrArr-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-StrArr-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: false,
       required: true,
     }),
-    'X-OptStrArr-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-OptStrArr-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: false,
       required: false,
     }),
-    'X-NumArrExpl-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-NumArrExpl-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: true,
       required: true,
     }),
-    'X-OptNumArrExpl-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-OptNumArrExpl-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: true,
       required: false,
     }),
-    'X-NumArr-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-NumArr-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: false,
       required: true,
     }),
-    'X-OptNumArr-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-OptNumArr-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: false,
       required: false,
     }),
-    'X-BoolArrExpl-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-BoolArrExpl-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: true,
     }),
-    'X-OptBoolArrExpl-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-OptBoolArrExpl-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: false,
     }),
-    'X-BoolArr-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-BoolArr-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: false,
       required: true,
     }),
-    'X-OptBoolArr-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-OptBoolArr-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: false,
       required: false,
     }),
-    'X-EnmArrExpl-Header': deserializers.header.simple.array(
+    'X-EnmArrExpl-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: true },
     ),
-    'X-OptEnmArrExpl-Header': deserializers.header.simple.array(
+    'X-OptEnmArrExpl-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: false },
     ),
-    'X-EnmArr-Header': deserializers.header.simple.array(
+    'X-EnmArr-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false, required: true },
     ),
-    'X-OptEnmArr-Header': deserializers.header.simple.array(
+    'X-OptEnmArr-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false, required: false },
     ),
-    'X-ObjExpl-Header': deserializers.header.simple.object(
+    'X-ObjExpl-Header': deserializers.header.simple.object<CommonObjectTypeExpl>(
       {
         objExplStrField: deserializers.value.string(),
         objExplNumField: deserializers.value.number(),
@@ -2306,7 +2321,7 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
       },
       { explode: true, required: true },
     ),
-    'X-OptObjExpl-Header': deserializers.header.simple.object(
+    'X-OptObjExpl-Header': deserializers.header.simple.object<CommonOptObjectTypeExpl>(
       {
         optObjExplStrField: deserializers.value.string(),
         optObjExplNumField: deserializers.value.number(),
@@ -2323,7 +2338,7 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
       },
       { explode: true, required: false },
     ),
-    'X-Obj-Header': deserializers.header.simple.object(
+    'X-Obj-Header': deserializers.header.simple.object<CommonObjectType>(
       {
         objStrField: deserializers.value.string(),
         objNumField: deserializers.value.number(),
@@ -2340,7 +2355,7 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
       },
       { explode: false, required: true },
     ),
-    'X-OptObj-Header': deserializers.header.simple.object(
+    'X-OptObj-Header': deserializers.header.simple.object<CommonOptObjectType>(
       {
         optObjStrField: deserializers.value.string(),
         optObjNumField: deserializers.value.number(),
@@ -2425,71 +2440,71 @@ export const simpleResponseHeaderParametersResponseHeadersDeserializer = {
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false, required: false },
     ),
-    'X-StrArrExpl-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-StrArrExpl-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: true,
       required: true,
     }),
-    'X-OptStrArrExpl-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-OptStrArrExpl-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: true,
       required: false,
     }),
-    'X-StrArr-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-StrArr-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: false,
       required: true,
     }),
-    'X-OptStrArr-Header': deserializers.header.simple.array(deserializers.value.string(), {
+    'X-OptStrArr-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
       explode: false,
       required: false,
     }),
-    'X-NumArrExpl-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-NumArrExpl-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: true,
       required: true,
     }),
-    'X-OptNumArrExpl-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-OptNumArrExpl-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: true,
       required: false,
     }),
-    'X-NumArr-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-NumArr-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: false,
       required: true,
     }),
-    'X-OptNumArr-Header': deserializers.header.simple.array(deserializers.value.number(), {
+    'X-OptNumArr-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
       explode: false,
       required: false,
     }),
-    'X-BoolArrExpl-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-BoolArrExpl-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: true,
     }),
-    'X-OptBoolArrExpl-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-OptBoolArrExpl-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: true,
       required: false,
     }),
-    'X-BoolArr-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-BoolArr-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: false,
       required: true,
     }),
-    'X-OptBoolArr-Header': deserializers.header.simple.array(deserializers.value.boolean(), {
+    'X-OptBoolArr-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
       explode: false,
       required: false,
     }),
-    'X-EnmArrExpl-Header': deserializers.header.simple.array(
+    'X-EnmArrExpl-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: true },
     ),
-    'X-OptEnmArrExpl-Header': deserializers.header.simple.array(
+    'X-OptEnmArrExpl-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: true, required: false },
     ),
-    'X-EnmArr-Header': deserializers.header.simple.array(
+    'X-EnmArr-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false, required: true },
     ),
-    'X-OptEnmArr-Header': deserializers.header.simple.array(
+    'X-OptEnmArr-Header': deserializers.header.simple.array<CommonEnumType>(
       deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
       { explode: false, required: false },
     ),
-    'X-ObjExpl-Header': deserializers.header.simple.object(
+    'X-ObjExpl-Header': deserializers.header.simple.object<CommonObjectTypeExpl>(
       {
         objExplStrField: deserializers.value.string(),
         objExplNumField: deserializers.value.number(),
@@ -2506,7 +2521,7 @@ export const simpleResponseHeaderParametersResponseHeadersDeserializer = {
       },
       { explode: true, required: true },
     ),
-    'X-OptObjExpl-Header': deserializers.header.simple.object(
+    'X-OptObjExpl-Header': deserializers.header.simple.object<CommonOptObjectTypeExpl>(
       {
         optObjExplStrField: deserializers.value.string(),
         optObjExplNumField: deserializers.value.number(),
@@ -2523,7 +2538,7 @@ export const simpleResponseHeaderParametersResponseHeadersDeserializer = {
       },
       { explode: true, required: false },
     ),
-    'X-Obj-Header': deserializers.header.simple.object(
+    'X-Obj-Header': deserializers.header.simple.object<CommonObjectType>(
       {
         objStrField: deserializers.value.string(),
         objNumField: deserializers.value.number(),
@@ -2540,7 +2555,7 @@ export const simpleResponseHeaderParametersResponseHeadersDeserializer = {
       },
       { explode: false, required: true },
     ),
-    'X-OptObj-Header': deserializers.header.simple.object(
+    'X-OptObj-Header': deserializers.header.simple.object<CommonOptObjectType>(
       {
         optObjStrField: deserializers.value.string(),
         optObjNumField: deserializers.value.number(),
@@ -3069,7 +3084,7 @@ export type ParametersApi<T> = {
   ): Promise<SpaceDelimitedQueryParametersResponse>
 }
 
-export const deepObjectQueryParametersRoute: Router = Router().get(
+export const deepObjectQueryParametersRouter: Router = Router().get(
   '/deepObject-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3094,7 +3109,7 @@ export const deepObjectQueryParametersRoute: Router = Router().get(
   },
 )
 
-export const formQueryParametersRoute: Router = Router().get(
+export const formQueryParametersRouter: Router = Router().get(
   '/form-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3119,7 +3134,7 @@ export const formQueryParametersRoute: Router = Router().get(
   },
 )
 
-export const labelPathParametersRoute: Router = Router().get(
+export const labelPathParametersRouter: Router = Router().get(
   '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3144,7 +3159,7 @@ export const labelPathParametersRoute: Router = Router().get(
   },
 )
 
-export const matrixPathParametersRoute: Router = Router().get(
+export const matrixPathParametersRouter: Router = Router().get(
   '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3169,7 +3184,7 @@ export const matrixPathParametersRoute: Router = Router().get(
   },
 )
 
-export const pipeDelimitedQueryParametersRoute: Router = Router().get(
+export const pipeDelimitedQueryParametersRouter: Router = Router().get(
   '/pipeDelimited-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3194,7 +3209,7 @@ export const pipeDelimitedQueryParametersRoute: Router = Router().get(
   },
 )
 
-export const simpleHeaderParametersRoute: Router = Router().get(
+export const simpleHeaderParametersRouter: Router = Router().get(
   '/simple-header-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3219,7 +3234,7 @@ export const simpleHeaderParametersRoute: Router = Router().get(
   },
 )
 
-export const simplePathParametersRoute: Router = Router().get(
+export const simplePathParametersRouter: Router = Router().get(
   '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3244,7 +3259,7 @@ export const simplePathParametersRoute: Router = Router().get(
   },
 )
 
-export const simpleResponseHeaderParametersRoute: Router = Router().post(
+export const simpleResponseHeaderParametersRouter: Router = Router().post(
   '/simple-response-header-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3279,7 +3294,7 @@ export const simpleResponseHeaderParametersRoute: Router = Router().post(
   },
 )
 
-export const spaceDelimitedQueryParametersRoute: Router = Router().get(
+export const spaceDelimitedQueryParametersRouter: Router = Router().get(
   '/spaceDelimited-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -3305,15 +3320,15 @@ export const spaceDelimitedQueryParametersRoute: Router = Router().get(
 )
 
 export type ParametersRouters = {
-  deepObjectQueryParametersRoute: Router
-  formQueryParametersRoute: Router
-  labelPathParametersRoute: Router
-  matrixPathParametersRoute: Router
-  pipeDelimitedQueryParametersRoute: Router
-  simpleHeaderParametersRoute: Router
-  simplePathParametersRoute: Router
-  simpleResponseHeaderParametersRoute: Router
-  spaceDelimitedQueryParametersRoute: Router
+  deepObjectQueryParametersRouter: Router
+  formQueryParametersRouter: Router
+  labelPathParametersRouter: Router
+  matrixPathParametersRouter: Router
+  pipeDelimitedQueryParametersRouter: Router
+  simpleHeaderParametersRouter: Router
+  simplePathParametersRouter: Router
+  simpleResponseHeaderParametersRouter: Router
+  spaceDelimitedQueryParametersRouter: Router
 }
 
 export function createParametersRouter(
@@ -3327,14 +3342,14 @@ export function createParametersRouter(
       response.locals['__oats_configuration'] = configuration
       next()
     },
-    routes.deepObjectQueryParametersRoute ?? deepObjectQueryParametersRoute,
-    routes.formQueryParametersRoute ?? formQueryParametersRoute,
-    routes.labelPathParametersRoute ?? labelPathParametersRoute,
-    routes.matrixPathParametersRoute ?? matrixPathParametersRoute,
-    routes.pipeDelimitedQueryParametersRoute ?? pipeDelimitedQueryParametersRoute,
-    routes.simpleHeaderParametersRoute ?? simpleHeaderParametersRoute,
-    routes.simplePathParametersRoute ?? simplePathParametersRoute,
-    routes.simpleResponseHeaderParametersRoute ?? simpleResponseHeaderParametersRoute,
-    routes.spaceDelimitedQueryParametersRoute ?? spaceDelimitedQueryParametersRoute,
+    routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
+    routes.formQueryParametersRouter ?? formQueryParametersRouter,
+    routes.labelPathParametersRouter ?? labelPathParametersRouter,
+    routes.matrixPathParametersRouter ?? matrixPathParametersRouter,
+    routes.pipeDelimitedQueryParametersRouter ?? pipeDelimitedQueryParametersRouter,
+    routes.simpleHeaderParametersRouter ?? simpleHeaderParametersRouter,
+    routes.simplePathParametersRouter ?? simplePathParametersRouter,
+    routes.simpleResponseHeaderParametersRouter ?? simpleResponseHeaderParametersRouter,
+    routes.spaceDelimitedQueryParametersRouter ?? spaceDelimitedQueryParametersRouter,
   )
 }

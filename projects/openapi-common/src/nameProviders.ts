@@ -60,7 +60,7 @@ const resHeadersDeserializer = nonNull(operation)((input: any, name: string) =>
 )
 const reqBodyValidator = nonNull(operation)((input: any, name: string) => camelCase(`${name}RequestBodyValidator`))
 const resBodyValidator = nonNull(operation)((input: any, name: string) => camelCase(`${name}ResponseBodyValidator`))
-const expressRouter = nonNull(operation)((input: any, name: string) => camelCase(`${name}Route`))
+const expressRouter = nonNull(operation)((input: any, name: string) => camelCase(`${name}Router`))
 const documentTitle = (doc: any) => pascalCase(doc.info?.title || '')
 const sdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Sdk`
 const sdkStub: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkStub`

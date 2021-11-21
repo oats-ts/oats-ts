@@ -7,8 +7,7 @@ import { factory, NodeFlags, SyntaxKind, VariableStatement } from 'typescript'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { getParameterDeserializerFactoryCallAst } from './getParameterDeserializerFactoryCallAst'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
-import { flatMap, isNil, negate } from 'lodash'
-import { collectEnumSchemas } from './collectEnumSchemas'
+import { collectSchemaImports } from './collectSchemaImports'
 
 function createDeserializerConstant(
   location: ParameterLocation,
@@ -47,13 +46,7 @@ export const generateOperationParameterTypeDeserializer =
     if (parameters.length === 0) {
       return undefined
     }
-    const schemas = flatMap(
-      parameters
-        .map((parameter) => dereference(parameter, true))
-        .map((parameter) => parameter?.schema)
-        .filter(negate(isNil)),
-      (schema) => collectEnumSchemas(schema, context),
-    )
+
     const path = pathOf(data.operation, target)
     return {
       path,
@@ -63,7 +56,7 @@ export const generateOperationParameterTypeDeserializer =
           getParameterDeserializerFactoryName(location),
         ]),
         ...dependenciesOf(path, data.operation, typeTarget),
-        ...flatMap(schemas, (schema) => dependenciesOf(path, schema, 'openapi/type')),
+        ...collectSchemaImports(path, parameters, context),
       ],
       content: [createDeserializerConstant(location, data, context, target)],
     }

@@ -74,6 +74,7 @@ const clientDelegates: Partial<DelegatingPathProviderInput> = ((): Partial<Deleg
   const sdk = delegate('sdk')
   const operations = (path: string, input: any, name: NameProvider) =>
     resolve(join(path, 'operations', `${name(input, 'openapi/operation')}.ts`))
+  const responseHeadersType = (path: string, [operation]: any, name: NameProvider) => operations(path, operation, name)
   return {
     ...commonDelegates,
 
@@ -87,7 +88,7 @@ const clientDelegates: Partial<DelegatingPathProviderInput> = ((): Partial<Deleg
     'openapi/response-body-validator': operations,
     'openapi/request-headers-type': operations,
     'openapi/request-headers-serializer': operations,
-    'openapi/response-headers-type': operations,
+    'openapi/response-headers-type': responseHeadersType,
     'openapi/response-headers-deserializer': operations,
     'openapi/query-type': operations,
     'openapi/query-serializer': operations,
@@ -98,29 +99,31 @@ const clientDelegates: Partial<DelegatingPathProviderInput> = ((): Partial<Deleg
 
 const serverDelegates: Partial<DelegatingPathProviderInput> = ((): Partial<DelegatingPathProviderInput> => {
   const api = delegate('api')
-  const routes = (path: string, input: any, name: NameProvider) =>
-    resolve(join(path, 'routes', `${name(input, 'openapi/express-route')}.ts`))
-
+  const routes = delegate('routers')
+  const routesSingle = (path: string, input: any, name: NameProvider) =>
+    resolve(join(path, 'routers', `${name(input, 'openapi/express-route')}.ts`))
+  const responseHeadersType = (path: string, [operation]: any, name: NameProvider) =>
+    routesSingle(path, operation, name)
   return {
     ...commonDelegates,
     'openapi/api-type': api,
     'openapi/api-stub': api,
-    'openapi/express-route-factory': delegate('routes'),
-    'openapi/express-routes-type': delegate('routes'),
+    'openapi/express-route-factory': routes,
+    'openapi/express-routes-type': routes,
 
-    'openapi/request-type': routes,
-    'openapi/request-server-type': routes,
-    'openapi/request-body-validator': routes,
-    'openapi/response-type': routes,
-    'openapi/request-headers-type': routes,
-    'openapi/request-headers-deserializer': routes,
-    'openapi/response-headers-type': routes,
-    'openapi/response-headers-serializer': routes,
-    'openapi/query-type': routes,
-    'openapi/query-deserializer': routes,
-    'openapi/path-type': routes,
-    'openapi/path-deserializer': routes,
-    'openapi/express-route': routes,
+    'openapi/request-type': routesSingle,
+    'openapi/request-server-type': routesSingle,
+    'openapi/request-body-validator': routesSingle,
+    'openapi/response-type': routesSingle,
+    'openapi/request-headers-type': routesSingle,
+    'openapi/request-headers-deserializer': routesSingle,
+    'openapi/response-headers-type': responseHeadersType,
+    'openapi/response-headers-serializer': routesSingle,
+    'openapi/query-type': routesSingle,
+    'openapi/query-deserializer': routesSingle,
+    'openapi/path-type': routesSingle,
+    'openapi/path-deserializer': routesSingle,
+    'openapi/express-route': routesSingle,
   }
 })()
 

@@ -17,7 +17,7 @@ export function getHandlerBodyAst(
   context: OpenAPIGeneratorContext,
   config: ExpressRouteGeneratorConfig,
 ) {
-  const { referenceOf, document } = context
+  const { referenceOf, nameOf, document } = context
   const { ServerConfiguration } = RuntimePackages.HttpServer
   const { ExpressParameters } = RuntimePackages.HttpServerExpress
 
@@ -223,7 +223,7 @@ export function getHandlerBodyAst(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
                 factory.createIdentifier(Names.api),
-                referenceOf(data.operation, 'openapi/operation'),
+                nameOf(data.operation, 'openapi/operation'),
               ),
               undefined,
               [

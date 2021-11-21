@@ -6,6 +6,7 @@ import { RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { getParameterSerializerConstant } from './getParameterSerializerConstant'
+import { collectSchemaImports } from './collectSchemaImports'
 
 export const generateOperationParameterTypeSerializer =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
@@ -15,15 +16,17 @@ export const generateOperationParameterTypeSerializer =
     if (parameters.length === 0) {
       return undefined
     }
-    const serializerPath = pathOf(data.operation, target)
+    const path = pathOf(data.operation, target)
+
     return {
-      path: serializerPath,
+      path: path,
       dependencies: [
         getNamedImports(RuntimePackages.ParameterSerialization.name, [
           RuntimePackages.ParameterSerialization.serializers,
           getParameterSerializerFactoryName(location),
         ]),
-        ...dependenciesOf(serializerPath, data.operation, typeTarget),
+        ...dependenciesOf(path, data.operation, typeTarget),
+        ...collectSchemaImports(path, parameters, context),
       ],
       content: [getParameterSerializerConstant(location, data, context, target)],
     }

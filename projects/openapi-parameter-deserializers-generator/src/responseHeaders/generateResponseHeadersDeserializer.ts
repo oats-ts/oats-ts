@@ -8,7 +8,8 @@ import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { getResponseHeadersDeserializerAst } from './getResponseHeadersDeserializerAst'
-import { entries, flatMap } from 'lodash'
+import { entries, flatMap, values } from 'lodash'
+import { collectSchemaImports } from '../collectSchemaImports'
 
 export function generateResponseHeadersDeserializer(
   data: EnhancedOperation,
@@ -19,6 +20,8 @@ export function generateResponseHeadersDeserializer(
   }
   const { pathOf, dependenciesOf } = context
   const path = pathOf(data.operation, 'openapi/response-headers-deserializer')
+  const headersByStatus = getResponseHeaders(data.operation, context)
+  const parameters = flatMap(values(headersByStatus), (headers) => values(headers))
   return {
     path: path,
     dependencies: [
@@ -26,9 +29,10 @@ export function generateResponseHeadersDeserializer(
         RuntimePackages.ParameterDeserialization.deserializers,
         RuntimePackages.ParameterDeserialization.createHeaderDeserializer,
       ]),
-      ...flatMap(entries(getResponseHeaders(data.operation, context)), ([statusCode]) =>
+      ...flatMap(entries(headersByStatus), ([statusCode]) =>
         dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),
       ),
+      ...collectSchemaImports(path, parameters, context),
     ],
     content: [getResponseHeadersDeserializerAst(data, context)],
   }

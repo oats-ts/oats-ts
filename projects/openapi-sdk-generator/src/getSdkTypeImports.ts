@@ -16,7 +16,5 @@ export function getSdkTypeImports(
     ...(params ? dependenciesOf(apiPath, data.operation, 'openapi/request-type') : []),
     ...dependenciesOf(apiPath, data.operation, 'openapi/response-type'),
   ])
-  return operations.length > 0
-    ? [...imports, getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.ClientConfiguration])]
-    : imports
+  return operations.length > 0 ? [...imports] : imports
 }

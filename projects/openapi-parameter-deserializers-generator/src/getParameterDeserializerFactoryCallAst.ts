@@ -8,12 +8,19 @@ import {
 } from '@oats-ts/openapi-common'
 import { has, isNil, negate } from 'lodash'
 import { getParameterDeserializerFactoryName } from './getParameterDeserializerFactoryName'
-import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { CallExpression, factory, ObjectLiteralExpression, PropertyAssignment, TypeReferenceType } from 'typescript'
+import { EnhancedOperation, ParameterKind } from '@oats-ts/openapi-common'
+import {
+  CallExpression,
+  factory,
+  ObjectLiteralExpression,
+  PropertyAssignment,
+  TypeNode,
+  TypeReferenceType,
+} from 'typescript'
 import { isIdentifier } from '@oats-ts/typescript-common'
 import { getDeserializerAst } from './getDeserializerAst'
 import { createPathRegex, getPathParameterNames } from './pathUtils'
-import { Referenceable } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
 function getDeserializerOptionProperty(
   key: keyof BaseParameterObject,
@@ -44,6 +51,22 @@ function getDeserializerOptions(parameter: BaseParameterObject): ObjectLiteralEx
   return factory.createObjectLiteralExpression(getDeserializerOptionProperties(parameter).filter(negate(isNil)))
 }
 
+function getDeserializerTypeParameters(
+  schema: SchemaObject,
+  kind: ParameterKind,
+  context: OpenAPIGeneratorContext,
+): TypeNode[] {
+  const { referenceOf } = context
+  switch (kind) {
+    case 'primitive':
+      return []
+    case 'array':
+      return [referenceOf(schema.items, 'openapi/type')]
+    case 'object':
+      return [referenceOf(schema, 'openapi/type')]
+  }
+}
+
 function createParameterDeserializer(parameter: BaseParameterObject, context: OpenAPIGeneratorContext): CallExpression {
   const { dereference } = context
   const schema = dereference(parameter.schema)
@@ -61,7 +84,7 @@ function createParameterDeserializer(parameter: BaseParameterObject, context: Op
       ),
       factory.createIdentifier(kind),
     ),
-    [],
+    getDeserializerTypeParameters(schema, kind, context),
     [getDeserializerAst(schema, context), getDeserializerOptions(parameter)],
   )
 }

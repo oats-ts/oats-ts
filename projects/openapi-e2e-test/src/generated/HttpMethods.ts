@@ -309,7 +309,7 @@ export type HttpMethodsApi<T> = {
   putMethod(frameworkInput: T): Promise<PutMethodResponse>
 }
 
-export const deleteMethodRoute: Router = Router().delete(
+export const deleteMethodRouter: Router = Router().delete(
   '/delete-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -325,7 +325,7 @@ export const deleteMethodRoute: Router = Router().delete(
   },
 )
 
-export const getMethodRoute: Router = Router().get(
+export const getMethodRouter: Router = Router().get(
   '/get-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -341,7 +341,7 @@ export const getMethodRoute: Router = Router().get(
   },
 )
 
-export const optionsMethodRoute: Router = Router().options(
+export const optionsMethodRouter: Router = Router().options(
   '/options-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -357,7 +357,7 @@ export const optionsMethodRoute: Router = Router().options(
   },
 )
 
-export const patchMethodRoute: Router = Router().patch(
+export const patchMethodRouter: Router = Router().patch(
   '/patch-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -373,7 +373,7 @@ export const patchMethodRoute: Router = Router().patch(
   },
 )
 
-export const postMethodRoute: Router = Router().post(
+export const postMethodRouter: Router = Router().post(
   '/post-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -389,7 +389,7 @@ export const postMethodRoute: Router = Router().post(
   },
 )
 
-export const putMethodRoute: Router = Router().put(
+export const putMethodRouter: Router = Router().put(
   '/put-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -406,12 +406,12 @@ export const putMethodRoute: Router = Router().put(
 )
 
 export type HttpMethodsRouters = {
-  deleteMethodRoute: Router
-  getMethodRoute: Router
-  optionsMethodRoute: Router
-  patchMethodRoute: Router
-  postMethodRoute: Router
-  putMethodRoute: Router
+  deleteMethodRouter: Router
+  getMethodRouter: Router
+  optionsMethodRouter: Router
+  patchMethodRouter: Router
+  postMethodRouter: Router
+  putMethodRouter: Router
 }
 
 export function createHttpMethodsRouter(
@@ -425,11 +425,11 @@ export function createHttpMethodsRouter(
       response.locals['__oats_configuration'] = configuration
       next()
     },
-    routes.deleteMethodRoute ?? deleteMethodRoute,
-    routes.getMethodRoute ?? getMethodRoute,
-    routes.optionsMethodRoute ?? optionsMethodRoute,
-    routes.patchMethodRoute ?? patchMethodRoute,
-    routes.postMethodRoute ?? postMethodRoute,
-    routes.putMethodRoute ?? putMethodRoute,
+    routes.deleteMethodRouter ?? deleteMethodRouter,
+    routes.getMethodRouter ?? getMethodRouter,
+    routes.optionsMethodRouter ?? optionsMethodRouter,
+    routes.patchMethodRouter ?? patchMethodRouter,
+    routes.postMethodRouter ?? postMethodRouter,
+    routes.putMethodRouter ?? putMethodRouter,
   )
 }

@@ -695,7 +695,7 @@ export type BodiesApi<T> = {
   strArr(input: StrArrServerRequest, frameworkInput: T): Promise<StrArrResponse>
 }
 
-export const arrObjRoute: Router = Router().post(
+export const arrObjRouter: Router = Router().post(
   '/arr-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -719,7 +719,7 @@ export const arrObjRoute: Router = Router().post(
   },
 )
 
-export const boolRoute: Router = Router().post(
+export const boolRouter: Router = Router().post(
   '/bool',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -743,7 +743,7 @@ export const boolRoute: Router = Router().post(
   },
 )
 
-export const boolArrRoute: Router = Router().post(
+export const boolArrRouter: Router = Router().post(
   '/bool-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -767,7 +767,7 @@ export const boolArrRoute: Router = Router().post(
   },
 )
 
-export const enmRoute: Router = Router().post(
+export const enmRouter: Router = Router().post(
   '/enm',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -791,7 +791,7 @@ export const enmRoute: Router = Router().post(
   },
 )
 
-export const enmArrRoute: Router = Router().post(
+export const enmArrRouter: Router = Router().post(
   '/enm-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -815,7 +815,7 @@ export const enmArrRoute: Router = Router().post(
   },
 )
 
-export const nestedObjRoute: Router = Router().post(
+export const nestedObjRouter: Router = Router().post(
   '/nested-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -843,7 +843,7 @@ export const nestedObjRoute: Router = Router().post(
   },
 )
 
-export const numRoute: Router = Router().post(
+export const numRouter: Router = Router().post(
   '/num',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -867,7 +867,7 @@ export const numRoute: Router = Router().post(
   },
 )
 
-export const numArrRoute: Router = Router().post(
+export const numArrRouter: Router = Router().post(
   '/num-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -891,7 +891,7 @@ export const numArrRoute: Router = Router().post(
   },
 )
 
-export const primObjRoute: Router = Router().post(
+export const primObjRouter: Router = Router().post(
   '/prim-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -915,7 +915,7 @@ export const primObjRoute: Router = Router().post(
   },
 )
 
-export const strRoute: Router = Router().post(
+export const strRouter: Router = Router().post(
   '/str',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -939,7 +939,7 @@ export const strRoute: Router = Router().post(
   },
 )
 
-export const strArrRoute: Router = Router().post(
+export const strArrRouter: Router = Router().post(
   '/str-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const frameworkInput: ExpressParameters = { request, response, next }
@@ -964,17 +964,17 @@ export const strArrRoute: Router = Router().post(
 )
 
 export type BodiesRouters = {
-  arrObjRoute: Router
-  boolArrRoute: Router
-  boolRoute: Router
-  enmArrRoute: Router
-  enmRoute: Router
-  nestedObjRoute: Router
-  numArrRoute: Router
-  numRoute: Router
-  primObjRoute: Router
-  strArrRoute: Router
-  strRoute: Router
+  arrObjRouter: Router
+  boolArrRouter: Router
+  boolRouter: Router
+  enmArrRouter: Router
+  enmRouter: Router
+  nestedObjRouter: Router
+  numArrRouter: Router
+  numRouter: Router
+  primObjRouter: Router
+  strArrRouter: Router
+  strRouter: Router
 }
 
 export function createBodiesRouter(
@@ -988,16 +988,16 @@ export function createBodiesRouter(
       response.locals['__oats_configuration'] = configuration
       next()
     },
-    routes.arrObjRoute ?? arrObjRoute,
-    routes.boolArrRoute ?? boolArrRoute,
-    routes.boolRoute ?? boolRoute,
-    routes.enmArrRoute ?? enmArrRoute,
-    routes.enmRoute ?? enmRoute,
-    routes.nestedObjRoute ?? nestedObjRoute,
-    routes.numArrRoute ?? numArrRoute,
-    routes.numRoute ?? numRoute,
-    routes.primObjRoute ?? primObjRoute,
-    routes.strArrRoute ?? strArrRoute,
-    routes.strRoute ?? strRoute,
+    routes.arrObjRouter ?? arrObjRouter,
+    routes.boolArrRouter ?? boolArrRouter,
+    routes.boolRouter ?? boolRouter,
+    routes.enmArrRouter ?? enmArrRouter,
+    routes.enmRouter ?? enmRouter,
+    routes.nestedObjRouter ?? nestedObjRouter,
+    routes.numArrRouter ?? numArrRouter,
+    routes.numRouter ?? numRouter,
+    routes.primObjRouter ?? primObjRouter,
+    routes.strArrRouter ?? strArrRouter,
+    routes.strRouter ?? strRouter,
   )
 }
