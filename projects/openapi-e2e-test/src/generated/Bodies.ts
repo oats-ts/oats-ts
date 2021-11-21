@@ -963,7 +963,7 @@ export const strArrRoute: Router = Router().post(
   },
 )
 
-export type BodiesRoutes = {
+export type BodiesRouters = {
   arrObjRoute: Router
   boolArrRoute: Router
   boolRoute: Router
@@ -977,10 +977,10 @@ export type BodiesRoutes = {
   strRoute: Router
 }
 
-export function createBodiesRoute(
+export function createBodiesRouter(
   api: BodiesApi<ExpressParameters>,
   configuration: ServerConfiguration<ExpressParameters>,
-  routes: Partial<BodiesRoutes> = {},
+  routes: Partial<BodiesRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {

@@ -1616,7 +1616,7 @@ export const simpleHeaderParametersRequestHeadersSerializer =
     'X-OptObj-Header': serializers.header.simple.object<CommonOptObjectType>({ explode: false, required: false }),
   })
 
-export const simpleResponseHeaderParametersResponseHeaderSerializer = {
+export const simpleResponseHeaderParametersResponseHeadersSerializer = {
   200: createHeaderSerializer<SimpleResponseHeaderParameters200ResponseHeaderParameters>({
     'X-StrExpl-Header': serializers.header.simple.primitive<string>({ explode: true, required: true }),
     'X-OptStrExpl-Header': serializers.header.simple.primitive<string>({ explode: true, required: false }),
@@ -3270,7 +3270,7 @@ export const simpleResponseHeaderParametersRoute: Router = Router().post(
       headers: await configuration.getResponseHeaders(
         frameworkInput,
         typedResponse,
-        simpleResponseHeaderParametersResponseHeaderSerializer,
+        simpleResponseHeaderParametersResponseHeadersSerializer,
       ),
       statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
       body: await configuration.getResponseBody(frameworkInput, typedResponse),
@@ -3304,7 +3304,7 @@ export const spaceDelimitedQueryParametersRoute: Router = Router().get(
   },
 )
 
-export type ParametersRoutes = {
+export type ParametersRouters = {
   deepObjectQueryParametersRoute: Router
   formQueryParametersRoute: Router
   labelPathParametersRoute: Router
@@ -3316,10 +3316,10 @@ export type ParametersRoutes = {
   spaceDelimitedQueryParametersRoute: Router
 }
 
-export function createParametersRoute(
+export function createParametersRouter(
   api: ParametersApi<ExpressParameters>,
   configuration: ServerConfiguration<ExpressParameters>,
-  routes: Partial<ParametersRoutes> = {},
+  routes: Partial<ParametersRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {

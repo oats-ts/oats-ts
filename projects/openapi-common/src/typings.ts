@@ -2,7 +2,7 @@ import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { CodeGenerator } from '@oats-ts/generator'
+import { CodeGenerator, GeneratorNameProvider, NameProvider } from '@oats-ts/generator'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { GeneratorContext } from '@oats-ts/model-common'
 
@@ -14,6 +14,11 @@ import { GeneratorContext } from '@oats-ts/model-common'
 export type PathProvider = (input: any, target: string) => string
 
 export type NameByTarget = Record<OpenAPIGeneratorTarget, string>
+
+export type PathDelegate = (basePath: string, input: any, name: NameProvider, target: string) => string
+
+export type DelegatingPathProviderInput = Record<OpenAPIGeneratorTarget, PathDelegate>
+export type DelegatingNameProviderInput = Record<OpenAPIGeneratorTarget, GeneratorNameProvider>
 
 export type OpenAPIGeneratorTarget =
   // Common

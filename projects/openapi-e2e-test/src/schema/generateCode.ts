@@ -14,7 +14,7 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
   return generate({
     configuration: {
       log: true,
-      name: nameProviders.default,
+      name: nameProviders.default(),
       path: pathProviders.singleFile(sourcePath),
     },
     validator: validator(),

@@ -2,7 +2,7 @@ import { manageServerLifecycle } from '../common/server.hooks'
 import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
 import { ExpressParameters, ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
 import { BodiesApiImpl } from './BodiesApiImpl'
-import { BodiesClientSdk, createBodiesRoute } from '../../generated/Bodies'
+import { BodiesClientSdk, createBodiesRouter } from '../../generated/Bodies'
 import YAML from 'yamljs'
 import { HttpResponse, TypedHttpRequest } from '@oats-ts/openapi-http'
 import { Response } from 'node-fetch'
@@ -38,7 +38,7 @@ describe('Request and Response bodies', () => {
   ] as const
 
   describe.each(configs)(`%s mime type`, (mimeType, ServerConfig, ClientConfig) => {
-    manageServerLifecycle(createBodiesRoute(new BodiesApiImpl(), new ServerConfig()))
+    manageServerLifecycle(createBodiesRouter(new BodiesApiImpl(), new ServerConfig()))
     const sdk = new BodiesClientSdk(new ClientConfig('http://localhost:3333'))
     const data = range(1, process.env['REPEATS'] ? parseInt(process.env['REPEATS']) + 1 : 11)
     it.each(data)('(#%d) string', async () => {

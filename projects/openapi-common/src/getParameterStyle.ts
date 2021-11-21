@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
 import { BaseParameterObject, ParameterObject, ParameterStyle } from '@oats-ts/openapi-model'
 
-export function getParameterStyle(parameter: BaseParameterObject): ParameterStyle {
+export function getParameterStyle(parameter: BaseParameterObject): ParameterStyle | undefined {
   const _in = (parameter as ParameterObject).in
   if (isNil(_in)) {
     return isNil(parameter.style) ? 'simple' : parameter.style

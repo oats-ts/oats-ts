@@ -6,7 +6,7 @@ import { OpenAPIGeneratorContext } from './typings'
 export function getParameterName(
   parameter: Referenceable<BaseParameterObject>,
   context: OpenAPIGeneratorContext,
-): string {
+): string | undefined {
   if (isNil(parameter)) {
     return undefined
   }

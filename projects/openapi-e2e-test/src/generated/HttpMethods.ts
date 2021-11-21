@@ -405,7 +405,7 @@ export const putMethodRoute: Router = Router().put(
   },
 )
 
-export type HttpMethodsRoutes = {
+export type HttpMethodsRouters = {
   deleteMethodRoute: Router
   getMethodRoute: Router
   optionsMethodRoute: Router
@@ -414,10 +414,10 @@ export type HttpMethodsRoutes = {
   putMethodRoute: Router
 }
 
-export function createHttpMethodsRoute(
+export function createHttpMethodsRouter(
   api: HttpMethodsApi<ExpressParameters>,
   configuration: ServerConfiguration<ExpressParameters>,
-  routes: Partial<HttpMethodsRoutes> = {},
+  routes: Partial<HttpMethodsRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {

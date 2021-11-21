@@ -8,7 +8,7 @@ import { EnhancedOperation } from './typings'
 function getEnhancedOperation(
   url: string,
   method: HttpMethod,
-  operation: OperationObject,
+  operation: OperationObject | undefined,
   commonParameters: (ParameterObject | ReferenceObject)[],
   context: OpenAPIGeneratorContext,
 ): EnhancedOperation[] {
