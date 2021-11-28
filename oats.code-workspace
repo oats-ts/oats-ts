@@ -157,6 +157,10 @@
       "path": "projects/openapi-sdk-generator"
     },
     {
+      "name": "openapi-test-utils",
+      "path": "projects/openapi-test-utils"
+    },
+    {
       "name": "openapi-type-guards-generator",
       "path": "projects/openapi-type-guards-generator"
     },

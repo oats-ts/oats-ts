@@ -245,6 +245,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-test-utils",
+      "projectFolder": "projects/openapi-test-utils",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-type-guards-generator",
       "projectFolder": "projects/openapi-type-guards-generator",
       "versionPolicyName": "oats",

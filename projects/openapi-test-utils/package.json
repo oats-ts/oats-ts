@@ -1,0 +1,33 @@
+{
+  "name": "@oats-ts/openapi-test-utils",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "directories": {},
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf lib && tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "ISC",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "peerDependencies": {
+    "@types/express": "4.17.12",
+    "@types/jest": "26.0.23",
+    "express": "4.17.1",
+    "http-terminator": "3.0.3",
+    "jest": "27.0.4"
+  }
+}
