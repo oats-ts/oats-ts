@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/asyncapi-validators-generator",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -32,10 +32,10 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/json-schema-validators-generator": "0.0.5",
-    "@oats-ts/asyncapi-reader": "0.0.5",
-    "@oats-ts/asyncapi": "0.0.5",
-    "@oats-ts/generator": "0.0.5",
-    "@oats-ts/asyncapi-common": "0.0.5"
+    "@oats-ts/json-schema-validators-generator": "0.0.6",
+    "@oats-ts/asyncapi-reader": "0.0.6",
+    "@oats-ts/asyncapi": "0.0.6",
+    "@oats-ts/generator": "0.0.6",
+    "@oats-ts/asyncapi-common": "0.0.6"
   }
 }
