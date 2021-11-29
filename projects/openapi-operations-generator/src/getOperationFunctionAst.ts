@@ -1,0 +1,52 @@
+import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
+import { RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
+import { OperationsGeneratorConfig } from './typings'
+import { EnhancedOperation } from '@oats-ts/openapi-common'
+import { documentNode } from '@oats-ts/typescript-common'
+import { Names } from './Names'
+import { getOperationBodyAst } from './getOperationBodyAst'
+
+export function getOperationFunctionAst(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  config: OperationsGeneratorConfig,
+): FunctionDeclaration {
+  const { nameOf, referenceOf } = context
+  const { operation } = data
+
+  const params: ParameterDeclaration[] = [
+    ...(hasInput(data, context)
+      ? [
+          factory.createParameterDeclaration(
+            [],
+            [],
+            undefined,
+            Names.input,
+            undefined,
+            factory.createTypeReferenceNode(nameOf(operation, 'openapi/request-type')),
+          ),
+        ]
+      : []),
+    factory.createParameterDeclaration(
+      [],
+      [],
+      undefined,
+      Names.configuration,
+      undefined,
+      factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
+    ),
+  ]
+
+  const node = factory.createFunctionDeclaration(
+    [],
+    [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
+    undefined,
+    nameOf(operation, 'openapi/operation'),
+    [],
+    params,
+    factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'openapi/response-type')]),
+    getOperationBodyAst(data, context, config),
+  )
+  return config.documentation ? documentNode(node, operation) : node
+}

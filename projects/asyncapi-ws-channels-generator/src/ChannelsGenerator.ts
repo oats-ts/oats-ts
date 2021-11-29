@@ -27,24 +27,19 @@ import { generateSubType } from './subType/generateSubType'
 import { generatePubType } from './pubType/generatePubType'
 import { generatePathSerializer } from './pathSerializer/generatePathSerializer'
 
-export class ChannelsGenerator implements AsyncAPIGenerator {
-  public static id = 'asyncapi/channels'
-  private static consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/type']
-  private static produces: AsyncAPIGeneratorTarget[] = ['asyncapi/channel']
+export class ChannelsGenerator implements AsyncAPIGenerator<'asyncapi/channel'> {
+  public readonly id = 'asyncapi/channel'
+  public readonly consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/type']
 
   private context: AsyncAPIGeneratorContext = null
-  private config: GeneratorConfig & ChannelsGeneratorConfig
+  private config: ChannelsGeneratorConfig
 
-  public readonly id: string = ChannelsGenerator.id
-  public readonly produces: string[] = ChannelsGenerator.produces
-  public readonly consumes: string[] = ChannelsGenerator.consumes
-
-  constructor(config: GeneratorConfig & ChannelsGeneratorConfig) {
+  constructor(config: ChannelsGeneratorConfig) {
     this.config = config
   }
 
-  initialize(data: AsyncAPIReadOutput, generators: AsyncAPIGenerator[]): void {
-    this.context = createAsyncAPIGeneratorContext(data, this.config, generators)
+  initialize(data: AsyncAPIReadOutput, config: GeneratorConfig, generators: AsyncAPIGenerator[]): void {
+    this.context = createAsyncAPIGeneratorContext(data, config, generators)
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
@@ -74,8 +69,10 @@ export class ChannelsGenerator implements AsyncAPIGenerator {
     }
   }
 
-  referenceOf(input: any, target: AsyncAPIGeneratorTarget): Identifier {
+  referenceOf(input: any): Identifier {
     const { nameOf } = this.context
+    // TODO separate to different generators
+    const target = this.id as AsyncAPIGeneratorTarget
     switch (target) {
       case 'asyncapi/channel-factory':
       case 'asyncapi/channel':
@@ -102,7 +99,9 @@ export class ChannelsGenerator implements AsyncAPIGenerator {
     }
   }
 
-  dependenciesOf(fromPath: string, input: ChannelItemObject, target: AsyncAPIGeneratorTarget): ImportDeclaration[] {
+  dependenciesOf(fromPath: string, input: ChannelItemObject): ImportDeclaration[] {
+    // TODO separate to different generators
+    const target = this.id as AsyncAPIGeneratorTarget
     switch (target) {
       case 'asyncapi/channel-factory':
       case 'asyncapi/channel':

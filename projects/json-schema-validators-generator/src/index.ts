@@ -1,2 +1,2 @@
-export { ValidatorsGeneratorConfig } from './typings'
+export type { ValidatorsGeneratorConfig } from './typings'
 export { JsonSchemaValidatorsGenerator } from './JsonSchemaValidatorsGenerator'

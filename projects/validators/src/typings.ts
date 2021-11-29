@@ -13,9 +13,9 @@ export type IssueType =
   | 'union'
   | 'extra-key'
 
-export type Issue = {
+export type Issue<Type = string> = {
   severity: Severity
-  type: string
+  type: Type
   path: string
   message: string
 }

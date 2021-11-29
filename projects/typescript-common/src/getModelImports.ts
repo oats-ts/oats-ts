@@ -6,9 +6,9 @@ type ModelImportsContext = {
   nameOf(model: any, target: string): string
 }
 
-export function getModelImports(
+export function getModelImports<T extends string = string>(
   fromPath: string,
-  target: string,
+  target: T,
   referencedModel: any[],
   context: ModelImportsContext,
 ): ImportDeclaration[] {

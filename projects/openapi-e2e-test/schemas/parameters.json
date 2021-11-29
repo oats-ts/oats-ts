@@ -1,0 +1,3463 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Parameters",
+    "version": "1.0"
+  },
+  "paths": {
+    "/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}": {
+      "get": {
+        "operationId": "simplePathParameters",
+        "description": "Endpoint for testing path parameters with simple serialization",
+        "parameters": [
+          {
+            "name": "strExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "str",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "num",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "boolExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "bool",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "enmExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "enm",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "strArrExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "strArr",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "numArrExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "numArr",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "boolArrExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "boolArr",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enmArrExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "enmArr",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "objExpl",
+            "in": "path",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "path",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the path parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimplePathParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/label-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}": {
+      "get": {
+        "operationId": "labelPathParameters",
+        "description": "Endpoint for testing path parameters with label serialization",
+        "parameters": [
+          {
+            "name": "strExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "str",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "num",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "boolExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "bool",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "enmExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "enm",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "strArrExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "strArr",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "numArrExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "numArr",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "boolArrExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "boolArr",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enmArrExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "enmArr",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "objExpl",
+            "in": "path",
+            "style": "label",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "path",
+            "style": "label",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the path parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabelPathParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matrix-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}": {
+      "get": {
+        "operationId": "matrixPathParameters",
+        "description": "Endpoint for testing path parameters with matrix serialization",
+        "parameters": [
+          {
+            "name": "strExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "str",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "num",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "boolExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "bool",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "enmExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "enm",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "strArrExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "strArr",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "numArrExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "numArr",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "boolArrExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "boolArr",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enmArrExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "enmArr",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "objExpl",
+            "in": "path",
+            "style": "matrix",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "path",
+            "style": "matrix",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the path parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MatrixPathParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/form-query-parameters": {
+      "get": {
+        "operationId": "formQueryParameters",
+        "description": "Endpoint for testing query parameters with form serialization",
+        "parameters": [
+          {
+            "name": "strExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "optStrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "str",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "optStr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "optNumExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "num",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "optNum",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "boolExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "optBoolExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "bool",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "optBool",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "enmExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "optEnmExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "enm",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "optEnm",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "strArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "optStrArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "strArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "optStrArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "numArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "optNumArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "numArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "optNumArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "boolArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "optBoolArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "boolArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "optBoolArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enmArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "optEnmArrExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "enmArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "optEnmArr",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "objExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
+            }
+          },
+          {
+            "name": "optObjExpl",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+            }
+          },
+          {
+            "name": "obj",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectType"
+            }
+          },
+          {
+            "name": "optObj",
+            "in": "query",
+            "style": "form",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonOptObjectType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the query parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormQueryParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaceDelimited-query-parameters": {
+      "get": {
+        "operationId": "spaceDelimitedQueryParameters",
+        "description": "Endpoint for testing query parameters with spaceDelimited serialization",
+        "parameters": [
+          {
+            "name": "strArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "optStrArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "numArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "optNumArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "boolArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "optBoolArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enmArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "optEnmArrExpl",
+            "in": "query",
+            "style": "spaceDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the query parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceDelimitedQueryParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pipeDelimited-query-parameters": {
+      "get": {
+        "operationId": "pipeDelimitedQueryParameters",
+        "description": "Endpoint for testing query parameters with pipeDelimited serialization",
+        "parameters": [
+          {
+            "name": "strArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "optStrArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "numArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "optNumArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "boolArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "optBoolArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "enmArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "optEnmArrExpl",
+            "in": "query",
+            "style": "pipeDelimited",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the query parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PipeDelimitedQueryParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deepObject-query-parameters": {
+      "get": {
+        "operationId": "deepObjectQueryParameters",
+        "description": "Endpoint for testing query parameters with deepObject serialization",
+        "parameters": [
+          {
+            "name": "objExpl",
+            "in": "query",
+            "style": "deepObject",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
+            }
+          },
+          {
+            "name": "optObjExpl",
+            "in": "query",
+            "style": "deepObject",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the query parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeepObjectQueryParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/simple-header-parameters": {
+      "get": {
+        "operationId": "simpleHeaderParameters",
+        "description": "Endpoint for testing header parameters with simple serialization",
+        "parameters": [
+          {
+            "name": "X-StrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-OptStrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Str-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-OptStr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-NumExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-OptNumExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-Num-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-OptNum-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-BoolExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "X-OptBoolExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "X-Bool-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "X-OptBool-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "X-EnmExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "X-OptEnmExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "X-Enm-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "X-OptEnm-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          {
+            "name": "X-StrArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "X-OptStrArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "X-StrArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "X-OptStrArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "X-NumArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "X-OptNumArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "X-NumArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "X-OptNumArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
+            "name": "X-BoolArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "X-OptBoolArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "X-BoolArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "X-OptBoolArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "boolean"
+              }
+            }
+          },
+          {
+            "name": "X-EnmArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "X-OptEnmArrExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "X-EnmArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "X-OptEnmArr-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CommonEnumType"
+              }
+            }
+          },
+          {
+            "name": "X-ObjExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectTypeExpl"
+            }
+          },
+          {
+            "name": "X-OptObjExpl-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": true,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+            }
+          },
+          {
+            "name": "X-Obj-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CommonObjectType"
+            }
+          },
+          {
+            "name": "X-OptObj-Header",
+            "in": "header",
+            "style": "simple",
+            "explode": false,
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CommonOptObjectType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the header parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimpleHeaderParameters"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/simple-response-header-parameters": {
+      "post": {
+        "operationId": "simpleResponseHeaderParameters",
+        "description": "Endpoint for testing response-header parameters with simple serialization",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimpleResponseHeaderParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response returning all the response-header parameters in an object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "X-StrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-OptStrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-Str-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-OptStr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-NumExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-OptNumExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-Num-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-OptNum-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "number"
+                }
+              },
+              "X-BoolExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-OptBoolExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-Bool-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-OptBool-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "X-EnmExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-OptEnmExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-Enm-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-OptEnm-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonEnumType"
+                }
+              },
+              "X-StrArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-OptStrArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-StrArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-OptStrArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "X-NumArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-OptNumArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-NumArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-OptNumArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              },
+              "X-BoolArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-OptBoolArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-BoolArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-OptBoolArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "X-EnmArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-OptEnmArrExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-EnmArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-OptEnmArr-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommonEnumType"
+                  }
+                }
+              },
+              "X-ObjExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonObjectTypeExpl"
+                }
+              },
+              "X-OptObjExpl-Header": {
+                "style": "simple",
+                "explode": true,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+                }
+              },
+              "X-Obj-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": true,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonObjectType"
+                }
+              },
+              "X-OptObj-Header": {
+                "style": "simple",
+                "explode": false,
+                "required": false,
+                "schema": {
+                  "$ref": "#/components/schemas/CommonOptObjectType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response on wrong data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParameterIssue"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SimplePathParameters": {
+        "type": "object",
+        "required": [
+          "strExpl",
+          "str",
+          "numExpl",
+          "num",
+          "boolExpl",
+          "bool",
+          "enmExpl",
+          "enm",
+          "strArrExpl",
+          "strArr",
+          "numArrExpl",
+          "numArr",
+          "boolArrExpl",
+          "boolArr",
+          "enmArrExpl",
+          "enmArr",
+          "objExpl",
+          "obj"
+        ],
+        "properties": {
+          "strExpl": {
+            "type": "string"
+          },
+          "str": {
+            "type": "string"
+          },
+          "numExpl": {
+            "type": "number"
+          },
+          "num": {
+            "type": "number"
+          },
+          "boolExpl": {
+            "type": "boolean"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "enmExpl": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "enm": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "strArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "strArr": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "numArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "boolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "boolArr": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "enmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "enmArr": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "objExpl": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "obj": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          }
+        }
+      },
+      "LabelPathParameters": {
+        "type": "object",
+        "required": [
+          "strExpl",
+          "str",
+          "numExpl",
+          "num",
+          "boolExpl",
+          "bool",
+          "enmExpl",
+          "enm",
+          "strArrExpl",
+          "strArr",
+          "numArrExpl",
+          "numArr",
+          "boolArrExpl",
+          "boolArr",
+          "enmArrExpl",
+          "enmArr",
+          "objExpl",
+          "obj"
+        ],
+        "properties": {
+          "strExpl": {
+            "type": "string"
+          },
+          "str": {
+            "type": "string"
+          },
+          "numExpl": {
+            "type": "number"
+          },
+          "num": {
+            "type": "number"
+          },
+          "boolExpl": {
+            "type": "boolean"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "enmExpl": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "enm": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "strArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "strArr": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "numArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "boolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "boolArr": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "enmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "enmArr": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "objExpl": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "obj": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          }
+        }
+      },
+      "MatrixPathParameters": {
+        "type": "object",
+        "required": [
+          "strExpl",
+          "str",
+          "numExpl",
+          "num",
+          "boolExpl",
+          "bool",
+          "enmExpl",
+          "enm",
+          "strArrExpl",
+          "strArr",
+          "numArrExpl",
+          "numArr",
+          "boolArrExpl",
+          "boolArr",
+          "enmArrExpl",
+          "enmArr",
+          "objExpl",
+          "obj"
+        ],
+        "properties": {
+          "strExpl": {
+            "type": "string"
+          },
+          "str": {
+            "type": "string"
+          },
+          "numExpl": {
+            "type": "number"
+          },
+          "num": {
+            "type": "number"
+          },
+          "boolExpl": {
+            "type": "boolean"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "enmExpl": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "enm": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "strArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "strArr": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "numArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "boolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "boolArr": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "enmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "enmArr": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "objExpl": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "obj": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          }
+        }
+      },
+      "FormQueryParameters": {
+        "type": "object",
+        "required": [
+          "strExpl",
+          "str",
+          "numExpl",
+          "num",
+          "boolExpl",
+          "bool",
+          "enmExpl",
+          "enm",
+          "strArrExpl",
+          "strArr",
+          "numArrExpl",
+          "numArr",
+          "boolArrExpl",
+          "boolArr",
+          "enmArrExpl",
+          "enmArr",
+          "objExpl",
+          "obj"
+        ],
+        "properties": {
+          "strExpl": {
+            "type": "string"
+          },
+          "optStrExpl": {
+            "type": "string"
+          },
+          "str": {
+            "type": "string"
+          },
+          "optStr": {
+            "type": "string"
+          },
+          "numExpl": {
+            "type": "number"
+          },
+          "optNumExpl": {
+            "type": "number"
+          },
+          "num": {
+            "type": "number"
+          },
+          "optNum": {
+            "type": "number"
+          },
+          "boolExpl": {
+            "type": "boolean"
+          },
+          "optBoolExpl": {
+            "type": "boolean"
+          },
+          "bool": {
+            "type": "boolean"
+          },
+          "optBool": {
+            "type": "boolean"
+          },
+          "enmExpl": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "optEnmExpl": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "enm": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "optEnm": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "strArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "optStrArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "strArr": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "optStrArr": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "optNumArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "numArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "optNumArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "boolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "optBoolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "boolArr": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "optBoolArr": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "enmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "optEnmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "enmArr": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "optEnmArr": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "objExpl": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "optObjExpl": {
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+          },
+          "obj": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          },
+          "optObj": {
+            "$ref": "#/components/schemas/CommonOptObjectType"
+          }
+        }
+      },
+      "SpaceDelimitedQueryParameters": {
+        "type": "object",
+        "required": [
+          "strArrExpl",
+          "numArrExpl",
+          "boolArrExpl",
+          "enmArrExpl"
+        ],
+        "properties": {
+          "strArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "optStrArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "optNumArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "boolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "optBoolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "enmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "optEnmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          }
+        }
+      },
+      "PipeDelimitedQueryParameters": {
+        "type": "object",
+        "required": [
+          "strArrExpl",
+          "numArrExpl",
+          "boolArrExpl",
+          "enmArrExpl"
+        ],
+        "properties": {
+          "strArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "optStrArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "numArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "optNumArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "boolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "optBoolArrExpl": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "enmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "optEnmArrExpl": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          }
+        }
+      },
+      "DeepObjectQueryParameters": {
+        "type": "object",
+        "required": [
+          "objExpl"
+        ],
+        "properties": {
+          "objExpl": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "optObjExpl": {
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+          }
+        }
+      },
+      "SimpleHeaderParameters": {
+        "type": "object",
+        "required": [
+          "X-StrExpl-Header",
+          "X-Str-Header",
+          "X-NumExpl-Header",
+          "X-Num-Header",
+          "X-BoolExpl-Header",
+          "X-Bool-Header",
+          "X-EnmExpl-Header",
+          "X-Enm-Header",
+          "X-StrArrExpl-Header",
+          "X-StrArr-Header",
+          "X-NumArrExpl-Header",
+          "X-NumArr-Header",
+          "X-BoolArrExpl-Header",
+          "X-BoolArr-Header",
+          "X-EnmArrExpl-Header",
+          "X-EnmArr-Header",
+          "X-ObjExpl-Header",
+          "X-Obj-Header"
+        ],
+        "properties": {
+          "X-StrExpl-Header": {
+            "type": "string"
+          },
+          "X-OptStrExpl-Header": {
+            "type": "string"
+          },
+          "X-Str-Header": {
+            "type": "string"
+          },
+          "X-OptStr-Header": {
+            "type": "string"
+          },
+          "X-NumExpl-Header": {
+            "type": "number"
+          },
+          "X-OptNumExpl-Header": {
+            "type": "number"
+          },
+          "X-Num-Header": {
+            "type": "number"
+          },
+          "X-OptNum-Header": {
+            "type": "number"
+          },
+          "X-BoolExpl-Header": {
+            "type": "boolean"
+          },
+          "X-OptBoolExpl-Header": {
+            "type": "boolean"
+          },
+          "X-Bool-Header": {
+            "type": "boolean"
+          },
+          "X-OptBool-Header": {
+            "type": "boolean"
+          },
+          "X-EnmExpl-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-OptEnmExpl-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-Enm-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-OptEnm-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-StrArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-OptStrArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-StrArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-OptStrArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-NumArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-OptNumArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-NumArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-OptNumArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-BoolArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-OptBoolArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-BoolArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-OptBoolArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-EnmArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-OptEnmArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-EnmArr-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-OptEnmArr-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-ObjExpl-Header": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "X-OptObjExpl-Header": {
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+          },
+          "X-Obj-Header": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          },
+          "X-OptObj-Header": {
+            "$ref": "#/components/schemas/CommonOptObjectType"
+          }
+        }
+      },
+      "SimpleResponseHeaderParameters": {
+        "type": "object",
+        "required": [
+          "X-StrExpl-Header",
+          "X-Str-Header",
+          "X-NumExpl-Header",
+          "X-Num-Header",
+          "X-BoolExpl-Header",
+          "X-Bool-Header",
+          "X-EnmExpl-Header",
+          "X-Enm-Header",
+          "X-StrArrExpl-Header",
+          "X-StrArr-Header",
+          "X-NumArrExpl-Header",
+          "X-NumArr-Header",
+          "X-BoolArrExpl-Header",
+          "X-BoolArr-Header",
+          "X-EnmArrExpl-Header",
+          "X-EnmArr-Header",
+          "X-ObjExpl-Header",
+          "X-Obj-Header"
+        ],
+        "properties": {
+          "X-StrExpl-Header": {
+            "type": "string"
+          },
+          "X-OptStrExpl-Header": {
+            "type": "string"
+          },
+          "X-Str-Header": {
+            "type": "string"
+          },
+          "X-OptStr-Header": {
+            "type": "string"
+          },
+          "X-NumExpl-Header": {
+            "type": "number"
+          },
+          "X-OptNumExpl-Header": {
+            "type": "number"
+          },
+          "X-Num-Header": {
+            "type": "number"
+          },
+          "X-OptNum-Header": {
+            "type": "number"
+          },
+          "X-BoolExpl-Header": {
+            "type": "boolean"
+          },
+          "X-OptBoolExpl-Header": {
+            "type": "boolean"
+          },
+          "X-Bool-Header": {
+            "type": "boolean"
+          },
+          "X-OptBool-Header": {
+            "type": "boolean"
+          },
+          "X-EnmExpl-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-OptEnmExpl-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-Enm-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-OptEnm-Header": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "X-StrArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-OptStrArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-StrArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-OptStrArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "X-NumArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-OptNumArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-NumArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-OptNumArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "X-BoolArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-OptBoolArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-BoolArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-OptBoolArr-Header": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            }
+          },
+          "X-EnmArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-OptEnmArrExpl-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-EnmArr-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-OptEnmArr-Header": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonEnumType"
+            }
+          },
+          "X-ObjExpl-Header": {
+            "$ref": "#/components/schemas/CommonObjectTypeExpl"
+          },
+          "X-OptObjExpl-Header": {
+            "$ref": "#/components/schemas/CommonOptObjectTypeExpl"
+          },
+          "X-Obj-Header": {
+            "$ref": "#/components/schemas/CommonObjectType"
+          },
+          "X-OptObj-Header": {
+            "$ref": "#/components/schemas/CommonOptObjectType"
+          }
+        }
+      },
+      "CommonEnumType": {
+        "type": "string",
+        "enum": [
+          "A",
+          "B",
+          "C"
+        ]
+      },
+      "ParameterIssue": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonObjectType": {
+        "type": "object",
+        "required": [
+          "objStrField",
+          "objNumField",
+          "objBoolField",
+          "objEnmField"
+        ],
+        "properties": {
+          "objStrField": {
+            "type": "string"
+          },
+          "objNumField": {
+            "type": "number"
+          },
+          "objBoolField": {
+            "type": "boolean"
+          },
+          "objEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "objOptStrField": {
+            "type": "string"
+          },
+          "objOptNumField": {
+            "type": "number"
+          },
+          "objOptBoolField": {
+            "type": "boolean"
+          },
+          "objOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      },
+      "CommonObjectTypeExpl": {
+        "type": "object",
+        "required": [
+          "objExplStrField",
+          "objExplNumField",
+          "objExplBoolField",
+          "objExplEnmField"
+        ],
+        "properties": {
+          "objExplStrField": {
+            "type": "string"
+          },
+          "objExplNumField": {
+            "type": "number"
+          },
+          "objExplBoolField": {
+            "type": "boolean"
+          },
+          "objExplEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "objExplOptStrField": {
+            "type": "string"
+          },
+          "objExplOptNumField": {
+            "type": "number"
+          },
+          "objExplOptBoolField": {
+            "type": "boolean"
+          },
+          "objExplOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      },
+      "CommonOptObjectType": {
+        "type": "object",
+        "required": [
+          "optObjStrField",
+          "optObjNumField",
+          "optObjBoolField",
+          "optObjEnmField"
+        ],
+        "properties": {
+          "optObjStrField": {
+            "type": "string"
+          },
+          "optObjNumField": {
+            "type": "number"
+          },
+          "optObjBoolField": {
+            "type": "boolean"
+          },
+          "optObjEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "optObjOptStrField": {
+            "type": "string"
+          },
+          "optObjOptNumField": {
+            "type": "number"
+          },
+          "optObjOptBoolField": {
+            "type": "boolean"
+          },
+          "optObjOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      },
+      "CommonOptObjectTypeExpl": {
+        "type": "object",
+        "required": [
+          "optObjExplStrField",
+          "optObjExplNumField",
+          "optObjExplBoolField",
+          "optObjExplEnmField"
+        ],
+        "properties": {
+          "optObjExplStrField": {
+            "type": "string"
+          },
+          "optObjExplNumField": {
+            "type": "number"
+          },
+          "optObjExplBoolField": {
+            "type": "boolean"
+          },
+          "optObjExplEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          },
+          "optObjExplOptStrField": {
+            "type": "string"
+          },
+          "optObjExplOptNumField": {
+            "type": "number"
+          },
+          "optObjExplOptBoolField": {
+            "type": "boolean"
+          },
+          "optObjExplOptEnmField": {
+            "$ref": "#/components/schemas/CommonEnumType"
+          }
+        }
+      }
+    }
+  }
+}

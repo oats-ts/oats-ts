@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/asyncapi",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -24,14 +24,14 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "devDependencies": {
-    "@types/pascalcase": "1.0.0",
+    "@types/pascalcase": "1.0.1",
     "@types/node": "16.7.1",
     "@types/lodash": "4.14.172",
     "typescript": "4.3.5"
   },
   "dependencies": {
-    "@oats-ts/generator": "0.0.5",
-    "@oats-ts/asyncapi-model": "0.0.5",
+    "@oats-ts/generator": "0.0.6",
+    "@oats-ts/asyncapi-model": "0.0.6",
     "lodash": "4.17.21",
     "camelcase": "6.2.0",
     "pascalcase": "1.0.0"

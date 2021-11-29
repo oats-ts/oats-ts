@@ -16,14 +16,13 @@ export type Module<C = any, D = any> = {
   dependencies: D[]
 }
 
-export type CodeGenerator<R, G extends Module> = {
-  id: string
-  produces: string[]
-  consumes: string[]
-  initialize: (data: R, generators: CodeGenerator<R, G>[]) => void
+export type CodeGenerator<R, G extends Module, P = string, C = string> = {
+  id: P
+  consumes: C[]
+  initialize: (data: R, configuration: GeneratorConfig, generators: CodeGenerator<R, G>[]) => void
   generate: () => Promise<Result<G[]>>
-  referenceOf: (input: any, target: string) => any
-  dependenciesOf: (fromPath: string, input: any, target: string) => any[]
+  referenceOf: (input: any) => any
+  dependenciesOf: (fromPath: string, input: any) => any[]
 }
 
 export type GeneratorInput<R, G extends Module> = {
@@ -31,7 +30,7 @@ export type GeneratorInput<R, G extends Module> = {
   validator?: ContentValidator<R>
   generators: CodeGenerator<R, G>[]
   writer: ContentWriter<G>
-  log?: boolean
+  configuration: GeneratorConfig
 }
 
 /**
@@ -43,6 +42,7 @@ export type NameProvider = (input: any, target: string) => string
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type GeneratorConfig = {
+  log: boolean
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param originalName The name of the object as described in the document.
@@ -50,15 +50,15 @@ export type GeneratorConfig = {
    * @param target The generator target (type definition, operation, etc).
    * @returns The desired name based on the parameters.
    */
-  name(input: any, originalName: string, target: string): string
+  name: GeneratorNameProvider
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param name A simplified name provider.
    * @param target The generator target (type definition, operation, etc).
    * @returns The operating system dependent path for the desired generator target.
    */
-  path(input: any, name: NameProvider, target: string): string
+  path: GeneratorPathProvider
 }
 
-export type GeneratorPathProvider = GeneratorConfig['path']
-export type GeneratorNameProvider = GeneratorConfig['name']
+export type GeneratorPathProvider = (input: any, name: NameProvider, target: string) => string | undefined
+export type GeneratorNameProvider = (input: any, originalName: string, target: string) => string | undefined

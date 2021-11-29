@@ -7,13 +7,14 @@ export function getEnhancedResponses(operation: OperationObject, context: OpenAP
   const responses: EnhancedResponse[] = []
 
   for (const [statusCode, resOrRef] of entries(operation.responses || {})) {
-    const repsonse = dereference<ResponseObject>(resOrRef, true)
-    for (const [mediaType, mediaTypeObj] of entries(repsonse.content || {})) {
+    const repsonse = isNil(resOrRef) ? undefined : dereference<ResponseObject>(resOrRef, true)
+    for (const [mediaType, mediaTypeObj] of entries(repsonse?.content || {})) {
       if (!isNil(mediaTypeObj.schema)) {
         responses.push({
           mediaType,
           statusCode,
           schema: dereference(mediaTypeObj.schema),
+          headers: repsonse?.headers || {},
         })
       }
     }

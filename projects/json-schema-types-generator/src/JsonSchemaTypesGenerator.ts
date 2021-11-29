@@ -9,29 +9,27 @@ import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
 import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 
-export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
+export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
   implements CodeGenerator<T, TypeScriptModule>
 {
   private context: TypesGeneratorContext = null
-  private config: GeneratorConfig & TypesGeneratorConfig
-  public readonly consumes: string[] = []
+  private jsonSchemaConfig: TypesGeneratorConfig
+  public readonly consumes: C[] = []
+  abstract readonly id: Id
 
-  abstract readonly id: string
-  abstract readonly produces: [string]
-
-  public constructor(config: GeneratorConfig & TypesGeneratorConfig) {
-    this.config = config
+  public constructor(config: TypesGeneratorConfig) {
+    this.jsonSchemaConfig = config
   }
 
-  public initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
+  public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
-      ...createGeneratorContext(data, this.config, generators),
-      target: this.produces[0],
+      ...createGeneratorContext(data, config, generators),
+      target: this.id,
     }
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, jsonSchemaConfig: config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema))
     const data = mergeTypeScriptModules(
@@ -44,23 +42,13 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>>
     }
   }
 
-  public referenceOf(input: Referenceable<SchemaObject>, target: string): TypeNode {
-    const { context, config } = this
-    switch (target) {
-      case context.target:
-        return getExternalTypeReferenceAst(input, context, config)
-      default:
-        return undefined
-    }
+  public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
+    const { context, jsonSchemaConfig: config } = this
+    return getExternalTypeReferenceAst(input, context, config)
   }
 
-  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>, target: string): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case context.target:
-        return getTypeImports(fromPath, input, context, true)
-      default:
-        return []
-    }
+    return getTypeImports(fromPath, input, context, true)
   }
 }

@@ -7,30 +7,32 @@ import { TypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
 import { ImportDeclaration, Identifier, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export abstract class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>>
-  implements CodeGenerator<T, TypeScriptModule>
+export abstract class JsonSchemaTypeGuardsGenerator<
+  T extends ReadOutput<HasSchemas>,
+  Id extends string,
+  C extends string,
+> implements CodeGenerator<T, TypeScriptModule>
 {
   private context: TypeGuardGeneratorContext = null
-  private config: GeneratorConfig & TypeGuardGeneratorConfig
+  private typeGuardsConfig: TypeGuardGeneratorConfig
 
-  public abstract readonly id: string
-  public abstract readonly produces: [string]
-  public abstract readonly consumes: [string]
+  public abstract readonly id: Id
+  public abstract readonly consumes: [C]
 
-  constructor(config: GeneratorConfig & TypeGuardGeneratorConfig) {
-    this.config = config
+  constructor(config: TypeGuardGeneratorConfig) {
+    this.typeGuardsConfig = config
   }
 
-  initialize(data: T, generators: CodeGenerator<T, TypeScriptModule>[]): void {
+  initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
-      ...createGeneratorContext(data, this.config, generators),
+      ...createGeneratorContext(data, config, generators),
       consumes: this.consumes[0],
-      produces: this.produces[0],
+      produces: this.id,
     }
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
+    const { context, typeGuardsConfig: config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, context.produces))
     const data = mergeTypeScriptModules(
@@ -44,26 +46,16 @@ export abstract class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSche
     }
   }
 
-  referenceOf(input: any, target: string): Identifier {
+  referenceOf(input: any): Identifier {
     const { context } = this
-    switch (target) {
-      case context.produces:
-        // TODO does it make sense to generate the assertion AST for non named type?
-        // We lose the type guard nature at that point.
-        const { nameOf } = context
-        return isNil(nameOf(input)) ? undefined : factory.createIdentifier(nameOf(input, target))
-      default:
-        return undefined
-    }
+    // TODO does it make sense to generate the assertion AST for non named type?
+    // We lose the type guard nature at that point.
+    const { nameOf } = context
+    return isNil(nameOf(input)) ? undefined : factory.createIdentifier(nameOf(input, this.id))
   }
 
-  dependenciesOf(fromPath: string, input: any, target: string): ImportDeclaration[] {
+  dependenciesOf(fromPath: string, input: any): ImportDeclaration[] {
     const { context } = this
-    switch (target) {
-      case context.produces:
-        return getModelImports(fromPath, target, [input], this.context)
-      default:
-        return []
-    }
+    return getModelImports(fromPath, this.id, [input], context)
   }
 }

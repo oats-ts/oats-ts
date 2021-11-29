@@ -4,12 +4,10 @@ import { CodeGenerator } from './typings'
 
 export function ensureDependencies(generators: CodeGenerator<any, any>[]): Issue[] {
   const issues: Issue[] = []
-  for (const { consumes, id } of generators) {
+  for (const { consumes, id: id } of generators) {
     const consumesSet = new Set(consumes)
-    for (const { produces } of generators) {
-      for (const produced of produces) {
-        consumesSet.delete(produced)
-      }
+    for (const { id: id } of generators) {
+      consumesSet.delete(id)
     }
     const notProvided = Array.from(consumesSet)
     if (!isEmpty(notProvided)) {

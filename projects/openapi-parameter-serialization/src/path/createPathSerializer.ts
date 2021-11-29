@@ -1,5 +1,5 @@
 import { ParameterObject, PathSerializers } from '../types'
-import { parsePathToSegments } from './parsePathToSegments'
+import { parsePathToSegments } from '@oats-ts/openapi-parameter-common'
 import { validatePathSerializers } from './pathUtils'
 
 export const createPathSerializer = <T extends ParameterObject>(path: string, serializers: PathSerializers<T>) => {

@@ -1,5 +1,5 @@
 import { ResponseObject } from '@oats-ts/openapi-model'
-import { Issue, object, shape, combine, record, string } from '@oats-ts/validators'
+import { Issue, object, shape, combine, record, string, optional } from '@oats-ts/validators'
 import { append } from '../utils/append'
 import { ignore } from '../utils/ignore'
 import { ordered } from '../utils/ordered'
@@ -11,10 +11,11 @@ const validator = object(
     shape<ResponseObject>(
       {
         content: object(record(string(), object())),
+        headers: optional(object(record(string(), object()))),
       },
       true,
     ),
-    ignore(['links', 'headers']),
+    ignore(['links']),
   ]),
 )
 

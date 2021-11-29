@@ -5,8 +5,8 @@ import { consoleLogger, noopLogger } from './logger'
 import { GeneratorInput, Module, Result } from './typings'
 
 export async function generate<R, G extends Module>(input: GeneratorInput<R, G>): Promise<Result<G[]>> {
-  const { reader, generators, writer, log } = input
-  const logger = log ? consoleLogger : noopLogger
+  const { reader, generators, writer, configuration } = input
+  const logger = configuration.log ? consoleLogger : noopLogger
 
   const readResult = await reader()
   if (!readResult.isOk) {
@@ -36,7 +36,7 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
   const modules: G[] = []
 
   for (const generator of generators) {
-    generator.initialize(readResult.data, generators)
+    generator.initialize(readResult.data, configuration, generators)
   }
 
   for (const generator of generators) {

@@ -1,0 +1,7 @@
+{
+  "preset": "ts-jest",
+  "verbose": true,
+  "testMatch": [
+    "**/?(*.)+(spec|test).ts"
+  ]
+}

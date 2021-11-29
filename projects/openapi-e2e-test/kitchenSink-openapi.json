@@ -206,7 +206,7 @@
     }
   },
   "paths": {
-    "/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{enumInPath}": {
+    "/path-params/{stringInPath}/{numberInPath}/{booleanInPath}/{enumInPath}/{objectInPath}/{arrayInPath}": {
       "parameters": [
         {
           "name": "stringInPath",
@@ -247,6 +247,27 @@
               "racoon",
               "cat"
             ]
+          }
+        },
+        {
+          "name": "objectInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "$ref": "#/components/schemas/NamedSimpleObject"
+          }
+        },
+        {
+          "name": "arrayInPath",
+          "required": true,
+          "in": "path",
+          "style": "simple",
+          "schema": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       ],
@@ -309,6 +330,27 @@
                 "cat"
               ]
             }
+          },
+          {
+            "name": "objectInQuery",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "$ref": "#/components/schemas/NamedSimpleObject"
+            }
+          },
+          {
+            "name": "arrayInQuery",
+            "required": true,
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "operationId": "getWithQueryParams",
@@ -368,6 +410,27 @@
                 "racoon",
                 "cat"
               ]
+            }
+          },
+          {
+            "name": "X-Object-In-Headers",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "$ref": "#/components/schemas/NamedSimpleObject"
+            }
+          },
+          {
+            "name": "X-Array-In-Headers",
+            "required": true,
+            "in": "header",
+            "style": "simple",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         ],
@@ -549,6 +612,15 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/NamedComplexObject"
+                }
+              }
+            },
+            "headers": {
+              "X-Test-Response-Headers": {
+                "required": true,
+                "style": "simple",
+                "schema": {
+                  "type": "string"
                 }
               }
             }

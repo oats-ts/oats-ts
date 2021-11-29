@@ -1,0 +1,25 @@
+import { RawPathParams } from '../types'
+import { isNil } from '../utils'
+
+export const createRawPathParser = (parameterNames: string[], regex: RegExp) => {
+  return (path: string): RawPathParams => {
+    // Regex reset just in case before
+    regex.lastIndex = 0
+
+    const values = regex.exec(path)
+    if (isNil(values) || values.length !== parameterNames.length + 1) {
+      throw new TypeError(`Path "${path}" should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`)
+    }
+
+    const result: RawPathParams = {}
+
+    for (let i = 0; i < parameterNames.length; i += 1) {
+      const name = parameterNames[i]
+      const value = values[i + 1]
+      result[name] = value
+    }
+    // Regex reset after, as it can be stateful with the global flag
+    regex.lastIndex = 0
+    return result
+  }
+}

@@ -53,10 +53,6 @@
       "path": "projects/generator"
     },
     {
-      "name": "http",
-      "path": "projects/http"
-    },
-    {
       "name": "json-schema-common",
       "path": "projects/json-schema-common"
     },
@@ -85,8 +81,8 @@
       "path": "projects/openapi"
     },
     {
-      "name": "openapi-api-generator",
-      "path": "projects/openapi-api-generator"
+      "name": "openapi-api-type-generator",
+      "path": "projects/openapi-api-type-generator"
     },
     {
       "name": "openapi-common",
@@ -97,6 +93,22 @@
       "path": "projects/openapi-e2e-test"
     },
     {
+      "name": "openapi-express-routes-generator",
+      "path": "projects/openapi-express-routes-generator"
+    },
+    {
+      "name": "openapi-http",
+      "path": "projects/openapi-http"
+    },
+    {
+      "name": "openapi-http-client",
+      "path": "projects/openapi-http-client"
+    },
+    {
+      "name": "openapi-http-server",
+      "path": "projects/openapi-http-server"
+    },
+    {
       "name": "openapi-model",
       "path": "projects/openapi-model"
     },
@@ -105,8 +117,24 @@
       "path": "projects/openapi-operations-generator"
     },
     {
+      "name": "openapi-parameter-common",
+      "path": "projects/openapi-parameter-common"
+    },
+    {
+      "name": "openapi-parameter-deserialization",
+      "path": "projects/openapi-parameter-deserialization"
+    },
+    {
+      "name": "openapi-parameter-deserializers-generator",
+      "path": "projects/openapi-parameter-deserializers-generator"
+    },
+    {
       "name": "openapi-parameter-serialization",
       "path": "projects/openapi-parameter-serialization"
+    },
+    {
+      "name": "openapi-parameter-serializers-generator",
+      "path": "projects/openapi-parameter-serializers-generator"
     },
     {
       "name": "openapi-parameter-types-generator",
@@ -115,6 +143,22 @@
     {
       "name": "openapi-reader",
       "path": "projects/openapi-reader"
+    },
+    {
+      "name": "openapi-request-types-generator",
+      "path": "projects/openapi-request-types-generator"
+    },
+    {
+      "name": "openapi-response-types-generator",
+      "path": "projects/openapi-response-types-generator"
+    },
+    {
+      "name": "openapi-sdk-generator",
+      "path": "projects/openapi-sdk-generator"
+    },
+    {
+      "name": "openapi-test-utils",
+      "path": "projects/openapi-test-utils"
     },
     {
       "name": "openapi-type-guards-generator",

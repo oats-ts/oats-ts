@@ -7,7 +7,12 @@ import { AsyncAPIReadOutput } from '@oats-ts/asyncapi-reader'
 
 export type AsyncAPIGeneratorContext = GeneratorContext<AsyncApiObject, AsyncAPIGeneratorTarget>
 
-export type AsyncAPIGenerator = CodeGenerator<AsyncAPIReadOutput, TypeScriptModule>
+export type AsyncAPIGenerator<P extends AsyncAPIGeneratorTarget = AsyncAPIGeneratorTarget> = CodeGenerator<
+  AsyncAPIReadOutput,
+  TypeScriptModule,
+  P,
+  AsyncAPIGeneratorTarget
+>
 
 export type EnhancedChannel = {
   channel: ChannelItemObject

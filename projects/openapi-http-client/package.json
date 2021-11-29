@@ -1,0 +1,41 @@
+{
+  "name": "@oats-ts/openapi-http-client",
+  "version": "0.0.6",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "directories": {},
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rimraf lib && tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "26.0.23",
+    "@types/node": "16.7.1",
+    "jest": "27.0.4",
+    "ts-jest": "27.0.2",
+    "typescript": "4.3.5",
+    "rimraf": "3.0.2"
+  },
+  "dependencies": {
+    "@types/node-fetch": "2.5.10",
+    "@types/whatwg-mimetype": "2.1.0",
+    "node-fetch": "2.6.1",
+    "whatwg-mimetype": "2.3.0",
+    "@oats-ts/openapi-http": "0.0.6"
+  }
+}

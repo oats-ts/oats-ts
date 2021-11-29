@@ -1,3 +1,4 @@
+import { ParameterSegment, PathSegment } from '@oats-ts/openapi-parameter-common'
 import {
   ParameterValue,
   PathOptions,
@@ -5,8 +6,6 @@ import {
   PrimitiveArray,
   PrimitiveRecord,
   ParameterObject,
-  ParameterSegment,
-  PathSegment,
   PathSerializers,
 } from '../types'
 import { isNil } from '../utils'
@@ -38,8 +37,8 @@ export function validatePathObject<T extends PrimitiveRecord>(name: string, inpu
       return input
   }
 }
-
 export function validatePathPrimitive<T extends Primitive>(name: string, input: T): T {
+
   switch (`${input}`.length) {
     case 0: {
       throw new Error(`Primitive "${name}" should not be empty (serializing to 0 length string)`)

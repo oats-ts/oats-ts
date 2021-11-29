@@ -1,7 +1,11 @@
 import { HeaderOptions, ParameterValue, QueryOptions } from '../types'
 import { isNil } from '../utils'
 
-export function getHeaderValue<T extends ParameterValue>(name: string, value: T, options: HeaderOptions<T>): T {
+export function getHeaderValue<T extends ParameterValue>(
+  name: string,
+  value: T | undefined,
+  options: HeaderOptions<T>,
+): T {
   if (!isNil(value)) {
     return value
   }

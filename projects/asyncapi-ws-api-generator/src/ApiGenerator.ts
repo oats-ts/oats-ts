@@ -17,36 +17,19 @@ import { generateApiClass } from './apiClass/generateApiClass'
 import { generateApiStub } from './apiStub/generateApiStub'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class ApiGenerator implements AsyncAPIGenerator {
-  public static id = 'asyncapi/channels'
-  private static consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/type']
-  private static produces: AsyncAPIGeneratorTarget[] = ['asyncapi/api-type', 'asyncapi/api-stub', 'asyncapi/api-class']
-
+export class ApiGenerator implements AsyncAPIGenerator<'asyncapi/api-type'> {
   private context: AsyncAPIGeneratorContext = null
-  private config: GeneratorConfig & ApiGeneratorConfig
+  private config: ApiGeneratorConfig
 
-  public readonly id: string = ApiGenerator.id
-  public readonly produces: string[] = ApiGenerator.produces
-  public readonly consumes: string[] = ApiGenerator.consumes
+  public readonly id = 'asyncapi/api-type'
+  public readonly consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/api-type', 'asyncapi/api-stub', 'asyncapi/api-class']
 
-  constructor(config: GeneratorConfig & ApiGeneratorConfig) {
+  constructor(config: ApiGeneratorConfig) {
     this.config = config
-    this.produces = ApiGenerator.produces.filter((target) => {
-      switch (target) {
-        case 'asyncapi/api-type':
-          return config.type
-        case 'asyncapi/api-class':
-          return config.class
-        case 'asyncapi/api-stub':
-          return config.stub
-        default:
-          return false
-      }
-    })
   }
 
-  initialize(data: AsyncAPIReadOutput, generators: AsyncAPIGenerator[]): void {
-    this.context = createAsyncAPIGeneratorContext(data, this.config, generators)
+  initialize(data: AsyncAPIReadOutput, config: GeneratorConfig, generators: AsyncAPIGenerator[]): void {
+    this.context = createAsyncAPIGeneratorContext(data, config, generators)
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
@@ -67,9 +50,10 @@ export class ApiGenerator implements AsyncAPIGenerator {
     }
   }
 
-  public referenceOf(input: AsyncApiObject, target: AsyncAPIGeneratorTarget): TypeNode | Expression {
+  public referenceOf(input: AsyncApiObject): TypeNode | Expression {
     const { context, config } = this
     const { nameOf } = context
+    const target = this.id as AsyncAPIGeneratorTarget
     switch (target) {
       case 'asyncapi/api-type': {
         return config.type ? factory.createTypeReferenceNode(nameOf(input, target)) : undefined
@@ -85,8 +69,9 @@ export class ApiGenerator implements AsyncAPIGenerator {
     }
   }
 
-  public dependenciesOf(fromPath: string, input: AsyncApiObject, target: AsyncAPIGeneratorTarget): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: AsyncApiObject): ImportDeclaration[] {
     const { context, config } = this
+    const target = this.id as AsyncAPIGeneratorTarget
     switch (target) {
       case 'asyncapi/api-type': {
         return config.type ? getModelImports(fromPath, target, [input], context) : []
