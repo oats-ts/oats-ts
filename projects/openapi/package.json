@@ -27,7 +27,7 @@
     "@types/jest": "26.0.23",
     "@types/node": "16.7.1",
     "@types/lodash": "4.14.172",
-    "@types/pascalcase": "1.0.0",
+    "@types/pascalcase": "1.0.1",
     "jest": "27.0.4",
     "ts-jest": "27.0.2",
     "rimraf": "3.0.2"

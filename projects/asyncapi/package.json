@@ -24,7 +24,7 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "devDependencies": {
-    "@types/pascalcase": "1.0.0",
+    "@types/pascalcase": "1.0.1",
     "@types/node": "16.7.1",
     "@types/lodash": "4.14.172",
     "typescript": "4.3.5"
