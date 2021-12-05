@@ -152,7 +152,8 @@
     {
       "packageName": "@oats-ts/openapi-express-routes-generator",
       "projectFolder": "projects/openapi-express-routes-generator",
-      "shouldPublish": false
+      "versionPolicyName": "oats",
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-http",

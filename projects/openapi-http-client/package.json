@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-http-client",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -36,6 +36,6 @@
     "@types/whatwg-mimetype": "2.1.0",
     "node-fetch": "2.6.1",
     "whatwg-mimetype": "2.3.0",
-    "@oats-ts/openapi-http": "0.0.6"
+    "@oats-ts/openapi-http": "0.0.7"
   }
 }
