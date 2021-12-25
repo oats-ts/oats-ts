@@ -315,13 +315,18 @@ export const deleteMethodRouter: Router = Router().delete(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: HttpMethodsApi<ExpressParameters> = response.locals['__oats_api']
-    const typedResponse = await api.deleteMethod(frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const typedResponse = await api.deleteMethod(frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -331,13 +336,18 @@ export const getMethodRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: HttpMethodsApi<ExpressParameters> = response.locals['__oats_api']
-    const typedResponse = await api.getMethod(frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const typedResponse = await api.getMethod(frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -347,13 +357,18 @@ export const optionsMethodRouter: Router = Router().options(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: HttpMethodsApi<ExpressParameters> = response.locals['__oats_api']
-    const typedResponse = await api.optionsMethod(frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const typedResponse = await api.optionsMethod(frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -363,13 +378,18 @@ export const patchMethodRouter: Router = Router().patch(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: HttpMethodsApi<ExpressParameters> = response.locals['__oats_api']
-    const typedResponse = await api.patchMethod(frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const typedResponse = await api.patchMethod(frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -379,13 +399,18 @@ export const postMethodRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: HttpMethodsApi<ExpressParameters> = response.locals['__oats_api']
-    const typedResponse = await api.postMethod(frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const typedResponse = await api.postMethod(frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -395,13 +420,18 @@ export const putMethodRouter: Router = Router().put(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: HttpMethodsApi<ExpressParameters> = response.locals['__oats_api']
-    const typedResponse = await api.putMethod(frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const typedResponse = await api.putMethod(frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
