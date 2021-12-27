@@ -1,18 +1,18 @@
-import { ParameterObject, QueryDeserializers } from '../types'
+import { Try, mapRecord } from '@oats-ts/try'
+import { ParameterObject, QueryDeserializers, ParameterValue } from '../types'
 import { parseRawQuery } from './parseRawQuery'
 
 export const createQueryDeserializer =
   <T extends ParameterObject>(deserializers: QueryDeserializers<T>) =>
-  (input: string): T => {
-    const raw = parseRawQuery(input)
-    const output: ParameterObject = {}
-    const keys = Object.keys(deserializers)
-
-    for (let i = 0; i < keys.length; i += 1) {
-      const key = keys[i]
-      const deserializer = deserializers[key]
-      output[key] = deserializer(key)(raw)
+  (input: string): Try<T> => {
+    const [rawQueryIssues, raw] = parseRawQuery(input)
+    if (rawQueryIssues.length > 0) {
+      return [rawQueryIssues, undefined]
     }
-
-    return output as T
+    const keys = Object.keys(deserializers)
+    const output = mapRecord(keys, (key): Try<ParameterValue> => {
+      const deserializer = deserializers[key]
+      return deserializer(key)(raw)
+    })
+    return output as Try<T>
   }

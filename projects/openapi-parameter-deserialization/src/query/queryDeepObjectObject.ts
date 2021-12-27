@@ -1,29 +1,36 @@
+import { Try, mapRecord, failure, isFailure, success, map } from '@oats-ts/try'
+import { ParameterValue } from '..'
 import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
 import { decode, encode, isNil } from '../utils'
 
 export const queryDeepObjectObject =
   <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}) =>
   (name: string) =>
-  (data: RawQueryParams): T => {
-    const output: Record<string, Primitive> = {}
+  (data: RawQueryParams): Try<T> => {
     const parserKeys = Object.keys(parsers)
     let hasKeys: boolean = false
-
-    for (let i = 0; i < parserKeys.length; i += 1) {
-      const key = parserKeys[i]
+    const output = mapRecord(parserKeys, (key: string): Try<ParameterValue> => {
       const parser = parsers[key]
       const queryKey = `${encode(name)}[${encode(key)}]`
       const values = data[queryKey] || []
       if (values.length > 1) {
-        throw new TypeError(`Expected single value for query parameter "${key}" ("${queryKey}")`)
+        return failure([
+          {
+            message: `Expected single value for query parameter "${key}" ("${queryKey}")`,
+            path: name,
+            severity: 'error',
+            type: '',
+          },
+        ])
       }
       const [rawValue] = values
       if (options.required || !isNil(rawValue)) {
-        const value = parser(key, decode(rawValue))
-        output[key] = value
-        hasKeys = true
+        return map(parser(key, decode(rawValue)), (parsedValue) => {
+          hasKeys = true
+          return parsedValue
+        })
       }
-    }
-
-    return hasKeys ? (output as T) : undefined
+      return undefined
+    })
+    return map(output, (o) => (hasKeys ? (o as T) : undefined))
   }

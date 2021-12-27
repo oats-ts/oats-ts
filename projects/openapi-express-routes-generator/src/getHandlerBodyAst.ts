@@ -310,16 +310,36 @@ export function getHandlerBodyAst(
     ),
   )
 
-  return factory.createBlock([
-    expressParams,
-    configuration,
-    api,
-    ...parameters,
-    ...body,
-    ...issues,
-    ...typedRequest,
-    typedResponse,
-    normalizedResponse,
-    returnStatement,
-  ])
+  const tryBlock = factory.createBlock(
+    [...parameters, ...body, ...issues, ...typedRequest, typedResponse, normalizedResponse, returnStatement],
+    true,
+  )
+
+  const catchBlock = factory.createBlock(
+    [
+      factory.createExpressionStatement(
+        factory.createCallExpression(
+          factory.createPropertyAccessExpression(
+            factory.createIdentifier(Names.configuration),
+            factory.createIdentifier('handleError'),
+          ),
+          undefined,
+          [factory.createIdentifier(Names.frameworkInput), factory.createIdentifier(Names.error)],
+        ),
+      ),
+      factory.createThrowStatement(factory.createIdentifier(Names.error)),
+    ],
+    true,
+  )
+
+  const tryCatch = factory.createTryStatement(
+    tryBlock,
+    factory.createCatchClause(
+      factory.createVariableDeclaration(factory.createIdentifier(Names.error), undefined, undefined, undefined),
+      catchBlock,
+    ),
+    undefined,
+  )
+
+  return factory.createBlock([expressParams, configuration, api, tryCatch])
 }

@@ -1,26 +1,37 @@
+import { failure, mapRecord, success, Try } from '@oats-ts/try'
+import { ParameterValue } from '..'
 import { RawHeaders, PrimitiveRecord, FieldParsers, Primitive } from '../types'
 import { isNil, decode } from '../utils'
 
-export function getHeaderValue(name: string, raw: RawHeaders, required: boolean) {
+export function getHeaderValue(name: string, raw: RawHeaders, required: boolean): Try<string> {
   const value = raw[name] ?? raw[name.toLowerCase()]
   if (isNil(value) && required) {
-    throw new TypeError(`Header parameter "${name}" cannot be ${value}`)
+    return failure([
+      {
+        message: `Header parameter "${name}" cannot be ${value}`,
+        path: name,
+        severity: 'error',
+        type: '',
+      },
+    ])
   }
-  return value
+  return success(value)
 }
 
 export function parseHeadersFromRecord<T extends PrimitiveRecord>(
   name: string,
   parsers: FieldParsers<T>,
   paramData: Record<string, string>,
-): T {
-  const result: Record<string, Primitive> = {}
+): Try<T> {
   const parserKeys = Object.keys(parsers)
-  for (let i = 0; i < parserKeys.length; i += 1) {
-    const key = parserKeys[i]
-    const parser = parsers[key]
-    const value = paramData[key]
-    result[decode(key)] = parser(`${name}.${key}`, decode(value))
-  }
-  return result as T
+  const result = mapRecord(
+    parserKeys,
+    (key): Try<ParameterValue> => {
+      const parser = parsers[key]
+      const value = paramData[key]
+      return parser(`${name}.${key}`, decode(value))
+    },
+    (key) => decode(key),
+  )
+  return result as Try<T>
 }

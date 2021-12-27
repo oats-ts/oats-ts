@@ -1,19 +1,21 @@
 import { queryDeepObjectObject } from './queryDeepObjectObject'
-import { queryDelimitedArray } from './queryDelmitedArray'
+import { queryFormArray } from './queryFormArray'
 import { queryFormObject } from './queryFormObject'
 import { queryFormPrimitive } from './queryFormPrimitive'
+import { queryPipeDelimitedArray } from './queryPipeDelimitedArray'
+import { querySpaceDelimitedArray } from './querySpaceDelimitedArray'
 
 export const query = {
   form: {
     primitive: queryFormPrimitive,
-    array: queryDelimitedArray(','),
+    array: queryFormArray,
     object: queryFormObject,
   },
   spaceDelimited: {
-    array: queryDelimitedArray(encodeURIComponent(' ')),
+    array: querySpaceDelimitedArray,
   },
   pipeDelimited: {
-    array: queryDelimitedArray('|'),
+    array: queryPipeDelimitedArray,
   },
   deepObject: {
     object: queryDeepObjectObject,

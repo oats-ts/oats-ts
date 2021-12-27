@@ -18,13 +18,17 @@ export const createQueryParserTest = <Data extends ParameterObject>(
     if (data.data.length > 0) {
       it.each(data.data)('should parse to %j, given query: %j', (expected: Data, url: string) => {
         const parser = createQueryDeserializer(config)
-        expect(parser(url)).toEqual(expected)
+        const [issues, data] = parser(url)
+        expect(issues).toEqual([])
+        expect(data).toEqual(expected)
       })
     }
     if (data.error.length > 0) {
       it.each(data.error)('should throw, given query: %j', (url: string) => {
         const parser = createQueryDeserializer(config)
-        expect(() => parser(url)).toThrowError()
+        const [issues, data] = parser(url)
+        expect(issues).not.toHaveLength(0)
+        expect(data).toBe(undefined)
       })
     }
   })

@@ -1,11 +1,14 @@
+import { Try, failure, success } from '@oats-ts/try'
 import { Primitive, ValueParser } from '../types'
 
 export const literalParser =
   <T extends Primitive, L extends T>(literal: L): ValueParser<T, L> =>
-  (name: string, value: T): L => {
+  (name: string, value: T): Try<L> => {
     if (value !== literal) {
       const strLiteral = typeof literal === 'string' ? `"${literal}"` : literal
-      throw new TypeError(`Parameter "${name}" should be ${strLiteral}.`)
+      return failure([
+        { message: `Parameter "${name}" should be ${strLiteral}.`, path: name, severity: 'error', type: '' },
+      ])
     }
-    return value as L
+    return success(value as L)
   }

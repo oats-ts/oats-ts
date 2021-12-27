@@ -5,8 +5,9 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
 } from '@oats-ts/openapi-http'
+import { Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { ServerConfiguration, Try } from '../typings'
+import { ServerConfiguration } from '../typings'
 import { ExpressParameters } from './typings'
 
 export class ExpressServerConfiguration implements ServerConfiguration<ExpressParameters> {
@@ -140,5 +141,9 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
       response.send(rawResponse.body ?? '')
     }
     next()
+  }
+
+  async handleError({ next }: ExpressParameters, error: Error): Promise<void> {
+    return next(error)
   }
 }

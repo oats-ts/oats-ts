@@ -28,4 +28,8 @@ createQueryParserTest('query.form.primitive (enum)', queryFormEnumData, queryFor
 createQueryParserTest('query.form.array (number)', queryNumberArrayFieldObjectData, queryFormNumberArrayExplodeParser)
 createQueryParserTest('query.form.array (enum)', queryEnumArrayFieldObjectData, queryFormEnumArrayExplodeParser)
 createQueryParserTest('query.form.object', queryFormObjectData, queryFormObjectExplodeParser)
-createQueryParserTest('query.form.object (optional fields)', queryFormOptionalObjectData, queryFormOptionalObjectExplodeParser)
+createQueryParserTest(
+  'query.form.object (optional fields)',
+  queryFormOptionalObjectData,
+  queryFormOptionalObjectExplodeParser,
+)

@@ -1,18 +1,26 @@
+import { Try, failure, success } from '@oats-ts/try'
 import { QueryOptions, RawQueryParams } from '../types'
 
-export function getQueryValue(name: string, params: RawQueryParams, options: QueryOptions): string {
+export function getQueryValue(name: string, params: RawQueryParams, options: QueryOptions): Try<string | undefined> {
   const values = params[name] || []
   switch (values.length) {
     case 0: {
       if (options.required) {
-        throw new TypeError(`Query parameter "${name}" is required`)
+        return failure([{ message: `Query parameter "${name}" is required`, path: name, severity: 'error', type: '' }])
       }
-      return undefined
+      return success(undefined)
     }
     case 1: {
-      return values[0]
+      return success(values[0])
     }
     default:
-      throw new TypeError(`Query parameter "${name}" should occur once (found ${values.length} times in query string)`)
+      return failure([
+        {
+          message: `Query parameter "${name}" should occur once (found ${values.length} times in query string)`,
+          path: name,
+          severity: 'error',
+          type: '',
+        },
+      ])
   }
 }

@@ -177,6 +177,10 @@
       "path": "projects/openapi-validators-generator"
     },
     {
+      "name": "try",
+      "path": "projects/try"
+    },
+    {
       "name": "typescript-common",
       "path": "projects/typescript-common"
     },

@@ -1,27 +1,60 @@
+import { failure, flatMap, mapArray, Try } from '@oats-ts/try'
 import { Primitive, ValueParser, RawPathParams, PathOptions } from '../types'
 import { decode, encode } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
 
-export const pathMatrixArray =
-  <T extends Primitive>(parse: ValueParser<string, T>, options: PathOptions = {}) =>
-  (name: string) =>
-  (data: RawPathParams): T[] => {
-    if (options.explode) {
-      const rawString = getPrefixedValue(name, getPathValue(name, data), ';')
+function pathMatrixArrayExplode<T extends Primitive>(
+  parse: ValueParser<string, T>,
+  name: string,
+  data: RawPathParams,
+): Try<T[]> {
+  return flatMap(getPathValue(name, data), (pathValue) => {
+    return flatMap(getPrefixedValue(name, pathValue, ';'), (rawString) => {
       const kvPairStrings = rawString.split(';')
-      return kvPairStrings.map((kvPair) => {
+      return mapArray(kvPairStrings, (kvPair) => {
         const parts = kvPair.split('=')
         if (parts.length !== 2) {
-          throw new TypeError(`Malformed value "${rawString}" for path parameter "${name}"`)
+          return failure([
+            {
+              message: `Malformed value "${rawString}" for path parameter "${name}"`,
+              path: name,
+              severity: 'error',
+              type: '',
+            },
+          ])
         }
         const [key, value] = parts.map(decode)
         if (key !== name) {
-          throw new TypeError(`Malformed value "${rawString}" for path parameter "${name}"`)
+          return failure([
+            {
+              message: `Malformed value "${rawString}" for path parameter "${name}"`,
+              path: name,
+              severity: 'error',
+              type: '',
+            },
+          ])
         }
         return parse(name, value)
       })
-    }
-    return getPrefixedValue(name, getPathValue(name, data), `;${encode(name)}=`)
-      .split(',')
-      .map((value) => parse(name, decode(value)))
+    })
+  })
+}
+
+function pathMatrixArrayNoExplode<T extends Primitive>(
+  parse: ValueParser<string, T>,
+  name: string,
+  data: RawPathParams,
+): Try<T[]> {
+  return flatMap(getPathValue(name, data), (pathValue) => {
+    return flatMap(getPrefixedValue(name, pathValue, `;${encode(name)}=`), (rawValue) => {
+      return mapArray(rawValue.split(','), (value) => parse(name, decode(value)))
+    })
+  })
+}
+
+export const pathMatrixArray =
+  <T extends Primitive>(parse: ValueParser<string, T>, options: PathOptions = {}) =>
+  (name: string) =>
+  (data: RawPathParams): Try<T[]> => {
+    return options.explode ? pathMatrixArrayExplode(parse, name, data) : pathMatrixArrayNoExplode(parse, name, data)
   }

@@ -5,9 +5,7 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
 } from '@oats-ts/openapi-http'
-import { Issue } from '@oats-ts/validators'
-
-export type Try<T> = [[], T] | [Issue[], undefined]
+import { Try } from '@oats-ts/try'
 
 export type ServerConfiguration<T> = {
   getPathParameters<P>(frameworkInput: T, deserializer: (input: string) => P): Promise<Try<P>>
@@ -29,4 +27,5 @@ export type ServerConfiguration<T> = {
   ): Promise<RawHttpHeaders>
 
   respond(frameworkInput: T, response: RawHttpResponse): Promise<void>
+  handleError(frameworkInput: T, error: Error): Promise<void>
 }

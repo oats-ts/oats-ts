@@ -1,16 +1,13 @@
-import { HeaderDeserializers, RawHeaders, ParameterObject } from '../types'
+import { Try, mapRecord } from '@oats-ts/try'
+import { HeaderDeserializers, RawHeaders, ParameterObject, ParameterValue } from '../types'
 
 export const createHeaderDeserializer = <T extends ParameterObject>(deserializers: HeaderDeserializers<T>) => {
-  return (input: RawHeaders): T => {
-    const output: ParameterObject = {}
+  return (input: RawHeaders): Try<T> => {
     const keys = Object.keys(deserializers)
-
-    for (let i = 0; i < keys.length; i += 1) {
-      const key = keys[i]
+    const output = mapRecord(keys, (key): Try<ParameterValue> => {
       const deserializer = deserializers[key]
-      output[key] = deserializer(key)(input)
-    }
-
-    return output as T
+      return deserializer(key)(input)
+    })
+    return output as Try<T>
   }
 }
