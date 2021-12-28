@@ -32,7 +32,7 @@ function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializer
   }
 }
 
-export const parsers: TestDataObject<QueryDeserializers<any>> = {
+export const formTestParsers: TestDataObject<QueryDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true, required: true }),
     optional: createTypesParsers({ explode: true, required: false }),

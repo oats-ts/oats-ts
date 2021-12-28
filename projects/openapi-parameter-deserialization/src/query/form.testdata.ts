@@ -242,7 +242,7 @@ const noExplodeOptional: TypesObject<QueryTestData<any>> = {
   },
 }
 
-export const testdata: TestDataObject<QueryTestData<any>> = {
+export const formTestData: TestDataObject<QueryTestData<any>> = {
   explode: {
     required: explodeRequired,
     optional: explodeOptional,
