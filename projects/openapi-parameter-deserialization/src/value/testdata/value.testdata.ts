@@ -1,7 +1,7 @@
-import { EnumType, LiteralType, ObjType, OptObjType } from '../testTypes'
-import { FieldParsers } from '../types'
-import { value } from './index'
-import { ValueErrorData, ValueSuccessData, ValueTestData } from './value.testutils'
+import { EnumType, LiteralType, ObjType, OptObjType } from '../../testTypes'
+import { FieldParsers } from '../../types'
+import { value } from '../index'
+import { ValueErrorData, ValueSuccessData, ValueTestData } from '../value.testutils'
 
 export const stringParser = value.string()
 export const numberParser = value.number()

@@ -19,7 +19,7 @@ import {
   optionalBooleanParser,
   optionalLiteralParser,
   optionalEnumParser,
-} from './value.testdata'
+} from './testdata/value.testdata'
 import { createValueParserTest } from './value.testutils'
 
 createValueParserTest('value.string', stringValueData, stringParser)
