@@ -1,4 +1,5 @@
-import { EnumType, LiteralType } from '../testTypes'
+import { EnumType, LiteralType, ObjType, OptObjType } from '../testTypes'
+import { FieldParsers } from '../types'
 import { value } from './index'
 import { ValueErrorData, ValueSuccessData, ValueTestData } from './value.testutils'
 
@@ -13,6 +14,22 @@ export const optionalNumberParser = value.optional(numberParser)
 export const optionalBooleanParser = value.optional(booleanParser)
 export const optionalLiteralParser = value.optional(literalParser)
 export const optionalEnumParser = value.optional(enumParser)
+
+export const objectFieldParsers: FieldParsers<ObjType> = {
+  s: stringParser,
+  n: numberParser,
+  b: booleanParser,
+  l: literalParser,
+  e: enumParser,
+}
+
+export const optionalObjectFieldParsers: FieldParsers<OptObjType> = {
+  s: optionalStringParser,
+  n: optionalNumberParser,
+  b: optionalBooleanParser,
+  l: optionalLiteralParser,
+  e: optionalEnumParser,
+}
 
 const optionalOk: ValueSuccessData<any, any>[] = [
   [undefined, undefined],

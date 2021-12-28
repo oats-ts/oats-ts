@@ -1,8 +1,9 @@
 import { createQueryDeserializer } from './createQueryDeserializer'
 import { ParameterObject, QueryDeserializers } from '../types'
+import { TestDataObject, TypesObject } from '../testTypes'
 
-type QuerySuccessData<Data extends ParameterObject> = [Data, string]
-type QueryErrorData = [string]
+export type QuerySuccessData<Data extends ParameterObject> = [Data, string]
+export type QueryErrorData = [string]
 
 export type QueryTestData<Data extends ParameterObject> = {
   data: QuerySuccessData<Data>[]
@@ -11,9 +12,12 @@ export type QueryTestData<Data extends ParameterObject> = {
 
 export const createQueryParserTest = <Data extends ParameterObject>(
   name: string,
-  data: QueryTestData<Data>,
-  config: QueryDeserializers<Data>,
+  config?: QueryDeserializers<Data>,
+  data?: QueryTestData<Data>,
 ): void => {
+  if (config === undefined || data === undefined) {
+    return
+  }
   describe(name, () => {
     if (data.data.length > 0) {
       it.each(data.data)('should parse to %j, given query: %j', (expected: Data, url: string) => {
@@ -32,4 +36,34 @@ export const createQueryParserTest = <Data extends ParameterObject>(
       })
     }
   })
+}
+
+export const createTestsForPossibleTypes = (
+  name: string,
+  parsers: TypesObject<QueryDeserializers<any>>,
+  data: TypesObject<QueryTestData<any>>,
+): void => {
+  createQueryParserTest(`${name}.string`, parsers?.string, data?.string)
+  createQueryParserTest(`${name}.number`, parsers?.number, data?.number)
+  createQueryParserTest(`${name}.boolean`, parsers?.boolean, data?.boolean)
+  createQueryParserTest(`${name}.literal`, parsers?.literal, data?.literal)
+  createQueryParserTest(`${name}.enumeration`, parsers?.enumeration, data?.enumeration)
+  createQueryParserTest(`${name}.array.string`, parsers?.array?.string, data?.array?.string)
+  createQueryParserTest(`${name}.array.number`, parsers?.array?.number, data?.array?.number)
+  createQueryParserTest(`${name}.array.boolean`, parsers?.array?.boolean, data?.array?.boolean)
+  createQueryParserTest(`${name}.array.literal`, parsers?.array?.literal, data?.array?.literal)
+  createQueryParserTest(`${name}.array.enumeration`, parsers?.array?.enumeration, data?.array?.enumeration)
+  createQueryParserTest(`${name}.object.requiredFields`, parsers?.object?.requiredFields, data?.object?.requiredFields)
+  createQueryParserTest(`${name}.object.optionalFields`, parsers?.object?.optionalFields, data?.object?.optionalFields)
+}
+
+export const createTestSuite = (
+  name: string,
+  parsers: TestDataObject<QueryDeserializers<any>>,
+  data: TestDataObject<QueryTestData<any>>,
+): void => {
+  createTestsForPossibleTypes(`${name}.explode.required`, parsers?.explode?.required, data?.explode?.required)
+  createTestsForPossibleTypes(`${name}.explode.optional`, parsers?.explode?.optional, data?.explode?.optional)
+  createTestsForPossibleTypes(`${name}.noExplode.required`, parsers?.noExplode?.required, data?.noExplode?.required)
+  createTestsForPossibleTypes(`${name}.noExplode.optional`, parsers?.noExplode?.required, data?.noExplode?.required)
 }

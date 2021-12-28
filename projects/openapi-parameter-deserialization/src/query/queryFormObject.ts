@@ -24,10 +24,8 @@ function queryFormObjectExplode<T extends PrimitiveRecord>(
       ])
     }
     const [value] = values
-    if (options.required || !isNil(value)) {
-      return map(parser(key, decode(value)), (valueForKey) => [key, valueForKey])
-    }
-    return success([key, undefined])
+    const decodedValue = isNil(value) ? value : decode(value)
+    return map(parser(key, decodedValue), (valueForKey) => [key, valueForKey])
   })
   return map(keyValuePairsTry, (keyValuePairs) => {
     const presentKvPairs = keyValuePairs.filter(([, v]) => v !== undefined)

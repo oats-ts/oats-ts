@@ -1,152 +1,254 @@
-import { query } from './index'
-import { FieldParsers, QueryDeserializers } from '../types'
-import { QueryTestData } from './query.testutils'
+import { QueryErrorData, QuerySuccessData, QueryTestData } from './query.testutils'
 import {
-  enumParser,
-  stringParser,
-  numberParser,
-  booleanParser,
-  literalParser,
-  optionalBooleanParser,
-  optionalEnumParser,
-  optionalLiteralParser,
-  optionalNumberParser,
-  optionalStringParser,
-} from '../value/value.testdata'
-import {
+  AnyFieldObj,
+  BooleanArrayFieldObj,
   BooleanFieldObj,
   EnumArrayFieldObj,
   EnumFieldObj,
+  LiteralArrayFieldObj,
   LiteralFieldObj,
   NumberArrayFieldObj,
   NumberFieldObj,
-  ObjectFieldObj,
-  ObjType,
   OptObjectFieldObj,
-  OptObjType,
+  StringArrayFieldObj,
   StringFieldObj,
+  TestDataObject,
+  TypesObject,
 } from '../testTypes'
 
-const objParser: FieldParsers<ObjType> = {
-  s: stringParser,
-  n: numberParser,
-  b: booleanParser,
-  l: literalParser,
-  e: enumParser,
+const optionalOk: QuerySuccessData<AnyFieldObj>[] = [
+  [{ value: undefined }, ''],
+  [{ value: undefined }, '?unrelated=10'],
+]
+
+const stringOk: QuerySuccessData<StringFieldObj>[] = [
+  [{ value: 'hello' }, '?value=hello'],
+  [{ value: 'hello test' }, '?value=hello%20test'],
+]
+
+const numberOk: QuerySuccessData<NumberFieldObj>[] = [
+  [{ value: 10 }, '?value=10'],
+  [{ value: 10.27 }, '?value=10.27'],
+]
+
+const booleanOk: QuerySuccessData<BooleanFieldObj>[] = [
+  [{ value: false }, '?value=false'],
+  [{ value: true }, '?value=true'],
+]
+
+const literalOk: QuerySuccessData<LiteralFieldObj>[] = [[{ value: 'cat' }, '?value=cat']]
+
+const enumOk: QuerySuccessData<EnumFieldObj>[] = [
+  [{ value: 'cat' }, '?value=cat'],
+  [{ value: 'dog' }, '?value=dog'],
+  [{ value: 'racoon' }, '?value=racoon'],
+]
+
+const explodeStringArrayOk: QuerySuccessData<StringArrayFieldObj>[] = [
+  [{ value: ['foo', 'bar', 'foobar'] }, '?value=foo&value=bar&value=foobar'],
+  [{ value: [] }, ''],
+]
+
+const explodeNumberArrayOk: QuerySuccessData<NumberArrayFieldObj>[] = [
+  [{ value: [1, 2, 3] }, '?value=1&value=2&value=3'],
+  [{ value: [1.2, 3.4, 5.998] }, '?value=1.2&value=3.4&value=5.998'],
+  [{ value: [] }, ''],
+]
+
+const explodeBooleanArrayOk: QuerySuccessData<BooleanArrayFieldObj>[] = [
+  [{ value: [true, false] }, '?value=true&value=false'],
+  [{ value: [] }, ''],
+]
+
+const explodeLiteralArrayOk: QuerySuccessData<LiteralArrayFieldObj>[] = [
+  [{ value: ['cat', 'cat'] }, '?value=cat&value=cat'],
+  [{ value: [] }, ''],
+]
+
+const explodeEnumArrayOk: QuerySuccessData<EnumArrayFieldObj>[] = [
+  [{ value: ['cat', 'dog', 'racoon'] }, '?value=cat&value=dog&value=racoon'],
+  [{ value: ['cat'] }, '?value=cat'],
+  [{ value: [] }, ''],
+]
+
+const noExplodeStringArrayOk: QuerySuccessData<StringArrayFieldObj>[] = [
+  [{ value: ['foo', 'bar', 'foobar'] }, '?value=foo,bar,foobar'],
+]
+
+const noExplodeNumberArrayOk: QuerySuccessData<NumberArrayFieldObj>[] = [
+  [{ value: [1, 2, 3] }, '?value=1,2,3'],
+  [{ value: [1.2, 3.4, 5.998] }, '?value=1.2,3.4,5.998'],
+]
+
+const noExplodeBooleanArrayOk: QuerySuccessData<BooleanArrayFieldObj>[] = [
+  [{ value: [true, false] }, '?value=true,false'],
+]
+
+const noExplodeLiteralArrayOk: QuerySuccessData<LiteralArrayFieldObj>[] = [
+  [{ value: ['cat', 'cat'] }, '?value=cat,cat'],
+]
+
+const noExplodeEnumArrayOk: QuerySuccessData<EnumArrayFieldObj>[] = [
+  [{ value: ['cat', 'dog', 'racoon'] }, '?value=cat,dog,racoon'],
+  [{ value: ['cat'] }, '?value=cat'],
+]
+
+const explodeOptionalObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?s=str&n=10&b=true&e=dog&l=cat'],
+  [{ value: { n: 10, b: true, e: 'dog', l: 'cat' } }, '?n=10&b=true&e=dog&l=cat'],
+  [{ value: { b: true, e: 'dog', l: 'cat' } }, '?&b=true&e=dog&l=cat'],
+  [{ value: { e: 'dog', l: 'cat' } }, '?e=dog&l=cat'],
+  [{ value: { l: 'cat' } }, '?l=cat'],
+  [{ value: {} }, ''],
+]
+
+const explodeRequiredObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?s=str&n=10&b=true&e=dog&l=cat'],
+]
+
+const noExplodeOptionalObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?value=s,str,n,10,b,true,l,cat,e,dog'],
+  [{ value: { n: 10, b: true, e: 'dog', l: 'cat' } }, '?value=n,10,b,true,l,cat,e,dog'],
+  [{ value: { b: true, e: 'dog', l: 'cat' } }, '?value=b,true,l,cat,e,dog'],
+  [{ value: { e: 'dog', l: 'cat' } }, '?value=l,cat,e,dog'],
+]
+
+const noExplodeRequiredObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?value=s,str,n,10,b,true,l,cat,e,dog'],
+]
+
+const requiredError: QueryErrorData[] = [[''], ['?unrelated=hello']]
+
+const numberError: QueryErrorData[] = [['?value=cat'], ['?value=false'], ['?value=c11']]
+
+const booleanError: QueryErrorData[] = [['?value=cat'], ['?value=12432'], ['?value=cfalse'], ['?value=FaLsE']]
+
+const literalError: QueryErrorData[] = [['?value=dog'], ['?value=12432'], ['?value=cfalse'], ['?value=FaLsE']]
+
+const enumError: QueryErrorData[] = [['?value=_cat'], ['?value=1'], ['?value=CaT'], ['?value=DOG'], ['?value=true']]
+
+const explodeNumberArrayError: QueryErrorData[] = [['?value=1&value=cat'], ['?value=false&value=32'], ['?value=c11']]
+
+const expodeBooleanArrayError: QueryErrorData[] = [
+  ['?value=cat&value=true'],
+  ['?value=false&value=12432'],
+  ['?value=FaLsE'],
+]
+
+const explodeLiteralArrayError: QueryErrorData[] = [['?value=dog&value=asd'], ['?value=false&value=cat']]
+
+const explodeEnumArrayError: QueryErrorData[] = [
+  ['?value=_cat&value=dog'],
+  ['?value=cat&value=1'],
+  ['?value=CaT'],
+  ['?value=DOG'],
+]
+
+const explodeRequiredObjectError: QueryErrorData[] = [
+  ['?value=dog'],
+  ['?s=x&n=x&b=x&e=x&l=x'],
+  ['?n=10&b=true&e=dog&l=cat'],
+  ['?&b=true&e=dog&l=cat'],
+  ['?e=dog&l=cat'],
+  ['?l=cat'],
+]
+
+const explodeOptionalObjectError: QueryErrorData[] = [['?s=x&n=x&b=x&e=x&l=x']]
+
+const explodeRequired: TypesObject<QueryTestData<any>> = {
+  string: { data: stringOk, error: [...requiredError] },
+  number: { data: numberOk, error: [...requiredError, ...numberError] },
+  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+  literal: { data: literalOk, error: [...requiredError, ...literalError] },
+  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  array: {
+    string: { data: explodeStringArrayOk, error: [] },
+    number: { data: explodeNumberArrayOk, error: explodeNumberArrayError },
+    boolean: { data: explodeBooleanArrayOk, error: expodeBooleanArrayError },
+    literal: { data: explodeLiteralArrayOk, error: explodeLiteralArrayError },
+    enumeration: { data: explodeEnumArrayOk, error: explodeEnumArrayError },
+  },
+  object: {
+    optionalFields: {
+      data: explodeOptionalObjectOk,
+      error: explodeOptionalObjectError,
+    },
+    requiredFields: {
+      data: explodeRequiredObjectOk,
+      error: explodeRequiredObjectError,
+    },
+  },
+}
+const explodeOptional: TypesObject<QueryTestData<any>> = {
+  string: { data: [...optionalOk, ...stringOk], error: [] },
+  number: { data: [...optionalOk, ...numberOk], error: numberError },
+  boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
+  literal: { data: [...optionalOk, ...literalOk], error: literalError },
+  enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  array: {
+    string: { data: explodeStringArrayOk, error: [] },
+    number: { data: explodeNumberArrayOk, error: explodeNumberArrayError },
+    boolean: { data: explodeBooleanArrayOk, error: expodeBooleanArrayError },
+    literal: { data: explodeLiteralArrayOk, error: explodeLiteralArrayError },
+    enumeration: { data: explodeEnumArrayOk, error: explodeEnumArrayError },
+  },
+  object: {
+    optionalFields: {
+      data: explodeOptionalObjectOk,
+      error: explodeOptionalObjectError,
+    },
+    requiredFields: {
+      data: explodeRequiredObjectOk,
+      error: explodeRequiredObjectError,
+    },
+  },
 }
 
-const optObjParser: FieldParsers<OptObjType> = {
-  s: optionalStringParser,
-  n: optionalNumberParser,
-  b: optionalBooleanParser,
-  l: optionalLiteralParser,
-  e: optionalEnumParser,
+const noExplodeRequired: TypesObject<QueryTestData<any>> = {
+  string: { data: stringOk, error: [...requiredError] },
+  number: { data: numberOk, error: [...requiredError, ...numberError] },
+  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+  literal: { data: literalOk, error: [...requiredError, ...literalError] },
+  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  array: {
+    string: { data: noExplodeStringArrayOk, error: [] },
+    number: { data: noExplodeNumberArrayOk, error: [] },
+    boolean: { data: noExplodeBooleanArrayOk, error: [] },
+    literal: { data: noExplodeLiteralArrayOk, error: [] },
+    enumeration: { data: noExplodeEnumArrayOk, error: [] },
+  },
+  object: {
+    optionalFields: { data: noExplodeOptionalObjectOk, error: [] },
+    requiredFields: { data: noExplodeRequiredObjectOk, error: [] },
+  },
 }
 
-export const queryFormStringParser: QueryDeserializers<StringFieldObj> = {
-  foo: query.form.primitive(stringParser, { required: true }),
-}
-export const queryFormNumberParser: QueryDeserializers<NumberFieldObj> = {
-  foo: query.form.primitive(numberParser, { required: true }),
-}
-export const queryFormBooleanParser: QueryDeserializers<BooleanFieldObj> = {
-  foo: query.form.primitive(booleanParser, { required: true }),
-}
-export const queryFormLiteralParser: QueryDeserializers<LiteralFieldObj> = {
-  foo: query.form.primitive(literalParser, { required: true }),
-}
-export const queryFormEnumParser: QueryDeserializers<EnumFieldObj> = {
-  foo: query.form.primitive(enumParser, { required: true }),
-}
-export const queryFormObjectExplodeParser: QueryDeserializers<ObjectFieldObj> = {
-  foo: query.form.object(objParser, { required: true }),
-}
-export const queryFormOptionalObjectExplodeParser: QueryDeserializers<OptObjectFieldObj> = {
-  foo: query.form.object(optObjParser, { required: true }),
-}
-export const queryFormNumberArrayExplodeParser: QueryDeserializers<NumberArrayFieldObj> = {
-  foo: query.form.array(numberParser, { required: true }),
-}
-export const queryFormEnumArrayExplodeParser: QueryDeserializers<EnumArrayFieldObj> = {
-  foo: query.form.array(enumParser, { required: true }),
+const noExplodeOptional: TypesObject<QueryTestData<any>> = {
+  string: { data: [...optionalOk, ...stringOk], error: [] },
+  number: { data: [...optionalOk, ...numberOk], error: numberError },
+  boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
+  literal: { data: [...optionalOk, ...literalOk], error: literalError },
+  enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  array: {
+    string: { data: noExplodeStringArrayOk, error: [] },
+    number: { data: noExplodeNumberArrayOk, error: [] },
+    boolean: { data: noExplodeBooleanArrayOk, error: [] },
+    literal: { data: noExplodeLiteralArrayOk, error: [] },
+    enumeration: { data: noExplodeEnumArrayOk, error: [] },
+  },
+  object: {
+    optionalFields: { data: [...noExplodeOptionalObjectOk, [{ value: {} }, '']], error: [] },
+    requiredFields: { data: noExplodeRequiredObjectOk, error: [] },
+  },
 }
 
-export const queryFormStringData: QueryTestData<StringFieldObj> = {
-  data: [
-    [{ foo: 'hello' }, '?foo=hello'],
-    [{ foo: 'hello test' }, '?foo=hello%20test'],
-  ],
-  error: [['']],
-}
-
-export const queryFormNumberData: QueryTestData<NumberFieldObj> = {
-  data: [
-    [{ foo: 10 }, '?foo=10'],
-    [{ foo: 10.27 }, '?foo=10.27'],
-  ],
-  error: [['?foo=cat']],
-}
-
-export const queryFormBooleanData: QueryTestData<BooleanFieldObj> = {
-  data: [
-    [{ foo: false }, '?foo=false'],
-    [{ foo: true }, '?foo=true'],
-  ],
-  error: [['?foo=cat']],
-}
-
-export const queryFormLiteralData: QueryTestData<LiteralFieldObj> = {
-  data: [[{ foo: 'cat' }, '?foo=cat']],
-  error: [['?foo=dog']],
-}
-
-export const queryFormEnumData: QueryTestData<EnumFieldObj> = {
-  data: [
-    [{ foo: 'cat' }, '?foo=cat'],
-    [{ foo: 'dog' }, '?foo=dog'],
-    [{ foo: 'racoon' }, '?foo=racoon'],
-  ],
-  error: [['?foo=catdog'], ['?foo=1']],
-}
-
-export const queryFormObjectData: QueryTestData<ObjectFieldObj> = {
-  data: [[{ foo: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?s=str&n=10&b=true&e=dog&l=cat']],
-  error: [
-    ['?foo=dog'],
-    ['?s=x&n=x&b=x&e=x&l=x'],
-    ['?n=10&b=true&e=dog&l=cat'],
-    ['?&b=true&e=dog&l=cat'],
-    ['?e=dog&l=cat'],
-    ['?l=cat'],
-  ],
-}
-
-export const queryFormOptionalObjectData: QueryTestData<OptObjectFieldObj> = {
-  data: [
-    [{ foo: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, '?s=str&n=10&b=true&e=dog&l=cat'],
-    [{ foo: { n: 10, b: true, e: 'dog', l: 'cat' } }, '?n=10&b=true&e=dog&l=cat'],
-    [{ foo: { b: true, e: 'dog', l: 'cat' } }, '?&b=true&e=dog&l=cat'],
-    [{ foo: { e: 'dog', l: 'cat' } }, '?e=dog&l=cat'],
-    [{ foo: { l: 'cat' } }, '?l=cat'],
-    [{ foo: {} }, ''],
-  ],
-  error: [['?s=x&n=x&b=x&e=x&l=x']],
-}
-
-export const queryNumberArrayFieldObjectData: QueryTestData<NumberArrayFieldObj> = {
-  data: [
-    [{ foo: [1, 2, 3] }, '?foo=1&foo=2&foo=3'],
-    [{ foo: [1.2, 3.4, 5.998] }, '?foo=1.2&foo=3.4&foo=5.998'],
-    [{ foo: [] }, ''],
-  ],
-  error: [['?foo=cat']],
-}
-
-export const queryEnumArrayFieldObjectData: QueryTestData<EnumArrayFieldObj> = {
-  data: [
-    [{ foo: ['cat', 'dog', 'racoon'] }, '?foo=cat&foo=dog&foo=racoon'],
-    [{ foo: ['cat'] }, '?foo=cat'],
-    [{ foo: [] }, ''],
-  ],
-  error: [['?foo=1']],
+export const testdata: TestDataObject<QueryTestData<any>> = {
+  explode: {
+    required: explodeRequired,
+    optional: explodeOptional,
+  },
+  noExplode: {
+    required: noExplodeRequired,
+    optional: noExplodeOptional,
+  },
 }

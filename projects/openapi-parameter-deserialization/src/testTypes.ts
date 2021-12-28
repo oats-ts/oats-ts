@@ -17,38 +17,83 @@ export type OptObjType = {
   e?: EnumType
 }
 
+export type AnyFieldObj = {
+  value?: any
+}
+
 export type StringFieldObj = {
-  foo: string
+  value: string
 }
 
 export type NumberFieldObj = {
-  foo: number
+  value: number
 }
 
 export type BooleanFieldObj = {
-  foo: boolean
+  value: boolean
 }
 
 export type LiteralFieldObj = {
-  foo: LiteralType
+  value: LiteralType
 }
 
 export type EnumFieldObj = {
-  foo: EnumType
+  value: EnumType
 }
 
 export type ObjectFieldObj = {
-  foo: ObjType
+  value: ObjType
 }
 
 export type OptObjectFieldObj = {
-  foo: OptObjType
+  value: OptObjType
+}
+
+export type StringArrayFieldObj = {
+  value: string[]
 }
 
 export type NumberArrayFieldObj = {
-  foo: number[]
+  value: number[]
+}
+
+export type BooleanArrayFieldObj = {
+  value: boolean[]
+}
+
+export type LiteralArrayFieldObj = {
+  value: LiteralType[]
 }
 
 export type EnumArrayFieldObj = {
-  foo: EnumType[]
+  value: EnumType[]
+}
+
+export type TypesObject<T> = {
+  string?: T
+  number?: T
+  boolean?: T
+  literal?: T
+  enumeration?: T
+  array?: {
+    string?: T
+    number?: T
+    boolean?: T
+    literal?: T
+    enumeration?: T
+  }
+  object?: {
+    requiredFields?: T
+    optionalFields?: T
+  }
+}
+
+export type StyleObject<T> = {
+  required?: TypesObject<T>
+  optional?: TypesObject<T>
+}
+
+export type TestDataObject<T> = {
+  explode?: StyleObject<T>
+  noExplode?: StyleObject<T>
 }
