@@ -12,7 +12,7 @@ export const queryDelimitedArray =
 
     const valuesTry = options.explode
       ? success(data[name] ?? [])
-      : flatMap(getQueryValue(name, data, options), (v) => success(v?.split(delimiter) ?? []))
+      : flatMap(getQueryValue(name, data, options), (v) => success(isNil(v) ? [] : v.split(delimiter)))
 
     return flatMap(valuesTry, (values) => {
       return mapArray(values, (value) => parse(name, decode(value)))

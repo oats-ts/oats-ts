@@ -1,5 +1,5 @@
-import { query } from './index'
-import { QueryDeserializers, QueryOptions } from '../types'
+import { query } from '../index'
+import { QueryDeserializers, QueryOptions } from '../../types'
 import {
   enumParser,
   stringParser,
@@ -8,8 +8,8 @@ import {
   literalParser,
   optionalObjectFieldParsers,
   objectFieldParsers,
-} from '../value/value.testdata'
-import { TestDataObject, TypesObject } from '../testTypes'
+} from '../../value/value.testdata'
+import { TestDataObject, TypesObject } from '../../testTypes'
 
 function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializers<any>> {
   return {

@@ -1,5 +1,5 @@
-import { QueryErrorData, QuerySuccessData, QueryTestData } from './query.testutils'
-import { OptObjectFieldObj, TestDataObject, TypesObject } from '../testTypes'
+import { QueryErrorData, QuerySuccessData, QueryTestData } from '../query.testutils'
+import { OptObjectFieldObj, TestDataObject, TypesObject } from '../../testTypes'
 
 const explodeOptionalObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
   [

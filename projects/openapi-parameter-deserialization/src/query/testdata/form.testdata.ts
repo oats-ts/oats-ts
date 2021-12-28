@@ -1,4 +1,4 @@
-import { QueryErrorData, QuerySuccessData, QueryTestData } from './query.testutils'
+import { QueryErrorData, QuerySuccessData, QueryTestData } from '../query.testutils'
 import {
   AnyFieldObj,
   BooleanArrayFieldObj,
@@ -14,7 +14,7 @@ import {
   StringFieldObj,
   TestDataObject,
   TypesObject,
-} from '../testTypes'
+} from '../../testTypes'
 
 const optionalOk: QuerySuccessData<AnyFieldObj>[] = [
   [{ value: undefined }, ''],
