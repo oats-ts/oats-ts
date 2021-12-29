@@ -55,6 +55,7 @@ specifiers:
   '@types/node': 16.7.1
   '@types/node-fetch': 2.5.10
   '@types/pascalcase': 1.0.1
+  '@types/path-to-regexp': 1.7.0
   '@types/prettier': 2.2.3
   '@types/urijs': 1.19.16
   '@types/valid-url': 1.0.3
@@ -141,6 +142,7 @@ dependencies:
   '@types/node': 16.7.1
   '@types/node-fetch': 2.5.10
   '@types/pascalcase': 1.0.1
+  '@types/path-to-regexp': 1.7.0
   '@types/prettier': 2.2.3
   '@types/urijs': 1.19.16
   '@types/valid-url': 1.0.3
@@ -1031,6 +1033,13 @@ packages:
 
   /@types/pascalcase/1.0.1:
     resolution: {integrity: sha512-JYPox1hbKw66Sv9HtvTp0r5jJkaz6k+V8XjEnZUb7B+4ffIoS+3sjiAtwkX6IMO68UQtQWe9QcAjugn9VR4GJg==}
+    dev: false
+
+  /@types/path-to-regexp/1.7.0:
+    resolution: {integrity: sha1-8a+dnJ21+K2AqnXtQk22ZcSNbNQ=}
+    deprecated: This is a stub types definition for path-to-regexp (https://github.com/pillarjs/path-to-regexp). path-to-regexp provides its own type definitions, so you don't need @types/path-to-regexp installed!
+    dependencies:
+      path-to-regexp: 6.2.0
     dev: false
 
   /@types/prettier/2.2.3:
@@ -4590,7 +4599,7 @@ packages:
     dev: false
 
   file:projects/openapi-http-server.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-+z5zow7e5oRLnbWsCEr4rPZyATiwvQiGoF2R8w6TOV9u9oNqgucUXcB3aTMH1eDS36c7gC3PqNd+dS9uNFdGHw==, tarball: file:projects/openapi-http-server.tgz}
+    resolution: {integrity: sha512-24Vnh6REJt1z6irrfl2+9UvGK0Mo0OixdNCeIOFLNyF1KUbD/iNfPrE8+F5cO0KjGNqeQVkQAUzOPNVFFR23Kg==, tarball: file:projects/openapi-http-server.tgz}
     id: file:projects/openapi-http-server.tgz
     name: '@rush-temp/openapi-http-server'
     version: 0.0.0
@@ -4690,14 +4699,16 @@ packages:
     dev: false
 
   file:projects/openapi-parameter-deserialization.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-TTP0U79kFPtYYvxmLu+IsnYpBeGFiawC6mMVbauxo7eK4pFC0q0ty3HhN3R7D5RVzvF5UffNB7yVSVICoiQizg==, tarball: file:projects/openapi-parameter-deserialization.tgz}
+    resolution: {integrity: sha512-geShOLsOsMnzvmkgql8arnjRGtX+I/F8Jp9gxlUit5tQZ1YJRhp+lr+lLXDAORxVwmJAl810exTrsbGKIRjHUw==, tarball: file:projects/openapi-parameter-deserialization.tgz}
     id: file:projects/openapi-parameter-deserialization.tgz
     name: '@rush-temp/openapi-parameter-deserialization'
     version: 0.0.0
     dependencies:
       '@types/jest': 26.0.23
       '@types/node': 16.7.1
+      '@types/path-to-regexp': 1.7.0
       jest: 27.0.4_ts-node@10.0.0
+      path-to-regexp: 6.2.0
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
       typescript: 4.3.5
