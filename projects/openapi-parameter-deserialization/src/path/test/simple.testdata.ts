@@ -1,4 +1,4 @@
-import { p, PathErrorData, PathSuccessData, PathTestData } from '../path.testutils'
+import { p, PathErrorData, PathSuccessData, PathTestData } from './path.testutils'
 import {
   BooleanArrayFieldObj,
   BooleanFieldObj,
@@ -109,11 +109,13 @@ const explodeRequiredObjectError: PathErrorData[] = [
 const explodeOptionalObjectError: PathErrorData[] = [[p('s=x,n=x,b=x,e=x,l=x')]]
 
 const explodeRequired: TypesObject<PathTestData<any>> = {
-  string: { data: stringOk, error: [...requiredError] },
-  number: { data: numberOk, error: [...requiredError, ...numberError] },
-  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
-  literal: { data: literalOk, error: [...requiredError, ...literalError] },
-  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  primitive: {
+    string: { data: stringOk, error: [...requiredError] },
+    number: { data: numberOk, error: [...requiredError, ...numberError] },
+    boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+    literal: { data: literalOk, error: [...requiredError, ...literalError] },
+    enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  },
   array: {
     string: { data: stringArrayOk, error: [] },
     number: { data: numberArrayOk, error: numberArrayError },
@@ -134,11 +136,13 @@ const explodeRequired: TypesObject<PathTestData<any>> = {
 }
 
 const noExplodeRequired: TypesObject<PathTestData<any>> = {
-  string: { data: stringOk, error: [...requiredError] },
-  number: { data: numberOk, error: [...requiredError, ...numberError] },
-  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
-  literal: { data: literalOk, error: [...requiredError, ...literalError] },
-  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  primitive: {
+    string: { data: stringOk, error: [...requiredError] },
+    number: { data: numberOk, error: [...requiredError, ...numberError] },
+    boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+    literal: { data: literalOk, error: [...requiredError, ...literalError] },
+    enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  },
   array: {
     string: { data: stringArrayOk, error: [] },
     number: { data: numberArrayOk, error: numberArrayError },

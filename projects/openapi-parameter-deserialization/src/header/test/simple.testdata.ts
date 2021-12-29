@@ -1,4 +1,4 @@
-import { h, HeaderErrorData, HeaderSuccessData, HeaderTestData } from '../header.testutils'
+import { h, HeaderErrorData, HeaderSuccessData, HeaderTestData } from './header.testutils'
 import {
   AnyFieldObj,
   BooleanArrayFieldObj,
@@ -112,11 +112,13 @@ const explodeRequiredObjectError: HeaderErrorData[] = [
 const explodeOptionalObjectError: HeaderErrorData[] = [[h('s=x,n=x,b=x,e=x,l=x')]]
 
 const explodeRequired: TypesObject<HeaderTestData<any>> = {
-  string: { data: stringOk, error: [...requiredError] },
-  number: { data: numberOk, error: [...requiredError, ...numberError] },
-  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
-  literal: { data: literalOk, error: [...requiredError, ...literalError] },
-  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  primitive: {
+    string: { data: stringOk, error: [...requiredError] },
+    number: { data: numberOk, error: [...requiredError, ...numberError] },
+    boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+    literal: { data: literalOk, error: [...requiredError, ...literalError] },
+    enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  },
   array: {
     string: { data: stringArrayOk, error: [] },
     number: { data: numberArrayOk, error: numberArrayError },
@@ -136,11 +138,13 @@ const explodeRequired: TypesObject<HeaderTestData<any>> = {
   },
 }
 const explodeOptional: TypesObject<HeaderTestData<any>> = {
-  string: { data: [...optionalOk, ...stringOk], error: [] },
-  number: { data: [...optionalOk, ...numberOk], error: numberError },
-  boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
-  literal: { data: [...optionalOk, ...literalOk], error: literalError },
-  enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  primitive: {
+    string: { data: [...optionalOk, ...stringOk], error: [] },
+    number: { data: [...optionalOk, ...numberOk], error: numberError },
+    boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
+    literal: { data: [...optionalOk, ...literalOk], error: literalError },
+    enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  },
   array: {
     string: { data: stringArrayOk, error: [] },
     number: { data: numberArrayOk, error: numberArrayError },
@@ -161,11 +165,13 @@ const explodeOptional: TypesObject<HeaderTestData<any>> = {
 }
 
 const noExplodeRequired: TypesObject<HeaderTestData<any>> = {
-  string: { data: stringOk, error: [...requiredError] },
-  number: { data: numberOk, error: [...requiredError, ...numberError] },
-  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
-  literal: { data: literalOk, error: [...requiredError, ...literalError] },
-  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  primitive: {
+    string: { data: stringOk, error: [...requiredError] },
+    number: { data: numberOk, error: [...requiredError, ...numberError] },
+    boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+    literal: { data: literalOk, error: [...requiredError, ...literalError] },
+    enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  },
   array: {
     string: { data: stringArrayOk, error: [] },
     number: { data: numberArrayOk, error: numberArrayError },
@@ -180,11 +186,13 @@ const noExplodeRequired: TypesObject<HeaderTestData<any>> = {
 }
 
 const noExplodeOptional: TypesObject<HeaderTestData<any>> = {
-  string: { data: [...optionalOk, ...stringOk], error: [] },
-  number: { data: [...optionalOk, ...numberOk], error: numberError },
-  boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
-  literal: { data: [...optionalOk, ...literalOk], error: literalError },
-  enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  primitive: {
+    string: { data: [...optionalOk, ...stringOk], error: [] },
+    number: { data: [...optionalOk, ...numberOk], error: numberError },
+    boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
+    literal: { data: [...optionalOk, ...literalOk], error: literalError },
+    enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  },
   array: {
     string: { data: stringArrayOk, error: [] },
     number: { data: numberArrayOk, error: numberArrayError },
@@ -193,7 +201,7 @@ const noExplodeOptional: TypesObject<HeaderTestData<any>> = {
     enumeration: { data: enumArrayOk, error: enumArrayError },
   },
   object: {
-    optionalFields: { data: [...noExplodeOptionalObjectOk, [{ value: {} }, h('')]], error: [] },
+    optionalFields: { data: noExplodeOptionalObjectOk, error: [] },
     requiredFields: { data: noExplodeRequiredObjectOk, error: [] },
   },
 }

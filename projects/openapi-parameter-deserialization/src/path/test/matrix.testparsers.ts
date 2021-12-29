@@ -8,16 +8,18 @@ import {
   literalParser,
   optionalObjectFieldParsers,
   objectFieldParsers,
-} from '../../value/testdata/value.testdata'
+} from '../../value/test/value.testdata'
 import { TestDataObject, TypesObject } from '../../testTypes'
 
 function createTypesParsers(config: PathOptions): TypesObject<PathDeserializers<any>> {
   return {
-    string: { value: path.matrix.primitive(stringParser, config) },
-    number: { value: path.matrix.primitive(numberParser, config) },
-    boolean: { value: path.matrix.primitive(booleanParser, config) },
-    literal: { value: path.matrix.primitive(literalParser, config) },
-    enumeration: { value: path.matrix.primitive(enumParser, config) },
+    primitive: {
+      string: { value: path.matrix.primitive(stringParser, config) },
+      number: { value: path.matrix.primitive(numberParser, config) },
+      boolean: { value: path.matrix.primitive(booleanParser, config) },
+      literal: { value: path.matrix.primitive(literalParser, config) },
+      enumeration: { value: path.matrix.primitive(enumParser, config) },
+    },
     array: {
       string: { value: path.matrix.array(stringParser, config) },
       number: { value: path.matrix.array(numberParser, config) },

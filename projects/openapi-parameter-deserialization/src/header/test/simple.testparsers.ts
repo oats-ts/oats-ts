@@ -8,16 +8,18 @@ import {
   literalParser,
   optionalObjectFieldParsers,
   objectFieldParsers,
-} from '../../value/testdata/value.testdata'
+} from '../../value/test/value.testdata'
 import { TestDataObject, TypesObject } from '../../testTypes'
 
 function createTypesParsers(config: HeaderOptions): TypesObject<HeaderDeserializers<any>> {
   return {
-    string: { value: header.simple.primitive(stringParser, config) },
-    number: { value: header.simple.primitive(numberParser, config) },
-    boolean: { value: header.simple.primitive(booleanParser, config) },
-    literal: { value: header.simple.primitive(literalParser, config) },
-    enumeration: { value: header.simple.primitive(enumParser, config) },
+    primitive: {
+      string: { value: header.simple.primitive(stringParser, config) },
+      number: { value: header.simple.primitive(numberParser, config) },
+      boolean: { value: header.simple.primitive(booleanParser, config) },
+      literal: { value: header.simple.primitive(literalParser, config) },
+      enumeration: { value: header.simple.primitive(enumParser, config) },
+    },
     array: {
       string: { value: header.simple.array(stringParser, config) },
       number: { value: header.simple.array(numberParser, config) },

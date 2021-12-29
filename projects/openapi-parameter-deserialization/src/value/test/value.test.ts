@@ -19,8 +19,8 @@ import {
   optionalBooleanParser,
   optionalLiteralParser,
   optionalEnumParser,
-} from './testdata/value.testdata'
-import { createValueParserTest } from './value.testutils'
+} from './value.testdata'
+import { createValueParserTest } from '../value.testutils'
 
 describe('value', () => {
   describe('required', () => {

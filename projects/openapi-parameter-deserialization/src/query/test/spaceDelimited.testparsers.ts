@@ -1,21 +1,21 @@
 import { query } from '../index'
 import { QueryDeserializers, QueryOptions } from '../../types'
-import { enumParser, stringParser, numberParser, booleanParser, literalParser } from '../../value/testdata/value.testdata'
+import { enumParser, stringParser, numberParser, booleanParser, literalParser } from '../../value/test/value.testdata'
 import { TestDataObject, TypesObject } from '../../testTypes'
 
 function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializers<any>> {
   return {
     array: {
-      string: { value: query.pipeDelimited.array(stringParser, config) },
-      number: { value: query.pipeDelimited.array(numberParser, config) },
-      boolean: { value: query.pipeDelimited.array(booleanParser, config) },
-      literal: { value: query.pipeDelimited.array(literalParser, config) },
-      enumeration: { value: query.pipeDelimited.array(enumParser, config) },
+      string: { value: query.spaceDelimited.array(stringParser, config) },
+      number: { value: query.spaceDelimited.array(numberParser, config) },
+      boolean: { value: query.spaceDelimited.array(booleanParser, config) },
+      literal: { value: query.spaceDelimited.array(literalParser, config) },
+      enumeration: { value: query.spaceDelimited.array(enumParser, config) },
     },
   }
 }
 
-export const pipeDelimitedTestParsers: TestDataObject<QueryDeserializers<any>> = {
+export const spaceDelimitedTestParsers: TestDataObject<QueryDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true, required: true }),
     optional: createTypesParsers({ explode: true, required: false }),

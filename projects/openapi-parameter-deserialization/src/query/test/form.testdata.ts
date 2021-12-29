@@ -1,4 +1,4 @@
-import { QueryErrorData, QuerySuccessData, QueryTestData } from '../query.testutils'
+import { QueryErrorData, QuerySuccessData, QueryTestData } from './query.testutils'
 import {
   AnyFieldObj,
   BooleanArrayFieldObj,
@@ -156,11 +156,13 @@ const explodeRequiredObjectError: QueryErrorData[] = [
 const explodeOptionalObjectError: QueryErrorData[] = [['?s=x&n=x&b=x&e=x&l=x']]
 
 const explodeRequired: TypesObject<QueryTestData<any>> = {
-  string: { data: stringOk, error: [...requiredError] },
-  number: { data: numberOk, error: [...requiredError, ...numberError] },
-  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
-  literal: { data: literalOk, error: [...requiredError, ...literalError] },
-  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  primitive: {
+    string: { data: stringOk, error: [...requiredError] },
+    number: { data: numberOk, error: [...requiredError, ...numberError] },
+    boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+    literal: { data: literalOk, error: [...requiredError, ...literalError] },
+    enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  },
   array: {
     string: { data: explodeStringArrayOk, error: [] },
     number: { data: explodeNumberArrayOk, error: explodeNumberArrayError },
@@ -180,11 +182,13 @@ const explodeRequired: TypesObject<QueryTestData<any>> = {
   },
 }
 const explodeOptional: TypesObject<QueryTestData<any>> = {
-  string: { data: [...optionalOk, ...stringOk], error: [] },
-  number: { data: [...optionalOk, ...numberOk], error: numberError },
-  boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
-  literal: { data: [...optionalOk, ...literalOk], error: literalError },
-  enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  primitive: {
+    string: { data: [...optionalOk, ...stringOk], error: [] },
+    number: { data: [...optionalOk, ...numberOk], error: numberError },
+    boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
+    literal: { data: [...optionalOk, ...literalOk], error: literalError },
+    enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  },
   array: {
     string: { data: explodeStringArrayOk, error: [] },
     number: { data: explodeNumberArrayOk, error: explodeNumberArrayError },
@@ -205,11 +209,13 @@ const explodeOptional: TypesObject<QueryTestData<any>> = {
 }
 
 const noExplodeRequired: TypesObject<QueryTestData<any>> = {
-  string: { data: stringOk, error: [...requiredError] },
-  number: { data: numberOk, error: [...requiredError, ...numberError] },
-  boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
-  literal: { data: literalOk, error: [...requiredError, ...literalError] },
-  enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  primitive: {
+    string: { data: stringOk, error: [...requiredError] },
+    number: { data: numberOk, error: [...requiredError, ...numberError] },
+    boolean: { data: booleanOk, error: [...requiredError, ...booleanError] },
+    literal: { data: literalOk, error: [...requiredError, ...literalError] },
+    enumeration: { data: enumOk, error: [...requiredError, ...enumError] },
+  },
   array: {
     string: { data: noExplodeStringArrayOk, error: [] },
     number: { data: noExplodeNumberArrayOk, error: [] },
@@ -224,11 +230,13 @@ const noExplodeRequired: TypesObject<QueryTestData<any>> = {
 }
 
 const noExplodeOptional: TypesObject<QueryTestData<any>> = {
-  string: { data: [...optionalOk, ...stringOk], error: [] },
-  number: { data: [...optionalOk, ...numberOk], error: numberError },
-  boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
-  literal: { data: [...optionalOk, ...literalOk], error: literalError },
-  enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  primitive: {
+    string: { data: [...optionalOk, ...stringOk], error: [] },
+    number: { data: [...optionalOk, ...numberOk], error: numberError },
+    boolean: { data: [...optionalOk, ...booleanOk], error: booleanError },
+    literal: { data: [...optionalOk, ...literalOk], error: literalError },
+    enumeration: { data: [...optionalOk, ...enumOk], error: enumError },
+  },
   array: {
     string: { data: noExplodeStringArrayOk, error: [] },
     number: { data: noExplodeNumberArrayOk, error: [] },
@@ -237,7 +245,7 @@ const noExplodeOptional: TypesObject<QueryTestData<any>> = {
     enumeration: { data: noExplodeEnumArrayOk, error: [] },
   },
   object: {
-    optionalFields: { data: [...noExplodeOptionalObjectOk, [{ value: {} }, '']], error: [] },
+    optionalFields: { data: [...noExplodeOptionalObjectOk, [{ value: undefined }, '']], error: [] },
     requiredFields: { data: noExplodeRequiredObjectOk, error: [] },
   },
 }

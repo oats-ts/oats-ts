@@ -8,16 +8,18 @@ import {
   literalParser,
   optionalObjectFieldParsers,
   objectFieldParsers,
-} from '../../value/testdata/value.testdata'
+} from '../../value/test/value.testdata'
 import { TestDataObject, TypesObject } from '../../testTypes'
 
 function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializers<any>> {
   return {
-    string: { value: query.form.primitive(stringParser, config) },
-    number: { value: query.form.primitive(numberParser, config) },
-    boolean: { value: query.form.primitive(booleanParser, config) },
-    literal: { value: query.form.primitive(literalParser, config) },
-    enumeration: { value: query.form.primitive(enumParser, config) },
+    primitive: {
+      string: { value: query.form.primitive(stringParser, config) },
+      number: { value: query.form.primitive(numberParser, config) },
+      boolean: { value: query.form.primitive(booleanParser, config) },
+      literal: { value: query.form.primitive(literalParser, config) },
+      enumeration: { value: query.form.primitive(enumParser, config) },
+    },
     array: {
       string: { value: query.form.array(stringParser, config) },
       number: { value: query.form.array(numberParser, config) },

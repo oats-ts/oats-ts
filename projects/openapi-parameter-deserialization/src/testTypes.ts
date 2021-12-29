@@ -69,23 +69,23 @@ export type EnumArrayFieldObj = {
   value: EnumType[]
 }
 
-export type TypesObject<T> = {
+export type PrimitiveTypesObject<T> = {
   string?: T
   number?: T
   boolean?: T
   literal?: T
   enumeration?: T
-  array?: {
-    string?: T
-    number?: T
-    boolean?: T
-    literal?: T
-    enumeration?: T
-  }
-  object?: {
-    requiredFields?: T
-    optionalFields?: T
-  }
+}
+
+export type ObjectTypesObject<T> = {
+  requiredFields?: T
+  optionalFields?: T
+}
+
+export type TypesObject<T> = {
+  primitive?: PrimitiveTypesObject<T>
+  array?: PrimitiveTypesObject<T>
+  object?: ObjectTypesObject<T>
 }
 
 export type StyleObject<T> = {
@@ -97,3 +97,5 @@ export type TestDataObject<T> = {
   explode?: StyleObject<T>
   noExplode?: StyleObject<T>
 }
+
+export type TestFactory<F, D> = (name: string, fn: F, data: D) => void

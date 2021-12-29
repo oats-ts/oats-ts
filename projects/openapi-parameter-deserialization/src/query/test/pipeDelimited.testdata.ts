@@ -1,4 +1,4 @@
-import { QueryErrorData, QuerySuccessData, QueryTestData } from '../query.testutils'
+import { QueryErrorData, QuerySuccessData, QueryTestData } from './query.testutils'
 import {
   BooleanArrayFieldObj,
   EnumArrayFieldObj,
