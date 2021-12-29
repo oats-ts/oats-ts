@@ -22,7 +22,7 @@ export const createValueParserTest = <Input extends Primitive, Output extends Pr
       })
     }
     if (data.error.length > 0) {
-      it.each(data.error)('should throw, given input: %j', (input: Input) => {
+      it.each(data.error)('should produce issues, given input: %j', (input: Input) => {
         const [issues, value] = parser('test', input)
         expect(value).toEqual(undefined)
         expect(issues).not.toHaveLength(0)

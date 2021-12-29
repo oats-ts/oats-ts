@@ -1,4 +1,4 @@
-import { createTestSuite } from './query.testutils'
+import { createTestSuite as createQueryTestSuite } from './query.testutils'
 import { formTestParsers } from './testdata/form.testparsers'
 import { formTestData } from './testdata/form.testdata'
 import { deepObjectTestParsers } from './testdata/deepObject.testparsers'
@@ -8,7 +8,9 @@ import { pipeDelimitedTestData } from './testdata/pipeDelimited.testdata'
 import { spaceDelimitedTestParsers } from './testdata/spaceDelimited.testparsers'
 import { spaceDelimitedTestData } from './testdata/spaceDelimited.testdata'
 
-createTestSuite('query.form', formTestParsers, formTestData)
-createTestSuite('query.deepObject', deepObjectTestParsers, deepObjectTestData)
-createTestSuite('query.pipeDelimited', pipeDelimitedTestParsers, pipeDelimitedTestData)
-createTestSuite('query.spaceDelimited', spaceDelimitedTestParsers, spaceDelimitedTestData)
+describe('query', () => {
+  createQueryTestSuite('query.form', formTestParsers, formTestData)
+  createQueryTestSuite('query.deepObject', deepObjectTestParsers, deepObjectTestData)
+  createQueryTestSuite('query.pipeDelimited', pipeDelimitedTestParsers, pipeDelimitedTestData)
+  createQueryTestSuite('query.spaceDelimited', spaceDelimitedTestParsers, spaceDelimitedTestData)
+})

@@ -1,4 +1,4 @@
-import { failure, success, Try } from '@oats-ts/try'
+import { failure, mapArray, mapRecord, success, Try } from '@oats-ts/try'
 import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '../types'
 import { has, isNil, decode } from '../utils'
 
@@ -36,14 +36,15 @@ export function parsePathFromRecord<T extends PrimitiveRecord>(
   parsers: FieldParsers<T>,
   paramData: Record<string, string>,
 ): Try<T> {
-  // const result: Record<string, Primitive> = {}
-  // const parserKeys = Object.keys(parsers)
-  // for (let i = 0; i < parserKeys.length; i += 1) {
-  //   const key = parserKeys[i]
-  //   const parser = parsers[key]
-  //   const value = paramData[key]
-  //   result[decode(key)] = parser(`${name}.${key}`, decode(value))
-  // }
-  // return result as T
-  return undefined
+  const parserKeys = Object.keys(parsers)
+  const result = mapRecord(
+    parserKeys,
+    (key): Try<Primitive> => {
+      const parser = parsers[key]
+      const value = paramData[key]
+      return parser(`${name}.${key}`, decode(value))
+    },
+    (key) => decode(key),
+  )
+  return result as Try<T>
 }
