@@ -1,4 +1,4 @@
-import { EnumType, LiteralType, ObjType, OptObjType } from '../../testTypes'
+import { EnumType, LiteralType, ObjType, OptObjType } from '../../test/testTypes'
 import { FieldParsers } from '../../types'
 import { value } from '../index'
 import { ValueErrorData, ValueSuccessData, ValueTestData } from '../value.testutils'

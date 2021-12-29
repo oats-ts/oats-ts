@@ -8,8 +8,8 @@ import {
   literalParser,
   optionalObjectFieldParsers,
   objectFieldParsers,
-} from '../../value/test/value.testdata'
-import { TestDataObject, TypesObject } from '../../testTypes'
+} from '../../value/test/valueTestData'
+import { TestDataObject, TypesObject } from '../../test/testTypes'
 
 function createTypesParsers(config: HeaderOptions): TypesObject<HeaderDeserializers<any>> {
   return {

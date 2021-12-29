@@ -1,4 +1,4 @@
-import { p, PathErrorData, PathSuccessData, PathTestData } from './path.testutils'
+import { p, PathErrorData, PathSuccessData, PathTestData } from './pathTestUtils'
 import {
   BooleanArrayFieldObj,
   BooleanFieldObj,
@@ -13,96 +13,88 @@ import {
   StringFieldObj,
   TestDataObject,
   TypesObject,
-} from '../../testTypes'
+} from '../../test/testTypes'
 
 const stringOk: PathSuccessData<StringFieldObj>[] = [
-  [{ value: 'hello' }, p(';value=hello')],
-  [{ value: 'hello test' }, p(';value=hello%20test')],
+  [{ value: 'hello' }, p('.hello')],
+  [{ value: 'hello test' }, p('.hello%20test')],
 ]
 
 const numberOk: PathSuccessData<NumberFieldObj>[] = [
-  [{ value: 10 }, p(';value=10')],
-  [{ value: 10.27 }, p(';value=10.27')],
+  [{ value: 10 }, p('.10')],
+  [{ value: 10.27 }, p('.10.27')],
 ]
 
 const booleanOk: PathSuccessData<BooleanFieldObj>[] = [
-  [{ value: false }, p(';value=false')],
-  [{ value: true }, p(';value=true')],
+  [{ value: false }, p('.false')],
+  [{ value: true }, p('.true')],
 ]
 
-const literalOk: PathSuccessData<LiteralFieldObj>[] = [[{ value: 'cat' }, p(';value=cat')]]
+const literalOk: PathSuccessData<LiteralFieldObj>[] = [[{ value: 'cat' }, p('.cat')]]
 
 const enumOk: PathSuccessData<EnumFieldObj>[] = [
-  [{ value: 'cat' }, p(';value=cat')],
-  [{ value: 'dog' }, p(';value=dog')],
-  [{ value: 'racoon' }, p(';value=racoon')],
+  [{ value: 'cat' }, p('.cat')],
+  [{ value: 'dog' }, p('.dog')],
+  [{ value: 'racoon' }, p('.racoon')],
 ]
 
 const noExplodeStringArrayOk: PathSuccessData<StringArrayFieldObj>[] = [
-  [{ value: ['foo', 'bar', 'foobar'] }, p(';value=foo,bar,foobar')],
+  [{ value: ['foo', 'bar', 'foobar'] }, p('.foo,bar,foobar')],
 ]
 
 const noExplodeNumberArrayOk: PathSuccessData<NumberArrayFieldObj>[] = [
-  [{ value: [1, 2, 3] }, p(';value=1,2,3')],
-  [{ value: [1.2, 3.4, 5.998] }, p(';value=1%2E2,3%2E4,5%2E998')],
+  [{ value: [1, 2, 3] }, p('.1,2,3')],
+  [{ value: [1.2, 3.4, 5.998] }, p('.1%2E2,3%2E4,5%2E998')],
 ]
 
-const noExplodeBooleanArrayOk: PathSuccessData<BooleanArrayFieldObj>[] = [
-  [{ value: [true, false] }, p(';value=true,false')],
-]
+const noExplodeBooleanArrayOk: PathSuccessData<BooleanArrayFieldObj>[] = [[{ value: [true, false] }, p('.true,false')]]
 
-const noExplodeLiteralArrayOk: PathSuccessData<LiteralArrayFieldObj>[] = [
-  [{ value: ['cat', 'cat'] }, p(';value=cat,cat')],
-]
+const noExplodeLiteralArrayOk: PathSuccessData<LiteralArrayFieldObj>[] = [[{ value: ['cat', 'cat'] }, p('.cat,cat')]]
 
 const noExplodeEnumArrayOk: PathSuccessData<EnumArrayFieldObj>[] = [
-  [{ value: ['cat', 'dog', 'racoon'] }, p(';value=cat,dog,racoon')],
-  [{ value: ['cat'] }, p(';value=cat')],
+  [{ value: ['cat', 'dog', 'racoon'] }, p('.cat,dog,racoon')],
+  [{ value: ['cat'] }, p('.cat')],
 ]
 
 const explodeStringArrayOk: PathSuccessData<StringArrayFieldObj>[] = [
-  [{ value: ['foo', 'bar', 'foobar'] }, p(';value=foo;value=bar;value=foobar')],
+  [{ value: ['foo', 'bar', 'foobar'] }, p('.foo.bar.foobar')],
 ]
 
 const explodeNumberArrayOk: PathSuccessData<NumberArrayFieldObj>[] = [
-  [{ value: [1, 2, 3] }, p(';value=1;value=2;value=3')],
-  [{ value: [1.2, 3.4, 5.998] }, p(';value=1%2E2;value=3%2E4;value=5%2E998')],
+  [{ value: [1, 2, 3] }, p('.1.2.3')],
+  [{ value: [1.2, 3.4, 5.998] }, p('.1%2E2.3%2E4.5%2E998')],
 ]
 
-const explodeBooleanArrayOk: PathSuccessData<BooleanArrayFieldObj>[] = [
-  [{ value: [true, false] }, p(';value=true;value=false')],
-]
+const explodeBooleanArrayOk: PathSuccessData<BooleanArrayFieldObj>[] = [[{ value: [true, false] }, p('.true.false')]]
 
-const explodeLiteralArrayOk: PathSuccessData<LiteralArrayFieldObj>[] = [
-  [{ value: ['cat', 'cat'] }, p(';value=cat;value=cat')],
-]
+const explodeLiteralArrayOk: PathSuccessData<LiteralArrayFieldObj>[] = [[{ value: ['cat', 'cat'] }, p('.cat.cat')]]
 
 const explodeEnumArrayOk: PathSuccessData<EnumArrayFieldObj>[] = [
-  [{ value: ['cat', 'dog', 'racoon'] }, p(';value=cat;value=dog;value=racoon')],
-  [{ value: ['cat'] }, p(';value=cat')],
+  [{ value: ['cat', 'dog', 'racoon'] }, p('.cat.dog.racoon')],
+  [{ value: ['cat'] }, p('.cat')],
 ]
 
 const explodeOptionalObjectOk: PathSuccessData<OptObjectFieldObj>[] = [
-  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p(';s=str;n=10;b=true;e=dog;l=cat')],
-  [{ value: { n: 10, b: true, e: 'dog', l: 'cat' } }, p(';n=10;b=true;e=dog;l=cat')],
-  [{ value: { b: true, e: 'dog', l: 'cat' } }, p(';b=true;e=dog;l=cat')],
-  [{ value: { e: 'dog', l: 'cat' } }, p(';e=dog;l=cat')],
-  [{ value: { l: 'cat' } }, p(';l=cat')],
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p('.s=str.n=10.b=true.e=dog.l=cat')],
+  [{ value: { n: 10, b: true, e: 'dog', l: 'cat' } }, p('.n=10.b=true.e=dog.l=cat')],
+  [{ value: { b: true, e: 'dog', l: 'cat' } }, p('.b=true.e=dog.l=cat')],
+  [{ value: { e: 'dog', l: 'cat' } }, p('.e=dog.l=cat')],
+  [{ value: { l: 'cat' } }, p('.l=cat')],
 ]
 
 const explodeRequiredObjectOk: PathSuccessData<OptObjectFieldObj>[] = [
-  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p(';s=str;n=10;b=true;e=dog;l=cat')],
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p('.s=str.n=10.b=true.e=dog.l=cat')],
 ]
 
 const noExplodeOptionalObjectOk: PathSuccessData<OptObjectFieldObj>[] = [
-  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p(';value=s,str,n,10,b,true,l,cat,e,dog')],
-  [{ value: { n: 10, b: true, e: 'dog', l: 'cat' } }, p(';value=n,10,b,true,l,cat,e,dog')],
-  [{ value: { b: true, e: 'dog', l: 'cat' } }, p(';value=b,true,l,cat,e,dog')],
-  [{ value: { e: 'dog', l: 'cat' } }, p(';value=l,cat,e,dog')],
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p('.s,str,n,10,b,true,l,cat,e,dog')],
+  [{ value: { n: 10, b: true, e: 'dog', l: 'cat' } }, p('.n,10,b,true,l,cat,e,dog')],
+  [{ value: { b: true, e: 'dog', l: 'cat' } }, p('.b,true,l,cat,e,dog')],
+  [{ value: { e: 'dog', l: 'cat' } }, p('.l,cat,e,dog')],
 ]
 
 const noExplodeRequiredObjectOk: PathSuccessData<OptObjectFieldObj>[] = [
-  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p(';value=s,str,n,10,b,true,l,cat,e,dog')],
+  [{ value: { s: 'str', n: 10, b: true, e: 'dog', l: 'cat' } }, p('.s,str,n,10,b,true,l,cat,e,dog')],
 ]
 
 const requiredError: PathErrorData[] = [[''], ['/test/'], ['/test/x']]
@@ -157,7 +149,7 @@ const noExplodeRequired: TypesObject<PathTestData<any>> = {
   },
 }
 
-export const matrixTestData: TestDataObject<PathTestData<any>> = {
+export const labelTestData: TestDataObject<PathTestData<any>> = {
   explode: {
     required: explodeRequired,
   },

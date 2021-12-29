@@ -1,4 +1,4 @@
-import { h, HeaderErrorData, HeaderSuccessData, HeaderTestData } from './header.testutils'
+import { h, HeaderErrorData, HeaderSuccessData, HeaderTestData } from './headerTestUtils'
 import {
   AnyFieldObj,
   BooleanArrayFieldObj,
@@ -14,7 +14,7 @@ import {
   StringFieldObj,
   TestDataObject,
   TypesObject,
-} from '../../testTypes'
+} from '../../test/testTypes'
 
 const optionalOk: HeaderSuccessData<AnyFieldObj>[] = [[{ value: undefined }, { unrelated: '10' }]]
 

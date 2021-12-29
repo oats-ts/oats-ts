@@ -1,9 +1,9 @@
-import { simpleTestData } from './simple.testdata'
-import { simpleTestParsers } from './simple.testparsers'
+import { simpleTestData } from './simpleTestData'
+import { simpleTestParsers } from './simpleTestParsers'
 import { createHeaderDeserializer } from '../createHeaderDeserializer'
 import { ParameterObject, HeaderDeserializers, RawHeaders } from '../../types'
-import { createTestSuiteFactory } from '../../testutils'
-import { HeaderTestData } from './header.testutils'
+import { createTestSuiteFactory } from '../../test/testUtils'
+import { HeaderTestData } from './headerTestUtils'
 
 export function createHeaderParserTest<Data extends ParameterObject>(
   name: string,

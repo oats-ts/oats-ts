@@ -1,4 +1,4 @@
-import { QueryErrorData, QuerySuccessData, QueryTestData } from './query.testutils'
+import { QueryErrorData, QuerySuccessData, QueryTestData } from './queryTestUtils'
 import {
   BooleanArrayFieldObj,
   EnumArrayFieldObj,
@@ -7,7 +7,7 @@ import {
   StringArrayFieldObj,
   TestDataObject,
   TypesObject,
-} from '../../testTypes'
+} from '../../test/testTypes'
 
 const explodeStringArrayOk: QuerySuccessData<StringArrayFieldObj>[] = [
   [{ value: ['foo', 'bar', 'foobar'] }, '?value=foo&value=bar&value=foobar'],
@@ -37,49 +37,44 @@ const explodeEnumArrayOk: QuerySuccessData<EnumArrayFieldObj>[] = [
 ]
 
 const noExplodeStringArrayOk: QuerySuccessData<StringArrayFieldObj>[] = [
-  [{ value: ['foo', 'bar', 'foobar'] }, '?value=foo%20bar%20foobar'],
+  [{ value: ['foo', 'bar', 'foobar'] }, '?value=foo|bar|foobar'],
 ]
 
 const noExplodeNumberArrayOk: QuerySuccessData<NumberArrayFieldObj>[] = [
-  [{ value: [1, 2, 3] }, '?value=1%202%203'],
-  [{ value: [1.2, 3.4, 5.998] }, '?value=1.2%203.4%205.998'],
+  [{ value: [1, 2, 3] }, '?value=1|2|3'],
+  [{ value: [1.2, 3.4, 5.998] }, '?value=1.2|3.4|5.998'],
 ]
 
 const noExplodeBooleanArrayOk: QuerySuccessData<BooleanArrayFieldObj>[] = [
-  [{ value: [true, false] }, '?value=true%20false'],
+  [{ value: [true, false] }, '?value=true|false'],
 ]
 
 const noExplodeLiteralArrayOk: QuerySuccessData<LiteralArrayFieldObj>[] = [
-  [{ value: ['cat', 'cat'] }, '?value=cat%20cat'],
+  [{ value: ['cat', 'cat'] }, '?value=cat|cat'],
 ]
 
 const noExplodeEnumArrayOk: QuerySuccessData<EnumArrayFieldObj>[] = [
-  [{ value: ['cat', 'dog', 'racoon'] }, '?value=cat%20dog%20racoon'],
+  [{ value: ['cat', 'dog', 'racoon'] }, '?value=cat|dog|racoon'],
   [{ value: ['cat'] }, '?value=cat'],
 ]
 
-const noExplodeNumberArrayError: QueryErrorData[] = [['?value=1%20cat'], ['?value=false%2032'], ['?value=c11']]
+const noExplodeNumberArrayError: QueryErrorData[] = [['?value=1|cat'], ['?value=false|32'], ['?value=c11']]
 
-const explodeNumberArrayError: QueryErrorData[] = [['?value=1%20cat'], ['?value=false%2032'], ['?value=c11']]
+const explodeNumberArrayError: QueryErrorData[] = [['?value=1|cat'], ['?value=false|32'], ['?value=c11']]
 
-const expodeBooleanArrayError: QueryErrorData[] = [['?value=cat%20true'], ['?value=fals%2012432'], ['?value=FaLsE']]
+const expodeBooleanArrayError: QueryErrorData[] = [['?value=cat|true'], ['?value=fals|12432'], ['?value=FaLsE']]
 
-const explodeLiteralArrayError: QueryErrorData[] = [['?value=dog%20asd'], ['?value=false%20cat']]
+const explodeLiteralArrayError: QueryErrorData[] = [['?value=dog|asd'], ['?value=false|cat']]
 
-const explodeEnumArrayError: QueryErrorData[] = [
-  ['?value=_cat%20dog'],
-  ['?value=cat%201'],
-  ['?value=CaT'],
-  ['?value=DOG'],
-]
+const explodeEnumArrayError: QueryErrorData[] = [['?value=_cat|dog'], ['?value=cat|1'], ['?value=CaT'], ['?value=DOG']]
 
-const noExpodeBooleanArrayError: QueryErrorData[] = [['?value=cat%20true'], ['?value=false%2012432'], ['?value=FaLsE']]
+const noExpodeBooleanArrayError: QueryErrorData[] = [['?value=cat|true'], ['?value=false|12432'], ['?value=FaLsE']]
 
 const noExplodeLiteralArrayError: QueryErrorData[] = [['?value=dog&value=asd'], ['?value=false&value=cat']]
 
 const noExplodeEnumArrayError: QueryErrorData[] = [
-  ['?value=_cat%20dog'],
-  ['?value=cat%201'],
+  ['?value=_cat|dog'],
+  ['?value=cat|1'],
   ['?value=CaT&value=asd'],
   ['?value=DOG'],
 ]
@@ -124,7 +119,7 @@ const noExplodeOptional: TypesObject<QueryTestData<any>> = {
   },
 }
 
-export const spaceDelimitedTestData: TestDataObject<QueryTestData<any>> = {
+export const pipeDelimitedTestData: TestDataObject<QueryTestData<any>> = {
   explode: {
     required: explodeRequired,
     optional: explodeOptional,

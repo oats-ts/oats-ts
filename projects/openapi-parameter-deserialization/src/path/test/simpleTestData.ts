@@ -1,4 +1,4 @@
-import { p, PathErrorData, PathSuccessData, PathTestData } from './path.testutils'
+import { p, PathErrorData, PathSuccessData, PathTestData } from './pathTestUtils'
 import {
   BooleanArrayFieldObj,
   BooleanFieldObj,
@@ -13,7 +13,7 @@ import {
   StringFieldObj,
   TestDataObject,
   TypesObject,
-} from '../../testTypes'
+} from '../../test/testTypes'
 
 const stringOk: PathSuccessData<StringFieldObj>[] = [
   [{ value: 'hello' }, p('hello')],

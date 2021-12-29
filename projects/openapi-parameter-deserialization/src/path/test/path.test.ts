@@ -1,15 +1,15 @@
-import { labelTestData } from './label.testdata'
-import { labelTestParsers } from './label.testparsers'
-import { matrixTestData } from './matrix.testdata'
-import { matrixTestParsers } from './matrix.testparsers'
-import { simpleTestData } from './simple.testdata'
-import { simpleTestParsers } from './simple.testparsers'
+import { labelTestData } from './labelTestData'
+import { labelTestParsers } from './labelTestParsers'
+import { matrixTestData } from './matrixTestData'
+import { matrixTestParsers } from './matrixTestParsers'
+import { simpleTestData } from './simpleTestData'
+import { simpleTestParsers } from './simpleTestParsers'
 
 import { pathToRegexp } from 'path-to-regexp'
 import { createPathDeserializer } from '../createPathDeserializer'
 import { ParameterObject, PathDeserializers } from '../../types'
-import { createTestSuiteFactory } from '../../testutils'
-import { PathTestData } from './path.testutils'
+import { createTestSuiteFactory } from '../../test/testUtils'
+import { PathTestData } from './pathTestUtils'
 
 const REGEXP = pathToRegexp('/test/:value/stuff')
 const NAMES = ['value']

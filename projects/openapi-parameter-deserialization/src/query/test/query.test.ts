@@ -1,16 +1,16 @@
-import { formTestParsers } from './form.testparsers'
-import { formTestData } from './form.testdata'
-import { deepObjectTestParsers } from './deepObject.testparsers'
-import { deepObjectTestData } from './deepObject.testdata'
-import { pipeDelimitedTestParsers } from './pipeDelimited.testparsers'
-import { pipeDelimitedTestData } from './pipeDelimited.testdata'
-import { spaceDelimitedTestParsers } from './spaceDelimited.testparsers'
-import { spaceDelimitedTestData } from './spaceDelimited.testdata'
+import { formTestParsers } from './formTestParsers'
+import { formTestData } from './formTestData'
+import { deepObjectTestParsers } from './deepObjectTestParsers'
+import { deepObjectTestData } from './deepObjectTestData'
+import { pipeDelimitedTestParsers } from './pipeDelimitedTestParsers'
+import { pipeDelimitedTestData } from './pipeDelimitedTestData'
+import { spaceDelimitedTestParsers } from './spaceDelimitedTestParsers'
+import { spaceDelimitedTestData } from './spaceDelimitedTestData'
 
 import { createQueryDeserializer } from '../createQueryDeserializer'
 import { ParameterObject, QueryDeserializers } from '../../types'
-import { createTestSuiteFactory } from '../../testutils'
-import { QueryTestData } from './query.testutils'
+import { createTestSuiteFactory } from '../../test/testUtils'
+import { QueryTestData } from './queryTestUtils'
 
 export const createQueryParserTest = <Data extends ParameterObject>(
   name: string,
