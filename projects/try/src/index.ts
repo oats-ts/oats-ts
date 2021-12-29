@@ -30,6 +30,17 @@ export function map<I, O>(input: Try<I>, transform: (input: I) => O): Try<O> {
   return isFailure(input) ? input : success(transform(input[1]))
 }
 
+export function get<T>(input: Try<T>): T {
+  if (isFailure(input)) {
+    throw new TypeError(`Can't get value of Failure (${input})`)
+  }
+  return input[1]
+}
+
+export function getIssues(input: Try<unknown>): Issue[] {
+  return input[0]
+}
+
 export function mapArray<I, O>(input: I[], transform: (input: I, index: number, array: I[]) => Try<O>): Try<O[]> {
   const output: O[] = []
   const allIssues: Issue[] = []

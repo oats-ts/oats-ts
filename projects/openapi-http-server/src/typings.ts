@@ -8,10 +8,10 @@ import {
 import { Try } from '@oats-ts/try'
 
 export type ServerConfiguration<T> = {
-  getPathParameters<P>(frameworkInput: T, deserializer: (input: string) => P): Promise<Try<P>>
-  getQueryParameters<Q>(frameworkInput: T, deserializer: (input: string) => Q): Promise<Try<Q>>
-  getRequestHeaders<H>(frameworkInput: T, deserializer: (input: RawHttpHeaders) => H): Promise<Try<H>>
-  getMimeType<M extends string>(frameworkInput: T, validator: RequestBodyValidators<M>): Promise<Try<M>>
+  getPathParameters<P>(frameworkInput: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
+  getQueryParameters<Q>(frameworkInput: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
+  getRequestHeaders<H>(frameworkInput: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
+  getMimeType<M extends string>(frameworkInput: T): Promise<M>
   getRequestBody<M extends string, B>(
     frameworkInput: T,
     mimeType: M | undefined,

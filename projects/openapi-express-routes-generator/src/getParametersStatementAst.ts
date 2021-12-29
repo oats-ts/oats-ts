@@ -46,20 +46,7 @@ export function getParametersStatementAst(
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createArrayBindingPattern([
-              factory.createBindingElement(
-                undefined,
-                undefined,
-                factory.createIdentifier(issuesNameMap[location]),
-                undefined,
-              ),
-              factory.createBindingElement(
-                undefined,
-                undefined,
-                factory.createIdentifier(valueNameMap[location]),
-                undefined,
-              ),
-            ]),
+            factory.createIdentifier(valueNameMap[location]),
             undefined,
             undefined,
             factory.createAwaitExpression(

@@ -53,14 +53,6 @@ export type HasQueryParameters<T> = {
   query: T
 }
 
-export type HasIssues = {
-  issues: Issue[]
-}
-
-export type HasNoIssues = {
-  issues?: undefined
-}
-
 export type HasRequestBody<M extends string, T> = {
   mimeType: M
   body: T

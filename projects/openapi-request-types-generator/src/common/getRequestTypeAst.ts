@@ -1,4 +1,4 @@
-import { entries, isNil } from 'lodash'
+import { entries, identity, isNil } from 'lodash'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
 import {
   EnhancedOperation,
@@ -8,12 +8,16 @@ import {
 } from '@oats-ts/openapi-common'
 import { getParameterTypesAst } from './getParameterTypesAst'
 
-function getFullType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
+function getFullType(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  transform: (node: TypeNode) => TypeNode = identity,
+): TypeNode {
   const { referenceOf } = context
   const bodies = entries(getRequestBodyContent(data, context))
   switch (bodies.length) {
     case 0: {
-      const common = getParameterTypesAst(data, context)
+      const common = getParameterTypesAst(data, context, transform)
       switch (common.length) {
         case 0:
           return undefined
@@ -24,13 +28,13 @@ function getFullType(data: EnhancedOperation, context: OpenAPIGeneratorContext):
       }
     }
     case 1: {
-      const common = getParameterTypesAst(data, context)
+      const common = getParameterTypesAst(data, context, transform)
       const [[mediaType, { schema }]] = bodies
       return factory.createIntersectionTypeNode([
         ...common,
         factory.createTypeReferenceNode(RuntimePackages.Http.HasRequestBody, [
           factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
-          referenceOf(schema, 'openapi/type'),
+          transform(referenceOf(schema, 'openapi/type')),
         ]),
       ])
     }
@@ -38,10 +42,10 @@ function getFullType(data: EnhancedOperation, context: OpenAPIGeneratorContext):
       return factory.createUnionTypeNode(
         bodies.map(([contentType, mediaType]) =>
           factory.createIntersectionTypeNode([
-            ...getParameterTypesAst(data, context),
+            ...getParameterTypesAst(data, context, transform),
             factory.createTypeReferenceNode(RuntimePackages.Http.HasRequestBody, [
               factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
-              referenceOf(mediaType.schema, 'openapi/type'),
+              transform(referenceOf(mediaType.schema, 'openapi/type')),
             ]),
           ]),
         ),
@@ -50,10 +54,13 @@ function getFullType(data: EnhancedOperation, context: OpenAPIGeneratorContext):
   }
 }
 
-export function getRequestTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
-  const { nameOf } = context
-  const typeName = nameOf(data.operation, 'openapi/request-type')
-  const fullType = getFullType(data, context)
+export function getRequestTypeAst(
+  typeName: string,
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  transform: (node: TypeNode) => TypeNode = identity,
+): TypeAliasDeclaration {
+  const fullType = getFullType(data, context, transform)
   return isNil(fullType)
     ? undefined
     : factory.createTypeAliasDeclaration(

@@ -5,15 +5,15 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
 } from '@oats-ts/openapi-http'
-import { Try } from '@oats-ts/try'
+import { failure, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { ServerConfiguration } from '../typings'
 import { ExpressParameters } from './typings'
 
 export class ExpressServerConfiguration implements ServerConfiguration<ExpressParameters> {
-  async getPathParameters<P>({ request }: ExpressParameters, deserializer: (input: string) => P): Promise<Try<P>> {
+  async getPathParameters<P>({ request }: ExpressParameters, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
     try {
-      return [[], deserializer(request.url)]
+      return deserializer(request.url)
     } catch (e) {
       const issue: Issue = {
         message: e.message,
@@ -21,12 +21,15 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
         path: '',
         type: '',
       }
-      return [[issue], undefined]
+      return failure([issue])
     }
   }
-  async getQueryParameters<Q>({ request }: ExpressParameters, deserializer: (input: string) => Q): Promise<Try<Q>> {
+  async getQueryParameters<Q>(
+    { request }: ExpressParameters,
+    deserializer: (input: string) => Try<Q>,
+  ): Promise<Try<Q>> {
     try {
-      return [[], deserializer(new URL(request.url, 'http://test.com').search)]
+      return deserializer(new URL(request.url, 'http://test.com').search)
     } catch (e) {
       const issue: Issue = {
         message: e.message,
@@ -34,15 +37,15 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
         path: '',
         type: '',
       }
-      return [[issue], undefined]
+      return failure([issue])
     }
   }
   async getRequestHeaders<H>(
     { request }: ExpressParameters,
-    deserializer: (input: RawHttpHeaders) => H,
+    deserializer: (input: RawHttpHeaders) => Try<H>,
   ): Promise<Try<H>> {
     try {
-      return [[], deserializer(request.headers as RawHttpHeaders)]
+      return deserializer(request.headers as RawHttpHeaders)
     } catch (e) {
       const issue: Issue = {
         message: e.message,
@@ -50,33 +53,12 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
         path: '',
         type: '',
       }
-      return [[issue], undefined]
+      return failure([issue])
     }
   }
-  async getMimeType<M extends string>(
-    { request }: ExpressParameters,
-    validator: RequestBodyValidators<M>,
-  ): Promise<Try<M>> {
-    const contentType = request.header('Content-Type') as M
-    if (contentType === null || contentType === undefined) {
-      const issue: Issue = {
-        message: `Missing "Content-Type" header`,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return [[issue], undefined]
-    }
-    if (validator[contentType] === null || validator[contentType] === undefined) {
-      const issue: Issue = {
-        message: `Unexpected "Content-Type" request header "${contentType}"`,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return [[issue], undefined]
-    }
-    return [[], contentType]
+
+  async getMimeType<M extends string>({ request }: ExpressParameters): Promise<M> {
+    return request.header('Content-Type') as M
   }
 
   async getRequestBody<M extends string, B>(
@@ -87,6 +69,25 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     // No mimetype means that getMimeType failed
     if (mimeType === null || mimeType === undefined) {
       return [[], undefined]
+    }
+
+    if (mimeType === null || mimeType === undefined) {
+      const issue: Issue = {
+        message: `Missing "Content-Type" header`,
+        severity: 'error',
+        path: '',
+        type: '',
+      }
+      return failure([issue])
+    }
+    if (validators[mimeType] === null || validators[mimeType] === undefined) {
+      const issue: Issue = {
+        message: `Unexpected "Content-Type" request header "${mimeType}"`,
+        severity: 'error',
+        path: '',
+        type: '',
+      }
+      return failure([issue])
     }
     const validator = validators[mimeType]
     const issues = validator(request.body)

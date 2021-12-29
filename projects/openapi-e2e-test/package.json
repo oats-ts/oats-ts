@@ -17,7 +17,7 @@
   "scripts": {
     "build": "echo 'Nothing to build'",
     "g": "ts-node src/schema/generate.ts",
-    "test": "cross-env REPEATS=100 jest --runInBand",
+    "test": "cross-env REPEATS=1 jest --runInBand",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -32,6 +32,7 @@
     "@oats-ts/openapi-parameter-deserialization": "0.0.7",
     "@oats-ts/validators": "0.0.7",
     "@oats-ts/openapi-test-utils": "0.0.7",
+    "@oats-ts/try": "0.0.7",
     "@types/express": "4.17.13",
     "@types/faker": "5.5.9",
     "@types/jest": "26.0.23",
