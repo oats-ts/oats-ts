@@ -1,5 +1,5 @@
 import { query } from '../index'
-import { QueryDeserializers, QueryOptions } from '../../types'
+import { QueryValueDeserializers, QueryOptions } from '../../types'
 import {
   enumParser,
   stringParser,
@@ -11,7 +11,7 @@ import {
 } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
 
-function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializers<any>> {
+function createTypesParsers(config: QueryOptions): TypesObject<QueryValueDeserializers<any>> {
   return {
     primitive: {
       string: { value: query.form.primitive(stringParser, config) },
@@ -34,7 +34,7 @@ function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializer
   }
 }
 
-export const formTestParsers: TestDataObject<QueryDeserializers<any>> = {
+export const formTestParsers: TestDataObject<QueryValueDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true, required: true }),
     optional: createTypesParsers({ explode: true, required: false }),

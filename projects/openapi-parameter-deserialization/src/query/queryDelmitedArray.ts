@@ -6,8 +6,7 @@ import { getQueryValue } from './queryUtils'
 export const queryDelimitedArray =
   (delimiter: string) =>
   <T extends Primitive>(parse: ValueParser<string, T>, opts: QueryOptions = {}) =>
-  (name: string) =>
-  (data: RawQueryParams): Try<T[]> => {
+  (name: string, data: RawQueryParams): Try<T[]> => {
     const options: QueryOptions = { explode: true, ...opts }
 
     const valuesTry = options.explode

@@ -1,5 +1,5 @@
 import { failure, flatMap, mapArray, Try } from '@oats-ts/try'
-import { Primitive, ValueParser, RawPathParams, PathOptions } from '../types'
+import { Primitive, ValueParser, RawPathParams, PathOptions, PathValueDeserializer } from '../types'
 import { decode, encode } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
 
@@ -53,8 +53,7 @@ function pathMatrixArrayNoExplode<T extends Primitive>(
 }
 
 export const pathMatrixArray =
-  <T extends Primitive>(parse: ValueParser<string, T>, options: PathOptions = {}) =>
-  (name: string) =>
-  (data: RawPathParams): Try<T[]> => {
+  <T extends Primitive>(parse: ValueParser<string, T>, options: PathOptions = {}): PathValueDeserializer<T[]> =>
+  (name: string, data: RawPathParams): Try<T[]> => {
     return options.explode ? pathMatrixArrayExplode(parse, name, data) : pathMatrixArrayNoExplode(parse, name, data)
   }

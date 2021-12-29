@@ -1,5 +1,5 @@
 import { path } from '../index'
-import { PathDeserializers, PathOptions } from '../../types'
+import { PathValueDeserializers, PathOptions } from '../../types'
 import {
   enumParser,
   stringParser,
@@ -11,7 +11,7 @@ import {
 } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
 
-function createTypesParsers(config: PathOptions): TypesObject<PathDeserializers<any>> {
+function createTypesParsers(config: PathOptions): TypesObject<PathValueDeserializers<any>> {
   return {
     primitive: {
       string: { value: path.label.primitive(stringParser, config) },
@@ -34,7 +34,7 @@ function createTypesParsers(config: PathOptions): TypesObject<PathDeserializers<
   }
 }
 
-export const labelTestParsers: TestDataObject<PathDeserializers<any>> = {
+export const labelTestParsers: TestDataObject<PathValueDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true }),
   },

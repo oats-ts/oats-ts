@@ -1,5 +1,5 @@
 import { header } from '../index'
-import { HeaderDeserializers, HeaderOptions } from '../../types'
+import { HeaderValueDeserializers, HeaderOptions } from '../../types'
 import {
   enumParser,
   stringParser,
@@ -11,7 +11,7 @@ import {
 } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
 
-function createTypesParsers(config: HeaderOptions): TypesObject<HeaderDeserializers<any>> {
+function createTypesParsers(config: HeaderOptions): TypesObject<HeaderValueDeserializers<any>> {
   return {
     primitive: {
       string: { value: header.simple.primitive(stringParser, config) },
@@ -34,7 +34,7 @@ function createTypesParsers(config: HeaderOptions): TypesObject<HeaderDeserializ
   }
 }
 
-export const simpleTestParsers: TestDataObject<HeaderDeserializers<any>> = {
+export const simpleTestParsers: TestDataObject<HeaderValueDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true, required: true }),
     optional: createTypesParsers({ explode: true, required: false }),

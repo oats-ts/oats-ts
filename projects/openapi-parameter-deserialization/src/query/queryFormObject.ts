@@ -1,6 +1,6 @@
 import { Try, mapArray, failure, map, success } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
+import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams, QueryValueDeserializer } from '../types'
 import { decode, isNil } from '../utils'
 
 function queryFormObjectExplode<T extends PrimitiveRecord>(
@@ -107,9 +107,8 @@ function queryFormObjectNoExplode<T extends PrimitiveRecord>(
 }
 
 export const queryFormObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, opts: QueryOptions = {}) =>
-  (name: string) =>
-  (data: RawQueryParams): Try<T> => {
+  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, opts: QueryOptions = {}): QueryValueDeserializer<T> =>
+  (name: string, data: RawQueryParams): Try<T> => {
     const options: QueryOptions = { explode: true, ...opts }
     return options.explode
       ? queryFormObjectExplode(parsers, options, name, data)

@@ -8,8 +8,7 @@ const parseDelimitedRecord = createDelimitedRecordParser('path', ',')
 
 export const headerSimpleObject =
   <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: HeaderOptions = {}) =>
-  (name: string) =>
-  (data: RawHeaders): Try<T> => {
+  (name: string, data: RawHeaders): Try<T> => {
     const rawDataStrTry = getHeaderValue(name, data, options.required)
     return flatMap(rawDataStrTry, (rawDataStr) => {
       if (isNil(rawDataStr)) {

@@ -2,8 +2,9 @@ import { Try, failure, success } from '@oats-ts/try'
 import { RawPathParams } from '../types'
 import { isNil } from '../utils'
 
-export const createRawPathParser = (parameterNames: string[], regex: RegExp) => {
-  return (path: string): Try<RawPathParams> => {
+export const createRawPathParser =
+  (parameterNames: string[], regex: RegExp) =>
+  (path: string): Try<RawPathParams> => {
     // Regex reset just in case before
     regex.lastIndex = 0
 
@@ -30,4 +31,3 @@ export const createRawPathParser = (parameterNames: string[], regex: RegExp) => 
     regex.lastIndex = 0
     return success(result)
   }
-}

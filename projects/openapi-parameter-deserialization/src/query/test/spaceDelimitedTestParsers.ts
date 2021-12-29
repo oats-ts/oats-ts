@@ -1,9 +1,9 @@
 import { query } from '../index'
-import { QueryDeserializers, QueryOptions } from '../../types'
+import { QueryValueDeserializers, QueryOptions } from '../../types'
 import { enumParser, stringParser, numberParser, booleanParser, literalParser } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
 
-function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializers<any>> {
+function createTypesParsers(config: QueryOptions): TypesObject<QueryValueDeserializers<any>> {
   return {
     array: {
       string: { value: query.spaceDelimited.array(stringParser, config) },
@@ -15,7 +15,7 @@ function createTypesParsers(config: QueryOptions): TypesObject<QueryDeserializer
   }
 }
 
-export const spaceDelimitedTestParsers: TestDataObject<QueryDeserializers<any>> = {
+export const spaceDelimitedTestParsers: TestDataObject<QueryValueDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true, required: true }),
     optional: createTypesParsers({ explode: true, required: false }),

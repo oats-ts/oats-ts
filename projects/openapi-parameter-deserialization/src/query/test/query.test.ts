@@ -8,13 +8,13 @@ import { spaceDelimitedTestParsers } from './spaceDelimitedTestParsers'
 import { spaceDelimitedTestData } from './spaceDelimitedTestData'
 
 import { createQueryDeserializer } from '../createQueryDeserializer'
-import { ParameterObject, QueryDeserializers } from '../../types'
+import { ParameterObject, QueryValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { QueryTestData } from './queryTestUtils'
 
 export const createQueryParserTest = <Data extends ParameterObject>(
   name: string,
-  config?: QueryDeserializers<Data>,
+  config?: QueryValueDeserializers<Data>,
   data?: QueryTestData<Data>,
 ): void => {
   if (config === undefined || data === undefined) {

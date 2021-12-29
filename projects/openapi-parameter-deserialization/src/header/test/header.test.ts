@@ -1,13 +1,13 @@
 import { simpleTestData } from './simpleTestData'
 import { simpleTestParsers } from './simpleTestParsers'
 import { createHeaderDeserializer } from '../createHeaderDeserializer'
-import { ParameterObject, HeaderDeserializers, RawHeaders } from '../../types'
+import { ParameterObject, HeaderValueDeserializers, RawHeaders } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { HeaderTestData } from './headerTestUtils'
 
 export function createHeaderParserTest<Data extends ParameterObject>(
   name: string,
-  config?: HeaderDeserializers<Data>,
+  config?: HeaderValueDeserializers<Data>,
   data?: HeaderTestData<Data>,
 ): void {
   if (config === undefined || data === undefined) {

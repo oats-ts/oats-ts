@@ -7,7 +7,7 @@ import { simpleTestParsers } from './simpleTestParsers'
 
 import { pathToRegexp } from 'path-to-regexp'
 import { createPathDeserializer } from '../createPathDeserializer'
-import { ParameterObject, PathDeserializers } from '../../types'
+import { ParameterObject, PathValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { PathTestData } from './pathTestUtils'
 
@@ -16,7 +16,7 @@ const NAMES = ['value']
 
 export const createPathParserTest = <Data extends ParameterObject>(
   name: string,
-  config?: PathDeserializers<Data>,
+  config?: PathValueDeserializers<Data>,
   data?: PathTestData<Data>,
 ): void => {
   if (config === undefined || data === undefined) {

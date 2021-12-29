@@ -1,12 +1,17 @@
 import { Try, mapRecord, failure, map } from '@oats-ts/try'
-import { ParameterValue } from '..'
-import { QueryOptions, PrimitiveRecord, FieldParsers, RawQueryParams } from '../types'
-import { decode, encode, isNil } from '../utils'
+import {
+  QueryOptions,
+  PrimitiveRecord,
+  FieldParsers,
+  RawQueryParams,
+  QueryValueDeserializer,
+  ParameterValue,
+} from '../types'
+import { decode, encode } from '../utils'
 
 export const queryDeepObjectObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}) =>
-  (name: string) =>
-  (data: RawQueryParams): Try<T> => {
+  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}): QueryValueDeserializer<T> =>
+  (name: string, data: RawQueryParams): Try<T> => {
     const parserKeys = Object.keys(parsers)
     let hasKeys: boolean = false
     const output = mapRecord(parserKeys, (key: string): Try<ParameterValue> => {
