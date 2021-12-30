@@ -46,29 +46,29 @@ const enumOk: QuerySuccessData<EnumFieldObj>[] = [
 
 const explodeStringArrayOk: QuerySuccessData<StringArrayFieldObj>[] = [
   [{ value: ['foo', 'bar', 'foobar'] }, '?value=foo&value=bar&value=foobar'],
-  [{ value: [] }, ''],
+  [{ value: undefined }, ''],
 ]
 
 const explodeNumberArrayOk: QuerySuccessData<NumberArrayFieldObj>[] = [
   [{ value: [1, 2, 3] }, '?value=1&value=2&value=3'],
   [{ value: [1.2, 3.4, 5.998] }, '?value=1.2&value=3.4&value=5.998'],
-  [{ value: [] }, ''],
+  [{ value: undefined }, ''],
 ]
 
 const explodeBooleanArrayOk: QuerySuccessData<BooleanArrayFieldObj>[] = [
   [{ value: [true, false] }, '?value=true&value=false'],
-  [{ value: [] }, ''],
+  [{ value: undefined }, ''],
 ]
 
 const explodeLiteralArrayOk: QuerySuccessData<LiteralArrayFieldObj>[] = [
   [{ value: ['cat', 'cat'] }, '?value=cat&value=cat'],
-  [{ value: [] }, ''],
+  [{ value: undefined }, ''],
 ]
 
 const explodeEnumArrayOk: QuerySuccessData<EnumArrayFieldObj>[] = [
   [{ value: ['cat', 'dog', 'racoon'] }, '?value=cat&value=dog&value=racoon'],
   [{ value: ['cat'] }, '?value=cat'],
-  [{ value: [] }, ''],
+  [{ value: undefined }, ''],
 ]
 
 const noExplodeStringArrayOk: QuerySuccessData<StringArrayFieldObj>[] = [

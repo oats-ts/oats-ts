@@ -1,6 +1,13 @@
-import { Try, mapArray, failure, map, success } from '@oats-ts/try'
+import { Try, mapArray, failure, map, success, isSuccess } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams, QueryValueDeserializer } from '../types'
+import {
+  QueryOptions,
+  PrimitiveRecord,
+  FieldParsers,
+  Primitive,
+  RawQueryParams,
+  QueryValueDeserializer,
+} from '../types'
 import { decode, isNil } from '../utils'
 
 function queryFormObjectExplode<T extends PrimitiveRecord>(
@@ -98,9 +105,12 @@ function queryFormObjectNoExplode<T extends PrimitiveRecord>(
         type: '',
       })
     } else {
-      const [partIssues, value] = parser(key, rawValue)
-      output[key] = value
-      collectedIssues.push(...partIssues)
+      const parsed = parser(key, rawValue)
+      if (isSuccess(parsed)) {
+        output[key] = parsed.data
+      } else {
+        collectedIssues.push(...parsed.issues)
+      }
     }
   }
   return collectedIssues.length === 0 ? success(output as T) : failure(collectedIssues)

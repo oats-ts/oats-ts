@@ -4,6 +4,7 @@ import { createHeaderDeserializer } from '../createHeaderDeserializer'
 import { ParameterObject, HeaderValueDeserializers, RawHeaders } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { HeaderTestData } from './headerTestUtils'
+import { isFailure, get, getIssues } from '@oats-ts/try'
 
 export function createHeaderParserTest<Data extends ParameterObject>(
   name: string,
@@ -17,17 +18,16 @@ export function createHeaderParserTest<Data extends ParameterObject>(
     if (data.data.length > 0) {
       it.each(data.data)('should parse to %j, given headers: %j', (expected: Data, url: RawHeaders) => {
         const parser = createHeaderDeserializer(config)
-        const [issues, data] = parser(url)
-        expect(issues).toEqual([])
-        expect(data).toEqual(expected)
+        const result = parser(url)
+        expect(get(result)).toEqual(expected)
       })
     }
     if (data.error.length > 0) {
       it.each(data.error)('should produce issues, given headers: %j', (url: RawHeaders) => {
         const parser = createHeaderDeserializer(config)
-        const [issues, data] = parser(url)
-        expect(issues).not.toHaveLength(0)
-        expect(data).toBe(undefined)
+        const result = parser(url)
+        expect(isFailure(result)).toBe(true)
+        expect(getIssues(result)).not.toHaveLength(0)
       })
     }
   })
