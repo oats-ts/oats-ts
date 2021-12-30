@@ -18,7 +18,7 @@
   "scripts": {
     "test": "jest",
     "build": "rimraf lib && tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --project tsconfig.json"
   },
   "bugs": {
     "url": "https://github.com/bali182/oats/issues"

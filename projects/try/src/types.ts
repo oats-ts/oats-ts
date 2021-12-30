@@ -11,10 +11,14 @@ export type Try<T> = Success<T> | Failure
 export type FluentTryInterface<T> = {
   isSuccess(): boolean
   isFailure(): boolean
-  map<R>(transform: (input: T) => R): FluentTryInterface<R>
-  flatMap<R>(transform: (input: T) => Try<R>): FluentTryInterface<R>
+  map<R>(transform: (input: T) => R): FluentTry<R>
+  flatMap<R>(transform: (input: T) => Try<R>): FluentTry<R>
   getData(): T
+  getDataOrElse(data: T): T
   getIssues(): Issue[]
+  getIssuesOrElse(issues: Issue[]): Issue[]
+  doIfSuccess(effect: (data: T) => void): FluentTry<T>
+  doIfFailure(effect: (issues: Issue[]) => void): FluentTry<T>
   getPlain(): Try<T>
 }
 
