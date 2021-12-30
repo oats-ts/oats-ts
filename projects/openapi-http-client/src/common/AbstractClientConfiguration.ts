@@ -8,6 +8,7 @@ import {
   ResponseBodyValidators,
 } from '@oats-ts/openapi-http'
 import { ClientConfiguration } from '../typings'
+import { success, Try } from '@oats-ts/try'
 
 export abstract class AbstractClientConfiguration implements ClientConfiguration {
   private readonly baseUrl?: string
@@ -63,9 +64,9 @@ export abstract class AbstractClientConfiguration implements ClientConfiguration
     response: RawHttpResponse,
     statusCode?: number,
     deserializers?: ResponseHeadersDeserializers,
-  ): Promise<any> {
+  ): Promise<Try<any>> {
     if (deserializers === null || deserializers === undefined) {
-      return undefined
+      return success(undefined)
     }
     if (typeof statusCode !== 'number' || typeof deserializers[statusCode] !== 'function') {
       const statusCodes = Object.keys(deserializers)

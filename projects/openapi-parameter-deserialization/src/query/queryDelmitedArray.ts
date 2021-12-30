@@ -10,10 +10,10 @@ export const queryDelimitedArray =
     const options: QueryOptions = { explode: true, ...opts }
 
     const valuesTry = options.explode
-      ? success(data[name] ?? [])
-      : flatMap(getQueryValue(name, data, options), (v) => success(isNil(v) ? [] : v.split(delimiter)))
+      ? success(data[name] ?? undefined)
+      : flatMap(getQueryValue(name, data, options), (v) => success(isNil(v) ? undefined : v.split(delimiter)))
 
     return flatMap(valuesTry, (values) => {
-      return mapArray(values, (value) => parse(name, decode(value)))
+      return isNil(values) ? success(undefined) : mapArray(values, (value) => parse(name, decode(value)))
     })
   }

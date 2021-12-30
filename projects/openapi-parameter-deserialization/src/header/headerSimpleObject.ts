@@ -1,4 +1,4 @@
-import { flatMap, Try } from '@oats-ts/try'
+import { flatMap, success, Try } from '@oats-ts/try'
 import { PrimitiveRecord, FieldParsers, HeaderOptions, RawHeaders } from '../types'
 import { createDelimitedRecordParser, createKeyValuePairRecordParser, isNil } from '../utils'
 import { getHeaderValue, parseHeadersFromRecord } from './headerUtils'
@@ -12,7 +12,7 @@ export const headerSimpleObject =
     const rawDataStrTry = getHeaderValue(name, data, options.required)
     return flatMap(rawDataStrTry, (rawDataStr) => {
       if (isNil(rawDataStr)) {
-        return undefined
+        return success(undefined)
       }
       const rawRecordTry = options.explode
         ? parseKeyValuePairRecord(name, rawDataStr)

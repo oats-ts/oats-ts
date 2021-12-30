@@ -60,6 +60,9 @@ const Express = {
 const Try = {
   name: '@oats-ts/try',
   Try: 'Try',
+  get: 'get',
+  map: 'map',
+  flatMap: 'flatMap',
 }
 
 export const RuntimePackages = {

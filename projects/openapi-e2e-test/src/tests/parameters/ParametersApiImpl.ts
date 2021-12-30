@@ -38,15 +38,12 @@ export class ParametersApiImpl implements ParametersApi<ExpressParameters> {
         body: getIssues(params).map((issue) => ({ message: issue.message })),
       }
     }
-    if (params) {
-      return {
-        mimeType: 'application/json',
-        statusCode: 200,
-        headers: undefined,
-        body: get(params),
-      }
+    return {
+      mimeType: 'application/json',
+      statusCode: 200,
+      headers: undefined,
+      body: get(params),
     }
-    throw new TypeError('something wrong')
   }
   async simpleResponseHeaderParameters(
     input: SimpleResponseHeaderParametersServerRequest,
