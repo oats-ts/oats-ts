@@ -22,7 +22,7 @@ import {
   SpaceDelimitedQueryParametersResponse,
   SpaceDelimitedQueryParametersServerRequest,
 } from '../../generated/Parameters'
-import { get, getIssues, isFailure, Try } from '@oats-ts/try'
+import { getData, getIssues, isFailure, Try } from '@oats-ts/try'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
@@ -42,7 +42,7 @@ export class ParametersApiImpl implements ParametersApi<ExpressParameters> {
       mimeType: 'application/json',
       statusCode: 200,
       headers: undefined,
-      body: get(params),
+      body: getData(params),
     }
   }
   async simpleResponseHeaderParameters(
@@ -58,7 +58,7 @@ export class ParametersApiImpl implements ParametersApi<ExpressParameters> {
     }
     return {
       body: { ok: true },
-      headers: get(input.body),
+      headers: getData(input.body),
       mimeType: 'application/json',
       statusCode: 200,
     }

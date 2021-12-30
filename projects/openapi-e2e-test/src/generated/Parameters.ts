@@ -22,7 +22,7 @@ import {
   createQuerySerializer,
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
-import { Try, get } from '@oats-ts/try'
+import { Try, getData } from '@oats-ts/try'
 import { array, boolean, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, Response, Router } from 'express'
 
@@ -2581,7 +2581,7 @@ export async function deepObjectQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2615,7 +2615,7 @@ export async function formQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2649,7 +2649,7 @@ export async function labelPathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2683,7 +2683,7 @@ export async function matrixPathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2717,7 +2717,7 @@ export async function pipeDelimitedQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2750,7 +2750,7 @@ export async function simpleHeaderParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2784,7 +2784,7 @@ export async function simplePathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2819,7 +2819,7 @@ export async function simpleResponseHeaderParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(
+  const responseHeaders = getData(
     await configuration.getResponseHeaders(
       rawResponse,
       statusCode,
@@ -2859,7 +2859,7 @@ export async function spaceDelimitedQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,

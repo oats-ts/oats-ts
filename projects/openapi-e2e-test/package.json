@@ -17,7 +17,7 @@
   "scripts": {
     "build": "echo 'Nothing to build'",
     "g": "ts-node src/schema/generate.ts",
-    "test": "cross-env REPEATS=1 jest --runInBand",
+    "test": "cross-env REPEATS=100 jest --runInBand",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

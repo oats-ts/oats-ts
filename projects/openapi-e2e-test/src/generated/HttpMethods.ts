@@ -2,7 +2,7 @@ import { HttpResponse, RawHttpRequest, RawHttpResponse } from '@oats-ts/openapi-
 import { ClientConfiguration } from '@oats-ts/openapi-http-client'
 import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
-import { get } from '@oats-ts/try'
+import { getData } from '@oats-ts/try'
 import { object, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, Response, Router } from 'express'
 
@@ -95,7 +95,7 @@ export async function deleteMethod(configuration: ClientConfiguration): Promise<
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -122,7 +122,7 @@ export async function getMethod(configuration: ClientConfiguration): Promise<Get
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -149,7 +149,7 @@ export async function optionsMethod(configuration: ClientConfiguration): Promise
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -176,7 +176,7 @@ export async function patchMethod(configuration: ClientConfiguration): Promise<P
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -203,7 +203,7 @@ export async function postMethod(configuration: ClientConfiguration): Promise<Po
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -230,7 +230,7 @@ export async function putMethod(configuration: ClientConfiguration): Promise<Put
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = get(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
