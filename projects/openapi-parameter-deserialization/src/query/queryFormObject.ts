@@ -17,6 +17,7 @@ function queryFormObjectExplode<T extends PrimitiveRecord>(
   data: RawQueryParams,
 ): Try<T> {
   const parserKeys = Object.keys(parsers)
+  let hasKeys = false
   const keyValuePairsTry = mapArray(parserKeys, (key): Try<[string, Primitive]> => {
     const parser = parsers[key]
     const values = data[key] || []
@@ -31,9 +32,17 @@ function queryFormObjectExplode<T extends PrimitiveRecord>(
       ])
     }
     const [value] = values
+    if (!isNil(value)) {
+      hasKeys = true
+    }
     const decodedValue = isNil(value) ? value : decode(value)
     return map(parser(key, decodedValue), (valueForKey) => [key, valueForKey])
   })
+
+  if (!hasKeys && !options.required) {
+    return success(undefined)
+  }
+
   return map(keyValuePairsTry, (keyValuePairs) => {
     const presentKvPairs = keyValuePairs.filter(([, v]) => v !== undefined)
 

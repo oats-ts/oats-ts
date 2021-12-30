@@ -265,7 +265,7 @@ export function getOperationBodyAst(
           undefined,
           undefined,
           factory.createCallExpression(
-            factory.createIdentifier(RuntimePackages.Try.get),
+            factory.createIdentifier(RuntimePackages.Try.getData),
             [],
             [
               factory.createAwaitExpression(

@@ -99,7 +99,6 @@ const explodeOptionalObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
   [{ value: { b: true, e: 'dog', l: 'cat' } }, '?&b=true&e=dog&l=cat'],
   [{ value: { e: 'dog', l: 'cat' } }, '?e=dog&l=cat'],
   [{ value: { l: 'cat' } }, '?l=cat'],
-  [{ value: {} }, ''],
 ]
 
 const explodeRequiredObjectOk: QuerySuccessData<OptObjectFieldObj>[] = [
@@ -145,7 +144,6 @@ const explodeEnumArrayError: QueryErrorData[] = [
 ]
 
 const explodeRequiredObjectError: QueryErrorData[] = [
-  ['?value=dog'],
   ['?s=x&n=x&b=x&e=x&l=x'],
   ['?n=10&b=true&e=dog&l=cat'],
   ['?&b=true&e=dog&l=cat'],
@@ -172,7 +170,7 @@ const explodeRequired: TypesObject<QueryTestData<any>> = {
   },
   object: {
     optionalFields: {
-      data: explodeOptionalObjectOk,
+      data: [...explodeOptionalObjectOk, [{ value: {} }, '']],
       error: explodeOptionalObjectError,
     },
     requiredFields: {
@@ -198,7 +196,7 @@ const explodeOptional: TypesObject<QueryTestData<any>> = {
   },
   object: {
     optionalFields: {
-      data: explodeOptionalObjectOk,
+      data: [...explodeOptionalObjectOk, [{ value: undefined }, '']],
       error: explodeOptionalObjectError,
     },
     requiredFields: {

@@ -60,7 +60,7 @@ const Express = {
 const Try = {
   name: '@oats-ts/try',
   Try: 'Try',
-  get: 'get',
+  getData: 'getData',
   map: 'map',
   flatMap: 'flatMap',
 }

@@ -11,7 +11,7 @@ import { createQueryDeserializer } from '../createQueryDeserializer'
 import { ParameterObject, QueryValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { QueryTestData } from './queryTestUtils'
-import { getData, getIssues, isFailure } from '@oats-ts/try'
+import { fluent, getData, isFailure } from '@oats-ts/try'
 
 export const createQueryParserTest = <Data extends ParameterObject>(
   name: string,
@@ -33,8 +33,8 @@ export const createQueryParserTest = <Data extends ParameterObject>(
       it.each(data.error)('should produce issues, given query: %j', (url: string) => {
         const parser = createQueryDeserializer(config)
         const result = parser(url)
+        expect(fluent(result).getDataOrElse(undefined)).toBe(undefined)
         expect(isFailure(result)).toBe(true)
-        expect(getIssues(result)).not.toHaveLength(0)
       })
     }
   })
