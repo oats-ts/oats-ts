@@ -1,6 +1,6 @@
-import { failure, mapArray, mapRecord, success, Try } from '@oats-ts/try'
+import { failure, success, Try } from '@oats-ts/try'
 import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '../types'
-import { has, isNil, decode } from '../utils'
+import { isNil, decode, mapRecord } from '../utils'
 
 export function getPathValue(name: string, raw: RawPathParams): Try<string> {
   const value = raw[name]

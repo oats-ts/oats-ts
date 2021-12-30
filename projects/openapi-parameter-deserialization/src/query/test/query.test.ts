@@ -11,7 +11,7 @@ import { createQueryDeserializer } from '../createQueryDeserializer'
 import { ParameterObject, QueryValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { QueryTestData } from './queryTestUtils'
-import { get, getIssues, isFailure } from '@oats-ts/try'
+import { getData, getIssues, isFailure } from '@oats-ts/try'
 
 export const createQueryParserTest = <Data extends ParameterObject>(
   name: string,
@@ -26,7 +26,7 @@ export const createQueryParserTest = <Data extends ParameterObject>(
       it.each(data.data)('should parse to %j, given query: %j', (expected: Data, url: string) => {
         const parser = createQueryDeserializer(config)
         const result = parser(url)
-        expect(get(result)).toEqual(expected)
+        expect(getData(result)).toEqual(expected)
       })
     }
     if (data.error.length > 0) {

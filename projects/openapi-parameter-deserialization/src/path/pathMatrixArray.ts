@@ -1,6 +1,6 @@
-import { failure, flatMap, mapArray, Try } from '@oats-ts/try'
+import { failure, flatMap, Try } from '@oats-ts/try'
 import { Primitive, ValueParser, RawPathParams, PathOptions, PathValueDeserializer } from '../types'
-import { decode, encode } from '../utils'
+import { decode, encode, mapArray } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
 
 function pathMatrixArrayExplode<T extends Primitive>(

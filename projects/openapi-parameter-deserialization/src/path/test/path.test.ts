@@ -10,7 +10,7 @@ import { createPathDeserializer } from '../createPathDeserializer'
 import { ParameterObject, PathValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { PathTestData } from './pathTestUtils'
-import { get, getIssues, isFailure } from '@oats-ts/try'
+import { getData, getIssues, isFailure } from '@oats-ts/try'
 
 const REGEXP = pathToRegexp('/test/:value/stuff')
 const NAMES = ['value']
@@ -28,7 +28,7 @@ export const createPathParserTest = <Data extends ParameterObject>(
       it.each(data.data)('should parse to %j, given path: %j', (expected: Data, url: string) => {
         const parser = createPathDeserializer(NAMES, REGEXP, config)
         const result = parser(url)
-        expect(get(result)).toEqual(expected)
+        expect(getData(result)).toEqual(expected)
       })
     }
     if (data.error.length > 0) {

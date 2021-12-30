@@ -1,5 +1,6 @@
-import { Try, flatMap, mapRecord } from '@oats-ts/try'
+import { Try, flatMap } from '@oats-ts/try'
 import { ParameterObject, PathValueDeserializers, ParameterValue, PathDeserializer } from '../types'
+import { mapRecord } from '../utils'
 import { createRawPathParser } from './createRawPathParser'
 
 export const createPathDeserializer = <T extends ParameterObject>(

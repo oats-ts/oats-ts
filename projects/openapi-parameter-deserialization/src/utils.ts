@@ -1,4 +1,4 @@
-import { Try, success, mapArray, failure } from '@oats-ts/try'
+import { Try, success, failure, isFailure } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { Primitive, ValueParser } from './types'
 
@@ -20,6 +20,53 @@ export function encode(value: string): string {
 
 export function has(input: Record<string, any>, key: string): boolean {
   return Object.prototype.hasOwnProperty.call(input, key)
+}
+
+export function mapArray<I, O>(input: I[], transform: (input: I, index: number, array: I[]) => Try<O>): Try<O[]> {
+  const output: O[] = []
+  const allIssues: Issue[] = []
+  for (let i = 0; i < input.length; i += 1) {
+    const result = transform(input[i], i, input)
+    if (isFailure(result)) {
+      allIssues.push(...result.issues)
+    } else {
+      output[i] = result.data
+    }
+  }
+  return allIssues.length === 0 ? success(output) : failure(allIssues)
+}
+
+const identity = (input: any) => input
+
+export function mapRecord<I extends string, V>(
+  input: I[],
+  valueTransform: (input: I, index: number, array: I[]) => Try<V>,
+): Try<Record<I, V>>
+
+export function mapRecord<I, V, K extends string>(
+  input: I[],
+  valueTransform: (input: I, index: number, array: I[]) => Try<V>,
+  keyTransfrom: (input: I, index: number, array: I[]) => K,
+): Try<Record<K, V>>
+
+export function mapRecord<I, V, K extends string>(
+  input: I[],
+  valueTransform: (input: I, index: number, array: I[]) => Try<V>,
+  keyTransfrom: (input: I, index: number, array: I[]) => any = identity,
+): Try<Record<K, V>> {
+  const output = {} as Record<K, V>
+  const allIssues: Issue[] = []
+  for (let i = 0; i < input.length; i += 1) {
+    const item = input[i]
+    const key = keyTransfrom(item, i, input)
+    const result = valueTransform(item, i, input)
+    if (isFailure(result)) {
+      allIssues.push(...result.issues)
+    } else {
+      output[key as K] = result.data
+    }
+  }
+  return allIssues.length === 0 ? success(output) : failure(allIssues)
 }
 
 export const createDelimitedRecordParser =

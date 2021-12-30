@@ -5,7 +5,7 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
 } from '@oats-ts/openapi-http'
-import { failure, Try } from '@oats-ts/try'
+import { failure, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { ServerConfiguration } from '../typings'
 import { ExpressParameters } from './typings'
@@ -68,7 +68,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
   ): Promise<Try<B>> {
     // No mimetype means that getMimeType failed
     if (mimeType === null || mimeType === undefined) {
-      return [[], undefined]
+      return success(undefined)
     }
 
     if (mimeType === null || mimeType === undefined) {
@@ -91,7 +91,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     }
     const validator = validators[mimeType]
     const issues = validator(request.body)
-    return issues.length > 0 ? [issues, undefined] : [[], request.body as B]
+    return issues.length > 0 ? failure(issues) : success(request.body as B)
   }
 
   async getStatusCode(input: ExpressParameters, resp: HttpResponse): Promise<number> {

@@ -1,7 +1,6 @@
-import { failure, mapRecord, success, Try } from '@oats-ts/try'
-import { ParameterValue } from '..'
-import { RawHeaders, PrimitiveRecord, FieldParsers, Primitive } from '../types'
-import { isNil, decode } from '../utils'
+import { failure, success, Try } from '@oats-ts/try'
+import { RawHeaders, PrimitiveRecord, FieldParsers, ParameterValue } from '../types'
+import { isNil, decode, mapRecord } from '../utils'
 
 export function getHeaderValue(name: string, raw: RawHeaders, required: boolean): Try<string> {
   const value = raw[name] ?? raw[name.toLowerCase()]

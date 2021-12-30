@@ -1,5 +1,6 @@
-import { Try, mapRecord, flatMap } from '@oats-ts/try'
+import { Try, flatMap } from '@oats-ts/try'
 import { ParameterObject, QueryValueDeserializers, ParameterValue, QueryDeserializer } from '../types'
+import { mapRecord } from '../utils'
 import { parseRawQuery } from './parseRawQuery'
 
 export const createQueryDeserializer =

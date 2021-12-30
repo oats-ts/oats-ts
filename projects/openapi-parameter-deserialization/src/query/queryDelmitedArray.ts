@@ -1,6 +1,6 @@
-import { Try, flatMap, success, mapArray } from '@oats-ts/try'
+import { Try, flatMap, success } from '@oats-ts/try'
 import { Primitive, ValueParser, QueryOptions, RawQueryParams } from '../types'
-import { decode, isNil } from '../utils'
+import { decode, isNil, mapArray } from '../utils'
 import { getQueryValue } from './queryUtils'
 
 export const queryDelimitedArray =

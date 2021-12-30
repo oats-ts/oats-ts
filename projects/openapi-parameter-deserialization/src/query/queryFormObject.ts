@@ -1,4 +1,4 @@
-import { Try, mapArray, failure, map, success, isSuccess } from '@oats-ts/try'
+import { Try, failure, map, success, isSuccess } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import {
   QueryOptions,
@@ -8,7 +8,7 @@ import {
   RawQueryParams,
   QueryValueDeserializer,
 } from '../types'
-import { decode, isNil } from '../utils'
+import { decode, isNil, mapArray } from '../utils'
 
 function queryFormObjectExplode<T extends PrimitiveRecord>(
   parsers: FieldParsers<T>,

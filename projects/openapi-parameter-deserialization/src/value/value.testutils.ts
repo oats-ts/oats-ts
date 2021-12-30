@@ -1,4 +1,4 @@
-import { get, getIssues, isFailure } from '@oats-ts/try'
+import { getData, getIssues, isFailure } from '@oats-ts/try'
 import { Primitive, ValueParser } from '../types'
 
 export type ValueSuccessData<Input extends Primitive, Output extends Primitive> = [Output, Input]
@@ -18,7 +18,7 @@ export const createValueParserTest = <Input extends Primitive, Output extends Pr
     if (data.data.length > 0) {
       it.each(data.data)('should parse to %j, given input: %j', (expected: Output, input: Input) => {
         const result = parser('test', input)
-        expect(get(result)).toEqual(expected)
+        expect(getData(result)).toEqual(expected)
       })
     }
     if (data.error.length > 0) {
