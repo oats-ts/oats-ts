@@ -1,63 +1,135 @@
-import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
-import { decode, has, isNil } from '../utils'
+import { Try, failure, map, success, isSuccess } from '@oats-ts/try'
+import { Issue } from '@oats-ts/validators'
+import {
+  QueryOptions,
+  PrimitiveRecord,
+  FieldParsers,
+  Primitive,
+  RawQueryParams,
+  QueryValueDeserializer,
+} from '../types'
+import { decode, isNil, mapArray } from '../utils'
 
-export const queryFormObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, opts: QueryOptions = {}) =>
-  (name: string) =>
-  (data: RawQueryParams): T => {
-    const options: QueryOptions = { explode: true, ...opts }
+function queryFormObjectExplode<T extends PrimitiveRecord>(
+  parsers: FieldParsers<T>,
+  options: QueryOptions,
+  name: string,
+  data: RawQueryParams,
+): Try<T> {
+  const parserKeys = Object.keys(parsers)
+  let hasKeys = false
+  const keyValuePairsTry = mapArray(parserKeys, (key): Try<[string, Primitive]> => {
+    const parser = parsers[key]
+    const values = data[key] || []
+    if (values.length > 1) {
+      return failure([
+        {
+          message: `Expected single value for query parameter "${key}" ("${name}.${key}")`,
+          path: `${name}.${key}`,
+          severity: 'error',
+          type: '',
+        },
+      ])
+    }
+    const [value] = values
+    if (!isNil(value)) {
+      hasKeys = true
+    }
+    const decodedValue = isNil(value) ? value : decode(value)
+    return map(parser(key, decodedValue), (valueForKey) => [key, valueForKey])
+  })
+
+  if (!hasKeys && !options.required) {
+    return success(undefined)
+  }
+
+  return map(keyValuePairsTry, (keyValuePairs) => {
+    const presentKvPairs = keyValuePairs.filter(([, v]) => v !== undefined)
+
     const output: Record<string, Primitive> = {}
-    const parserKeys = Object.keys(parsers)
+    for (let i = 0; i < presentKvPairs.length; i += 1) {
+      const [key, value] = presentKvPairs[i]
+      output[key] = value
+    }
+    return (presentKvPairs.length === 0 ? {} : output) as T
+  })
+}
 
-    if (options.explode) {
-      const keyValuePairs: [string, Primitive][] = []
-      for (let i = 0; i < parserKeys.length; i += 1) {
-        const key = parserKeys[i]
-        const parser = parsers[key]
-        const values = data[key] || []
-        if (values.length > 1) {
-          throw new TypeError(`Expected single value for query parameter "${key}" ("${name}.${key}")`)
-        }
-        const [value] = values
-        if (options.required || !isNil(value)) {
-          keyValuePairs.push([key, parser(key, decode(value))])
-        }
+function queryFormObjectNoExplode<T extends PrimitiveRecord>(
+  parsers: FieldParsers<T>,
+  options: QueryOptions,
+  name: string,
+  data: RawQueryParams,
+): Try<T> {
+  const output: Record<string, Primitive> = {}
+  const values = data[name] || []
+  switch (values.length) {
+    case 0: {
+      if (options.required) {
+        return failure([
+          {
+            message: `Missing query parameter "${name}"`,
+            path: name,
+            severity: 'error',
+            type: '',
+          },
+        ])
       }
-      for (let i = 0; i < keyValuePairs.length; i += 1) {
-        const [key, value] = keyValuePairs[i]
-        output[key] = value
-      }
-      return keyValuePairs.length === 0 ? undefined : (output as T)
+      return success(undefined)
+    }
+    case 1:
+      break
+    default:
+      return failure([
+        {
+          message: `Expected single query parameter "${name}"`,
+          path: name,
+          severity: 'error',
+          type: '',
+        },
+      ])
+  }
+  const [value] = values
+  const parts = value.split(',')
+  if (parts.length % 2 !== 0) {
+    return failure([
+      {
+        message: `Malformed value "${value}" for query parameter "${name}"`,
+        path: name,
+        severity: 'error',
+        type: '',
+      },
+    ])
+  }
+  const collectedIssues: Issue[] = []
+  for (let i = 0; i < parts.length; i += 2) {
+    const key = decode(parts[i])
+    const rawValue = decode(parts[i + 1])
+    const parser = parsers[key]
+    if (isNil(parser)) {
+      collectedIssues.push({
+        message: `Unexpected key "${key}" in query parameter "${name}"`,
+        path: name,
+        severity: 'error',
+        type: '',
+      })
     } else {
-      const values = data[name] || []
-      switch (values.length) {
-        case 0: {
-          if (options.required) {
-            throw new TypeError(`Missing query parameter "${name}"`)
-          }
-          return undefined
-        }
-        case 1:
-          break
-        default:
-          throw new TypeError(`Expected single query parameter "${name}"`)
-      }
-      const [value] = values
-      const parts = value.split(',')
-      if (parts.length % 2 !== 0) {
-        throw new TypeError(`Malformed value "${value}" for query parameter "${name}"`)
-      }
-      for (let i = 0; i < parts.length; i += 2) {
-        const key = decode(parts[i])
-        const rawValue = decode(parts[i + 1])
-        const parser = parsers[key]
-        if (isNil(parser)) {
-          throw new TypeError(`Unexpected key "${key}" in query parameter "${name}"`)
-        }
-        const value = parser(key, rawValue)
-        output[key] = value
+      const parsed = parser(key, rawValue)
+      if (isSuccess(parsed)) {
+        output[key] = parsed.data
+      } else {
+        collectedIssues.push(...parsed.issues)
       }
     }
+  }
+  return collectedIssues.length === 0 ? success(output as T) : failure(collectedIssues)
+}
 
-    return output as T
+export const queryFormObject =
+  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, opts: QueryOptions = {}): QueryValueDeserializer<T> =>
+  (name: string, data: RawQueryParams): Try<T> => {
+    const options: QueryOptions = { explode: true, ...opts }
+    return options.explode
+      ? queryFormObjectExplode(parsers, options, name, data)
+      : queryFormObjectNoExplode(parsers, options, name, data)
   }

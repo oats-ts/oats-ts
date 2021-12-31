@@ -1,7 +1,5 @@
 import {
   HasHeaders,
-  HasIssues,
-  HasNoIssues,
   HasPathParameters,
   HasQueryParameters,
   HasRequestBody,
@@ -24,6 +22,7 @@ import {
   createQuerySerializer,
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
+import { Try, getData } from '@oats-ts/try'
 import { array, boolean, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, Response, Router } from 'express'
 
@@ -1303,41 +1302,30 @@ export type SimpleResponseHeaderParametersRequest = HasRequestBody<'application/
 
 export type SpaceDelimitedQueryParametersRequest = HasQueryParameters<SpaceDelimitedQueryParametersQueryParameters>
 
-export type DeepObjectQueryParametersServerRequest =
-  | (Partial<DeepObjectQueryParametersRequest> & HasIssues)
-  | (DeepObjectQueryParametersRequest & HasNoIssues)
+export type DeepObjectQueryParametersServerRequest = HasQueryParameters<Try<DeepObjectQueryParametersQueryParameters>>
 
-export type FormQueryParametersServerRequest =
-  | (Partial<FormQueryParametersRequest> & HasIssues)
-  | (FormQueryParametersRequest & HasNoIssues)
+export type FormQueryParametersServerRequest = HasQueryParameters<Try<FormQueryParametersQueryParameters>>
 
-export type LabelPathParametersServerRequest =
-  | (Partial<LabelPathParametersRequest> & HasIssues)
-  | (LabelPathParametersRequest & HasNoIssues)
+export type LabelPathParametersServerRequest = HasPathParameters<Try<LabelPathParametersPathParameters>>
 
-export type MatrixPathParametersServerRequest =
-  | (Partial<MatrixPathParametersRequest> & HasIssues)
-  | (MatrixPathParametersRequest & HasNoIssues)
+export type MatrixPathParametersServerRequest = HasPathParameters<Try<MatrixPathParametersPathParameters>>
 
-export type PipeDelimitedQueryParametersServerRequest =
-  | (Partial<PipeDelimitedQueryParametersRequest> & HasIssues)
-  | (PipeDelimitedQueryParametersRequest & HasNoIssues)
+export type PipeDelimitedQueryParametersServerRequest = HasQueryParameters<
+  Try<PipeDelimitedQueryParametersQueryParameters>
+>
 
-export type SimpleHeaderParametersServerRequest =
-  | (Partial<SimpleHeaderParametersRequest> & HasIssues)
-  | (SimpleHeaderParametersRequest & HasNoIssues)
+export type SimpleHeaderParametersServerRequest = HasHeaders<Try<SimpleHeaderParametersRequestHeaderParameters>>
 
-export type SimplePathParametersServerRequest =
-  | (Partial<SimplePathParametersRequest> & HasIssues)
-  | (SimplePathParametersRequest & HasNoIssues)
+export type SimplePathParametersServerRequest = HasPathParameters<Try<SimplePathParametersPathParameters>>
 
-export type SimpleResponseHeaderParametersServerRequest =
-  | (Partial<SimpleResponseHeaderParametersRequest> & HasIssues)
-  | (SimpleResponseHeaderParametersRequest & HasNoIssues)
+export type SimpleResponseHeaderParametersServerRequest = HasRequestBody<
+  'application/json',
+  Try<SimpleResponseHeaderParameters>
+>
 
-export type SpaceDelimitedQueryParametersServerRequest =
-  | (Partial<SpaceDelimitedQueryParametersRequest> & HasIssues)
-  | (SpaceDelimitedQueryParametersRequest & HasNoIssues)
+export type SpaceDelimitedQueryParametersServerRequest = HasQueryParameters<
+  Try<SpaceDelimitedQueryParametersQueryParameters>
+>
 
 export const deepObjectQueryParametersResponseBodyValidator = {
   200: { 'application/json': deepObjectQueryParametersTypeValidator },
@@ -2593,7 +2581,7 @@ export async function deepObjectQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2627,7 +2615,7 @@ export async function formQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2661,7 +2649,7 @@ export async function labelPathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2695,7 +2683,7 @@ export async function matrixPathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2729,7 +2717,7 @@ export async function pipeDelimitedQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2762,7 +2750,7 @@ export async function simpleHeaderParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2796,7 +2784,7 @@ export async function simplePathParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -2831,10 +2819,12 @@ export async function simpleResponseHeaderParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(
-    rawResponse,
-    statusCode,
-    simpleResponseHeaderParametersResponseHeadersDeserializer,
+  const responseHeaders = getData(
+    await configuration.getResponseHeaders(
+      rawResponse,
+      statusCode,
+      simpleResponseHeaderParametersResponseHeadersDeserializer,
+    ),
   )
   const responseBody = await configuration.getResponseBody(
     rawResponse,
@@ -2869,7 +2859,7 @@ export async function spaceDelimitedQueryParameters(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -3090,22 +3080,22 @@ export const deepObjectQueryParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [queryIssues, query] = await configuration.getQueryParameters(
-      frameworkInput,
-      deepObjectQueryParametersQueryDeserializer,
-    )
-    const issues = [...queryIssues]
-    const typedRequest = {
-      query,
-      issues: issues.length > 0 ? issues : undefined,
-    } as DeepObjectQueryParametersServerRequest
-    const typedResponse = await api.deepObjectQueryParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const query = await configuration.getQueryParameters(frameworkInput, deepObjectQueryParametersQueryDeserializer)
+      const typedRequest: DeepObjectQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.deepObjectQueryParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3115,22 +3105,22 @@ export const formQueryParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [queryIssues, query] = await configuration.getQueryParameters(
-      frameworkInput,
-      formQueryParametersQueryDeserializer,
-    )
-    const issues = [...queryIssues]
-    const typedRequest = {
-      query,
-      issues: issues.length > 0 ? issues : undefined,
-    } as FormQueryParametersServerRequest
-    const typedResponse = await api.formQueryParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const query = await configuration.getQueryParameters(frameworkInput, formQueryParametersQueryDeserializer)
+      const typedRequest: FormQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.formQueryParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3140,22 +3130,22 @@ export const labelPathParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [pathIssues, path] = await configuration.getPathParameters(
-      frameworkInput,
-      labelPathParametersPathDeserializer,
-    )
-    const issues = [...pathIssues]
-    const typedRequest = {
-      path,
-      issues: issues.length > 0 ? issues : undefined,
-    } as LabelPathParametersServerRequest
-    const typedResponse = await api.labelPathParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const path = await configuration.getPathParameters(frameworkInput, labelPathParametersPathDeserializer)
+      const typedRequest: LabelPathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.labelPathParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3165,22 +3155,22 @@ export const matrixPathParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [pathIssues, path] = await configuration.getPathParameters(
-      frameworkInput,
-      matrixPathParametersPathDeserializer,
-    )
-    const issues = [...pathIssues]
-    const typedRequest = {
-      path,
-      issues: issues.length > 0 ? issues : undefined,
-    } as MatrixPathParametersServerRequest
-    const typedResponse = await api.matrixPathParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const path = await configuration.getPathParameters(frameworkInput, matrixPathParametersPathDeserializer)
+      const typedRequest: MatrixPathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.matrixPathParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3190,22 +3180,25 @@ export const pipeDelimitedQueryParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [queryIssues, query] = await configuration.getQueryParameters(
-      frameworkInput,
-      pipeDelimitedQueryParametersQueryDeserializer,
-    )
-    const issues = [...queryIssues]
-    const typedRequest = {
-      query,
-      issues: issues.length > 0 ? issues : undefined,
-    } as PipeDelimitedQueryParametersServerRequest
-    const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const query = await configuration.getQueryParameters(
+        frameworkInput,
+        pipeDelimitedQueryParametersQueryDeserializer,
+      )
+      const typedRequest: PipeDelimitedQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3215,22 +3208,25 @@ export const simpleHeaderParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [headerIssues, headers] = await configuration.getRequestHeaders(
-      frameworkInput,
-      simpleHeaderParametersRequestHeadersDeserializer,
-    )
-    const issues = [...headerIssues]
-    const typedRequest = {
-      headers,
-      issues: issues.length > 0 ? issues : undefined,
-    } as SimpleHeaderParametersServerRequest
-    const typedResponse = await api.simpleHeaderParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const headers = await configuration.getRequestHeaders(
+        frameworkInput,
+        simpleHeaderParametersRequestHeadersDeserializer,
+      )
+      const typedRequest: SimpleHeaderParametersServerRequest = {
+        headers,
+      }
+      const typedResponse = await api.simpleHeaderParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3240,22 +3236,22 @@ export const simplePathParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [pathIssues, path] = await configuration.getPathParameters(
-      frameworkInput,
-      simplePathParametersPathDeserializer,
-    )
-    const issues = [...pathIssues]
-    const typedRequest = {
-      path,
-      issues: issues.length > 0 ? issues : undefined,
-    } as SimplePathParametersServerRequest
-    const typedResponse = await api.simplePathParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const path = await configuration.getPathParameters(frameworkInput, simplePathParametersPathDeserializer)
+      const typedRequest: SimplePathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.simplePathParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3265,32 +3261,32 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(
-      frameworkInput,
-      simpleResponseHeaderParametersRequestBodyValidator,
-    )
-    const [bodyIssues, body] = await configuration.getRequestBody(
-      frameworkInput,
-      mimeType,
-      simpleResponseHeaderParametersRequestBodyValidator,
-    )
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as SimpleResponseHeaderParametersServerRequest
-    const typedResponse = await api.simpleResponseHeaderParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(
+    try {
+      const mimeType = await configuration.getMimeType<'application/json'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
         frameworkInput,
-        typedResponse,
-        simpleResponseHeaderParametersResponseHeadersSerializer,
-      ),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+        mimeType,
+        simpleResponseHeaderParametersRequestBodyValidator,
+      )
+      const typedRequest: SimpleResponseHeaderParametersServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(
+          frameworkInput,
+          typedResponse,
+          simpleResponseHeaderParametersResponseHeadersSerializer,
+        ),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -3300,22 +3296,25 @@ export const spaceDelimitedQueryParametersRouter: Router = Router().get(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: ParametersApi<ExpressParameters> = response.locals['__oats_api']
-    const [queryIssues, query] = await configuration.getQueryParameters(
-      frameworkInput,
-      spaceDelimitedQueryParametersQueryDeserializer,
-    )
-    const issues = [...queryIssues]
-    const typedRequest = {
-      query,
-      issues: issues.length > 0 ? issues : undefined,
-    } as SpaceDelimitedQueryParametersServerRequest
-    const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const query = await configuration.getQueryParameters(
+        frameworkInput,
+        spaceDelimitedQueryParametersQueryDeserializer,
+      )
+      const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 

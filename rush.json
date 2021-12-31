@@ -276,6 +276,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/try",
+      "projectFolder": "projects/try",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/typescript-common",
       "projectFolder": "projects/typescript-common",
       "versionPolicyName": "oats",

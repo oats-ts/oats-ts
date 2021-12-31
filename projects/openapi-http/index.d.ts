@@ -1,4 +1,5 @@
-import type { Issue, Validator } from '@oats-ts/validators'
+import type { Validator } from '@oats-ts/validators'
+import type { Try } from '@oats-ts/try'
 
 /** Configuration for performing a HTTP request */
 export type ClientConfiguration<R = any, V = any> = {
@@ -29,7 +30,7 @@ export type ResponseHeadersSerializer<S extends string = string> = {
 }
 
 export type ResponseHeadersDeserializers<S extends string = string> = {
-  [statusCode in S]: (input: RawHttpHeaders) => any
+  [statusCode in S]: (input: RawHttpHeaders) => Try<any>
 }
 
 export type ResponseBodyValidators<V = unknown> = {
@@ -51,14 +52,6 @@ export type HasPathParameters<T> = {
 
 export type HasQueryParameters<T> = {
   query: T
-}
-
-export type HasIssues = {
-  issues: Issue[]
-}
-
-export type HasNoIssues = {
-  issues?: undefined
 }
 
 export type HasRequestBody<M extends string, T> = {

@@ -26,7 +26,6 @@ export function getHandlerBodyAst(
   const hasQuery = data.query.length > 0
   const hasHeaders = data.header.length > 0
   const hasBody = hasRequestBody(data, context)
-  const hasRespHeaders = hasResponseHeaders(data.operation, context)
 
   const expressParams = factory.createVariableStatement(
     undefined,
@@ -104,44 +103,6 @@ export function getHandlerBodyAst(
 
   const body = getRequestBodyRelatedStatementAsts(data, context)
 
-  const issues = hasInputParams
-    ? [
-        factory.createVariableStatement(
-          undefined,
-          factory.createVariableDeclarationList(
-            [
-              factory.createVariableDeclaration(
-                factory.createIdentifier(Names.issues),
-                undefined,
-                undefined,
-                factory.createArrayLiteralExpression(
-                  [
-                    ...(data.path.length > 0
-                      ? [factory.createSpreadElement(factory.createIdentifier(Names.pathIssues))]
-                      : []),
-                    ...(data.query.length > 0
-                      ? [factory.createSpreadElement(factory.createIdentifier(Names.queryIssues))]
-                      : []),
-                    ...(data.header.length > 0
-                      ? [factory.createSpreadElement(factory.createIdentifier(Names.headerIssues))]
-                      : []),
-                    ...(hasRequestBody(data, context)
-                      ? [
-                          factory.createSpreadElement(factory.createIdentifier(Names.mimeTypeIssues)),
-                          factory.createSpreadElement(factory.createIdentifier(Names.bodyIssues)),
-                        ]
-                      : []),
-                  ],
-                  false,
-                ),
-              ),
-            ],
-            NodeFlags.Const,
-          ),
-        ),
-      ]
-    : []
-
   const typedRequest = hasInputParams
     ? [
         factory.createVariableStatement(
@@ -151,57 +112,29 @@ export function getHandlerBodyAst(
               factory.createVariableDeclaration(
                 factory.createIdentifier(Names.typedRequest),
                 undefined,
-                undefined,
-                factory.createAsExpression(
-                  factory.createObjectLiteralExpression(
-                    [
-                      ...(hasPath
-                        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.path), undefined)]
-                        : []),
-                      ...(hasQuery
-                        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.query), undefined)]
-                        : []),
-                      ...(hasHeaders
-                        ? [
-                            factory.createShorthandPropertyAssignment(
-                              factory.createIdentifier(Names.headers),
-                              undefined,
-                            ),
-                          ]
-                        : []),
-                      ...(hasBody
-                        ? [
-                            factory.createShorthandPropertyAssignment(
-                              factory.createIdentifier(Names.mimeType),
-                              undefined,
-                            ),
-                            factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.body), undefined),
-                          ]
-                        : []),
-                      factory.createPropertyAssignment(
-                        factory.createIdentifier(Names.issues),
-                        factory.createConditionalExpression(
-                          factory.createBinaryExpression(
-                            factory.createPropertyAccessExpression(
-                              factory.createIdentifier(Names.issues),
-                              factory.createIdentifier('length'),
-                            ),
-                            factory.createToken(SyntaxKind.GreaterThanToken),
-                            factory.createNumericLiteral('0'),
+                factory.createTypeReferenceNode(referenceOf(data.operation, 'openapi/request-server-type'), undefined),
+                factory.createObjectLiteralExpression(
+                  [
+                    ...(hasPath
+                      ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.path), undefined)]
+                      : []),
+                    ...(hasQuery
+                      ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.query), undefined)]
+                      : []),
+                    ...(hasHeaders
+                      ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.headers), undefined)]
+                      : []),
+                    ...(hasBody
+                      ? [
+                          factory.createShorthandPropertyAssignment(
+                            factory.createIdentifier(Names.mimeType),
+                            undefined,
                           ),
-                          factory.createToken(SyntaxKind.QuestionToken),
-                          factory.createIdentifier(Names.issues),
-                          factory.createToken(SyntaxKind.ColonToken),
-                          factory.createIdentifier('undefined'),
-                        ),
-                      ),
-                    ],
-                    true,
-                  ),
-                  factory.createTypeReferenceNode(
-                    referenceOf(data.operation, 'openapi/request-server-type'),
-                    undefined,
-                  ),
+                          factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.body), undefined),
+                        ]
+                      : []),
+                  ],
+                  true,
                 ),
               ),
             ],
@@ -310,16 +243,36 @@ export function getHandlerBodyAst(
     ),
   )
 
-  return factory.createBlock([
-    expressParams,
-    configuration,
-    api,
-    ...parameters,
-    ...body,
-    ...issues,
-    ...typedRequest,
-    typedResponse,
-    normalizedResponse,
-    returnStatement,
-  ])
+  const tryBlock = factory.createBlock(
+    [...parameters, ...body, ...typedRequest, typedResponse, normalizedResponse, returnStatement],
+    true,
+  )
+
+  const catchBlock = factory.createBlock(
+    [
+      factory.createExpressionStatement(
+        factory.createCallExpression(
+          factory.createPropertyAccessExpression(
+            factory.createIdentifier(Names.configuration),
+            factory.createIdentifier('handleError'),
+          ),
+          undefined,
+          [factory.createIdentifier(Names.frameworkInput), factory.createIdentifier(Names.error)],
+        ),
+      ),
+      factory.createThrowStatement(factory.createIdentifier(Names.error)),
+    ],
+    true,
+  )
+
+  const tryCatch = factory.createTryStatement(
+    tryBlock,
+    factory.createCatchClause(
+      factory.createVariableDeclaration(factory.createIdentifier(Names.error), undefined, undefined, undefined),
+      catchBlock,
+    ),
+    undefined,
+  )
+
+  return factory.createBlock([expressParams, configuration, api, tryCatch])
 }

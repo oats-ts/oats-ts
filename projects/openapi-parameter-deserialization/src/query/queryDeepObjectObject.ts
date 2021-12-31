@@ -1,29 +1,41 @@
-import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
-import { decode, encode, isNil } from '../utils'
+import { Try, failure, map, success } from '@oats-ts/try'
+import {
+  QueryOptions,
+  PrimitiveRecord,
+  FieldParsers,
+  RawQueryParams,
+  QueryValueDeserializer,
+  ParameterValue,
+} from '../types'
+import { decode, encode, isNil, mapRecord } from '../utils'
 
 export const queryDeepObjectObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}) =>
-  (name: string) =>
-  (data: RawQueryParams): T => {
-    const output: Record<string, Primitive> = {}
+  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}): QueryValueDeserializer<T> =>
+  (name: string, data: RawQueryParams): Try<T> => {
     const parserKeys = Object.keys(parsers)
+    if (parserKeys.length === 0) {
+      return success({} as T)
+    }
     let hasKeys: boolean = false
-
-    for (let i = 0; i < parserKeys.length; i += 1) {
-      const key = parserKeys[i]
+    const output = mapRecord(parserKeys, (key: string): Try<ParameterValue> => {
       const parser = parsers[key]
       const queryKey = `${encode(name)}[${encode(key)}]`
       const values = data[queryKey] || []
       if (values.length > 1) {
-        throw new TypeError(`Expected single value for query parameter "${key}" ("${queryKey}")`)
+        return failure([
+          {
+            message: `Expected single value for query parameter "${key}" ("${queryKey}")`,
+            path: name,
+            severity: 'error',
+            type: '',
+          },
+        ])
       }
       const [rawValue] = values
-      if (options.required || !isNil(rawValue)) {
-        const value = parser(key, decode(rawValue))
-        output[key] = value
+      if (!isNil(rawValue)) {
         hasKeys = true
       }
-    }
-
-    return hasKeys ? (output as T) : undefined
+      return parser(`${name}.${key}`, decode(rawValue))
+    })
+    return !hasKeys && !options.required ? success(undefined) : output
   }

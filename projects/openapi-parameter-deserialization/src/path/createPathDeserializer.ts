@@ -1,23 +1,22 @@
-import { ParameterObject, PathDeserializers } from '../types'
+import { Try, flatMap } from '@oats-ts/try'
+import { ParameterObject, PathValueDeserializers, ParameterValue, PathDeserializer } from '../types'
+import { mapRecord } from '../utils'
 import { createRawPathParser } from './createRawPathParser'
 
 export const createPathDeserializer = <T extends ParameterObject>(
   parameterNames: string[],
   regex: RegExp,
-  deserializers: PathDeserializers<T>,
-) => {
+  deserializers: PathValueDeserializers<T>,
+): PathDeserializer<T> => {
   const parseRawPath = createRawPathParser(parameterNames, regex)
-  return (input: string): T => {
-    const raw = parseRawPath(input)
-    const output: ParameterObject = {}
-    const keys = Object.keys(deserializers)
-
-    for (let i = 0; i < keys.length; i += 1) {
-      const key = keys[i]
-      const deserializer = deserializers[key]
-      output[key] = deserializer(key)(raw)
-    }
-
-    return output as T
+  return (input: string): Try<T> => {
+    return flatMap(parseRawPath(input), (raw) => {
+      const keys = Object.keys(deserializers)
+      const output = mapRecord(keys, (key): Try<ParameterValue> => {
+        const deserializer = deserializers[key]
+        return deserializer(key, raw)
+      })
+      return output as Try<T>
+    })
   }
 }

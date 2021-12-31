@@ -1,14 +1,8 @@
-import {
-  HasIssues,
-  HasNoIssues,
-  HasRequestBody,
-  HttpResponse,
-  RawHttpRequest,
-  RawHttpResponse,
-} from '@oats-ts/openapi-http'
+import { HasRequestBody, HttpResponse, RawHttpRequest, RawHttpResponse } from '@oats-ts/openapi-http'
 import { ClientConfiguration } from '@oats-ts/openapi-http-client'
 import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
+import { Try, getData } from '@oats-ts/try'
 import { array, boolean, enumeration, items, lazy, number, object, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, Response, Router } from 'express'
 
@@ -131,27 +125,49 @@ export type StrRequest = HasRequestBody<'application/json', string> | HasRequest
 
 export type StrArrRequest = HasRequestBody<'application/json', string[]> | HasRequestBody<'application/yaml', string[]>
 
-export type ArrObjServerRequest = (Partial<ArrObjRequest> & HasIssues) | (ArrObjRequest & HasNoIssues)
+export type ArrObjServerRequest =
+  | HasRequestBody<'application/json', Try<ObjectWithArrays>>
+  | HasRequestBody<'application/yaml', Try<ObjectWithArrays>>
 
-export type BoolServerRequest = (Partial<BoolRequest> & HasIssues) | (BoolRequest & HasNoIssues)
+export type BoolServerRequest =
+  | HasRequestBody<'application/json', Try<boolean>>
+  | HasRequestBody<'application/yaml', Try<boolean>>
 
-export type BoolArrServerRequest = (Partial<BoolArrRequest> & HasIssues) | (BoolArrRequest & HasNoIssues)
+export type BoolArrServerRequest =
+  | HasRequestBody<'application/json', Try<boolean[]>>
+  | HasRequestBody<'application/yaml', Try<boolean[]>>
 
-export type EnmServerRequest = (Partial<EnmRequest> & HasIssues) | (EnmRequest & HasNoIssues)
+export type EnmServerRequest =
+  | HasRequestBody<'application/json', Try<EnumType>>
+  | HasRequestBody<'application/yaml', Try<EnumType>>
 
-export type EnmArrServerRequest = (Partial<EnmArrRequest> & HasIssues) | (EnmArrRequest & HasNoIssues)
+export type EnmArrServerRequest =
+  | HasRequestBody<'application/json', Try<EnumType[]>>
+  | HasRequestBody<'application/yaml', Try<EnumType[]>>
 
-export type NestedObjServerRequest = (Partial<NestedObjRequest> & HasIssues) | (NestedObjRequest & HasNoIssues)
+export type NestedObjServerRequest =
+  | HasRequestBody<'application/json', Try<ObjectWithNestedObjects>>
+  | HasRequestBody<'application/yaml', Try<ObjectWithNestedObjects>>
 
-export type NumServerRequest = (Partial<NumRequest> & HasIssues) | (NumRequest & HasNoIssues)
+export type NumServerRequest =
+  | HasRequestBody<'application/json', Try<number>>
+  | HasRequestBody<'application/yaml', Try<number>>
 
-export type NumArrServerRequest = (Partial<NumArrRequest> & HasIssues) | (NumArrRequest & HasNoIssues)
+export type NumArrServerRequest =
+  | HasRequestBody<'application/json', Try<number[]>>
+  | HasRequestBody<'application/yaml', Try<number[]>>
 
-export type PrimObjServerRequest = (Partial<PrimObjRequest> & HasIssues) | (PrimObjRequest & HasNoIssues)
+export type PrimObjServerRequest =
+  | HasRequestBody<'application/json', Try<ObjectWithPrimitives>>
+  | HasRequestBody<'application/yaml', Try<ObjectWithPrimitives>>
 
-export type StrServerRequest = (Partial<StrRequest> & HasIssues) | (StrRequest & HasNoIssues)
+export type StrServerRequest =
+  | HasRequestBody<'application/json', Try<string>>
+  | HasRequestBody<'application/yaml', Try<string>>
 
-export type StrArrServerRequest = (Partial<StrArrRequest> & HasIssues) | (StrArrRequest & HasNoIssues)
+export type StrArrServerRequest =
+  | HasRequestBody<'application/json', Try<string[]>>
+  | HasRequestBody<'application/yaml', Try<string[]>>
 
 export const arrObjResponseBodyValidator = {
   200: { 'application/json': objectWithArraysTypeValidator, 'application/yaml': objectWithArraysTypeValidator },
@@ -302,7 +318,7 @@ export async function arrObj(input: ArrObjRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -331,7 +347,7 @@ export async function bool(input: BoolRequest, configuration: ClientConfiguratio
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
   const response = {
     mimeType,
@@ -355,7 +371,7 @@ export async function boolArr(input: BoolArrRequest, configuration: ClientConfig
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -384,7 +400,7 @@ export async function enm(input: EnmRequest, configuration: ClientConfiguration)
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
   const response = {
     mimeType,
@@ -408,7 +424,7 @@ export async function enmArr(input: EnmArrRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -440,7 +456,7 @@ export async function nestedObj(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -469,7 +485,7 @@ export async function num(input: NumRequest, configuration: ClientConfiguration)
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
   const response = {
     mimeType,
@@ -493,7 +509,7 @@ export async function numArr(input: NumArrRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -522,7 +538,7 @@ export async function primObj(input: PrimObjRequest, configuration: ClientConfig
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -551,7 +567,7 @@ export async function str(input: StrRequest, configuration: ClientConfiguration)
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
   const response = {
     mimeType,
@@ -575,7 +591,7 @@ export async function strArr(input: StrArrRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -701,21 +717,27 @@ export const arrObjRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, arrObjRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, arrObjRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as ArrObjServerRequest
-    const typedResponse = await api.arrObj(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<
+        'application/json' | 'application/yaml',
+        ObjectWithArrays | ObjectWithArrays
+      >(frameworkInput, mimeType, arrObjRequestBodyValidator)
+      const typedRequest: ArrObjServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.arrObj(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -725,21 +747,28 @@ export const boolRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, boolRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, boolRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as BoolServerRequest
-    const typedResponse = await api.bool(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean | boolean>(
+        frameworkInput,
+        mimeType,
+        boolRequestBodyValidator,
+      )
+      const typedRequest: BoolServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.bool(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -749,21 +778,28 @@ export const boolArrRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, boolArrRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, boolArrRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as BoolArrServerRequest
-    const typedResponse = await api.boolArr(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean[] | boolean[]>(
+        frameworkInput,
+        mimeType,
+        boolArrRequestBodyValidator,
+      )
+      const typedRequest: BoolArrServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.boolArr(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -773,21 +809,28 @@ export const enmRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, enmRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, enmRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as EnmServerRequest
-    const typedResponse = await api.enm(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType | EnumType>(
+        frameworkInput,
+        mimeType,
+        enmRequestBodyValidator,
+      )
+      const typedRequest: EnmServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.enm(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -797,21 +840,28 @@ export const enmArrRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, enmArrRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, enmArrRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as EnmArrServerRequest
-    const typedResponse = await api.enmArr(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType[] | EnumType[]>(
+        frameworkInput,
+        mimeType,
+        enmArrRequestBodyValidator,
+      )
+      const typedRequest: EnmArrServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.enmArr(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -821,25 +871,27 @@ export const nestedObjRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, nestedObjRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(
-      frameworkInput,
-      mimeType,
-      nestedObjRequestBodyValidator,
-    )
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as NestedObjServerRequest
-    const typedResponse = await api.nestedObj(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<
+        'application/json' | 'application/yaml',
+        ObjectWithNestedObjects | ObjectWithNestedObjects
+      >(frameworkInput, mimeType, nestedObjRequestBodyValidator)
+      const typedRequest: NestedObjServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.nestedObj(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -849,21 +901,28 @@ export const numRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, numRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, numRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as NumServerRequest
-    const typedResponse = await api.num(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number | number>(
+        frameworkInput,
+        mimeType,
+        numRequestBodyValidator,
+      )
+      const typedRequest: NumServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.num(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -873,21 +932,28 @@ export const numArrRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, numArrRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, numArrRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as NumArrServerRequest
-    const typedResponse = await api.numArr(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number[] | number[]>(
+        frameworkInput,
+        mimeType,
+        numArrRequestBodyValidator,
+      )
+      const typedRequest: NumArrServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.numArr(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -897,21 +963,27 @@ export const primObjRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, primObjRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, primObjRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as PrimObjServerRequest
-    const typedResponse = await api.primObj(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<
+        'application/json' | 'application/yaml',
+        ObjectWithPrimitives | ObjectWithPrimitives
+      >(frameworkInput, mimeType, primObjRequestBodyValidator)
+      const typedRequest: PrimObjServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.primObj(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -921,21 +993,28 @@ export const strRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, strRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, strRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as StrServerRequest
-    const typedResponse = await api.str(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string | string>(
+        frameworkInput,
+        mimeType,
+        strRequestBodyValidator,
+      )
+      const typedRequest: StrServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.str(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 
@@ -945,21 +1024,28 @@ export const strArrRouter: Router = Router().post(
     const frameworkInput: ExpressParameters = { request, response, next }
     const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
-    const [mimeTypeIssues, mimeType] = await configuration.getMimeType(frameworkInput, strArrRequestBodyValidator)
-    const [bodyIssues, body] = await configuration.getRequestBody(frameworkInput, mimeType, strArrRequestBodyValidator)
-    const issues = [...mimeTypeIssues, ...bodyIssues]
-    const typedRequest = {
-      mimeType,
-      body,
-      issues: issues.length > 0 ? issues : undefined,
-    } as StrArrServerRequest
-    const typedResponse = await api.strArr(typedRequest, frameworkInput)
-    const rawResponse: RawHttpResponse = {
-      headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-      statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-      body: await configuration.getResponseBody(frameworkInput, typedResponse),
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string[] | string[]>(
+        frameworkInput,
+        mimeType,
+        strArrRequestBodyValidator,
+      )
+      const typedRequest: StrArrServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.strArr(typedRequest, frameworkInput)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
+        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+      }
+      return configuration.respond(frameworkInput, rawResponse)
+    } catch (error) {
+      configuration.handleError(frameworkInput, error)
+      throw error
     }
-    return configuration.respond(frameworkInput, rawResponse)
   },
 )
 

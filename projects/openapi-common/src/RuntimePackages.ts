@@ -57,6 +57,14 @@ const Express = {
   NextFunction: 'NextFunction',
 }
 
+const Try = {
+  name: '@oats-ts/try',
+  Try: 'Try',
+  getData: 'getData',
+  map: 'map',
+  flatMap: 'flatMap',
+}
+
 export const RuntimePackages = {
   Http,
   HttpClient,
@@ -65,4 +73,5 @@ export const RuntimePackages = {
   HttpServerExpress,
   ParameterSerialization,
   ParameterDeserialization,
+  Try,
 }

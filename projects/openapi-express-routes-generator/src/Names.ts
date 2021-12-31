@@ -18,6 +18,7 @@ export const Names = {
   pathIssues: 'pathIssues',
   headers: 'headers',
   headerIssues: 'headerIssues',
+  error: 'error',
 
   typedRequest: 'typedRequest',
   typedResponse: 'typedResponse',

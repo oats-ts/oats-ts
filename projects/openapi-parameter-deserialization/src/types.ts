@@ -1,3 +1,5 @@
+import { Try } from '@oats-ts/try'
+
 /** Types that can be individual parameter values */
 export type Primitive = string | number | boolean
 export type PrimitiveArray = ReadonlyArray<Primitive>
@@ -11,7 +13,7 @@ export type FieldParsers<T extends PrimitiveRecord> = { [P in keyof T]: ValuePar
 /** Object, collection of named parameter values */
 export type ParameterObject = Record<string, ParameterValue>
 
-export type ValueParser<I extends Primitive, O extends Primitive> = (name: string, input: I) => O
+export type ValueParser<I extends Primitive, O extends Primitive> = (name: string, input: I) => Try<O>
 
 /** Query related types */
 export type QueryOptions = {
@@ -20,8 +22,9 @@ export type QueryOptions = {
 }
 
 export type RawQueryParams = Record<string, string[]>
-export type QueryDeserializer<T extends ParameterValue> = (name: string) => (value: RawQueryParams) => T
-export type QueryDeserializers<T extends ParameterObject> = { [P in keyof T]: QueryDeserializer<T[P]> }
+export type QueryValueDeserializer<T extends ParameterValue> = (name: string, value: RawQueryParams) => Try<T>
+export type QueryValueDeserializers<T extends ParameterObject> = { [P in keyof T]: QueryValueDeserializer<T[P]> }
+export type QueryDeserializer<T extends ParameterObject> = (input: string) => Try<T>
 
 /** Path related types */
 export type PathOptions = {
@@ -29,8 +32,9 @@ export type PathOptions = {
 }
 
 export type RawPathParams = Record<string, string>
-export type PathDeserializer<T extends ParameterValue> = (name: string) => (value: RawPathParams) => T
-export type PathDeserializers<T extends ParameterObject> = { [P in keyof T]: PathDeserializer<T[P]> }
+export type PathValueDeserializer<T extends ParameterValue> = (name: string, value: RawPathParams) => Try<T>
+export type PathValueDeserializers<T extends ParameterObject> = { [P in keyof T]: PathValueDeserializer<T[P]> }
+export type PathDeserializer<T extends ParameterObject> = (input: string) => Try<T>
 
 /** Header related types */
 export type HeaderOptions = {
@@ -39,5 +43,6 @@ export type HeaderOptions = {
 }
 
 export type RawHeaders = Record<string, string>
-export type HeaderDeserializer<T extends ParameterValue> = (name: string) => (value: RawHeaders) => T
-export type HeaderDeserializers<T extends ParameterObject> = { [P in keyof T]: HeaderDeserializer<T[P]> }
+export type HeaderValueDeserializer<T extends ParameterValue> = (name: string, value: RawHeaders) => Try<T>
+export type HeaderValueDeserializers<T extends ParameterObject> = { [P in keyof T]: HeaderValueDeserializer<T[P]> }
+export type HeaderDeserializer<T extends ParameterObject> = (input: RawHeaders) => Try<T>

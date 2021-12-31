@@ -1,8 +1,13 @@
-import { factory, TypeReferenceType } from 'typescript'
+import { factory, TypeNode, TypeReferenceType } from 'typescript'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation, RuntimePackages } from '@oats-ts/openapi-common'
+import { identity } from 'lodash'
 
-export function getParameterTypesAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeReferenceType[] {
+export function getParameterTypesAst(
+  data: EnhancedOperation,
+  context: OpenAPIGeneratorContext,
+  transform: (node: TypeNode) => TypeNode = identity,
+): TypeReferenceType[] {
   const { referenceOf } = context
   const { header, query, path, operation } = data
 
@@ -11,7 +16,7 @@ export function getParameterTypesAst(data: EnhancedOperation, context: OpenAPIGe
   if (header.length > 0) {
     commonTypes.push(
       factory.createTypeReferenceNode(RuntimePackages.Http.HasHeaders, [
-        referenceOf(operation, 'openapi/request-headers-type'),
+        transform(referenceOf(operation, 'openapi/request-headers-type')),
       ]),
     )
   }
@@ -19,7 +24,7 @@ export function getParameterTypesAst(data: EnhancedOperation, context: OpenAPIGe
   if (query.length > 0) {
     commonTypes.push(
       factory.createTypeReferenceNode(RuntimePackages.Http.HasQueryParameters, [
-        referenceOf(operation, 'openapi/query-type'),
+        transform(referenceOf(operation, 'openapi/query-type')),
       ]),
     )
   }
@@ -27,7 +32,7 @@ export function getParameterTypesAst(data: EnhancedOperation, context: OpenAPIGe
   if (path.length > 0) {
     commonTypes.push(
       factory.createTypeReferenceNode(RuntimePackages.Http.HasPathParameters, [
-        referenceOf(operation, 'openapi/path-type'),
+        transform(referenceOf(operation, 'openapi/path-type')),
       ]),
     )
   }

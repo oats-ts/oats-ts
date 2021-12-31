@@ -1,5 +1,6 @@
-import { HasIssues, HasNoIssues, HasRequestBody, HttpResponse } from '@oats-ts/openapi-http'
+import { HasRequestBody, HttpResponse } from '@oats-ts/openapi-http'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
+import { getIssues, isFailure, Try, getData } from '@oats-ts/try'
 import {
   ArrObjResponse,
   ArrObjServerRequest,
@@ -28,15 +29,13 @@ import {
 
 export class BodiesApiImpl implements BodiesApi<ExpressParameters> {
   // TODO typings
-  async respond(
-    input: (Partial<HasRequestBody<any, any>> & HasIssues) | (HasRequestBody<any, any> & HasNoIssues),
-  ): Promise<HttpResponse<any, 200, any, undefined>> {
-    if (input.issues) {
-      console.error(input.issues)
-      throw new TypeError(JSON.stringify(input.issues))
+  async respond(input: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
+    if (isFailure(input.body)) {
+      console.error(getIssues(input.body))
+      throw new TypeError(JSON.stringify(getIssues(input.body)))
     }
     return {
-      body: input.body as any,
+      body: getData(input.body),
       headers: undefined,
       mimeType: input.mimeType,
       statusCode: 200,

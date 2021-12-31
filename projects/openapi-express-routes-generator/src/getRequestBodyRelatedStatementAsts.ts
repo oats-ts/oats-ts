@@ -1,6 +1,41 @@
-import { EnhancedOperation, hasRequestBody, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { factory, NodeFlags, VariableStatement } from 'typescript'
+import {
+  EnhancedOperation,
+  getRequestBodyContent,
+  hasRequestBody,
+  OpenAPIGeneratorContext,
+} from '@oats-ts/openapi-common'
+import { isNil, keys, values } from 'lodash'
+import { factory, NodeFlags, TypeNode, VariableStatement } from 'typescript'
 import { Names } from './Names'
+
+export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
+  const { referenceOf } = context
+  const bodyTypes = values(getRequestBodyContent(data, context))
+    .filter((mediaType) => !isNil(mediaType?.schema))
+    .map((mediaType): TypeNode => referenceOf(mediaType.schema, 'openapi/type'))
+  switch (bodyTypes.length) {
+    case 0:
+      return factory.createTypeReferenceNode('any')
+    case 1:
+      return bodyTypes[0]
+    default:
+      return factory.createUnionTypeNode(bodyTypes)
+  }
+}
+
+export function getMimeTypesUnionType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
+  const mediaTypes = keys(getRequestBodyContent(data, context)).map(
+    (mediaType): TypeNode => factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
+  )
+  switch (mediaTypes.length) {
+    case 0:
+      return factory.createTypeReferenceNode('any')
+    case 1:
+      return mediaTypes[0]
+    default:
+      return factory.createUnionTypeNode(mediaTypes)
+  }
+}
 
 export function getRequestBodyRelatedStatementAsts(
   data: EnhancedOperation,
@@ -10,20 +45,14 @@ export function getRequestBodyRelatedStatementAsts(
     return []
   }
   const { referenceOf } = context
+  const mediaTypeUnion = getMimeTypesUnionType(data, context)
+  const bodiesUnion = getBodyTypesUnionType(data, context)
   const mimeType = factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          factory.createArrayBindingPattern([
-            factory.createBindingElement(
-              undefined,
-              undefined,
-              factory.createIdentifier(Names.mimeTypeIssues),
-              undefined,
-            ),
-            factory.createBindingElement(undefined, undefined, factory.createIdentifier(Names.mimeType), undefined),
-          ]),
+          factory.createIdentifier(Names.mimeType),
           undefined,
           undefined,
           factory.createAwaitExpression(
@@ -32,11 +61,8 @@ export function getRequestBodyRelatedStatementAsts(
                 factory.createIdentifier(Names.configuration),
                 factory.createIdentifier('getMimeType'),
               ),
-              undefined,
-              [
-                factory.createIdentifier(Names.frameworkInput),
-                referenceOf(data.operation, 'openapi/request-body-validator'),
-              ],
+              [mediaTypeUnion],
+              [factory.createIdentifier(Names.frameworkInput)],
             ),
           ),
         ),
@@ -50,10 +76,7 @@ export function getRequestBodyRelatedStatementAsts(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          factory.createArrayBindingPattern([
-            factory.createBindingElement(undefined, undefined, factory.createIdentifier(Names.bodyIssues), undefined),
-            factory.createBindingElement(undefined, undefined, factory.createIdentifier(Names.body), undefined),
-          ]),
+          factory.createIdentifier(Names.body),
           undefined,
           undefined,
           factory.createAwaitExpression(
@@ -62,7 +85,7 @@ export function getRequestBodyRelatedStatementAsts(
                 factory.createIdentifier(Names.configuration),
                 factory.createIdentifier('getRequestBody'),
               ),
-              undefined,
+              [mediaTypeUnion, bodiesUnion],
               [
                 factory.createIdentifier(Names.frameworkInput),
                 factory.createIdentifier(Names.mimeType),
