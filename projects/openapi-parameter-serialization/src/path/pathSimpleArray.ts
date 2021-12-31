@@ -5,8 +5,7 @@ import { getPathValue, validatePathArray } from './pathUtils'
 
 export const pathSimpleArray =
   <T extends PrimitiveArray>(options: PathOptions<T>): PathSerializer<T> =>
-  (name: string) =>
-  (data?: T): string => {
+  (name: string, data?: T): string => {
     const value = validatePathArray(name, getPathValue(name, data, options))
     return joinArrayItems('', ',', value)
   }

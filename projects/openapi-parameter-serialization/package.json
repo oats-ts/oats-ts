@@ -24,7 +24,8 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "dependencies": {
-    "@oats-ts/openapi-parameter-common": "0.0.8"
+    "@oats-ts/openapi-parameter-common": "0.0.8",
+    "@oats-ts/try": "0.0.8"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",

@@ -5,8 +5,7 @@ import { getPathValue, validatePathPrimitive } from './pathUtils'
 
 export const pathMatrixPrimitive =
   <T extends Primitive>(options: PathOptions<T>): PathSerializer<T> =>
-  (name: string) =>
-  (data?: T) => {
+  (name: string, data?: T) => {
     const value = validatePathPrimitive(name, getPathValue(name, data, options))
     const nameStr = encode(name)
     const valueStr = encode(value)

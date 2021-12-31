@@ -6,8 +6,7 @@ import { getQueryValue } from './queryUtils'
 export const queryDelimitedArray =
   (delimiter: string) =>
   <T extends PrimitiveArray>(opts: QueryOptions<T>): QuerySerializer<T> =>
-  (name: string) =>
-  (data?: T): string[] => {
+  (name: string, data?: T): string[] => {
     const options: QueryOptions<T> = { explode: true, ...opts }
     const value = getQueryValue(name, data, options)
     if (isNil(value)) {

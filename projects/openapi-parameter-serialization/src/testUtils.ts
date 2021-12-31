@@ -1,6 +1,6 @@
 import { QueryOptions, ParameterValue, PathOptions, HeaderOptions } from './types'
 
-export type SerialzerCreator<Result, Options> = (options: Options) => (name: string) => (data: ParameterValue) => Result
+export type SerialzerCreator<Result, Options> = (options: Options) => (name: string, data: ParameterValue) => Result
 
 export type TestDataInput<Result, Options> = [Result, Options, string, ParameterValue]
 export type TestErrorInput<Options> = [Options, string, ParameterValue]
@@ -28,10 +28,10 @@ export function createSerializerTest<Result, Options>(
 ): void {
   describe(name, () => {
     it.each(data.data)('should be "%s", given options: %s, name %s, value: %s', (expected, options, name, value) => {
-      expect(fn(options)(name)(value)).toEqual(expected)
+      expect(fn(options)(name, value)).toEqual(expected)
     })
     it.each(data.error)('should throw, given options: %s, name %s, value: %s', (options, name, value) => {
-      expect(() => fn(options)(name)(value)).toThrowError()
+      expect(() => fn(options)(name, value)).toThrowError()
     })
   })
 }

@@ -9,7 +9,7 @@ export const createQuerySerializer =
     for (let i = 0; i < keys.length; i += 1) {
       const name = keys[i] as keyof T
       const serializer = serializers[name]
-      parts.push(...serializer(name.toString())(input[name]))
+      parts.push(...serializer(name.toString(), input[name]))
     }
 
     return parts.length === 0 ? undefined : `?${parts.join('&')}`

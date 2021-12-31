@@ -11,7 +11,7 @@ export const createHeaderSerializer =
       const name = keys[i] as keyof T
       const serializer = serializers[name]
       const key = name.toString().toLowerCase()
-      const value = serializer(name.toString())(input[name])
+      const value = serializer(name.toString(), input[name])
       if (!isNil(value)) {
         headers[key] = value
       }

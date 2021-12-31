@@ -5,8 +5,7 @@ import { getQueryValue } from './queryUtils'
 
 export const queryFormPrimitive =
   <T extends Primitive>(options: QueryOptions<T>): QuerySerializer<T> =>
-  (name: string) =>
-  (data?: T): string[] => {
+  (name: string, data?: T): string[] => {
     const value = getQueryValue(name, data, options)
     if (isNil(value)) {
       return []

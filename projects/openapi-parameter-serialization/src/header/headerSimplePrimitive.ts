@@ -5,8 +5,7 @@ import { getHeaderValue } from './headerUtils'
 
 export const headerSimplePrimitive =
   <T extends Primitive>(options: HeaderOptions<T>): HeaderSerializer<T> =>
-  (name: string) =>
-  (data?: T): string => {
+  (name: string, data?: T): string => {
     const value = getHeaderValue(name, data, options)
     if (isNil(value)) {
       return undefined

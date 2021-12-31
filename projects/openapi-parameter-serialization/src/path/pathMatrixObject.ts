@@ -6,8 +6,7 @@ import { getPathValue, validatePathObject } from './pathUtils'
 
 export const pathMatrixObject =
   <T extends PrimitiveRecord>(options: PathOptions<T>): PathSerializer<T> =>
-  (name: string) =>
-  (data?: T) => {
+  (name: string, data?: T) => {
     const value = validatePathObject(name, getPathValue(name, data, options))
     return joinKeyValuePairs(
       options.explode ? ';' : `;${encode(name)}=`,
