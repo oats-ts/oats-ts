@@ -1,56 +1,60 @@
 import { Issue } from '@oats-ts/validators'
 import { fluent } from './fluent'
-import { Try, Success, FluentTryInterface, FluentTry } from './types'
+import { Try, Success, Fluent, FluentTry } from './types'
 
-export class FluentSuccess<T> implements Success<T>, FluentTryInterface<T> {
+export class FluentSuccess<T> implements Success<T>, Fluent<T> {
   public readonly data: T
 
-  constructor(data: T) {
+  public constructor(data: T) {
     this.data = data
   }
 
-  isSuccess(): boolean {
+  public get<S, F>(mapSuccess: (input: T) => S, _: (issues: Issue[]) => F): S {
+    return mapSuccess(this.getData())
+  }
+
+  public isSuccess(): boolean {
     return true
   }
 
-  isFailure(): boolean {
+  public isFailure(): boolean {
     return false
   }
 
-  map<R>(transform: (input: T) => R): FluentSuccess<R> {
+  public map<R>(transform: (input: T) => R): FluentSuccess<R> {
     return new FluentSuccess(transform(this.getData()))
   }
 
-  flatMap<R>(transform: (input: T) => Try<R>): FluentTry<R> {
+  public flatMap<R>(transform: (input: T) => Try<R>): FluentTry<R> {
     return fluent(transform(this.getData()))
   }
 
-  getData(): T {
+  public getData(): T {
     return this.data
   }
 
-  getDataOrElse(): T {
-    return this.data
+  public getDataOrElse(): T {
+    return this.getData()
   }
 
-  getIssues(): never {
+  public getIssues(): never {
     throw new TypeError(`Can't call ${FluentSuccess.prototype.getIssues.name} on ${FluentSuccess.name}`)
   }
 
-  getIssuesOrElse(issues: Issue<string>[]): Issue<string>[] {
+  public getIssuesOrElse(issues: Issue<string>[]): Issue<string>[] {
     return issues
   }
 
-  doIfSuccess(effect: (data: T) => void): FluentSuccess<T> {
+  public doIfSuccess(effect: (data: T) => void): FluentSuccess<T> {
     effect(this.getData())
     return this
   }
 
-  doIfFailure(): FluentSuccess<T> {
+  public doIfFailure(): FluentSuccess<T> {
     return this
   }
 
-  getPlain(): Success<T> {
+  public getPlain(): Success<T> {
     return { data: this.getData() }
   }
 }

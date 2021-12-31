@@ -1,55 +1,62 @@
 import { Issue } from '@oats-ts/validators'
-import { Failure, FluentTryInterface } from './types'
+import { Failure, Fluent } from './types'
 
-export class FluentFailure implements Failure, FluentTryInterface<any> {
+export class FluentFailure implements Failure, Fluent<any> {
   public readonly issues: Issue<string>[]
 
-  constructor(issues: Issue<string>[]) {
+  public constructor(issues: Issue<string>[]) {
     this.issues = issues
   }
 
-  isSuccess(): boolean {
+  public get<S, F>(_: (input: never) => S, mapFailure: (input: Issue<string>[]) => F): F {
+    if (typeof mapFailure !== 'function') {
+      throw new TypeError(`Can't call ${FluentFailure.prototype.get.name} on ${FluentFailure.name}`)
+    }
+    return mapFailure(this.getIssues())
+  }
+
+  public isSuccess(): boolean {
     return false
   }
 
-  isFailure(): boolean {
+  public isFailure(): boolean {
     return true
   }
 
-  map(): FluentFailure {
+  public map(): FluentFailure {
     return this
   }
 
-  flatMap(): FluentFailure {
+  public flatMap(): FluentFailure {
     return this
   }
 
-  getData(): never {
+  public getData(): never {
     throw new TypeError(`Can't call ${FluentFailure.prototype.getData.name} on ${FluentFailure.name}`)
   }
 
-  getDataOrElse(data: any): any {
+  public getDataOrElse(data: any): any {
     return data
   }
 
-  getIssues(): Issue[] {
+  public getIssues(): Issue[] {
     return this.issues
   }
 
-  getIssuesOrElse(): Issue<string>[] {
-    return this.issues
+  public getIssuesOrElse(): Issue<string>[] {
+    return this.getIssues()
   }
 
-  doIfSuccess(): FluentFailure {
+  public doIfSuccess(): FluentFailure {
     return this
   }
 
-  doIfFailure(effect: (issues: Issue[]) => void): FluentFailure {
+  public doIfFailure(effect: (issues: Issue[]) => void): FluentFailure {
     effect(this.getIssues())
     return this
   }
 
-  getPlain(): Failure {
+  public getPlain(): Failure {
     return { issues: this.getIssues() }
   }
 }

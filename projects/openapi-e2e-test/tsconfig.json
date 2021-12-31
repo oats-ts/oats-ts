@@ -19,6 +19,7 @@
     "noStrictGenericChecks": true,
     "noUnusedParameters": true,
     "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
     "lib": [
       "es6"
     ]
