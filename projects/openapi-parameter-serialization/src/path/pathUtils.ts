@@ -1,4 +1,5 @@
 import { ParameterSegment, PathSegment } from '@oats-ts/openapi-parameter-common'
+import { failure, success, Try } from '@oats-ts/try'
 import {
   ParameterValue,
   PathOptions,
@@ -10,52 +11,83 @@ import {
 } from '../types'
 import { isNil } from '../utils'
 
-export function validatePathArray<T extends PrimitiveArray>(name: string, input: T): T {
+export function validatePathArray<T extends PrimitiveArray>(name: string, input: T): Try<T> {
   switch (input.length) {
     case 0: {
-      throw new Error(`Array "${name}" should not be empty`)
+      return failure([
+        {
+          message: `Array "${name}" should not be empty`,
+          path: name,
+          severity: 'error',
+          type: '',
+        },
+      ])
     }
     case 1: {
       const [head] = input
       if (`${head}`.length === 0) {
-        throw new Error(`Array "${name}" should not have a single 0 length item`)
+        return failure([
+          {
+            message: `Array "${name}" should not have a single 0 length item`,
+            path: name,
+            severity: 'error',
+            type: '',
+          },
+        ])
       }
-      return input
+      return success(input)
     }
     default:
-      return input
+      return success(input)
   }
 }
 
-export function validatePathObject<T extends PrimitiveRecord>(name: string, input: T): T {
+export function validatePathObject<T extends PrimitiveRecord>(name: string, input: T): Try<T> {
   const keys = Object.keys(input)
   switch (keys.length) {
     case 0: {
-      throw new Error(`Object "${name}" should not be empty`)
+      return failure([
+        {
+          message: `Object "${name}" should not be empty`,
+          path: name,
+          severity: 'error',
+          type: '',
+        },
+      ])
     }
     default:
-      return input
+      return success(input)
   }
 }
-export function validatePathPrimitive<T extends Primitive>(name: string, input: T): T {
-
+export function validatePathPrimitive<T extends Primitive>(name: string, input: T): Try<T> {
   switch (`${input}`.length) {
     case 0: {
-      throw new Error(`Primitive "${name}" should not be empty (serializing to 0 length string)`)
+      return failure([
+        {
+          message: `Primitive "${name}" should not be empty (serializing to 0 length string)`,
+          path: name,
+          severity: 'error',
+          type: '',
+        },
+      ])
     }
     default:
-      return input
+      return success(input)
   }
 }
 
-export function getPathValue<T extends ParameterValue>(name: string, value: T, options: PathOptions<T>): T {
+export function getPathValue<T extends ParameterValue>(name: string, value: T, options: PathOptions<T>): Try<T> {
   if (!isNil(value)) {
-    return value
+    return success(value)
   }
-  if (!isNil(options.defaultValue)) {
-    return options.defaultValue
-  }
-  throw new TypeError(`Path parameter "${name}" should not be ${value}`)
+  return failure([
+    {
+      message: `Path parameter "${name}" should not be ${value}`,
+      path: name,
+      severity: 'error',
+      type: '',
+    },
+  ])
 }
 
 export function validatePathSerializers<T extends ParameterObject>(

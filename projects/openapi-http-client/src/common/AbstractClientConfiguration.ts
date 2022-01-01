@@ -8,7 +8,7 @@ import {
   ResponseBodyValidators,
 } from '@oats-ts/openapi-http'
 import { ClientConfiguration } from '../typings'
-import { success, Try } from '@oats-ts/try'
+import { fluent, success, Try } from '@oats-ts/try'
 
 export abstract class AbstractClientConfiguration implements ClientConfiguration {
   private readonly baseUrl?: string
@@ -18,27 +18,30 @@ export abstract class AbstractClientConfiguration implements ClientConfiguration
     this.baseUrl = baseUrl
   }
 
-  async getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => string): Promise<string> {
-    return serializer(input.path)
+  async getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string> {
+    return fluent(serializer(input.path)).getData()
   }
-  async getQuery(input: Partial<TypedHttpRequest>, serializer: (input: any) => string): Promise<string | undefined> {
+  async getQuery(
+    input: Partial<TypedHttpRequest>,
+    serializer: (input: any) => Try<string>,
+  ): Promise<string | undefined> {
     // There are no query parameters, no query string returned by this
     if (serializer === undefined || serializer === null) {
       return undefined
     }
-    return serializer(input.query)
+    return fluent(serializer(input.query)).getData()
   }
   async getUrl(path: string, query?: string): Promise<string> {
     return [typeof this.baseUrl !== 'string' ? '' : this.baseUrl, path, typeof query !== 'string' ? '' : query].join('')
   }
   async getRequestHeaders(
     input?: Partial<TypedHttpRequest>,
-    serializer?: (input: any) => RawHttpHeaders,
+    serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders> {
     return {
       ...(serializer === undefined || serializer === null || input === undefined || input === null
         ? {}
-        : serializer(input.headers)),
+        : fluent(serializer(input.headers)).getData()),
       ...(typeof input?.mimeType === 'string' ? { 'content-type': input.mimeType } : {}),
     }
   }
@@ -64,9 +67,9 @@ export abstract class AbstractClientConfiguration implements ClientConfiguration
     response: RawHttpResponse,
     statusCode?: number,
     deserializers?: ResponseHeadersDeserializers,
-  ): Promise<Try<any>> {
+  ): Promise<any> {
     if (deserializers === null || deserializers === undefined) {
-      return success(undefined)
+      return undefined
     }
     if (typeof statusCode !== 'number' || typeof deserializers[statusCode] !== 'function') {
       const statusCodes = Object.keys(deserializers)
@@ -79,7 +82,7 @@ export abstract class AbstractClientConfiguration implements ClientConfiguration
     if (response.headers === null || response.headers === undefined) {
       throw new Error(`Response headers should not be ${response.headers}`)
     }
-    return deserializers[statusCode](response.headers)
+    return fluent(deserializers[statusCode](response.headers)).getData()
   }
   async getResponseBody(
     response: RawHttpResponse,

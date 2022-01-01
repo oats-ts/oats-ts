@@ -6,7 +6,6 @@ export const queryFormPrimitiveTestData: QueryTestData = {
     [['cat=1'], {}, 'cat', 1],
     [['dog=false'], {}, 'dog', false],
     [['x=true'], {}, 'x', true],
-    [['x=5'], { defaultValue: 5 }, 'x', undefined],
   ],
   error: [
     [{ required: true }, 'foo', undefined],

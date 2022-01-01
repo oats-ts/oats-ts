@@ -1,19 +1,24 @@
-import { HeaderOptions, ParameterValue, QueryOptions } from '../types'
+import { failure, success, Try } from '@oats-ts/try'
+import { HeaderOptions, ParameterValue } from '../types'
 import { isNil } from '../utils'
 
 export function getHeaderValue<T extends ParameterValue>(
   name: string,
   value: T | undefined,
   options: HeaderOptions<T>,
-): T {
+): Try<T> {
   if (!isNil(value)) {
-    return value
-  }
-  if (!isNil(options.defaultValue)) {
-    return options.defaultValue
+    return success(value)
   }
   if (!options.required) {
-    return undefined
+    return success(undefined)
   }
-  throw new TypeError(`Header "${name}" should not be ${value}`)
+  return failure([
+    {
+      message: `Header "${name}" should not be ${value}`,
+      path: name,
+      severity: 'error',
+      type: '',
+    },
+  ])
 }

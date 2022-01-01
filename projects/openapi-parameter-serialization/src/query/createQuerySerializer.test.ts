@@ -1,3 +1,4 @@
+import { fluent } from '@oats-ts/try'
 import { query } from '.'
 import { createQuerySerializer } from './createQuerySerializer'
 
@@ -20,24 +21,28 @@ const serializer = createQuerySerializer<Q>({
 // TODO more full scope tests
 describe('createQuerySerializer', () => {
   it('should create query string with all the parts necessary', () => {
-    const queryString = serializer({
-      a: 'some string',
-      b: 34,
-      c: true,
-      d: ['a', 'b', 'c'],
-      e: { foo: 1, bar: 43 },
-    })
+    const queryString = fluent(
+      serializer({
+        a: 'some string',
+        b: 34,
+        c: true,
+        d: ['a', 'b', 'c'],
+        e: { foo: 1, bar: 43 },
+      }),
+    ).getData()
     expect(queryString).toBe('?a=some%20string&b=34&c=true&d=a&d=b&d=c&foo=1&bar=43')
   })
 
   it('should return undefined when none of the values are present', () => {
-    const queryString = serializer({
-      a: null,
-      b: undefined,
-      c: undefined,
-      d: null,
-      e: undefined,
-    })
+    const queryString = fluent(
+      serializer({
+        a: null,
+        b: undefined,
+        c: undefined,
+        d: null,
+        e: undefined,
+      }),
+    ).getData()
     expect(queryString).toBe(undefined)
   })
 })

@@ -1,16 +1,17 @@
+import { Try, fromArray, fluent } from '@oats-ts/try'
 import { ParameterObject, QuerySerializers } from '../types'
 
 export const createQuerySerializer =
   <T extends ParameterObject>(serializers: QuerySerializers<T>) =>
-  (input: T): string => {
-    const parts: string[] = []
-    const keys = Object.keys(serializers)
-
-    for (let i = 0; i < keys.length; i += 1) {
-      const name = keys[i] as keyof T
-      const serializer = serializers[name]
-      parts.push(...serializer(name.toString(), input[name]))
-    }
-
-    return parts.length === 0 ? undefined : `?${parts.join('&')}`
+  (input: T): Try<string> => {
+    const serializedParts = fromArray(
+      Object.keys(serializers).map((name: string) => {
+        const key = name as keyof T
+        const serializer = serializers[key]
+        return serializer(name.toString(), input[key])
+      }),
+    )
+    return fluent(serializedParts)
+      .map((parts: string[][]): string[] => parts.reduce((flat, arr) => [...flat, ...arr], []))
+      .map((parts) => (parts.length === 0 ? undefined : `?${parts.join('&')}`))
   }

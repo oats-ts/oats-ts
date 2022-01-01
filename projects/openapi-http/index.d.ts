@@ -26,7 +26,7 @@ export type RequestBodyValidators<C extends string = string> = {
 }
 
 export type ResponseHeadersSerializer<S extends string = string> = {
-  [statusCode in S]: (input: any) => RawHttpHeaders
+  [statusCode in S]: (input: any) => Try<RawHttpHeaders>
 }
 
 export type ResponseHeadersDeserializers<S extends string = string> = {

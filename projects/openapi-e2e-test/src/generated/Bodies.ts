@@ -2,7 +2,7 @@ import { HasRequestBody, HttpResponse, RawHttpRequest, RawHttpResponse } from '@
 import { ClientConfiguration } from '@oats-ts/openapi-http-client'
 import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
-import { Try, getData } from '@oats-ts/try'
+import { Try } from '@oats-ts/try'
 import { array, boolean, enumeration, items, lazy, number, object, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, Response, Router } from 'express'
 
@@ -318,7 +318,7 @@ export async function arrObj(input: ArrObjRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -347,7 +347,7 @@ export async function bool(input: BoolRequest, configuration: ClientConfiguratio
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
   const response = {
     mimeType,
@@ -371,7 +371,7 @@ export async function boolArr(input: BoolArrRequest, configuration: ClientConfig
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -400,7 +400,7 @@ export async function enm(input: EnmRequest, configuration: ClientConfiguration)
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
   const response = {
     mimeType,
@@ -424,7 +424,7 @@ export async function enmArr(input: EnmArrRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -456,7 +456,7 @@ export async function nestedObj(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -485,7 +485,7 @@ export async function num(input: NumRequest, configuration: ClientConfiguration)
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
   const response = {
     mimeType,
@@ -509,7 +509,7 @@ export async function numArr(input: NumArrRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -538,7 +538,7 @@ export async function primObj(input: PrimObjRequest, configuration: ClientConfig
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -567,7 +567,7 @@ export async function str(input: StrRequest, configuration: ClientConfiguration)
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
   const response = {
     mimeType,
@@ -591,7 +591,7 @@ export async function strArr(input: StrArrRequest, configuration: ClientConfigur
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,

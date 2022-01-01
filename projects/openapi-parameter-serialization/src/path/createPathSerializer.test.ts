@@ -1,3 +1,4 @@
+import { fluent, getData } from '@oats-ts/try'
 import { path } from '.'
 import { PathSerializers } from '../types'
 import { createPathSerializer } from './createPathSerializer'
@@ -17,7 +18,7 @@ const serializers: PathSerializers<PathParams> = {
 describe('createPathSerializer', () => {
   it('should successfuly serialize path', () => {
     const serializer = createPathSerializer<PathParams>('/a/{a}/b/{b}/foo/{foo}', serializers)
-    expect(serializer({ a: 'test', b: 42, foo: true })).toBe('/a/test/b/42/foo/true')
+    expect(fluent(serializer({ a: 'test', b: 42, foo: true })).getData()).toBe('/a/test/b/42/foo/true')
   })
 
   it('should throw on extra params', () => {

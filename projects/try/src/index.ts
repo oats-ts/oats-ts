@@ -2,6 +2,8 @@ export { Failure, Success, Try, FluentTry } from './types'
 export { FluentFailure } from './FluentFailure'
 export { FluentSuccess } from './FluentSuccess'
 
+export { fromArray } from './fromArray'
+export { fromRecord } from './fromRecord'
 export { failure } from './failure'
 export { fluent } from './fluent'
 export { getData } from './getData'

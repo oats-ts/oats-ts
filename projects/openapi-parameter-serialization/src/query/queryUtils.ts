@@ -1,3 +1,4 @@
+import { failure, success, Try } from '@oats-ts/try'
 import { ParameterValue, QueryOptions } from '../types'
 import { isNil } from '../utils'
 
@@ -5,15 +6,19 @@ export function getQueryValue<T extends ParameterValue>(
   name: string,
   value: T | undefined,
   options: QueryOptions<T>,
-): T {
+): Try<T> {
   if (!isNil(value)) {
-    return value
-  }
-  if (!isNil(options.defaultValue)) {
-    return options.defaultValue
+    return success(value)
   }
   if (!options.required) {
-    return undefined
+    return success(undefined)
   }
-  throw new TypeError(`Query parameter "${name}" not be ${value}`)
+  return failure([
+    {
+      message: `Query parameter "${name}" not be ${value}`,
+      path: name,
+      severity: 'error',
+      type: '',
+    },
+  ])
 }

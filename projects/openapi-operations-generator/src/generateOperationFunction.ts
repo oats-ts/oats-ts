@@ -17,7 +17,6 @@ export function generateOperationFunction(
   return {
     path,
     dependencies: [
-      getNamedImports(RuntimePackages.Try.name, [RuntimePackages.Try.getData]),
       getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RawHttpRequest]),
       getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.ClientConfiguration]),
       ...dependenciesOf(path, data.operation, 'openapi/request-type'),
