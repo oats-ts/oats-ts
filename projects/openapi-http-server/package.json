@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-http-server",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -32,9 +32,9 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/openapi-http": "0.0.8",
-    "@oats-ts/try": "0.0.8",
-    "@oats-ts/validators": "0.0.8",
+    "@oats-ts/openapi-http": "0.0.9",
+    "@oats-ts/try": "0.0.9",
+    "@oats-ts/validators": "0.0.9",
     "@types/express": "4.17.13"
   },
   "peerDependencies": {

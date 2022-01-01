@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/asyncapi-type-guards-generator",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -32,10 +32,10 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/generator": "0.0.8",
-    "@oats-ts/asyncapi-common": "0.0.8",
-    "@oats-ts/asyncapi-reader": "0.0.8",
-    "@oats-ts/asyncapi": "0.0.8",
-    "@oats-ts/json-schema-type-guards-generator": "0.0.8"
+    "@oats-ts/generator": "0.0.9",
+    "@oats-ts/asyncapi-common": "0.0.9",
+    "@oats-ts/asyncapi-reader": "0.0.9",
+    "@oats-ts/asyncapi": "0.0.9",
+    "@oats-ts/json-schema-type-guards-generator": "0.0.9"
   }
 }

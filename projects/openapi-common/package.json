@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-common",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -34,16 +34,16 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.8",
-    "@oats-ts/json-schema-common": "0.0.8",
-    "@oats-ts/openapi-model": "0.0.8",
+    "@oats-ts/json-schema-model": "0.0.9",
+    "@oats-ts/json-schema-common": "0.0.9",
+    "@oats-ts/openapi-model": "0.0.9",
     "typescript": "4.3.5",
-    "@oats-ts/validators": "0.0.8",
-    "@oats-ts/openapi-reader": "0.0.8",
-    "@oats-ts/typescript-writer": "0.0.8",
-    "@oats-ts/generator": "0.0.8",
-    "@oats-ts/openapi-http": "0.0.8",
-    "@oats-ts/model-common": "0.0.8",
+    "@oats-ts/validators": "0.0.9",
+    "@oats-ts/openapi-reader": "0.0.9",
+    "@oats-ts/typescript-writer": "0.0.9",
+    "@oats-ts/generator": "0.0.9",
+    "@oats-ts/openapi-http": "0.0.9",
+    "@oats-ts/model-common": "0.0.9",
     "pascalcase": "1.0.0",
     "camelcase": "6.2.0"
   }
