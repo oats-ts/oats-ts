@@ -5,7 +5,7 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
 } from '@oats-ts/openapi-http'
-import { failure, success, Try } from '@oats-ts/try'
+import { failure, fluent, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { ServerConfiguration } from '../typings'
 import { ExpressParameters } from './typings'
@@ -125,7 +125,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     if (serializers === null || serializers === undefined) {
       return mimeTypeHeaders
     }
-    return { ...serializer(headers), ...mimeTypeHeaders }
+    return { ...fluent(serializer(headers)).getData(), ...mimeTypeHeaders }
   }
 
   async respond({ response, next }: ExpressParameters, rawResponse: RawHttpResponse): Promise<void> {

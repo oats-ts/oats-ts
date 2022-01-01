@@ -6,14 +6,15 @@ import {
   ResponseHeadersDeserializers,
   TypedHttpRequest,
 } from '@oats-ts/openapi-http'
+import { Try } from '@oats-ts/try'
 
 export type ClientConfiguration = {
-  getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => string): Promise<string>
-  getQuery(input: Partial<TypedHttpRequest>, serializer?: (input: any) => string): Promise<string | undefined>
+  getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string>
+  getQuery(input: Partial<TypedHttpRequest>, serializer?: (input: any) => Try<string>): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
   getRequestHeaders(
     input?: Partial<TypedHttpRequest>,
-    serializer?: (input: any) => RawHttpHeaders,
+    serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders>
   getRequestBody(input: Partial<TypedHttpRequest>): Promise<any>
   request(request: RawHttpRequest): Promise<RawHttpResponse>

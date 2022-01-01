@@ -1,6 +1,9 @@
+import { fluent, Try } from '@oats-ts/try'
 import { QueryOptions, ParameterValue, PathOptions, HeaderOptions } from './types'
 
-export type SerialzerCreator<Result, Options> = (options: Options) => (name: string) => (data: ParameterValue) => Result
+export type SerialzerCreator<Result, Options> = (
+  options: Options,
+) => (name: string, data: ParameterValue) => Try<Result>
 
 export type TestDataInput<Result, Options> = [Result, Options, string, ParameterValue]
 export type TestErrorInput<Options> = [Options, string, ParameterValue]
@@ -28,10 +31,12 @@ export function createSerializerTest<Result, Options>(
 ): void {
   describe(name, () => {
     it.each(data.data)('should be "%s", given options: %s, name %s, value: %s', (expected, options, name, value) => {
-      expect(fn(options)(name)(value)).toEqual(expected)
+      const result = fn(options)(name, value)
+      expect(fluent(result).getData()).toEqual(expected)
     })
     it.each(data.error)('should throw, given options: %s, name %s, value: %s', (options, name, value) => {
-      expect(() => fn(options)(name)(value)).toThrowError()
+      const result = fn(options)(name, value)
+      expect(fluent(result).getIssues()).not.toHaveLength(0)
     })
   })
 }

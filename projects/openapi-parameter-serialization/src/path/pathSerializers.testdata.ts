@@ -79,7 +79,7 @@ export const pathLabelArrayTestData: PathTestData = {
 export const pathLabelObjectTestData: PathTestData = {
   data: [
     ['.a,a,b,1,c,true', {}, 'foo', { a: 'a', b: 1, c: true }],
-    ['.a=a,b=1,c=true', { explode: true }, 'foo', { a: 'a', b: 1, c: true }],
+    ['.a=a.b=1.c=true', { explode: true }, 'foo', { a: 'a', b: 1, c: true }],
   ],
   error: [
     [{}, 'foo', undefined],

@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/asyncapi-model",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/bali182/oats.git"
   },
   "scripts": {
-    "test": "jest",
+    "test": "echo 'TODO'",
     "build": "echo 'Nothing to build'",
     "typecheck": "tsc --noEmit"
   },
@@ -24,6 +24,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@oats-ts/json-schema-model": "0.0.8"
+    "@oats-ts/json-schema-model": "0.0.9"
   }
 }

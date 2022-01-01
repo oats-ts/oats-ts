@@ -4,7 +4,7 @@ import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
 import { createPathDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
 import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
-import { Try, getData } from '@oats-ts/try'
+import { Try } from '@oats-ts/try'
 import { array, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, Response, Router } from 'express'
 
@@ -173,7 +173,7 @@ export async function createBook(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -204,7 +204,7 @@ export async function getBook(input: GetBookRequest, configuration: ClientConfig
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -231,7 +231,7 @@ export async function getBooks(configuration: ClientConfiguration): Promise<GetB
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,
@@ -267,7 +267,7 @@ export async function updateBook(
   const rawResponse = await configuration.request(rawRequest)
   const mimeType = await configuration.getMimeType(rawResponse)
   const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = getData(await configuration.getResponseHeaders(rawResponse, statusCode, undefined))
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await configuration.getResponseBody(
     rawResponse,
     statusCode,

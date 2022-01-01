@@ -1,21 +1,18 @@
+import { fromRecord, isFailure, isSuccess, Try } from '@oats-ts/try'
 import { HeaderSerializers, ParameterObject } from '../types'
 import { isNil } from '../utils'
 
 export const createHeaderSerializer =
   <T extends ParameterObject>(serializers: HeaderSerializers<T>) =>
-  (input: T): Record<string, string> => {
-    const keys = Object.keys(serializers)
-    const headers: Record<string, string> = {}
-
-    for (let i = 0; i < keys.length; i += 1) {
-      const name = keys[i] as keyof T
+  (input: T): Try<Record<string, string>> => {
+    const serializedParts = Object.keys(serializers).reduce((parts: Record<string, Try<string>>, key: string) => {
+      const name = key as keyof T
       const serializer = serializers[name]
-      const key = name.toString().toLowerCase()
-      const value = serializer(name.toString())(input[name])
-      if (!isNil(value)) {
-        headers[key] = value
+      const value = serializer(name.toString(), input[name])
+      if ((isSuccess(value) && !isNil(value.data)) || isFailure(value)) {
+        parts[key.toString().toLowerCase()] = value
       }
-    }
-
-    return headers
+      return parts
+    }, {})
+    return fromRecord(serializedParts)
   }

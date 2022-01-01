@@ -1,4 +1,4 @@
-import { Try, failure, map, success, isSuccess } from '@oats-ts/try'
+import { Try, failure, success, isSuccess, fromArray, fluent } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import {
   QueryOptions,
@@ -8,7 +8,7 @@ import {
   RawQueryParams,
   QueryValueDeserializer,
 } from '../types'
-import { decode, isNil, mapArray } from '../utils'
+import { decode, isNil } from '../utils'
 
 function queryFormObjectExplode<T extends PrimitiveRecord>(
   parsers: FieldParsers<T>,
@@ -18,32 +18,36 @@ function queryFormObjectExplode<T extends PrimitiveRecord>(
 ): Try<T> {
   const parserKeys = Object.keys(parsers)
   let hasKeys = false
-  const keyValuePairsTry = mapArray(parserKeys, (key): Try<[string, Primitive]> => {
-    const parser = parsers[key]
-    const values = data[key] || []
-    if (values.length > 1) {
-      return failure([
-        {
-          message: `Expected single value for query parameter "${key}" ("${name}.${key}")`,
-          path: `${name}.${key}`,
-          severity: 'error',
-          type: '',
-        },
-      ])
-    }
-    const [value] = values
-    if (!isNil(value)) {
-      hasKeys = true
-    }
-    const decodedValue = isNil(value) ? value : decode(value)
-    return map(parser(key, decodedValue), (valueForKey) => [key, valueForKey])
-  })
+  const keyValuePairsTry = fromArray(
+    parserKeys.map((key): Try<[string, Primitive]> => {
+      const parser = parsers[key]
+      const values = data[key] || []
+      if (values.length > 1) {
+        return failure([
+          {
+            message: `Expected single value for query parameter "${key}" ("${name}.${key}")`,
+            path: `${name}.${key}`,
+            severity: 'error',
+            type: '',
+          },
+        ])
+      }
+      const [value] = values
+      if (!isNil(value)) {
+        hasKeys = true
+      }
+      const decodedValue = isNil(value) ? value : decode(value)
+      return fluent(parser(key, decodedValue))
+        .map((valueForKey): [string, Primitive] => [key, valueForKey])
+        .toJson()
+    }),
+  )
 
   if (!hasKeys && !options.required) {
     return success(undefined)
   }
 
-  return map(keyValuePairsTry, (keyValuePairs) => {
+  return fluent(keyValuePairsTry).map((keyValuePairs) => {
     const presentKvPairs = keyValuePairs.filter(([, v]) => v !== undefined)
 
     const output: Record<string, Primitive> = {}

@@ -264,27 +264,21 @@ export function getOperationBodyAst(
           factory.createIdentifier(Names.responseHeaders),
           undefined,
           undefined,
-          factory.createCallExpression(
-            factory.createIdentifier(RuntimePackages.Try.getData),
-            [],
-            [
-              factory.createAwaitExpression(
-                factory.createCallExpression(
-                  factory.createPropertyAccessExpression(
-                    factory.createIdentifier(Names.configuration),
-                    factory.createIdentifier(Names.getResponseHeaders),
-                  ),
-                  undefined,
-                  [
-                    factory.createIdentifier(Names.rawResponse),
-                    factory.createIdentifier(Names.statusCode),
-                    hasResponseHeaders(data.operation, context)
-                      ? referenceOf(data.operation, 'openapi/response-headers-deserializer')
-                      : factory.createIdentifier('undefined'),
-                  ],
-                ),
+          factory.createAwaitExpression(
+            factory.createCallExpression(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.getResponseHeaders),
               ),
-            ],
+              undefined,
+              [
+                factory.createIdentifier(Names.rawResponse),
+                factory.createIdentifier(Names.statusCode),
+                hasResponseHeaders(data.operation, context)
+                  ? referenceOf(data.operation, 'openapi/response-headers-deserializer')
+                  : factory.createIdentifier('undefined'),
+              ],
+            ),
           ),
         ),
       ],

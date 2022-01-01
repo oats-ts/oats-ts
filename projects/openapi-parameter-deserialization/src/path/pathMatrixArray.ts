@@ -1,6 +1,6 @@
-import { failure, flatMap, Try } from '@oats-ts/try'
+import { failure, fluent, fromArray, Try } from '@oats-ts/try'
 import { Primitive, ValueParser, RawPathParams, PathOptions, PathValueDeserializer } from '../types'
-import { decode, encode, mapArray } from '../utils'
+import { decode, encode } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
 
 function pathMatrixArrayExplode<T extends Primitive>(
@@ -8,10 +8,10 @@ function pathMatrixArrayExplode<T extends Primitive>(
   name: string,
   data: RawPathParams,
 ): Try<T[]> {
-  return flatMap(getPathValue(name, data), (pathValue) => {
-    return flatMap(getPrefixedValue(name, pathValue, ';'), (rawString) => {
-      const kvPairStrings = rawString.split(';')
-      return mapArray(kvPairStrings, (kvPair) => {
+  return fluent(getPathValue(name, data))
+    .flatMap((pathValue) => getPrefixedValue(name, pathValue, ';'))
+    .flatMap((rawString) => {
+      const parsed = rawString.split(';').map((kvPair) => {
         const parts = kvPair.split('=')
         if (parts.length !== 2) {
           return failure([
@@ -36,8 +36,9 @@ function pathMatrixArrayExplode<T extends Primitive>(
         }
         return parse(name, value)
       })
+      return fromArray(parsed)
     })
-  })
+    .toJson()
 }
 
 function pathMatrixArrayNoExplode<T extends Primitive>(
@@ -45,11 +46,12 @@ function pathMatrixArrayNoExplode<T extends Primitive>(
   name: string,
   data: RawPathParams,
 ): Try<T[]> {
-  return flatMap(getPathValue(name, data), (pathValue) => {
-    return flatMap(getPrefixedValue(name, pathValue, `;${encode(name)}=`), (rawValue) => {
-      return mapArray(rawValue.split(','), (value) => parse(name, decode(value)))
+  return fluent(getPathValue(name, data))
+    .flatMap((pathValue) => getPrefixedValue(name, pathValue, `;${encode(name)}=`))
+    .flatMap((rawValue) => {
+      return fromArray(rawValue.split(',').map((value) => parse(name, decode(value))))
     })
-  })
+    .toJson()
 }
 
 export const pathMatrixArray =

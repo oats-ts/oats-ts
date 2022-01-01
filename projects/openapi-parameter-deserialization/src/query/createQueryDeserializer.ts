@@ -1,18 +1,17 @@
-import { Try, flatMap } from '@oats-ts/try'
+import { Try, fluent, fromRecord } from '@oats-ts/try'
 import { ParameterObject, QueryValueDeserializers, ParameterValue, QueryDeserializer } from '../types'
-import { mapRecord } from '../utils'
 import { parseRawQuery } from './parseRawQuery'
 
 export const createQueryDeserializer =
   <T extends ParameterObject>(deserializers: QueryValueDeserializers<T>): QueryDeserializer<T> =>
   (input: string): Try<T> => {
-    const rawQueryTry = parseRawQuery(input)
-    const keys = Object.keys(deserializers)
-    const output = flatMap(rawQueryTry, (raw) => {
-      return mapRecord(keys, (key): Try<ParameterValue> => {
+    const deserialized = fluent(parseRawQuery(input)).flatMap((raw) => {
+      const parsed = Object.keys(deserializers).reduce((acc: Record<string, Try<ParameterValue>>, key: string) => {
         const deserializer = deserializers[key]
-        return deserializer(key, raw)
-      })
+        acc[key] = deserializer(key, raw)
+        return acc
+      }, {})
+      return fromRecord(parsed)
     })
-    return output as Try<T>
+    return deserialized as Try<T>
   }
