@@ -19,5 +19,5 @@ export const headerSimpleObject =
         }
         return kvPairs.map(([key, value]) => `${key},${value}`).join(',')
       })
-      .getPlain()
+      .toJson()
   }

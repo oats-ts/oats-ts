@@ -1,4 +1,4 @@
-import { fluent, map, Try } from '@oats-ts/try'
+import { fluent, Try } from '@oats-ts/try'
 import { QueryOptions, Primitive, QuerySerializer } from '../types'
 import { encode, isNil } from '../utils'
 import { getQueryValue } from './queryUtils'
@@ -15,5 +15,5 @@ export const queryFormPrimitive =
         const valStr = encode(value)
         return [`${keyStr}=${valStr}`]
       })
-      .getPlain()
+      .toJson()
   }

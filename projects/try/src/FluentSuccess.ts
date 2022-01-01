@@ -54,7 +54,7 @@ export class FluentSuccess<T> implements Success<T>, Fluent<T> {
     return this
   }
 
-  public getPlain(): Success<T> {
+  public toJson(): Success<T> {
     return { data: this.getData() }
   }
 }

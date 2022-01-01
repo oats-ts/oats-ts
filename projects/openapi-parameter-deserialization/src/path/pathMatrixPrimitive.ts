@@ -1,4 +1,4 @@
-import { flatMap, Try } from '@oats-ts/try'
+import { fluent, Try } from '@oats-ts/try'
 import { ValueParser, RawPathParams, PathOptions, Primitive, PathValueDeserializer } from '../types'
 import { decode, encode } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
@@ -6,9 +6,8 @@ import { getPathValue, getPrefixedValue } from './pathUtils'
 export const pathMatrixPrimitive =
   <T extends Primitive>(parse: ValueParser<string, T>, options: PathOptions = {}): PathValueDeserializer<T> =>
   (name: string, data: RawPathParams): Try<T> => {
-    return flatMap(getPathValue(name, data), (pathValue) => {
-      return flatMap(getPrefixedValue(name, pathValue, `;${encode(name)}=`), (rawValue) => {
-        return parse(name, decode(rawValue))
-      })
-    })
+    return fluent(getPathValue(name, data))
+      .flatMap((pathValue) => getPrefixedValue(name, pathValue, `;${encode(name)}=`))
+      .flatMap((rawValue) => parse(name, decode(rawValue)))
+      .toJson()
   }

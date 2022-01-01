@@ -21,5 +21,5 @@ export const pathMatrixArray =
           value.map((v): [string, Primitive] => [name, v]),
         )
       })
-      .getPlain()
+      .toJson()
   }

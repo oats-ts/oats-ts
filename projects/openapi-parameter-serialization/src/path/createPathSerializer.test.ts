@@ -1,4 +1,4 @@
-import { fluent, getData } from '@oats-ts/try'
+import { fluent } from '@oats-ts/try'
 import { path } from '.'
 import { PathSerializers } from '../types'
 import { createPathSerializer } from './createPathSerializer'

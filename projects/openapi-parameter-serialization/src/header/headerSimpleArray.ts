@@ -17,5 +17,5 @@ export const headerSimpleArray =
           .map((item) => encode(item))
           .join(',')
       })
-      .getPlain()
+      .toJson()
   }

@@ -17,5 +17,5 @@ export const pathMatrixObject =
           entries(value),
         ),
       )
-      .getPlain()
+      .toJson()
   }

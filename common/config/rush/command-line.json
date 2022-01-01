@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/command-line.schema.json",
+  "commands": [
+    {
+      "commandKind": "bulk",
+      "name": "test",
+      "summary": "Runs tests in each project",
+      "description": "Runs tests in each project",
+      "enableParallelism": true
+    },
+    {
+      "commandKind": "global",
+      "name": "publish-app",
+      "summary": "Publishes the application",
+      "description": "Publishes the application",
+      "shellCommand": "echo 'TODO'"
+    }
+  ],
+  "parameters": []
+}

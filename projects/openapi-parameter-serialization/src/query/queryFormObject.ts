@@ -1,4 +1,4 @@
-import { fluent, map, Try } from '@oats-ts/try'
+import { fluent, Try } from '@oats-ts/try'
 import { QueryOptions, PrimitiveRecord, QuerySerializer } from '../types'
 import { entries, isNil, encode } from '../utils'
 import { getQueryValue } from './queryUtils'
@@ -19,5 +19,5 @@ export const queryFormObject =
         const valueStr = kvPairs.map(([key, value]) => [encode(key), encode(value)].join(',')).join(',')
         return [`${encode(name)}=${valueStr}`]
       })
-      .getPlain()
+      .toJson()
   }

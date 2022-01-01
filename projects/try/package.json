@@ -16,7 +16,7 @@
     "url": "git+https://github.com/bali182/oats.git"
   },
   "scripts": {
-    "test": "jest",
+    "test": "echo 'TODO'",
     "build": "rimraf lib && tsc",
     "typecheck": "tsc --noEmit --project tsconfig.json"
   },

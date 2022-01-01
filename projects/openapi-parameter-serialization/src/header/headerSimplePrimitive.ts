@@ -9,5 +9,5 @@ export const headerSimplePrimitive =
     // TODO do we need to encode here???
     return fluent(getHeaderValue(name, data, options))
       .map((value) => (isNil(value) ? undefined : encode(value)))
-      .getPlain()
+      .toJson()
   }

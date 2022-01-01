@@ -1,6 +1,5 @@
-import { Try, flatMap } from '@oats-ts/try'
+import { Try, fluent, fromRecord } from '@oats-ts/try'
 import { ParameterObject, PathValueDeserializers, ParameterValue, PathDeserializer } from '../types'
-import { mapRecord } from '../utils'
 import { createRawPathParser } from './createRawPathParser'
 
 export const createPathDeserializer = <T extends ParameterObject>(
@@ -10,13 +9,18 @@ export const createPathDeserializer = <T extends ParameterObject>(
 ): PathDeserializer<T> => {
   const parseRawPath = createRawPathParser(parameterNames, regex)
   return (input: string): Try<T> => {
-    return flatMap(parseRawPath(input), (raw) => {
-      const keys = Object.keys(deserializers)
-      const output = mapRecord(keys, (key): Try<ParameterValue> => {
-        const deserializer = deserializers[key]
-        return deserializer(key, raw)
+    return fluent(parseRawPath(input))
+      .flatMap((raw) => {
+        const deserialized = Object.keys(deserializers).reduce(
+          (acc: Record<string, Try<ParameterValue>>, key: string) => {
+            const deserializer = deserializers[key]
+            acc[key] = deserializer(key, raw)
+            return acc
+          },
+          {},
+        )
+        return fromRecord(deserialized) as Try<T>
       })
-      return output as Try<T>
-    })
+      .toJson()
   }
 }

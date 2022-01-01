@@ -19,5 +19,5 @@ export const queryDelimitedArray =
         }
         return [`${keyStr}=${value.map((item) => encode(item)).join(delimiter)}`]
       })
-      .getPlain()
+      .toJson()
   }

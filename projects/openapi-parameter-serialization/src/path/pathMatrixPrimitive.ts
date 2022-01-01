@@ -13,5 +13,5 @@ export const pathMatrixPrimitive =
         const valueStr = encode(value)
         return `;${nameStr}=${valueStr}`
       })
-      .getPlain()
+      .toJson()
   }

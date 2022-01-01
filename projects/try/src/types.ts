@@ -20,7 +20,7 @@ export type Fluent<T> = {
   getDataOrElse(data: T): T
   getIssues(): Issue[]
   getIssuesOrElse(issues: Issue[]): Issue[]
-  getPlain(): Try<T>
+  toJson(): Try<T>
 }
 
 export type FluentTry<T> = FluentSuccess<T> | FluentFailure

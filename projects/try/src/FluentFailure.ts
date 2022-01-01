@@ -58,7 +58,7 @@ export class FluentFailure implements Failure, Fluent<any> {
     return this
   }
 
-  public getPlain(): Failure {
+  public toJson(): Failure {
     return { issues: this.getIssues() }
   }
 }

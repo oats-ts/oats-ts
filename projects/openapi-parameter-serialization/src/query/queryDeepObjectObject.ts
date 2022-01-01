@@ -37,5 +37,5 @@ export const queryDeepObjectObject =
 
         return success(output)
       })
-      .getPlain()
+      .toJson()
   }

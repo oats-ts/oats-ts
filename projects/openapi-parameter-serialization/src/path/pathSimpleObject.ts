@@ -10,5 +10,5 @@ export const pathSimpleObject =
     return fluent(getPathValue(name, data, options))
       .flatMap((value) => validatePathObject(name, value))
       .map((value) => joinKeyValuePairs('', options.explode ? '=' : ',', ',', entries(value)))
-      .getPlain()
+      .toJson()
   }

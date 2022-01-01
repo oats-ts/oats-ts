@@ -9,5 +9,5 @@ export const pathLabelPrimitive =
     return fluent(getPathValue(name, data, options))
       .flatMap((value) => validatePathPrimitive(name, value))
       .map((value) => `.${encode(value)}`)
-      .getPlain()
+      .toJson()
   }

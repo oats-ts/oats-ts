@@ -9,5 +9,5 @@ export const pathSimpleArray =
     return fluent(getPathValue(name, data, options))
       .flatMap((value) => validatePathArray(name, value))
       .map((value) => joinArrayItems('', ',', value))
-      .getPlain()
+      .toJson()
   }
