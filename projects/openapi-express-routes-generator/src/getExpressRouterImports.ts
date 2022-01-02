@@ -1,6 +1,12 @@
-import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
+import {
+  EnhancedOperation,
+  getRequestBodyContent,
+  OpenAPIGeneratorContext,
+  RuntimePackages,
+} from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
 import { getNamedImports } from '@oats-ts/typescript-common'
+import { flatMap, isNil, values } from 'lodash'
 
 export function getExpressRouterImports(
   operation: EnhancedOperation,
@@ -8,6 +14,10 @@ export function getExpressRouterImports(
 ): ImportDeclaration[] {
   const { pathOf, dependenciesOf, document } = context
   const path = pathOf(operation.operation, 'openapi/express-route')
+  const bodyTypesImports = flatMap(
+    values(getRequestBodyContent(operation, context)).filter((mediaType) => !isNil(mediaType?.schema)),
+    (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'openapi/type'),
+  )
   return [
     getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RawHttpResponse]),
     getNamedImports(RuntimePackages.HttpServer.name, [RuntimePackages.HttpServer.ServerConfiguration]),
@@ -25,5 +35,6 @@ export function getExpressRouterImports(
     ...dependenciesOf(path, operation.operation, 'openapi/request-body-validator'),
     ...dependenciesOf(path, operation.operation, 'openapi/request-server-type'),
     ...dependenciesOf(path, operation.operation, 'openapi/response-headers-serializer'),
+    ...bodyTypesImports,
   ]
 }

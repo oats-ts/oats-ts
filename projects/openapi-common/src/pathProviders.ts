@@ -28,7 +28,6 @@ const nameByTarget: NameByTarget = {
   'openapi/express-route': 'routes',
   'openapi/express-routes-type': 'routes',
   'openapi/express-route-factory': 'routes',
-  'openapi/api-stub': 'api',
   'openapi/api-type': 'api',
   'openapi/client-sdk': 'sdk',
   'openapi/sdk-stub': 'sdk',
@@ -49,91 +48,79 @@ function byTarget(path: string, folder: Partial<NameByTarget> = {}): GeneratorPa
     resolve(join(path, mergedFolder[target as OpenAPIGeneratorTarget], `${name(input, target)}.ts`))
 }
 
-function delegating(path: string, delegates: Partial<DelegatingPathProviderInput>): GeneratorPathProvider {
+function delegating(path: string, delegates: DelegatingPathProviderInput): GeneratorPathProvider {
   return (input: any, name: NameProvider, target: string): string => {
     const delegate = delegates[target as OpenAPIGeneratorTarget]
-    if (isNil(delegate)) {
-      throw new Error(`No path provider delegate found for "${target}}"`)
-    }
     return delegate(path, input, name, target)
   }
 }
 
 const delegate =
-  (folder?: string): PathDelegate =>
+  (folder: string): PathDelegate =>
   (path: string, input: any, name: NameProvider, target: string) =>
     resolve(join(...[path, ...(isNil(folder) ? [] : [folder]), `${name(input, target)}.ts`]))
 
-const commonDelegates: Partial<DelegatingPathProviderInput> = {
-  'openapi/type': delegate('types'),
-  'openapi/type-guard': delegate('typeGuards'),
-  'openapi/type-validator': delegate('typeValidators'),
-}
-
-const clientDelegates: Partial<DelegatingPathProviderInput> = ((): Partial<DelegatingPathProviderInput> => {
+const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProviderInput => {
+  const api = delegate('api')
   const sdk = delegate('sdk')
-  const operations = (path: string, input: any, name: NameProvider) =>
-    resolve(join(path, 'operations', `${name(input, 'openapi/operation')}.ts`))
-  const responseHeadersType = (path: string, [operation]: any, name: NameProvider) => operations(path, operation, name)
+  const types = delegate('types')
+  const routers = delegate('routers')
+  const parameters = delegate('parameters')
+  const serializers = delegate('serializers')
+  const deserializers = delegate('deserializers')
+  const validators = delegate('validators')
+  const responses = delegate('responses')
+  const requests = delegate('requests')
+  const typeGuards = delegate('typeGuards')
+  const operations = delegate('operations')
+
   return {
-    ...commonDelegates,
+    'openapi/type': types,
+    'openapi/type-guard': typeGuards,
+
+    'openapi/response-type': responses,
+
+    'openapi/request-type': requests,
+    'openapi/request-server-type': requests,
+
+    'openapi/api-type': api,
+
+    'openapi/type-validator': validators,
+    'openapi/response-body-validator': validators,
+    'openapi/request-body-validator': validators,
+
+    'openapi/request-headers-type': parameters,
+    'openapi/response-headers-type': parameters,
+    'openapi/path-type': parameters,
+    'openapi/query-type': parameters,
+
+    'openapi/request-headers-serializer': serializers,
+    'openapi/query-serializer': serializers,
+    'openapi/path-serializer': serializers,
+    'openapi/response-headers-serializer': serializers,
+
+    'openapi/response-headers-deserializer': deserializers,
+    'openapi/request-headers-deserializer': deserializers,
+    'openapi/query-deserializer': deserializers,
+    'openapi/path-deserializer': deserializers,
+
+    'openapi/operation': operations,
+
+    'openapi/express-route': routers,
+    'openapi/express-route-factory': routers,
+    'openapi/express-routes-type': routers,
 
     'openapi/sdk-type': sdk,
     'openapi/sdk-stub': sdk,
     'openapi/client-sdk': sdk,
-
-    'openapi/operation': operations,
-    'openapi/request-type': operations,
-    'openapi/response-type': operations,
-    'openapi/response-body-validator': operations,
-    'openapi/request-headers-type': operations,
-    'openapi/request-headers-serializer': operations,
-    'openapi/response-headers-type': responseHeadersType,
-    'openapi/response-headers-deserializer': operations,
-    'openapi/query-type': operations,
-    'openapi/query-serializer': operations,
-    'openapi/path-type': operations,
-    'openapi/path-serializer': operations,
   }
 })()
 
-const serverDelegates: Partial<DelegatingPathProviderInput> = ((): Partial<DelegatingPathProviderInput> => {
-  const api = delegate('api')
-  const routes = delegate('routers')
-  const routesSingle = (path: string, input: any, name: NameProvider) =>
-    resolve(join(path, 'routers', `${name(input, 'openapi/express-route')}.ts`))
-  const responseHeadersType = (path: string, [operation]: any, name: NameProvider) =>
-    routesSingle(path, operation, name)
-  return {
-    ...commonDelegates,
-    'openapi/api-type': api,
-    'openapi/api-stub': api,
-    'openapi/express-route-factory': routes,
-    'openapi/express-routes-type': routes,
-
-    'openapi/request-type': routesSingle,
-    'openapi/request-server-type': routesSingle,
-    'openapi/request-body-validator': routesSingle,
-    'openapi/response-type': routesSingle,
-    'openapi/request-headers-type': routesSingle,
-    'openapi/request-headers-deserializer': routesSingle,
-    'openapi/response-headers-type': responseHeadersType,
-    'openapi/response-headers-serializer': routesSingle,
-    'openapi/query-type': routesSingle,
-    'openapi/query-deserializer': routesSingle,
-    'openapi/path-type': routesSingle,
-    'openapi/path-deserializer': routesSingle,
-    'openapi/express-route': routesSingle,
-  }
-})()
-
-const client = (path: string): GeneratorPathProvider => delegating(path, clientDelegates)
-const server = (path: string): GeneratorPathProvider => delegating(path, serverDelegates)
+const _default = (path: string): GeneratorPathProvider => delegating(path, fullStackDelegate)
 
 export const pathProviders = {
   byName,
   byTarget,
   singleFile,
-  client,
-  server,
+  default: _default,
 }

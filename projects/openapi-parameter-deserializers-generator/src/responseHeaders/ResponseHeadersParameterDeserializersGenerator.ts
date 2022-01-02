@@ -3,6 +3,7 @@ import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
   getEnhancedOperations,
+  hasResponseHeaders,
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
@@ -13,7 +14,7 @@ import { getModelImports } from '@oats-ts/typescript-common'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { flatMap, isNil, negate, sortBy } from 'lodash'
 import { factory, Identifier, ImportDeclaration } from 'typescript'
-import { generateResponseHeadersDeserializer as generateResponseHeadersDeserializer } from './generateResponseHeadersDeserializer'
+import { generateResponseHeadersDeserializer } from './generateResponseHeadersDeserializer'
 
 export class ResponseHeadersParameterDeserializersGenerator
   implements OpenAPIGenerator<'openapi/response-headers-deserializer'>
@@ -50,11 +51,11 @@ export class ResponseHeadersParameterDeserializersGenerator
   public referenceOf(input: OperationObject): Identifier {
     const { context } = this
     const { nameOf } = context
-    return factory.createIdentifier(nameOf(input, this.id))
+    return hasResponseHeaders(input, context) ? factory.createIdentifier(nameOf(input, this.id)) : undefined
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return hasResponseHeaders(input, context) ? getModelImports(fromPath, this.id, [input], context) : []
   }
 }

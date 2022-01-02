@@ -1,4 +1,3 @@
-import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { ValidatorsGeneratorConfig } from '@oats-ts/json-schema-validators-generator'
 import { TypeValidatorsGenerator } from './type/TypeValidatorsGenerator'
@@ -8,6 +7,7 @@ import { RequestBodyValidatorsGenerator } from './requestBody/RequestBodyValidat
 export { TypeValidatorsGenerator } from './type/TypeValidatorsGenerator'
 export { ResponseBodyValidatorsGenerator } from './responseBody/ResponseBodyValidatorsGenerator'
 export { RequestBodyValidatorsGenerator } from './requestBody/RequestBodyValidatorsGenerator'
+export { ValidatorsGeneratorConfig } from '@oats-ts/json-schema-validators-generator'
 
 export function typeValidators(config: ValidatorsGeneratorConfig): OpenAPIGenerator {
   return new TypeValidatorsGenerator(config)

@@ -719,10 +719,11 @@ export const arrObjRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<
-        'application/json' | 'application/yaml',
-        ObjectWithArrays | ObjectWithArrays
-      >(frameworkInput, mimeType, arrObjRequestBodyValidator)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithArrays>(
+        frameworkInput,
+        mimeType,
+        arrObjRequestBodyValidator,
+      )
       const typedRequest: ArrObjServerRequest = {
         mimeType,
         body,
@@ -749,7 +750,7 @@ export const boolRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean | boolean>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean>(
         frameworkInput,
         mimeType,
         boolRequestBodyValidator,
@@ -780,7 +781,7 @@ export const boolArrRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean[] | boolean[]>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean[]>(
         frameworkInput,
         mimeType,
         boolArrRequestBodyValidator,
@@ -811,7 +812,7 @@ export const enmRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType | EnumType>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType>(
         frameworkInput,
         mimeType,
         enmRequestBodyValidator,
@@ -842,7 +843,7 @@ export const enmArrRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType[] | EnumType[]>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType[]>(
         frameworkInput,
         mimeType,
         enmArrRequestBodyValidator,
@@ -873,10 +874,11 @@ export const nestedObjRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<
-        'application/json' | 'application/yaml',
-        ObjectWithNestedObjects | ObjectWithNestedObjects
-      >(frameworkInput, mimeType, nestedObjRequestBodyValidator)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithNestedObjects>(
+        frameworkInput,
+        mimeType,
+        nestedObjRequestBodyValidator,
+      )
       const typedRequest: NestedObjServerRequest = {
         mimeType,
         body,
@@ -903,7 +905,7 @@ export const numRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number | number>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number>(
         frameworkInput,
         mimeType,
         numRequestBodyValidator,
@@ -934,7 +936,7 @@ export const numArrRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number[] | number[]>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number[]>(
         frameworkInput,
         mimeType,
         numArrRequestBodyValidator,
@@ -965,10 +967,11 @@ export const primObjRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<
-        'application/json' | 'application/yaml',
-        ObjectWithPrimitives | ObjectWithPrimitives
-      >(frameworkInput, mimeType, primObjRequestBodyValidator)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithPrimitives>(
+        frameworkInput,
+        mimeType,
+        primObjRequestBodyValidator,
+      )
       const typedRequest: PrimObjServerRequest = {
         mimeType,
         body,
@@ -995,7 +998,7 @@ export const strRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string | string>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string>(
         frameworkInput,
         mimeType,
         strRequestBodyValidator,
@@ -1026,7 +1029,7 @@ export const strArrRouter: Router = Router().post(
     const api: BodiesApi<ExpressParameters> = response.locals['__oats_api']
     try {
       const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(frameworkInput)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string[] | string[]>(
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string[]>(
         frameworkInput,
         mimeType,
         strArrRequestBodyValidator,

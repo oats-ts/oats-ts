@@ -4,15 +4,19 @@ import {
   hasRequestBody,
   OpenAPIGeneratorContext,
 } from '@oats-ts/openapi-common'
-import { isNil, keys, values } from 'lodash'
+import { isNil, keys, uniqWith, values, isEqual } from 'lodash'
 import { factory, NodeFlags, TypeNode, VariableStatement } from 'typescript'
 import { Names } from './Names'
 
 export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
   const { referenceOf } = context
-  const bodyTypes = values(getRequestBodyContent(data, context))
-    .filter((mediaType) => !isNil(mediaType?.schema))
-    .map((mediaType): TypeNode => referenceOf(mediaType.schema, 'openapi/type'))
+  const bodyTypes = uniqWith(
+    values(getRequestBodyContent(data, context))
+      .map((mediaType) => mediaType.schema)
+      .filter((schema) => !isNil(schema))
+      .map((schema) => referenceOf(schema, 'openapi/type')),
+    isEqual,
+  )
   switch (bodyTypes.length) {
     case 0:
       return factory.createTypeReferenceNode('any')
@@ -24,7 +28,7 @@ export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIG
 }
 
 export function getMimeTypesUnionType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
-  const mediaTypes = keys(getRequestBodyContent(data, context)).map(
+  const mediaTypes = Array.from(new Set(keys(getRequestBodyContent(data, context)))).map(
     (mediaType): TypeNode => factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
   )
   switch (mediaTypes.length) {
