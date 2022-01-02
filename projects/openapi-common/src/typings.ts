@@ -49,7 +49,6 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/sdk-stub'
   // Server
   | 'openapi/api-type'
-  | 'openapi/api-stub'
   | 'openapi/express-route'
   | 'openapi/express-routes-type'
   | 'openapi/express-route-factory'

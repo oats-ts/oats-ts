@@ -2,8 +2,7 @@ import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { isNil } from 'lodash'
 import { GeneratorNameProvider } from '@oats-ts/generator'
-import { DelegatingNameProviderInput } from './typings'
-import { OpenAPIGeneratorTarget } from '.'
+import { DelegatingNameProviderInput, OpenAPIGeneratorTarget } from './typings'
 
 const delegating =
   (delegates: Partial<DelegatingNameProviderInput> = {}): GeneratorNameProvider =>
@@ -97,7 +96,6 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/sdk-stub': sdkStub,
   'openapi/client-sdk': clientSdk,
   'openapi/api-type': api,
-  'openapi/api-stub': apiStub,
   'openapi/express-route-factory': routerFactory,
   'openapi/express-routes-type': routersType,
 }
