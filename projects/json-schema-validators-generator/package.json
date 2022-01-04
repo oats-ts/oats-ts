@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/json-schema-validators-generator",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -34,12 +34,12 @@
   "dependencies": {
     "typescript": "4.3.5",
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.10",
-    "@oats-ts/json-schema-common": "0.0.10",
-    "@oats-ts/validators": "0.0.10",
-    "@oats-ts/typescript-writer": "0.0.10",
-    "@oats-ts/generator": "0.0.10",
-    "@oats-ts/model-common": "0.0.10",
-    "@oats-ts/typescript-common": "0.0.10"
+    "@oats-ts/json-schema-model": "0.0.11",
+    "@oats-ts/json-schema-common": "0.0.11",
+    "@oats-ts/validators": "0.0.11",
+    "@oats-ts/typescript-writer": "0.0.11",
+    "@oats-ts/generator": "0.0.11",
+    "@oats-ts/model-common": "0.0.11",
+    "@oats-ts/typescript-common": "0.0.11"
   }
 }
