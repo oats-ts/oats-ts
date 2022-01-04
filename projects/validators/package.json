@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/validators",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -9,7 +9,8 @@
   "main": "lib/index.js",
   "directories": {},
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "repository": {
     "type": "git",

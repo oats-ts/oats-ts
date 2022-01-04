@@ -6,7 +6,7 @@ import { createPathDeserializer, deserializers } from '@oats-ts/openapi-paramete
 import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
 import { array, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
-import { NextFunction, Request, Response, Router } from 'express'
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type AppError = {
   message: string
@@ -483,3 +483,17 @@ export function createBookStoreRouter(
     routes.updateBookRouter ?? updateBookRouter,
   )
 }
+
+export const bookStoreCorsMiddleware =
+  (...origins: string[]): RequestHandler =>
+  (request: Request, response: Response, next: NextFunction) => {
+    if (
+      typeof request.headers.origin === 'string' &&
+      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
+    ) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+      response.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH')
+      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+    }
+    next()
+  }
