@@ -50,6 +50,7 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
       g.expressRoute(),
       g.expressRoutesType(),
       g.expressRouteFactory(),
+      g.expressCorsMiddleware(),
     ],
     writer: writer({
       stringify: prettierStringify({

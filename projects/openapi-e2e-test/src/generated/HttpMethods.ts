@@ -3,7 +3,7 @@ import { ClientConfiguration } from '@oats-ts/openapi-http-client'
 import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
 import { object, shape, string } from '@oats-ts/validators'
-import { NextFunction, Request, Response, Router } from 'express'
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export const deleteMethodResponseBodyValidator = {
   200: { 'application/json': object(shape({ methodUsed: string() })) },
@@ -463,3 +463,17 @@ export function createHttpMethodsRouter(
     routes.putMethodRouter ?? putMethodRouter,
   )
 }
+
+export const httpMethodsCorsMiddleware =
+  (...origins: string[]): RequestHandler =>
+  (request: Request, response: Response, next: NextFunction) => {
+    if (
+      typeof request.headers.origin === 'string' &&
+      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
+    ) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+      response.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, OPTIONS, PATCH, POST, PUT')
+      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+    }
+    next()
+  }

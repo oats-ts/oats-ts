@@ -4,7 +4,7 @@ import { ServerConfiguration } from '@oats-ts/openapi-http-server'
 import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
 import { Try } from '@oats-ts/try'
 import { array, boolean, enumeration, items, lazy, number, object, shape, string } from '@oats-ts/validators'
-import { NextFunction, Request, Response, Router } from 'express'
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type EnumType = 'A' | 'B' | 'C'
 
@@ -1090,3 +1090,17 @@ export function createBodiesRouter(
     routes.strRouter ?? strRouter,
   )
 }
+
+export const bodiesCorsMiddleware =
+  (...origins: string[]): RequestHandler =>
+  (request: Request, response: Response, next: NextFunction) => {
+    if (
+      typeof request.headers.origin === 'string' &&
+      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
+    ) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+      response.setHeader('Access-Control-Allow-Methods', 'POST')
+      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+    }
+    next()
+  }
