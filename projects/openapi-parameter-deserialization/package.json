@@ -9,7 +9,8 @@
   "main": "lib/index.js",
   "directories": {},
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "repository": {
     "type": "git",

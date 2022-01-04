@@ -47,7 +47,7 @@
     "cross-env": "7.0.3",
     "express": "4.17.1",
     "faker": "5.5.3",
-    "http-terminator": "3.0.3",
+    "http-terminator": "3.0.4",
     "jest": "27.0.4",
     "lodash": "4.17.21",
     "node-fetch": "2.6.1",
