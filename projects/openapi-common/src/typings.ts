@@ -52,6 +52,7 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/express-route'
   | 'openapi/express-routes-type'
   | 'openapi/express-route-factory'
+  | 'openapi/express-cors-middleware'
 
 export type OpenAPIGenerator<P extends OpenAPIGeneratorTarget = OpenAPIGeneratorTarget> = CodeGenerator<
   OpenAPIReadOutput,

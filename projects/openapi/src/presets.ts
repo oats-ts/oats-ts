@@ -50,6 +50,7 @@ function serverOnly(config: PresetConfig): OpenAPIGenerator[] {
     generators.expressRoute(),
     generators.expressRoutesType(),
     generators.expressRouteFactory(),
+    generators.expressCorsMiddleware(),
   ]
 }
 

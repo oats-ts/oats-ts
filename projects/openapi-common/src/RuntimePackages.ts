@@ -55,6 +55,7 @@ const Express = {
   Request: 'Request',
   Response: 'Response',
   NextFunction: 'NextFunction',
+  RequestHandler: 'RequestHandler',
 }
 
 const Try = {

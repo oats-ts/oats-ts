@@ -65,9 +65,9 @@ const sdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Sdk`
 const sdkStub: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkStub`
 const clientSdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}ClientSdk`
 const api: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Api`
-const apiStub: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}ApiStub`
 const routerFactory: GeneratorNameProvider = (doc: any) => `create${documentTitle(doc)}Router`
 const routersType: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Routers`
+const corsMiddleware: GeneratorNameProvider = (doc: any) => `${camelCase(documentTitle(doc))}CorsMiddleware`
 
 const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/type': type,
@@ -98,6 +98,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/api-type': api,
   'openapi/express-route-factory': routerFactory,
   'openapi/express-routes-type': routersType,
+  'openapi/express-cors-middleware': corsMiddleware,
 }
 
 const defaultNameProvider = (delegates: Partial<DelegatingNameProviderInput> = {}): GeneratorNameProvider =>
