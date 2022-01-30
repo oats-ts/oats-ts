@@ -7,7 +7,7 @@ import { stopExpressServer } from './stopExpressServer'
  * Creates an express server, and hooks it's starting in the before or beforeAll,
  * and it's shutdown in the after or afterAll lifecycle events.
  */
-export function useExpressServer(input: TestServerInput) {
+export function testExpressServer(input: TestServerInput) {
   let terminator: HttpTerminator | undefined = undefined
   const startHandler = async () => {
     terminator = await startExpressServer(input)

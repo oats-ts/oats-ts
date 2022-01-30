@@ -17,7 +17,7 @@
   "scripts": {
     "build": "echo 'Nothing to build'",
     "g": "ts-node src/schema/generate.ts",
-    "test": "cross-env REPEATS=100 jest --runInBand",
+    "test": "cross-env jest --runInBand",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -38,7 +38,6 @@
     "@types/jest": "26.0.23",
     "@types/lodash": "4.14.172",
     "@types/node": "16.7.1",
-    "@types/node-fetch": "2.5.10",
     "@types/pascalcase": "1.0.1",
     "@types/urijs": "1.19.16",
     "@types/valid-url": "1.0.3",

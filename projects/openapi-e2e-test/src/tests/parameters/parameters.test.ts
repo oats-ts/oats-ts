@@ -1,5 +1,3 @@
-import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
-import { createParametersRouter, ParametersSdkImpl } from '../../generated/Parameters'
 import {
   randomPathParameters,
   randomFormQueryParameters,
@@ -8,93 +6,80 @@ import {
   randomHeaderParameters,
 } from './parameters.testdata'
 import { range } from 'lodash'
-import { ParametersApiImpl } from './ParametersApiImpl'
-import { customBodyParsers } from '../common/customBodyParsers'
-import { useExpressServer } from '@oats-ts/openapi-test-utils'
-import { ExpressServerAdapter } from '@oats-ts/openapi-express-server-adapter'
+import { testParametersServer } from '../servers'
+import { parametersSdk } from '../sdks'
+import { REPEATS } from '../constants'
 
 describe('Parameters', () => {
-  useExpressServer({
-    port: 3333,
-    runBeforeAndAfter: 'all',
-    handlers: [
-      customBodyParsers.yaml(),
-      customBodyParsers.json(),
-      createParametersRouter(new ParametersApiImpl(), new ExpressServerAdapter()),
-    ],
-  })
-
-  const sdk = new ParametersSdkImpl(new FetchClientAdapter('http://localhost:3333'))
-
-  const data = range(1, process.env['REPEATS'] ? parseInt(process.env['REPEATS']) + 1 : 11)
-
+  testParametersServer()
+  const repeats = range(1, REPEATS)
   describe('path', () => {
     describe('simple', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const path = randomPathParameters()
-        const response = await sdk.simplePathParameters({ path })
+        const response = await parametersSdk.simplePathParameters({ path })
         expect(response.body).toEqual(path)
       })
     })
     describe('label', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const path = randomPathParameters()
-        const response = await sdk.labelPathParameters({ path })
+        const response = await parametersSdk.labelPathParameters({ path })
         expect(response.body).toEqual(path)
       })
     })
     describe('marix', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const path = randomPathParameters()
-        const response = await sdk.matrixPathParameters({ path })
+        const response = await parametersSdk.matrixPathParameters({ path })
         expect(response.body).toEqual(path)
       })
     })
   })
   describe('query', () => {
     describe('form', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomFormQueryParameters()
-        const response = await sdk.formQueryParameters({ query })
+        const response = await parametersSdk.formQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
     describe('spaceDelimited', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomDelimitedQueryParameters()
-        const response = await sdk.spaceDelimitedQueryParameters({ query })
+        const response = await parametersSdk.spaceDelimitedQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
     describe('pipeDelimited', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomDelimitedQueryParameters()
-        const response = await sdk.pipeDelimitedQueryParameters({ query })
+        const response = await parametersSdk.pipeDelimitedQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
     describe('deepObject', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const query = randomDeepObjectQueryParameters()
-        const response = await sdk.deepObjectQueryParameters({ query })
+        const response = await parametersSdk.deepObjectQueryParameters({ query })
         expect(response.body).toEqual(query)
       })
     })
   })
   describe('header', () => {
     describe('simple', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const headers = randomHeaderParameters()
-        const response = await sdk.simpleHeaderParameters({ headers })
+        const response = await parametersSdk.simpleHeaderParameters({ headers })
         expect(response.body).toEqual(headers)
       })
     })
   })
   describe('response headers', () => {
     describe('simple', () => {
-      it.each(data)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const body = randomHeaderParameters()
-        const response = await sdk.simpleResponseHeaderParameters({ body, mimeType: 'application/json' })
+        const response = await parametersSdk.simpleResponseHeaderParameters({ body, mimeType: 'application/json' })
         expect(response.headers).toEqual(body)
         expect(response.body).toEqual({ ok: true })
       })

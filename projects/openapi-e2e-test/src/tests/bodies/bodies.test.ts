@@ -1,9 +1,3 @@
-import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
-import { BodiesApiImpl } from './BodiesApiImpl'
-import { BodiesSdkImpl, createBodiesRouter } from '../../generated/Bodies'
-import YAML from 'yamljs'
-import { HttpResponse, TypedHttpRequest } from '@oats-ts/openapi-http'
-import { Response } from 'node-fetch'
 import { range } from 'lodash'
 import { datatype } from 'faker'
 import {
@@ -13,94 +7,68 @@ import {
   randomObjectWithPrimitives,
 } from './bodies.testdata'
 import { arrayOf } from '../common/testData'
-import { useExpressServer } from '@oats-ts/openapi-test-utils'
-import { customBodyParsers } from '../common/customBodyParsers'
-import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import { testBodiesServer } from '../servers'
+import { bodiesSdk } from '../sdks'
+import { REPEATS } from '../constants'
 
 describe('Request and Response bodies', () => {
-  class YamlExpressServerConfiguration extends ExpressServerAdapter {
-    override async getResponseBody(_: ExpressToolkit, { body }: HttpResponse) {
-      return YAML.stringify(body)
-    }
-  }
+  const configs = ['application/json', 'application/yaml'] as const
 
-  class YamlClientConfiguration extends FetchClientAdapter {
-    override async getParsedResponseBody(response: Response): Promise<any> {
-      return YAML.parse(await response.text())
-    }
-    override async getRequestBody(response: Partial<TypedHttpRequest>): Promise<any> {
-      return YAML.stringify(response.body)
-    }
-  }
-
-  const configs = [
-    ['application/json', ExpressServerAdapter, FetchClientAdapter],
-    ['application/yaml', YamlExpressServerConfiguration, YamlClientConfiguration],
-  ] as const
-
-  describe.each(configs)(`%s mime type`, (mimeType, ServerConfig, ClientConfig) => {
-    useExpressServer({
-      port: 3333,
-      runBeforeAndAfter: 'all',
-      handlers: [
-        customBodyParsers.yaml(),
-        customBodyParsers.json(),
-        createBodiesRouter(new BodiesApiImpl(), new ServerConfig()),
-      ],
-    })
-    const sdk = new BodiesSdkImpl(new ClientConfig('http://localhost:3333'))
-    const data = range(1, process.env['REPEATS'] ? parseInt(process.env['REPEATS']) + 1 : 11)
-    it.each(data)('(#%d) string', async () => {
-      const body = datatype.string()
+  describe.each(configs)(`%s mime type`, (mimeType) => {
+    testBodiesServer(mimeType)
+    const sdk = bodiesSdk(mimeType)
+    const repeats = range(1, REPEATS)
+    it.each(repeats)('(#%d) string', async () => {
+      const body = datatype.string(10)
       const response = await sdk.str({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) string', async () => {
+    it.each(repeats)('(#%d) number', async () => {
       const body = datatype.number()
       const response = await sdk.num({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) boolean', async () => {
+    it.each(repeats)('(#%d) boolean', async () => {
       const body = datatype.boolean()
       const response = await sdk.bool({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) enum', async () => {
+    it.each(repeats)('(#%d) enum', async () => {
       const body = randomEnum()
       const response = await sdk.enm({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) string array', async () => {
+    it.each(repeats)('(#%d) string array', async () => {
       const body = arrayOf(() => datatype.string())
       const response = await sdk.strArr({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) number array', async () => {
+    it.each(repeats)('(#%d) number array', async () => {
       const body = arrayOf(() => datatype.number())
       const response = await sdk.numArr({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) boolean array', async () => {
+    it.each(repeats)('(#%d) boolean array', async () => {
       const body = arrayOf(() => datatype.boolean())
       const response = await sdk.boolArr({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) enum array', async () => {
+    it.each(repeats)('(#%d) enum array', async () => {
       const body = arrayOf(randomEnum)
       const response = await sdk.enmArr({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) object (primitives)', async () => {
+    it.each(repeats)('(#%d) object (primitives)', async () => {
       const body = randomObjectWithPrimitives()
       const response = await sdk.primObj({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) object (arrays)', async () => {
+    it.each(repeats)('(#%d) object (arrays)', async () => {
       const body = randomObjectWithArrays()
       const response = await sdk.arrObj({ body, mimeType })
       expect(response.body).toEqual(body)
     })
-    it.each(data)('(#%d) object (nested)', async () => {
+    it.each(repeats)('(#%d) object (nested)', async () => {
       const body = randomObjectWithNestedObjects()
       const response = await sdk.nestedObj({ body, mimeType })
       expect(response.body).toEqual(body)
