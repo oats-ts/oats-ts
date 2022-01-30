@@ -57,7 +57,7 @@ export function getParametersStatementAst(
                 ),
                 undefined,
                 [
-                  factory.createIdentifier(Names.frameworkInput),
+                  factory.createIdentifier(Names.toolkit),
                   referenceOf(data.operation, deserializerMap[location]),
                 ],
               ),

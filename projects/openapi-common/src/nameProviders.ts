@@ -63,7 +63,7 @@ const expressRouter = nonNull(operation)((input: any, name: string) => camelCase
 const documentTitle = (doc: any) => pascalCase(doc.info?.title || '')
 const sdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Sdk`
 const sdkStub: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkStub`
-const clientSdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}ClientSdk`
+const sdkImpl: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkImpl`
 const api: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Api`
 const routerFactory: GeneratorNameProvider = (doc: any) => `create${documentTitle(doc)}Router`
 const routersType: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Routers`
@@ -94,7 +94,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/express-route': expressRouter,
   'openapi/sdk-type': sdk,
   'openapi/sdk-stub': sdkStub,
-  'openapi/client-sdk': clientSdk,
+  'openapi/sdk-impl': sdkImpl,
   'openapi/api-type': api,
   'openapi/express-route-factory': routerFactory,
   'openapi/express-routes-type': routersType,

@@ -45,7 +45,7 @@ export type OpenAPIGeneratorTarget =
   // Client
   | 'openapi/operation'
   | 'openapi/sdk-type'
-  | 'openapi/client-sdk'
+  | 'openapi/sdk-impl'
   | 'openapi/sdk-stub'
   // Server
   | 'openapi/api-type'

@@ -1,0 +1,1 @@
+export { FetchClientAdapter } from './FetchClientAdapter'

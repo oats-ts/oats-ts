@@ -6,7 +6,7 @@ export const Names = {
 
   api: 'api',
   configuration: 'configuration',
-  frameworkInput: 'frameworkInput',
+  toolkit: 'toolkit',
   issues: 'issues',
   mimeType: 'mimeType',
   mimeTypeIssues: 'mimeTypeIssues',

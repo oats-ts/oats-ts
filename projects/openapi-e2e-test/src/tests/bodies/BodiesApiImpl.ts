@@ -1,5 +1,5 @@
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { HasRequestBody, HttpResponse } from '@oats-ts/openapi-http'
-import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
 import { isFailure, Try, fluent } from '@oats-ts/try'
 import {
   ArrObjResponse,
@@ -27,7 +27,7 @@ import {
   StrServerRequest,
 } from '../../generated/Bodies'
 
-export class BodiesApiImpl implements BodiesApi<ExpressParameters> {
+export class BodiesApiImpl implements BodiesApi<ExpressToolkit> {
   // TODO typings
   async respond(input: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
     if (isFailure(input.body)) {

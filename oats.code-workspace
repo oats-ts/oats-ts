@@ -97,16 +97,16 @@
       "path": "projects/openapi-express-routes-generator"
     },
     {
+      "name": "openapi-express-server-adapter",
+      "path": "projects/openapi-express-server-adapter"
+    },
+    {
+      "name": "openapi-fetch-client-adapter",
+      "path": "projects/openapi-fetch-client-adapter"
+    },
+    {
       "name": "openapi-http",
       "path": "projects/openapi-http"
-    },
-    {
-      "name": "openapi-http-client",
-      "path": "projects/openapi-http-client"
-    },
-    {
-      "name": "openapi-http-server",
-      "path": "projects/openapi-http-server"
     },
     {
       "name": "openapi-model",

@@ -1,6 +1,6 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, SyntaxKind } from 'typescript'
-import { ExpressRouteGeneratorConfig } from '..'
+import { ExpressRouteGeneratorConfig } from '../typings'
 import { Names } from '../Names'
 
 export function getMainRouteFactoryAst(
@@ -23,7 +23,7 @@ export function getMainRouteFactoryAst(
         factory.createIdentifier(Names.api),
         undefined,
         factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type'), [
-          factory.createTypeReferenceNode(RuntimePackages.HttpServerExpress.ExpressParameters),
+          factory.createTypeReferenceNode(RuntimePackages.HttpServerExpress.ExpressToolkit),
         ]),
         undefined,
       ),
@@ -33,9 +33,9 @@ export function getMainRouteFactoryAst(
         undefined,
         factory.createIdentifier(Names.configuration),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.HttpServer.ServerConfiguration), [
+        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
           factory.createTypeReferenceNode(
-            factory.createIdentifier(RuntimePackages.HttpServerExpress.ExpressParameters),
+            factory.createIdentifier(RuntimePackages.HttpServerExpress.ExpressToolkit),
             undefined,
           ),
         ]),

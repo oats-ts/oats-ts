@@ -1,32 +1,21 @@
-import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
-import { BookStoreApiImpl } from './BookStoreApiImpl'
-import { useExpressServer } from '@oats-ts/openapi-test-utils'
-import { customBodyParsers } from '../common/customBodyParsers'
-import { Book, BookStoreClientSdk, createBookStoreRouter } from '../../generated/BookStore'
+import { Book } from '../../generated/BookStore'
 import { catBook, defaultBooks, frogBook } from './bookStore.testdata'
+import { testBookStoreServer } from '../servers'
+import { bookstoreSdk } from '../sdks'
 
 describe('Http methods', () => {
-  useExpressServer({
-    port: 3333,
-    runBeforeAndAfter: 'each',
-    handlers: [
-      customBodyParsers.json(),
-      createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerConfiguration()),
-    ],
-  })
-  const sdk = new BookStoreClientSdk(new NodeFetchClientConfiguration('http://localhost:3333'))
+  testBookStoreServer()
 
   describe('happy path', () => {
     it('should retrieve the default books', async () => {
-      const response = await sdk.getBooks()
+      const response = await bookstoreSdk.getBooks()
       expect(response.body).toEqual(defaultBooks)
     })
 
     it('should get book by id', async () => {
-      const catBookResponse = await sdk.getBook({ path: { bookId: catBook.id } })
+      const catBookResponse = await bookstoreSdk.getBook({ path: { bookId: catBook.id } })
       expect(catBookResponse.body).toEqual(catBook)
-      const frogBookResponse = await sdk.getBook({ path: { bookId: frogBook.id } })
+      const frogBookResponse = await bookstoreSdk.getBook({ path: { bookId: frogBook.id } })
       expect(frogBookResponse.body).toEqual(frogBook)
     })
 
@@ -38,7 +27,7 @@ describe('Http methods', () => {
         price: 200,
         title: 'The Hippo book',
       }
-      const hippoBookResponse = await sdk.createBook({
+      const hippoBookResponse = await bookstoreSdk.createBook({
         body: hippoBook,
         mimeType: 'application/json',
       })
@@ -50,7 +39,7 @@ describe('Http methods', () => {
         ...catBook,
         title: 'Dog book',
       }
-      const catBookResponse = await sdk.updateBook({
+      const catBookResponse = await bookstoreSdk.updateBook({
         path: { bookId: catBook.id },
         body: updatedCatBook,
         mimeType: 'application/json',
@@ -61,7 +50,7 @@ describe('Http methods', () => {
   // With the SDK we can't produce structural issues, but can do semantic issues that the server checks
   describe('issues', () => {
     it('should fail to retrieve a non-existing book', async () => {
-      const catBookResponse = await sdk.getBook({
+      const catBookResponse = await bookstoreSdk.getBook({
         path: { bookId: 10 },
       })
       expect(catBookResponse.body).toEqual([{ message: '[ERROR] in "path.bookId": No book with id 10' }])

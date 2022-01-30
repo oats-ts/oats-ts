@@ -1,4 +1,4 @@
-import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { Request } from 'express'
 import {
   DeleteMethodResponse,
@@ -10,7 +10,7 @@ import {
   PutMethodResponse,
 } from '../../generated/HttpMethods'
 
-export class HttpMethodsApiImpl implements HttpMethodsApi<ExpressParameters> {
+export class HttpMethodsApiImpl implements HttpMethodsApi<ExpressToolkit> {
   async respond(request: Request): Promise<GetMethodResponse> {
     return {
       mimeType: 'application/json',
@@ -21,22 +21,22 @@ export class HttpMethodsApiImpl implements HttpMethodsApi<ExpressParameters> {
       },
     }
   }
-  async deleteMethod({ request }: ExpressParameters): Promise<DeleteMethodResponse> {
+  async deleteMethod({ request }: ExpressToolkit): Promise<DeleteMethodResponse> {
     return this.respond(request)
   }
-  async getMethod({ request }: ExpressParameters): Promise<GetMethodResponse> {
+  async getMethod({ request }: ExpressToolkit): Promise<GetMethodResponse> {
     return this.respond(request)
   }
-  async optionsMethod({ request }: ExpressParameters): Promise<OptionsMethodResponse> {
+  async optionsMethod({ request }: ExpressToolkit): Promise<OptionsMethodResponse> {
     return this.respond(request)
   }
-  async patchMethod({ request }: ExpressParameters): Promise<PatchMethodResponse> {
+  async patchMethod({ request }: ExpressToolkit): Promise<PatchMethodResponse> {
     return this.respond(request)
   }
-  async postMethod({ request }: ExpressParameters): Promise<PostMethodResponse> {
+  async postMethod({ request }: ExpressToolkit): Promise<PostMethodResponse> {
     return this.respond(request)
   }
-  async putMethod({ request }: ExpressParameters): Promise<PutMethodResponse> {
+  async putMethod({ request }: ExpressToolkit): Promise<PutMethodResponse> {
     return this.respond(request)
   }
 }
