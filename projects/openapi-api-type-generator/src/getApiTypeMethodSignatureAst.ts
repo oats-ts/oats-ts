@@ -18,7 +18,7 @@ export function getApiTypeMethodSignatureAst(
         [],
         [],
         undefined,
-        'input',
+        'request',
         undefined,
         referenceOf(data.operation, 'openapi/request-server-type'),
       ),
@@ -26,14 +26,7 @@ export function getApiTypeMethodSignatureAst(
   }
 
   parameters.push(
-    factory.createParameterDeclaration(
-      [],
-      [],
-      undefined,
-      'frameworkInput',
-      undefined,
-      factory.createTypeReferenceNode('T'),
-    ),
+    factory.createParameterDeclaration([], [], undefined, 'toolkit', undefined, factory.createTypeReferenceNode('T')),
   )
 
   const returnType = factory.createTypeReferenceNode('Promise', [

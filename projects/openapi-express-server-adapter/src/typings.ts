@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-export type ExpressParameters = {
+export type ExpressToolkit = {
   request: Request
   response: Response
   next: NextFunction

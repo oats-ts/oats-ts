@@ -15,11 +15,11 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export class SdkImplementationGenerator implements OpenAPIGenerator<'openapi/client-sdk'> {
+export class SdkImplementationGenerator implements OpenAPIGenerator<'openapi/sdk-impl'> {
   private context: OpenAPIGeneratorContext = null
   private sdkConfig: SdkGeneratorConfig
 
-  public readonly id = 'openapi/client-sdk'
+  public readonly id = 'openapi/sdk-impl'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
     'openapi/operation',
     'openapi/request-type',

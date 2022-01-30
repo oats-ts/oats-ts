@@ -20,8 +20,8 @@ export function generateRoutesType(
     path,
     dependencies: [
       getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router]),
-      getNamedImports(RuntimePackages.HttpServer.name, [RuntimePackages.HttpServer.ServerConfiguration]),
-      getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressParameters]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ServerAdapter]),
+      getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
       ...getModelImports<OpenAPIGeneratorTarget>(path, 'openapi/api-type', [document], context),
       ...getModelImports<OpenAPIGeneratorTarget>(path, 'openapi/express-routes-type', [document], context),
       ...getModelImports<OpenAPIGeneratorTarget>(

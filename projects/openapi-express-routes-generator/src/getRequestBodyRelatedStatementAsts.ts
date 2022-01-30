@@ -66,7 +66,7 @@ export function getRequestBodyRelatedStatementAsts(
                 factory.createIdentifier('getMimeType'),
               ),
               [mediaTypeUnion],
-              [factory.createIdentifier(Names.frameworkInput)],
+              [factory.createIdentifier(Names.toolkit)],
             ),
           ),
         ),
@@ -91,7 +91,7 @@ export function getRequestBodyRelatedStatementAsts(
               ),
               [mediaTypeUnion, bodiesUnion],
               [
-                factory.createIdentifier(Names.frameworkInput),
+                factory.createIdentifier(Names.toolkit),
                 factory.createIdentifier(Names.mimeType),
                 referenceOf(data.operation, 'openapi/request-body-validator'),
               ],

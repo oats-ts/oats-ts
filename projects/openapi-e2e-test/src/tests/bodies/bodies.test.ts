@@ -1,7 +1,6 @@
-import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { ExpressParameters, ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
+import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
 import { BodiesApiImpl } from './BodiesApiImpl'
-import { BodiesClientSdk, createBodiesRouter } from '../../generated/Bodies'
+import { BodiesSdkImpl, createBodiesRouter } from '../../generated/Bodies'
 import YAML from 'yamljs'
 import { HttpResponse, TypedHttpRequest } from '@oats-ts/openapi-http'
 import { Response } from 'node-fetch'
@@ -16,15 +15,16 @@ import {
 import { arrayOf } from '../common/testData'
 import { useExpressServer } from '@oats-ts/openapi-test-utils'
 import { customBodyParsers } from '../common/customBodyParsers'
+import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 
 describe('Request and Response bodies', () => {
-  class YamlExpressServerConfiguration extends ExpressServerConfiguration {
-    override async getResponseBody(_: ExpressParameters, { body }: HttpResponse) {
+  class YamlExpressServerConfiguration extends ExpressServerAdapter {
+    override async getResponseBody(_: ExpressToolkit, { body }: HttpResponse) {
       return YAML.stringify(body)
     }
   }
 
-  class YamlClientConfiguration extends NodeFetchClientConfiguration {
+  class YamlClientConfiguration extends FetchClientAdapter {
     override async getParsedResponseBody(response: Response): Promise<any> {
       return YAML.parse(await response.text())
     }
@@ -34,7 +34,7 @@ describe('Request and Response bodies', () => {
   }
 
   const configs = [
-    ['application/json', ExpressServerConfiguration, NodeFetchClientConfiguration],
+    ['application/json', ExpressServerAdapter, FetchClientAdapter],
     ['application/yaml', YamlExpressServerConfiguration, YamlClientConfiguration],
   ] as const
 
@@ -48,7 +48,7 @@ describe('Request and Response bodies', () => {
         createBodiesRouter(new BodiesApiImpl(), new ServerConfig()),
       ],
     })
-    const sdk = new BodiesClientSdk(new ClientConfig('http://localhost:3333'))
+    const sdk = new BodiesSdkImpl(new ClientConfig('http://localhost:3333'))
     const data = range(1, process.env['REPEATS'] ? parseInt(process.env['REPEATS']) + 1 : 11)
     it.each(data)('(#%d) string', async () => {
       const body = datatype.string()

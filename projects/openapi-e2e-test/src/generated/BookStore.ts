@@ -1,7 +1,13 @@
-import { HasPathParameters, HasRequestBody, HttpResponse, RawHttpRequest, RawHttpResponse } from '@oats-ts/openapi-http'
-import { ClientConfiguration } from '@oats-ts/openapi-http-client'
-import { ServerConfiguration } from '@oats-ts/openapi-http-server'
-import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import {
+  ClientAdapter,
+  HasPathParameters,
+  HasRequestBody,
+  HttpResponse,
+  RawHttpRequest,
+  RawHttpResponse,
+  ServerAdapter,
+} from '@oats-ts/openapi-http'
 import { createPathDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
 import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
@@ -157,10 +163,7 @@ export const updateBookPathDeserializer = createPathDeserializer<UpdateBookPathP
 /**
  * Creates a new book based on the request body. The id field can be ommited (will be ignored)
  */
-export async function createBook(
-  input: CreateBookRequest,
-  configuration: ClientConfiguration,
-): Promise<CreateBookResponse> {
+export async function createBook(input: CreateBookRequest, configuration: ClientAdapter): Promise<CreateBookResponse> {
   const requestUrl = await configuration.getUrl('/books', undefined)
   const requestHeaders = await configuration.getRequestHeaders(input, undefined)
   const requestBody = await configuration.getRequestBody(input)
@@ -192,7 +195,7 @@ export async function createBook(
 /**
  * Returns the book associated with the given bookId
  */
-export async function getBook(input: GetBookRequest, configuration: ClientConfiguration): Promise<GetBookResponse> {
+export async function getBook(input: GetBookRequest, configuration: ClientAdapter): Promise<GetBookResponse> {
   const path = await configuration.getPath(input, getBookPathSerializer)
   const requestUrl = await configuration.getUrl(path, undefined)
   const requestHeaders = await configuration.getRequestHeaders(input, undefined)
@@ -220,7 +223,7 @@ export async function getBook(input: GetBookRequest, configuration: ClientConfig
   return response
 }
 
-export async function getBooks(configuration: ClientConfiguration): Promise<GetBooksResponse> {
+export async function getBooks(configuration: ClientAdapter): Promise<GetBooksResponse> {
   const requestUrl = await configuration.getUrl('/books', undefined)
   const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
@@ -250,10 +253,7 @@ export async function getBooks(configuration: ClientConfiguration): Promise<GetB
 /**
  * Updates the book associated with the given bookId
  */
-export async function updateBook(
-  input: UpdateBookRequest,
-  configuration: ClientConfiguration,
-): Promise<UpdateBookResponse> {
+export async function updateBook(input: UpdateBookRequest, configuration: ClientAdapter): Promise<UpdateBookResponse> {
   const path = await configuration.getPath(input, updateBookPathSerializer)
   const requestUrl = await configuration.getUrl(path, undefined)
   const requestHeaders = await configuration.getRequestHeaders(input, undefined)
@@ -299,9 +299,9 @@ export type BookStoreSdk = {
   updateBook(input: UpdateBookRequest): Promise<UpdateBookResponse>
 }
 
-export class BookStoreClientSdk implements BookStoreSdk {
-  protected readonly config: ClientConfiguration
-  public constructor(config: ClientConfiguration) {
+export class BookStoreSdkImpl implements BookStoreSdk {
+  protected readonly config: ClientAdapter
+  public constructor(config: ClientAdapter) {
     this.config = config
   }
   public async createBook(input: CreateBookRequest): Promise<CreateBookResponse> {
@@ -337,28 +337,28 @@ export type BookStoreApi<T> = {
   /**
    * Creates a new book based on the request body. The id field can be ommited (will be ignored)
    */
-  createBook(input: CreateBookServerRequest, frameworkInput: T): Promise<CreateBookResponse>
+  createBook(request: CreateBookServerRequest, toolkit: T): Promise<CreateBookResponse>
   /**
    * Returns the book associated with the given bookId
    */
-  getBook(input: GetBookServerRequest, frameworkInput: T): Promise<GetBookResponse>
-  getBooks(frameworkInput: T): Promise<GetBooksResponse>
+  getBook(request: GetBookServerRequest, toolkit: T): Promise<GetBookResponse>
+  getBooks(toolkit: T): Promise<GetBooksResponse>
   /**
    * Updates the book associated with the given bookId
    */
-  updateBook(input: UpdateBookServerRequest, frameworkInput: T): Promise<UpdateBookResponse>
+  updateBook(request: UpdateBookServerRequest, toolkit: T): Promise<UpdateBookResponse>
 }
 
 export const createBookRouter: Router = Router().post(
   '/books',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const frameworkInput: ExpressParameters = { request, response, next }
-    const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
-    const api: BookStoreApi<ExpressParameters> = response.locals['__oats_api']
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json'>(frameworkInput)
+      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
       const body = await configuration.getRequestBody<'application/json', Book>(
-        frameworkInput,
+        toolkit,
         mimeType,
         createBookRequestBodyValidator,
       )
@@ -366,15 +366,15 @@ export const createBookRouter: Router = Router().post(
         mimeType,
         body,
       }
-      const typedResponse = await api.createBook(typedRequest, frameworkInput)
+      const typedResponse = await api.createBook(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(frameworkInput, rawResponse)
+      return configuration.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(frameworkInput, error)
+      configuration.handleError(toolkit, error)
       throw error
     }
   },
@@ -383,23 +383,23 @@ export const createBookRouter: Router = Router().post(
 export const getBookRouter: Router = Router().get(
   '/books/:bookId',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const frameworkInput: ExpressParameters = { request, response, next }
-    const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
-    const api: BookStoreApi<ExpressParameters> = response.locals['__oats_api']
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(frameworkInput, getBookPathDeserializer)
+      const path = await configuration.getPathParameters(toolkit, getBookPathDeserializer)
       const typedRequest: GetBookServerRequest = {
         path,
       }
-      const typedResponse = await api.getBook(typedRequest, frameworkInput)
+      const typedResponse = await api.getBook(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(frameworkInput, rawResponse)
+      return configuration.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(frameworkInput, error)
+      configuration.handleError(toolkit, error)
       throw error
     }
   },
@@ -408,19 +408,19 @@ export const getBookRouter: Router = Router().get(
 export const getBooksRouter: Router = Router().get(
   '/books',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const frameworkInput: ExpressParameters = { request, response, next }
-    const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
-    const api: BookStoreApi<ExpressParameters> = response.locals['__oats_api']
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const typedResponse = await api.getBooks(frameworkInput)
+      const typedResponse = await api.getBooks(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(frameworkInput, rawResponse)
+      return configuration.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(frameworkInput, error)
+      configuration.handleError(toolkit, error)
       throw error
     }
   },
@@ -429,14 +429,14 @@ export const getBooksRouter: Router = Router().get(
 export const updateBookRouter: Router = Router().patch(
   '/books/:bookId',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const frameworkInput: ExpressParameters = { request, response, next }
-    const configuration: ServerConfiguration<ExpressParameters> = response.locals['__oats_configuration']
-    const api: BookStoreApi<ExpressParameters> = response.locals['__oats_api']
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(frameworkInput, updateBookPathDeserializer)
-      const mimeType = await configuration.getMimeType<'application/json'>(frameworkInput)
+      const path = await configuration.getPathParameters(toolkit, updateBookPathDeserializer)
+      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
       const body = await configuration.getRequestBody<'application/json', Book>(
-        frameworkInput,
+        toolkit,
         mimeType,
         updateBookRequestBodyValidator,
       )
@@ -445,15 +445,15 @@ export const updateBookRouter: Router = Router().patch(
         mimeType,
         body,
       }
-      const typedResponse = await api.updateBook(typedRequest, frameworkInput)
+      const typedResponse = await api.updateBook(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(frameworkInput, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(frameworkInput, typedResponse),
-        body: await configuration.getResponseBody(frameworkInput, typedResponse),
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(frameworkInput, rawResponse)
+      return configuration.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(frameworkInput, error)
+      configuration.handleError(toolkit, error)
       throw error
     }
   },
@@ -467,8 +467,8 @@ export type BookStoreRouters = {
 }
 
 export function createBookStoreRouter(
-  api: BookStoreApi<ExpressParameters>,
-  configuration: ServerConfiguration<ExpressParameters>,
+  api: BookStoreApi<ExpressToolkit>,
+  configuration: ServerAdapter<ExpressToolkit>,
   routes: Partial<BookStoreRouters> = {},
 ): Router {
   return Router().use(

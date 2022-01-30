@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/openapi-http-server",
+  "name": "@oats-ts/openapi-express-server-adapter",
   "version": "0.0.11",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",

@@ -18,8 +18,7 @@ export function getHandlerBodyAst(
   config: ExpressRouteGeneratorConfig,
 ) {
   const { referenceOf, nameOf, document } = context
-  const { ServerConfiguration } = RuntimePackages.HttpServer
-  const { ExpressParameters } = RuntimePackages.HttpServerExpress
+  const { ExpressToolkit: ExpressParameters } = RuntimePackages.HttpServerExpress
 
   const hasInputParams = hasInput(data, context)
   const hasPath = data.path.length > 0
@@ -32,7 +31,7 @@ export function getHandlerBodyAst(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          factory.createIdentifier(Names.frameworkInput),
+          factory.createIdentifier(Names.toolkit),
           undefined,
           factory.createTypeReferenceNode(factory.createIdentifier(ExpressParameters), undefined),
           factory.createObjectLiteralExpression(
@@ -56,7 +55,7 @@ export function getHandlerBodyAst(
         factory.createVariableDeclaration(
           factory.createIdentifier(Names.configuration),
           undefined,
-          factory.createTypeReferenceNode(factory.createIdentifier(ServerConfiguration), [
+          factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
             factory.createTypeReferenceNode(factory.createIdentifier(ExpressParameters), undefined),
           ]),
           factory.createElementAccessExpression(
@@ -161,7 +160,7 @@ export function getHandlerBodyAst(
               undefined,
               [
                 ...(hasInputParams ? [factory.createIdentifier(Names.typedRequest)] : []),
-                factory.createIdentifier(Names.frameworkInput),
+                factory.createIdentifier(Names.toolkit),
               ],
             ),
           ),
@@ -190,7 +189,7 @@ export function getHandlerBodyAst(
                     ),
                     undefined,
                     [
-                      factory.createIdentifier(Names.frameworkInput),
+                      factory.createIdentifier(Names.toolkit),
                       factory.createIdentifier(Names.typedResponse),
                       referenceOf(data.operation, 'openapi/response-headers-serializer') ||
                         factory.createIdentifier('undefined'),
@@ -207,7 +206,7 @@ export function getHandlerBodyAst(
                       factory.createIdentifier('getStatusCode'),
                     ),
                     undefined,
-                    [factory.createIdentifier(Names.frameworkInput), factory.createIdentifier(Names.typedResponse)],
+                    [factory.createIdentifier(Names.toolkit), factory.createIdentifier(Names.typedResponse)],
                   ),
                 ),
               ),
@@ -220,7 +219,7 @@ export function getHandlerBodyAst(
                       factory.createIdentifier('getResponseBody'),
                     ),
                     undefined,
-                    [factory.createIdentifier(Names.frameworkInput), factory.createIdentifier(Names.typedResponse)],
+                    [factory.createIdentifier(Names.toolkit), factory.createIdentifier(Names.typedResponse)],
                   ),
                 ),
               ),
@@ -239,7 +238,7 @@ export function getHandlerBodyAst(
         factory.createIdentifier('respond'),
       ),
       undefined,
-      [factory.createIdentifier(Names.frameworkInput), factory.createIdentifier(Names.rawResponse)],
+      [factory.createIdentifier(Names.toolkit), factory.createIdentifier(Names.rawResponse)],
     ),
   )
 
@@ -257,7 +256,7 @@ export function getHandlerBodyAst(
             factory.createIdentifier('handleError'),
           ),
           undefined,
-          [factory.createIdentifier(Names.frameworkInput), factory.createIdentifier(Names.error)],
+          [factory.createIdentifier(Names.toolkit), factory.createIdentifier(Names.error)],
         ),
       ),
       factory.createThrowStatement(factory.createIdentifier(Names.error)),

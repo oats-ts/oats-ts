@@ -15,11 +15,11 @@ export function generateSdkClass(
   config: SdkGeneratorConfig,
 ): TypeScriptModule {
   const { dependenciesOf, pathOf } = context
-  const path = pathOf(doc, 'openapi/client-sdk')
+  const path = pathOf(doc, 'openapi/sdk-impl')
   return {
     path,
     dependencies: [
-      getNamedImports(RuntimePackages.HttpClient.name, [RuntimePackages.HttpClient.ClientConfiguration]),
+      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientAdapter]),
       ...getSdkTypeImports(doc, operations, context, true),
       ...dependenciesOf(path, doc, 'openapi/sdk-type'),
       ...flatMap(operations, ({ operation }) => dependenciesOf(path, operation, 'openapi/operation')),

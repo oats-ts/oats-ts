@@ -4,14 +4,14 @@ import {
   RawHttpResponse,
   RequestBodyValidators,
   ResponseHeadersSerializer,
+  ServerAdapter,
 } from '@oats-ts/openapi-http'
 import { failure, fluent, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { ServerConfiguration } from '../typings'
-import { ExpressParameters } from './typings'
+import { ExpressToolkit } from './typings'
 
-export class ExpressServerConfiguration implements ServerConfiguration<ExpressParameters> {
-  async getPathParameters<P>({ request }: ExpressParameters, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
+export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
+  async getPathParameters<P>({ request }: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
     try {
       return deserializer(request.url)
     } catch (e) {
@@ -25,7 +25,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     }
   }
   async getQueryParameters<Q>(
-    { request }: ExpressParameters,
+    { request }: ExpressToolkit,
     deserializer: (input: string) => Try<Q>,
   ): Promise<Try<Q>> {
     try {
@@ -41,7 +41,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     }
   }
   async getRequestHeaders<H>(
-    { request }: ExpressParameters,
+    { request }: ExpressToolkit,
     deserializer: (input: RawHttpHeaders) => Try<H>,
   ): Promise<Try<H>> {
     try {
@@ -57,12 +57,12 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     }
   }
 
-  async getMimeType<M extends string>({ request }: ExpressParameters): Promise<M> {
+  async getMimeType<M extends string>({ request }: ExpressToolkit): Promise<M> {
     return request.header('Content-Type') as M
   }
 
   async getRequestBody<M extends string, B>(
-    { request }: ExpressParameters,
+    { request }: ExpressToolkit,
     mimeType: M | undefined,
     validators: RequestBodyValidators<M>,
   ): Promise<Try<B>> {
@@ -94,11 +94,11 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     return issues.length > 0 ? failure(issues) : success(request.body as B)
   }
 
-  async getStatusCode(input: ExpressParameters, resp: HttpResponse): Promise<number> {
+  async getStatusCode(input: ExpressToolkit, resp: HttpResponse): Promise<number> {
     return resp.statusCode
   }
 
-  async getResponseBody(input: ExpressParameters, resp: HttpResponse): Promise<any> {
+  async getResponseBody(input: ExpressToolkit, resp: HttpResponse): Promise<any> {
     if (resp.body === null || resp.body === undefined) {
       return undefined
     }
@@ -113,7 +113,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
   }
 
   async getResponseHeaders(
-    input: ExpressParameters,
+    input: ExpressToolkit,
     { mimeType, statusCode, headers }: HttpResponse,
     serializers?: ResponseHeadersSerializer,
   ): Promise<RawHttpHeaders> {
@@ -128,7 +128,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     return { ...fluent(serializer(headers)).getData(), ...mimeTypeHeaders }
   }
 
-  async respond({ response, next }: ExpressParameters, rawResponse: RawHttpResponse): Promise<void> {
+  async respond({ response, next }: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
     response.status(rawResponse.statusCode)
     if (rawResponse.headers !== null && rawResponse.headers !== undefined && !response.headersSent) {
       const headerNames = Object.keys(rawResponse.headers)
@@ -144,7 +144,7 @@ export class ExpressServerConfiguration implements ServerConfiguration<ExpressPa
     next()
   }
 
-  async handleError({ next }: ExpressParameters, error: Error): Promise<void> {
+  async handleError({ next }: ExpressToolkit, error: Error): Promise<void> {
     return next(error)
   }
 }

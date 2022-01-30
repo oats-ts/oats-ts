@@ -30,7 +30,7 @@ const nameByTarget: NameByTarget = {
   'openapi/express-route-factory': 'routes',
   'openapi/express-cors-middleware': 'routes',
   'openapi/api-type': 'api',
-  'openapi/client-sdk': 'sdk',
+  'openapi/sdk-impl': 'sdk',
   'openapi/sdk-stub': 'sdk',
   'openapi/sdk-type': 'sdk',
 }
@@ -114,7 +114,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
 
     'openapi/sdk-type': sdk,
     'openapi/sdk-stub': sdk,
-    'openapi/client-sdk': sdk,
+    'openapi/sdk-impl': sdk,
   }
 })()
 

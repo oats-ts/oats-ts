@@ -17,7 +17,7 @@ export function getSdkClassAst(
     [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
     'config',
     undefined,
-    factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
+    factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
     undefined,
   )
 
@@ -31,7 +31,7 @@ export function getSdkClassAst(
         undefined,
         'config',
         undefined,
-        factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
+        factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
       ),
     ],
     factory.createBlock([
@@ -48,7 +48,7 @@ export function getSdkClassAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'openapi/client-sdk'),
+    nameOf(document, 'openapi/sdk-impl'),
     [],
     [
       factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [

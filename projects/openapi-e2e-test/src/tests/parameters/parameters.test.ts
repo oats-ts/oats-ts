@@ -1,5 +1,5 @@
-import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { createParametersRouter, ParametersClientSdk } from '../../generated/Parameters'
+import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
+import { createParametersRouter, ParametersSdkImpl } from '../../generated/Parameters'
 import {
   randomPathParameters,
   randomFormQueryParameters,
@@ -9,9 +9,9 @@ import {
 } from './parameters.testdata'
 import { range } from 'lodash'
 import { ParametersApiImpl } from './ParametersApiImpl'
-import { ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
 import { customBodyParsers } from '../common/customBodyParsers'
 import { useExpressServer } from '@oats-ts/openapi-test-utils'
+import { ExpressServerAdapter } from '@oats-ts/openapi-express-server-adapter'
 
 describe('Parameters', () => {
   useExpressServer({
@@ -20,11 +20,11 @@ describe('Parameters', () => {
     handlers: [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createParametersRouter(new ParametersApiImpl(), new ExpressServerConfiguration()),
+      createParametersRouter(new ParametersApiImpl(), new ExpressServerAdapter()),
     ],
   })
 
-  const sdk = new ParametersClientSdk(new NodeFetchClientConfiguration('http://localhost:3333'))
+  const sdk = new ParametersSdkImpl(new FetchClientAdapter('http://localhost:3333'))
 
   const data = range(1, process.env['REPEATS'] ? parseInt(process.env['REPEATS']) + 1 : 11)
 

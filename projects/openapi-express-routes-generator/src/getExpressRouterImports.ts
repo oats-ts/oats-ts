@@ -19,9 +19,11 @@ export function getExpressRouterImports(
     (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'openapi/type'),
   )
   return [
-    getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.RawHttpResponse]),
-    getNamedImports(RuntimePackages.HttpServer.name, [RuntimePackages.HttpServer.ServerConfiguration]),
-    getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressParameters]),
+    getNamedImports(RuntimePackages.Http.name, [
+      RuntimePackages.Http.RawHttpResponse,
+      RuntimePackages.Http.ServerAdapter,
+    ]),
+    getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
     getNamedImports(RuntimePackages.Express.name, [
       RuntimePackages.Express.Router,
       RuntimePackages.Express.Request,

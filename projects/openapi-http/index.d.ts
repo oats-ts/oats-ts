@@ -1,24 +1,52 @@
 import type { Validator } from '@oats-ts/validators'
-import type { Try } from '@oats-ts/try'
+import { Try } from '@oats-ts/try'
 
-/** Configuration for performing a HTTP request */
-export type ClientConfiguration<R = any, V = any> = {
-  /** The common base of the url */
-  baseUrl: string
-  /** Performs the HTTP request and returns a Promise with a value that the rest of the methods will receive */
-  request(request: RawHttpRequest): Promise<R>
-  /** Serializes the request body */
-  serialize(contentType: string, body: any): Promise<any>
-  /** Retrieves the status code from the response */
-  statusCode(response: R): Promise<number>
-  /** Retrieves the mime type from the response (usually using the content-type header) */
-  mimeType(response: R): Promise<string>
-  /** Retrieves and parses the request body from the response */
-  body(response: R, mimeType: string): Promise<unknown>
-  /** Retrieves the response headers from the response */
-  headers(response: R): Promise<RawHttpHeaders>
-  /** Validates the response body */
-  validate(body: unknown, validator: V): void
+export type ClientAdapter = {
+  getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string>
+  getQuery(input: Partial<TypedHttpRequest>, serializer?: (input: any) => Try<string>): Promise<string | undefined>
+  getUrl(path: string, query?: string): Promise<string>
+  getRequestHeaders(
+    input?: Partial<TypedHttpRequest>,
+    serializer?: (input: any) => Try<RawHttpHeaders>,
+  ): Promise<RawHttpHeaders>
+  getRequestBody(input: Partial<TypedHttpRequest>): Promise<any>
+  request(request: RawHttpRequest): Promise<RawHttpResponse>
+  getMimeType(response: RawHttpResponse): Promise<string | undefined>
+  getStatusCode(response: RawHttpResponse): Promise<number | undefined>
+  getResponseHeaders(
+    response: RawHttpResponse,
+    statusCode?: number,
+    deserializers?: ResponseHeadersDeserializers,
+  ): Promise<any>
+  getResponseBody(
+    response: RawHttpResponse,
+    statusCode?: number,
+    mimeType?: string,
+    validators?: ResponseBodyValidators,
+  ): Promise<any>
+}
+
+export type ServerAdapter<T> = {
+  getPathParameters<P>(frameworkInput: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
+  getQueryParameters<Q>(frameworkInput: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
+  getRequestHeaders<H>(frameworkInput: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
+  getMimeType<M extends string>(frameworkInput: T): Promise<M>
+  getRequestBody<M extends string, B>(
+    frameworkInput: T,
+    mimeType: M | undefined,
+    validator: RequestBodyValidators<M>,
+  ): Promise<Try<B>>
+
+  getStatusCode(frameworkInput: T, resp: HttpResponse): Promise<number>
+  getResponseBody(frameworkInput: T, resp: HttpResponse): Promise<any>
+  getResponseHeaders(
+    frameworkInput: T,
+    resp: HttpResponse,
+    serializer?: ResponseHeadersSerializer,
+  ): Promise<RawHttpHeaders>
+
+  respond(frameworkInput: T, response: RawHttpResponse): Promise<void>
+  handleError(frameworkInput: T, error: Error): Promise<void>
 }
 
 export type RequestBodyValidators<C extends string = string> = {

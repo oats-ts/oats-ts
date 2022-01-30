@@ -156,20 +156,20 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-express-server-adapter",
+      "projectFolder": "projects/openapi-express-server-adapter",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-fetch-client-adapter",
+      "projectFolder": "projects/openapi-fetch-client-adapter",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-http",
       "projectFolder": "projects/openapi-http",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-http-client",
-      "projectFolder": "projects/openapi-http-client",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-http-server",
-      "projectFolder": "projects/openapi-http-server",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

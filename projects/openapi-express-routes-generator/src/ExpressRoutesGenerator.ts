@@ -21,7 +21,7 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express
 
   public readonly id = 'openapi/express-route'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/request-type',
+    'openapi/request-server-type',
     'openapi/response-type',
     'openapi/api-type',
     'openapi/path-deserializer',

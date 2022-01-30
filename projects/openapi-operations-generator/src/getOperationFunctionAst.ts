@@ -34,7 +34,7 @@ export function getOperationFunctionAst(
       undefined,
       Names.configuration,
       undefined,
-      factory.createTypeReferenceNode(RuntimePackages.HttpClient.ClientConfiguration),
+      factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
     ),
   ]
 

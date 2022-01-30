@@ -1,4 +1,5 @@
 import MIMEType from 'whatwg-mimetype'
+import * as crossFetch from 'cross-fetch'
 import {
   TypedHttpRequest,
   RawHttpHeaders,
@@ -6,16 +7,48 @@ import {
   RawHttpResponse,
   ResponseHeadersDeserializers,
   ResponseBodyValidators,
+  ClientAdapter,
 } from '@oats-ts/openapi-http'
-import { ClientConfiguration } from '../typings'
-import { fluent, success, Try } from '@oats-ts/try'
+import { fluent, Try } from '@oats-ts/try'
 
-export abstract class AbstractClientConfiguration implements ClientConfiguration {
+export class FetchClientAdapter implements ClientAdapter {
   private readonly baseUrl?: string
-  abstract request(request: RawHttpRequest): Promise<RawHttpResponse>
 
   constructor(baseUrl?: string) {
     this.baseUrl = baseUrl
+  }
+
+  async request(request: RawHttpRequest): Promise<RawHttpResponse> {
+    const response = await crossFetch.fetch(request.url, {
+      headers: request.headers,
+      method: request.method,
+      ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
+    })
+    return {
+      statusCode: response.status,
+      headers: this.asRawHttpHeaders(response),
+      body: this.getParsedResponseBody(response),
+    }
+  }
+
+  protected asRawHttpHeaders(response: Response): RawHttpHeaders {
+    const rawHeaders: Record<string, string> = {}
+    response.headers.forEach((value, key) => (rawHeaders[key.toLowerCase()] = value))
+    return rawHeaders
+  }
+
+  protected async getParsedResponseBody(response: Response): Promise<any> {
+    if (typeof response.headers.get('content-type') !== 'string') {
+      return undefined
+    }
+    const mimeType = response.headers.get('content-type') as string
+    if (mimeType?.indexOf('application/json') >= 0) {
+      return response.json()
+    }
+    if (mimeType?.indexOf('text/plain') >= 0) {
+      return response.text()
+    }
+    return response.blob()
   }
 
   async getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string> {

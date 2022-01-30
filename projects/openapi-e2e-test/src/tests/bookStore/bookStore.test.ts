@@ -1,21 +1,18 @@
-import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
+import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
 import { BookStoreApiImpl } from './BookStoreApiImpl'
 import { useExpressServer } from '@oats-ts/openapi-test-utils'
 import { customBodyParsers } from '../common/customBodyParsers'
-import { Book, BookStoreClientSdk, createBookStoreRouter } from '../../generated/BookStore'
+import { Book, BookStoreSdkImpl, createBookStoreRouter } from '../../generated/BookStore'
 import { catBook, defaultBooks, frogBook } from './bookStore.testdata'
+import { ExpressServerAdapter } from '@oats-ts/openapi-express-server-adapter'
 
 describe('Http methods', () => {
   useExpressServer({
     port: 3333,
     runBeforeAndAfter: 'each',
-    handlers: [
-      customBodyParsers.json(),
-      createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerConfiguration()),
-    ],
+    handlers: [customBodyParsers.json(), createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerAdapter())],
   })
-  const sdk = new BookStoreClientSdk(new NodeFetchClientConfiguration('http://localhost:3333'))
+  const sdk = new BookStoreSdkImpl(new FetchClientAdapter('http://localhost:3333'))
 
   describe('happy path', () => {
     it('should retrieve the default books', async () => {

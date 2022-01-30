@@ -1,10 +1,10 @@
-import { NodeFetchClientConfiguration } from '@oats-ts/openapi-http-client/lib/node-fetch'
-import { ExpressServerConfiguration } from '@oats-ts/openapi-http-server/lib/express'
+import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
 import { HttpMethodsApiImpl } from './HttpMethodsApiImpl'
-import { createHttpMethodsRouter, HttpMethodsClientSdk, HttpMethodsSdk } from '../../generated/HttpMethods'
+import { createHttpMethodsRouter, HttpMethodsSdkImpl, HttpMethodsSdk } from '../../generated/HttpMethods'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { useExpressServer } from '@oats-ts/openapi-test-utils'
 import { customBodyParsers } from '../common/customBodyParsers'
+import { ExpressServerAdapter } from '@oats-ts/openapi-express-server-adapter'
 
 describe('Http methods', () => {
   useExpressServer({
@@ -13,10 +13,10 @@ describe('Http methods', () => {
     handlers: [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createHttpMethodsRouter(new HttpMethodsApiImpl(), new ExpressServerConfiguration()),
+      createHttpMethodsRouter(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
     ],
   })
-  const sdk = new HttpMethodsClientSdk(new NodeFetchClientConfiguration('http://localhost:3333'))
+  const sdk = new HttpMethodsSdkImpl(new FetchClientAdapter('http://localhost:3333'))
   const methods: [HttpMethod, HttpMethodsSdk[keyof HttpMethodsSdk]][] = [
     ['get', () => sdk.getMethod()],
     ['post', () => sdk.postMethod()],
