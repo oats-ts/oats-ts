@@ -1,5 +1,3 @@
-import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
-import { HttpResponse } from '@oats-ts/openapi-http-server/node_modules/@oats-ts/openapi-http'
 import {
   DeepObjectQueryParametersResponse,
   DeepObjectQueryParametersServerRequest,
@@ -23,12 +21,14 @@ import {
   SpaceDelimitedQueryParametersServerRequest,
 } from '../../generated/Parameters'
 import { fluent, isFailure, Try } from '@oats-ts/try'
+import { HttpResponse } from '@oats-ts/openapi-http'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
   | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
 
-export class ParametersApiImpl implements ParametersApi<ExpressParameters> {
+export class ParametersApiImpl implements ParametersApi<ExpressToolkit> {
   private respond<T>(params: Try<T>): ParameterResponse<T> {
     if (isFailure(params)) {
       return {

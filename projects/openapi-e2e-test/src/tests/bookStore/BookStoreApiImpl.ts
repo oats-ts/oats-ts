@@ -1,4 +1,4 @@
-import { ExpressParameters } from '@oats-ts/openapi-http-server/lib/express'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { failure, fluent, success, zip } from '@oats-ts/try'
 import { Issue, stringify } from '@oats-ts/validators'
 import {
@@ -15,7 +15,7 @@ import {
 } from '../../generated/BookStore'
 import { defaultBooks } from './bookStore.testdata'
 
-export class BookStoreApiImpl implements BookStoreApi<ExpressParameters> {
+export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
   private books: Book[] = Array.from(defaultBooks)
 
   async getBooks(): Promise<GetBooksResponse> {
