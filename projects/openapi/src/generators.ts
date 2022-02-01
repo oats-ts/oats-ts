@@ -4,11 +4,9 @@ import {
   requestHeaderParameterTypes,
   responseHeaderParameterTypes,
 } from '@oats-ts/openapi-parameter-types-generator'
-import { typeValidators, responseBodyValidators, requestBodyValidators } from '@oats-ts/openapi-validators-generator'
-import { types } from '@oats-ts/openapi-types-generator'
+import { responseBodyValidators, requestBodyValidators } from '@oats-ts/openapi-validators-generator'
 import { apiType } from '@oats-ts/openapi-api-type-generator'
 import { sdkStub, sdkType, sdkImplementation } from '@oats-ts/openapi-sdk-generator'
-import { typeGuards } from '@oats-ts/openapi-type-guards-generator'
 import { operations } from '@oats-ts/openapi-operations-generator'
 import { requestTypes, requestServerTypes } from '@oats-ts/openapi-request-types-generator'
 import { responseTypes } from '@oats-ts/openapi-response-types-generator'
@@ -30,10 +28,12 @@ import {
   expressRouteFactory,
   expressCorsMiddleware,
 } from '@oats-ts/openapi-express-routes-generator'
+import { openApiTypeGuards, openApiTypes, openApiTypeValidators } from './specializedGenerators'
 
 export const generators = {
-  types,
-  typeValidators,
+  types: openApiTypes,
+  typeGuards: openApiTypeGuards,
+  typeValidators: openApiTypeValidators,
   responseBodyValidators,
   requestBodyValidators,
   queryParameterTypes,
@@ -44,7 +44,6 @@ export const generators = {
   sdkStub,
   sdkType,
   sdkImplementation,
-  typeGuards,
   operations,
   requestTypes,
   requestServerTypes,
@@ -61,4 +60,4 @@ export const generators = {
   expressRoutesType,
   expressRouteFactory,
   expressCorsMiddleware,
-}
+} as const

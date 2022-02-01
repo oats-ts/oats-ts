@@ -9,17 +9,14 @@ import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
 import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 
-export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
+export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
   implements CodeGenerator<T, TypeScriptModule>
 {
   private context: TypesGeneratorContext = null
-  private jsonSchemaConfig: TypesGeneratorConfig
-  public readonly consumes: C[] = []
-  abstract readonly id: Id
 
-  public constructor(config: TypesGeneratorConfig) {
-    this.jsonSchemaConfig = config
-  }
+  public readonly consumes: C[] = []
+
+  public constructor(public readonly id: Id, private readonly config: TypesGeneratorConfig) {}
 
   public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
@@ -29,7 +26,7 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>,
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, jsonSchemaConfig: config } = this
+    const { context, config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema))
     const data = mergeTypeScriptModules(
@@ -43,7 +40,7 @@ export abstract class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>,
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
-    const { context, jsonSchemaConfig: config } = this
+    const { context, config } = this
     return getExternalTypeReferenceAst(input, context, config)
   }
 

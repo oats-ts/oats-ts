@@ -21,18 +21,6 @@
       "path": "projects/asyncapi-reader"
     },
     {
-      "name": "asyncapi-type-guards-generator",
-      "path": "projects/asyncapi-type-guards-generator"
-    },
-    {
-      "name": "asyncapi-types-generator",
-      "path": "projects/asyncapi-types-generator"
-    },
-    {
-      "name": "asyncapi-validators-generator",
-      "path": "projects/asyncapi-validators-generator"
-    },
-    {
       "name": "asyncapi-ws-api-generator",
       "path": "projects/asyncapi-ws-api-generator"
     },
@@ -159,14 +147,6 @@
     {
       "name": "openapi-test-utils",
       "path": "projects/openapi-test-utils"
-    },
-    {
-      "name": "openapi-type-guards-generator",
-      "path": "projects/openapi-type-guards-generator"
-    },
-    {
-      "name": "openapi-types-generator",
-      "path": "projects/openapi-types-generator"
     },
     {
       "name": "openapi-validator",

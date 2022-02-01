@@ -7,21 +7,16 @@ import { TypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
 import { ImportDeclaration, Identifier, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 
-export abstract class JsonSchemaTypeGuardsGenerator<
-  T extends ReadOutput<HasSchemas>,
-  Id extends string,
-  C extends string,
-> implements CodeGenerator<T, TypeScriptModule>
+export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
+  implements CodeGenerator<T, TypeScriptModule>
 {
   private context: TypeGuardGeneratorContext = null
-  private typeGuardsConfig: TypeGuardGeneratorConfig
 
-  public abstract readonly id: Id
-  public abstract readonly consumes: [C]
-
-  constructor(config: TypeGuardGeneratorConfig) {
-    this.typeGuardsConfig = config
-  }
+  constructor(
+    public readonly id: Id,
+    public readonly consumes: [C],
+    private readonly config: TypeGuardGeneratorConfig,
+  ) {}
 
   initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
@@ -32,7 +27,7 @@ export abstract class JsonSchemaTypeGuardsGenerator<
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, typeGuardsConfig: config } = this
+    const { context, config } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, context.produces))
     const data = mergeTypeScriptModules(
