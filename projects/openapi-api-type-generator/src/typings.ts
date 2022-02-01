@@ -1,3 +1,3 @@
 export type ApiTypeGeneratorConfig = {
-  documentation?: boolean
+  documentation: boolean
 }

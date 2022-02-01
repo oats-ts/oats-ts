@@ -11,12 +11,18 @@ export { SdkTypeGenerator } from './type/SdkTypeGenerator'
 export { SdkImplementationGenerator } from './implementation/SdkImplementationGenerator'
 export { SdkStubGenerator } from './stub/SdkStubGenerator'
 
-export function sdkType(config: SdkGeneratorConfig): OpenAPIGenerator {
-  return new SdkTypeGenerator(config)
+function defaultConfig(config: Partial<SdkGeneratorConfig>): SdkGeneratorConfig {
+  return {
+    documentation: config?.documentation ?? true,
+  }
 }
 
-export function sdkImplementation(config: SdkGeneratorConfig): OpenAPIGenerator {
-  return new SdkImplementationGenerator(config)
+export function sdkType(config: Partial<SdkGeneratorConfig> = {}): OpenAPIGenerator {
+  return new SdkTypeGenerator(defaultConfig(config))
+}
+
+export function sdkImplementation(config: Partial<SdkGeneratorConfig> = {}): OpenAPIGenerator {
+  return new SdkImplementationGenerator(defaultConfig(config))
 }
 
 export function sdkStub(): OpenAPIGenerator {

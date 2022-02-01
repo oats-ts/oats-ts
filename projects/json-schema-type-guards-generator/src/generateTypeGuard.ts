@@ -9,10 +9,7 @@ import { factory } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { getDiscriminatorBasedTypeAssertionAst } from './getDiscriminatorBasedTypeAssertionAst'
 import { getTypeGuardImports } from './getTypeGuardImports'
-
-function isUnionTypeGuardGeneratorConfig(input: any): input is UnionTypeGuardGeneratorConfig {
-  return typeof input === 'object' && input !== null && input.discriminatorBased === true
-}
+import { isUnionTypeGuardGeneratorConfig } from './utils'
 
 export function generateTypeGuard(
   schema: SchemaObject | ReferenceObject,

@@ -9,21 +9,16 @@ import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 
-export abstract class JsonSchemaValidatorsGenerator<
-  T extends ReadOutput<HasSchemas>,
-  Id extends string,
-  C extends string,
-> implements CodeGenerator<T, TypeScriptModule>
+export class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
+  implements CodeGenerator<T, TypeScriptModule>
 {
   private context: ValidatorsGeneratorContext = null
-  private validatorConfig: ValidatorsGeneratorConfig
 
-  public abstract readonly id: Id
-  public abstract readonly consumes: [C]
-
-  public constructor(config: ValidatorsGeneratorConfig) {
-    this.validatorConfig = config
-  }
+  public constructor(
+    public readonly id: Id,
+    public readonly consumes: [C],
+    public readonly config: ValidatorsGeneratorConfig,
+  ) {}
 
   public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
     this.context = {
@@ -34,7 +29,7 @@ export abstract class JsonSchemaValidatorsGenerator<
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, validatorConfig } = this
+    const { context, config: validatorConfig } = this
     const { nameOf } = context
     const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, context.produces))
     const data = mergeTypeScriptModules(
@@ -48,7 +43,7 @@ export abstract class JsonSchemaValidatorsGenerator<
   }
 
   public referenceOf(input: SchemaObject | ReferenceObject): Expression {
-    const { context, validatorConfig: config } = this
+    const { context, config: config } = this
     const { nameOf, dereference } = context
     const schema = dereference(input)
     const name = nameOf(schema, context.produces)
@@ -56,7 +51,7 @@ export abstract class JsonSchemaValidatorsGenerator<
   }
 
   public dependenciesOf(fromPath: string, input: SchemaObject | ReferenceObject): ImportDeclaration[] {
-    const { context, validatorConfig: config } = this
+    const { context, config: config } = this
     return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
   }
 }

@@ -14,8 +14,8 @@ export { ExpressCorsMiddlewareGenerator } from './corsMiddleware/ExpressCorsMidd
 
 function defaultConfig(config: Partial<ExpressRouteGeneratorConfig>): ExpressRouteGeneratorConfig {
   return {
-    apiImplKey: config.apiImplKey ?? '__oats_api',
-    configurationKey: config.configurationKey ?? '__oats_configuration',
+    apiImplKey: config?.apiImplKey ?? '__oats_api',
+    configurationKey: config?.configurationKey ?? '__oats_configuration',
   }
 }
 

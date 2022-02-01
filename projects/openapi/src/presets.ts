@@ -1,85 +1,59 @@
-import { generators } from './generators'
-import { ValidatorsGeneratorConfig } from '@oats-ts/openapi-validators-generator'
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
-import { TypeGuardGeneratorConfig } from '@oats-ts/openapi-type-guards-generator'
+import { createPreset } from './createPreset'
+import { PresetConfiguration } from './typings'
 
-type PresetConfig = {
-  documentation: boolean
-  validate: boolean
-  validators: ValidatorsGeneratorConfig
-  typeGuards: TypeGuardGeneratorConfig
+const commonConfig: PresetConfiguration = {
+  'openapi/type': true,
+  'openapi/type-validator': true,
+  'openapi/type-guard': true,
+  'openapi/query-type': true,
+  'openapi/path-type': true,
+  'openapi/request-headers-type': true,
+  'openapi/response-headers-type': true,
+  'openapi/response-type': true,
 }
 
-const DefaultPresetConfig: PresetConfig = {
-  documentation: true,
-  validate: true,
-  typeGuards: {
-    arrays: true,
-    records: true,
-    references: true,
-  },
-  validators: {
-    arrays: true,
-    records: true,
-    references: true,
-  },
+const serverOnlyConfig: PresetConfiguration = {
+  'openapi/request-server-type': true,
+  'openapi/request-body-validator': true,
+  'openapi/response-headers-serializer': true,
+  'openapi/path-deserializer': true,
+  'openapi/query-deserializer': true,
+  'openapi/request-headers-deserializer': true,
+  'openapi/api-type': true,
+  'openapi/express-route': true,
+  'openapi/express-routes-type': true,
+  'openapi/express-route-factory': true,
+  'openapi/express-cors-middleware': true,
 }
 
-function common(config: PresetConfig): OpenAPIGenerator[] {
-  return [
-    generators.types({ documentation: config.documentation }),
-    generators.typeValidators(config.validators),
-    generators.typeGuards(config.typeGuards),
-    generators.queryParameterTypes({ documentation: config.documentation }),
-    generators.pathParameterTypes({ documentation: config.documentation }),
-    generators.requestHeaderParameterTypes({ documentation: config.documentation }),
-    generators.responseHeaderParameterTypes({ documentation: config.documentation }),
-    generators.responseTypes(),
-  ]
+const clientOnlyConfig: PresetConfiguration = {
+  'openapi/request-type': true,
+  'openapi/response-body-validator': true,
+  'openapi/response-headers-deserializer': true,
+  'openapi/path-serializer': true,
+  'openapi/query-serializer': true,
+  'openapi/request-headers-serializer': true,
+  'openapi/operation': true,
+  'openapi/sdk-type': true,
+  'openapi/sdk-impl': true,
+  'openapi/sdk-stub': true,
 }
 
-function serverOnly(config: PresetConfig): OpenAPIGenerator[] {
-  return [
-    generators.requestServerTypes(),
-    generators.requestBodyValidators(),
-    generators.responseHeaderParameterSerializers(),
-    generators.pathParameterDeserializers(),
-    generators.queryParameterDeserializers(),
-    generators.requestHeaderParameterDeserializers(),
-    generators.apiType({ documentation: config.documentation }),
-    generators.expressRoute(),
-    generators.expressRoutesType(),
-    generators.expressRouteFactory(),
-    generators.expressCorsMiddleware(),
-  ]
-}
+const server = createPreset({
+  ...commonConfig,
+  ...serverOnlyConfig,
+})
 
-function clientOnly(config: PresetConfig): OpenAPIGenerator[] {
-  return [
-    generators.requestTypes(),
-    generators.responseBodyValidators(),
-    generators.responseHeaderParameterDeserializers(),
-    generators.pathParameterSerializers(),
-    generators.queryParameterSerializers(),
-    generators.requestHeaderParameterSerializers(),
-    generators.operations({ documentation: config.documentation, validate: config.validate }),
-    generators.sdkType({ documentation: config.documentation }),
-    generators.sdkStub(),
-    generators.sdkImplementation({ documentation: config.documentation }),
-  ]
-}
+const client = createPreset({
+  ...commonConfig,
+  ...clientOnlyConfig,
+})
 
-function server(config: PresetConfig = DefaultPresetConfig): OpenAPIGenerator[] {
-  return [...common(config), ...serverOnly(config)]
-}
-
-function client(config: PresetConfig = DefaultPresetConfig): OpenAPIGenerator[] {
-  return [...common(config), ...clientOnly(config)]
-}
-
-function fullStack(config: PresetConfig = DefaultPresetConfig): OpenAPIGenerator[] {
-  return [...common(config), ...serverOnly(config), ...clientOnly(config)]
-}
+const fullStack = createPreset({
+  ...commonConfig,
+  ...serverOnlyConfig,
+  ...clientOnlyConfig,
+})
 
 export const presets = {
   client,

@@ -1,15 +1,5 @@
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import {
-  ClientAdapter,
-  HasRequestBody,
-  HttpResponse,
-  RawHttpRequest,
-  RawHttpResponse,
-  ServerAdapter,
-} from '@oats-ts/openapi-http'
-import { Try } from '@oats-ts/try'
-import { array, boolean, enumeration, items, lazy, number, object, shape, string } from '@oats-ts/validators'
-import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
+import { ClientAdapter, HasRequestBody, HttpResponse, RawHttpRequest } from '@oats-ts/openapi-http'
+import { array, boolean, enumeration, lazy, number, object, shape, string } from '@oats-ts/validators'
 
 export type EnumType = 'A' | 'B' | 'C'
 
@@ -36,10 +26,10 @@ export const enumTypeTypeValidator = enumeration(['A', 'B', 'C'])
 
 export const objectWithArraysTypeValidator = object(
   shape({
-    boolArr: array(items(boolean())),
-    enmArr: array(items(lazy(() => enumTypeTypeValidator))),
-    numArr: array(items(number())),
-    strArr: array(items(string())),
+    boolArr: array(),
+    enmArr: array(),
+    numArr: array(),
+    strArr: array(),
   }),
 )
 
@@ -68,13 +58,9 @@ export function isObjectWithArrays(input: any): input is ObjectWithArrays {
     input !== null &&
     typeof input === 'object' &&
     Array.isArray(input.boolArr) &&
-    input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.enmArr) &&
-    input.enmArr.every((item: any) => isEnumType(item)) &&
     Array.isArray(input.numArr) &&
-    input.numArr.every((item: any) => typeof item === 'number') &&
-    Array.isArray(input.strArr) &&
-    input.strArr.every((item: any) => typeof item === 'string')
+    Array.isArray(input.strArr)
   )
 }
 
@@ -97,174 +83,6 @@ export function isObjectWithPrimitives(input: any): input is ObjectWithPrimitive
     typeof input.str === 'string'
   )
 }
-
-export type ArrObjRequest =
-  | HasRequestBody<'application/json', ObjectWithArrays>
-  | HasRequestBody<'application/yaml', ObjectWithArrays>
-
-export type BoolRequest = HasRequestBody<'application/json', boolean> | HasRequestBody<'application/yaml', boolean>
-
-export type BoolArrRequest =
-  | HasRequestBody<'application/json', boolean[]>
-  | HasRequestBody<'application/yaml', boolean[]>
-
-export type EnmRequest = HasRequestBody<'application/json', EnumType> | HasRequestBody<'application/yaml', EnumType>
-
-export type EnmArrRequest =
-  | HasRequestBody<'application/json', EnumType[]>
-  | HasRequestBody<'application/yaml', EnumType[]>
-
-export type NestedObjRequest =
-  | HasRequestBody<'application/json', ObjectWithNestedObjects>
-  | HasRequestBody<'application/yaml', ObjectWithNestedObjects>
-
-export type NumRequest = HasRequestBody<'application/json', number> | HasRequestBody<'application/yaml', number>
-
-export type NumArrRequest = HasRequestBody<'application/json', number[]> | HasRequestBody<'application/yaml', number[]>
-
-export type PrimObjRequest =
-  | HasRequestBody<'application/json', ObjectWithPrimitives>
-  | HasRequestBody<'application/yaml', ObjectWithPrimitives>
-
-export type StrRequest = HasRequestBody<'application/json', string> | HasRequestBody<'application/yaml', string>
-
-export type StrArrRequest = HasRequestBody<'application/json', string[]> | HasRequestBody<'application/yaml', string[]>
-
-export type ArrObjServerRequest =
-  | HasRequestBody<'application/json', Try<ObjectWithArrays>>
-  | HasRequestBody<'application/yaml', Try<ObjectWithArrays>>
-
-export type BoolServerRequest =
-  | HasRequestBody<'application/json', Try<boolean>>
-  | HasRequestBody<'application/yaml', Try<boolean>>
-
-export type BoolArrServerRequest =
-  | HasRequestBody<'application/json', Try<boolean[]>>
-  | HasRequestBody<'application/yaml', Try<boolean[]>>
-
-export type EnmServerRequest =
-  | HasRequestBody<'application/json', Try<EnumType>>
-  | HasRequestBody<'application/yaml', Try<EnumType>>
-
-export type EnmArrServerRequest =
-  | HasRequestBody<'application/json', Try<EnumType[]>>
-  | HasRequestBody<'application/yaml', Try<EnumType[]>>
-
-export type NestedObjServerRequest =
-  | HasRequestBody<'application/json', Try<ObjectWithNestedObjects>>
-  | HasRequestBody<'application/yaml', Try<ObjectWithNestedObjects>>
-
-export type NumServerRequest =
-  | HasRequestBody<'application/json', Try<number>>
-  | HasRequestBody<'application/yaml', Try<number>>
-
-export type NumArrServerRequest =
-  | HasRequestBody<'application/json', Try<number[]>>
-  | HasRequestBody<'application/yaml', Try<number[]>>
-
-export type PrimObjServerRequest =
-  | HasRequestBody<'application/json', Try<ObjectWithPrimitives>>
-  | HasRequestBody<'application/yaml', Try<ObjectWithPrimitives>>
-
-export type StrServerRequest =
-  | HasRequestBody<'application/json', Try<string>>
-  | HasRequestBody<'application/yaml', Try<string>>
-
-export type StrArrServerRequest =
-  | HasRequestBody<'application/json', Try<string[]>>
-  | HasRequestBody<'application/yaml', Try<string[]>>
-
-export const arrObjResponseBodyValidator = {
-  200: { 'application/json': objectWithArraysTypeValidator, 'application/yaml': objectWithArraysTypeValidator },
-} as const
-
-export const boolArrResponseBodyValidator = {
-  200: { 'application/json': array(items(boolean())), 'application/yaml': array(items(boolean())) },
-} as const
-
-export const boolResponseBodyValidator = {
-  200: { 'application/json': boolean(), 'application/yaml': boolean() },
-} as const
-
-export const enmArrResponseBodyValidator = {
-  200: {
-    'application/json': array(items(lazy(() => enumTypeTypeValidator))),
-    'application/yaml': array(items(lazy(() => enumTypeTypeValidator))),
-  },
-} as const
-
-export const enmResponseBodyValidator = {
-  200: { 'application/json': enumTypeTypeValidator, 'application/yaml': enumTypeTypeValidator },
-} as const
-
-export const nestedObjResponseBodyValidator = {
-  200: {
-    'application/json': objectWithNestedObjectsTypeValidator,
-    'application/yaml': objectWithNestedObjectsTypeValidator,
-  },
-} as const
-
-export const numArrResponseBodyValidator = {
-  200: { 'application/json': array(items(number())), 'application/yaml': array(items(number())) },
-} as const
-
-export const numResponseBodyValidator = { 200: { 'application/json': number(), 'application/yaml': number() } } as const
-
-export const primObjResponseBodyValidator = {
-  200: { 'application/json': objectWithPrimitivesTypeValidator, 'application/yaml': objectWithPrimitivesTypeValidator },
-} as const
-
-export const strArrResponseBodyValidator = {
-  200: { 'application/json': array(items(string())), 'application/yaml': array(items(string())) },
-} as const
-
-export const strResponseBodyValidator = { 200: { 'application/json': string(), 'application/yaml': string() } } as const
-
-export const arrObjRequestBodyValidator = {
-  'application/json': objectWithArraysTypeValidator,
-  'application/yaml': objectWithArraysTypeValidator,
-} as const
-
-export const boolArrRequestBodyValidator = {
-  'application/json': array(items(boolean())),
-  'application/yaml': array(items(boolean())),
-} as const
-
-export const boolRequestBodyValidator = { 'application/json': boolean(), 'application/yaml': boolean() } as const
-
-export const enmArrRequestBodyValidator = {
-  'application/json': array(items(lazy(() => enumTypeTypeValidator))),
-  'application/yaml': array(items(lazy(() => enumTypeTypeValidator))),
-} as const
-
-export const enmRequestBodyValidator = {
-  'application/json': enumTypeTypeValidator,
-  'application/yaml': enumTypeTypeValidator,
-} as const
-
-export const nestedObjRequestBodyValidator = {
-  'application/json': objectWithNestedObjectsTypeValidator,
-  'application/yaml': objectWithNestedObjectsTypeValidator,
-} as const
-
-export const numArrRequestBodyValidator = {
-  'application/json': array(items(number())),
-  'application/yaml': array(items(number())),
-} as const
-
-export const numRequestBodyValidator = { 'application/json': number(), 'application/yaml': number() } as const
-
-export const primObjRequestBodyValidator = {
-  'application/json': objectWithPrimitivesTypeValidator,
-  'application/yaml': objectWithPrimitivesTypeValidator,
-} as const
-
-export const strArrRequestBodyValidator = {
-  'application/json': array(items(string())),
-  'application/yaml': array(items(string())),
-} as const
-
-export const strRequestBodyValidator = { 'application/json': string(), 'application/yaml': string() } as const
 
 export type ArrObjResponse =
   | HttpResponse<ObjectWithArrays, 200, 'application/json', undefined>
@@ -309,6 +127,81 @@ export type StrResponse =
 export type StrArrResponse =
   | HttpResponse<string[], 200, 'application/json', undefined>
   | HttpResponse<string[], 200, 'application/yaml', undefined>
+
+export type ArrObjRequest =
+  | HasRequestBody<'application/json', ObjectWithArrays>
+  | HasRequestBody<'application/yaml', ObjectWithArrays>
+
+export type BoolRequest = HasRequestBody<'application/json', boolean> | HasRequestBody<'application/yaml', boolean>
+
+export type BoolArrRequest =
+  | HasRequestBody<'application/json', boolean[]>
+  | HasRequestBody<'application/yaml', boolean[]>
+
+export type EnmRequest = HasRequestBody<'application/json', EnumType> | HasRequestBody<'application/yaml', EnumType>
+
+export type EnmArrRequest =
+  | HasRequestBody<'application/json', EnumType[]>
+  | HasRequestBody<'application/yaml', EnumType[]>
+
+export type NestedObjRequest =
+  | HasRequestBody<'application/json', ObjectWithNestedObjects>
+  | HasRequestBody<'application/yaml', ObjectWithNestedObjects>
+
+export type NumRequest = HasRequestBody<'application/json', number> | HasRequestBody<'application/yaml', number>
+
+export type NumArrRequest = HasRequestBody<'application/json', number[]> | HasRequestBody<'application/yaml', number[]>
+
+export type PrimObjRequest =
+  | HasRequestBody<'application/json', ObjectWithPrimitives>
+  | HasRequestBody<'application/yaml', ObjectWithPrimitives>
+
+export type StrRequest = HasRequestBody<'application/json', string> | HasRequestBody<'application/yaml', string>
+
+export type StrArrRequest = HasRequestBody<'application/json', string[]> | HasRequestBody<'application/yaml', string[]>
+
+export const arrObjResponseBodyValidator = {
+  200: { 'application/json': objectWithArraysTypeValidator, 'application/yaml': objectWithArraysTypeValidator },
+} as const
+
+export const boolArrResponseBodyValidator = {
+  200: { 'application/json': array(), 'application/yaml': array() },
+} as const
+
+export const boolResponseBodyValidator = {
+  200: { 'application/json': boolean(), 'application/yaml': boolean() },
+} as const
+
+export const enmArrResponseBodyValidator = {
+  200: { 'application/json': array(), 'application/yaml': array() },
+} as const
+
+export const enmResponseBodyValidator = {
+  200: { 'application/json': enumTypeTypeValidator, 'application/yaml': enumTypeTypeValidator },
+} as const
+
+export const nestedObjResponseBodyValidator = {
+  200: {
+    'application/json': objectWithNestedObjectsTypeValidator,
+    'application/yaml': objectWithNestedObjectsTypeValidator,
+  },
+} as const
+
+export const numArrResponseBodyValidator = {
+  200: { 'application/json': array(), 'application/yaml': array() },
+} as const
+
+export const numResponseBodyValidator = { 200: { 'application/json': number(), 'application/yaml': number() } } as const
+
+export const primObjResponseBodyValidator = {
+  200: { 'application/json': objectWithPrimitivesTypeValidator, 'application/yaml': objectWithPrimitivesTypeValidator },
+} as const
+
+export const strArrResponseBodyValidator = {
+  200: { 'application/json': array(), 'application/yaml': array() },
+} as const
+
+export const strResponseBodyValidator = { 200: { 'application/json': string(), 'application/yaml': string() } } as const
 
 export async function arrObj(input: ArrObjRequest, configuration: ClientAdapter): Promise<ArrObjResponse> {
   const requestUrl = await configuration.getUrl('/arr-obj', undefined)
@@ -698,411 +591,3 @@ export class BodiesSdkStub implements BodiesSdk {
     throw new Error('Stub method "strArr" called. You should implement this method if you want to use it.')
   }
 }
-
-export type BodiesApi<T> = {
-  arrObj(request: ArrObjServerRequest, toolkit: T): Promise<ArrObjResponse>
-  bool(request: BoolServerRequest, toolkit: T): Promise<BoolResponse>
-  boolArr(request: BoolArrServerRequest, toolkit: T): Promise<BoolArrResponse>
-  enm(request: EnmServerRequest, toolkit: T): Promise<EnmResponse>
-  enmArr(request: EnmArrServerRequest, toolkit: T): Promise<EnmArrResponse>
-  nestedObj(request: NestedObjServerRequest, toolkit: T): Promise<NestedObjResponse>
-  num(request: NumServerRequest, toolkit: T): Promise<NumResponse>
-  numArr(request: NumArrServerRequest, toolkit: T): Promise<NumArrResponse>
-  primObj(request: PrimObjServerRequest, toolkit: T): Promise<PrimObjResponse>
-  str(request: StrServerRequest, toolkit: T): Promise<StrResponse>
-  strArr(request: StrArrServerRequest, toolkit: T): Promise<StrArrResponse>
-}
-
-export const arrObjRouter: Router = Router().post(
-  '/arr-obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithArrays>(
-        toolkit,
-        mimeType,
-        arrObjRequestBodyValidator,
-      )
-      const typedRequest: ArrObjServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.arrObj(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const boolRouter: Router = Router().post(
-  '/bool',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean>(
-        toolkit,
-        mimeType,
-        boolRequestBodyValidator,
-      )
-      const typedRequest: BoolServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.bool(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const boolArrRouter: Router = Router().post(
-  '/bool-arr',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean[]>(
-        toolkit,
-        mimeType,
-        boolArrRequestBodyValidator,
-      )
-      const typedRequest: BoolArrServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.boolArr(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const enmRouter: Router = Router().post(
-  '/enm',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType>(
-        toolkit,
-        mimeType,
-        enmRequestBodyValidator,
-      )
-      const typedRequest: EnmServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.enm(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const enmArrRouter: Router = Router().post(
-  '/enm-arr',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType[]>(
-        toolkit,
-        mimeType,
-        enmArrRequestBodyValidator,
-      )
-      const typedRequest: EnmArrServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.enmArr(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const nestedObjRouter: Router = Router().post(
-  '/nested-obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithNestedObjects>(
-        toolkit,
-        mimeType,
-        nestedObjRequestBodyValidator,
-      )
-      const typedRequest: NestedObjServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.nestedObj(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const numRouter: Router = Router().post(
-  '/num',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number>(
-        toolkit,
-        mimeType,
-        numRequestBodyValidator,
-      )
-      const typedRequest: NumServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.num(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const numArrRouter: Router = Router().post(
-  '/num-arr',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number[]>(
-        toolkit,
-        mimeType,
-        numArrRequestBodyValidator,
-      )
-      const typedRequest: NumArrServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.numArr(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const primObjRouter: Router = Router().post(
-  '/prim-obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithPrimitives>(
-        toolkit,
-        mimeType,
-        primObjRequestBodyValidator,
-      )
-      const typedRequest: PrimObjServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.primObj(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const strRouter: Router = Router().post(
-  '/str',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string>(
-        toolkit,
-        mimeType,
-        strRequestBodyValidator,
-      )
-      const typedRequest: StrServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.str(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export const strArrRouter: Router = Router().post(
-  '/str-arr',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
-    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
-    try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string[]>(
-        toolkit,
-        mimeType,
-        strArrRequestBodyValidator,
-      )
-      const typedRequest: StrArrServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.strArr(typedRequest, toolkit)
-      const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
-      }
-      return configuration.respond(toolkit, rawResponse)
-    } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
-    }
-  },
-)
-
-export type BodiesRouters = {
-  arrObjRouter: Router
-  boolArrRouter: Router
-  boolRouter: Router
-  enmArrRouter: Router
-  enmRouter: Router
-  nestedObjRouter: Router
-  numArrRouter: Router
-  numRouter: Router
-  primObjRouter: Router
-  strArrRouter: Router
-  strRouter: Router
-}
-
-export function createBodiesRouter(
-  api: BodiesApi<ExpressToolkit>,
-  configuration: ServerAdapter<ExpressToolkit>,
-  routes: Partial<BodiesRouters> = {},
-): Router {
-  return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_configuration'] = configuration
-      next()
-    },
-    routes.arrObjRouter ?? arrObjRouter,
-    routes.boolArrRouter ?? boolArrRouter,
-    routes.boolRouter ?? boolRouter,
-    routes.enmArrRouter ?? enmArrRouter,
-    routes.enmRouter ?? enmRouter,
-    routes.nestedObjRouter ?? nestedObjRouter,
-    routes.numArrRouter ?? numArrRouter,
-    routes.numRouter ?? numRouter,
-    routes.primObjRouter ?? primObjRouter,
-    routes.strArrRouter ?? strArrRouter,
-    routes.strRouter ?? strRouter,
-  )
-}
-
-export const bodiesCorsMiddleware =
-  (...origins: string[]): RequestHandler =>
-  (request: Request, response: Response, next: NextFunction) => {
-    if (
-      typeof request.headers.origin === 'string' &&
-      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
-    ) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
-      response.setHeader('Access-Control-Allow-Methods', 'POST')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
-    }
-    next()
-  }

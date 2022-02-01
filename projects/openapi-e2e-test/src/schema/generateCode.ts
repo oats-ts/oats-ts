@@ -1,5 +1,4 @@
 import {
-  generators as g,
   generate,
   nameProviders,
   pathProviders,
@@ -7,6 +6,7 @@ import {
   writer,
   reader,
   prettierStringify,
+  presets,
 } from '@oats-ts/openapi'
 import { GeneratorModel } from './GeneratorModel'
 
@@ -19,39 +19,18 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
     },
     validator: validator(),
     reader: reader({ path: schemaPath }),
-    generators: [
-      g.types({ documentation: true }),
-      g.typeValidators({ references: true, arrays: true, records: true }),
-      g.typeGuards({ references: true, arrays: true, records: true }),
-      g.queryParameterTypes({ documentation: true }),
-      g.pathParameterTypes({ documentation: true }),
-      g.requestHeaderParameterTypes({ documentation: true }),
-      g.responseHeaderParameterTypes({ documentation: true }),
-      g.requestTypes(),
-      g.requestServerTypes(),
-      g.responseBodyValidators(),
-      g.requestBodyValidators(),
-      g.responseTypes(),
-      // Serializers
-      g.pathParameterSerializers(),
-      g.queryParameterSerializers(),
-      g.requestHeaderParameterSerializers(),
-      g.responseHeaderParameterSerializers(),
-      // Deserializers
-      g.pathParameterDeserializers(),
-      g.queryParameterDeserializers(),
-      g.requestHeaderParameterDeserializers(),
-      g.responseHeaderParameterDeserializers(),
-      g.operations({ validate: true, documentation: true }),
-      g.sdkType({ documentation: true }),
-      g.sdkImplementation({ documentation: true }),
-      g.sdkStub(),
-      g.apiType({ documentation: true }),
-      g.expressRoute(),
-      g.expressRoutesType(),
-      g.expressRouteFactory(),
-      g.expressCorsMiddleware(),
-    ],
+    generators: presets.fullStack({
+      'openapi/type-guard': {
+        arrays: true,
+        records: true,
+        references: true,
+      },
+      'openapi/type-validator': {
+        arrays: true,
+        records: true,
+        references: true,
+      },
+    }),
     writer: writer({
       stringify: prettierStringify({
         parser: 'typescript',

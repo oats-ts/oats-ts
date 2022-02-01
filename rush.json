@@ -43,24 +43,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/asyncapi-type-guards-generator",
-      "projectFolder": "projects/asyncapi-type-guards-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-types-generator",
-      "projectFolder": "projects/asyncapi-types-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-validators-generator",
-      "projectFolder": "projects/asyncapi-validators-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/asyncapi-ws-api-generator",
       "projectFolder": "projects/asyncapi-ws-api-generator",
       "versionPolicyName": "oats",
@@ -248,18 +230,6 @@
     {
       "packageName": "@oats-ts/openapi-test-utils",
       "projectFolder": "projects/openapi-test-utils",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-type-guards-generator",
-      "projectFolder": "projects/openapi-type-guards-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-types-generator",
-      "projectFolder": "projects/openapi-types-generator",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
