@@ -3,12 +3,13 @@ import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { getDiscriminators } from '@oats-ts/model-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { FullTypeGuardGeneratorConfig } from './typings'
 import { getLogicalExpression, reduceLogicalExpressions, safeMemberAccess } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getObjectTypeAssertionAst(
   data: SchemaObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
   level: number,

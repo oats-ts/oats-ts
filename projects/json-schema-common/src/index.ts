@@ -1,3 +1,2 @@
-export { isReferenceObject } from './isReferenceObject'
 export { getInferredType } from './getInferredType'
-export type { InferredType } from './types'
+export type { InferredType, JsonSchemaGeneratorTarget, JsonSchemaGeneratorContext } from './types'

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@oats-ts/json-schema-model": "0.0.13",
+    "@oats-ts/model-common": "0.0.13",
     "lodash": "4.17.21"
   }
 }

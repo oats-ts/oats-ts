@@ -39,6 +39,7 @@
     "lodash": "4.17.21",
     "@oats-ts/json-schema-model": "0.0.13",
     "@oats-ts/asyncapi-model": "0.0.13",
+    "@oats-ts/model-common": "0.0.13",
     "@oats-ts/json-schema-common": "0.0.13",
     "urijs": "1.19.7",
     "valid-url": "1.0.9",

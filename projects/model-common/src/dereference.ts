@@ -1,5 +1,5 @@
 import { ReferenceObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
+import { isReferenceObject } from './isReferenceObject'
 import { ReadOutput } from './types'
 
 export function dereference(data: ReadOutput<any>) {

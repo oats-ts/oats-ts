@@ -9,7 +9,7 @@ export function getContentTypeBasedValidatorsAst(
 ): PropertyAssignment[] {
   const { referenceOf } = context
   return entries(content || {}).map(([contentType, mediaTypeObj]) => {
-    const validator: Expression = referenceOf(mediaTypeObj.schema, 'openapi/type-validator')
+    const validator: Expression = referenceOf(mediaTypeObj.schema, 'json-schema/type-validator')
     return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validator)
   })
 }

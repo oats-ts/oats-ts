@@ -28,7 +28,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   } else {
     const knownStatusCodes = responses.map(({ statusCode }) => statusCode).filter((s) => s !== 'default')
     const responseTypes = responses.map(({ mediaType, schema, statusCode, headers }) => {
-      const bodyType = referenceOf<TypeNode>(schema, 'openapi/type')
+      const bodyType = referenceOf<TypeNode>(schema, 'json-schema/type')
       const statusCodeType =
         statusCode === 'default'
           ? createDefaultStatusCodeType(knownStatusCodes)

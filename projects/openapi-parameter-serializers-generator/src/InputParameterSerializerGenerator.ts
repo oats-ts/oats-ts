@@ -28,7 +28,7 @@ export class InputParameterSerializerGenerator<Id extends OpenAPIGeneratorTarget
   public constructor(id: Id, consumed: OpenAPIGeneratorTarget, location: ParameterLocation) {
     this.id = id
     this.consumed = consumed
-    this.consumes = ['openapi/type', consumed]
+    this.consumes = ['json-schema/type', consumed]
     this.location = location
   }
 

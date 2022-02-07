@@ -3,12 +3,13 @@ import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
 import { getPrimitiveType, PrimitiveTypes, RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
+import { ValidatorsGeneratorConfig } from './typings'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 function getUnionProperties(
   data: SchemaObject,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): PropertyAssignment[] {
@@ -26,7 +27,7 @@ function getUnionProperties(
   const discriminators = values(data.discriminator.mapping || {})
   return discriminators.map(($ref) => {
     return factory.createPropertyAssignment(
-      factory.createIdentifier(nameOf(dereference($ref), context.consumes)),
+      factory.createIdentifier(nameOf(dereference($ref), 'json-schema/type')),
       getReferenceValidatorAst({ $ref }, context, config, level),
     )
   })
@@ -34,7 +35,7 @@ function getUnionProperties(
 
 export function getUnionTypeValidatorAst(
   data: SchemaObject,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {

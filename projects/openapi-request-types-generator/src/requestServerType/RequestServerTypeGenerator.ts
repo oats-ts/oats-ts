@@ -22,7 +22,7 @@ export class RequestServerTypesGenerator implements OpenAPIGenerator<'openapi/re
 
   public readonly id = 'openapi/request-server-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/type',
+    'json-schema/type',
     'openapi/request-headers-type',
     'openapi/query-type',
     'openapi/path-type',

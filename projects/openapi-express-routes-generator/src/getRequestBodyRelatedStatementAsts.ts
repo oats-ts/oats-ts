@@ -14,7 +14,7 @@ export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIG
     values(getRequestBodyContent(data, context))
       .map((mediaType) => mediaType.schema)
       .filter((schema) => !isNil(schema))
-      .map((schema) => referenceOf(schema, 'openapi/type')),
+      .map((schema) => referenceOf(schema, 'json-schema/type')),
     isEqual,
   )
   switch (bodyTypes.length) {

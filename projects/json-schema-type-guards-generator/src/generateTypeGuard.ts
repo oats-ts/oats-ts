@@ -1,24 +1,24 @@
 import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
-import { TypeGuardGeneratorConfig, TypeGuardGeneratorContext, UnionTypeGuardGeneratorConfig } from './typings'
-import { getDiscriminators } from '@oats-ts/model-common'
+import { TypeGuardGeneratorConfig } from './typings'
+import { getDiscriminators, isReferenceObject } from '@oats-ts/model-common'
 import { isNil, keys } from 'lodash'
 import { factory } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { getDiscriminatorBasedTypeAssertionAst } from './getDiscriminatorBasedTypeAssertionAst'
 import { getTypeGuardImports } from './getTypeGuardImports'
 import { isUnionTypeGuardGeneratorConfig } from './utils'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function generateTypeGuard(
   schema: SchemaObject | ReferenceObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: TypeGuardGeneratorConfig,
 ): TypeScriptModule {
   const { pathOf, dependenciesOf } = context
-  const path = pathOf(schema, context.produces)
-  const typeImports = dependenciesOf(path, schema, context.consumes)
+  const path = pathOf(schema, 'json-schema/type-guard')
+  const typeImports = dependenciesOf(path, schema, 'json-schema/type')
   if (isUnionTypeGuardGeneratorConfig(config)) {
     if (isReferenceObject(schema)) {
       return undefined

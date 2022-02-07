@@ -1,15 +1,8 @@
-import { ReferenceObject } from '@oats-ts/json-schema-model'
+import { GeneratorContext, HasSchemas } from '@oats-ts/model-common'
 
-export type JsonSchemaGeneratorContext<Doc, Target extends string, Dep> = {
-  readonly document: Doc
-  readonly documents: Doc[]
-  dereference<T>(input: string | T | ReferenceObject, deep?: boolean): T
-  nameOf(input: any, target?: Target): string
-  pathOf(input: any, target: Target): string
-  uriOf(input: any): string
-  referenceOf<T>(input: any, target: Target): T
-  dependenciesOf(fromPath: string, input: any, target: Target): Dep[]
-}
+export type JsonSchemaGeneratorTarget = 'json-schema/type' | 'json-schema/type-guard' | 'json-schema/type-validator'
+
+export type JsonSchemaGeneratorContext = GeneratorContext<HasSchemas, JsonSchemaGeneratorTarget>
 
 export type InferredType =
   | 'string'

@@ -41,7 +41,7 @@ export function getDeserializerAst(
       return createPrimitiveDeserializer(type, [
         factory.createCallExpression(
           valueAccess('enumeration'),
-          [factory.createTypeReferenceNode(type), referenceOf(schemaOrRef, 'openapi/type')],
+          [factory.createTypeReferenceNode(type), referenceOf(schemaOrRef, 'json-schema/type')],
           [factory.createArrayLiteralExpression(schema.enum.map((v) => getLiteralAst(v)))],
         ),
       ])

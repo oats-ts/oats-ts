@@ -1,7 +1,7 @@
 import { entries, isNil, values } from 'lodash'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { GeneratorContext, HasSchemas } from './types'
+import { isReferenceObject } from './isReferenceObject'
 
 function collectFromSchema(
   uri: string,

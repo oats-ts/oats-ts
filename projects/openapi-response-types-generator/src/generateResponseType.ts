@@ -21,7 +21,7 @@ export function generateOperationReturnType(
         ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.StatusCode])]
         : []),
       ...flatMap(responses, ({ schema, statusCode }) => [
-        ...dependenciesOf(path, schema, 'openapi/type'),
+        ...dependenciesOf(path, schema, 'json-schema/type'),
         ...dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),
       ]),
     ],

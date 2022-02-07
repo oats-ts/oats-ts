@@ -70,8 +70,8 @@ const routersType: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}R
 const corsMiddleware: GeneratorNameProvider = (doc: any) => `${camelCase(documentTitle(doc))}CorsMiddleware`
 
 const defaultDelegates: DelegatingNameProviderInput = {
-  'openapi/type': type,
-  'openapi/type-guard': typeGuard,
+  'json-schema/type': type,
+  'json-schema/type-guard': typeGuard,
   'openapi/operation': operation,
   'openapi/query-type': queryType,
   'openapi/path-type': pathType,
@@ -88,7 +88,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/request-headers-deserializer': reqHeadersDeserializer,
   'openapi/response-headers-serializer': resHeadersSerializer,
   'openapi/response-headers-deserializer': resHeadersDeserializer,
-  'openapi/type-validator': typeValidator,
+  'json-schema/type-validator': typeValidator,
   'openapi/request-body-validator': reqBodyValidator,
   'openapi/response-body-validator': resBodyValidator,
   'openapi/express-route': expressRouter,

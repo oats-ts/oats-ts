@@ -1,16 +1,17 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
+import { isReferenceObject } from '@oats-ts/model-common'
 import { isEmpty, entries, isNil, sortBy, values } from 'lodash'
 import { getDiscriminators, RuntimePackages } from '@oats-ts/model-common'
-import { getInferredType } from '@oats-ts/json-schema-common'
+import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { ImportDeclaration } from 'typescript'
-import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
+import { ValidatorsGeneratorConfig } from './typings'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common/lib/types'
 
 export type ImportCollector = (
   data: SchemaObject | ReferenceObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -19,14 +20,14 @@ export type ImportCollector = (
 export function collectExternalReferenceImports(
   data: SchemaObject | ReferenceObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
 ): void {
   const { dereference, nameOf, uriOf } = context
   const schema = dereference(data)
-  if (!isNil(nameOf(schema, context.produces))) {
+  if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
     refs.add(uriOf(schema))
   } else {
     collectImports(schema, config, context, names, refs, level + 1)
@@ -36,7 +37,7 @@ export function collectExternalReferenceImports(
 export function collectReferenceImports(
   data: ReferenceObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -46,7 +47,7 @@ export function collectReferenceImports(
     names.add(RuntimePackages.Validators.any)
   } else {
     const schema = dereference(data)
-    if (!isNil(nameOf(schema, context.produces))) {
+    if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
       names.add(RuntimePackages.Validators.lazy)
       refs.add(data.$ref)
     } else {
@@ -58,7 +59,7 @@ export function collectReferenceImports(
 export function collectUnionImports(
   data: SchemaObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -81,7 +82,7 @@ export function collectUnionImports(
 export function collectRecordImports(
   data: SchemaObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -97,7 +98,7 @@ export function collectRecordImports(
 export function collectObjectTypeImports(
   data: SchemaObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -119,7 +120,7 @@ export function collectObjectTypeImports(
 export function collectArrayTypeImports(
   data: SchemaObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -134,7 +135,7 @@ export function collectArrayTypeImports(
 export function collectImports(
   data: SchemaObject | ReferenceObject,
   config: ValidatorsGeneratorConfig,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
@@ -172,7 +173,7 @@ export function collectImports(
 export function getValidatorImports(
   fromPath: string,
   schema: SchemaObject | ReferenceObject,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
   collector: ImportCollector = collectImports,
 ): ImportDeclaration[] {
@@ -191,9 +192,9 @@ export function getValidatorImports(
             sortBy(names, (name) => name),
           ),
         ]),
-    ...getModelImports(
+    ...getModelImports<JsonSchemaGeneratorTarget>(
       fromPath,
-      context.produces,
+      'json-schema/type-validator',
       refs.map((ref) => dereference<SchemaObject>(ref)),
       context,
     ),

@@ -34,7 +34,7 @@ function getFullType(
         ...common,
         factory.createTypeReferenceNode(RuntimePackages.Http.HasRequestBody, [
           factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
-          transform(referenceOf(schema, 'openapi/type')),
+          transform(referenceOf(schema, 'json-schema/type')),
         ]),
       ])
     }
@@ -45,7 +45,7 @@ function getFullType(
             ...getParameterTypesAst(data, context, transform),
             factory.createTypeReferenceNode(RuntimePackages.Http.HasRequestBody, [
               factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
-              transform(referenceOf(mediaType.schema, 'openapi/type')),
+              transform(referenceOf(mediaType.schema, 'json-schema/type')),
             ]),
           ]),
         ),

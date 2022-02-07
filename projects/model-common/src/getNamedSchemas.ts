@@ -1,7 +1,7 @@
 import { isNil, values } from 'lodash'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { GeneratorContext, HasSchemas } from './types'
+import { isReferenceObject } from './isReferenceObject'
 
 /* TODO prevent recursion */
 function collectNamedTypesForSchema(

@@ -23,7 +23,7 @@ export class ResponseHeaderTypesGenerator implements OpenAPIGenerator<'openapi/r
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/response-headers-type'
-  public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/type']
+  public readonly consumes: OpenAPIGeneratorTarget[] = ['json-schema/type']
 
   public constructor(config: ParameterTypesGeneratorConfig) {
     this.parametersConfig = config

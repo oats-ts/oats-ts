@@ -2,12 +2,13 @@ import { isNil } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { FullTypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getUnionTypeAssertionAst(
   data: SchemaObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
   level: number,
@@ -24,7 +25,11 @@ export function getUnionTypeAssertionAst(
     SyntaxKind.BarBarToken,
     data.oneOf.map((refOrSchema) => {
       const schema = dereference<SchemaObject>(refOrSchema)
-      return factory.createCallExpression(factory.createIdentifier(nameOf(schema, context.produces)), [], [variable])
+      return factory.createCallExpression(
+        factory.createIdentifier(nameOf(schema, 'json-schema/type-guard')),
+        [],
+        [variable],
+      )
     }),
   )
 }

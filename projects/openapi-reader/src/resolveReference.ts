@@ -1,9 +1,9 @@
 import { ReferenceObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
 import { ReadContext, ReadInput } from './internalTypings'
 import { findByFragments } from './findByFragments'
 import { register } from './register'
 import { isNil } from 'lodash'
+import { isReferenceObject } from '@oats-ts/model-common'
 
 export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
   const specUri = context.uri.document(uri)

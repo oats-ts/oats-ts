@@ -23,7 +23,7 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
 
   public readonly id = 'openapi/operation'
   public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/type',
+    'json-schema/type',
     'openapi/request-headers-type',
     'openapi/query-type',
     'openapi/path-type',

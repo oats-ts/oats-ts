@@ -16,8 +16,6 @@ function defaultConfig(config: Partial<TypeGuardGeneratorConfig>): TypeGuardGene
   }
 }
 
-export const typeGuards =
-  <Id extends string, C extends string>(id: Id, consumes: C) =>
-  (config: Partial<TypeGuardGeneratorConfig> = {}) => {
-    return new JsonSchemaTypeGuardsGenerator(id, [consumes], defaultConfig(config))
-  }
+export const typeGuards = (config: Partial<TypeGuardGeneratorConfig> = {}) => {
+  return new JsonSchemaTypeGuardsGenerator(defaultConfig(config))
+}

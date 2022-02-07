@@ -20,12 +20,12 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
     validator: validator(),
     reader: reader({ path: schemaPath }),
     generators: presets.fullStack({
-      'openapi/type-guard': {
+      'json-schema/type-guard': {
         arrays: true,
         records: true,
         references: true,
       },
-      'openapi/type-validator': {
+      'json-schema/type-validator': {
         arrays: true,
         records: true,
         references: true,

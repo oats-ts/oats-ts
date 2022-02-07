@@ -4,8 +4,8 @@ import { join, resolve } from 'path'
 import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, PathDelegate } from './typings'
 
 const nameByTarget: NameByTarget = {
-  'openapi/type': 'types',
-  'openapi/type-guard': 'typeGuards',
+  'json-schema/type': 'types',
+  'json-schema/type-guard': 'typeGuards',
   'openapi/operation': 'operations',
   'openapi/query-type': 'queryTypes',
   'openapi/request-headers-type': 'requestHeaderTypes',
@@ -22,7 +22,7 @@ const nameByTarget: NameByTarget = {
   'openapi/query-deserializer': 'queryDeserializers',
   'openapi/request-headers-deserializer': 'requestHeaderDeserializers',
   'openapi/response-headers-deserializer': 'responseHeaderDeserializers',
-  'openapi/type-validator': 'typeValidators',
+  'json-schema/type-validator': 'typeValidators',
   'openapi/request-body-validator': 'requestBodyValidators',
   'openapi/response-body-validator': 'responseBodyValidators',
   'openapi/express-route': 'routes',
@@ -76,8 +76,8 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
   const operations = delegate('operations')
 
   return {
-    'openapi/type': types,
-    'openapi/type-guard': typeGuards,
+    'json-schema/type': types,
+    'json-schema/type-guard': typeGuards,
 
     'openapi/response-type': responses,
 
@@ -86,7 +86,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
 
     'openapi/api-type': api,
 
-    'openapi/type-validator': validators,
+    'json-schema/type-validator': validators,
     'openapi/response-body-validator': validators,
     'openapi/request-body-validator': validators,
 

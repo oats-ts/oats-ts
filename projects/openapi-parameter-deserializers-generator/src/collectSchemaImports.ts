@@ -50,5 +50,5 @@ export function collectSchemaImports(
       .filter(negate(isNil)),
     (schema) => collectNamedSchemas(schema, context),
   )
-  return flatMap(schemas, (schema) => dependenciesOf(path, schema, 'openapi/type'))
+  return flatMap(schemas, (schema) => dependenciesOf(path, schema, 'json-schema/type'))
 }

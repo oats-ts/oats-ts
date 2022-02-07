@@ -7,7 +7,3 @@ export type TypesGeneratorConfig = {
    */
   documentation?: boolean
 }
-
-export type TypesGeneratorContext = GeneratorContext<HasSchemas> & {
-  target: string
-}
