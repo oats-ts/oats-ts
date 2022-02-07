@@ -24,7 +24,7 @@ export function generatePathParamsType(
     .map((param) => dereference(param))
     .map((param) => param.schema)
 
-  const imports = flatMap(schemas, (schema): ImportDeclaration[] => dependenciesOf(path, schema, 'asyncapi/type'))
+  const imports = flatMap(schemas, (schema): ImportDeclaration[] => dependenciesOf(path, schema, 'json-schema/type'))
 
   return {
     content: [getPathParamsTypeAst(data, context, config)],

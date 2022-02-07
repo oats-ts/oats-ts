@@ -24,13 +24,13 @@ export function generatePubType(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     nameOf(data.channel, 'asyncapi/publish-type'),
     [],
-    referenceOf(schema, 'asyncapi/type'),
+    referenceOf(schema, 'json-schema/type'),
   )
   const content = [config.documentation ? documentNode(type, message) : type]
 
   return {
     content,
-    dependencies: dependenciesOf(path, schema, 'asyncapi/type'),
+    dependencies: dependenciesOf(path, schema, 'json-schema/type'),
     path,
   }
 }

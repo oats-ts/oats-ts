@@ -8,10 +8,10 @@ const nonNil = negate(isNil)
 
 export function nameProvider(input: any, name: string, target: AsyncAPIGeneratorTarget): string {
   switch (target) {
-    case 'asyncapi/type': {
+    case 'json-schema/type': {
       return isNil(name) ? undefined : pascalCase(name)
     }
-    case 'asyncapi/type-guard': {
+    case 'json-schema/type-guard': {
       return isNil(name) ? undefined : camelCase(`is-${name}`)
     }
     case 'asyncapi/channel-factory': {
@@ -67,7 +67,7 @@ export function nameProvider(input: any, name: string, target: AsyncAPIGenerator
     case 'asyncapi/api-stub': {
       return 'ApiStub'
     }
-    case 'asyncapi/validator': {
+    case 'json-schema/type-validator': {
       return isNil(name) ? undefined : `${camelCase(name)}Validator`
     }
     default:

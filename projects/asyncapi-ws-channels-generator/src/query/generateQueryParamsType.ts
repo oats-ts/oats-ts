@@ -24,13 +24,13 @@ export function generateQueryParamsType(
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       nameOf(data.channel, 'asyncapi/query-type'),
       [],
-      referenceOf(schema, 'asyncapi/type'),
+      referenceOf(schema, 'json-schema/type'),
     ),
   ]
 
   return {
     content,
-    dependencies: dependenciesOf(path, schema, 'asyncapi/type'),
+    dependencies: dependenciesOf(path, schema, 'json-schema/type'),
     path,
   }
 }

@@ -3,8 +3,8 @@ import { GeneratorPathProvider, NameProvider } from '@oats-ts/generator'
 import { NameByTarget, AsyncAPIGeneratorTarget } from './typings'
 
 const defaultName: NameByTarget = {
-  'asyncapi/type': 'types',
-  'asyncapi/type-guard': 'typeGuards',
+  'json-schema/type': 'types',
+  'json-schema/type-guard': 'typeGuards',
   'asyncapi/channel': 'channels',
   'asyncapi/channel-factory': 'channelFactories',
   'asyncapi/publish-type': 'pubTypes',
@@ -13,7 +13,7 @@ const defaultName: NameByTarget = {
   'asyncapi/query-type': 'queryTypes',
   'asyncapi/path-type': 'pathTypes',
   'asyncapi/path-serializer': 'pathSerializers',
-  'asyncapi/validator': 'validators',
+  'json-schema/type-validator': 'validators',
   'asyncapi/api-type': 'apiType',
   'asyncapi/api-stub': 'apiStub',
   'asyncapi/api-class': 'apiClass',

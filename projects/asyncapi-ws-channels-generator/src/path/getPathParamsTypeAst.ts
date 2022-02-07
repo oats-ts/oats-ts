@@ -19,7 +19,7 @@ export function getPathParamsTypeAst(
         [],
         safeName(name),
         undefined,
-        referenceOf(param.schema, 'asyncapi/type'),
+        referenceOf(param.schema, 'json-schema/type'),
       )
       return config.documentation ? documentNode(property, param) : property
     }),
