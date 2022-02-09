@@ -47,7 +47,10 @@ export function getDeserializerAst(
       ])
     }
     case 'array': {
-      return getDeserializerAst(schema.items, context)
+      if (typeof schema.items !== 'boolean') {
+        return getDeserializerAst(schema.items, context)
+      }
+      return factory.createIdentifier('undefined')
     }
     case 'object': {
       const properties = entries(schema.properties).map(([name, propSchema]) => {

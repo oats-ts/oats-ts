@@ -12,7 +12,7 @@ export function getArrayValidatorAst(
   level: number,
 ): CallExpression | Identifier {
   const args: Expression[] = []
-  if (config.arrays) {
+  if (config.arrays && typeof data.items !== 'boolean') {
     args.push(
       factory.createCallExpression(
         factory.createIdentifier(RuntimePackages.Validators.items),

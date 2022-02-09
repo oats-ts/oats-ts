@@ -36,7 +36,9 @@ function collectNamedTypesForSchema(
   if (typeof additionalProperties !== 'boolean') {
     collectNamedTypesForSchema(additionalProperties, context, schemas, processed)
   }
-  collectNamedTypesForSchema(items, context, schemas, processed)
+  if (typeof items !== 'boolean') {
+    collectNamedTypesForSchema(items, context, schemas, processed)
+  }
 
   for (const schema of values(properties || {})) {
     collectNamedTypesForSchema(schema, context, schemas, processed)

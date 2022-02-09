@@ -126,7 +126,7 @@ export function collectArrayTypeImports(
   level: number,
 ): void {
   names.add(RuntimePackages.Validators.array)
-  if (config.arrays) {
+  if (config.arrays && typeof data.items !== 'boolean') {
     names.add(RuntimePackages.Validators.items)
     return collectImports(data.items, config, context, names, refs, level + 1)
   }

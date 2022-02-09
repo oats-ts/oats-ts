@@ -12,6 +12,9 @@ function getArrayItemAsserterAst(
   config: FullTypeGuardGeneratorConfig,
   level: number,
 ): CallExpression | TrueLiteral {
+  if (typeof data.items === 'boolean') {
+    return factory.createTrue()
+  }
   const itemAssertion = getTypeAssertionAst(data.items, context, factory.createIdentifier('item'), config, level + 1)
   if (itemAssertion.kind === SyntaxKind.TrueKeyword) {
     return factory.createTrue()

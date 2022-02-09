@@ -44,6 +44,6 @@ export const arraySchemaObject =
           path: uriOf(data),
           append,
         }),
-      )(() => referenceable(items)(data.items, context, config))
+      )(() => (typeof data.items === 'boolean' ? [] : referenceable(items)(data.items, context, config)))
     })
   }
