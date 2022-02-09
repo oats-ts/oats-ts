@@ -2,13 +2,14 @@ import { entries, has, sortBy } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, PropertySignature } from 'typescript'
 import { getObjectPropertyAst } from './getObjectPropertyAst'
-import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
+import { TypesGeneratorConfig } from './typings'
 import { safeName } from '@oats-ts/typescript-common'
 import { getDiscriminators } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getObjectPropertiesAst(
   data: SchemaObject,
-  context: TypesGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ): PropertySignature[] {
   const discriminators = getDiscriminators(data, context) || {}

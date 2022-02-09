@@ -1,5 +1,5 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
+import { isReferenceObject } from '@oats-ts/model-common'
 import { isNil, last } from 'lodash'
 import { SchemaType } from './typings'
 import {

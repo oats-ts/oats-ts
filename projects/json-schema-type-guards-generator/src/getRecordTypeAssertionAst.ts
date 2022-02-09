@@ -1,12 +1,13 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { CallExpression, Expression, factory, SyntaxKind, TrueLiteral } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { FullTypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 function getRecordItemsAsserterAst(
   data: SchemaObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
   level: number,
@@ -48,7 +49,7 @@ function getRecordItemsAsserterAst(
 
 export function getRecordTypeAssertionAst(
   data: SchemaObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
   level: number,

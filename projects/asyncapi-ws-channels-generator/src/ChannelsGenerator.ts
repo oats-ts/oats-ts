@@ -29,7 +29,7 @@ import { generatePathSerializer } from './pathSerializer/generatePathSerializer'
 
 export class ChannelsGenerator implements AsyncAPIGenerator<'asyncapi/channel'> {
   public readonly id = 'asyncapi/channel'
-  public readonly consumes: AsyncAPIGeneratorTarget[] = ['asyncapi/type']
+  public readonly consumes: AsyncAPIGeneratorTarget[] = ['json-schema/type']
 
   private context: AsyncAPIGeneratorContext = null
   private config: ChannelsGeneratorConfig

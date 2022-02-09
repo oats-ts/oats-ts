@@ -61,9 +61,9 @@ function getDeserializerTypeParameters(
     case 'primitive':
       return []
     case 'array':
-      return [referenceOf(schema.items, 'openapi/type')]
+      return [referenceOf(schema.items, 'json-schema/type')]
     case 'object':
-      return [referenceOf(schema, 'openapi/type')]
+      return [referenceOf(schema, 'json-schema/type')]
   }
 }
 

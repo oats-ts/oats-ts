@@ -21,7 +21,7 @@ export class RequestBodyValidatorsGenerator implements OpenAPIGenerator<'openapi
   private operations: EnhancedOperation[]
 
   public readonly id = 'openapi/request-body-validator'
-  public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/type', 'openapi/type-validator']
+  public readonly consumes: OpenAPIGeneratorTarget[] = ['json-schema/type', 'json-schema/type-validator']
 
   public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, config, generators)

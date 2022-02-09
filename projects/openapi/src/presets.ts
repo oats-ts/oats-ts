@@ -2,9 +2,9 @@ import { createPreset } from './createPreset'
 import { PresetConfiguration } from './typings'
 
 const commonConfig: PresetConfiguration = {
-  'openapi/type': true,
-  'openapi/type-validator': true,
-  'openapi/type-guard': true,
+  'json-schema/type': true,
+  'json-schema/type-validator': true,
+  'json-schema/type-guard': true,
   'openapi/query-type': true,
   'openapi/path-type': true,
   'openapi/request-headers-type': true,

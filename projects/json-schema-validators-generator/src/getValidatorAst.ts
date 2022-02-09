@@ -1,11 +1,12 @@
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, NodeFlags, SyntaxKind } from 'typescript'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
+import { ValidatorsGeneratorConfig } from './typings'
 
 export function getValidatorAst(
   schema: SchemaObject | ReferenceObject,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ) {
   const { nameOf } = context
@@ -14,7 +15,7 @@ export function getValidatorAst(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          nameOf(schema, context.produces),
+          nameOf(schema, "json-schema/type-validator"),
           undefined,
           undefined,
           getRightHandSideValidatorAst(schema, context, config, 0),

@@ -1,11 +1,12 @@
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, TypeNode, SyntaxKind } from 'typescript'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
-import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
+import { TypesGeneratorConfig } from './typings'
 
 export function getIntersectionTypeAst(
   data: SchemaObject,
-  context: TypesGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeNode {
   const types = data.allOf

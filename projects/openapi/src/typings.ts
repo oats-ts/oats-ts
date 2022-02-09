@@ -16,9 +16,9 @@ export type PresetConfiguration = {
   'openapi/request-headers-type'?: boolean | ParameterTypesGeneratorConfig
   'openapi/sdk-type'?: boolean | SdkGeneratorConfig
   'openapi/sdk-impl'?: boolean | SdkGeneratorConfig
-  'openapi/type'?: boolean | TypesGeneratorConfig
-  'openapi/type-guard'?: boolean | TypeGuardGeneratorConfig
-  'openapi/type-validator'?: boolean | ValidatorsGeneratorConfig
+  'json-schema/type'?: boolean | TypesGeneratorConfig
+  'json-schema/type-guard'?: boolean | TypeGuardGeneratorConfig
+  'json-schema/type-validator'?: boolean | ValidatorsGeneratorConfig
   'openapi/response-headers-type'?: boolean | ParameterTypesGeneratorConfig
   'openapi/express-cors-middleware'?: boolean
   'openapi/express-route-factory'?: boolean

@@ -16,7 +16,7 @@ export function getExpressRouterImports(
   const path = pathOf(operation.operation, 'openapi/express-route')
   const bodyTypesImports = flatMap(
     values(getRequestBodyContent(operation, context)).filter((mediaType) => !isNil(mediaType?.schema)),
-    (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'openapi/type'),
+    (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'json-schema/type'),
   )
   return [
     getNamedImports(RuntimePackages.Http.name, [

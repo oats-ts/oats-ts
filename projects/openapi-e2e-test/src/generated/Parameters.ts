@@ -1,3 +1,4 @@
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import {
   ClientAdapter,
   HasHeaders,
@@ -6,15 +7,24 @@ import {
   HasRequestBody,
   HttpResponse,
   RawHttpRequest,
+  RawHttpResponse,
+  ServerAdapter,
 } from '@oats-ts/openapi-http'
-import { createHeaderDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
+import {
+  createHeaderDeserializer,
+  createPathDeserializer,
+  createQueryDeserializer,
+  deserializers,
+} from '@oats-ts/openapi-parameter-deserialization'
 import {
   createHeaderSerializer,
   createPathSerializer,
   createQuerySerializer,
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
-import { array, boolean, enumeration, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { Try } from '@oats-ts/try'
+import { array, boolean, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type CommonEnumType = 'A' | 'B' | 'C'
 
@@ -337,40 +347,40 @@ export const deepObjectQueryParametersTypeValidator = object(
 export const formQueryParametersTypeValidator = object(
   shape({
     bool: boolean(),
-    boolArr: array(),
-    boolArrExpl: array(),
+    boolArr: array(items(boolean())),
+    boolArrExpl: array(items(boolean())),
     boolExpl: boolean(),
     enm: lazy(() => commonEnumTypeTypeValidator),
-    enmArr: array(),
-    enmArrExpl: array(),
+    enmArr: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
     enmExpl: lazy(() => commonEnumTypeTypeValidator),
     num: number(),
-    numArr: array(),
-    numArrExpl: array(),
+    numArr: array(items(number())),
+    numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
     objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     optBool: optional(boolean()),
-    optBoolArr: optional(array()),
-    optBoolArrExpl: optional(array()),
+    optBoolArr: optional(array(items(boolean()))),
+    optBoolArrExpl: optional(array(items(boolean()))),
     optBoolExpl: optional(boolean()),
     optEnm: optional(lazy(() => commonEnumTypeTypeValidator)),
-    optEnmArr: optional(array()),
-    optEnmArrExpl: optional(array()),
+    optEnmArr: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    optEnmArrExpl: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
     optEnmExpl: optional(lazy(() => commonEnumTypeTypeValidator)),
     optNum: optional(number()),
-    optNumArr: optional(array()),
-    optNumArrExpl: optional(array()),
+    optNumArr: optional(array(items(number()))),
+    optNumArrExpl: optional(array(items(number()))),
     optNumExpl: optional(number()),
     optObj: optional(lazy(() => commonOptObjectTypeTypeValidator)),
     optObjExpl: optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
     optStr: optional(string()),
-    optStrArr: optional(array()),
-    optStrArrExpl: optional(array()),
+    optStrArr: optional(array(items(string()))),
+    optStrArrExpl: optional(array(items(string()))),
     optStrExpl: optional(string()),
     str: string(),
-    strArr: array(),
-    strArrExpl: array(),
+    strArr: array(items(string())),
+    strArrExpl: array(items(string())),
     strExpl: string(),
   }),
 )
@@ -378,22 +388,22 @@ export const formQueryParametersTypeValidator = object(
 export const labelPathParametersTypeValidator = object(
   shape({
     bool: boolean(),
-    boolArr: array(),
-    boolArrExpl: array(),
+    boolArr: array(items(boolean())),
+    boolArrExpl: array(items(boolean())),
     boolExpl: boolean(),
     enm: lazy(() => commonEnumTypeTypeValidator),
-    enmArr: array(),
-    enmArrExpl: array(),
+    enmArr: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
     enmExpl: lazy(() => commonEnumTypeTypeValidator),
     num: number(),
-    numArr: array(),
-    numArrExpl: array(),
+    numArr: array(items(number())),
+    numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
     objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     str: string(),
-    strArr: array(),
-    strArrExpl: array(),
+    strArr: array(items(string())),
+    strArrExpl: array(items(string())),
     strExpl: string(),
   }),
 )
@@ -401,22 +411,22 @@ export const labelPathParametersTypeValidator = object(
 export const matrixPathParametersTypeValidator = object(
   shape({
     bool: boolean(),
-    boolArr: array(),
-    boolArrExpl: array(),
+    boolArr: array(items(boolean())),
+    boolArrExpl: array(items(boolean())),
     boolExpl: boolean(),
     enm: lazy(() => commonEnumTypeTypeValidator),
-    enmArr: array(),
-    enmArrExpl: array(),
+    enmArr: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
     enmExpl: lazy(() => commonEnumTypeTypeValidator),
     num: number(),
-    numArr: array(),
-    numArrExpl: array(),
+    numArr: array(items(number())),
+    numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
     objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     str: string(),
-    strArr: array(),
-    strArrExpl: array(),
+    strArr: array(items(string())),
+    strArrExpl: array(items(string())),
     strExpl: string(),
   }),
 )
@@ -425,54 +435,54 @@ export const parameterIssueTypeValidator = object(shape({ message: string() }))
 
 export const pipeDelimitedQueryParametersTypeValidator = object(
   shape({
-    boolArrExpl: array(),
-    enmArrExpl: array(),
-    numArrExpl: array(),
-    optBoolArrExpl: optional(array()),
-    optEnmArrExpl: optional(array()),
-    optNumArrExpl: optional(array()),
-    optStrArrExpl: optional(array()),
-    strArrExpl: array(),
+    boolArrExpl: array(items(boolean())),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    numArrExpl: array(items(number())),
+    optBoolArrExpl: optional(array(items(boolean()))),
+    optEnmArrExpl: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    optNumArrExpl: optional(array(items(number()))),
+    optStrArrExpl: optional(array(items(string()))),
+    strArrExpl: array(items(string())),
   }),
 )
 
 export const simpleHeaderParametersTypeValidator = object(
   shape({
     'X-Bool-Header': boolean(),
-    'X-BoolArr-Header': array(),
-    'X-BoolArrExpl-Header': array(),
+    'X-BoolArr-Header': array(items(boolean())),
+    'X-BoolArrExpl-Header': array(items(boolean())),
     'X-BoolExpl-Header': boolean(),
     'X-Enm-Header': lazy(() => commonEnumTypeTypeValidator),
-    'X-EnmArr-Header': array(),
-    'X-EnmArrExpl-Header': array(),
+    'X-EnmArr-Header': array(items(lazy(() => commonEnumTypeTypeValidator))),
+    'X-EnmArrExpl-Header': array(items(lazy(() => commonEnumTypeTypeValidator))),
     'X-EnmExpl-Header': lazy(() => commonEnumTypeTypeValidator),
     'X-Num-Header': number(),
-    'X-NumArr-Header': array(),
-    'X-NumArrExpl-Header': array(),
+    'X-NumArr-Header': array(items(number())),
+    'X-NumArrExpl-Header': array(items(number())),
     'X-NumExpl-Header': number(),
     'X-Obj-Header': lazy(() => commonObjectTypeTypeValidator),
     'X-ObjExpl-Header': lazy(() => commonObjectTypeExplTypeValidator),
     'X-OptBool-Header': optional(boolean()),
-    'X-OptBoolArr-Header': optional(array()),
-    'X-OptBoolArrExpl-Header': optional(array()),
+    'X-OptBoolArr-Header': optional(array(items(boolean()))),
+    'X-OptBoolArrExpl-Header': optional(array(items(boolean()))),
     'X-OptBoolExpl-Header': optional(boolean()),
     'X-OptEnm-Header': optional(lazy(() => commonEnumTypeTypeValidator)),
-    'X-OptEnmArr-Header': optional(array()),
-    'X-OptEnmArrExpl-Header': optional(array()),
+    'X-OptEnmArr-Header': optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    'X-OptEnmArrExpl-Header': optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
     'X-OptEnmExpl-Header': optional(lazy(() => commonEnumTypeTypeValidator)),
     'X-OptNum-Header': optional(number()),
-    'X-OptNumArr-Header': optional(array()),
-    'X-OptNumArrExpl-Header': optional(array()),
+    'X-OptNumArr-Header': optional(array(items(number()))),
+    'X-OptNumArrExpl-Header': optional(array(items(number()))),
     'X-OptNumExpl-Header': optional(number()),
     'X-OptObj-Header': optional(lazy(() => commonOptObjectTypeTypeValidator)),
     'X-OptObjExpl-Header': optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
     'X-OptStr-Header': optional(string()),
-    'X-OptStrArr-Header': optional(array()),
-    'X-OptStrArrExpl-Header': optional(array()),
+    'X-OptStrArr-Header': optional(array(items(string()))),
+    'X-OptStrArrExpl-Header': optional(array(items(string()))),
     'X-OptStrExpl-Header': optional(string()),
     'X-Str-Header': string(),
-    'X-StrArr-Header': array(),
-    'X-StrArrExpl-Header': array(),
+    'X-StrArr-Header': array(items(string())),
+    'X-StrArrExpl-Header': array(items(string())),
     'X-StrExpl-Header': string(),
   }),
 )
@@ -480,22 +490,22 @@ export const simpleHeaderParametersTypeValidator = object(
 export const simplePathParametersTypeValidator = object(
   shape({
     bool: boolean(),
-    boolArr: array(),
-    boolArrExpl: array(),
+    boolArr: array(items(boolean())),
+    boolArrExpl: array(items(boolean())),
     boolExpl: boolean(),
     enm: lazy(() => commonEnumTypeTypeValidator),
-    enmArr: array(),
-    enmArrExpl: array(),
+    enmArr: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
     enmExpl: lazy(() => commonEnumTypeTypeValidator),
     num: number(),
-    numArr: array(),
-    numArrExpl: array(),
+    numArr: array(items(number())),
+    numArrExpl: array(items(number())),
     numExpl: number(),
     obj: lazy(() => commonObjectTypeTypeValidator),
     objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     str: string(),
-    strArr: array(),
-    strArrExpl: array(),
+    strArr: array(items(string())),
+    strArrExpl: array(items(string())),
     strExpl: string(),
   }),
 )
@@ -503,54 +513,54 @@ export const simplePathParametersTypeValidator = object(
 export const simpleResponseHeaderParametersTypeValidator = object(
   shape({
     'X-Bool-Header': boolean(),
-    'X-BoolArr-Header': array(),
-    'X-BoolArrExpl-Header': array(),
+    'X-BoolArr-Header': array(items(boolean())),
+    'X-BoolArrExpl-Header': array(items(boolean())),
     'X-BoolExpl-Header': boolean(),
     'X-Enm-Header': lazy(() => commonEnumTypeTypeValidator),
-    'X-EnmArr-Header': array(),
-    'X-EnmArrExpl-Header': array(),
+    'X-EnmArr-Header': array(items(lazy(() => commonEnumTypeTypeValidator))),
+    'X-EnmArrExpl-Header': array(items(lazy(() => commonEnumTypeTypeValidator))),
     'X-EnmExpl-Header': lazy(() => commonEnumTypeTypeValidator),
     'X-Num-Header': number(),
-    'X-NumArr-Header': array(),
-    'X-NumArrExpl-Header': array(),
+    'X-NumArr-Header': array(items(number())),
+    'X-NumArrExpl-Header': array(items(number())),
     'X-NumExpl-Header': number(),
     'X-Obj-Header': lazy(() => commonObjectTypeTypeValidator),
     'X-ObjExpl-Header': lazy(() => commonObjectTypeExplTypeValidator),
     'X-OptBool-Header': optional(boolean()),
-    'X-OptBoolArr-Header': optional(array()),
-    'X-OptBoolArrExpl-Header': optional(array()),
+    'X-OptBoolArr-Header': optional(array(items(boolean()))),
+    'X-OptBoolArrExpl-Header': optional(array(items(boolean()))),
     'X-OptBoolExpl-Header': optional(boolean()),
     'X-OptEnm-Header': optional(lazy(() => commonEnumTypeTypeValidator)),
-    'X-OptEnmArr-Header': optional(array()),
-    'X-OptEnmArrExpl-Header': optional(array()),
+    'X-OptEnmArr-Header': optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    'X-OptEnmArrExpl-Header': optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
     'X-OptEnmExpl-Header': optional(lazy(() => commonEnumTypeTypeValidator)),
     'X-OptNum-Header': optional(number()),
-    'X-OptNumArr-Header': optional(array()),
-    'X-OptNumArrExpl-Header': optional(array()),
+    'X-OptNumArr-Header': optional(array(items(number()))),
+    'X-OptNumArrExpl-Header': optional(array(items(number()))),
     'X-OptNumExpl-Header': optional(number()),
     'X-OptObj-Header': optional(lazy(() => commonOptObjectTypeTypeValidator)),
     'X-OptObjExpl-Header': optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
     'X-OptStr-Header': optional(string()),
-    'X-OptStrArr-Header': optional(array()),
-    'X-OptStrArrExpl-Header': optional(array()),
+    'X-OptStrArr-Header': optional(array(items(string()))),
+    'X-OptStrArrExpl-Header': optional(array(items(string()))),
     'X-OptStrExpl-Header': optional(string()),
     'X-Str-Header': string(),
-    'X-StrArr-Header': array(),
-    'X-StrArrExpl-Header': array(),
+    'X-StrArr-Header': array(items(string())),
+    'X-StrArrExpl-Header': array(items(string())),
     'X-StrExpl-Header': string(),
   }),
 )
 
 export const spaceDelimitedQueryParametersTypeValidator = object(
   shape({
-    boolArrExpl: array(),
-    enmArrExpl: array(),
-    numArrExpl: array(),
-    optBoolArrExpl: optional(array()),
-    optEnmArrExpl: optional(array()),
-    optNumArrExpl: optional(array()),
-    optStrArrExpl: optional(array()),
-    strArrExpl: array(),
+    boolArrExpl: array(items(boolean())),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    numArrExpl: array(items(number())),
+    optBoolArrExpl: optional(array(items(boolean()))),
+    optEnmArrExpl: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    optNumArrExpl: optional(array(items(number()))),
+    optStrArrExpl: optional(array(items(string()))),
+    strArrExpl: array(items(string())),
   }),
 )
 
@@ -659,39 +669,63 @@ export function isFormQueryParameters(input: any): input is FormQueryParameters 
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
     Array.isArray(input.boolArr) &&
+    input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
     typeof input.boolExpl === 'boolean' &&
     isCommonEnumType(input.enm) &&
     Array.isArray(input.enmArr) &&
+    input.enmArr.every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item)) &&
     isCommonEnumType(input.enmExpl) &&
     typeof input.num === 'number' &&
     Array.isArray(input.numArr) &&
+    input.numArr.every((item: any) => typeof item === 'number') &&
     Array.isArray(input.numArrExpl) &&
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
     isCommonObjectTypeExpl(input.objExpl) &&
     (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
-    (input.optBoolArr === null || input.optBoolArr === undefined || Array.isArray(input.optBoolArr)) &&
-    (input.optBoolArrExpl === null || input.optBoolArrExpl === undefined || Array.isArray(input.optBoolArrExpl)) &&
+    (input.optBoolArr === null ||
+      input.optBoolArr === undefined ||
+      (Array.isArray(input.optBoolArr) && input.optBoolArr.every((item: any) => typeof item === 'boolean'))) &&
+    (input.optBoolArrExpl === null ||
+      input.optBoolArrExpl === undefined ||
+      (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
     (input.optBoolExpl === null || input.optBoolExpl === undefined || typeof input.optBoolExpl === 'boolean') &&
     (input.optEnm === null || input.optEnm === undefined || isCommonEnumType(input.optEnm)) &&
-    (input.optEnmArr === null || input.optEnmArr === undefined || Array.isArray(input.optEnmArr)) &&
-    (input.optEnmArrExpl === null || input.optEnmArrExpl === undefined || Array.isArray(input.optEnmArrExpl)) &&
+    (input.optEnmArr === null ||
+      input.optEnmArr === undefined ||
+      (Array.isArray(input.optEnmArr) && input.optEnmArr.every((item: any) => isCommonEnumType(item)))) &&
+    (input.optEnmArrExpl === null ||
+      input.optEnmArrExpl === undefined ||
+      (Array.isArray(input.optEnmArrExpl) && input.optEnmArrExpl.every((item: any) => isCommonEnumType(item)))) &&
     (input.optEnmExpl === null || input.optEnmExpl === undefined || isCommonEnumType(input.optEnmExpl)) &&
     (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
-    (input.optNumArr === null || input.optNumArr === undefined || Array.isArray(input.optNumArr)) &&
-    (input.optNumArrExpl === null || input.optNumArrExpl === undefined || Array.isArray(input.optNumArrExpl)) &&
+    (input.optNumArr === null ||
+      input.optNumArr === undefined ||
+      (Array.isArray(input.optNumArr) && input.optNumArr.every((item: any) => typeof item === 'number'))) &&
+    (input.optNumArrExpl === null ||
+      input.optNumArrExpl === undefined ||
+      (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
     (input.optNumExpl === null || input.optNumExpl === undefined || typeof input.optNumExpl === 'number') &&
     (input.optObj === null || input.optObj === undefined || isCommonOptObjectType(input.optObj)) &&
     (input.optObjExpl === null || input.optObjExpl === undefined || isCommonOptObjectTypeExpl(input.optObjExpl)) &&
     (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
-    (input.optStrArr === null || input.optStrArr === undefined || Array.isArray(input.optStrArr)) &&
-    (input.optStrArrExpl === null || input.optStrArrExpl === undefined || Array.isArray(input.optStrArrExpl)) &&
+    (input.optStrArr === null ||
+      input.optStrArr === undefined ||
+      (Array.isArray(input.optStrArr) && input.optStrArr.every((item: any) => typeof item === 'string'))) &&
+    (input.optStrArrExpl === null ||
+      input.optStrArrExpl === undefined ||
+      (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
     (input.optStrExpl === null || input.optStrExpl === undefined || typeof input.optStrExpl === 'string') &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
+    input.strArr.every((item: any) => typeof item === 'string') &&
     Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string') &&
     typeof input.strExpl === 'string'
   )
 }
@@ -702,21 +736,29 @@ export function isLabelPathParameters(input: any): input is LabelPathParameters 
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
     Array.isArray(input.boolArr) &&
+    input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
     typeof input.boolExpl === 'boolean' &&
     isCommonEnumType(input.enm) &&
     Array.isArray(input.enmArr) &&
+    input.enmArr.every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item)) &&
     isCommonEnumType(input.enmExpl) &&
     typeof input.num === 'number' &&
     Array.isArray(input.numArr) &&
+    input.numArr.every((item: any) => typeof item === 'number') &&
     Array.isArray(input.numArrExpl) &&
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
     isCommonObjectTypeExpl(input.objExpl) &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
+    input.strArr.every((item: any) => typeof item === 'string') &&
     Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string') &&
     typeof input.strExpl === 'string'
   )
 }
@@ -727,21 +769,29 @@ export function isMatrixPathParameters(input: any): input is MatrixPathParameter
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
     Array.isArray(input.boolArr) &&
+    input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
     typeof input.boolExpl === 'boolean' &&
     isCommonEnumType(input.enm) &&
     Array.isArray(input.enmArr) &&
+    input.enmArr.every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item)) &&
     isCommonEnumType(input.enmExpl) &&
     typeof input.num === 'number' &&
     Array.isArray(input.numArr) &&
+    input.numArr.every((item: any) => typeof item === 'number') &&
     Array.isArray(input.numArrExpl) &&
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
     isCommonObjectTypeExpl(input.objExpl) &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
+    input.strArr.every((item: any) => typeof item === 'string') &&
     Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string') &&
     typeof input.strExpl === 'string'
   )
 }
@@ -755,13 +805,25 @@ export function isPipeDelimitedQueryParameters(input: any): input is PipeDelimit
     input !== null &&
     typeof input === 'object' &&
     Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input.numArrExpl) &&
-    (input.optBoolArrExpl === null || input.optBoolArrExpl === undefined || Array.isArray(input.optBoolArrExpl)) &&
-    (input.optEnmArrExpl === null || input.optEnmArrExpl === undefined || Array.isArray(input.optEnmArrExpl)) &&
-    (input.optNumArrExpl === null || input.optNumArrExpl === undefined || Array.isArray(input.optNumArrExpl)) &&
-    (input.optStrArrExpl === null || input.optStrArrExpl === undefined || Array.isArray(input.optStrArrExpl)) &&
-    Array.isArray(input.strArrExpl)
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
+    (input.optBoolArrExpl === null ||
+      input.optBoolArrExpl === undefined ||
+      (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
+    (input.optEnmArrExpl === null ||
+      input.optEnmArrExpl === undefined ||
+      (Array.isArray(input.optEnmArrExpl) && input.optEnmArrExpl.every((item: any) => isCommonEnumType(item)))) &&
+    (input.optNumArrExpl === null ||
+      input.optNumArrExpl === undefined ||
+      (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
+    (input.optStrArrExpl === null ||
+      input.optStrArrExpl === undefined ||
+      (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
+    Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string')
   )
 }
 
@@ -771,15 +833,21 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
     typeof input === 'object' &&
     typeof input['X-Bool-Header'] === 'boolean' &&
     Array.isArray(input['X-BoolArr-Header']) &&
+    input['X-BoolArr-Header'].every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input['X-BoolArrExpl-Header']) &&
+    input['X-BoolArrExpl-Header'].every((item: any) => typeof item === 'boolean') &&
     typeof input['X-BoolExpl-Header'] === 'boolean' &&
     isCommonEnumType(input['X-Enm-Header']) &&
     Array.isArray(input['X-EnmArr-Header']) &&
+    input['X-EnmArr-Header'].every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input['X-EnmArrExpl-Header']) &&
+    input['X-EnmArrExpl-Header'].every((item: any) => isCommonEnumType(item)) &&
     isCommonEnumType(input['X-EnmExpl-Header']) &&
     typeof input['X-Num-Header'] === 'number' &&
     Array.isArray(input['X-NumArr-Header']) &&
+    input['X-NumArr-Header'].every((item: any) => typeof item === 'number') &&
     Array.isArray(input['X-NumArrExpl-Header']) &&
+    input['X-NumArrExpl-Header'].every((item: any) => typeof item === 'number') &&
     typeof input['X-NumExpl-Header'] === 'number' &&
     isCommonObjectType(input['X-Obj-Header']) &&
     isCommonObjectTypeExpl(input['X-ObjExpl-Header']) &&
@@ -788,10 +856,12 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
       typeof input['X-OptBool-Header'] === 'boolean') &&
     (input['X-OptBoolArr-Header'] === null ||
       input['X-OptBoolArr-Header'] === undefined ||
-      Array.isArray(input['X-OptBoolArr-Header'])) &&
+      (Array.isArray(input['X-OptBoolArr-Header']) &&
+        input['X-OptBoolArr-Header'].every((item: any) => typeof item === 'boolean'))) &&
     (input['X-OptBoolArrExpl-Header'] === null ||
       input['X-OptBoolArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptBoolArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptBoolArrExpl-Header']) &&
+        input['X-OptBoolArrExpl-Header'].every((item: any) => typeof item === 'boolean'))) &&
     (input['X-OptBoolExpl-Header'] === null ||
       input['X-OptBoolExpl-Header'] === undefined ||
       typeof input['X-OptBoolExpl-Header'] === 'boolean') &&
@@ -800,10 +870,12 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
       isCommonEnumType(input['X-OptEnm-Header'])) &&
     (input['X-OptEnmArr-Header'] === null ||
       input['X-OptEnmArr-Header'] === undefined ||
-      Array.isArray(input['X-OptEnmArr-Header'])) &&
+      (Array.isArray(input['X-OptEnmArr-Header']) &&
+        input['X-OptEnmArr-Header'].every((item: any) => isCommonEnumType(item)))) &&
     (input['X-OptEnmArrExpl-Header'] === null ||
       input['X-OptEnmArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptEnmArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptEnmArrExpl-Header']) &&
+        input['X-OptEnmArrExpl-Header'].every((item: any) => isCommonEnumType(item)))) &&
     (input['X-OptEnmExpl-Header'] === null ||
       input['X-OptEnmExpl-Header'] === undefined ||
       isCommonEnumType(input['X-OptEnmExpl-Header'])) &&
@@ -812,10 +884,12 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
       typeof input['X-OptNum-Header'] === 'number') &&
     (input['X-OptNumArr-Header'] === null ||
       input['X-OptNumArr-Header'] === undefined ||
-      Array.isArray(input['X-OptNumArr-Header'])) &&
+      (Array.isArray(input['X-OptNumArr-Header']) &&
+        input['X-OptNumArr-Header'].every((item: any) => typeof item === 'number'))) &&
     (input['X-OptNumArrExpl-Header'] === null ||
       input['X-OptNumArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptNumArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptNumArrExpl-Header']) &&
+        input['X-OptNumArrExpl-Header'].every((item: any) => typeof item === 'number'))) &&
     (input['X-OptNumExpl-Header'] === null ||
       input['X-OptNumExpl-Header'] === undefined ||
       typeof input['X-OptNumExpl-Header'] === 'number') &&
@@ -830,16 +904,20 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
       typeof input['X-OptStr-Header'] === 'string') &&
     (input['X-OptStrArr-Header'] === null ||
       input['X-OptStrArr-Header'] === undefined ||
-      Array.isArray(input['X-OptStrArr-Header'])) &&
+      (Array.isArray(input['X-OptStrArr-Header']) &&
+        input['X-OptStrArr-Header'].every((item: any) => typeof item === 'string'))) &&
     (input['X-OptStrArrExpl-Header'] === null ||
       input['X-OptStrArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptStrArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptStrArrExpl-Header']) &&
+        input['X-OptStrArrExpl-Header'].every((item: any) => typeof item === 'string'))) &&
     (input['X-OptStrExpl-Header'] === null ||
       input['X-OptStrExpl-Header'] === undefined ||
       typeof input['X-OptStrExpl-Header'] === 'string') &&
     typeof input['X-Str-Header'] === 'string' &&
     Array.isArray(input['X-StrArr-Header']) &&
+    input['X-StrArr-Header'].every((item: any) => typeof item === 'string') &&
     Array.isArray(input['X-StrArrExpl-Header']) &&
+    input['X-StrArrExpl-Header'].every((item: any) => typeof item === 'string') &&
     typeof input['X-StrExpl-Header'] === 'string'
   )
 }
@@ -850,21 +928,29 @@ export function isSimplePathParameters(input: any): input is SimplePathParameter
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
     Array.isArray(input.boolArr) &&
+    input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
     typeof input.boolExpl === 'boolean' &&
     isCommonEnumType(input.enm) &&
     Array.isArray(input.enmArr) &&
+    input.enmArr.every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item)) &&
     isCommonEnumType(input.enmExpl) &&
     typeof input.num === 'number' &&
     Array.isArray(input.numArr) &&
+    input.numArr.every((item: any) => typeof item === 'number') &&
     Array.isArray(input.numArrExpl) &&
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
     typeof input.numExpl === 'number' &&
     isCommonObjectType(input.obj) &&
     isCommonObjectTypeExpl(input.objExpl) &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
+    input.strArr.every((item: any) => typeof item === 'string') &&
     Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string') &&
     typeof input.strExpl === 'string'
   )
 }
@@ -875,15 +961,21 @@ export function isSimpleResponseHeaderParameters(input: any): input is SimpleRes
     typeof input === 'object' &&
     typeof input['X-Bool-Header'] === 'boolean' &&
     Array.isArray(input['X-BoolArr-Header']) &&
+    input['X-BoolArr-Header'].every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input['X-BoolArrExpl-Header']) &&
+    input['X-BoolArrExpl-Header'].every((item: any) => typeof item === 'boolean') &&
     typeof input['X-BoolExpl-Header'] === 'boolean' &&
     isCommonEnumType(input['X-Enm-Header']) &&
     Array.isArray(input['X-EnmArr-Header']) &&
+    input['X-EnmArr-Header'].every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input['X-EnmArrExpl-Header']) &&
+    input['X-EnmArrExpl-Header'].every((item: any) => isCommonEnumType(item)) &&
     isCommonEnumType(input['X-EnmExpl-Header']) &&
     typeof input['X-Num-Header'] === 'number' &&
     Array.isArray(input['X-NumArr-Header']) &&
+    input['X-NumArr-Header'].every((item: any) => typeof item === 'number') &&
     Array.isArray(input['X-NumArrExpl-Header']) &&
+    input['X-NumArrExpl-Header'].every((item: any) => typeof item === 'number') &&
     typeof input['X-NumExpl-Header'] === 'number' &&
     isCommonObjectType(input['X-Obj-Header']) &&
     isCommonObjectTypeExpl(input['X-ObjExpl-Header']) &&
@@ -892,10 +984,12 @@ export function isSimpleResponseHeaderParameters(input: any): input is SimpleRes
       typeof input['X-OptBool-Header'] === 'boolean') &&
     (input['X-OptBoolArr-Header'] === null ||
       input['X-OptBoolArr-Header'] === undefined ||
-      Array.isArray(input['X-OptBoolArr-Header'])) &&
+      (Array.isArray(input['X-OptBoolArr-Header']) &&
+        input['X-OptBoolArr-Header'].every((item: any) => typeof item === 'boolean'))) &&
     (input['X-OptBoolArrExpl-Header'] === null ||
       input['X-OptBoolArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptBoolArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptBoolArrExpl-Header']) &&
+        input['X-OptBoolArrExpl-Header'].every((item: any) => typeof item === 'boolean'))) &&
     (input['X-OptBoolExpl-Header'] === null ||
       input['X-OptBoolExpl-Header'] === undefined ||
       typeof input['X-OptBoolExpl-Header'] === 'boolean') &&
@@ -904,10 +998,12 @@ export function isSimpleResponseHeaderParameters(input: any): input is SimpleRes
       isCommonEnumType(input['X-OptEnm-Header'])) &&
     (input['X-OptEnmArr-Header'] === null ||
       input['X-OptEnmArr-Header'] === undefined ||
-      Array.isArray(input['X-OptEnmArr-Header'])) &&
+      (Array.isArray(input['X-OptEnmArr-Header']) &&
+        input['X-OptEnmArr-Header'].every((item: any) => isCommonEnumType(item)))) &&
     (input['X-OptEnmArrExpl-Header'] === null ||
       input['X-OptEnmArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptEnmArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptEnmArrExpl-Header']) &&
+        input['X-OptEnmArrExpl-Header'].every((item: any) => isCommonEnumType(item)))) &&
     (input['X-OptEnmExpl-Header'] === null ||
       input['X-OptEnmExpl-Header'] === undefined ||
       isCommonEnumType(input['X-OptEnmExpl-Header'])) &&
@@ -916,10 +1012,12 @@ export function isSimpleResponseHeaderParameters(input: any): input is SimpleRes
       typeof input['X-OptNum-Header'] === 'number') &&
     (input['X-OptNumArr-Header'] === null ||
       input['X-OptNumArr-Header'] === undefined ||
-      Array.isArray(input['X-OptNumArr-Header'])) &&
+      (Array.isArray(input['X-OptNumArr-Header']) &&
+        input['X-OptNumArr-Header'].every((item: any) => typeof item === 'number'))) &&
     (input['X-OptNumArrExpl-Header'] === null ||
       input['X-OptNumArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptNumArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptNumArrExpl-Header']) &&
+        input['X-OptNumArrExpl-Header'].every((item: any) => typeof item === 'number'))) &&
     (input['X-OptNumExpl-Header'] === null ||
       input['X-OptNumExpl-Header'] === undefined ||
       typeof input['X-OptNumExpl-Header'] === 'number') &&
@@ -934,16 +1032,20 @@ export function isSimpleResponseHeaderParameters(input: any): input is SimpleRes
       typeof input['X-OptStr-Header'] === 'string') &&
     (input['X-OptStrArr-Header'] === null ||
       input['X-OptStrArr-Header'] === undefined ||
-      Array.isArray(input['X-OptStrArr-Header'])) &&
+      (Array.isArray(input['X-OptStrArr-Header']) &&
+        input['X-OptStrArr-Header'].every((item: any) => typeof item === 'string'))) &&
     (input['X-OptStrArrExpl-Header'] === null ||
       input['X-OptStrArrExpl-Header'] === undefined ||
-      Array.isArray(input['X-OptStrArrExpl-Header'])) &&
+      (Array.isArray(input['X-OptStrArrExpl-Header']) &&
+        input['X-OptStrArrExpl-Header'].every((item: any) => typeof item === 'string'))) &&
     (input['X-OptStrExpl-Header'] === null ||
       input['X-OptStrExpl-Header'] === undefined ||
       typeof input['X-OptStrExpl-Header'] === 'string') &&
     typeof input['X-Str-Header'] === 'string' &&
     Array.isArray(input['X-StrArr-Header']) &&
+    input['X-StrArr-Header'].every((item: any) => typeof item === 'string') &&
     Array.isArray(input['X-StrArrExpl-Header']) &&
+    input['X-StrArrExpl-Header'].every((item: any) => typeof item === 'string') &&
     typeof input['X-StrExpl-Header'] === 'string'
   )
 }
@@ -953,13 +1055,25 @@ export function isSpaceDelimitedQueryParameters(input: any): input is SpaceDelim
     input !== null &&
     typeof input === 'object' &&
     Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item)) &&
     Array.isArray(input.numArrExpl) &&
-    (input.optBoolArrExpl === null || input.optBoolArrExpl === undefined || Array.isArray(input.optBoolArrExpl)) &&
-    (input.optEnmArrExpl === null || input.optEnmArrExpl === undefined || Array.isArray(input.optEnmArrExpl)) &&
-    (input.optNumArrExpl === null || input.optNumArrExpl === undefined || Array.isArray(input.optNumArrExpl)) &&
-    (input.optStrArrExpl === null || input.optStrArrExpl === undefined || Array.isArray(input.optStrArrExpl)) &&
-    Array.isArray(input.strArrExpl)
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
+    (input.optBoolArrExpl === null ||
+      input.optBoolArrExpl === undefined ||
+      (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
+    (input.optEnmArrExpl === null ||
+      input.optEnmArrExpl === undefined ||
+      (Array.isArray(input.optEnmArrExpl) && input.optEnmArrExpl.every((item: any) => isCommonEnumType(item)))) &&
+    (input.optNumArrExpl === null ||
+      input.optNumArrExpl === undefined ||
+      (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
+    (input.optStrArrExpl === null ||
+      input.optStrArrExpl === undefined ||
+      (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
+    Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string')
   )
 }
 
@@ -1213,6 +1327,1134 @@ export type SpaceDelimitedQueryParametersResponse =
   | HttpResponse<SpaceDelimitedQueryParameters, 200, 'application/json', undefined>
   | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
 
+export type DeepObjectQueryParametersServerRequest = HasQueryParameters<Try<DeepObjectQueryParametersQueryParameters>>
+
+export type FormQueryParametersServerRequest = HasQueryParameters<Try<FormQueryParametersQueryParameters>>
+
+export type LabelPathParametersServerRequest = HasPathParameters<Try<LabelPathParametersPathParameters>>
+
+export type MatrixPathParametersServerRequest = HasPathParameters<Try<MatrixPathParametersPathParameters>>
+
+export type PipeDelimitedQueryParametersServerRequest = HasQueryParameters<
+  Try<PipeDelimitedQueryParametersQueryParameters>
+>
+
+export type SimpleHeaderParametersServerRequest = HasHeaders<Try<SimpleHeaderParametersRequestHeaderParameters>>
+
+export type SimplePathParametersServerRequest = HasPathParameters<Try<SimplePathParametersPathParameters>>
+
+export type SimpleResponseHeaderParametersServerRequest = HasRequestBody<
+  'application/json',
+  Try<SimpleResponseHeaderParameters>
+>
+
+export type SpaceDelimitedQueryParametersServerRequest = HasQueryParameters<
+  Try<SpaceDelimitedQueryParametersQueryParameters>
+>
+
+export const simpleResponseHeaderParametersRequestBodyValidator = {
+  'application/json': simpleResponseHeaderParametersTypeValidator,
+} as const
+
+export const simpleResponseHeaderParametersResponseHeadersSerializer = {
+  200: createHeaderSerializer<SimpleResponseHeaderParameters200ResponseHeaderParameters>({
+    'X-StrExpl-Header': serializers.header.simple.primitive<string>({ explode: true, required: true }),
+    'X-OptStrExpl-Header': serializers.header.simple.primitive<string>({ explode: true, required: false }),
+    'X-Str-Header': serializers.header.simple.primitive<string>({ explode: false, required: true }),
+    'X-OptStr-Header': serializers.header.simple.primitive<string>({ explode: false, required: false }),
+    'X-NumExpl-Header': serializers.header.simple.primitive<number>({ explode: true, required: true }),
+    'X-OptNumExpl-Header': serializers.header.simple.primitive<number>({ explode: true, required: false }),
+    'X-Num-Header': serializers.header.simple.primitive<number>({ explode: false, required: true }),
+    'X-OptNum-Header': serializers.header.simple.primitive<number>({ explode: false, required: false }),
+    'X-BoolExpl-Header': serializers.header.simple.primitive<boolean>({ explode: true, required: true }),
+    'X-OptBoolExpl-Header': serializers.header.simple.primitive<boolean>({ explode: true, required: false }),
+    'X-Bool-Header': serializers.header.simple.primitive<boolean>({ explode: false, required: true }),
+    'X-OptBool-Header': serializers.header.simple.primitive<boolean>({ explode: false, required: false }),
+    'X-EnmExpl-Header': serializers.header.simple.primitive<CommonEnumType>({ explode: true, required: true }),
+    'X-OptEnmExpl-Header': serializers.header.simple.primitive<CommonEnumType>({ explode: true, required: false }),
+    'X-Enm-Header': serializers.header.simple.primitive<CommonEnumType>({ explode: false, required: true }),
+    'X-OptEnm-Header': serializers.header.simple.primitive<CommonEnumType>({ explode: false, required: false }),
+    'X-StrArrExpl-Header': serializers.header.simple.array<string[]>({ explode: true, required: true }),
+    'X-OptStrArrExpl-Header': serializers.header.simple.array<string[]>({ explode: true, required: false }),
+    'X-StrArr-Header': serializers.header.simple.array<string[]>({ explode: false, required: true }),
+    'X-OptStrArr-Header': serializers.header.simple.array<string[]>({ explode: false, required: false }),
+    'X-NumArrExpl-Header': serializers.header.simple.array<number[]>({ explode: true, required: true }),
+    'X-OptNumArrExpl-Header': serializers.header.simple.array<number[]>({ explode: true, required: false }),
+    'X-NumArr-Header': serializers.header.simple.array<number[]>({ explode: false, required: true }),
+    'X-OptNumArr-Header': serializers.header.simple.array<number[]>({ explode: false, required: false }),
+    'X-BoolArrExpl-Header': serializers.header.simple.array<boolean[]>({ explode: true, required: true }),
+    'X-OptBoolArrExpl-Header': serializers.header.simple.array<boolean[]>({ explode: true, required: false }),
+    'X-BoolArr-Header': serializers.header.simple.array<boolean[]>({ explode: false, required: true }),
+    'X-OptBoolArr-Header': serializers.header.simple.array<boolean[]>({ explode: false, required: false }),
+    'X-EnmArrExpl-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: true, required: true }),
+    'X-OptEnmArrExpl-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: true, required: false }),
+    'X-EnmArr-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: false, required: true }),
+    'X-OptEnmArr-Header': serializers.header.simple.array<CommonEnumType[]>({ explode: false, required: false }),
+    'X-ObjExpl-Header': serializers.header.simple.object<CommonObjectTypeExpl>({ explode: true, required: true }),
+    'X-OptObjExpl-Header': serializers.header.simple.object<CommonOptObjectTypeExpl>({
+      explode: true,
+      required: false,
+    }),
+    'X-Obj-Header': serializers.header.simple.object<CommonObjectType>({ explode: false, required: true }),
+    'X-OptObj-Header': serializers.header.simple.object<CommonOptObjectType>({ explode: false, required: false }),
+  }),
+} as const
+
+export const labelPathParametersPathDeserializer = createPathDeserializer<LabelPathParametersPathParameters>(
+  [
+    'strExpl',
+    'str',
+    'numExpl',
+    'num',
+    'boolExpl',
+    'bool',
+    'enmExpl',
+    'enm',
+    'strArrExpl',
+    'strArr',
+    'numArrExpl',
+    'numArr',
+    'boolArrExpl',
+    'boolArr',
+    'enmArrExpl',
+    'enmArr',
+    'objExpl',
+    'obj',
+  ],
+  /^\/label-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+  {
+    strExpl: deserializers.path.label.primitive(deserializers.value.string(), { explode: true }),
+    str: deserializers.path.label.primitive(deserializers.value.string(), { explode: false }),
+    numExpl: deserializers.path.label.primitive(deserializers.value.number(), { explode: true }),
+    num: deserializers.path.label.primitive(deserializers.value.number(), { explode: false }),
+    boolExpl: deserializers.path.label.primitive(deserializers.value.boolean(), { explode: true }),
+    bool: deserializers.path.label.primitive(deserializers.value.boolean(), { explode: false }),
+    enmExpl: deserializers.path.label.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true },
+    ),
+    enm: deserializers.path.label.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false },
+    ),
+    strArrExpl: deserializers.path.label.array<string>(deserializers.value.string(), { explode: true }),
+    strArr: deserializers.path.label.array<string>(deserializers.value.string(), { explode: false }),
+    numArrExpl: deserializers.path.label.array<number>(deserializers.value.number(), { explode: true }),
+    numArr: deserializers.path.label.array<number>(deserializers.value.number(), { explode: false }),
+    boolArrExpl: deserializers.path.label.array<boolean>(deserializers.value.boolean(), { explode: true }),
+    boolArr: deserializers.path.label.array<boolean>(deserializers.value.boolean(), { explode: false }),
+    enmArrExpl: deserializers.path.label.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true },
+    ),
+    enmArr: deserializers.path.label.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false },
+    ),
+    objExpl: deserializers.path.label.object<CommonObjectTypeExpl>(
+      {
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true },
+    ),
+    obj: deserializers.path.label.object<CommonObjectType>(
+      {
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: false },
+    ),
+  },
+)
+
+export const matrixPathParametersPathDeserializer = createPathDeserializer<MatrixPathParametersPathParameters>(
+  [
+    'strExpl',
+    'str',
+    'numExpl',
+    'num',
+    'boolExpl',
+    'bool',
+    'enmExpl',
+    'enm',
+    'strArrExpl',
+    'strArr',
+    'numArrExpl',
+    'numArr',
+    'boolArrExpl',
+    'boolArr',
+    'enmArrExpl',
+    'enmArr',
+    'objExpl',
+    'obj',
+  ],
+  /^\/matrix-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+  {
+    strExpl: deserializers.path.matrix.primitive(deserializers.value.string(), { explode: true }),
+    str: deserializers.path.matrix.primitive(deserializers.value.string(), { explode: false }),
+    numExpl: deserializers.path.matrix.primitive(deserializers.value.number(), { explode: true }),
+    num: deserializers.path.matrix.primitive(deserializers.value.number(), { explode: false }),
+    boolExpl: deserializers.path.matrix.primitive(deserializers.value.boolean(), { explode: true }),
+    bool: deserializers.path.matrix.primitive(deserializers.value.boolean(), { explode: false }),
+    enmExpl: deserializers.path.matrix.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true },
+    ),
+    enm: deserializers.path.matrix.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false },
+    ),
+    strArrExpl: deserializers.path.matrix.array<string>(deserializers.value.string(), { explode: true }),
+    strArr: deserializers.path.matrix.array<string>(deserializers.value.string(), { explode: false }),
+    numArrExpl: deserializers.path.matrix.array<number>(deserializers.value.number(), { explode: true }),
+    numArr: deserializers.path.matrix.array<number>(deserializers.value.number(), { explode: false }),
+    boolArrExpl: deserializers.path.matrix.array<boolean>(deserializers.value.boolean(), { explode: true }),
+    boolArr: deserializers.path.matrix.array<boolean>(deserializers.value.boolean(), { explode: false }),
+    enmArrExpl: deserializers.path.matrix.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true },
+    ),
+    enmArr: deserializers.path.matrix.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false },
+    ),
+    objExpl: deserializers.path.matrix.object<CommonObjectTypeExpl>(
+      {
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true },
+    ),
+    obj: deserializers.path.matrix.object<CommonObjectType>(
+      {
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: false },
+    ),
+  },
+)
+
+export const simplePathParametersPathDeserializer = createPathDeserializer<SimplePathParametersPathParameters>(
+  [
+    'strExpl',
+    'str',
+    'numExpl',
+    'num',
+    'boolExpl',
+    'bool',
+    'enmExpl',
+    'enm',
+    'strArrExpl',
+    'strArr',
+    'numArrExpl',
+    'numArr',
+    'boolArrExpl',
+    'boolArr',
+    'enmArrExpl',
+    'enmArr',
+    'objExpl',
+    'obj',
+  ],
+  /^\/simple-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+  {
+    strExpl: deserializers.path.simple.primitive(deserializers.value.string(), { explode: true }),
+    str: deserializers.path.simple.primitive(deserializers.value.string(), { explode: false }),
+    numExpl: deserializers.path.simple.primitive(deserializers.value.number(), { explode: true }),
+    num: deserializers.path.simple.primitive(deserializers.value.number(), { explode: false }),
+    boolExpl: deserializers.path.simple.primitive(deserializers.value.boolean(), { explode: true }),
+    bool: deserializers.path.simple.primitive(deserializers.value.boolean(), { explode: false }),
+    enmExpl: deserializers.path.simple.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true },
+    ),
+    enm: deserializers.path.simple.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false },
+    ),
+    strArrExpl: deserializers.path.simple.array<string>(deserializers.value.string(), { explode: true }),
+    strArr: deserializers.path.simple.array<string>(deserializers.value.string(), { explode: false }),
+    numArrExpl: deserializers.path.simple.array<number>(deserializers.value.number(), { explode: true }),
+    numArr: deserializers.path.simple.array<number>(deserializers.value.number(), { explode: false }),
+    boolArrExpl: deserializers.path.simple.array<boolean>(deserializers.value.boolean(), { explode: true }),
+    boolArr: deserializers.path.simple.array<boolean>(deserializers.value.boolean(), { explode: false }),
+    enmArrExpl: deserializers.path.simple.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true },
+    ),
+    enmArr: deserializers.path.simple.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false },
+    ),
+    objExpl: deserializers.path.simple.object<CommonObjectTypeExpl>(
+      {
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true },
+    ),
+    obj: deserializers.path.simple.object<CommonObjectType>(
+      {
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: false },
+    ),
+  },
+)
+
+export const deepObjectQueryParametersQueryDeserializer =
+  createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
+    objExpl: deserializers.query.deepObject.object<CommonObjectTypeExpl>(
+      {
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true, required: true },
+    ),
+    optObjExpl: deserializers.query.deepObject.object<CommonOptObjectTypeExpl>(
+      {
+        optObjExplStrField: deserializers.value.string(),
+        optObjExplNumField: deserializers.value.number(),
+        optObjExplBoolField: deserializers.value.boolean(),
+        optObjExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        optObjExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        optObjExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        optObjExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        optObjExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true, required: false },
+    ),
+  })
+
+export const formQueryParametersQueryDeserializer = createQueryDeserializer<FormQueryParametersQueryParameters>({
+  strExpl: deserializers.query.form.primitive(deserializers.value.string(), { explode: true, required: true }),
+  optStrExpl: deserializers.query.form.primitive(deserializers.value.string(), { explode: true, required: false }),
+  str: deserializers.query.form.primitive(deserializers.value.string(), { explode: false, required: true }),
+  optStr: deserializers.query.form.primitive(deserializers.value.string(), { explode: false, required: false }),
+  numExpl: deserializers.query.form.primitive(deserializers.value.number(), { explode: true, required: true }),
+  optNumExpl: deserializers.query.form.primitive(deserializers.value.number(), { explode: true, required: false }),
+  num: deserializers.query.form.primitive(deserializers.value.number(), { explode: false, required: true }),
+  optNum: deserializers.query.form.primitive(deserializers.value.number(), { explode: false, required: false }),
+  boolExpl: deserializers.query.form.primitive(deserializers.value.boolean(), { explode: true, required: true }),
+  optBoolExpl: deserializers.query.form.primitive(deserializers.value.boolean(), { explode: true, required: false }),
+  bool: deserializers.query.form.primitive(deserializers.value.boolean(), { explode: false, required: true }),
+  optBool: deserializers.query.form.primitive(deserializers.value.boolean(), { explode: false, required: false }),
+  enmExpl: deserializers.query.form.primitive(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: true, required: true },
+  ),
+  optEnmExpl: deserializers.query.form.primitive(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: true, required: false },
+  ),
+  enm: deserializers.query.form.primitive(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: false, required: true },
+  ),
+  optEnm: deserializers.query.form.primitive(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: false, required: false },
+  ),
+  strArrExpl: deserializers.query.form.array<string>(deserializers.value.string(), { explode: true, required: true }),
+  optStrArrExpl: deserializers.query.form.array<string>(deserializers.value.string(), {
+    explode: true,
+    required: false,
+  }),
+  strArr: deserializers.query.form.array<string>(deserializers.value.string(), { explode: false, required: true }),
+  optStrArr: deserializers.query.form.array<string>(deserializers.value.string(), { explode: false, required: false }),
+  numArrExpl: deserializers.query.form.array<number>(deserializers.value.number(), { explode: true, required: true }),
+  optNumArrExpl: deserializers.query.form.array<number>(deserializers.value.number(), {
+    explode: true,
+    required: false,
+  }),
+  numArr: deserializers.query.form.array<number>(deserializers.value.number(), { explode: false, required: true }),
+  optNumArr: deserializers.query.form.array<number>(deserializers.value.number(), { explode: false, required: false }),
+  boolArrExpl: deserializers.query.form.array<boolean>(deserializers.value.boolean(), {
+    explode: true,
+    required: true,
+  }),
+  optBoolArrExpl: deserializers.query.form.array<boolean>(deserializers.value.boolean(), {
+    explode: true,
+    required: false,
+  }),
+  boolArr: deserializers.query.form.array<boolean>(deserializers.value.boolean(), { explode: false, required: true }),
+  optBoolArr: deserializers.query.form.array<boolean>(deserializers.value.boolean(), {
+    explode: false,
+    required: false,
+  }),
+  enmArrExpl: deserializers.query.form.array<CommonEnumType>(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: true, required: true },
+  ),
+  optEnmArrExpl: deserializers.query.form.array<CommonEnumType>(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: true, required: false },
+  ),
+  enmArr: deserializers.query.form.array<CommonEnumType>(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: false, required: true },
+  ),
+  optEnmArr: deserializers.query.form.array<CommonEnumType>(
+    deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+    { explode: false, required: false },
+  ),
+  objExpl: deserializers.query.form.object<CommonObjectTypeExpl>(
+    {
+      objExplStrField: deserializers.value.string(),
+      objExplNumField: deserializers.value.number(),
+      objExplBoolField: deserializers.value.boolean(),
+      objExplEnmField: deserializers.value.string(
+        deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+      ),
+      objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+      objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+      objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      objExplOptEnmField: deserializers.value.optional(
+        deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      ),
+    },
+    { explode: true, required: true },
+  ),
+  optObjExpl: deserializers.query.form.object<CommonOptObjectTypeExpl>(
+    {
+      optObjExplStrField: deserializers.value.string(),
+      optObjExplNumField: deserializers.value.number(),
+      optObjExplBoolField: deserializers.value.boolean(),
+      optObjExplEnmField: deserializers.value.string(
+        deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+      ),
+      optObjExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+      optObjExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+      optObjExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      optObjExplOptEnmField: deserializers.value.optional(
+        deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      ),
+    },
+    { explode: true, required: false },
+  ),
+  obj: deserializers.query.form.object<CommonObjectType>(
+    {
+      objStrField: deserializers.value.string(),
+      objNumField: deserializers.value.number(),
+      objBoolField: deserializers.value.boolean(),
+      objEnmField: deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      objOptStrField: deserializers.value.optional(deserializers.value.string()),
+      objOptNumField: deserializers.value.optional(deserializers.value.number()),
+      objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      objOptEnmField: deserializers.value.optional(
+        deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      ),
+    },
+    { explode: false, required: true },
+  ),
+  optObj: deserializers.query.form.object<CommonOptObjectType>(
+    {
+      optObjStrField: deserializers.value.string(),
+      optObjNumField: deserializers.value.number(),
+      optObjBoolField: deserializers.value.boolean(),
+      optObjEnmField: deserializers.value.string(
+        deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+      ),
+      optObjOptStrField: deserializers.value.optional(deserializers.value.string()),
+      optObjOptNumField: deserializers.value.optional(deserializers.value.number()),
+      optObjOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+      optObjOptEnmField: deserializers.value.optional(
+        deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      ),
+    },
+    { explode: false, required: false },
+  ),
+})
+
+export const pipeDelimitedQueryParametersQueryDeserializer =
+  createQueryDeserializer<PipeDelimitedQueryParametersQueryParameters>({
+    strArrExpl: deserializers.query.pipeDelimited.array<string>(deserializers.value.string(), {
+      explode: true,
+      required: true,
+    }),
+    optStrArrExpl: deserializers.query.pipeDelimited.array<string>(deserializers.value.string(), {
+      explode: true,
+      required: false,
+    }),
+    numArrExpl: deserializers.query.pipeDelimited.array<number>(deserializers.value.number(), {
+      explode: true,
+      required: true,
+    }),
+    optNumArrExpl: deserializers.query.pipeDelimited.array<number>(deserializers.value.number(), {
+      explode: true,
+      required: false,
+    }),
+    boolArrExpl: deserializers.query.pipeDelimited.array<boolean>(deserializers.value.boolean(), {
+      explode: true,
+      required: true,
+    }),
+    optBoolArrExpl: deserializers.query.pipeDelimited.array<boolean>(deserializers.value.boolean(), {
+      explode: true,
+      required: false,
+    }),
+    enmArrExpl: deserializers.query.pipeDelimited.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: true },
+    ),
+    optEnmArrExpl: deserializers.query.pipeDelimited.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: false },
+    ),
+  })
+
+export const spaceDelimitedQueryParametersQueryDeserializer =
+  createQueryDeserializer<SpaceDelimitedQueryParametersQueryParameters>({
+    strArrExpl: deserializers.query.spaceDelimited.array<string>(deserializers.value.string(), {
+      explode: true,
+      required: true,
+    }),
+    optStrArrExpl: deserializers.query.spaceDelimited.array<string>(deserializers.value.string(), {
+      explode: true,
+      required: false,
+    }),
+    numArrExpl: deserializers.query.spaceDelimited.array<number>(deserializers.value.number(), {
+      explode: true,
+      required: true,
+    }),
+    optNumArrExpl: deserializers.query.spaceDelimited.array<number>(deserializers.value.number(), {
+      explode: true,
+      required: false,
+    }),
+    boolArrExpl: deserializers.query.spaceDelimited.array<boolean>(deserializers.value.boolean(), {
+      explode: true,
+      required: true,
+    }),
+    optBoolArrExpl: deserializers.query.spaceDelimited.array<boolean>(deserializers.value.boolean(), {
+      explode: true,
+      required: false,
+    }),
+    enmArrExpl: deserializers.query.spaceDelimited.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: true },
+    ),
+    optEnmArrExpl: deserializers.query.spaceDelimited.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: false },
+    ),
+  })
+
+export const simpleHeaderParametersRequestHeadersDeserializer =
+  createHeaderDeserializer<SimpleHeaderParametersRequestHeaderParameters>({
+    'X-StrExpl-Header': deserializers.header.simple.primitive(deserializers.value.string(), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptStrExpl-Header': deserializers.header.simple.primitive(deserializers.value.string(), {
+      explode: true,
+      required: false,
+    }),
+    'X-Str-Header': deserializers.header.simple.primitive(deserializers.value.string(), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptStr-Header': deserializers.header.simple.primitive(deserializers.value.string(), {
+      explode: false,
+      required: false,
+    }),
+    'X-NumExpl-Header': deserializers.header.simple.primitive(deserializers.value.number(), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptNumExpl-Header': deserializers.header.simple.primitive(deserializers.value.number(), {
+      explode: true,
+      required: false,
+    }),
+    'X-Num-Header': deserializers.header.simple.primitive(deserializers.value.number(), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptNum-Header': deserializers.header.simple.primitive(deserializers.value.number(), {
+      explode: false,
+      required: false,
+    }),
+    'X-BoolExpl-Header': deserializers.header.simple.primitive(deserializers.value.boolean(), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptBoolExpl-Header': deserializers.header.simple.primitive(deserializers.value.boolean(), {
+      explode: true,
+      required: false,
+    }),
+    'X-Bool-Header': deserializers.header.simple.primitive(deserializers.value.boolean(), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptBool-Header': deserializers.header.simple.primitive(deserializers.value.boolean(), {
+      explode: false,
+      required: false,
+    }),
+    'X-EnmExpl-Header': deserializers.header.simple.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: true },
+    ),
+    'X-OptEnmExpl-Header': deserializers.header.simple.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: false },
+    ),
+    'X-Enm-Header': deserializers.header.simple.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false, required: true },
+    ),
+    'X-OptEnm-Header': deserializers.header.simple.primitive(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false, required: false },
+    ),
+    'X-StrArrExpl-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptStrArrExpl-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
+      explode: true,
+      required: false,
+    }),
+    'X-StrArr-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptStrArr-Header': deserializers.header.simple.array<string>(deserializers.value.string(), {
+      explode: false,
+      required: false,
+    }),
+    'X-NumArrExpl-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptNumArrExpl-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
+      explode: true,
+      required: false,
+    }),
+    'X-NumArr-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptNumArr-Header': deserializers.header.simple.array<number>(deserializers.value.number(), {
+      explode: false,
+      required: false,
+    }),
+    'X-BoolArrExpl-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptBoolArrExpl-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
+      explode: true,
+      required: false,
+    }),
+    'X-BoolArr-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptBoolArr-Header': deserializers.header.simple.array<boolean>(deserializers.value.boolean(), {
+      explode: false,
+      required: false,
+    }),
+    'X-EnmArrExpl-Header': deserializers.header.simple.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: true },
+    ),
+    'X-OptEnmArrExpl-Header': deserializers.header.simple.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: true, required: false },
+    ),
+    'X-EnmArr-Header': deserializers.header.simple.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false, required: true },
+    ),
+    'X-OptEnmArr-Header': deserializers.header.simple.array<CommonEnumType>(
+      deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+      { explode: false, required: false },
+    ),
+    'X-ObjExpl-Header': deserializers.header.simple.object<CommonObjectTypeExpl>(
+      {
+        objExplStrField: deserializers.value.string(),
+        objExplNumField: deserializers.value.number(),
+        objExplBoolField: deserializers.value.boolean(),
+        objExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true, required: true },
+    ),
+    'X-OptObjExpl-Header': deserializers.header.simple.object<CommonOptObjectTypeExpl>(
+      {
+        optObjExplStrField: deserializers.value.string(),
+        optObjExplNumField: deserializers.value.number(),
+        optObjExplBoolField: deserializers.value.boolean(),
+        optObjExplEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        optObjExplOptStrField: deserializers.value.optional(deserializers.value.string()),
+        optObjExplOptNumField: deserializers.value.optional(deserializers.value.number()),
+        optObjExplOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        optObjExplOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: true, required: false },
+    ),
+    'X-Obj-Header': deserializers.header.simple.object<CommonObjectType>(
+      {
+        objStrField: deserializers.value.string(),
+        objNumField: deserializers.value.number(),
+        objBoolField: deserializers.value.boolean(),
+        objEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        objOptStrField: deserializers.value.optional(deserializers.value.string()),
+        objOptNumField: deserializers.value.optional(deserializers.value.number()),
+        objOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        objOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: false, required: true },
+    ),
+    'X-OptObj-Header': deserializers.header.simple.object<CommonOptObjectType>(
+      {
+        optObjStrField: deserializers.value.string(),
+        optObjNumField: deserializers.value.number(),
+        optObjBoolField: deserializers.value.boolean(),
+        optObjEnmField: deserializers.value.string(
+          deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C']),
+        ),
+        optObjOptStrField: deserializers.value.optional(deserializers.value.string()),
+        optObjOptNumField: deserializers.value.optional(deserializers.value.number()),
+        optObjOptBoolField: deserializers.value.optional(deserializers.value.boolean()),
+        optObjOptEnmField: deserializers.value.optional(
+          deserializers.value.string(deserializers.value.enumeration<string, CommonEnumType>(['A', 'B', 'C'])),
+        ),
+      },
+      { explode: false, required: false },
+    ),
+  })
+
+export type ParametersApi<T> = {
+  /**
+   * Endpoint for testing query parameters with deepObject serialization
+   */
+  deepObjectQueryParameters(
+    request: DeepObjectQueryParametersServerRequest,
+    toolkit: T,
+  ): Promise<DeepObjectQueryParametersResponse>
+  /**
+   * Endpoint for testing query parameters with form serialization
+   */
+  formQueryParameters(request: FormQueryParametersServerRequest, toolkit: T): Promise<FormQueryParametersResponse>
+  /**
+   * Endpoint for testing path parameters with label serialization
+   */
+  labelPathParameters(request: LabelPathParametersServerRequest, toolkit: T): Promise<LabelPathParametersResponse>
+  /**
+   * Endpoint for testing path parameters with matrix serialization
+   */
+  matrixPathParameters(request: MatrixPathParametersServerRequest, toolkit: T): Promise<MatrixPathParametersResponse>
+  /**
+   * Endpoint for testing query parameters with pipeDelimited serialization
+   */
+  pipeDelimitedQueryParameters(
+    request: PipeDelimitedQueryParametersServerRequest,
+    toolkit: T,
+  ): Promise<PipeDelimitedQueryParametersResponse>
+  /**
+   * Endpoint for testing header parameters with simple serialization
+   */
+  simpleHeaderParameters(
+    request: SimpleHeaderParametersServerRequest,
+    toolkit: T,
+  ): Promise<SimpleHeaderParametersResponse>
+  /**
+   * Endpoint for testing path parameters with simple serialization
+   */
+  simplePathParameters(request: SimplePathParametersServerRequest, toolkit: T): Promise<SimplePathParametersResponse>
+  /**
+   * Endpoint for testing response-header parameters with simple serialization
+   */
+  simpleResponseHeaderParameters(
+    request: SimpleResponseHeaderParametersServerRequest,
+    toolkit: T,
+  ): Promise<SimpleResponseHeaderParametersResponse>
+  /**
+   * Endpoint for testing query parameters with spaceDelimited serialization
+   */
+  spaceDelimitedQueryParameters(
+    request: SpaceDelimitedQueryParametersServerRequest,
+    toolkit: T,
+  ): Promise<SpaceDelimitedQueryParametersResponse>
+}
+
+export const deepObjectQueryParametersRouter: Router = Router().get(
+  '/deepObject-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const query = await configuration.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
+      const typedRequest: DeepObjectQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.deepObjectQueryParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const formQueryParametersRouter: Router = Router().get(
+  '/form-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const query = await configuration.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
+      const typedRequest: FormQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.formQueryParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const labelPathParametersRouter: Router = Router().get(
+  '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const path = await configuration.getPathParameters(toolkit, labelPathParametersPathDeserializer)
+      const typedRequest: LabelPathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.labelPathParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const matrixPathParametersRouter: Router = Router().get(
+  '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const path = await configuration.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
+      const typedRequest: MatrixPathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.matrixPathParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const pipeDelimitedQueryParametersRouter: Router = Router().get(
+  '/pipeDelimited-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const query = await configuration.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
+      const typedRequest: PipeDelimitedQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const simpleHeaderParametersRouter: Router = Router().get(
+  '/simple-header-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const headers = await configuration.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
+      const typedRequest: SimpleHeaderParametersServerRequest = {
+        headers,
+      }
+      const typedResponse = await api.simpleHeaderParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const simplePathParametersRouter: Router = Router().get(
+  '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const path = await configuration.getPathParameters(toolkit, simplePathParametersPathDeserializer)
+      const typedRequest: SimplePathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.simplePathParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const simpleResponseHeaderParametersRouter: Router = Router().post(
+  '/simple-response-header-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
+      const body = await configuration.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
+        toolkit,
+        mimeType,
+        simpleResponseHeaderParametersRequestBodyValidator,
+      )
+      const typedRequest: SimpleResponseHeaderParametersServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(
+          toolkit,
+          typedResponse,
+          simpleResponseHeaderParametersResponseHeadersSerializer,
+        ),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const spaceDelimitedQueryParametersRouter: Router = Router().get(
+  '/spaceDelimited-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const query = await configuration.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
+      const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export type ParametersRouters = {
+  deepObjectQueryParametersRouter: Router
+  formQueryParametersRouter: Router
+  labelPathParametersRouter: Router
+  matrixPathParametersRouter: Router
+  pipeDelimitedQueryParametersRouter: Router
+  simpleHeaderParametersRouter: Router
+  simplePathParametersRouter: Router
+  simpleResponseHeaderParametersRouter: Router
+  spaceDelimitedQueryParametersRouter: Router
+}
+
+export function createParametersRouter(
+  api: ParametersApi<ExpressToolkit>,
+  configuration: ServerAdapter<ExpressToolkit>,
+  routes: Partial<ParametersRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_configuration'] = configuration
+      next()
+    },
+    routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
+    routes.formQueryParametersRouter ?? formQueryParametersRouter,
+    routes.labelPathParametersRouter ?? labelPathParametersRouter,
+    routes.matrixPathParametersRouter ?? matrixPathParametersRouter,
+    routes.pipeDelimitedQueryParametersRouter ?? pipeDelimitedQueryParametersRouter,
+    routes.simpleHeaderParametersRouter ?? simpleHeaderParametersRouter,
+    routes.simplePathParametersRouter ?? simplePathParametersRouter,
+    routes.simpleResponseHeaderParametersRouter ?? simpleResponseHeaderParametersRouter,
+    routes.spaceDelimitedQueryParametersRouter ?? spaceDelimitedQueryParametersRouter,
+  )
+}
+
+export const parametersCorsMiddleware =
+  (...origins: string[]): RequestHandler =>
+  (request: Request, response: Response, next: NextFunction) => {
+    if (
+      typeof request.headers.origin === 'string' &&
+      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
+    ) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+      response.setHeader(
+        'Access-Control-Allow-Headers',
+        'x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header, content-type',
+      )
+    }
+    next()
+  }
+
 export type DeepObjectQueryParametersRequest = HasQueryParameters<DeepObjectQueryParametersQueryParameters>
 
 export type FormQueryParametersRequest = HasQueryParameters<FormQueryParametersQueryParameters>
@@ -1233,47 +2475,47 @@ export type SpaceDelimitedQueryParametersRequest = HasQueryParameters<SpaceDelim
 
 export const deepObjectQueryParametersResponseBodyValidator = {
   200: { 'application/json': deepObjectQueryParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const formQueryParametersResponseBodyValidator = {
   200: { 'application/json': formQueryParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const labelPathParametersResponseBodyValidator = {
   200: { 'application/json': labelPathParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const matrixPathParametersResponseBodyValidator = {
   200: { 'application/json': matrixPathParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const pipeDelimitedQueryParametersResponseBodyValidator = {
   200: { 'application/json': pipeDelimitedQueryParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simpleHeaderParametersResponseBodyValidator = {
   200: { 'application/json': simpleHeaderParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simplePathParametersResponseBodyValidator = {
   200: { 'application/json': simplePathParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simpleResponseHeaderParametersResponseBodyValidator = {
   200: { 'application/json': object(shape({ ok: boolean() })) },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const spaceDelimitedQueryParametersResponseBodyValidator = {
   200: { 'application/json': spaceDelimitedQueryParametersTypeValidator },
-  400: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simpleResponseHeaderParametersResponseHeadersDeserializer = {

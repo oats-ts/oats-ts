@@ -1,5 +1,7 @@
-import { ClientAdapter, HttpResponse, RawHttpRequest } from '@oats-ts/openapi-http'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import { ClientAdapter, HttpResponse, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { object, shape, string } from '@oats-ts/validators'
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type DeleteMethodResponse = HttpResponse<
   {
@@ -54,6 +56,184 @@ export type PutMethodResponse = HttpResponse<
   'application/json',
   undefined
 >
+
+export type HttpMethodsApi<T> = {
+  deleteMethod(toolkit: T): Promise<DeleteMethodResponse>
+  getMethod(toolkit: T): Promise<GetMethodResponse>
+  optionsMethod(toolkit: T): Promise<OptionsMethodResponse>
+  patchMethod(toolkit: T): Promise<PatchMethodResponse>
+  postMethod(toolkit: T): Promise<PostMethodResponse>
+  putMethod(toolkit: T): Promise<PutMethodResponse>
+}
+
+export const deleteMethodRouter: Router = Router().delete(
+  '/delete-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.deleteMethod(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const getMethodRouter: Router = Router().get(
+  '/get-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getMethod(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const optionsMethodRouter: Router = Router().options(
+  '/options-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.optionsMethod(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const patchMethodRouter: Router = Router().patch(
+  '/patch-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.patchMethod(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const postMethodRouter: Router = Router().post(
+  '/post-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.postMethod(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const putMethodRouter: Router = Router().put(
+  '/put-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.putMethod(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export type HttpMethodsRouters = {
+  deleteMethodRouter: Router
+  getMethodRouter: Router
+  optionsMethodRouter: Router
+  patchMethodRouter: Router
+  postMethodRouter: Router
+  putMethodRouter: Router
+}
+
+export function createHttpMethodsRouter(
+  api: HttpMethodsApi<ExpressToolkit>,
+  configuration: ServerAdapter<ExpressToolkit>,
+  routes: Partial<HttpMethodsRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_configuration'] = configuration
+      next()
+    },
+    routes.deleteMethodRouter ?? deleteMethodRouter,
+    routes.getMethodRouter ?? getMethodRouter,
+    routes.optionsMethodRouter ?? optionsMethodRouter,
+    routes.patchMethodRouter ?? patchMethodRouter,
+    routes.postMethodRouter ?? postMethodRouter,
+    routes.putMethodRouter ?? putMethodRouter,
+  )
+}
+
+export const httpMethodsCorsMiddleware =
+  (...origins: string[]): RequestHandler =>
+  (request: Request, response: Response, next: NextFunction) => {
+    if (
+      typeof request.headers.origin === 'string' &&
+      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
+    ) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+      response.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, OPTIONS, PATCH, POST, PUT')
+      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+    }
+    next()
+  }
 
 export const deleteMethodResponseBodyValidator = {
   200: { 'application/json': object(shape({ methodUsed: string() })) },

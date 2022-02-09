@@ -12,7 +12,5 @@ function defaultConfig(config: Partial<ValidatorsGeneratorConfig>): ValidatorsGe
   }
 }
 
-export const typeValidators =
-  <Id extends string, C extends string>(id: Id, consumes: C) =>
-  (config: Partial<ValidatorsGeneratorConfig> = {}) =>
-    new JsonSchemaValidatorsGenerator(id, [consumes], defaultConfig(config))
+export const typeValidators = (config: Partial<ValidatorsGeneratorConfig> = {}) =>
+  new JsonSchemaValidatorsGenerator(defaultConfig(config))

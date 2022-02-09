@@ -56,7 +56,7 @@ function createParameterSerializer(parameter: BaseParameterObject, context: Open
       ),
       factory.createIdentifier(getParameterKind(dereference(schema))),
     ),
-    [referenceOf(schema, 'openapi/type')],
+    [referenceOf(schema, 'json-schema/type')],
     [getSerializerOptions(parameter)],
   )
 }

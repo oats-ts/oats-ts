@@ -1,5 +1,5 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject, getInferredType } from '@oats-ts/json-schema-common'
+import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { Expression, factory } from 'typescript'
 import { getArrayTypeAssertionAst } from './getArrayTypeAssertion'
 import { getEnumAssertionAst } from './getEnumAssertionAst'
@@ -8,11 +8,12 @@ import { getPrimitiveTypeAssertionAst } from './getPrimitiveTypeAssertionAst'
 import { getRecordTypeAssertionAst } from './getRecordTypeAssertionAst'
 import { getReferenceAssertionAst } from './getReferenceAssertionAst'
 import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { FullTypeGuardGeneratorConfig } from './typings'
+import { isReferenceObject } from '@oats-ts/model-common'
 
 export function getTypeAssertionAst(
   data: SchemaObject | ReferenceObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
   level: number,

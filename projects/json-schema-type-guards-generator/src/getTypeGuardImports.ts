@@ -1,13 +1,14 @@
 import { isNil, sortBy, values } from 'lodash'
 import { ImportDeclaration } from 'typescript'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
-import { FullTypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { FullTypeGuardGeneratorConfig } from './typings'
 import { getModelImports } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { isReferenceObject } from '@oats-ts/model-common'
 
 function getImportedRefs(
   data: SchemaObject | ReferenceObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: FullTypeGuardGeneratorConfig,
   refs: Set<ReferenceObject>,
   level: number,
@@ -18,7 +19,7 @@ function getImportedRefs(
       return
     }
     const refTarget = dereference(data)
-    const name = nameOf(refTarget, context.produces)
+    const name = nameOf(refTarget, 'json-schema/type-guard')
     if (isNil(name)) {
       getImportedRefs(refTarget, context, config, refs, level)
     } else {
@@ -45,14 +46,14 @@ function getImportedRefs(
     return
   }
 
-  if (!isNil(data.items)) {
+  if (!isNil(data.items) && typeof data.items !== 'boolean') {
     return getImportedRefs(data.items, context, config, refs, level + 1)
   }
 }
 
 export function getTypeGuardImports(
   data: SchemaObject | ReferenceObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: FullTypeGuardGeneratorConfig,
 ): ImportDeclaration[] {
   const { dereference, nameOf, pathOf } = context
@@ -61,8 +62,8 @@ export function getTypeGuardImports(
 
   const importedSchemas = sortBy(
     Array.from(refs).map((ref) => dereference<SchemaObject>(ref)),
-    (schema) => nameOf(schema, context.produces),
+    (schema) => nameOf(schema, 'json-schema/type-guard'),
   )
-  const path = pathOf(data, context.produces)
-  return getModelImports(path, context.produces, importedSchemas, context)
+  const path = pathOf(data, 'json-schema/type-guard')
+  return getModelImports(path, 'json-schema/type-guard', importedSchemas, context)
 }

@@ -17,8 +17,3 @@ export type UnionTypeGuardGeneratorConfig = {
 }
 
 export type TypeGuardGeneratorConfig = UnionTypeGuardGeneratorConfig | FullTypeGuardGeneratorConfig
-
-export type TypeGuardGeneratorContext = GeneratorContext & {
-  produces: string
-  consumes: string
-}

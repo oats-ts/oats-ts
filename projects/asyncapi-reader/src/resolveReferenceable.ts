@@ -1,5 +1,5 @@
 import { ReferenceObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/json-schema-common'
+import { isReferenceObject } from '@oats-ts/model-common'
 import { resolveReference } from './resolveReference'
 import { ReadContext, ReadInput } from './internalTypings'
 

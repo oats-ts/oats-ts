@@ -11,7 +11,7 @@ export function generateResponseBodyValidator(
   const { pathOf, dependenciesOf } = context
   const path = pathOf(data.operation, 'openapi/response-body-validator')
   const responses = getEnhancedResponses(data.operation, context)
-  const dependencies = [...flatMap(responses, ({ schema }) => dependenciesOf(path, schema, 'openapi/type-validator'))]
+  const dependencies = [...flatMap(responses, ({ schema }) => dependenciesOf(path, schema, 'json-schema/type-validator'))]
   return {
     path,
     dependencies,

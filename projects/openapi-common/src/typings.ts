@@ -5,6 +5,7 @@ import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator, GeneratorNameProvider, NameProvider } from '@oats-ts/generator'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { GeneratorContext } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 
 /**
  * @param input The object (schema, operation, parameter, etc).
@@ -22,9 +23,7 @@ export type DelegatingNameProviderInput = Record<OpenAPIGeneratorTarget, Generat
 
 export type OpenAPIGeneratorTarget =
   // Common
-  | 'openapi/type'
-  | 'openapi/type-guard'
-  | 'openapi/type-validator'
+  | JsonSchemaGeneratorTarget
   | 'openapi/request-body-validator'
   | 'openapi/response-body-validator'
   | 'openapi/query-type'

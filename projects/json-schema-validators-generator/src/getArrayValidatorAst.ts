@@ -2,16 +2,17 @@ import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { ValidatorsGeneratorConfig, ValidatorsGeneratorContext } from './typings'
+import { ValidatorsGeneratorConfig } from './typings'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getArrayValidatorAst(
   data: SchemaObject,
-  context: ValidatorsGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {
   const args: Expression[] = []
-  if (config.arrays) {
+  if (config.arrays && typeof data.items !== 'boolean') {
     args.push(
       factory.createCallExpression(
         factory.createIdentifier(RuntimePackages.Validators.items),

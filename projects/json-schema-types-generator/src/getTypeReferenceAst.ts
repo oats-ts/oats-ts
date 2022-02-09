@@ -2,11 +2,12 @@ import { isNil } from 'lodash'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, SyntaxKind } from 'typescript'
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
-import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
+import { TypesGeneratorConfig } from './typings'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getTypeReferenceAst(
   data: Referenceable<SchemaObject>,
-  context: TypesGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ) {
   const { dereference, nameOf } = context

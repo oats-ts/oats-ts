@@ -1,6 +1,6 @@
 import { string, number, boolean, object, array } from './type'
 
-describe('openapi/type', () => {
+describe('json-schema/type', () => {
   it('string', () => {
     const v = string()
     expect(v('cat')).toHaveLength(0)

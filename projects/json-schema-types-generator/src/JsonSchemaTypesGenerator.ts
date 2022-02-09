@@ -1,28 +1,26 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { TypeNode, ImportDeclaration } from 'typescript'
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { sortBy } from 'lodash'
 import { GeneratorConfig, Result, CodeGenerator } from '@oats-ts/generator'
 import { createGeneratorContext, getNamedSchemas, HasSchemas, ReadOutput } from '@oats-ts/model-common'
-import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
+import { TypesGeneratorConfig } from './typings'
 import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
 import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 
-export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
-  implements CodeGenerator<T, TypeScriptModule>
-{
-  private context: TypesGeneratorContext = null
+export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>> implements CodeGenerator<T, TypeScriptModule> {
+  private context: JsonSchemaGeneratorContext = null
 
-  public readonly consumes: C[] = []
+  public readonly consumes: JsonSchemaGeneratorTarget[] = []
 
-  public constructor(public readonly id: Id, private readonly config: TypesGeneratorConfig) {}
+  public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type'
+
+  public constructor(private readonly config: TypesGeneratorConfig) {}
 
   public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
-    this.context = {
-      ...createGeneratorContext(data, config, generators),
-      target: this.id,
-    }
+    this.context = createGeneratorContext(data, config, generators)
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {

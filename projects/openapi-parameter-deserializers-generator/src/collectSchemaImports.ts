@@ -19,10 +19,12 @@ function recCollectNamedSchemas(
       values(schema.properties || {}).forEach((property) => recCollectNamedSchemas(property, context, references))
       return
     case 'array':
-      if (!isNil(schema.items)) {
+      if (!isNil(schema.items) && typeof schema.items !== 'boolean') {
         references.add(schema.items)
       }
-      recCollectNamedSchemas(schema.items, context, references)
+      if (typeof schema.items !== 'boolean') {
+        recCollectNamedSchemas(schema.items, context, references)
+      }
       return
     case 'primitive':
       if (inferredType === 'enum') {
@@ -50,5 +52,5 @@ export function collectSchemaImports(
       .filter(negate(isNil)),
     (schema) => collectNamedSchemas(schema, context),
   )
-  return flatMap(schemas, (schema) => dependenciesOf(path, schema, 'openapi/type'))
+  return flatMap(schemas, (schema) => dependenciesOf(path, schema, 'json-schema/type'))
 }

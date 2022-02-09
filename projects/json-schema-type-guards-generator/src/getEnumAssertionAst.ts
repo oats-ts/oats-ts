@@ -1,11 +1,12 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
-import { FullTypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { FullTypeGuardGeneratorConfig } from './typings'
 import { getLiteralAst, getLogicalExpression } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getEnumAssertionAst(
   data: SchemaObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: FullTypeGuardGeneratorConfig,
 ): Expression {

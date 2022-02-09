@@ -11,7 +11,7 @@ export function getApiTypeImports(
   params: boolean,
 ): ImportDeclaration[] {
   const { dependenciesOf, pathOf } = context
-  const apiPath = pathOf(doc, 'asyncapi/type')
+  const apiPath = pathOf(doc, 'json-schema/type')
   const imports = flatMap(operations, (data) => [
     ...(params ? dependenciesOf(apiPath, data.channel, 'asyncapi/input-type') : []),
     ...dependenciesOf(apiPath, data.channel, 'asyncapi/channel'),

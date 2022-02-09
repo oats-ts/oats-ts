@@ -3,11 +3,11 @@ import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { getDiscriminators } from '@oats-ts/model-common'
 import { reduceLogicalExpressions, safeMemberAccess } from '@oats-ts/typescript-common'
-import { TypeGuardGeneratorContext } from './typings'
+import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getDiscriminatorBasedTypeAssertionAst(
   data: SchemaObject,
-  context: TypeGuardGeneratorContext,
+  context: JsonSchemaGeneratorContext,
 ): Expression {
   const discriminators = getDiscriminators(data, context)
   const variable = factory.createIdentifier('input')

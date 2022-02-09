@@ -19,7 +19,7 @@ export function getCommonImports(path: string, data: EnhancedOperation, context:
       ...(data.query.length > 0 ? [RuntimePackages.Http.HasQueryParameters] : []),
       ...(data.header.length > 0 ? [RuntimePackages.Http.HasHeaders] : []),
     ]),
-    ...flatMap(bodies, (schema) => dependenciesOf(path, schema, 'openapi/type')),
+    ...flatMap(bodies, (schema) => dependenciesOf(path, schema, 'json-schema/type')),
     ...dependenciesOf(path, operation, 'openapi/path-type'),
     ...dependenciesOf(path, operation, 'openapi/query-type'),
     ...dependenciesOf(path, operation, 'openapi/request-headers-type'),

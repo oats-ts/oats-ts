@@ -1,6 +1,18 @@
-import { ClientAdapter, HasPathParameters, HasRequestBody, HttpResponse, RawHttpRequest } from '@oats-ts/openapi-http'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import {
+  ClientAdapter,
+  HasPathParameters,
+  HasRequestBody,
+  HttpResponse,
+  RawHttpRequest,
+  RawHttpResponse,
+  ServerAdapter,
+} from '@oats-ts/openapi-http'
+import { createPathDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
 import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
-import { array, enumeration, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { Try } from '@oats-ts/try'
+import { array, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type AppError = {
   message: string
@@ -87,6 +99,194 @@ export type UpdateBookResponse =
   | HttpResponse<AppError[], 400, 'application/json', undefined>
   | HttpResponse<AppError[], 500, 'application/json', undefined>
 
+export type CreateBookServerRequest = HasRequestBody<'application/json', Try<Book>>
+
+export type GetBookServerRequest = HasPathParameters<Try<GetBookPathParameters>>
+
+export type UpdateBookServerRequest = HasPathParameters<Try<UpdateBookPathParameters>> &
+  HasRequestBody<'application/json', Try<Book>>
+
+export const createBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
+
+export const updateBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
+
+export const getBookPathDeserializer = createPathDeserializer<GetBookPathParameters>(
+  ['bookId'],
+  /^\/books(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+  { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
+)
+
+export const updateBookPathDeserializer = createPathDeserializer<UpdateBookPathParameters>(
+  ['bookId'],
+  /^\/books(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+  { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
+)
+
+export type BookStoreApi<T> = {
+  /**
+   * Creates a new book based on the request body. The id field can be ommited (will be ignored)
+   */
+  createBook(request: CreateBookServerRequest, toolkit: T): Promise<CreateBookResponse>
+  /**
+   * Returns the book associated with the given bookId
+   */
+  getBook(request: GetBookServerRequest, toolkit: T): Promise<GetBookResponse>
+  getBooks(toolkit: T): Promise<GetBooksResponse>
+  /**
+   * Updates the book associated with the given bookId
+   */
+  updateBook(request: UpdateBookServerRequest, toolkit: T): Promise<UpdateBookResponse>
+}
+
+export const createBookRouter: Router = Router().post(
+  '/books',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
+      const body = await configuration.getRequestBody<'application/json', Book>(
+        toolkit,
+        mimeType,
+        createBookRequestBodyValidator,
+      )
+      const typedRequest: CreateBookServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.createBook(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const getBookRouter: Router = Router().get(
+  '/books/:bookId',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const path = await configuration.getPathParameters(toolkit, getBookPathDeserializer)
+      const typedRequest: GetBookServerRequest = {
+        path,
+      }
+      const typedResponse = await api.getBook(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const getBooksRouter: Router = Router().get(
+  '/books',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getBooks(toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const updateBookRouter: Router = Router().patch(
+  '/books/:bookId',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const path = await configuration.getPathParameters(toolkit, updateBookPathDeserializer)
+      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
+      const body = await configuration.getRequestBody<'application/json', Book>(
+        toolkit,
+        mimeType,
+        updateBookRequestBodyValidator,
+      )
+      const typedRequest: UpdateBookServerRequest = {
+        path,
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.updateBook(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export type BookStoreRouters = {
+  createBookRouter: Router
+  getBookRouter: Router
+  getBooksRouter: Router
+  updateBookRouter: Router
+}
+
+export function createBookStoreRouter(
+  api: BookStoreApi<ExpressToolkit>,
+  configuration: ServerAdapter<ExpressToolkit>,
+  routes: Partial<BookStoreRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_configuration'] = configuration
+      next()
+    },
+    routes.createBookRouter ?? createBookRouter,
+    routes.getBookRouter ?? getBookRouter,
+    routes.getBooksRouter ?? getBooksRouter,
+    routes.updateBookRouter ?? updateBookRouter,
+  )
+}
+
+export const bookStoreCorsMiddleware =
+  (...origins: string[]): RequestHandler =>
+  (request: Request, response: Response, next: NextFunction) => {
+    if (
+      typeof request.headers.origin === 'string' &&
+      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
+    ) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+      response.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH')
+      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+    }
+    next()
+  }
+
 export type CreateBookRequest = HasRequestBody<'application/json', Book>
 
 export type GetBookRequest = HasPathParameters<GetBookPathParameters>
@@ -95,26 +295,26 @@ export type UpdateBookRequest = HasPathParameters<UpdateBookPathParameters> & Ha
 
 export const createBookResponseBodyValidator = {
   201: { 'application/json': bookTypeValidator },
-  400: { 'application/json': array() },
-  500: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBookResponseBodyValidator = {
   200: { 'application/json': bookTypeValidator },
-  400: { 'application/json': array() },
-  500: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBooksResponseBodyValidator = {
-  200: { 'application/json': array() },
-  400: { 'application/json': array() },
-  500: { 'application/json': array() },
+  200: { 'application/json': array(items(lazy(() => bookTypeValidator))) },
+  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const updateBookResponseBodyValidator = {
   200: { 'application/json': bookTypeValidator },
-  400: { 'application/json': array() },
-  500: { 'application/json': array() },
+  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>('/books/{bookId}', {

@@ -5,14 +5,14 @@ import { getDictionaryTypeAst } from './getDictionaryTypeAst'
 import { getLiteralUnionTypeAst } from './getLiteralUnionTypeAst'
 import { getObjectTypeAst } from './getObjectTypeAst'
 import { getUnionTypeAst } from './getUnionTypeAst'
-import { TypesGeneratorConfig, TypesGeneratorContext } from './typings'
+import { TypesGeneratorConfig } from './typings'
 import { getIntersectionTypeAst } from './getIntersectionTypeAst'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
-import { getInferredType } from '@oats-ts/json-schema-common'
+import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getRighthandSideTypeAst(
   data: Referenceable<SchemaObject>,
-  context: TypesGeneratorContext,
+  context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeNode {
   switch (getInferredType(data)) {

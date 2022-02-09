@@ -41,13 +41,16 @@ export function getDeserializerAst(
       return createPrimitiveDeserializer(type, [
         factory.createCallExpression(
           valueAccess('enumeration'),
-          [factory.createTypeReferenceNode(type), referenceOf(schemaOrRef, 'openapi/type')],
+          [factory.createTypeReferenceNode(type), referenceOf(schemaOrRef, 'json-schema/type')],
           [factory.createArrayLiteralExpression(schema.enum.map((v) => getLiteralAst(v)))],
         ),
       ])
     }
     case 'array': {
-      return getDeserializerAst(schema.items, context)
+      if (typeof schema.items !== 'boolean') {
+        return getDeserializerAst(schema.items, context)
+      }
+      return factory.createIdentifier('undefined')
     }
     case 'object': {
       const properties = entries(schema.properties).map(([name, propSchema]) => {

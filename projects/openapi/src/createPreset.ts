@@ -1,3 +1,6 @@
+import { typeGuards } from '@oats-ts/json-schema-type-guards-generator'
+import { types } from '@oats-ts/json-schema-types-generator'
+import { typeValidators } from '@oats-ts/json-schema-validators-generator'
 import { apiType } from '@oats-ts/openapi-api-type-generator'
 import { OpenAPIGenerator, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import {
@@ -30,7 +33,6 @@ import { responseTypes } from '@oats-ts/openapi-response-types-generator'
 import { sdkImplementation, sdkStub, sdkType } from '@oats-ts/openapi-sdk-generator'
 import { requestBodyValidators, responseBodyValidators } from '@oats-ts/openapi-validators-generator'
 import { entries, isNil } from 'lodash'
-import { openApiTypeGuards, openApiTypes, openApiTypeValidators } from './specializedGenerators'
 import { PresetConfiguration } from './typings'
 
 const factories: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPIGenerator> = {
@@ -60,9 +62,9 @@ const factories: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPIGenerat
   'openapi/sdk-impl': sdkImplementation,
   'openapi/sdk-stub': sdkStub,
   'openapi/sdk-type': sdkType,
-  'openapi/type': openApiTypes,
-  'openapi/type-validator': openApiTypeValidators,
-  'openapi/type-guard': openApiTypeGuards,
+  'json-schema/type': types,
+  'json-schema/type-validator': typeValidators,
+  'json-schema/type-guard': typeGuards,
 }
 
 export const createPreset =

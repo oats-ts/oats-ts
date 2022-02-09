@@ -32,7 +32,7 @@ export class InputParameterTypesGenerator<Id extends OpenAPIGeneratorTarget> imp
 
   public constructor(id: Id, location: ParameterLocation, config: ParameterTypesGeneratorConfig) {
     this.id = id
-    this.consumes = ['openapi/type']
+    this.consumes = ['json-schema/type']
     this.location = location
     this.parametersConfig = config
   }

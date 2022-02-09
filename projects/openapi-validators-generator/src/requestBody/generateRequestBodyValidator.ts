@@ -18,7 +18,7 @@ export function generateRequestBodyValidator(
     return undefined
   }
 
-  const dependencies = [...flatMap(content, ([, schema]) => dependenciesOf(path, schema, 'openapi/type-validator'))]
+  const dependencies = [...flatMap(content, ([, schema]) => dependenciesOf(path, schema, 'json-schema/type-validator'))]
 
   return {
     path,

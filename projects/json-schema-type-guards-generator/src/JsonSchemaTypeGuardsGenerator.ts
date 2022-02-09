@@ -3,33 +3,28 @@ import { isNil, negate, sortBy } from 'lodash'
 import { getNamedSchemas, ReadOutput, createGeneratorContext, HasSchemas } from '@oats-ts/model-common'
 import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
 import { generateTypeGuard } from './generateTypeGuard'
-import { TypeGuardGeneratorConfig, TypeGuardGeneratorContext } from './typings'
+import { TypeGuardGeneratorConfig } from './typings'
 import { ImportDeclaration, Identifier, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 
-export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
+export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>>
   implements CodeGenerator<T, TypeScriptModule>
 {
-  private context: TypeGuardGeneratorContext = null
+  private context: JsonSchemaGeneratorContext = null
+  public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type-guard'
+  public readonly consumes: JsonSchemaGeneratorTarget[] = ['json-schema/type']
 
-  constructor(
-    public readonly id: Id,
-    public readonly consumes: [C],
-    private readonly config: TypeGuardGeneratorConfig,
-  ) {}
+  constructor(private readonly config: TypeGuardGeneratorConfig) {}
 
   initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
-    this.context = {
-      ...createGeneratorContext(data, config, generators),
-      consumes: this.consumes[0],
-      produces: this.id,
-    }
+    this.context = createGeneratorContext(data, config, generators)
   }
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
     const { nameOf } = context
-    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, context.produces))
+    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-guard'))
     const data = mergeTypeScriptModules(
       schemas.map((schema) => generateTypeGuard(schema, context, config)).filter(negate(isNil)),
     )

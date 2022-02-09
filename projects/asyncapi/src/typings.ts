@@ -1,3 +1,4 @@
+import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 /**
  * @param input The object (schema, operation, parameter, etc).
  * @param target The generator target (type definition, operation, etc).
@@ -8,8 +9,7 @@ export type PathProvider = (input: any, target: string) => string
 export type NameByTarget = Record<AsyncAPIGeneratorTarget, string>
 
 export type AsyncAPIGeneratorTarget =
-  | 'asyncapi/type'
-  | 'asyncapi/type-guard'
+  | JsonSchemaGeneratorTarget
   | 'asyncapi/input-type'
   | 'asyncapi/query-type'
   | 'asyncapi/path-type'
@@ -21,4 +21,3 @@ export type AsyncAPIGeneratorTarget =
   | 'asyncapi/api-type'
   | 'asyncapi/api-class'
   | 'asyncapi/api-stub'
-  | 'asyncapi/validator'

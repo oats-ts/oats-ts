@@ -19,7 +19,7 @@ export const generateResponseHeaderType = (
   const types = headers.map((header) => header.schema).filter(negate(isNil))
   return {
     path: fromPath,
-    dependencies: [...flatMap(types, (type) => dependenciesOf(fromPath, type, 'openapi/type'))],
+    dependencies: [...flatMap(types, (type) => dependenciesOf(fromPath, type, 'json-schema/type'))],
     content: [
       factory.createTypeAliasDeclaration(
         [],

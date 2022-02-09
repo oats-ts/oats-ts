@@ -17,7 +17,7 @@ export function getParameterTypeLiteralAst(
         undefined,
         safeName(name),
         parameter.required ? undefined : factory.createToken(SyntaxKind.QuestionToken),
-        referenceOf(parameter.schema, 'openapi/type'),
+        referenceOf(parameter.schema, 'json-schema/type'),
       )
       return config.documentation ? documentNode(node, parameter) : node
     }),
