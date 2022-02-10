@@ -46,6 +46,10 @@ function getImportedRefs(
     return
   }
 
+  if (!isNil(data.prefixItems)) {
+    return data.prefixItems.forEach((item) => getImportedRefs(item, context, config, refs, level))
+  }
+
   if (!isNil(data.items) && typeof data.items !== 'boolean') {
     return getImportedRefs(data.items, context, config, refs, level + 1)
   }

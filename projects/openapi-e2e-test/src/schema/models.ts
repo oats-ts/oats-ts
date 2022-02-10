@@ -9,21 +9,25 @@ export const models: GeneratorModel[] = [
   {
     schemaPath: 'schemas/parameters.json',
     sourcePath: 'src/generated/Parameters.ts',
+    alternativePath: 'src/generated/parameters',
     schema: generateParametersOpenApiObject,
   },
   {
     schemaPath: 'schemas/http-methods.json',
     sourcePath: 'src/generated/HttpMethods.ts',
+    alternativePath: 'src/generated/httpMethods',
     schema: generateHttpMethodsOpenApiObject,
   },
   {
     schemaPath: 'schemas/bodies.json',
     sourcePath: 'src/generated/Bodies.ts',
+    alternativePath: 'src/generated/bodies',
     schema: generateBodiesOpenApiObject,
   },
   {
     schemaPath: 'schemas/book-store.json',
     sourcePath: 'src/generated/BookStore.ts',
+    alternativePath: 'src/generated/bookStore',
     schema: () => bookStore as OpenAPIObject,
   },
 ]
