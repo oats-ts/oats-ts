@@ -9,6 +9,11 @@ export const stringSchema: SchemaObject = {
   type: 'string',
 }
 
+export const literalSchema: SchemaObject = {
+  type: 'string',
+  const: 'Literal Value',
+}
+
 export const booleanSchema: SchemaObject = {
   type: 'boolean',
 }
@@ -22,6 +27,14 @@ export function arraySchema(items: Referenceable<SchemaObject>): SchemaObject {
   return {
     type: 'array',
     items,
+  }
+}
+
+export function tupleSchema(minItems: number, ...items: Referenceable<SchemaObject>[]): SchemaObject {
+  return {
+    type: 'array',
+    prefixItems: items,
+    minItems,
   }
 }
 

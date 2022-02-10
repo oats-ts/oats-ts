@@ -19,8 +19,12 @@ import {
   NumArrServerRequest,
   NumResponse,
   NumServerRequest,
+  OptPrimTupleResponse,
+  OptPrimTupleServerRequest,
   PrimObjResponse,
   PrimObjServerRequest,
+  PrimTupleResponse,
+  PrimTupleServerRequest,
   StrArrResponse,
   StrArrServerRequest,
   StrResponse,
@@ -28,51 +32,56 @@ import {
 } from '../../generated/Bodies'
 
 export class BodiesApiImpl implements BodiesApi<ExpressToolkit> {
-  // TODO typings
-  async respond(input: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
-    if (isFailure(input.body)) {
-      const issues = fluent(input.body).getIssues()
+  async respond(request: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
+    if (isFailure(request.body)) {
+      const issues = fluent(request.body).getIssues()
       console.error(issues)
       throw new TypeError(JSON.stringify(issues))
     }
     return {
-      body: fluent(input.body).getData(),
+      body: fluent(request.body).getData(),
       headers: undefined,
-      mimeType: input.mimeType,
+      mimeType: request.mimeType,
       statusCode: 200,
     }
   }
-  async arrObj(input: ArrObjServerRequest): Promise<ArrObjResponse> {
-    return this.respond(input)
+  async optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleResponse> {
+    return this.respond(request)
   }
-  async bool(input: BoolServerRequest): Promise<BoolResponse> {
-    return this.respond(input)
+  async primTuple(request: PrimTupleServerRequest): Promise<PrimTupleResponse> {
+    return this.respond(request)
   }
-  async boolArr(input: BoolArrServerRequest): Promise<BoolArrResponse> {
-    return this.respond(input)
+  async arrObj(request: ArrObjServerRequest): Promise<ArrObjResponse> {
+    return this.respond(request)
   }
-  async enm(input: EnmServerRequest): Promise<EnmResponse> {
-    return this.respond(input)
+  async bool(request: BoolServerRequest): Promise<BoolResponse> {
+    return this.respond(request)
   }
-  async enmArr(input: EnmArrServerRequest): Promise<EnmArrResponse> {
-    return this.respond(input)
+  async boolArr(request: BoolArrServerRequest): Promise<BoolArrResponse> {
+    return this.respond(request)
   }
-  async nestedObj(input: NestedObjServerRequest): Promise<NestedObjResponse> {
-    return this.respond(input)
+  async enm(request: EnmServerRequest): Promise<EnmResponse> {
+    return this.respond(request)
   }
-  async num(input: NumServerRequest): Promise<NumResponse> {
-    return this.respond(input)
+  async enmArr(request: EnmArrServerRequest): Promise<EnmArrResponse> {
+    return this.respond(request)
   }
-  async numArr(input: NumArrServerRequest): Promise<NumArrResponse> {
-    return this.respond(input)
+  async nestedObj(request: NestedObjServerRequest): Promise<NestedObjResponse> {
+    return this.respond(request)
   }
-  async primObj(input: PrimObjServerRequest): Promise<PrimObjResponse> {
-    return this.respond(input)
+  async num(request: NumServerRequest): Promise<NumResponse> {
+    return this.respond(request)
   }
-  async str(input: StrServerRequest): Promise<StrResponse> {
-    return this.respond(input)
+  async numArr(request: NumArrServerRequest): Promise<NumArrResponse> {
+    return this.respond(request)
   }
-  async strArr(input: StrArrServerRequest): Promise<StrArrResponse> {
-    return this.respond(input)
+  async primObj(request: PrimObjServerRequest): Promise<PrimObjResponse> {
+    return this.respond(request)
+  }
+  async str(request: StrServerRequest): Promise<StrResponse> {
+    return this.respond(request)
+  }
+  async strArr(request: StrArrServerRequest): Promise<StrArrResponse> {
+    return this.respond(request)
   }
 }

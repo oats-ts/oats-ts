@@ -14,6 +14,7 @@ const Validators = {
   union: 'union',
   lazy: 'lazy',
   literal: 'literal',
+  tuple: 'tuple',
 }
 
 export const RuntimePackages = {

@@ -1,9 +1,13 @@
 import { head } from 'lodash'
-import { BinaryOperator, Expression, factory, SyntaxKind } from 'typescript'
+import { Expression, factory, LogicalOperator, SyntaxKind } from 'typescript'
 import { getLogicalExpression } from './getLogicalExpression'
 
-export function reduceLogicalExpressions(operator: BinaryOperator, expressions: Expression[]): Expression {
+export function reduceLogicalExpressions(operator: LogicalOperator, expressions: Expression[]): Expression {
   const filtered = expressions.filter((expr) => expr.kind !== SyntaxKind.TrueKeyword)
+  const hasTrue = filtered.length !== expressions.length
+  if (hasTrue && operator === SyntaxKind.BarBarToken) {
+    return factory.createTrue()
+  }
   switch (filtered.length) {
     case 0:
       return factory.createTrue()

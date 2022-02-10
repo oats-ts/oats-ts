@@ -24,6 +24,10 @@ export function getInferredType(data: SchemaObject | ReferenceObject): InferredT
     return 'enum'
   }
 
+  if (!isNil(data.const)) {
+    return 'literal'
+  }
+
   if (data.type === 'string') {
     return 'string'
   }
@@ -44,7 +48,11 @@ export function getInferredType(data: SchemaObject | ReferenceObject): InferredT
     return 'object'
   }
 
-  if (!isNil(data.items) || data.type === 'array') {
+  if (!isNil(data.prefixItems)) {
+    return 'tuple'
+  }
+
+  if ((!isNil(data.items) || data.type === 'array') && typeof data.items !== 'boolean') {
     return 'array'
   }
 

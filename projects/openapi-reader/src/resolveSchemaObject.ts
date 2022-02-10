@@ -13,11 +13,11 @@ export async function resolveSchemaObject(input: ReadInput<SchemaObject>, contex
   }
 
   const { data, uri } = input
-  const { items, not, allOf, oneOf, anyOf, properties, additionalProperties, discriminator } = data
+  const { items, not, allOf, oneOf, anyOf, properties, additionalProperties, discriminator, prefixItems } = data
 
   register(input, context)
 
-  if (!isNil(items)) {
+  if (!isNil(items) && typeof items !== 'boolean') {
     await resolveReferenceable({ data: items, uri: context.uri.append(uri, 'items') }, context, resolveSchemaObject)
   }
 
@@ -79,6 +79,17 @@ export async function resolveSchemaObject(input: ReadInput<SchemaObject>, contex
     for (const [name, propSchema] of entries(properties)) {
       await resolveReferenceable(
         { data: propSchema, uri: context.uri.append(propertiesUri, name) },
+        context,
+        resolveSchemaObject,
+      )
+    }
+  }
+
+  if (!isNil(prefixItems)) {
+    const prefixItemsUri = context.uri.append(uri, 'prefixItems')
+    for (let i = 0; i < prefixItems.length; i += 1) {
+      await resolveReferenceable(
+        { data: prefixItems[i], uri: context.uri.append(prefixItemsUri, i.toString()) },
         context,
         resolveSchemaObject,
       )

@@ -72,10 +72,10 @@ function optCommonExplObject(): CommonOptObjectTypeExpl {
 
 export function randomPathParameters(): SimplePathParameters & MatrixPathParameters & LabelPathParameters {
   return {
-    str: datatype.string(datatype.number({ min: 1, max: 10 })),
-    strExpl: datatype.string(datatype.number({ min: 1, max: 10 })),
-    strArr: arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    strArrExpl: arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
+    str: datatype.string(datatype.number({ min: 2, max: 10 })),
+    strExpl: datatype.string(datatype.number({ min: 2, max: 10 })),
+    strArr: arrayOf(() => datatype.string(datatype.number({ min: 2, max: 10 }))),
+    strArrExpl: arrayOf(() => datatype.string(datatype.number({ min: 2, max: 10 }))),
 
     num: datatype.number(),
     numExpl: datatype.number(),

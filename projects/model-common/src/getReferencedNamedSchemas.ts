@@ -4,9 +4,10 @@ import { GeneratorContext } from './types'
 import { isReferenceObject } from './isReferenceObject'
 
 function collectInChildren(input: SchemaObject, context: GeneratorContext, schemas: SchemaObject[]) {
-  const { items, additionalProperties, properties, oneOf } = input
-
-  if (!isNil(items) && typeof items !== 'boolean') {
+  const { items, additionalProperties, properties, oneOf, prefixItems } = input
+  if (!isNil(prefixItems)) {
+    return prefixItems.forEach((item) => collect(item, context, schemas))
+  } else if (!isNil(items) && typeof items !== 'boolean') {
     return collect(items, context, schemas)
   } else if (!isNil(properties)) {
     for (const [, propSchema] of entries(properties)) {

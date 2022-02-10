@@ -8,7 +8,20 @@ import {
   ServerAdapter,
 } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
-import { array, boolean, enumeration, items, lazy, number, object, shape, string } from '@oats-ts/validators'
+import {
+  array,
+  boolean,
+  enumeration,
+  items,
+  lazy,
+  literal,
+  number,
+  object,
+  optional,
+  shape,
+  string,
+  tuple,
+} from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type EnumType = 'A' | 'B' | 'C'
@@ -28,9 +41,14 @@ export type ObjectWithNestedObjects = {
 export type ObjectWithPrimitives = {
   bool: boolean
   enm: EnumType
+  lit: 'Literal Value'
   num: number
   str: string
 }
+
+export type PrimitiveOptionalTupleType = ['Literal Value'?, string?, number?, EnumType?, boolean?]
+
+export type PrimitiveTupleType = ['Literal Value', string, number, EnumType, boolean]
 
 export const enumTypeTypeValidator = enumeration(['A', 'B', 'C'])
 
@@ -54,9 +72,30 @@ export const objectWithPrimitivesTypeValidator = object(
   shape({
     bool: boolean(),
     enm: lazy(() => enumTypeTypeValidator),
+    lit: literal('Literal Value'),
     num: number(),
     str: string(),
   }),
+)
+
+export const primitiveOptionalTupleTypeTypeValidator = array(
+  tuple(
+    optional(literal('Literal Value')),
+    optional(string()),
+    optional(number()),
+    optional(lazy(() => enumTypeTypeValidator)),
+    optional(boolean()),
+  ),
+)
+
+export const primitiveTupleTypeTypeValidator = array(
+  tuple(
+    literal('Literal Value'),
+    string(),
+    number(),
+    lazy(() => enumTypeTypeValidator),
+    boolean(),
+  ),
 )
 
 export function isEnumType(input: any): input is EnumType {
@@ -93,8 +132,31 @@ export function isObjectWithPrimitives(input: any): input is ObjectWithPrimitive
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
     isEnumType(input.enm) &&
+    input.lit === 'Literal Value' &&
     typeof input.num === 'number' &&
     typeof input.str === 'string'
+  )
+}
+
+export function isPrimitiveOptionalTupleType(input: any): input is PrimitiveOptionalTupleType {
+  return (
+    Array.isArray(input) &&
+    (input[0] === null || input[0] === undefined || input[0] === 'Literal Value') &&
+    (input[1] === null || input[1] === undefined || typeof input[1] === 'string') &&
+    (input[2] === null || input[2] === undefined || typeof input[2] === 'number') &&
+    (input[3] === null || input[3] === undefined || isEnumType(input[3])) &&
+    (input[4] === null || input[4] === undefined || typeof input[4] === 'boolean')
+  )
+}
+
+export function isPrimitiveTupleType(input: any): input is PrimitiveTupleType {
+  return (
+    Array.isArray(input) &&
+    input[0] === 'Literal Value' &&
+    typeof input[1] === 'string' &&
+    typeof input[2] === 'number' &&
+    isEnumType(input[3]) &&
+    typeof input[4] === 'boolean'
   )
 }
 
@@ -130,9 +192,17 @@ export type NumArrResponse =
   | HttpResponse<number[], 200, 'application/json', undefined>
   | HttpResponse<number[], 200, 'application/yaml', undefined>
 
+export type OptPrimTupleResponse =
+  | HttpResponse<PrimitiveOptionalTupleType, 200, 'application/json', undefined>
+  | HttpResponse<PrimitiveOptionalTupleType, 200, 'application/yaml', undefined>
+
 export type PrimObjResponse =
   | HttpResponse<ObjectWithPrimitives, 200, 'application/json', undefined>
   | HttpResponse<ObjectWithPrimitives, 200, 'application/yaml', undefined>
+
+export type PrimTupleResponse =
+  | HttpResponse<PrimitiveTupleType, 200, 'application/json', undefined>
+  | HttpResponse<PrimitiveTupleType, 200, 'application/yaml', undefined>
 
 export type StrResponse =
   | HttpResponse<string, 200, 'application/json', undefined>
@@ -174,9 +244,17 @@ export type NumArrServerRequest =
   | HasRequestBody<'application/json', Try<number[]>>
   | HasRequestBody<'application/yaml', Try<number[]>>
 
+export type OptPrimTupleServerRequest =
+  | HasRequestBody<'application/json', Try<PrimitiveOptionalTupleType>>
+  | HasRequestBody<'application/yaml', Try<PrimitiveOptionalTupleType>>
+
 export type PrimObjServerRequest =
   | HasRequestBody<'application/json', Try<ObjectWithPrimitives>>
   | HasRequestBody<'application/yaml', Try<ObjectWithPrimitives>>
+
+export type PrimTupleServerRequest =
+  | HasRequestBody<'application/json', Try<PrimitiveTupleType>>
+  | HasRequestBody<'application/yaml', Try<PrimitiveTupleType>>
 
 export type StrServerRequest =
   | HasRequestBody<'application/json', Try<string>>
@@ -220,9 +298,19 @@ export const numArrRequestBodyValidator = {
 
 export const numRequestBodyValidator = { 'application/json': number(), 'application/yaml': number() } as const
 
+export const optPrimTupleRequestBodyValidator = {
+  'application/json': primitiveOptionalTupleTypeTypeValidator,
+  'application/yaml': primitiveOptionalTupleTypeTypeValidator,
+} as const
+
 export const primObjRequestBodyValidator = {
   'application/json': objectWithPrimitivesTypeValidator,
   'application/yaml': objectWithPrimitivesTypeValidator,
+} as const
+
+export const primTupleRequestBodyValidator = {
+  'application/json': primitiveTupleTypeTypeValidator,
+  'application/yaml': primitiveTupleTypeTypeValidator,
 } as const
 
 export const strArrRequestBodyValidator = {
@@ -241,7 +329,9 @@ export type BodiesApi<T> = {
   nestedObj(request: NestedObjServerRequest, toolkit: T): Promise<NestedObjResponse>
   num(request: NumServerRequest, toolkit: T): Promise<NumResponse>
   numArr(request: NumArrServerRequest, toolkit: T): Promise<NumArrResponse>
+  optPrimTuple(request: OptPrimTupleServerRequest, toolkit: T): Promise<OptPrimTupleResponse>
   primObj(request: PrimObjServerRequest, toolkit: T): Promise<PrimObjResponse>
+  primTuple(request: PrimTupleServerRequest, toolkit: T): Promise<PrimTupleResponse>
   str(request: StrServerRequest, toolkit: T): Promise<StrResponse>
   strArr(request: StrArrServerRequest, toolkit: T): Promise<StrArrResponse>
 }
@@ -494,6 +584,36 @@ export const numArrRouter: Router = Router().post(
   },
 )
 
+export const optPrimTupleRouter: Router = Router().post(
+  '/opt-prim-tuple',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await configuration.getRequestBody<
+        'application/json' | 'application/yaml',
+        PrimitiveOptionalTupleType
+      >(toolkit, mimeType, optPrimTupleRequestBodyValidator)
+      const typedRequest: OptPrimTupleServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.optPrimTuple(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
 export const primObjRouter: Router = Router().post(
   '/prim-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -512,6 +632,37 @@ export const primObjRouter: Router = Router().post(
         body,
       }
       const typedResponse = await api.primObj(typedRequest, toolkit)
+      const rawResponse: RawHttpResponse = {
+        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
+        body: await configuration.getResponseBody(toolkit, typedResponse),
+      }
+      return configuration.respond(toolkit, rawResponse)
+    } catch (error) {
+      configuration.handleError(toolkit, error)
+      throw error
+    }
+  },
+)
+
+export const primTupleRouter: Router = Router().post(
+  '/prim-tuple',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
+    try {
+      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', PrimitiveTupleType>(
+        toolkit,
+        mimeType,
+        primTupleRequestBodyValidator,
+      )
+      const typedRequest: PrimTupleServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.primTuple(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
         headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await configuration.getStatusCode(toolkit, typedResponse),
@@ -596,7 +747,9 @@ export type BodiesRouters = {
   nestedObjRouter: Router
   numArrRouter: Router
   numRouter: Router
+  optPrimTupleRouter: Router
   primObjRouter: Router
+  primTupleRouter: Router
   strArrRouter: Router
   strRouter: Router
 }
@@ -620,7 +773,9 @@ export function createBodiesRouter(
     routes.nestedObjRouter ?? nestedObjRouter,
     routes.numArrRouter ?? numArrRouter,
     routes.numRouter ?? numRouter,
+    routes.optPrimTupleRouter ?? optPrimTupleRouter,
     routes.primObjRouter ?? primObjRouter,
+    routes.primTupleRouter ?? primTupleRouter,
     routes.strArrRouter ?? strArrRouter,
     routes.strRouter ?? strRouter,
   )
@@ -664,9 +819,17 @@ export type NumRequest = HasRequestBody<'application/json', number> | HasRequest
 
 export type NumArrRequest = HasRequestBody<'application/json', number[]> | HasRequestBody<'application/yaml', number[]>
 
+export type OptPrimTupleRequest =
+  | HasRequestBody<'application/json', PrimitiveOptionalTupleType>
+  | HasRequestBody<'application/yaml', PrimitiveOptionalTupleType>
+
 export type PrimObjRequest =
   | HasRequestBody<'application/json', ObjectWithPrimitives>
   | HasRequestBody<'application/yaml', ObjectWithPrimitives>
+
+export type PrimTupleRequest =
+  | HasRequestBody<'application/json', PrimitiveTupleType>
+  | HasRequestBody<'application/yaml', PrimitiveTupleType>
 
 export type StrRequest = HasRequestBody<'application/json', string> | HasRequestBody<'application/yaml', string>
 
@@ -708,8 +871,19 @@ export const numArrResponseBodyValidator = {
 
 export const numResponseBodyValidator = { 200: { 'application/json': number(), 'application/yaml': number() } } as const
 
+export const optPrimTupleResponseBodyValidator = {
+  200: {
+    'application/json': primitiveOptionalTupleTypeTypeValidator,
+    'application/yaml': primitiveOptionalTupleTypeTypeValidator,
+  },
+} as const
+
 export const primObjResponseBodyValidator = {
   200: { 'application/json': objectWithPrimitivesTypeValidator, 'application/yaml': objectWithPrimitivesTypeValidator },
+} as const
+
+export const primTupleResponseBodyValidator = {
+  200: { 'application/json': primitiveTupleTypeTypeValidator, 'application/yaml': primitiveTupleTypeTypeValidator },
 } as const
 
 export const strArrResponseBodyValidator = {
@@ -935,6 +1109,38 @@ export async function numArr(input: NumArrRequest, configuration: ClientAdapter)
   return response
 }
 
+export async function optPrimTuple(
+  input: OptPrimTupleRequest,
+  configuration: ClientAdapter,
+): Promise<OptPrimTupleResponse> {
+  const requestUrl = await configuration.getUrl('/opt-prim-tuple', undefined)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const requestBody = await configuration.getRequestBody(input)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    optPrimTupleResponseBodyValidator,
+  )
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as OptPrimTupleResponse
+  return response
+}
+
 export async function primObj(input: PrimObjRequest, configuration: ClientAdapter): Promise<PrimObjResponse> {
   const requestUrl = await configuration.getUrl('/prim-obj', undefined)
   const requestHeaders = await configuration.getRequestHeaders(input, undefined)
@@ -961,6 +1167,35 @@ export async function primObj(input: PrimObjRequest, configuration: ClientAdapte
     headers: responseHeaders,
     body: responseBody,
   } as PrimObjResponse
+  return response
+}
+
+export async function primTuple(input: PrimTupleRequest, configuration: ClientAdapter): Promise<PrimTupleResponse> {
+  const requestUrl = await configuration.getUrl('/prim-tuple', undefined)
+  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const requestBody = await configuration.getRequestBody(input)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await configuration.request(rawRequest)
+  const mimeType = await configuration.getMimeType(rawResponse)
+  const statusCode = await configuration.getStatusCode(rawResponse)
+  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await configuration.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    primTupleResponseBodyValidator,
+  )
+  const response = {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as PrimTupleResponse
   return response
 }
 
@@ -1026,7 +1261,9 @@ export type BodiesSdk = {
   nestedObj(input: NestedObjRequest): Promise<NestedObjResponse>
   num(input: NumRequest): Promise<NumResponse>
   numArr(input: NumArrRequest): Promise<NumArrResponse>
+  optPrimTuple(input: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
   primObj(input: PrimObjRequest): Promise<PrimObjResponse>
+  primTuple(input: PrimTupleRequest): Promise<PrimTupleResponse>
   str(input: StrRequest): Promise<StrResponse>
   strArr(input: StrArrRequest): Promise<StrArrResponse>
 }
@@ -1060,8 +1297,14 @@ export class BodiesSdkImpl implements BodiesSdk {
   public async numArr(input: NumArrRequest): Promise<NumArrResponse> {
     return numArr(input, this.config)
   }
+  public async optPrimTuple(input: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
+    return optPrimTuple(input, this.config)
+  }
   public async primObj(input: PrimObjRequest): Promise<PrimObjResponse> {
     return primObj(input, this.config)
+  }
+  public async primTuple(input: PrimTupleRequest): Promise<PrimTupleResponse> {
+    return primTuple(input, this.config)
   }
   public async str(input: StrRequest): Promise<StrResponse> {
     return str(input, this.config)
@@ -1096,8 +1339,14 @@ export class BodiesSdkStub implements BodiesSdk {
   public async numArr(_input: NumArrRequest): Promise<NumArrResponse> {
     throw new Error('Stub method "numArr" called. You should implement this method if you want to use it.')
   }
+  public async optPrimTuple(_input: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
+    throw new Error('Stub method "optPrimTuple" called. You should implement this method if you want to use it.')
+  }
   public async primObj(_input: PrimObjRequest): Promise<PrimObjResponse> {
     throw new Error('Stub method "primObj" called. You should implement this method if you want to use it.')
+  }
+  public async primTuple(_input: PrimTupleRequest): Promise<PrimTupleResponse> {
+    throw new Error('Stub method "primTuple" called. You should implement this method if you want to use it.')
   }
   public async str(_input: StrRequest): Promise<StrResponse> {
     throw new Error('Stub method "str" called. You should implement this method if you want to use it.')

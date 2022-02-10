@@ -11,18 +11,8 @@ export const tuple =
     if (isNil(severity)) {
       return []
     }
-    if (input.length !== validators.length) {
-      return [
-        {
-          type: issueType,
-          message: `should have ${validators.length} items`,
-          path: cfg.path,
-          severity,
-        },
-      ]
-    }
     const issues: Issue[] = []
-    for (let i = 0; i < input.length; i += 1) {
+    for (let i = 0; i < validators.length; i += 1) {
       const validator = validators[i]
       const newIssues = validator(input[i], {
         ...cfg,

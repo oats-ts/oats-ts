@@ -1,8 +1,8 @@
 import { head } from 'lodash'
-import { Expression, BinaryExpression, factory, BinaryOperator } from 'typescript'
+import { Expression, BinaryExpression, factory, LogicalOperator } from 'typescript'
 
 export function getLogicalExpression(
-  operator: BinaryOperator,
+  operator: LogicalOperator,
   expressions: Expression[],
 ): Expression | BinaryExpression {
   switch (expressions.length) {

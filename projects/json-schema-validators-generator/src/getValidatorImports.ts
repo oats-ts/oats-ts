@@ -132,6 +132,23 @@ export function collectArrayTypeImports(
   }
 }
 
+export function collectTupleImports(
+  data: SchemaObject,
+  config: ValidatorsGeneratorConfig,
+  context: JsonSchemaGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+  level: number,
+): void {
+  const { prefixItems = [], minItems = 0 } = data
+  if (minItems < prefixItems.length) {
+    names.add(RuntimePackages.Validators.optional)
+  }
+  names.add(RuntimePackages.Validators.array)
+  names.add(RuntimePackages.Validators.tuple)
+  return prefixItems.forEach((item) => collectImports(item, config, context, names, refs, level))
+}
+
 export function collectImports(
   data: SchemaObject | ReferenceObject,
   config: ValidatorsGeneratorConfig,
@@ -149,6 +166,9 @@ export function collectImports(
     case 'enum':
       names.add(RuntimePackages.Validators.enumeration)
       return
+    case 'literal':
+      names.add(RuntimePackages.Validators.literal)
+      return
     case 'string':
       names.add(RuntimePackages.Validators.string)
       return
@@ -164,6 +184,8 @@ export function collectImports(
       return collectObjectTypeImports(data, config, context, names, refs, level)
     case 'array':
       return collectArrayTypeImports(data, config, context, names, refs, level)
+    case 'tuple':
+      return collectTupleImports(data, config, context, names, refs, level)
     default:
       names.add(RuntimePackages.Validators.any)
       return
