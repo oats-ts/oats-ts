@@ -1,17 +1,47 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { arraySchema, booleanSchema, enumSchema, numberSchema, referenceOf, stringSchema } from '../common/schema'
+import {
+  arraySchema,
+  booleanSchema,
+  enumSchema,
+  literalSchema,
+  numberSchema,
+  referenceOf,
+  stringSchema,
+  tupleSchema,
+} from '../common/schema'
 
 export const registry = {
   EnumType: () => enumSchema,
+  PrimitiveTupleType: () => primitiveTupe,
+  PrimitiveOptionalTupleType: () => optionalPrimitiveTuple,
   ObjectWithArrays: () => objectWithArrays,
   ObjectWithPrimitives: () => objectWithPrimitives,
   ObjectWithNestedObjects: () => objectWithNestedObjects,
 }
 
+const primitiveTupe = tupleSchema(
+  5,
+  literalSchema,
+  stringSchema,
+  numberSchema,
+  referenceOf(enumSchema, registry),
+  booleanSchema,
+)
+
+const optionalPrimitiveTuple = tupleSchema(
+  0,
+  literalSchema,
+  stringSchema,
+  numberSchema,
+  referenceOf(enumSchema, registry),
+  booleanSchema,
+)
+
 const objectWithPrimitives: SchemaObject = {
   type: 'object',
-  required: ['str', 'num', 'enm', 'bool'],
+  required: ['str', 'num', 'enm', 'bool', 'lit'],
   properties: {
+    lit: literalSchema,
     str: stringSchema,
     num: numberSchema,
     enm: referenceOf(enumSchema, registry),
@@ -44,6 +74,8 @@ export const schemas: Record<string, Referenceable<SchemaObject>> = {
   num: numberSchema,
   enm: referenceOf(enumSchema, registry),
   bool: booleanSchema,
+  'prim-tuple': referenceOf(primitiveTupe, registry),
+  'opt-prim-tuple': referenceOf(optionalPrimitiveTuple, registry),
   'str-arr': arraySchema(stringSchema),
   'num-arr': arraySchema(numberSchema),
   'enm-arr': arraySchema(referenceOf(enumSchema, registry)),

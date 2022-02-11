@@ -47,7 +47,7 @@ export const schemaObject = object(
       else: optional(object()),
       contains: optional(object()),
       patternProperties: optional(object(record(string(), object()))),
-      prefixItems: optional(object()),
+      prefixItems: optional(array()),
       propertyNames: optional(object()),
       const: optional(any),
     },

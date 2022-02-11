@@ -1,7 +1,7 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { Expression, factory } from 'typescript'
-import { getArrayTypeAssertionAst } from './getArrayTypeAssertion'
+import { getArrayTypeAssertionAst } from './getArrayTypeAssertionAst'
 import { getEnumAssertionAst } from './getEnumAssertionAst'
 import { getObjectTypeAssertionAst } from './getObjectTypeAssertionAst'
 import { getPrimitiveTypeAssertionAst } from './getPrimitiveTypeAssertionAst'
@@ -10,6 +10,8 @@ import { getReferenceAssertionAst } from './getReferenceAssertionAst'
 import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
 import { FullTypeGuardGeneratorConfig } from './typings'
 import { isReferenceObject } from '@oats-ts/model-common'
+import { getLiteralTypeAssertionAst } from './getLiteralTypeAssertionAst'
+import { getTupleTypeAssertionAst } from './getTupleTypeAssertionAst'
 
 export function getTypeAssertionAst(
   data: SchemaObject | ReferenceObject,
@@ -27,6 +29,8 @@ export function getTypeAssertionAst(
       return getUnionTypeAssertionAst(data, context, variable, config, level)
     case 'enum':
       return getEnumAssertionAst(data, context, variable, config)
+    case 'literal':
+      return getLiteralTypeAssertionAst(data, context, variable, config)
     case 'string':
     case 'number':
     case 'boolean':
@@ -37,6 +41,8 @@ export function getTypeAssertionAst(
       return getObjectTypeAssertionAst(data, context, variable, config, level)
     case 'array':
       return getArrayTypeAssertionAst(data, context, variable, config, level)
+    case 'tuple':
+      return getTupleTypeAssertionAst(data, context, variable, config, level)
     default:
       return factory.createTrue()
   }

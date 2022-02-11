@@ -8,6 +8,6 @@ export const pathLabelArray =
   (name: string, data?: T): Try<string> => {
     return fluent(getPathValue(name, data, options))
       .flatMap((pathValue) => validatePathArray(name, pathValue))
-      .map((value) => joinArrayItems('.', options.explode ? '.' : ',', value, options.explode))
+      .map((value) => joinArrayItems('.', options.explode ? '.' : ',', value))
       .toJson()
   }

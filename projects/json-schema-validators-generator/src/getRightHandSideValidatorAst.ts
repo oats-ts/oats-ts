@@ -10,6 +10,9 @@ import { getUnionTypeValidatorAst } from './getUnionTypeValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 import { getLiteralAst } from '@oats-ts/typescript-common'
 import { getArrayValidatorAst } from './getArrayValidatorAst'
+import { getEnumValidatorAst } from './getEnumValidatorAst'
+import { getLiteralValidatorAst } from './getLiteralValidatorAst'
+import { getTupleValidatorAst } from './getTupleValidatorAst'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
@@ -24,11 +27,7 @@ export function getRightHandSideValidatorAst(
     case 'union':
       return getUnionTypeValidatorAst(data, context, config, level)
     case 'enum':
-      return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.enumeration),
-        [],
-        [factory.createArrayLiteralExpression(data.enum.map((value) => getLiteralAst(value)))],
-      )
+      return getEnumValidatorAst(data, context, config)
     case 'string':
       return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.string), [], [])
     case 'number':
@@ -41,6 +40,10 @@ export function getRightHandSideValidatorAst(
       return getObjectValidatorAst(data, context, config, level)
     case 'array':
       return getArrayValidatorAst(data, context, config, level)
+    case 'literal':
+      return getLiteralValidatorAst(data, context, config)
+    case 'tuple':
+      return getTupleValidatorAst(data, context, config, level)
     default:
       return factory.createIdentifier(RuntimePackages.Validators.any)
   }

@@ -9,6 +9,8 @@ import { TypesGeneratorConfig } from './typings'
 import { getIntersectionTypeAst } from './getIntersectionTypeAst'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { getTupleTypeAst } from './getTupleTypeAst'
+import { getConstantTypeAst } from './getConstantTypeAst'
 
 export function getRighthandSideTypeAst(
   data: Referenceable<SchemaObject>,
@@ -30,6 +32,10 @@ export function getRighthandSideTypeAst(
       return getUnionTypeAst(data as SchemaObject, context, config)
     case 'intersection':
       return getIntersectionTypeAst(data as SchemaObject, context, config)
+    case 'literal':
+      return getConstantTypeAst(data as SchemaObject, context)
+    case 'tuple':
+      return getTupleTypeAst(data as SchemaObject, context, config)
     case 'string':
       return factory.createKeywordTypeNode(SyntaxKind.StringKeyword)
     case 'boolean':

@@ -5,6 +5,8 @@ import {
   randomObjectWithArrays,
   randomObjectWithNestedObjects,
   randomObjectWithPrimitives,
+  randomOptionalTuple,
+  randomTuple,
 } from './bodies.testdata'
 import { arrayOf } from '../common/testData'
 import { testBodiesServer } from '../servers'
@@ -17,7 +19,7 @@ describe('Request and Response bodies', () => {
   describe.each(configs)(`%s mime type`, (mimeType) => {
     testBodiesServer(mimeType)
     const sdk = bodiesSdk(mimeType)
-    const repeats = range(1, REPEATS)
+    const repeats = range(1, REPEATS + 1)
     it.each(repeats)('(#%d) string', async () => {
       const body = datatype.string(10)
       const response = await sdk.str({ body, mimeType })
@@ -71,6 +73,16 @@ describe('Request and Response bodies', () => {
     it.each(repeats)('(#%d) object (nested)', async () => {
       const body = randomObjectWithNestedObjects()
       const response = await sdk.nestedObj({ body, mimeType })
+      expect(response.body).toEqual(body)
+    })
+    it.each(repeats)('(#%d) tuple (primitives)', async () => {
+      const body = randomTuple()
+      const response = await sdk.primTuple({ body, mimeType })
+      expect(response.body).toEqual(body)
+    })
+    it.each(repeats)('(#%d) tuple (primitives, optional)', async () => {
+      const body = randomOptionalTuple()
+      const response = await sdk.optPrimTuple({ body, mimeType })
       expect(response.body).toEqual(body)
     })
   })

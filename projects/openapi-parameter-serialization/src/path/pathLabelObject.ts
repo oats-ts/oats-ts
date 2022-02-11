@@ -12,7 +12,7 @@ export const pathLabelObject =
       .map((value) => {
         const kvSeparator = options.explode ? '=' : ','
         const separator = options.explode ? '.' : ','
-        return joinKeyValuePairs('.', kvSeparator, separator, entries(value), true)
+        return joinKeyValuePairs('.', kvSeparator, separator, entries(value))
       })
       .toJson()
   }

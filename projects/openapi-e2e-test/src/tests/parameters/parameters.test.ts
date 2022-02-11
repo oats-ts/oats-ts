@@ -12,7 +12,7 @@ import { REPEATS } from '../constants'
 
 describe('Parameters', () => {
   testParametersServer()
-  const repeats = range(1, REPEATS)
+  const repeats = range(1, REPEATS + 1)
   describe('path', () => {
     describe('simple', () => {
       it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {

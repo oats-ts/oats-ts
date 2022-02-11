@@ -14,6 +14,50 @@
           "C"
         ]
       },
+      "PrimitiveTupleType": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string",
+            "const": "Literal Value"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "$ref": "#/components/schemas/EnumType"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "minItems": 5
+      },
+      "PrimitiveOptionalTupleType": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string",
+            "const": "Literal Value"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          },
+          {
+            "$ref": "#/components/schemas/EnumType"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "minItems": 0
+      },
       "ObjectWithArrays": {
         "type": "object",
         "required": [
@@ -55,9 +99,14 @@
           "str",
           "num",
           "enm",
-          "bool"
+          "bool",
+          "lit"
         ],
         "properties": {
+          "lit": {
+            "type": "string",
+            "const": "Literal Value"
+          },
           "str": {
             "type": "string"
           },
@@ -227,6 +276,78 @@
               "application/yaml": {
                 "schema": {
                   "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prim-tuple": {
+      "post": {
+        "operationId": "primTuple",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrimitiveTupleType"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/PrimitiveTupleType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for content prim-tuple.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrimitiveTupleType"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrimitiveTupleType"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/opt-prim-tuple": {
+      "post": {
+        "operationId": "optPrimTuple",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrimitiveOptionalTupleType"
+              }
+            },
+            "application/yaml": {
+              "schema": {
+                "$ref": "#/components/schemas/PrimitiveOptionalTupleType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response for content opt-prim-tuple.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrimitiveOptionalTupleType"
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrimitiveOptionalTupleType"
                 }
               }
             }
