@@ -1,5 +1,5 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { factory, CallExpression, Identifier } from 'typescript'
+import { factory, CallExpression, Identifier, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { safeName } from '@oats-ts/typescript-common'
 import { getJsonLiteralValidatorAst } from './getJsonLiteralValidatorAst'
@@ -17,8 +17,11 @@ function keyOf(value: any) {
   return safeName(JSON.stringify(value))
 }
 
-export function getEnumValidatorAst(data: SchemaObject): CallExpression | Identifier {
+export function getEnumValidatorAst(data: SchemaObject): Expression {
   const { enum: values = [] } = data
+  if (values.length === 1) {
+    return getJsonLiteralValidatorAst(values[0])
+  }
   const properties = values.map((value) =>
     factory.createPropertyAssignment(keyOf(value), getJsonLiteralValidatorAst(value)),
   )
