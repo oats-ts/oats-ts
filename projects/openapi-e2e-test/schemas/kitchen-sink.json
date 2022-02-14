@@ -6,6 +6,37 @@
   },
   "components": {
     "schemas": {
+      "SingleValueEnums": {
+        "type": "object",
+        "required": [
+          "str",
+          "obj"
+        ],
+        "properties": {
+          "str": {
+            "enum": [
+              "A"
+            ]
+          },
+          "num": {
+            "enum": [
+              1
+            ]
+          },
+          "bool": {
+            "enum": [
+              true
+            ]
+          },
+          "obj": {
+            "enum": [
+              {
+                "asd": "foo"
+              }
+            ]
+          }
+        }
+      },
       "ObjectEnum": {
         "enum": [
           null,

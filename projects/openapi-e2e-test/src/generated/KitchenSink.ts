@@ -34,6 +34,15 @@ export type ObjectEnum =
 
 export type PrimitiveTuple = [number, string, boolean?, 'hello'?]
 
+export type SingleValueEnums = {
+  bool?: true
+  num?: 1
+  obj: {
+    asd: 'foo'
+  }
+  str: 'A'
+}
+
 export const objectConstTypeValidator = object(
   shape({
     null: literal(null),
@@ -61,6 +70,15 @@ export const objectEnumTypeValidator = union({
 
 export const primitiveTupleTypeValidator = array(
   tuple(number(), string(), optional(boolean()), optional(literal('hello'))),
+)
+
+export const singleValueEnumsTypeValidator = object(
+  shape({
+    bool: optional(literal(true)),
+    num: optional(literal(1)),
+    obj: object(shape({ asd: literal('foo') })),
+    str: literal('A'),
+  }),
 )
 
 export function isObjectConst(input: any): input is ObjectConst {
@@ -107,5 +125,18 @@ export function isPrimitiveTuple(input: any): input is PrimitiveTuple {
     typeof input[1] === 'string' &&
     (input[2] === null || input[2] === undefined || typeof input[2] === 'boolean') &&
     (input[3] === null || input[3] === undefined || input[3] === 'hello')
+  )
+}
+
+export function isSingleValueEnums(input: any): input is SingleValueEnums {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    (input.bool === null || input.bool === undefined || input.bool === true) &&
+    (input.num === null || input.num === undefined || input.num === 1) &&
+    typeof input.obj === 'object' &&
+    typeof input.obj !== null &&
+    input.obj.asd === 'foo' &&
+    input.str === 'A'
   )
 }
