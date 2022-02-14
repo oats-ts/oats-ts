@@ -4,6 +4,7 @@ import { GeneratorModel } from './GeneratorModel'
 import { generateHttpMethodsOpenApiObject } from './methods/generateHttpMethodsOpenApiObject'
 import { generateParametersOpenApiObject } from './parameters/generateParametersOpenApiObject'
 import bookStore from '../../schemas/book-store.json'
+import kitchenSink from '../../schemas/kitchen-sink.json'
 
 export const models: GeneratorModel[] = [
   {
@@ -29,5 +30,11 @@ export const models: GeneratorModel[] = [
     sourcePath: 'src/generated/BookStore.ts',
     alternativePath: 'src/generated/bookStore',
     schema: () => bookStore as OpenAPIObject,
+  },
+  {
+    schemaPath: 'schemas/kitchen-sink.json',
+    sourcePath: 'src/generated/KitchenSink.ts',
+    alternativePath: 'src/generated/kitchenSink',
+    schema: () => kitchenSink as OpenAPIObject,
   },
 ]

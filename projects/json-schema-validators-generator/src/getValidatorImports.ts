@@ -149,6 +149,20 @@ export function collectTupleImports(
   return prefixItems.forEach((item) => collectImports(item, config, context, names, refs, level))
 }
 
+export function collectLiteralImports(data: any, names: Set<string>): void {
+  if (data === null || typeof data === 'number' || typeof data === 'boolean' || typeof data === 'string') {
+    names.add(RuntimePackages.Validators.literal)
+  } else if (Array.isArray(data)) {
+    names.add(RuntimePackages.Validators.array).add(RuntimePackages.Validators.tuple)
+    data.forEach((item: any) => collectLiteralImports(item, names))
+  } else if (typeof data === 'object') {
+    names.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
+    values(data).forEach((item) => collectLiteralImports(item, names))
+  } else {
+    names.add(RuntimePackages.Validators.any)
+  }
+}
+
 export function collectImports(
   data: SchemaObject | ReferenceObject,
   config: ValidatorsGeneratorConfig,
@@ -164,10 +178,11 @@ export function collectImports(
     case 'union':
       return collectUnionImports(data, config, context, names, refs, level)
     case 'enum':
-      names.add(RuntimePackages.Validators.enumeration)
+      names.add(RuntimePackages.Validators.union)
+      data.enum.forEach((value) => collectLiteralImports(value, names))
       return
     case 'literal':
-      names.add(RuntimePackages.Validators.literal)
+      collectLiteralImports(data.const, names)
       return
     case 'string':
       names.add(RuntimePackages.Validators.string)

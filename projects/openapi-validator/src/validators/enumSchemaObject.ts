@@ -20,8 +20,7 @@ const validator = object(
   combine([
     shape<SchemaObject>(
       {
-        type: optional(enumeration<SchemaObject['type']>(['integer', 'number', 'string'])),
-        enum: array(combine([minLength(1), items(string())])),
+        enum: array(minLength(1)),
       },
       true,
     ),

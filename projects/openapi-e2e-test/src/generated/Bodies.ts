@@ -11,7 +11,6 @@ import { Try } from '@oats-ts/try'
 import {
   array,
   boolean,
-  enumeration,
   items,
   lazy,
   literal,
@@ -21,6 +20,7 @@ import {
   shape,
   string,
   tuple,
+  union,
 } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
@@ -50,7 +50,11 @@ export type PrimitiveOptionalTupleType = ['Literal Value'?, string?, number?, En
 
 export type PrimitiveTupleType = ['Literal Value', string, number, EnumType, boolean]
 
-export const enumTypeTypeValidator = enumeration(['A', 'B', 'C'])
+export const enumTypeTypeValidator = union({
+  A: literal('A'),
+  B: literal('B'),
+  C: literal('C'),
+})
 
 export const objectWithArraysTypeValidator = object(
   shape({

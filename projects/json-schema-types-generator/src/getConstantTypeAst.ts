@@ -1,8 +1,8 @@
-import { factory, TypeNode } from 'typescript'
+import { TypeNode } from 'typescript'
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { getLiteralAst } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { getJsonLiteralTypeAst } from './getJsonLiteralTypeAst'
 
 export function getConstantTypeAst(data: SchemaObject, context: JsonSchemaGeneratorContext): TypeNode {
-  return factory.createLiteralTypeNode(getLiteralAst(data.const))
+  return getJsonLiteralTypeAst(data.const)
 }

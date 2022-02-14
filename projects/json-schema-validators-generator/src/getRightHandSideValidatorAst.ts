@@ -1,6 +1,6 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/model-common'
-import { factory, CallExpression, Identifier } from 'typescript'
+import { factory, CallExpression, Identifier, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { getObjectValidatorAst } from './getObjectValidatorAst'
@@ -19,7 +19,7 @@ export function getRightHandSideValidatorAst(
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
   level: number,
-): CallExpression | Identifier {
+): Expression {
   if (isReferenceObject(data)) {
     return getReferenceValidatorAst(data, context, config, level)
   }
@@ -27,7 +27,7 @@ export function getRightHandSideValidatorAst(
     case 'union':
       return getUnionTypeValidatorAst(data, context, config, level)
     case 'enum':
-      return getEnumValidatorAst(data, context, config)
+      return getEnumValidatorAst(data)
     case 'string':
       return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.string), [], [])
     case 'number':
@@ -41,7 +41,7 @@ export function getRightHandSideValidatorAst(
     case 'array':
       return getArrayValidatorAst(data, context, config, level)
     case 'literal':
-      return getLiteralValidatorAst(data, context, config)
+      return getLiteralValidatorAst(data)
     case 'tuple':
       return getTupleValidatorAst(data, context, config, level)
     default:

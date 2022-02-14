@@ -1,0 +1,73 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Kitchen sink",
+    "version": "1.0"
+  },
+  "components": {
+    "schemas": {
+      "ObjectEnum": {
+        "enum": [
+          null,
+          "foo",
+          "bar",
+          2,
+          3,
+          false,
+          true,
+          {
+            "foo": "bar"
+          },
+          {
+            "bar": "foo"
+          },
+          [
+            "cat",
+            1
+          ],
+          {
+            "barfoo": "fooo"
+          }
+        ]
+      },
+      "ObjectConst": {
+        "const": {
+          "null": null,
+          "str": "bar",
+          "num": 12,
+          "bool": false,
+          "array": [
+            1,
+            "asd",
+            true
+          ],
+          "nested": {
+            "secondLevel": {
+              "thirdLevel": {}
+            }
+          }
+        }
+      },
+      "PrimitiveTuple": {
+        "type": "array",
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "boolean"
+          },
+          {
+            "type": "string",
+            "const": "hello"
+          }
+        ]
+      }
+    }
+  },
+  "paths": {}
+}

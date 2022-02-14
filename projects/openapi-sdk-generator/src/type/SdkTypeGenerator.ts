@@ -7,6 +7,7 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  EnhancedOperation,
 } from '@oats-ts/openapi-common'
 import { generateSdkType } from './generateSdkType'
 import { SdkGeneratorConfig } from '../typings'
@@ -19,6 +20,7 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
   public static id = 'openapi/sdk-type'
 
   private context: OpenAPIGeneratorContext = null
+  private operations: EnhancedOperation[] = []
   private sdkConfig: SdkGeneratorConfig
 
   public readonly id = 'openapi/sdk-type'
@@ -39,10 +41,13 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, sdkConfig } = this
     const { document, nameOf } = context
-    const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
+    this.operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),
     )
-    const data: TypeScriptModule[] = mergeTypeScriptModules([generateSdkType(document, operations, context, sdkConfig)])
+    const data: TypeScriptModule[] =
+      this.operations.length > 0
+        ? mergeTypeScriptModules([generateSdkType(document, this.operations, context, sdkConfig)])
+        : []
 
     return {
       isOk: true,
@@ -54,11 +59,11 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
   public referenceOf(input: OpenAPIObject): TypeNode | Expression {
     const { context } = this
     const { nameOf } = context
-    return factory.createTypeReferenceNode(nameOf(input, this.id))
+    return this.operations.length > 0 ? factory.createTypeReferenceNode(nameOf(input, this.id)) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return this.operations.length > 0 ? getModelImports(fromPath, this.id, [input], context) : []
   }
 }
