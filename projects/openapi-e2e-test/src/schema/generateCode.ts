@@ -21,9 +21,7 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
     reader: reader({ path: schemaPath }),
     generators: presets.fullStack({
       'json-schema/type-guard': {
-        arrays: true,
-        records: true,
-        references: true,
+        ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
       },
       'json-schema/type-validator': {
         arrays: true,

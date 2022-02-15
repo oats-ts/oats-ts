@@ -1,16 +1,23 @@
 import {
   array,
   boolean,
+  items,
   lazy,
   literal,
   number,
   object,
   optional,
+  record,
   shape,
   string,
   tuple,
   union,
 } from '@oats-ts/validators'
+
+export type IgnoredInternals = {
+  additionalProps?: Record<string, string>
+  arrayItems?: string[]
+}
 
 export type Leaf1 = {
   midType: 'Leaf1'
@@ -82,6 +89,13 @@ export type TupleMessage2 = [
     bar?: string
   },
 ]
+
+export const ignoredInternalsTypeValidator = object(
+  shape({
+    additionalProps: optional(object(record(string(), string()))),
+    arrayItems: optional(array(items(string()))),
+  }),
+)
 
 export const leaf1TypeValidator = object(
   shape({
@@ -157,6 +171,17 @@ export const tupleMessageTypeValidator = union({
   TupleMessage1: lazy(() => tupleMessage1TypeValidator),
   TupleMessage2: lazy(() => tupleMessage2TypeValidator),
 })
+
+export function isIgnoredInternals(input: any): input is IgnoredInternals {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    (input.additionalProps === null ||
+      input.additionalProps === undefined ||
+      (input.additionalProps !== null && typeof input.additionalProps === 'object')) &&
+    (input.arrayItems === null || input.arrayItems === undefined || Array.isArray(input.arrayItems))
+  )
+}
 
 export function isLeaf1(input: any): input is Leaf1 {
   return (

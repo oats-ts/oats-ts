@@ -191,6 +191,25 @@
             "$ref": "#/components/schemas/Leaf3"
           }
         ]
+      },
+      "IgnoredInternals": {
+        "type": "object",
+        "properties": {
+          "arrayItems": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "x-ignore-validation": true
+            }
+          },
+          "additionalProps": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "x-ignore-validation": true
+            }
+          }
+        }
       }
     }
   },
