@@ -1,36 +1,24 @@
-import { isNil, values } from 'lodash'
-import { SchemaObject } from '@oats-ts/json-schema-model'
-import { factory, CallExpression, Identifier, PropertyAssignment } from 'typescript'
-import { getPrimitiveType, PrimitiveTypes, RuntimePackages } from '@oats-ts/model-common'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { factory, CallExpression, Identifier } from 'typescript'
+import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
-import { getReferenceValidatorAst } from './getReferenceValidatorAst'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { safeName } from '@oats-ts/typescript-common'
 
-function getUnionProperties(
-  data: SchemaObject,
-  context: JsonSchemaGeneratorContext,
-  config: ValidatorsGeneratorConfig,
-  level: number,
-): PropertyAssignment[] {
+function getSchemaKey(data: Referenceable<SchemaObject>, index: number, context: JsonSchemaGeneratorContext): string {
   const { dereference, nameOf } = context
-  if (isNil(data.discriminator)) {
-    return data.oneOf.map((schemaOrRef) => {
-      const schema = dereference(schemaOrRef)
-      const rightHandSide =
-        PrimitiveTypes.indexOf(schema.type) >= 0
-          ? getRightHandSideValidatorAst(schema, context, config, level)
-          : factory.createIdentifier('any')
-      return factory.createPropertyAssignment(getPrimitiveType(schema), rightHandSide)
-    })
+  const type = getInferredType(data)
+  switch (type) {
+    case 'string':
+    case 'number':
+    case 'boolean':
+      return type
+    case 'ref':
+      return nameOf(dereference(data), 'json-schema/type')
+    default:
+      return `${type}${index}`
   }
-  const discriminators = values(data.discriminator.mapping || {})
-  return discriminators.map(($ref) => {
-    return factory.createPropertyAssignment(
-      factory.createIdentifier(nameOf(dereference($ref), 'json-schema/type')),
-      getReferenceValidatorAst({ $ref }, context, config, level),
-    )
-  })
 }
 
 export function getUnionTypeValidatorAst(
@@ -42,7 +30,12 @@ export function getUnionTypeValidatorAst(
   if (!config.references && level > 0) {
     return factory.createIdentifier(RuntimePackages.Validators.any)
   }
-  const properties = getUnionProperties(data, context, config, level)
+  const properties = (data.oneOf || []).map((item, index) =>
+    factory.createPropertyAssignment(
+      safeName(getSchemaKey(item, index, context)),
+      getRightHandSideValidatorAst(item, context, config, level),
+    ),
+  )
   const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
   return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.union), [], [parameters])
 }

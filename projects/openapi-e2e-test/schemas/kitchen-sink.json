@@ -40,25 +40,15 @@
       "ObjectEnum": {
         "enum": [
           null,
-          "foo",
           "bar",
-          2,
           3,
-          false,
           true,
           {
             "foo": "bar"
           },
-          {
-            "bar": "foo"
-          },
           [
-            "cat",
-            1
-          ],
-          {
-            "barfoo": "fooo"
-          }
+            "cat"
+          ]
         ]
       },
       "ObjectConst": {
@@ -95,6 +85,110 @@
           {
             "type": "string",
             "const": "hello"
+          }
+        ]
+      },
+      "TupleMessage1": {
+        "type": "array",
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string",
+            "const": "message-1"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "foo": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "TupleMessage2": {
+        "type": "array",
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "string",
+            "const": "message-2"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "bar": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "TupleMessage": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/TupleMessage1"
+          },
+          {
+            "$ref": "#/components/schemas/TupleMessage2"
+          }
+        ]
+      },
+      "Leaf1": {
+        "type": "object",
+        "properties": {
+          "leaf1": {
+            "const": true
+          }
+        }
+      },
+      "Leaf2": {
+        "type": "object",
+        "properties": {
+          "leaf2": {
+            "const": true
+          }
+        }
+      },
+      "Leaf3": {
+        "type": "object",
+        "properties": {
+          "leaf3": {
+            "const": true
+          }
+        }
+      },
+      "Mid": {
+        "discriminator": {
+          "propertyName": "midType",
+          "mapping": {
+            "Leaf1": "#/components/schemas/Leaf1",
+            "Leaf2": "#/components/schemas/Leaf2"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Leaf1"
+          },
+          {
+            "$ref": "#/components/schemas/Leaf2"
+          }
+        ]
+      },
+      "Top": {
+        "discriminator": {
+          "propertyName": "topType",
+          "mapping": {
+            "Mid": "#/components/schemas/Mid",
+            "Leaf3": "#/components/schemas/Leaf3"
+          }
+        },
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Mid"
+          },
+          {
+            "$ref": "#/components/schemas/Leaf3"
           }
         ]
       }

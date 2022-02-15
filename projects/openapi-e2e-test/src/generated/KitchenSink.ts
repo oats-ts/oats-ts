@@ -1,4 +1,35 @@
-import { array, boolean, literal, number, object, optional, shape, string, tuple, union } from '@oats-ts/validators'
+import {
+  array,
+  boolean,
+  lazy,
+  literal,
+  number,
+  object,
+  optional,
+  shape,
+  string,
+  tuple,
+  union,
+} from '@oats-ts/validators'
+
+export type Leaf1 = {
+  midType: 'Leaf1'
+  topType: 'Mid'
+  leaf1?: true
+}
+
+export type Leaf2 = {
+  midType: 'Leaf2'
+  topType: 'Mid'
+  leaf2?: true
+}
+
+export type Leaf3 = {
+  topType: 'Leaf3'
+  leaf3?: true
+}
+
+export type Mid = Leaf1 | Leaf2
 
 export type ObjectConst = {
   null: null
@@ -15,22 +46,13 @@ export type ObjectConst = {
 
 export type ObjectEnum =
   | null
-  | 'foo'
   | 'bar'
-  | 2
   | 3
-  | false
   | true
   | {
       foo: 'bar'
     }
-  | {
-      bar: 'foo'
-    }
-  | ['cat', 1]
-  | {
-      barfoo: 'fooo'
-    }
+  | ['cat']
 
 export type PrimitiveTuple = [number, string, boolean?, 'hello'?]
 
@@ -42,6 +64,52 @@ export type SingleValueEnums = {
   }
   str: 'A'
 }
+
+export type Top = Mid | Leaf3
+
+export type TupleMessage = TupleMessage1 | TupleMessage2
+
+export type TupleMessage1 = [
+  'message-1',
+  {
+    foo?: string
+  },
+]
+
+export type TupleMessage2 = [
+  'message-2',
+  {
+    bar?: string
+  },
+]
+
+export const leaf1TypeValidator = object(
+  shape({
+    midType: literal('Leaf1'),
+    topType: literal('Mid'),
+    leaf1: optional(literal(true)),
+  }),
+)
+
+export const leaf2TypeValidator = object(
+  shape({
+    midType: literal('Leaf2'),
+    topType: literal('Mid'),
+    leaf2: optional(literal(true)),
+  }),
+)
+
+export const leaf3TypeValidator = object(
+  shape({
+    topType: literal('Leaf3'),
+    leaf3: optional(literal(true)),
+  }),
+)
+
+export const midTypeValidator = union({
+  Leaf1: lazy(() => leaf1TypeValidator),
+  Leaf2: lazy(() => leaf2TypeValidator),
+})
 
 export const objectConstTypeValidator = object(
   shape({
@@ -56,16 +124,11 @@ export const objectConstTypeValidator = object(
 
 export const objectEnumTypeValidator = union({
   null: literal(null),
-  foo: literal('foo'),
   bar: literal('bar'),
-  '2': literal(2),
   '3': literal(3),
-  false: literal(false),
   true: literal(true),
   '{"foo":"bar"}': object(shape({ foo: literal('bar') })),
-  '{"bar":"foo"}': object(shape({ bar: literal('foo') })),
-  '["cat",1]': array(tuple(literal('cat'), literal(1))),
-  '{"barfoo":"fooo"}': object(shape({ barfoo: literal('fooo') })),
+  '["cat"]': array(tuple(literal('cat'))),
 })
 
 export const primitiveTupleTypeValidator = array(
@@ -80,6 +143,53 @@ export const singleValueEnumsTypeValidator = object(
     str: literal('A'),
   }),
 )
+
+export const topTypeValidator = union({
+  Mid: lazy(() => midTypeValidator),
+  Leaf3: lazy(() => leaf3TypeValidator),
+})
+
+export const tupleMessage1TypeValidator = array(tuple(literal('message-1'), object(shape({ foo: optional(string()) }))))
+
+export const tupleMessage2TypeValidator = array(tuple(literal('message-2'), object(shape({ bar: optional(string()) }))))
+
+export const tupleMessageTypeValidator = union({
+  TupleMessage1: lazy(() => tupleMessage1TypeValidator),
+  TupleMessage2: lazy(() => tupleMessage2TypeValidator),
+})
+
+export function isLeaf1(input: any): input is Leaf1 {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    input.midType === 'Leaf1' &&
+    input.topType === 'Mid' &&
+    (input.leaf1 === null || input.leaf1 === undefined || input.leaf1 === true)
+  )
+}
+
+export function isLeaf2(input: any): input is Leaf2 {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    input.midType === 'Leaf2' &&
+    input.topType === 'Mid' &&
+    (input.leaf2 === null || input.leaf2 === undefined || input.leaf2 === true)
+  )
+}
+
+export function isLeaf3(input: any): input is Leaf3 {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    input.topType === 'Leaf3' &&
+    (input.leaf3 === null || input.leaf3 === undefined || input.leaf3 === true)
+  )
+}
+
+export function isMid(input: any): input is Mid {
+  return isLeaf1(input) || isLeaf2(input)
+}
 
 export function isObjectConst(input: any): input is ObjectConst {
   return (
@@ -105,16 +215,11 @@ export function isObjectConst(input: any): input is ObjectConst {
 export function isObjectEnum(input: any): input is ObjectEnum {
   return (
     input === null ||
-    input === 'foo' ||
     input === 'bar' ||
-    input === 2 ||
     input === 3 ||
-    input === false ||
     input === true ||
     (typeof input === 'object' && typeof input !== null && input.foo === 'bar') ||
-    (typeof input === 'object' && typeof input !== null && input.bar === 'foo') ||
-    (Array.isArray(input) && input[0] === 'cat' && input[1] === 1) ||
-    (typeof input === 'object' && typeof input !== null && input.barfoo === 'fooo')
+    (Array.isArray(input) && input[0] === 'cat')
   )
 }
 
@@ -138,5 +243,33 @@ export function isSingleValueEnums(input: any): input is SingleValueEnums {
     typeof input.obj !== null &&
     input.obj.asd === 'foo' &&
     input.str === 'A'
+  )
+}
+
+export function isTop(input: any): input is Top {
+  return isMid(input) || isLeaf3(input)
+}
+
+export function isTupleMessage(input: any): input is TupleMessage {
+  return isTupleMessage1(input) || isTupleMessage2(input)
+}
+
+export function isTupleMessage1(input: any): input is TupleMessage1 {
+  return (
+    Array.isArray(input) &&
+    input[0] === 'message-1' &&
+    input[1] !== null &&
+    typeof input[1] === 'object' &&
+    (input[1].foo === null || input[1].foo === undefined || typeof input[1].foo === 'string')
+  )
+}
+
+export function isTupleMessage2(input: any): input is TupleMessage2 {
+  return (
+    Array.isArray(input) &&
+    input[0] === 'message-2' &&
+    input[1] !== null &&
+    typeof input[1] === 'object' &&
+    (input[1].bar === null || input[1].bar === undefined || typeof input[1].bar === 'string')
   )
 }
