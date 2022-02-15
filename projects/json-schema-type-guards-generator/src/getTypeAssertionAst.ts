@@ -1,4 +1,4 @@
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { Expression, factory } from 'typescript'
 import { getArrayTypeAssertionAst } from './getArrayTypeAssertionAst'
@@ -8,18 +8,25 @@ import { getPrimitiveTypeAssertionAst } from './getPrimitiveTypeAssertionAst'
 import { getRecordTypeAssertionAst } from './getRecordTypeAssertionAst'
 import { getReferenceAssertionAst } from './getReferenceAssertionAst'
 import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig } from './typings'
+import { TypeGuardGeneratorConfig } from './typings'
 import { isReferenceObject } from '@oats-ts/model-common'
 import { getLiteralTypeAssertionAst } from './getLiteralTypeAssertionAst'
 import { getTupleTypeAssertionAst } from './getTupleTypeAssertionAst'
 
 export function getTypeAssertionAst(
-  data: SchemaObject | ReferenceObject,
+  data: Referenceable<SchemaObject>,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
-  config: FullTypeGuardGeneratorConfig,
+  config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
+  const { uriOf } = context
+  if (config.ignore(data, uriOf(data))) {
+    // If a top level schema is ignored, he type guard will always return false.
+    // Otherwise the generated expression is true, meaning it's ignored.
+    return level === 0 ? factory.createFalse() : factory.createTrue()
+  }
+
   if (isReferenceObject(data)) {
     return getReferenceAssertionAst(data, context, variable, config, level)
   }

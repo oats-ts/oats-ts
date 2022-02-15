@@ -1,7 +1,7 @@
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { CallExpression, Expression, factory, SyntaxKind, TrueLiteral } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig } from './typings'
+import { TypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
@@ -9,7 +9,7 @@ function getRecordItemsAsserterAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
-  config: FullTypeGuardGeneratorConfig,
+  config: TypeGuardGeneratorConfig,
   level: number,
 ): CallExpression | TrueLiteral {
   const itemAssertion = getTypeAssertionAst(
@@ -51,9 +51,12 @@ export function getRecordTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
-  config: FullTypeGuardGeneratorConfig,
+  config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
+  const { uriOf } = context
+  const propsSchema = data.additionalProperties as Referenceable<SchemaObject>
+  const propsUri = uriOf(propsSchema)
   const expressions: Expression[] = [
     factory.createBinaryExpression(variable, SyntaxKind.ExclamationEqualsEqualsToken, factory.createNull()),
     factory.createBinaryExpression(
@@ -61,7 +64,9 @@ export function getRecordTypeAssertionAst(
       SyntaxKind.EqualsEqualsEqualsToken,
       factory.createStringLiteral('object'),
     ),
-    ...(config.records ? [getRecordItemsAsserterAst(data, context, variable, config, level)] : []),
+    ...(config.ignore(propsSchema, propsUri)
+      ? [getRecordItemsAsserterAst(data, context, variable, config, level)]
+      : []),
   ]
   return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
 }

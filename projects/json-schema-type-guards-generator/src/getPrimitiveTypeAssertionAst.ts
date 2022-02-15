@@ -1,14 +1,14 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { getPrimitiveType } from '@oats-ts/model-common'
-import { FullTypeGuardGeneratorConfig } from './typings'
+import { TypeGuardGeneratorConfig } from './typings'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common/lib/types'
 
 export function getPrimitiveTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
-  config: FullTypeGuardGeneratorConfig,
+  config: TypeGuardGeneratorConfig,
 ): Expression {
   return factory.createBinaryExpression(
     factory.createTypeOfExpression(variable),
