@@ -1,4 +1,4 @@
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/model-common'
 import { isEmpty, entries, isNil, sortBy, values } from 'lodash'
 import { getDiscriminators, RuntimePackages } from '@oats-ts/model-common'
@@ -9,7 +9,7 @@ import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common/lib/types'
 
 export type ImportCollector = (
-  data: SchemaObject | ReferenceObject,
+  data: Referenceable<SchemaObject>,
   config: ValidatorsGeneratorConfig,
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
@@ -18,7 +18,7 @@ export type ImportCollector = (
 ) => void
 
 export function collectExternalReferenceImports(
-  data: SchemaObject | ReferenceObject,
+  data: Referenceable<SchemaObject>,
   config: ValidatorsGeneratorConfig,
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
@@ -43,16 +43,12 @@ export function collectReferenceImports(
   level: number,
 ): void {
   const { nameOf, dereference } = context
-  if (!config.references && level > 0) {
-    names.add(RuntimePackages.Validators.any)
+  const schema = dereference(data)
+  if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
+    names.add(RuntimePackages.Validators.lazy)
+    refs.add(data.$ref)
   } else {
-    const schema = dereference(data)
-    if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
-      names.add(RuntimePackages.Validators.lazy)
-      refs.add(data.$ref)
-    } else {
-      collectImports(schema, config, context, names, refs, level + 1)
-    }
+    collectImports(schema, config, context, names, refs, level + 1)
   }
 }
 
@@ -88,10 +84,11 @@ export function collectRecordImports(
   level: number,
 ): void {
   names.add(RuntimePackages.Validators.object)
-  if (config.records) {
+  const { uriOf } = context
+  if (!config.ignore(data.additionalProperties as Referenceable<SchemaObject>, uriOf(data.additionalProperties))) {
     names.add(RuntimePackages.Validators.record)
     names.add(RuntimePackages.Validators.string)
-    collectImports(data.additionalProperties as SchemaObject | ReferenceObject, config, context, names, refs, level + 1)
+    collectImports(data.additionalProperties as Referenceable<SchemaObject>, config, context, names, refs, level + 1)
   }
 }
 
@@ -126,9 +123,10 @@ export function collectArrayTypeImports(
   level: number,
 ): void {
   names.add(RuntimePackages.Validators.array)
-  if (config.arrays && typeof data.items !== 'boolean') {
+  const { uriOf } = context
+  if (!config.ignore(data.items as Referenceable<SchemaObject>, uriOf(data.items))) {
     names.add(RuntimePackages.Validators.items)
-    return collectImports(data.items, config, context, names, refs, level + 1)
+    collectImports(data.items as Referenceable<SchemaObject>, config, context, names, refs, level + 1)
   }
 }
 
@@ -149,25 +147,46 @@ export function collectTupleImports(
   return prefixItems.forEach((item) => collectImports(item, config, context, names, refs, level))
 }
 
+export function collectLiteralImports(data: any, names: Set<string>): void {
+  if (data === null || typeof data === 'number' || typeof data === 'boolean' || typeof data === 'string') {
+    names.add(RuntimePackages.Validators.literal)
+  } else if (Array.isArray(data)) {
+    names.add(RuntimePackages.Validators.array).add(RuntimePackages.Validators.tuple)
+    data.forEach((item: any) => collectLiteralImports(item, names))
+  } else if (typeof data === 'object') {
+    names.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
+    values(data).forEach((item) => collectLiteralImports(item, names))
+  } else {
+    names.add(RuntimePackages.Validators.any)
+  }
+}
+
 export function collectImports(
-  data: SchemaObject | ReferenceObject,
+  data: Referenceable<SchemaObject>,
   config: ValidatorsGeneratorConfig,
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
   level: number,
 ): void {
+  const { uriOf } = context
+  const type = getInferredType(data)
+  if (config.ignore(data, uriOf(data))) {
+    names.add(RuntimePackages.Validators.any)
+    return
+  }
   if (isReferenceObject(data)) {
     return collectReferenceImports(data, config, context, names, refs, level)
   }
-  switch (getInferredType(data)) {
+  switch (type) {
     case 'union':
       return collectUnionImports(data, config, context, names, refs, level)
     case 'enum':
-      names.add(RuntimePackages.Validators.enumeration)
+      names.add(RuntimePackages.Validators.union)
+      data.enum.forEach((value) => collectLiteralImports(value, names))
       return
     case 'literal':
-      names.add(RuntimePackages.Validators.literal)
+      collectLiteralImports(data.const, names)
       return
     case 'string':
       names.add(RuntimePackages.Validators.string)
@@ -194,7 +213,7 @@ export function collectImports(
 
 export function getValidatorImports(
   fromPath: string,
-  schema: SchemaObject | ReferenceObject,
+  schema: Referenceable<SchemaObject>,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
   collector: ImportCollector = collectImports,

@@ -11,7 +11,7 @@ import {
 import { createPathDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
 import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
-import { array, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { array, items, lazy, literal, number, object, optional, shape, string, union } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type AppError = {
@@ -31,7 +31,11 @@ export type BookType = 'paperback' | 'digital' | 'audio'
 
 export const appErrorTypeValidator = object(shape({ message: string() }))
 
-export const bookTypeTypeValidator = enumeration(['paperback', 'digital', 'audio'])
+export const bookTypeTypeValidator = union({
+  paperback: literal('paperback'),
+  digital: literal('digital'),
+  audio: literal('audio'),
+})
 
 export const bookTypeValidator = object(
   shape({

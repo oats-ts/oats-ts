@@ -1,14 +1,14 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { Expression, factory, SyntaxKind } from 'typescript'
-import { FullTypeGuardGeneratorConfig } from './typings'
-import { getLiteralAst } from '@oats-ts/typescript-common'
+import { Expression } from 'typescript'
+import { TypeGuardGeneratorConfig } from './typings'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { getJsonLiteralAssertionAst } from './getJsonLiteralAssertionAst'
 
 export function getLiteralTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
-  config: FullTypeGuardGeneratorConfig,
+  config: TypeGuardGeneratorConfig,
 ): Expression {
-  return factory.createBinaryExpression(variable, SyntaxKind.EqualsEqualsEqualsToken, getLiteralAst(data.const))
+  return getJsonLiteralAssertionAst(data.const, variable)
 }

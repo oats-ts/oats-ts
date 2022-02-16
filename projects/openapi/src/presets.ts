@@ -55,8 +55,11 @@ const fullStack = createPreset({
   ...clientOnlyConfig,
 })
 
+const custom = createPreset({})
+
 export const presets = {
   client,
   server,
   fullStack,
+  custom,
 }

@@ -4,7 +4,7 @@ import { getConfig, getSeverity, isNil } from '../utils'
 const issueType: IssueType = 'literal'
 
 export const literal =
-  (value: string | number | boolean): Validator<any> =>
+  (value: string | number | boolean | null): Validator<any> =>
   (input: any, config?: Partial<ValidatorConfig>) => {
     const cfg = getConfig(config)
     const severity = getSeverity(issueType, cfg)

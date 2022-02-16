@@ -2,7 +2,7 @@ import { isNil } from 'lodash'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { FullTypeGuardGeneratorConfig } from './typings'
+import { TypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
@@ -10,7 +10,7 @@ export function getUnionTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
-  config: FullTypeGuardGeneratorConfig,
+  config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
   const { dereference, nameOf } = context

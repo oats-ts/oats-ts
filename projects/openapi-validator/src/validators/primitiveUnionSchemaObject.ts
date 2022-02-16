@@ -1,22 +1,23 @@
-import { SchemaObject } from '@oats-ts/json-schema-model'
-import { Issue, object, optional, shape, combine, array, items, literal, minLength } from '@oats-ts/validators'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Issue, object, optional, shape, combine, array, literal, minLength } from '@oats-ts/validators'
 import { getInferredType } from '@oats-ts/json-schema-common'
 import { append } from '../utils/append'
 import { flatMap } from 'lodash'
 import { enumSchemaObject } from './enumSchemaObject'
 import { primitiveSchemaObject } from './primitiveSchemaObject'
-import { forbidFields } from '../utils/forbidFields'
 import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { referenceable } from './referenceable'
+import { schemaObject } from './schemaObject'
 
 const validator = object(
   combine([
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
-        oneOf: array(combine([items(object(forbidFields(['$ref']))), minLength(1)])),
+        oneOf: array(minLength(1)),
       },
       true,
     ),
@@ -41,6 +42,8 @@ export function primitiveUnionSchemaObject(
     )(() =>
       flatMap(input.oneOf, (schema: SchemaObject): Issue[] => {
         switch (getInferredType(schema)) {
+          case 'ref':
+            return referenceable(schemaObject)(schema as ReferenceObject, context, config)
           case 'enum':
             return enumSchemaObject(schema, context, config)
           case 'string':

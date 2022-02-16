@@ -23,7 +23,19 @@ import {
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
-import { array, boolean, enumeration, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import {
+  array,
+  boolean,
+  items,
+  lazy,
+  literal,
+  number,
+  object,
+  optional,
+  shape,
+  string,
+  union,
+} from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type CommonEnumType = 'A' | 'B' | 'C'
@@ -283,7 +295,11 @@ export type SpaceDelimitedQueryParameters = {
   strArrExpl: string[]
 }
 
-export const commonEnumTypeTypeValidator = enumeration(['A', 'B', 'C'])
+export const commonEnumTypeTypeValidator = union({
+  A: literal('A'),
+  B: literal('B'),
+  C: literal('C'),
+})
 
 export const commonObjectTypeExplTypeValidator = object(
   shape({
