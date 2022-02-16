@@ -1,4 +1,4 @@
-import { SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
@@ -11,15 +11,17 @@ export function getArrayValidatorAst(
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {
-  const args: Expression[] = []
-  if (config.arrays && typeof data.items !== 'boolean') {
-    args.push(
-      factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.items),
-        [],
-        [getRightHandSideValidatorAst(data.items, context, config, level + 1)],
-      ),
-    )
-  }
-  return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.array), [], args)
+  const { uriOf } = context
+  const itemsSchema = data.items as Referenceable<SchemaObject>
+  const uri = uriOf(itemsSchema)
+  const itemsValidator = factory.createCallExpression(
+    factory.createIdentifier(RuntimePackages.Validators.items),
+    [],
+    [getRightHandSideValidatorAst(itemsSchema, context, config, level + 1)],
+  )
+  return factory.createCallExpression(
+    factory.createIdentifier(RuntimePackages.Validators.array),
+    [],
+    config.ignore(itemsSchema, uri) ? [] : [itemsValidator],
+  )
 }

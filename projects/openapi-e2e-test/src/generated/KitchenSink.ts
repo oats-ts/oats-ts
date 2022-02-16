@@ -1,13 +1,12 @@
 import {
+  any,
   array,
   boolean,
-  items,
   lazy,
   literal,
   number,
   object,
   optional,
-  record,
   shape,
   string,
   tuple,
@@ -17,6 +16,8 @@ import {
 export type IgnoredInternals = {
   additionalProps?: Record<string, string>
   arrayItems?: string[]
+  primitive?: number
+  reference?: TupleMessage1
 }
 
 export type Leaf1 = {
@@ -92,8 +93,10 @@ export type TupleMessage2 = [
 
 export const ignoredInternalsTypeValidator = object(
   shape({
-    additionalProps: optional(object(record(string(), string()))),
-    arrayItems: optional(array(items(string()))),
+    additionalProps: optional(object()),
+    arrayItems: optional(array()),
+    primitive: optional(any),
+    reference: optional(any),
   }),
 )
 

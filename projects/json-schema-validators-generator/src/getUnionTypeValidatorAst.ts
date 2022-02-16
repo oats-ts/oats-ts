@@ -27,9 +27,6 @@ export function getUnionTypeValidatorAst(
   config: ValidatorsGeneratorConfig,
   level: number,
 ): CallExpression | Identifier {
-  if (!config.references && level > 0) {
-    return factory.createIdentifier(RuntimePackages.Validators.any)
-  }
   const properties = (data.oneOf || []).map((item, index) =>
     factory.createPropertyAssignment(
       safeName(getSchemaKey(item, index, context)),

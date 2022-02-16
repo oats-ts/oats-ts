@@ -7,7 +7,7 @@ import { ordered } from '../utils/ordered'
 import { append } from '../utils/append'
 import { isNil } from 'lodash'
 
-const validator = object(shape<ReferenceObject>({ $ref: string() }))
+const validator = object(shape<ReferenceObject>({ $ref: string() }, true))
 
 function traverseReferences(
   input: ReferenceObject,

@@ -13,9 +13,6 @@ export function getReferenceValidatorAst(
   level: number,
 ): Expression {
   const { dereference, nameOf } = context
-  if (!config.references && level > 0) {
-    return factory.createIdentifier(RuntimePackages.Validators.any)
-  }
   const resolved = dereference(data)
   const name = nameOf(resolved, 'json-schema/type-validator')
   if (!isNil(name)) {

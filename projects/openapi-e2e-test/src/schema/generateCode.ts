@@ -24,9 +24,7 @@ export async function generateCode({ sourcePath, schemaPath }: GeneratorModel) {
         ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
       },
       'json-schema/type-validator': {
-        arrays: true,
-        records: true,
-        references: true,
+        ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
       },
     }),
     writer: writer({

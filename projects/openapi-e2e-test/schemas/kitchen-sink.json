@@ -195,6 +195,14 @@
       "IgnoredInternals": {
         "type": "object",
         "properties": {
+          "primitive": {
+            "type": "number",
+            "x-ignore-validation": true
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TupleMessage1",
+            "x-ignore-validation": true
+          },
           "arrayItems": {
             "type": "array",
             "items": {
