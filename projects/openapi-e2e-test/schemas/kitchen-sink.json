@@ -160,7 +160,7 @@
       },
       "Mid": {
         "discriminator": {
-          "propertyName": "midType",
+          "propertyName": "type",
           "mapping": {
             "Leaf1": "#/components/schemas/Leaf1",
             "Leaf2": "#/components/schemas/Leaf2"
@@ -177,7 +177,7 @@
       },
       "Top": {
         "discriminator": {
-          "propertyName": "topType",
+          "propertyName": "type",
           "mapping": {
             "Mid": "#/components/schemas/Mid",
             "Leaf3": "#/components/schemas/Leaf3"

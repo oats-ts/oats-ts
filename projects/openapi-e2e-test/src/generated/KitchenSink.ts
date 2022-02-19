@@ -21,19 +21,19 @@ export type IgnoredInternals = {
 }
 
 export type Leaf1 = {
-  midType: 'Leaf1'
-  topType: 'Mid'
+  type: 'Mid'
+  typex: 'Leaf1'
   leaf1?: true
 }
 
 export type Leaf2 = {
-  midType: 'Leaf2'
-  topType: 'Mid'
+  type: 'Mid'
+  typex: 'Leaf2'
   leaf2?: true
 }
 
 export type Leaf3 = {
-  topType: 'Leaf3'
+  type: 'Leaf3'
   leaf3?: true
 }
 
@@ -102,23 +102,23 @@ export const ignoredInternalsTypeValidator = object(
 
 export const leaf1TypeValidator = object(
   shape({
-    midType: literal('Leaf1'),
-    topType: literal('Mid'),
+    type: literal('Mid'),
+    typex: literal('Leaf1'),
     leaf1: optional(literal(true)),
   }),
 )
 
 export const leaf2TypeValidator = object(
   shape({
-    midType: literal('Leaf2'),
-    topType: literal('Mid'),
+    type: literal('Mid'),
+    typex: literal('Leaf2'),
     leaf2: optional(literal(true)),
   }),
 )
 
 export const leaf3TypeValidator = object(
   shape({
-    topType: literal('Leaf3'),
+    type: literal('Leaf3'),
     leaf3: optional(literal(true)),
   }),
 )
@@ -190,8 +190,8 @@ export function isLeaf1(input: any): input is Leaf1 {
   return (
     input !== null &&
     typeof input === 'object' &&
-    input.midType === 'Leaf1' &&
-    input.topType === 'Mid' &&
+    input.type === 'Mid' &&
+    input.typex === 'Leaf1' &&
     (input.leaf1 === null || input.leaf1 === undefined || input.leaf1 === true)
   )
 }
@@ -200,8 +200,8 @@ export function isLeaf2(input: any): input is Leaf2 {
   return (
     input !== null &&
     typeof input === 'object' &&
-    input.midType === 'Leaf2' &&
-    input.topType === 'Mid' &&
+    input.type === 'Mid' &&
+    input.typex === 'Leaf2' &&
     (input.leaf2 === null || input.leaf2 === undefined || input.leaf2 === true)
   )
 }
@@ -210,7 +210,7 @@ export function isLeaf3(input: any): input is Leaf3 {
   return (
     input !== null &&
     typeof input === 'object' &&
-    input.topType === 'Leaf3' &&
+    input.type === 'Leaf3' &&
     (input.leaf3 === null || input.leaf3 === undefined || input.leaf3 === true)
   )
 }

@@ -16,7 +16,7 @@ function collectFromSchema(
     const { propertyName, mapping } = schema.discriminator
     const mappingEntries = entries(mapping || {})
     for (const [value, ref] of mappingEntries) {
-      if (ref == uri) {
+      if (ref == uri && isNil(discriminators[propertyName])) {
         discriminators[propertyName] = value
         const parentUri = uriOf(schema)
         return parentUri
