@@ -12,10 +12,11 @@ function getRecordItemsAsserterAst(
   config: TypeGuardGeneratorConfig,
   level: number,
 ): CallExpression | TrueLiteral {
+  const keyVar = factory.createIdentifier('key')
   const itemAssertion = getTypeAssertionAst(
     data.additionalProperties as SchemaObject | ReferenceObject,
     context,
-    factory.createElementAccessExpression(variable, factory.createIdentifier('key')),
+    factory.createElementAccessExpression(variable, keyVar),
     config,
     level + 1,
   )
@@ -27,7 +28,7 @@ function getRecordItemsAsserterAst(
   const arrowFn = factory.createArrowFunction(
     undefined,
     undefined,
-    [factory.createParameterDeclaration(undefined, undefined, undefined, factory.createIdentifier('key'))],
+    [factory.createParameterDeclaration(undefined, undefined, undefined, keyVar)],
     undefined,
     factory.createToken(SyntaxKind.EqualsGreaterThanToken),
     itemAssertion,
@@ -65,8 +66,8 @@ export function getRecordTypeAssertionAst(
       factory.createStringLiteral('object'),
     ),
     ...(config.ignore(propsSchema, propsUri)
-      ? [getRecordItemsAsserterAst(data, context, variable, config, level)]
-      : []),
+      ? []
+      : [getRecordItemsAsserterAst(data, context, variable, config, level)]),
   ]
   return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
 }
