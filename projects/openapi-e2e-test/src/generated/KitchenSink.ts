@@ -21,14 +21,12 @@ export type IgnoredInternals = {
 }
 
 export type Leaf1 = {
-  type: 'Mid'
-  typex: 'Leaf1'
+  type: 'Leaf1'
   leaf1?: true
 }
 
 export type Leaf2 = {
-  type: 'Mid'
-  typex: 'Leaf2'
+  type: 'Leaf2'
   leaf2?: true
 }
 
@@ -102,16 +100,14 @@ export const ignoredInternalsTypeValidator = object(
 
 export const leaf1TypeValidator = object(
   shape({
-    type: literal('Mid'),
-    typex: literal('Leaf1'),
+    type: literal('Leaf1'),
     leaf1: optional(literal(true)),
   }),
 )
 
 export const leaf2TypeValidator = object(
   shape({
-    type: literal('Mid'),
-    typex: literal('Leaf2'),
+    type: literal('Leaf2'),
     leaf2: optional(literal(true)),
   }),
 )
@@ -190,8 +186,7 @@ export function isLeaf1(input: any): input is Leaf1 {
   return (
     input !== null &&
     typeof input === 'object' &&
-    input.type === 'Mid' &&
-    input.typex === 'Leaf1' &&
+    input.type === 'Leaf1' &&
     (input.leaf1 === null || input.leaf1 === undefined || input.leaf1 === true)
   )
 }
@@ -200,8 +195,7 @@ export function isLeaf2(input: any): input is Leaf2 {
   return (
     input !== null &&
     typeof input === 'object' &&
-    input.type === 'Mid' &&
-    input.typex === 'Leaf2' &&
+    input.type === 'Leaf2' &&
     (input.leaf2 === null || input.leaf2 === undefined || input.leaf2 === true)
   )
 }

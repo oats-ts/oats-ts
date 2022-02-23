@@ -17,6 +17,7 @@
   "scripts": {
     "build": "echo 'Nothing to build'",
     "g": "ts-node src/schema/generate.ts",
+    "g2": "ts-node src/schema/generate2.ts",
     "test": "cross-env jest --runInBand",
     "typecheck": "tsc --noEmit"
   },
@@ -43,6 +44,7 @@
     "@types/urijs": "1.19.16",
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
+    "@types/node-fetch": "2.6.1",
     "camelcase": "6.2.0",
     "cross-env": "7.0.3",
     "express": "4.17.1",
