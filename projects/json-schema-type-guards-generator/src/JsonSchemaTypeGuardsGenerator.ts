@@ -23,8 +23,10 @@ export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>>
 
   async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, config } = this
-    const { nameOf } = context
-    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-guard'))
+    const { uriOf, nameOf } = context
+    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-guard')).filter(
+      (schema) => !config.ignore(schema, uriOf(schema)),
+    )
     const data = mergeTypeScriptModules(
       schemas.map((schema) => generateTypeGuard(schema, context, config)).filter(negate(isNil)),
     )

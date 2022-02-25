@@ -9,22 +9,27 @@ import {
   prettierStringify,
   presets,
 } from '@oats-ts/openapi'
+import { promises as fs } from 'fs'
 
 const REPO = 'oats-ts/oats-schemas'
+const PATH = 'src/generated'
 
 type FileDescriptor = {
   path: string
   mode: string
-  type: string
+  type: 'tree' | 'blob'
   sha: string
   size: number
   url: string
 }
 
 export async function getFiles(): Promise<string[]> {
-  const response = await fetch(`https://api.github.com/repos/${REPO}/git/trees/master`)
+  const response = await fetch(`https://api.github.com/repos/${REPO}/git/trees/master?recursive=true`)
   const tree = (await response.json()).tree as FileDescriptor[]
-  return tree.map((file) => file.path)
+  return tree
+    .filter((file) => file.type !== 'tree')
+    .map((file) => file.path)
+    .filter((path) => path.endsWith('.json'))
 }
 
 function getSchemaUrl(path: string): string {
@@ -32,7 +37,7 @@ function getSchemaUrl(path: string): string {
 }
 
 function getCodePath(path: string): string {
-  return `src/generated/${path.replace('.json', '.ts')}`
+  return `${PATH}/${path.replace('.json', '.ts')}`
 }
 
 export async function generateCode(path: string) {
@@ -76,6 +81,7 @@ export async function generateCode(path: string) {
 }
 
 async function generateAll() {
+  await fs.rm(PATH, { force: true, recursive: true })
   const files = await getFiles()
   for (const path of files) {
     console.log(`===\n${path}\n===`)

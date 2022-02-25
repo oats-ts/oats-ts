@@ -1,12 +1,6 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { sortBy, isNil } from 'lodash'
-import {
-  getNamedSchemas,
-  ReadOutput,
-  HasSchemas,
-  createGeneratorContext,
-  GeneratorContext,
-} from '@oats-ts/model-common'
+import { getNamedSchemas, ReadOutput, HasSchemas, createGeneratorContext } from '@oats-ts/model-common'
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
@@ -31,11 +25,13 @@ export class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>, Id 
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config: validatorConfig } = this
-    const { nameOf } = context
-    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-validator'))
+    const { context, config } = this
+    const { uriOf, nameOf } = context
+    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-validator')).filter(
+      (schema) => !config.ignore(schema, uriOf(schema)),
+    )
     const data = mergeTypeScriptModules(
-      schemas.map((schema): TypeScriptModule => generateValidator(schema, context, validatorConfig)),
+      schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config)),
     )
     return {
       data,

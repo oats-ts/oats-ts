@@ -2,7 +2,7 @@ import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue } from '@oats-ts/validators'
 import { isNil } from 'lodash'
 import { discriminatedUnionSchemaObject } from './discriminatedUnionSchemaObject'
-import { primitiveUnionSchemaObject } from './primitiveUnionSchemaObject'
+import { nonDiscriminatedSchemaObject } from './nonDiscriminatedSchemaObject'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 
 export function unionSchemaObject(
@@ -11,6 +11,6 @@ export function unionSchemaObject(
   config: OpenAPIValidatorConfig,
 ): Issue[] {
   return isNil(input.discriminator)
-    ? primitiveUnionSchemaObject(input, context, config)
+    ? nonDiscriminatedSchemaObject(input, context, config)
     : discriminatedUnionSchemaObject(input, context, config)
 }

@@ -17,7 +17,7 @@
   },
   "scripts": {
     "test": "echo 'TODO'",
-    "build": "rimraf lib && tsc",
+    "build": "echo 'TODO'",
     "typecheck": "tsc --noEmit"
   },
   "bugs": {

@@ -1,4 +1,4 @@
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, array, literal, minLength } from '@oats-ts/validators'
 import { getInferredType } from '@oats-ts/json-schema-common'
 import { append } from '../utils/append'
@@ -24,7 +24,7 @@ const validator = object(
     ignore(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'discriminator', 'enum']),
   ]),
 )
-export function primitiveUnionSchemaObject(
+export function nonDiscriminatedSchemaObject(
   input: SchemaObject,
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,
@@ -40,27 +40,9 @@ export function primitiveUnionSchemaObject(
         path: uriOf(input),
       }),
     )(() =>
-      flatMap(input.oneOf, (schema: SchemaObject): Issue[] => {
-        switch (getInferredType(schema)) {
-          case 'ref':
-            return referenceable(schemaObject)(schema as ReferenceObject, context, config)
-          case 'enum':
-            return enumSchemaObject(schema, context, config)
-          case 'string':
-          case 'number':
-          case 'boolean':
-            return primitiveSchemaObject(schema, context, config)
-          default:
-            return [
-              {
-                message: 'should be either a primitive type or an enum',
-                path: uriOf(schema),
-                severity: 'error',
-                type: 'other',
-              },
-            ]
-        }
-      }),
+      flatMap(input.oneOf, (schema: Referenceable<SchemaObject>): Issue[] =>
+        referenceable(schemaObject)(schema, context, config),
+      ),
     )
   })
 }
