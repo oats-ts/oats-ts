@@ -14,12 +14,6 @@ function collectNamedTypesForSchema(
   if (isNil(input) || processed.has(input) || schemas.has(input)) {
     return
   }
-  processed.add(input)
-
-  if (!isNil(nameOf(input))) {
-    schemas.add(input)
-  }
-
   const schema = isReferenceObject(input) ? dereference<SchemaObject>(input) : input
 
   if (processed.has(schema) || schemas.has(schema)) {
@@ -30,22 +24,44 @@ function collectNamedTypesForSchema(
     schemas.add(schema)
   }
 
-  // TODO not, allOf etc will not be needed for generation
-  const { additionalProperties, items, oneOf, properties } = schema
+  const { additionalProperties, items, oneOf, properties, prefixItems, allOf } = schema
 
-  if (typeof additionalProperties !== 'boolean') {
+  if (!isNil(additionalProperties) && typeof additionalProperties === 'object') {
     collectNamedTypesForSchema(additionalProperties, context, schemas, processed)
   }
-  if (typeof items !== 'boolean') {
+
+  if (!isNil(items) && typeof items === 'object') {
     collectNamedTypesForSchema(items, context, schemas, processed)
   }
 
-  for (const schema of values(properties || {})) {
-    collectNamedTypesForSchema(schema, context, schemas, processed)
+  if (!isNil(properties)) {
+    for (const propertySchema of values(properties)) {
+      collectNamedTypesForSchema(propertySchema, context, schemas, processed)
+    }
   }
 
-  for (const schema of oneOf || []) {
-    collectNamedTypesForSchema(schema, context, schemas, processed)
+  if (Array.isArray(prefixItems)) {
+    for (const prefixSchema of prefixItems) {
+      collectNamedTypesForSchema(prefixSchema, context, schemas, processed)
+    }
+  }
+
+  if (Array.isArray(oneOf)) {
+    for (const oneOfSchema of oneOf) {
+      collectNamedTypesForSchema(oneOfSchema, context, schemas, processed)
+    }
+  }
+
+  if (Array.isArray(allOf)) {
+    for (const allOfSchema of allOf) {
+      collectNamedTypesForSchema(allOfSchema, context, schemas, processed)
+    }
+  }
+
+  processed.add(input)
+
+  if (!isNil(nameOf(input))) {
+    schemas.add(input)
   }
 }
 

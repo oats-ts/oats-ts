@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "echo 'TODO'",
-    "build": "echo 'Nothing to build'",
+    "build": "echo 'TODO'",
     "typecheck": "tsc --noEmit"
   },
   "bugs": {
@@ -24,6 +24,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@oats-ts/json-schema-model": "0.0.13"
+    "@oats-ts/json-schema-model": "0.0.14"
   }
 }

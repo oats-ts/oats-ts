@@ -28,9 +28,9 @@ function getImportedRefs(
     return
   }
 
-  if (!isNil(data.oneOf) && !isNil(data.discriminator)) {
-    for (const s of data.oneOf) {
-      getImportedRefs(s, context, config, refs, level)
+  if (Array.isArray(data.oneOf)) {
+    for (const oneOfItemSchema of data.oneOf) {
+      getImportedRefs(oneOfItemSchema, context, config, refs, level)
     }
     return
   }

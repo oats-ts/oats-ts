@@ -24,7 +24,7 @@ export function getInferredType(data: SchemaObject | ReferenceObject): InferredT
     return 'enum'
   }
 
-  if (!isNil(data.const)) {
+  if (Object.prototype.hasOwnProperty.call(data, 'const')) {
     return 'literal'
   }
 

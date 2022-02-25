@@ -51,6 +51,7 @@ specifiers:
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
+  '@types/node-fetch': 2.6.1
   '@types/pascalcase': 1.0.1
   '@types/prettier': 2.2.3
   '@types/urijs': 1.19.16
@@ -135,6 +136,7 @@ dependencies:
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
+  '@types/node-fetch': 2.6.1
   '@types/pascalcase': 1.0.1
   '@types/prettier': 2.2.3
   '@types/urijs': 1.19.16
@@ -1235,6 +1237,13 @@ packages:
 
   /@types/node-fetch/2.5.10:
     resolution: {integrity: sha512-IpkX0AasN44hgEad0gEF/V6EgR5n69VEqPEgnmoM8GsIGro3PowbWs4tR6IhxUTyPLpOn+fiGG6nrQhcmoCuIQ==}
+    dependencies:
+      '@types/node': 16.7.1
+      form-data: 3.0.1
+    dev: false
+
+  /@types/node-fetch/2.6.1:
+    resolution: {integrity: sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==}
     dependencies:
       '@types/node': 16.7.1
       form-data: 3.0.1
@@ -4463,7 +4472,7 @@ packages:
     dev: false
 
   file:projects/asyncapi-reader.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-30eu8cZ9KTB5UUN+VGjmTfS8xNynekgTVxv0IM/G9G6HfxwplifTWGm42xQDA3xCQQ1nAy/7/XkDZwEi7KmXQw==, tarball: file:projects/asyncapi-reader.tgz}
+    resolution: {integrity: sha512-XvcsKoNvvXZ+cgxOjgu8ifgnAdTV4S/crxtWt5GK3Tg3FgIoPEeGuXrQyIM5HOor+g2VuhCtuTYnEySO3hs0aA==, tarball: file:projects/asyncapi-reader.tgz}
     id: file:projects/asyncapi-reader.tgz
     name: '@rush-temp/asyncapi-reader'
     version: 0.0.0
@@ -4543,7 +4552,7 @@ packages:
     dev: false
 
   file:projects/asyncapi.tgz:
-    resolution: {integrity: sha512-jzEmythxu83sjpEme3cKPDU1hj8JP3JYfK50u1c2TwUnHhQYz8fdMkFnzdGMp4MdUJnOrBuw6l4ue0K8cdSt2A==, tarball: file:projects/asyncapi.tgz}
+    resolution: {integrity: sha512-2YQLmanwWs/RcqLVKu4rZPBtb1J6wUMCEQFnnD4OxLCt3n+eRjZZIcxtALtxzRuvMRr1Qxeh6zb6MT8qMOCD3Q==, tarball: file:projects/asyncapi.tgz}
     name: '@rush-temp/asyncapi'
     version: 0.0.0
     dependencies:
@@ -4583,7 +4592,7 @@ packages:
     dev: false
 
   file:projects/json-schema-common.tgz:
-    resolution: {integrity: sha512-Ea+g0YEmZZaNPvFKtUclw+bO2O8+Bs+B6DaD26P7JbnF2GTfNg+dUTkVyyJLa9wU7JO9uohXNi0Wq2lSev31JQ==, tarball: file:projects/json-schema-common.tgz}
+    resolution: {integrity: sha512-6Pp3EBKsoP4h/Zfu2bj9W9getecfHwEukOoDA0AFyevF1C3T9jLHTSHFd0EswByjjYFRf64qri9mHniTqBBfDQ==, tarball: file:projects/json-schema-common.tgz}
     name: '@rush-temp/json-schema-common'
     version: 0.0.0
     dependencies:
@@ -4670,7 +4679,7 @@ packages:
     dev: false
 
   file:projects/model-common.tgz:
-    resolution: {integrity: sha512-tbdpsFuQMaFnQ6IzB8qasv6YlYO5vgOjkfgCyq91rTeeqXKEFvf0ETeX3AtYex/DBYHLvCTBLGzpNHI8926PHw==, tarball: file:projects/model-common.tgz}
+    resolution: {integrity: sha512-NWkA16us829bH6WDGw31ayq/D5T1fVzBj5tF4R2QovZKr1Xg9T6Wg4DrrmG6qfknDe2oLoAOh38ueGgqIpMrZw==, tarball: file:projects/model-common.tgz}
     name: '@rush-temp/model-common'
     version: 0.0.0
     dependencies:
@@ -4735,7 +4744,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-feCKQETliNHpepikzHrYVdOPqJiRAefpRRuYkQty6oUV5N2pxxm9JMsON/a+8aV9Pob/AXuU+ZTR58+JKciPaQ==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-ULZm2ODVlm/x/EhzUIoWXssPSOebm9gJwBZZqJ34Jep7AG2lwwzf6icqTPBQcA+ana1ioZWkU2y7GvPAEY2+9Q==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -4747,7 +4756,7 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
-      '@types/node-fetch': 2.5.10
+      '@types/node-fetch': 2.6.1
       '@types/pascalcase': 1.0.1
       '@types/urijs': 1.19.16
       '@types/valid-url': 1.0.3
@@ -5046,7 +5055,7 @@ packages:
     dev: false
 
   file:projects/openapi-reader.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-zdQtGH+FrIAeWCXjK7ezVgLh6UPspe9SNUsX35Fp4zIzVKWlbKFxn0Hx3lByWB2ppC7v8ZxUZAdiw3kLgrxBig==, tarball: file:projects/openapi-reader.tgz}
+    resolution: {integrity: sha512-hiaQTa76+TCzY4ogseWaGHFORwtXwgIfojA36etKH1lGnqAUViDZGIhUVU8Wyp4n6XdGxosVVJiWGfwhlzPKug==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
     version: 0.0.0

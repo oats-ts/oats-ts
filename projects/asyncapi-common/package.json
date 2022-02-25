@@ -17,7 +17,7 @@
   },
   "scripts": {
     "test": "echo 'TODO'",
-    "build": "rimraf lib && tsc",
+    "build": "echo 'TODO'",
     "typecheck": "tsc --noEmit"
   },
   "bugs": {
@@ -29,12 +29,12 @@
   },
   "dependencies": {
     "@oats-ts/asyncapi": "0.0.13",
-    "@oats-ts/generator": "0.0.13",
-    "@oats-ts/typescript-writer": "0.0.13",
-    "@oats-ts/json-schema-model": "0.0.13",
+    "@oats-ts/generator": "0.0.14",
+    "@oats-ts/typescript-writer": "0.0.14",
+    "@oats-ts/json-schema-model": "0.0.14",
     "@oats-ts/asyncapi-model": "0.0.13",
     "@oats-ts/asyncapi-reader": "0.0.13",
-    "@oats-ts/model-common": "0.0.13",
+    "@oats-ts/model-common": "0.0.14",
     "lodash": "4.17.21"
   }
 }

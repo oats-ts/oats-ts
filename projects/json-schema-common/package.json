@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/json-schema-common",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -28,8 +28,8 @@
     "@types/lodash": "4.14.172"
   },
   "dependencies": {
-    "@oats-ts/json-schema-model": "0.0.13",
-    "@oats-ts/model-common": "0.0.13",
+    "@oats-ts/json-schema-model": "0.0.14",
+    "@oats-ts/model-common": "0.0.14",
     "lodash": "4.17.21"
   }
 }

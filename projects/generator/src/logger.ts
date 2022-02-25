@@ -52,6 +52,9 @@ export const consoleLogger: Logger = {
     console.log(`${c} Read step successful!\n`)
   },
   generatorSuccess(name: string, { data, issues }: Result<Module[]>): void {
+    if (issues.length === 0 && data.length === 0) {
+      return
+    }
     const issueLines =
       issues.length === 0
         ? []
@@ -68,6 +71,9 @@ export const consoleLogger: Logger = {
     console.log(lines.join('\n'))
   },
   writerSuccess(modules: Module[]): void {
+    if (modules.length === 0) {
+      console.log(`${c} Write step emitted no modules.`)
+    }
     const lines: string[] = [
       `${c} Write step succesfully written ${blue(modules.length)} module(s) to disk:`,
       ...modules.map(moduleToString),
