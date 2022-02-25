@@ -19,7 +19,7 @@ import {
   SimpleResponseHeaderParametersServerRequest,
   SpaceDelimitedQueryParametersResponse,
   SpaceDelimitedQueryParametersServerRequest,
-} from '../../generated/Parameters'
+} from '../../generated/parameters'
 import { fluent, isFailure, Try } from '@oats-ts/try'
 import { HttpResponse } from '@oats-ts/openapi-http'
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'

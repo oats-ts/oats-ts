@@ -1,4 +1,4 @@
-import { Book } from '../../generated/BookStore'
+import { Book } from '../../generated/book-store'
 import { catBook, defaultBooks, frogBook } from './bookStore.testdata'
 import { testBookStoreServer } from '../servers'
 import { bookstoreSdk } from '../sdks'

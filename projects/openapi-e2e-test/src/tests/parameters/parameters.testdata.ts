@@ -13,7 +13,7 @@ import {
   SimpleHeaderParameters,
   SimplePathParameters,
   SpaceDelimitedQueryParameters,
-} from '../../generated/Parameters'
+} from '../../generated/parameters'
 import { arrayOf, optional } from '../common/testData'
 
 const enumValues: CommonEnumType[] = ['A', 'B', 'C']

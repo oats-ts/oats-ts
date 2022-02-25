@@ -6,7 +6,7 @@ import {
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
-} from '../../generated/Bodies'
+} from '../../generated/bodies'
 import { arrayOf } from '../common/testData'
 
 const enumValues: EnumType[] = ['A', 'B', 'C']

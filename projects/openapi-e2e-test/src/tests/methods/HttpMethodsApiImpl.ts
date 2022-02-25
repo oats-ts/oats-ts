@@ -8,7 +8,7 @@ import {
   PatchMethodResponse,
   PostMethodResponse,
   PutMethodResponse,
-} from '../../generated/HttpMethods'
+} from '../../generated/methods'
 
 export class HttpMethodsApiImpl implements HttpMethodsApi<ExpressToolkit> {
   async respond(request: Request): Promise<GetMethodResponse> {

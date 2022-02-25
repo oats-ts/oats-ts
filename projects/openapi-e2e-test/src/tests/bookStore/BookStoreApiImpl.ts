@@ -12,7 +12,7 @@ import {
   UpdateBookServerRequest,
   Book,
   AppError,
-} from '../../generated/BookStore'
+} from '../../generated/book-store'
 import { defaultBooks } from './bookStore.testdata'
 
 export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {

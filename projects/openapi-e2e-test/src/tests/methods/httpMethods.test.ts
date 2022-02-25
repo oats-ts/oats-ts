@@ -1,4 +1,4 @@
-import { HttpMethodsSdk } from '../../generated/HttpMethods'
+import { HttpMethodsSdk } from '../../generated/methods'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { testHttpMethodsServer } from '../servers'
 import { httpMethodsSdk } from '../sdks'

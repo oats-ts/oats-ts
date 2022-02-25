@@ -29,7 +29,7 @@ import {
   StrArrServerRequest,
   StrResponse,
   StrServerRequest,
-} from '../../generated/Bodies'
+} from '../../generated/bodies'
 
 export class BodiesApiImpl implements BodiesApi<ExpressToolkit> {
   async respond(request: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
