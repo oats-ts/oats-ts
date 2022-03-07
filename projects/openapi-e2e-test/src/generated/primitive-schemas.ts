@@ -4,22 +4,25 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/primitive-schemas.json
  */
 
-import { number, string } from '@oats-ts/validators'
+import { boolean, number, string } from '@oats-ts/validators'
 
-export type BooleanType = number
+export type BooleanType = boolean
 
 export type NumberType = number
 
+/**
+ * This is a named string schema
+ */
 export type StringType = string
 
-export const booleanTypeTypeValidator = number()
+export const booleanTypeTypeValidator = boolean()
 
 export const numberTypeTypeValidator = number()
 
 export const stringTypeTypeValidator = string()
 
 export function isBooleanType(input: any): input is BooleanType {
-  return typeof input === 'number'
+  return typeof input === 'boolean'
 }
 
 export function isNumberType(input: any): input is NumberType {

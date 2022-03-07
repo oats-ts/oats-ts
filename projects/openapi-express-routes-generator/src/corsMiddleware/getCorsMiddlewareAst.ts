@@ -24,6 +24,32 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
   )
   const hasCookies = operations.some(({ cookie }) => cookie.length > 0)
 
+  const matcherFnName = factory.createIdentifier('isAccepted')
+
+  const matcherFnParam = factory.createParameterDeclaration(
+    undefined,
+    undefined,
+    undefined,
+    matcherFnName,
+    undefined,
+    factory.createFunctionTypeNode(
+      undefined,
+      [
+        factory.createParameterDeclaration(
+          undefined,
+          undefined,
+          undefined,
+          factory.createIdentifier('request'),
+          undefined,
+          factory.createTypeReferenceNode(factory.createIdentifier('Request'), undefined),
+          undefined,
+        ),
+      ],
+      factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword),
+    ),
+    undefined,
+  )
+
   const corsOrigin = factory.createExpressionStatement(
     factory.createCallExpression(
       factory.createPropertyAccessExpression(
@@ -33,12 +59,16 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
       undefined,
       [
         factory.createStringLiteral('Access-Control-Allow-Origin'),
-        factory.createPropertyAccessExpression(
+        factory.createBinaryExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier('request'),
-            factory.createIdentifier('headers'),
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier('request'),
+              factory.createIdentifier('headers'),
+            ),
+            factory.createIdentifier('origin'),
           ),
-          factory.createIdentifier('origin'),
+          factory.createToken(SyntaxKind.QuestionQuestionToken),
+          factory.createStringLiteral('*'),
         ),
       ],
     ),
@@ -104,17 +134,7 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
           factory.createArrowFunction(
             undefined,
             undefined,
-            [
-              factory.createParameterDeclaration(
-                undefined,
-                undefined,
-                factory.createToken(SyntaxKind.DotDotDotToken),
-                factory.createIdentifier('origins'),
-                undefined,
-                factory.createArrayTypeNode(factory.createKeywordTypeNode(SyntaxKind.StringKeyword)),
-                undefined,
-              ),
-            ],
+            [matcherFnParam],
             factory.createTypeReferenceNode(
               factory.createIdentifier(RuntimePackages.Express.RequestHandler),
               undefined,
@@ -163,59 +183,7 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
               factory.createBlock(
                 [
                   factory.createIfStatement(
-                    factory.createBinaryExpression(
-                      factory.createBinaryExpression(
-                        factory.createTypeOfExpression(
-                          factory.createPropertyAccessExpression(
-                            factory.createPropertyAccessExpression(
-                              factory.createIdentifier('request'),
-                              factory.createIdentifier('headers'),
-                            ),
-                            factory.createIdentifier('origin'),
-                          ),
-                        ),
-                        factory.createToken(SyntaxKind.EqualsEqualsEqualsToken),
-                        factory.createStringLiteral('string'),
-                      ),
-                      factory.createToken(SyntaxKind.AmpersandAmpersandToken),
-                      factory.createParenthesizedExpression(
-                        factory.createBinaryExpression(
-                          factory.createBinaryExpression(
-                            factory.createCallExpression(
-                              factory.createPropertyAccessExpression(
-                                factory.createIdentifier('origins'),
-                                factory.createIdentifier('indexOf'),
-                              ),
-                              undefined,
-                              [
-                                factory.createPropertyAccessExpression(
-                                  factory.createPropertyAccessExpression(
-                                    factory.createIdentifier('request'),
-                                    factory.createIdentifier('headers'),
-                                  ),
-                                  factory.createIdentifier('origin'),
-                                ),
-                              ],
-                            ),
-                            factory.createToken(SyntaxKind.GreaterThanEqualsToken),
-                            factory.createNumericLiteral('0'),
-                          ),
-                          factory.createToken(SyntaxKind.BarBarToken),
-                          factory.createBinaryExpression(
-                            factory.createCallExpression(
-                              factory.createPropertyAccessExpression(
-                                factory.createIdentifier('origins'),
-                                factory.createIdentifier('indexOf'),
-                              ),
-                              undefined,
-                              [factory.createStringLiteral('*')],
-                            ),
-                            factory.createToken(SyntaxKind.GreaterThanEqualsToken),
-                            factory.createNumericLiteral('0'),
-                          ),
-                        ),
-                      ),
-                    ),
+                    factory.createCallExpression(matcherFnName, undefined, [factory.createIdentifier('request')]),
                     factory.createBlock(corsHeaderStatements, true),
                     undefined,
                   ),

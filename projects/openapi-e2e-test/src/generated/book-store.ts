@@ -284,13 +284,10 @@ export function createBookStoreRouter(
 }
 
 export const bookStoreCorsMiddleware =
-  (...origins: string[]): RequestHandler =>
+  (isAccepted: (request: Request) => boolean): RequestHandler =>
   (request: Request, response: Response, next: NextFunction) => {
-    if (
-      typeof request.headers.origin === 'string' &&
-      (origins.indexOf(request.headers.origin) >= 0 || origins.indexOf('*') >= 0)
-    ) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin)
+    if (isAccepted(request)) {
+      response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
       response.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH')
       response.setHeader('Access-Control-Allow-Headers', 'content-type')
     }
