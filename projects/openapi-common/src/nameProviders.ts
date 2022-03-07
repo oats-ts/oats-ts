@@ -4,16 +4,6 @@ import { isNil } from 'lodash'
 import { GeneratorNameProvider } from '@oats-ts/generator'
 import { DelegatingNameProviderInput, OpenAPIGeneratorTarget } from './typings'
 
-const delegating =
-  (delegates: Partial<DelegatingNameProviderInput> = {}): GeneratorNameProvider =>
-  (input: any, name: string, target: string): string | undefined => {
-    const delegate = delegates[target as OpenAPIGeneratorTarget]
-    if (isNil(delegate)) {
-      throw new Error(`No name provider delegate found for "${target}}"`)
-    }
-    return delegate(input, name, target)
-  }
-
 const nonNull =
   (producer?: GeneratorNameProvider) =>
   (delegate: GeneratorNameProvider) =>
@@ -101,9 +91,27 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/express-cors-middleware': corsMiddleware,
 }
 
-const defaultNameProvider = (delegates: Partial<DelegatingNameProviderInput> = {}): GeneratorNameProvider =>
-  delegating({ ...defaultDelegates, ...delegates })
-
 export const nameProviders = {
-  default: defaultNameProvider,
+  /**
+   * Creates a name provider, respecting basic typescript naming conventions
+   * @param delegates (optional) A generator target => delegate function mapping, use this for alternative naming
+   * @returns The name provider
+   */
+  default(delegates: Partial<DelegatingNameProviderInput> = {}): GeneratorNameProvider {
+    return nameProviders.delegating({ ...defaultDelegates, ...delegates })
+  },
+  /**
+   * Creates a name provider, that delegates the task for the appropriate name provider delegate
+   * @param delegates The delegates, which is a generator target => delegate function mapping
+   * @returns The name provider
+   */
+  delegating(delegates: DelegatingNameProviderInput): GeneratorNameProvider {
+    return (input: any, name: string, target: string): string | undefined => {
+      const delegate = delegates[target as OpenAPIGeneratorTarget]
+      if (isNil(delegate)) {
+        throw new Error(`No name provider delegate found for "${target}}"`)
+      }
+      return delegate(input, name, target)
+    }
+  },
 }

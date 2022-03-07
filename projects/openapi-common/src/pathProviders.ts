@@ -3,57 +3,36 @@ import { isNil } from 'lodash'
 import { join, resolve } from 'path'
 import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, PathDelegate } from './typings'
 
-const nameByTarget: NameByTarget = {
-  'json-schema/type': 'types',
-  'json-schema/type-guard': 'typeGuards',
-  'openapi/operation': 'operations',
-  'openapi/query-type': 'queryTypes',
-  'openapi/request-headers-type': 'requestHeaderTypes',
-  'openapi/path-type': 'pathTypes',
-  'openapi/response-headers-type': 'responseHeaderTypes',
-  'openapi/response-type': 'responseTypes',
-  'openapi/request-type': 'requestTypes',
-  'openapi/request-server-type': 'requestServerTypes',
-  'openapi/path-serializer': 'pathSerializers',
-  'openapi/query-serializer': 'querySerializers',
-  'openapi/request-headers-serializer': 'requestHeaderSerializers',
-  'openapi/response-headers-serializer': 'responseHeaderSerializers',
-  'openapi/path-deserializer': 'pathDeserializers',
-  'openapi/query-deserializer': 'queryDeserializers',
-  'openapi/request-headers-deserializer': 'requestHeaderDeserializers',
-  'openapi/response-headers-deserializer': 'responseHeaderDeserializers',
-  'json-schema/type-validator': 'typeValidators',
-  'openapi/request-body-validator': 'requestBodyValidators',
-  'openapi/response-body-validator': 'responseBodyValidators',
-  'openapi/express-route': 'routes',
-  'openapi/express-routes-type': 'routes',
-  'openapi/express-route-factory': 'routes',
-  'openapi/express-cors-middleware': 'routes',
-  'openapi/api-type': 'api',
-  'openapi/sdk-impl': 'sdk',
-  'openapi/sdk-stub': 'sdk',
-  'openapi/sdk-type': 'sdk',
-}
-
-function singleFile(path: string): GeneratorPathProvider {
-  return () => resolve(path)
-}
-
-function byName(path: string): GeneratorPathProvider {
-  return (input: any, name: NameProvider, target: string) => resolve(join(path, `${name(input, target)}.ts`))
-}
-
-function byTarget(path: string, folder: Partial<NameByTarget> = {}): GeneratorPathProvider {
-  const mergedFolder: NameByTarget = { ...nameByTarget, ...folder }
-  return (input: any, name: NameProvider, target: string) =>
-    resolve(join(path, mergedFolder[target as OpenAPIGeneratorTarget], `${name(input, target)}.ts`))
-}
-
-function delegating(path: string, delegates: DelegatingPathProviderInput): GeneratorPathProvider {
-  return (input: any, name: NameProvider, target: string): string => {
-    const delegate = delegates[target as OpenAPIGeneratorTarget]
-    return delegate(path, input, name, target)
-  }
+const fileNameByTarget: NameByTarget = {
+  'json-schema/type': 'types.ts',
+  'json-schema/type-guard': 'typeGuards.ts',
+  'openapi/operation': 'operations.ts',
+  'openapi/query-type': 'queryTypes.ts',
+  'openapi/request-headers-type': 'requestHeaderTypes.ts',
+  'openapi/path-type': 'pathTypes.ts',
+  'openapi/response-headers-type': 'responseHeaderTypes.ts',
+  'openapi/response-type': 'responseTypes.ts',
+  'openapi/request-type': 'requestTypes.ts',
+  'openapi/request-server-type': 'requestServerTypes.ts',
+  'openapi/path-serializer': 'pathSerializers.ts',
+  'openapi/query-serializer': 'querySerializers.ts',
+  'openapi/request-headers-serializer': 'requestHeaderSerializers.ts',
+  'openapi/response-headers-serializer': 'responseHeaderSerializers.ts',
+  'openapi/path-deserializer': 'pathDeserializers.ts',
+  'openapi/query-deserializer': 'queryDeserializers.ts',
+  'openapi/request-headers-deserializer': 'requestHeaderDeserializers.ts',
+  'openapi/response-headers-deserializer': 'responseHeaderDeserializers.ts',
+  'json-schema/type-validator': 'typeValidators.ts',
+  'openapi/request-body-validator': 'requestBodyValidators.ts',
+  'openapi/response-body-validator': 'responseBodyValidators.ts',
+  'openapi/express-route': 'expressRoutes.ts',
+  'openapi/express-routes-type': 'expressRoutesType.ts',
+  'openapi/express-route-factory': 'expressRouteFactory.ts',
+  'openapi/express-cors-middleware': 'expressCorsMiddleware.ts',
+  'openapi/api-type': 'apiType.ts',
+  'openapi/sdk-impl': 'sdkImpl.ts',
+  'openapi/sdk-stub': 'sdkStub.ts',
+  'openapi/sdk-type': 'sdkType.ts',
 }
 
 const delegate =
@@ -118,11 +97,60 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
   }
 })()
 
-const _default = (path: string): GeneratorPathProvider => delegating(path, fullStackDelegate)
-
 export const pathProviders = {
-  byName,
-  byTarget,
-  singleFile,
-  default: _default,
+  /**
+   * Creates a path provider that provides the same fileName every input.
+   * @param fileName The name of the file.
+   * @returns The path provider
+   */
+  singleFile(fileName: string): GeneratorPathProvider {
+    return () => resolve(fileName)
+  },
+
+  /**
+   * Creates a path provider that separates output by generator target.
+   * @param folder The root folder.
+   * @param fileNames (optional) An object, mapping from generator target => file name. You can overwrite default file names with this parameter.
+   * @returns The path provider
+   */
+  byTarget(folder: string, fileNames: Partial<NameByTarget> = {}): GeneratorPathProvider {
+    const mergedFileNames: NameByTarget = { ...fileNameByTarget, ...fileNames }
+    return (input: any, name: NameProvider, target: string) =>
+      resolve(join(folder, mergedFileNames[target as OpenAPIGeneratorTarget]))
+  },
+  /**
+   * Creates a path provider that generates each artifact into it's own file, in the input folder.
+   * @param folder The root folder.
+   * @returns The path provider
+   */
+  byName(folder: string): GeneratorPathProvider {
+    return (input: any, name: NameProvider, target: string) => resolve(join(folder, `${name(input, target)}.ts`))
+  },
+  /**
+   * Creates a default, recommended path provider. Splits files into topical hierarchy.
+   * @param folder The root folder.
+   * @returns The path provider
+   */
+  default(folder: string): GeneratorPathProvider {
+    return pathProviders.delegating(folder, fullStackDelegate)
+  },
+  /**
+   * Creates a path provider, which composes the path from folder + result of the appropriate delegate
+   * @param folder The root folder.
+   * @param delegates The object mapping from generator target => delegate function
+   * @returns The path provider.
+   */
+  delegating(folder: string, delegates: DelegatingPathProviderInput): GeneratorPathProvider {
+    return (input: any, name: NameProvider, target: string): string => {
+      const delegate = delegates[target as OpenAPIGeneratorTarget]
+      if (isNil(delegate)) {
+        throw new TypeError(`No delegate for target "${target}".`)
+      }
+      const path = delegate(folder, input, name, target)
+      if (isNil(path)) {
+        throw new TypeError(`Path provider delegate for "${target}" returned ${path} for ${JSON.stringify(input)}.`)
+      }
+      return path
+    }
+  },
 }

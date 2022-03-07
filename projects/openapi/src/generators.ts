@@ -28,15 +28,15 @@ import {
   expressRouteFactory,
   expressCorsMiddleware,
 } from '@oats-ts/openapi-express-routes-generator'
-import { types } from '@oats-ts/json-schema-types-generator'
-import { typeGuards } from '@oats-ts/json-schema-type-guards-generator'
-import { typeValidators } from '@oats-ts/json-schema-validators-generator'
+import { types, TypesGeneratorConfig } from '@oats-ts/json-schema-types-generator'
+import { TypeGuardGeneratorConfig, typeGuards } from '@oats-ts/json-schema-type-guards-generator'
+import { typeValidators, ValidatorsGeneratorConfig } from '@oats-ts/json-schema-validators-generator'
 import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 
 export const generators = {
-  types: types as () => OpenAPIGenerator,
-  typeGuards: typeGuards as () => OpenAPIGenerator,
-  typeValidators: typeValidators as () => OpenAPIGenerator,
+  types: types as (config?: Partial<TypesGeneratorConfig>) => OpenAPIGenerator,
+  typeGuards: typeGuards as (config?: Partial<TypeGuardGeneratorConfig>) => OpenAPIGenerator,
+  typeValidators: typeValidators as (config?: Partial<ValidatorsGeneratorConfig>) => OpenAPIGenerator,
   responseBodyValidators,
   requestBodyValidators,
   queryParameterTypes,

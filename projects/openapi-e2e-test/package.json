@@ -16,8 +16,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "echo 'Nothing to build'",
-    "g": "ts-node src/schema/generate.ts",
-    "g2": "ts-node src/schema/generate2.ts",
+    "g": "ts-node src/generate.ts",
     "test": "cross-env jest --runInBand",
     "typecheck": "tsc --noEmit"
   },
