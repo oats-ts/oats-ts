@@ -5,17 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import {
-  ClientAdapter,
-  HasHeaders,
-  HasPathParameters,
-  HasQueryParameters,
-  HasRequestBody,
-  HttpResponse,
-  RawHttpRequest,
-  RawHttpResponse,
-  ServerAdapter,
-} from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
   createHeaderDeserializer,
   createPathDeserializer,
@@ -1307,72 +1297,152 @@ export type SimpleResponseHeaderParameters200ResponseHeaderParameters = {
 }
 
 export type DeepObjectQueryParametersResponse =
-  | HttpResponse<DeepObjectQueryParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: DeepObjectQueryParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type FormQueryParametersResponse =
-  | HttpResponse<FormQueryParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: FormQueryParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type LabelPathParametersResponse =
-  | HttpResponse<LabelPathParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: LabelPathParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type MatrixPathParametersResponse =
-  | HttpResponse<MatrixPathParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: MatrixPathParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type PipeDelimitedQueryParametersResponse =
-  | HttpResponse<PipeDelimitedQueryParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: PipeDelimitedQueryParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type SimpleHeaderParametersResponse =
-  | HttpResponse<SimpleHeaderParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: SimpleHeaderParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type SimplePathParametersResponse =
-  | HttpResponse<SimplePathParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: SimplePathParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type SimpleResponseHeaderParametersResponse =
-  | HttpResponse<
-      {
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: {
         ok: boolean
-      },
-      200,
-      'application/json',
-      SimpleResponseHeaderParameters200ResponseHeaderParameters
-    >
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+      }
+      headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
 export type SpaceDelimitedQueryParametersResponse =
-  | HttpResponse<SpaceDelimitedQueryParameters, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: SpaceDelimitedQueryParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
 
-export type DeepObjectQueryParametersServerRequest = HasQueryParameters<Try<DeepObjectQueryParametersQueryParameters>>
+export type DeepObjectQueryParametersServerRequest = {
+  query: Try<DeepObjectQueryParametersQueryParameters>
+}
 
-export type FormQueryParametersServerRequest = HasQueryParameters<Try<FormQueryParametersQueryParameters>>
+export type FormQueryParametersServerRequest = {
+  query: Try<FormQueryParametersQueryParameters>
+}
 
-export type LabelPathParametersServerRequest = HasPathParameters<Try<LabelPathParametersPathParameters>>
+export type LabelPathParametersServerRequest = {
+  path: Try<LabelPathParametersPathParameters>
+}
 
-export type MatrixPathParametersServerRequest = HasPathParameters<Try<MatrixPathParametersPathParameters>>
+export type MatrixPathParametersServerRequest = {
+  path: Try<MatrixPathParametersPathParameters>
+}
 
-export type PipeDelimitedQueryParametersServerRequest = HasQueryParameters<
-  Try<PipeDelimitedQueryParametersQueryParameters>
->
+export type PipeDelimitedQueryParametersServerRequest = {
+  query: Try<PipeDelimitedQueryParametersQueryParameters>
+}
 
-export type SimpleHeaderParametersServerRequest = HasHeaders<Try<SimpleHeaderParametersRequestHeaderParameters>>
+export type SimpleHeaderParametersServerRequest = {
+  headers: Try<SimpleHeaderParametersRequestHeaderParameters>
+}
 
-export type SimplePathParametersServerRequest = HasPathParameters<Try<SimplePathParametersPathParameters>>
+export type SimplePathParametersServerRequest = {
+  path: Try<SimplePathParametersPathParameters>
+}
 
-export type SimpleResponseHeaderParametersServerRequest = HasRequestBody<
-  'application/json',
-  Try<SimpleResponseHeaderParameters>
->
+export type SimpleResponseHeaderParametersServerRequest = {
+  mimeType: 'application/json'
+  body: Try<SimpleResponseHeaderParameters>
+}
 
-export type SpaceDelimitedQueryParametersServerRequest = HasQueryParameters<
-  Try<SpaceDelimitedQueryParametersQueryParameters>
->
+export type SpaceDelimitedQueryParametersServerRequest = {
+  query: Try<SpaceDelimitedQueryParametersQueryParameters>
+}
 
 export const simpleResponseHeaderParametersRequestBodyValidator = {
   'application/json': simpleResponseHeaderParametersTypeValidator,
@@ -2474,23 +2544,42 @@ export const parametersCorsMiddleware =
     next()
   }
 
-export type DeepObjectQueryParametersRequest = HasQueryParameters<DeepObjectQueryParametersQueryParameters>
+export type DeepObjectQueryParametersRequest = {
+  query: DeepObjectQueryParametersQueryParameters
+}
 
-export type FormQueryParametersRequest = HasQueryParameters<FormQueryParametersQueryParameters>
+export type FormQueryParametersRequest = {
+  query: FormQueryParametersQueryParameters
+}
 
-export type LabelPathParametersRequest = HasPathParameters<LabelPathParametersPathParameters>
+export type LabelPathParametersRequest = {
+  path: LabelPathParametersPathParameters
+}
 
-export type MatrixPathParametersRequest = HasPathParameters<MatrixPathParametersPathParameters>
+export type MatrixPathParametersRequest = {
+  path: MatrixPathParametersPathParameters
+}
 
-export type PipeDelimitedQueryParametersRequest = HasQueryParameters<PipeDelimitedQueryParametersQueryParameters>
+export type PipeDelimitedQueryParametersRequest = {
+  query: PipeDelimitedQueryParametersQueryParameters
+}
 
-export type SimpleHeaderParametersRequest = HasHeaders<SimpleHeaderParametersRequestHeaderParameters>
+export type SimpleHeaderParametersRequest = {
+  headers: SimpleHeaderParametersRequestHeaderParameters
+}
 
-export type SimplePathParametersRequest = HasPathParameters<SimplePathParametersPathParameters>
+export type SimplePathParametersRequest = {
+  path: SimplePathParametersPathParameters
+}
 
-export type SimpleResponseHeaderParametersRequest = HasRequestBody<'application/json', SimpleResponseHeaderParameters>
+export type SimpleResponseHeaderParametersRequest = {
+  mimeType: 'application/json'
+  body: SimpleResponseHeaderParameters
+}
 
-export type SpaceDelimitedQueryParametersRequest = HasQueryParameters<SpaceDelimitedQueryParametersQueryParameters>
+export type SpaceDelimitedQueryParametersRequest = {
+  query: SpaceDelimitedQueryParametersQueryParameters
+}
 
 export const deepObjectQueryParametersResponseBodyValidator = {
   200: { 'application/json': deepObjectQueryParametersTypeValidator },

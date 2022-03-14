@@ -5,14 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import {
-  ClientAdapter,
-  HasRequestBody,
-  HttpResponse,
-  RawHttpRequest,
-  RawHttpResponse,
-  ServerAdapter,
-} from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
 import {
   array,
@@ -171,108 +164,290 @@ export function isPrimitiveTupleType(input: any): input is PrimitiveTupleType {
 }
 
 export type ArrObjResponse =
-  | HttpResponse<ObjectWithArrays, 200, 'application/json', undefined>
-  | HttpResponse<ObjectWithArrays, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: ObjectWithArrays
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: ObjectWithArrays
+    }
 
 export type BoolResponse =
-  | HttpResponse<boolean, 200, 'application/json', undefined>
-  | HttpResponse<boolean, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: boolean
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: boolean
+    }
 
 export type BoolArrResponse =
-  | HttpResponse<boolean[], 200, 'application/json', undefined>
-  | HttpResponse<boolean[], 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: boolean[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: boolean[]
+    }
 
 export type EnmResponse =
-  | HttpResponse<EnumType, 200, 'application/json', undefined>
-  | HttpResponse<EnumType, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: EnumType
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: EnumType
+    }
 
 export type EnmArrResponse =
-  | HttpResponse<EnumType[], 200, 'application/json', undefined>
-  | HttpResponse<EnumType[], 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: EnumType[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: EnumType[]
+    }
 
 export type NestedObjResponse =
-  | HttpResponse<ObjectWithNestedObjects, 200, 'application/json', undefined>
-  | HttpResponse<ObjectWithNestedObjects, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: ObjectWithNestedObjects
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: ObjectWithNestedObjects
+    }
 
 export type NumResponse =
-  | HttpResponse<number, 200, 'application/json', undefined>
-  | HttpResponse<number, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: number
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: number
+    }
 
 export type NumArrResponse =
-  | HttpResponse<number[], 200, 'application/json', undefined>
-  | HttpResponse<number[], 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: number[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: number[]
+    }
 
 export type OptPrimTupleResponse =
-  | HttpResponse<PrimitiveOptionalTupleType, 200, 'application/json', undefined>
-  | HttpResponse<PrimitiveOptionalTupleType, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: PrimitiveOptionalTupleType
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: PrimitiveOptionalTupleType
+    }
 
 export type PrimObjResponse =
-  | HttpResponse<ObjectWithPrimitives, 200, 'application/json', undefined>
-  | HttpResponse<ObjectWithPrimitives, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: ObjectWithPrimitives
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: ObjectWithPrimitives
+    }
 
 export type PrimTupleResponse =
-  | HttpResponse<PrimitiveTupleType, 200, 'application/json', undefined>
-  | HttpResponse<PrimitiveTupleType, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: PrimitiveTupleType
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: PrimitiveTupleType
+    }
 
 export type StrResponse =
-  | HttpResponse<string, 200, 'application/json', undefined>
-  | HttpResponse<string, 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: string
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: string
+    }
 
 export type StrArrResponse =
-  | HttpResponse<string[], 200, 'application/json', undefined>
-  | HttpResponse<string[], 200, 'application/yaml', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: string[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: string[]
+    }
 
 export type ArrObjServerRequest =
-  | HasRequestBody<'application/json', Try<ObjectWithArrays>>
-  | HasRequestBody<'application/yaml', Try<ObjectWithArrays>>
+  | {
+      mimeType: 'application/json'
+      body: Try<ObjectWithArrays>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<ObjectWithArrays>
+    }
 
 export type BoolServerRequest =
-  | HasRequestBody<'application/json', Try<boolean>>
-  | HasRequestBody<'application/yaml', Try<boolean>>
+  | {
+      mimeType: 'application/json'
+      body: Try<boolean>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<boolean>
+    }
 
 export type BoolArrServerRequest =
-  | HasRequestBody<'application/json', Try<boolean[]>>
-  | HasRequestBody<'application/yaml', Try<boolean[]>>
+  | {
+      mimeType: 'application/json'
+      body: Try<boolean[]>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<boolean[]>
+    }
 
 export type EnmServerRequest =
-  | HasRequestBody<'application/json', Try<EnumType>>
-  | HasRequestBody<'application/yaml', Try<EnumType>>
+  | {
+      mimeType: 'application/json'
+      body: Try<EnumType>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<EnumType>
+    }
 
 export type EnmArrServerRequest =
-  | HasRequestBody<'application/json', Try<EnumType[]>>
-  | HasRequestBody<'application/yaml', Try<EnumType[]>>
+  | {
+      mimeType: 'application/json'
+      body: Try<EnumType[]>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<EnumType[]>
+    }
 
 export type NestedObjServerRequest =
-  | HasRequestBody<'application/json', Try<ObjectWithNestedObjects>>
-  | HasRequestBody<'application/yaml', Try<ObjectWithNestedObjects>>
+  | {
+      mimeType: 'application/json'
+      body: Try<ObjectWithNestedObjects>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<ObjectWithNestedObjects>
+    }
 
 export type NumServerRequest =
-  | HasRequestBody<'application/json', Try<number>>
-  | HasRequestBody<'application/yaml', Try<number>>
+  | {
+      mimeType: 'application/json'
+      body: Try<number>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<number>
+    }
 
 export type NumArrServerRequest =
-  | HasRequestBody<'application/json', Try<number[]>>
-  | HasRequestBody<'application/yaml', Try<number[]>>
+  | {
+      mimeType: 'application/json'
+      body: Try<number[]>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<number[]>
+    }
 
 export type OptPrimTupleServerRequest =
-  | HasRequestBody<'application/json', Try<PrimitiveOptionalTupleType>>
-  | HasRequestBody<'application/yaml', Try<PrimitiveOptionalTupleType>>
+  | {
+      mimeType: 'application/json'
+      body: Try<PrimitiveOptionalTupleType>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<PrimitiveOptionalTupleType>
+    }
 
 export type PrimObjServerRequest =
-  | HasRequestBody<'application/json', Try<ObjectWithPrimitives>>
-  | HasRequestBody<'application/yaml', Try<ObjectWithPrimitives>>
+  | {
+      mimeType: 'application/json'
+      body: Try<ObjectWithPrimitives>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<ObjectWithPrimitives>
+    }
 
 export type PrimTupleServerRequest =
-  | HasRequestBody<'application/json', Try<PrimitiveTupleType>>
-  | HasRequestBody<'application/yaml', Try<PrimitiveTupleType>>
+  | {
+      mimeType: 'application/json'
+      body: Try<PrimitiveTupleType>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<PrimitiveTupleType>
+    }
 
 export type StrServerRequest =
-  | HasRequestBody<'application/json', Try<string>>
-  | HasRequestBody<'application/yaml', Try<string>>
+  | {
+      mimeType: 'application/json'
+      body: Try<string>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<string>
+    }
 
 export type StrArrServerRequest =
-  | HasRequestBody<'application/json', Try<string[]>>
-  | HasRequestBody<'application/yaml', Try<string[]>>
+  | {
+      mimeType: 'application/json'
+      body: Try<string[]>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<string[]>
+    }
 
 export const arrObjRequestBodyValidator = {
   'application/json': objectWithArraysTypeValidator,
@@ -803,44 +978,134 @@ export const bodiesCorsMiddleware =
   }
 
 export type ArrObjRequest =
-  | HasRequestBody<'application/json', ObjectWithArrays>
-  | HasRequestBody<'application/yaml', ObjectWithArrays>
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithArrays
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithArrays
+    }
 
-export type BoolRequest = HasRequestBody<'application/json', boolean> | HasRequestBody<'application/yaml', boolean>
+export type BoolRequest =
+  | {
+      mimeType: 'application/json'
+      body: boolean
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: boolean
+    }
 
 export type BoolArrRequest =
-  | HasRequestBody<'application/json', boolean[]>
-  | HasRequestBody<'application/yaml', boolean[]>
+  | {
+      mimeType: 'application/json'
+      body: boolean[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: boolean[]
+    }
 
-export type EnmRequest = HasRequestBody<'application/json', EnumType> | HasRequestBody<'application/yaml', EnumType>
+export type EnmRequest =
+  | {
+      mimeType: 'application/json'
+      body: EnumType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: EnumType
+    }
 
 export type EnmArrRequest =
-  | HasRequestBody<'application/json', EnumType[]>
-  | HasRequestBody<'application/yaml', EnumType[]>
+  | {
+      mimeType: 'application/json'
+      body: EnumType[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: EnumType[]
+    }
 
 export type NestedObjRequest =
-  | HasRequestBody<'application/json', ObjectWithNestedObjects>
-  | HasRequestBody<'application/yaml', ObjectWithNestedObjects>
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithNestedObjects
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithNestedObjects
+    }
 
-export type NumRequest = HasRequestBody<'application/json', number> | HasRequestBody<'application/yaml', number>
+export type NumRequest =
+  | {
+      mimeType: 'application/json'
+      body: number
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: number
+    }
 
-export type NumArrRequest = HasRequestBody<'application/json', number[]> | HasRequestBody<'application/yaml', number[]>
+export type NumArrRequest =
+  | {
+      mimeType: 'application/json'
+      body: number[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: number[]
+    }
 
 export type OptPrimTupleRequest =
-  | HasRequestBody<'application/json', PrimitiveOptionalTupleType>
-  | HasRequestBody<'application/yaml', PrimitiveOptionalTupleType>
+  | {
+      mimeType: 'application/json'
+      body: PrimitiveOptionalTupleType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: PrimitiveOptionalTupleType
+    }
 
 export type PrimObjRequest =
-  | HasRequestBody<'application/json', ObjectWithPrimitives>
-  | HasRequestBody<'application/yaml', ObjectWithPrimitives>
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithPrimitives
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithPrimitives
+    }
 
 export type PrimTupleRequest =
-  | HasRequestBody<'application/json', PrimitiveTupleType>
-  | HasRequestBody<'application/yaml', PrimitiveTupleType>
+  | {
+      mimeType: 'application/json'
+      body: PrimitiveTupleType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: PrimitiveTupleType
+    }
 
-export type StrRequest = HasRequestBody<'application/json', string> | HasRequestBody<'application/yaml', string>
+export type StrRequest =
+  | {
+      mimeType: 'application/json'
+      body: string
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: string
+    }
 
-export type StrArrRequest = HasRequestBody<'application/json', string[]> | HasRequestBody<'application/yaml', string[]>
+export type StrArrRequest =
+  | {
+      mimeType: 'application/json'
+      body: string[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: string[]
+    }
 
 export const arrObjResponseBodyValidator = {
   200: { 'application/json': objectWithArraysTypeValidator, 'application/yaml': objectWithArraysTypeValidator },

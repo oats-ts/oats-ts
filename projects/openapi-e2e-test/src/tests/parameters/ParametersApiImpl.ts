@@ -34,7 +34,6 @@ export class ParametersApiImpl implements ParametersApi<ExpressToolkit> {
       return {
         mimeType: 'application/json',
         statusCode: 400,
-        headers: undefined,
         body: fluent(params)
           .getIssues()
           .map((issue) => ({ message: issue.message })),
@@ -43,7 +42,6 @@ export class ParametersApiImpl implements ParametersApi<ExpressToolkit> {
     return {
       mimeType: 'application/json',
       statusCode: 200,
-      headers: undefined,
       body: fluent(params).getData(),
     }
   }
@@ -54,7 +52,6 @@ export class ParametersApiImpl implements ParametersApi<ExpressToolkit> {
       return {
         mimeType: 'application/json',
         statusCode: 400,
-        headers: undefined,
         body: fluent(input.body)
           .getIssues()
           .map((issue) => ({ message: issue.message })),

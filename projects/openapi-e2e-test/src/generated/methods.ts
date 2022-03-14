@@ -5,63 +5,57 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ClientAdapter, HttpResponse, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { object, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
-export type DeleteMethodResponse = HttpResponse<
-  {
+export type DeleteMethodResponse = {
+  mimeType: 'application/json'
+  statusCode: 200
+  body: {
     methodUsed: string
-  },
-  200,
-  'application/json',
-  undefined
->
+  }
+}
 
-export type GetMethodResponse = HttpResponse<
-  {
+export type GetMethodResponse = {
+  mimeType: 'application/json'
+  statusCode: 200
+  body: {
     methodUsed: string
-  },
-  200,
-  'application/json',
-  undefined
->
+  }
+}
 
-export type OptionsMethodResponse = HttpResponse<
-  {
+export type OptionsMethodResponse = {
+  mimeType: 'application/json'
+  statusCode: 200
+  body: {
     methodUsed: string
-  },
-  200,
-  'application/json',
-  undefined
->
+  }
+}
 
-export type PatchMethodResponse = HttpResponse<
-  {
+export type PatchMethodResponse = {
+  mimeType: 'application/json'
+  statusCode: 200
+  body: {
     methodUsed: string
-  },
-  200,
-  'application/json',
-  undefined
->
+  }
+}
 
-export type PostMethodResponse = HttpResponse<
-  {
+export type PostMethodResponse = {
+  mimeType: 'application/json'
+  statusCode: 200
+  body: {
     methodUsed: string
-  },
-  200,
-  'application/json',
-  undefined
->
+  }
+}
 
-export type PutMethodResponse = HttpResponse<
-  {
+export type PutMethodResponse = {
+  mimeType: 'application/json'
+  statusCode: 200
+  body: {
     methodUsed: string
-  },
-  200,
-  'application/json',
-  undefined
->
+  }
+}
 
 export type HttpMethodsApi<T> = {
   deleteMethod(toolkit: T): Promise<DeleteMethodResponse>
