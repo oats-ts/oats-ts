@@ -41,8 +41,6 @@
     "@oats-ts/openapi-common": "0.0.16",
     "@oats-ts/openapi-express-routes-generator": "0.0.16",
     "@oats-ts/openapi-http": "0.0.16",
-    "@oats-ts/openapi-http-client": "0.0.11",
-    "@oats-ts/openapi-http-server": "0.0.11",
     "@oats-ts/openapi-model": "0.0.16",
     "@oats-ts/openapi-operations-generator": "0.0.16",
     "@oats-ts/openapi-parameter-deserialization": "0.0.16",
