@@ -22,6 +22,7 @@ export class ResponseTypesGenerator implements OpenAPIGenerator<'openapi/respons
 
   public readonly id = 'openapi/response-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['json-schema/type', 'openapi/response-headers-type']
+  public readonly runtimeDepencencies: string[] = []
 
   public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, config, generators)

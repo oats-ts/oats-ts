@@ -11,6 +11,7 @@ import {
   createOpenAPIGeneratorContext,
   hasInput,
   OpenAPIGeneratorTarget,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
@@ -27,6 +28,7 @@ export class RequestServerTypesGenerator implements OpenAPIGenerator<'openapi/re
     'openapi/query-type',
     'openapi/path-type',
   ]
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.Try.name]
 
   public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, config, generators)

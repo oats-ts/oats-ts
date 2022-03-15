@@ -8,6 +8,7 @@ import {
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   EnhancedOperation,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { generateSdkClass } from './generateSdkClass'
 import { SdkGeneratorConfig } from '../typings'
@@ -28,6 +29,7 @@ export class SdkImplementationGenerator implements OpenAPIGenerator<'openapi/sdk
     'openapi/response-type',
     'openapi/sdk-type',
   ]
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.Http.name]
 
   public constructor(config: SdkGeneratorConfig) {
     this.sdkConfig = config

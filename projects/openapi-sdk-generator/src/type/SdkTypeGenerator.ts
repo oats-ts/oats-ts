@@ -29,6 +29,7 @@ export class SdkTypeGenerator implements OpenAPIGenerator<'openapi/sdk-type'> {
     'openapi/request-type',
     'openapi/response-type',
   ]
+  public readonly runtimeDepencencies: string[] = []
 
   public constructor(config: SdkGeneratorConfig) {
     this.sdkConfig = config

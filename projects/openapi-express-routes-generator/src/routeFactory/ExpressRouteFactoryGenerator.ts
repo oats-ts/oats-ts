@@ -8,6 +8,7 @@ import {
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   EnhancedOperation,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { Result, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
@@ -23,6 +24,11 @@ export class ExpressRouteFactoryGenerator implements OpenAPIGenerator<'openapi/e
 
   public readonly id = 'openapi/express-route-factory'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/express-route']
+  public readonly runtimeDepencencies: string[] = [
+    RuntimePackages.Http.name,
+    RuntimePackages.HttpServerExpress.name,
+    RuntimePackages.Express.name,
+  ]
 
   public constructor(config: ExpressRouteGeneratorConfig) {
     this.routeFactoryConfig = config

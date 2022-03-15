@@ -9,6 +9,7 @@ export type Logger = {
   readSuccess(): void
   generatorSuccess(name: string, result: Result<Module[]>): void
   writerSuccess(modules: Module[]): void
+  runtimeDependencies(dependencies: string[]): void
 }
 
 export const noopLogger: Logger = {
@@ -16,6 +17,7 @@ export const noopLogger: Logger = {
   readSuccess: noop,
   generatorSuccess: noop,
   writerSuccess: noop,
+  runtimeDependencies: noop,
 }
 
 const x = red('✕')
@@ -38,6 +40,8 @@ const severityIcon = (severity: Severity) => {
 
 const moduleToString = (m: Module) =>
   `    ${m.path} (${blue(m.content.length)} elements, ${blue(m.dependencies.length)} dependencies)`
+
+const dependencyToString = (d: string) => `    - ${blue(d)}`
 
 const issueToString = (issue: Issue) => `    ${severityIcon(issue.severity)} ${issue.message} at "${issue.path}"`
 
@@ -71,12 +75,25 @@ export const consoleLogger: Logger = {
     console.log(lines.join('\n'))
   },
   writerSuccess(modules: Module[]): void {
-    if (modules.length === 0) {
-      console.log(`${c} Write step emitted no modules.`)
+    const lines: string[] = [
+      modules.length === 0
+        ? `${c} Write step emitted no modules.`
+        : `${c} Write step succesfully written ${blue(modules.length)} module(s) to disk:`,
+      ...modules.map(moduleToString),
+      '',
+    ]
+    console.log(lines.join('\n'))
+  },
+  runtimeDependencies(dependencies: string[]): void {
+    if (dependencies.length === 0) {
+      return
     }
     const lines: string[] = [
-      `${c} Write step succesfully written ${blue(modules.length)} module(s) to disk:`,
-      ...modules.map(moduleToString),
+      `${i} Generators declared ${blue(dependencies.length)} runtime dependencies:`,
+      ...dependencies.map(dependencyToString),
+      '',
+      `${i} Please review and install these dependencies:`,
+      `    npm i ${dependencies.map((dep) => blue(dep)).join(' ')}`,
       '',
     ]
     console.log(lines.join('\n'))

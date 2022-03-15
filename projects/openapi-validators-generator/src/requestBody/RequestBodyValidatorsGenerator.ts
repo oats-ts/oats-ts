@@ -15,6 +15,7 @@ import {
 } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
+import { RuntimePackages } from '@oats-ts/model-common'
 
 export class RequestBodyValidatorsGenerator implements OpenAPIGenerator<'openapi/request-body-validator'> {
   private context: OpenAPIGeneratorContext = null
@@ -22,6 +23,7 @@ export class RequestBodyValidatorsGenerator implements OpenAPIGenerator<'openapi
 
   public readonly id = 'openapi/request-body-validator'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['json-schema/type', 'json-schema/type-validator']
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.Validators.name]
 
   public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, config, generators)

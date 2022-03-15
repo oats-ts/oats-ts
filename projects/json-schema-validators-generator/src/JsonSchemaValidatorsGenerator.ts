@@ -1,6 +1,6 @@
 import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { sortBy, isNil } from 'lodash'
-import { getNamedSchemas, ReadOutput, HasSchemas, createGeneratorContext } from '@oats-ts/model-common'
+import { getNamedSchemas, ReadOutput, HasSchemas, createGeneratorContext, RuntimePackages } from '@oats-ts/model-common'
 import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
 import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
@@ -15,8 +15,10 @@ export class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>, Id 
   implements CodeGenerator<T, TypeScriptModule>
 {
   private context: JsonSchemaGeneratorContext = null
+
   public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type-validator'
   public readonly consumes: JsonSchemaGeneratorTarget[] = ['json-schema/type']
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.Validators.name]
 
   public constructor(public readonly config: ValidatorsGeneratorConfig) {}
 

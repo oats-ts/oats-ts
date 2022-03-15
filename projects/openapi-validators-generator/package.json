@@ -41,6 +41,7 @@
     "@oats-ts/json-schema-model": "0.0.15",
     "@oats-ts/openapi-model": "0.0.15",
     "@oats-ts/typescript-writer": "0.0.15",
-    "@oats-ts/typescript-common": "0.0.15"
+    "@oats-ts/typescript-common": "0.0.15",
+    "@oats-ts/model-common": "0.0.15"
   }
 }

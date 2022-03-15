@@ -7,6 +7,7 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { generateExpressRoute } from './generateExpressRoute'
 import { ExpressRouteGeneratorConfig } from './typings'
@@ -27,6 +28,11 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express
     'openapi/path-deserializer',
     'openapi/query-deserializer',
     'openapi/request-headers-deserializer',
+  ]
+  public readonly runtimeDepencencies: string[] = [
+    RuntimePackages.Http.name,
+    RuntimePackages.HttpServerExpress.name,
+    RuntimePackages.Express.name,
   ]
 
   public constructor(config: ExpressRouteGeneratorConfig) {

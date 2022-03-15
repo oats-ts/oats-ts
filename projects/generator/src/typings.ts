@@ -19,6 +19,7 @@ export type Module<C = any, D = any> = {
 export type CodeGenerator<R, G extends Module, P = string, C = string> = {
   id: P
   consumes: C[]
+  runtimeDepencencies: string[]
   initialize: (data: R, configuration: GeneratorConfig, generators: CodeGenerator<R, G>[]) => void
   generate: () => Promise<Result<G[]>>
   referenceOf: (input: any) => any

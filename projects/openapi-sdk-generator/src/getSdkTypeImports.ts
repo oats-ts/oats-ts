@@ -1,8 +1,7 @@
 import { flatMap } from 'lodash'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { ImportDeclaration } from 'typescript'
-import { getNamedImports } from '@oats-ts/typescript-common'
 
 export function getSdkTypeImports(
   doc: OpenAPIObject,
