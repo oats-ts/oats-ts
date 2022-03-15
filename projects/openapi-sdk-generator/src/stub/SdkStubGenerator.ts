@@ -26,6 +26,7 @@ export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
     'openapi/response-type',
     'openapi/sdk-type',
   ]
+  public readonly runtimeDepencencies: string[] = []
 
   public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, config, generators)

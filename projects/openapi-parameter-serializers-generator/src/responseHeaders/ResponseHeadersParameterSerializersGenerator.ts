@@ -7,6 +7,7 @@ import {
   OpenAPIGenerator,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
@@ -24,6 +25,7 @@ export class ResponseHeadersParameterSerializersGenerator
 
   public readonly id = 'openapi/response-headers-serializer'
   public readonly consumes: OpenAPIGeneratorTarget[] = []
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.ParameterSerialization.name]
 
   initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
     this.context = createOpenAPIGeneratorContext(data, config, generators)

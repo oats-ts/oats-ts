@@ -21,7 +21,6 @@ export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
   async getBooks(): Promise<GetBooksResponse> {
     return {
       body: this.books,
-      headers: undefined,
       mimeType: 'application/json',
       statusCode: 200,
     }
@@ -39,13 +38,11 @@ export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
       .get(
         (book): CreateBookResponse => ({
           body: book,
-          headers: undefined,
           mimeType: 'application/json',
           statusCode: 201,
         }),
         (issues: Issue[]): CreateBookResponse => ({
           body: issues.map(stringify).map((message): AppError => ({ message })),
-          headers: undefined,
           mimeType: 'application/json',
           statusCode: 400,
         }),
@@ -63,13 +60,11 @@ export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
       .get(
         (book): GetBookResponse => ({
           body: book,
-          headers: undefined,
           mimeType: 'application/json',
           statusCode: 200,
         }),
         (issues: Issue[]): GetBookResponse => ({
           body: issues.map(stringify).map((message): AppError => ({ message })),
-          headers: undefined,
           mimeType: 'application/json',
           statusCode: 400,
         }),
@@ -90,13 +85,11 @@ export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
       .get(
         (book): UpdateBookResponse => ({
           body: book,
-          headers: undefined,
           mimeType: 'application/json',
           statusCode: 200,
         }),
         (issues: Issue[]): UpdateBookResponse => ({
           body: issues.map(stringify).map((message): AppError => ({ message })),
-          headers: undefined,
           mimeType: 'application/json',
           statusCode: 400,
         }),

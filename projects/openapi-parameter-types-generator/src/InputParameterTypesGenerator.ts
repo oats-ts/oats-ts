@@ -29,6 +29,7 @@ export class InputParameterTypesGenerator<Id extends OpenAPIGeneratorTarget> imp
 
   public readonly id: Id
   public readonly consumes: OpenAPIGeneratorTarget[]
+  public readonly runtimeDepencencies: string[] = []
 
   public constructor(id: Id, location: ParameterLocation, config: ParameterTypesGeneratorConfig) {
     this.id = id

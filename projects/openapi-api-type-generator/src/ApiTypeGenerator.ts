@@ -23,6 +23,7 @@ export class ApiTypeGenerator implements OpenAPIGenerator<'openapi/api-type'> {
 
   public readonly id = 'openapi/api-type'
   public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/request-server-type', 'openapi/response-type']
+  public readonly runtimeDepencencies: string[] = []
 
   public constructor(config: ApiTypeGeneratorConfig) {
     this.apiTypeConfig = config

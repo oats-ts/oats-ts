@@ -11,6 +11,7 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
@@ -24,6 +25,7 @@ export class InputParameterDeserializersGenerator<Id extends OpenAPIGeneratorTar
 
   public readonly id: Id
   public readonly consumes: OpenAPIGeneratorTarget[]
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.ParameterDeserialization.name]
 
   public constructor(id: Id, consumed: OpenAPIGeneratorTarget, location: ParameterLocation) {
     this.id = id

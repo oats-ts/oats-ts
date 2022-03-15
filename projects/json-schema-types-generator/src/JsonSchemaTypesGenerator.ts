@@ -13,9 +13,9 @@ import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
 export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>> implements CodeGenerator<T, TypeScriptModule> {
   private context: JsonSchemaGeneratorContext = null
 
-  public readonly consumes: JsonSchemaGeneratorTarget[] = []
-
   public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type'
+  public readonly consumes: JsonSchemaGeneratorTarget[] = []
+  public readonly runtimeDepencencies: string[] = []
 
   public constructor(private readonly config: TypesGeneratorConfig) {}
 

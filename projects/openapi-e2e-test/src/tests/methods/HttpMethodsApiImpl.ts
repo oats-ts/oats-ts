@@ -14,7 +14,6 @@ export class HttpMethodsApiImpl implements HttpMethodsApi<ExpressToolkit> {
   async respond(request: Request): Promise<GetMethodResponse> {
     return {
       mimeType: 'application/json',
-      headers: undefined,
       statusCode: 200,
       body: {
         methodUsed: request.method,

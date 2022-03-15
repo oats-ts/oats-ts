@@ -26,7 +26,7 @@ type FileDescriptor = {
 
 export async function getFiles(folders: string[]): Promise<string[]> {
   const response = await fetch(`https://api.github.com/repos/${REPO}/git/trees/master?recursive=true`)
-  const tree = (await response.json()).tree as FileDescriptor[]
+  const tree = ((await response.json()) as any).tree as FileDescriptor[]
   return tree
     .filter((file) => file.type !== 'tree')
     .filter((file) => folders.some((folder) => file.path.startsWith(`${folder}/`)))

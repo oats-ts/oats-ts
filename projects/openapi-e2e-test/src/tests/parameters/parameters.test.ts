@@ -80,7 +80,10 @@ describe('Parameters', () => {
       it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const body = randomHeaderParameters()
         const response = await parametersSdk.simpleResponseHeaderParameters({ body, mimeType: 'application/json' })
-        expect(response.headers).toEqual(body)
+        expect(response.statusCode).toBe(200)
+        if (response.statusCode === 200) {
+          expect(response.headers).toEqual(body)
+        }
         expect(response.body).toEqual({ ok: true })
       })
     })

@@ -1,52 +1,44 @@
 import { entries, identity, isNil } from 'lodash'
-import { factory, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
-import {
-  EnhancedOperation,
-  getRequestBodyContent,
-  OpenAPIGeneratorContext,
-  RuntimePackages,
-} from '@oats-ts/openapi-common'
+import { factory, PropertySignature, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
+import { EnhancedOperation, getRequestBodyContent, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getParameterTypesAst } from './getParameterTypesAst'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+
+function getBodyTypeProperties(
+  mimeType: string,
+  schema: Referenceable<SchemaObject>,
+  context: OpenAPIGeneratorContext,
+  transform: (node: TypeNode) => TypeNode,
+): PropertySignature[] {
+  const { referenceOf } = context
+  return [
+    factory.createPropertySignature(
+      undefined,
+      'mimeType',
+      undefined,
+      factory.createLiteralTypeNode(factory.createStringLiteral(mimeType)),
+    ),
+    factory.createPropertySignature(undefined, 'body', undefined, transform(referenceOf(schema, 'json-schema/type'))),
+  ]
+}
 
 function getFullType(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   transform: (node: TypeNode) => TypeNode = identity,
 ): TypeNode {
-  const { referenceOf } = context
   const bodies = entries(getRequestBodyContent(data, context))
+  const paramProps = getParameterTypesAst(data, context, transform)
   switch (bodies.length) {
     case 0: {
-      const common = getParameterTypesAst(data, context, transform)
-      switch (common.length) {
-        case 0:
-          return undefined
-        case 1:
-          return common[0]
-        default:
-          return common.length > 0 ? factory.createIntersectionTypeNode(common) : undefined
-      }
-    }
-    case 1: {
-      const common = getParameterTypesAst(data, context, transform)
-      const [[mediaType, { schema }]] = bodies
-      return factory.createIntersectionTypeNode([
-        ...common,
-        factory.createTypeReferenceNode(RuntimePackages.Http.HasRequestBody, [
-          factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
-          transform(referenceOf(schema, 'json-schema/type')),
-        ]),
-      ])
+      return factory.createTypeLiteralNode(paramProps)
     }
     default: {
       return factory.createUnionTypeNode(
-        bodies.map(([contentType, mediaType]) =>
-          factory.createIntersectionTypeNode([
-            ...getParameterTypesAst(data, context, transform),
-            factory.createTypeReferenceNode(RuntimePackages.Http.HasRequestBody, [
-              factory.createLiteralTypeNode(factory.createStringLiteral(contentType)),
-              transform(referenceOf(mediaType.schema, 'json-schema/type')),
-            ]),
+        bodies.map(([mimeType, mediaType]) =>
+          factory.createTypeLiteralNode([
+            ...paramProps,
+            ...getBodyTypeProperties(mimeType, mediaType.schema, context, transform),
           ]),
         ),
       )

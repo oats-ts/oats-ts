@@ -12,6 +12,7 @@ import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
@@ -34,6 +35,7 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
     'openapi/query-serializer',
     'openapi/response-headers-deserializer',
   ]
+  public readonly runtimeDepencencies: string[] = [RuntimePackages.Http.name]
 
   public constructor(config: OperationsGeneratorConfig) {
     this.operationsConfig = config

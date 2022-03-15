@@ -1,5 +1,5 @@
-import { head } from 'lodash'
-import { factory, SyntaxKind, TypeAliasDeclaration, TypeNode, TypeReferenceNode } from 'typescript'
+import { head, isNil, keys } from 'lodash'
+import { factory, SyntaxKind, TypeAliasDeclaration, TypeLiteralNode, TypeNode, TypeReferenceNode } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation, getEnhancedResponses } from '@oats-ts/openapi-common'
@@ -15,33 +15,48 @@ function createDefaultStatusCodeType(knownStatusCodes: string[]): TypeReferenceN
     : statusCodeTypeRef
 }
 
+function createResponseTypeLiteral(
+  mimeType: TypeNode,
+  statusType: TypeNode,
+  bodyType: TypeNode,
+  headersType?: TypeNode,
+): TypeLiteralNode {
+  return factory.createTypeLiteralNode([
+    factory.createPropertySignature(undefined, 'mimeType', undefined, mimeType),
+    factory.createPropertySignature(undefined, 'statusCode', undefined, statusType),
+    factory.createPropertySignature(undefined, 'body', undefined, bodyType),
+    ...(isNil(headersType) ? [] : [factory.createPropertySignature(undefined, 'headers', undefined, headersType)]),
+  ])
+}
+
 export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
   const { referenceOf } = context
   const responses = getEnhancedResponses(data.operation, context)
-  const types: TypeReferenceNode[] = []
+  const types: TypeNode[] = []
   if (responses.length === 0) {
     types.push(
-      factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
-        factory.createTypeReferenceNode('undefined'),
-      ]),
+      createResponseTypeLiteral(
+        factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
+        factory.createKeywordTypeNode(SyntaxKind.NumberKeyword),
+        factory.createTypeReferenceNode('unknown'),
+        factory.createTypeReferenceNode('unknown'),
+      ),
     )
   } else {
     const knownStatusCodes = responses.map(({ statusCode }) => statusCode).filter((s) => s !== 'default')
     const responseTypes = responses.map(({ mediaType, schema, statusCode, headers }) => {
+      const hasResponseHeaders = keys(headers || {}).length > 0
       const bodyType = referenceOf<TypeNode>(schema, 'json-schema/type')
       const statusCodeType =
         statusCode === 'default'
           ? createDefaultStatusCodeType(knownStatusCodes)
           : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
       const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
-      const headersType = referenceOf<TypeNode>([data.operation, statusCode], 'openapi/response-headers-type')
+      const headersType = hasResponseHeaders
+        ? referenceOf<TypeNode>([data.operation, statusCode], 'openapi/response-headers-type')
+        : undefined
 
-      return factory.createTypeReferenceNode(RuntimePackages.Http.HttpResponse, [
-        bodyType,
-        statusCodeType,
-        mediaTypeType,
-        headersType,
-      ])
+      return createResponseTypeLiteral(mediaTypeType, statusCodeType, bodyType, headersType)
     })
 
     types.push(...responseTypes)

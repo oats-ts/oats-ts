@@ -104,7 +104,7 @@ export type HttpResponse<B = any, S = any, M = any, H = any> = {
   /** The mime type of the response */
   mimeType: M
   /** The response headers */
-  headers: H
+  headers?: H
 }
 
 /** Http headers where key is the header name, value is the serialized header value. */

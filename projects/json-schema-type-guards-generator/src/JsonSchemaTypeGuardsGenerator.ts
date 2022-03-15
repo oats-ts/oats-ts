@@ -12,8 +12,10 @@ export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>>
   implements CodeGenerator<T, TypeScriptModule>
 {
   private context: JsonSchemaGeneratorContext = null
+
   public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type-guard'
   public readonly consumes: JsonSchemaGeneratorTarget[] = ['json-schema/type']
+  public readonly runtimeDepencencies: string[] = []
 
   constructor(private readonly config: TypeGuardGeneratorConfig) {}
 

@@ -5,15 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import {
-  ClientAdapter,
-  HasPathParameters,
-  HasRequestBody,
-  HttpResponse,
-  RawHttpRequest,
-  RawHttpResponse,
-  ServerAdapter,
-} from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { createPathDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
 import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
@@ -90,31 +82,87 @@ export type UpdateBookPathParameters = {
 }
 
 export type CreateBookResponse =
-  | HttpResponse<Book, 201, 'application/json', undefined>
-  | HttpResponse<AppError[], 400, 'application/json', undefined>
-  | HttpResponse<AppError[], 500, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 201
+      body: Book
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: AppError[]
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 500
+      body: AppError[]
+    }
 
 export type GetBookResponse =
-  | HttpResponse<Book, 200, 'application/json', undefined>
-  | HttpResponse<AppError[], 400, 'application/json', undefined>
-  | HttpResponse<AppError[], 500, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: Book
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: AppError[]
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 500
+      body: AppError[]
+    }
 
 export type GetBooksResponse =
-  | HttpResponse<Book[], 200, 'application/json', undefined>
-  | HttpResponse<AppError[], 400, 'application/json', undefined>
-  | HttpResponse<AppError[], 500, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: Book[]
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: AppError[]
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 500
+      body: AppError[]
+    }
 
 export type UpdateBookResponse =
-  | HttpResponse<Book, 200, 'application/json', undefined>
-  | HttpResponse<AppError[], 400, 'application/json', undefined>
-  | HttpResponse<AppError[], 500, 'application/json', undefined>
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: Book
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: AppError[]
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 500
+      body: AppError[]
+    }
 
-export type CreateBookServerRequest = HasRequestBody<'application/json', Try<Book>>
+export type CreateBookServerRequest = {
+  mimeType: 'application/json'
+  body: Try<Book>
+}
 
-export type GetBookServerRequest = HasPathParameters<Try<GetBookPathParameters>>
+export type GetBookServerRequest = {
+  path: Try<GetBookPathParameters>
+}
 
-export type UpdateBookServerRequest = HasPathParameters<Try<UpdateBookPathParameters>> &
-  HasRequestBody<'application/json', Try<Book>>
+export type UpdateBookServerRequest = {
+  path: Try<UpdateBookPathParameters>
+  mimeType: 'application/json'
+  body: Try<Book>
+}
 
 export const createBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
 
@@ -294,11 +342,20 @@ export const bookStoreCorsMiddleware =
     next()
   }
 
-export type CreateBookRequest = HasRequestBody<'application/json', Book>
+export type CreateBookRequest = {
+  mimeType: 'application/json'
+  body: Book
+}
 
-export type GetBookRequest = HasPathParameters<GetBookPathParameters>
+export type GetBookRequest = {
+  path: GetBookPathParameters
+}
 
-export type UpdateBookRequest = HasPathParameters<UpdateBookPathParameters> & HasRequestBody<'application/json', Book>
+export type UpdateBookRequest = {
+  path: UpdateBookPathParameters
+  mimeType: 'application/json'
+  body: Book
+}
 
 export const createBookResponseBodyValidator = {
   201: { 'application/json': bookTypeValidator },

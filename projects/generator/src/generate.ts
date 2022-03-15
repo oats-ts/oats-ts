@@ -1,4 +1,4 @@
-import { isEmpty, isNil } from 'lodash'
+import { flatMap, isEmpty, isNil } from 'lodash'
 import { isOk } from '@oats-ts/validators'
 import { ensureDependencies } from './ensureDependencies'
 import { consoleLogger, noopLogger } from './logger'
@@ -55,5 +55,9 @@ export async function generate<R, G extends Module>(input: GeneratorInput<R, G>)
     return writeResult
   }
   logger.writerSuccess(writeResult.data)
+  const runtimeDeps = Array.from(new Set(flatMap(generators, (generator) => generator.runtimeDepencencies))).sort(
+    (a, b) => a.localeCompare(b),
+  )
+  logger.runtimeDependencies(runtimeDeps)
   return writeResult
 }
