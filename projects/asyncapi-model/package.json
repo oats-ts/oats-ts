@@ -24,6 +24,6 @@
   },
   "devDependencies": {},
   "dependencies": {
-    "@oats-ts/json-schema-model": "0.0.16"
+    "@oats-ts/json-schema-model": "0.0.17"
   }
 }
