@@ -33,7 +33,7 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@types/urijs": "1.19.16",
+    "@types/urijs": "1.19.19",
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
     "lodash": "4.17.21",
@@ -41,7 +41,7 @@
     "@oats-ts/asyncapi-model": "0.0.13",
     "@oats-ts/model-common": "0.0.15",
     "@oats-ts/json-schema-common": "0.0.15",
-    "urijs": "1.19.7",
+    "urijs": "1.19.10",
     "valid-url": "1.0.9",
     "yamljs": "0.3.0",
     "@oats-ts/validators": "0.0.15",
