@@ -122,7 +122,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       return mimeTypeHeaders
     }
     const serializer = serializers[statusCode]
-    if (serializers === null || serializers === undefined) {
+    if (serializer === null || serializer === undefined) {
       return mimeTypeHeaders
     }
     return { ...fluent(serializer(headers)).getData(), ...mimeTypeHeaders }
