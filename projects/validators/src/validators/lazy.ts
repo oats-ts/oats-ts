@@ -1,7 +1,7 @@
-import { Validator, ValidatorConfig } from '../typings'
+import { FullValidator, ValidatorConfig } from '../typings'
 
 export const lazy =
-  <T>(producer: () => Validator<T>): Validator<T> =>
-  (input: T, config?: Partial<ValidatorConfig>) => {
-    return producer()(input, config)
+  <T>(producer: () => FullValidator<T>): FullValidator<T> =>
+  (input: T, path: string, config: ValidatorConfig) => {
+    return producer()(input, path, config)
   }

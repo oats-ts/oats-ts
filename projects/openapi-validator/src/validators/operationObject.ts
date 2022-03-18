@@ -35,7 +35,7 @@ export function operationObject(
   )(() => {
     const { uriOf } = context
     const { parameterObject, requestBodyObject, responsesObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(
+    return ordered(() => validator(data, uriOf(data), { append }))(
       () => flatMap(parametersOf(data, context), (p) => referenceable(parameterObject, true)(p, context, config)),
       () => (isNil(data.requestBody) ? [] : referenceable(requestBodyObject)(data.requestBody, context, config)),
       () => responsesObject(data.responses, context, config),

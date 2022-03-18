@@ -21,9 +21,10 @@ export type Issue<Type = string> = {
 }
 
 export type ValidatorConfig = {
-  path: string
   severities?: Record<string, Severity>
-  append(path: string, ...segments: string[]): string
+  append(path: string, ...segments: (string | number)[]): string
 }
 
-export type Validator<T> = (input: T, config?: Partial<ValidatorConfig>) => Issue[]
+export type FullValidator<T> = (input: T, path: string, config: ValidatorConfig) => Issue[]
+
+export type Validator<T> = (input: T, path?: string, config?: Partial<ValidatorConfig>) => Issue[]

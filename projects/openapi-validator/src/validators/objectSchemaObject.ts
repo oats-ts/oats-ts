@@ -31,11 +31,8 @@ export const objectSchemaObject =
       data,
     )(() => {
       const { uriOf } = context
-      return ordered(() =>
-        validator(data, {
-          path: uriOf(data),
-          append,
-        }),
-      )(() => flatMap(values(data.properties), (schema) => referenceable(properties)(schema, context, config)))
+      return ordered(() => validator(data, uriOf(data), { append }))(() =>
+        flatMap(values(data.properties), (schema) => referenceable(properties)(schema, context, config)),
+      )
     })
   }

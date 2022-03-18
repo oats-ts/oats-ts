@@ -20,7 +20,7 @@ export function pathsObject(
   )(() => {
     const { pathItemObject } = config
     const { uriOf } = context
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
+    return ordered(() => validator(data, uriOf(data), { append }))(() =>
       flatMap(entries(data), ([url, pathObj]) =>
         ordered(() => pathItemObject(pathObj, context, config))(() => pathItemObjectUrl(url, pathObj, context, config)),
       ),

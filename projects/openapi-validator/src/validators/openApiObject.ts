@@ -27,7 +27,7 @@ export function openApiObject(
   )(() => {
     const { componentsObject, pathsObject } = config
     const { uriOf } = context
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(
+    return ordered(() => validator(data, uriOf(data), { append }))(
       () => (isNil(data.components) ? [] : componentsObject(data.components, context, config)),
       () => (isNil(data.paths) ? [] : pathsObject(data.paths, context, config)),
     )

@@ -39,11 +39,8 @@ export const arraySchemaObject =
       data,
     )(() => {
       const { uriOf } = context
-      return ordered(() =>
-        validator(data, {
-          path: uriOf(data),
-          append,
-        }),
-      )(() => (typeof data.items === 'boolean' ? [] : referenceable(items)(data.items, context, config)))
+      return ordered(() => validator(data, uriOf(data), { append }))(() =>
+        typeof data.items === 'boolean' ? [] : referenceable(items)(data.items, context, config),
+      )
     })
   }

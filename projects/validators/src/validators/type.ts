@@ -1,6 +1,5 @@
-import { any } from './any'
-import { Issue, IssueType, Severity, Validator, ValidatorConfig } from '../typings'
-import { getConfig, getSeverity, isNil } from '../utils'
+import { Issue, FullValidator, ValidatorConfig } from '../typings'
+import { getSeverity, isNil } from '../utils'
 
 export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'object' | 'string'
 
@@ -15,10 +14,9 @@ const TypeChecks: { [key in ValueType]: (input: any) => boolean } = {
 
 const type =
   <T>(type: ValueType) =>
-  (validate: Validator<T> = any): Validator<any> =>
-  (input: any, config?: Partial<ValidatorConfig>): Issue[] => {
-    const cfg = getConfig(config)
-    const severity = getSeverity(type, cfg)
+  (validate?: FullValidator<T>): FullValidator<any> =>
+  (input: any, path: string, config: ValidatorConfig): Issue[] => {
+    const severity = getSeverity(type, config)
     if (isNil(severity)) {
       return []
     }
@@ -27,12 +25,15 @@ const type =
         {
           type,
           message: `should be a(n) ${type}`,
-          path: cfg.path,
+          path: path,
           severity,
         },
       ]
     }
-    return validate(input, cfg)
+    if (isNil(validate)) {
+      return []
+    }
+    return validate(input, path, config)
   }
 
 export const string = type<string>('string')

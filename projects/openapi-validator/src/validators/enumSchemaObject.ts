@@ -48,6 +48,6 @@ export function enumSchemaObject(
     data,
   )(() => {
     const { uriOf } = context
-    return validator(data, { path: uriOf(data), append })
+    return validator(data, uriOf(data), { append })
   })
 }

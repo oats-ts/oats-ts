@@ -1,5 +1,5 @@
 import type { Validator } from '@oats-ts/validators'
-import { Try } from '@oats-ts/try'
+import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
   getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string>
@@ -27,26 +27,22 @@ export type ClientAdapter = {
 }
 
 export type ServerAdapter<T> = {
-  getPathParameters<P>(frameworkInput: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
-  getQueryParameters<Q>(frameworkInput: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
-  getRequestHeaders<H>(frameworkInput: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
-  getMimeType<M extends string>(frameworkInput: T): Promise<M>
+  getPathParameters<P>(toolkit: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
+  getQueryParameters<Q>(toolkit: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
+  getRequestHeaders<H>(toolkit: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
+  getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
-    frameworkInput: T,
+    toolkit: T,
     mimeType: M | undefined,
     validator: RequestBodyValidators<M>,
   ): Promise<Try<B>>
 
-  getStatusCode(frameworkInput: T, resp: HttpResponse): Promise<number>
-  getResponseBody(frameworkInput: T, resp: HttpResponse): Promise<any>
-  getResponseHeaders(
-    frameworkInput: T,
-    resp: HttpResponse,
-    serializer?: ResponseHeadersSerializer,
-  ): Promise<RawHttpHeaders>
+  getStatusCode(toolkit: T, resp: HttpResponse): Promise<number>
+  getResponseBody(toolkit: T, resp: HttpResponse): Promise<any>
+  getResponseHeaders(toolkit: T, resp: HttpResponse, serializer?: ResponseHeadersSerializer): Promise<RawHttpHeaders>
 
-  respond(frameworkInput: T, response: RawHttpResponse): Promise<void>
-  handleError(frameworkInput: T, error: Error): Promise<void>
+  respond(toolkit: T, response: RawHttpResponse): Promise<void>
+  handleError(toolkit: T, error: Error): Promise<void>
 }
 
 export type RequestBodyValidators<C extends string = string> = {

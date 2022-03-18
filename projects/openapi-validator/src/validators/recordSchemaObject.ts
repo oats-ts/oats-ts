@@ -29,12 +29,7 @@ export const recordSchemaObject =
       data,
     )(() => {
       const { uriOf } = context
-      return ordered(() =>
-        validator(data, {
-          path: uriOf(data),
-          append,
-        }),
-      )(() =>
+      return ordered(() => validator(data, uriOf(data), { append }))(() =>
         referenceable(additionalProperties)(
           data.additionalProperties as SchemaObject | ReferenceObject,
           context,

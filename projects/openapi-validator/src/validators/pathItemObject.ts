@@ -38,7 +38,7 @@ export function pathItemObject(
   )(() => {
     const { uriOf } = context
     const { operationObject, parameterObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(
+    return ordered(() => validator(data, uriOf(data), { append }))(
       () => flatMap(operationsOf(data), (operation) => operationObject(operation, context, config)),
       () => flatMap(parametersOf(data, context), (param) => parameterObject(param, context, config)),
     )

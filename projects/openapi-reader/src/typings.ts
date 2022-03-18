@@ -20,7 +20,7 @@ export type URIManipulator = {
    * @param segments Possibly other URI fragment pieces.
    * @returns A URI fragment composed from the pieces
    */
-  append(path: string, ...segments: string[]): string
+  append(path: string, ...segments: (string | number)[]): string
   /**
    * @param ref A partial or full URI (possibly just a fragment).
    * @param parent A full URI.

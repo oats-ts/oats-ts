@@ -1,19 +1,18 @@
-import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
-import { getConfig, getSeverity, isNil } from '../utils'
+import { Issue, IssueType, FullValidator, ValidatorConfig } from '../typings'
+import { getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'extra-key'
 
 export type ShapeInput<T> = {
-  [P in keyof T]?: Validator<any>
+  [P in keyof T]?: FullValidator<any>
 }
 
 export const shape =
   <T extends Record<string, any>>(
     validators: ShapeInput<T>,
     allowExtraFields = false,
-  ): Validator<Record<string, any>> =>
-  (input: object, config?: Partial<ValidatorConfig>) => {
-    const cfg = getConfig(config)
+  ): FullValidator<Record<string, any>> =>
+  (input: object, path: string, config: ValidatorConfig) => {
     const keys = Object.keys(input)
     const expectedKeys = Object.keys(validators)
     const extraKeys: string[] = keys.filter((key) => expectedKeys.indexOf(key) < 0)
@@ -23,13 +22,10 @@ export const shape =
       const key = expectedKeys[i]
       const value = (input as any)[key]
       const validator = (validators as any)[key]
-      const newIssues = validator(value, {
-        ...cfg,
-        path: cfg.append(cfg.path, key),
-      })
+      const newIssues = validator(value, config.append(path, key), config)
       issues.push(...newIssues)
     }
-    const severity = getSeverity(issueType, cfg)
+    const severity = getSeverity(issueType, config)
 
     if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
       issues.push(
@@ -37,7 +33,7 @@ export const shape =
           (key): Issue => ({
             type: issueType,
             message: `should not have key "${key}"`,
-            path: cfg.append(cfg.path, key),
+            path: config.append(path, key),
             severity,
           }),
         ),

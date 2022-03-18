@@ -1,7 +1,8 @@
+import { configure } from '../configure'
 import { enumeration } from './enumeration'
 
 describe('enumeration', () => {
-  const v = enumeration<string>(['A', 'B', 'C'])
+  const v = configure(enumeration<string>(['A', 'B', 'C']))
   it('should only pass for each valid value', () => {
     expect(v('A')).toEqual([])
     expect(v('B')).toEqual([])

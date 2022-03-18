@@ -14,8 +14,8 @@ export class DefaultURIManipulator implements URIManipulator {
     return new URI(uri).fragment(fragment).valueOf()
   }
 
-  append = (uri: string, ...pieces: string[]): string => {
-    return this.setFragments(uri, this.fragments(uri).concat(pieces))
+  append = (uri: string, ...pieces: (string | number)[]): string => {
+    return this.setFragments(uri, this.fragments(uri).concat(pieces.map((piece) => piece.toString())))
   }
 
   resolve = (ref: string, parent: string): string => {

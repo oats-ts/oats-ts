@@ -26,8 +26,6 @@ export function requestBodyObject(
   )(() => {
     const { dereference, uriOf } = context
     const { contentObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
-      contentObject(data.content, context, config),
-    )
+    return ordered(() => validator(data, uriOf(data), { append }))(() => contentObject(data.content, context, config))
   })
 }

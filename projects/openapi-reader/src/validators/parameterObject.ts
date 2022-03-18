@@ -11,7 +11,7 @@ const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any
   allowReserved: optional(boolean()),
   schema: optional(object()),
   examples: optional(object()),
-  example: optional(any),
+  example: optional(any()),
   content: optional(object()),
 }
 

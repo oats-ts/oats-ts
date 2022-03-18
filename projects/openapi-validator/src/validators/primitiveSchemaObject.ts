@@ -38,9 +38,6 @@ export function primitiveSchemaObject(
     schema,
   )(() => {
     const { uriOf } = context
-    return validator(schema, {
-      append,
-      path: uriOf(schema),
-    })
+    return validator(schema, uriOf(schema), { append })
   })
 }

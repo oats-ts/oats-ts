@@ -30,31 +30,26 @@ export function queryParameterObject(
 ): Issue[] {
   const { uriOf } = context
   const uri = uriOf(input)
-  return ordered(() =>
-    validator(input, {
-      path: uri,
-      append,
-    }),
-  )(() => {
+  return ordered(() => validator(input, uri, { append }))(() => {
     switch (input.style) {
       case 'form': {
         return referenceable(parameterObjectSchema)(input.schema, context, config)
       }
       case 'spaceDelimited': {
         return [
-          ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
+          ...literal(true)(input.explode, append(uri, 'explode'), { append }),
           ...referenceable(paramterObjectArraySchema)(input.schema, context, config),
         ]
       }
       case 'pipeDelimited': {
         return [
-          ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
+          ...literal(true)(input.explode, append(uri, 'explode'), { append }),
           ...referenceable(paramterObjectArraySchema)(input.schema, context, config),
         ]
       }
       case 'deepObject': {
         return [
-          ...literal(true)(input.explode, { path: append(uri, 'explode'), append }),
+          ...literal(true)(input.explode, append(uri, 'explode'), { append }),
           ...referenceable(parameterObjectObjectSchema)(input.schema, context, config),
         ]
       }

@@ -39,7 +39,7 @@ export function referenceObject(
     input,
   )(() => {
     const { uriOf, dereference } = context
-    return ordered(() => validator(input, { append, path: uriOf(input) }))(() =>
+    return ordered(() => validator(input, uriOf(input), { append }))(() =>
       ordered((): Issue[] => {
         if (isNil(dereference(input))) {
           return [

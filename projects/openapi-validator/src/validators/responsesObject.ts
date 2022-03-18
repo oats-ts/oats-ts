@@ -20,7 +20,7 @@ export function responsesObject(
   )(() => {
     const { responseObject } = config
     const { uriOf } = context
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
+    return ordered(() => validator(data, uriOf(data), { append }))(() =>
       flatMap(entries(data), ([statusCode, response]): Issue[] => {
         const issues: Issue[] = []
         if (

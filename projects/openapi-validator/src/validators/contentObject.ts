@@ -33,7 +33,7 @@ export function contentObject(
   )(() => {
     const { uriOf } = context
     const { schemaObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
+    return ordered(() => validator(data, uriOf(data), { append }))(() =>
       flatMap(entries(data), ([contentType, mediaType]): Issue[] => {
         const issues: Issue[] = []
         if (contentType !== 'application/json') {

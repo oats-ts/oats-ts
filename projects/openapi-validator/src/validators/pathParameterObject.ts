@@ -29,7 +29,7 @@ export function pathParameterObject(
   config: OpenAPIValidatorConfig,
 ): Issue[] {
   const { uriOf } = context
-  return ordered(() => validator(data, { path: uriOf(data), append }))(() =>
+  return ordered(() => validator(data, uriOf(data), { append }))(() =>
     referenceable(parameterObjectSchema)(data.schema, context, config),
   )
 }

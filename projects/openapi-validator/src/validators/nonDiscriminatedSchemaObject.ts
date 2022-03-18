@@ -1,10 +1,7 @@
-import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, array, literal, minLength } from '@oats-ts/validators'
-import { getInferredType } from '@oats-ts/json-schema-common'
 import { append } from '../utils/append'
 import { flatMap } from 'lodash'
-import { enumSchemaObject } from './enumSchemaObject'
-import { primitiveSchemaObject } from './primitiveSchemaObject'
 import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
@@ -34,12 +31,7 @@ export function nonDiscriminatedSchemaObject(
     input,
   )(() => {
     const { uriOf } = context
-    return ordered(() =>
-      validator(input, {
-        append,
-        path: uriOf(input),
-      }),
-    )(() =>
+    return ordered(() => validator(input, uriOf(input), { append }))(() =>
       flatMap(input.oneOf, (schema: Referenceable<SchemaObject>): Issue[] =>
         referenceable(schemaObject)(schema, context, config),
       ),

@@ -28,7 +28,7 @@ export function componentsObject(
   )(() => {
     const { uriOf } = context
     const { schemaObject, parameterObject, responseObject, requestBodyObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(
+    return ordered(() => validator(data, uriOf(data), { append }))(
       () => flatMap(schemasOf(data, context), (schema) => referenceable(schemaObject)(schema, context, config)),
       () => flatMap(parametersOf(data, context), (schema) => referenceable(parameterObject)(schema, context, config)),
       () => flatMap(responsesOf(data, context), (schema) => referenceable(responseObject)(schema, context, config)),

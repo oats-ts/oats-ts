@@ -1,4 +1,3 @@
-import { DefaultConfig } from './defaults'
 import { Severity, ValidatorConfig } from './typings'
 
 export function isNil(input: any): input is null | undefined {
@@ -17,14 +16,4 @@ export function getSeverity(issueType: string, config: ValidatorConfig, defaultS
     return defaultSeverity
   }
   return config.severities[issueType]
-}
-
-export function getConfig(config: Partial<ValidatorConfig>): ValidatorConfig {
-  if (isNil(config)) {
-    return DefaultConfig
-  }
-  if (!isNil(config.append) && !isNil(config.path)) {
-    return config as ValidatorConfig
-  }
-  return { ...DefaultConfig, ...config }
 }
