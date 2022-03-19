@@ -25,7 +25,7 @@ function queryFormObjectExplode<T extends PrimitiveRecord>(
       if (values.length > 1) {
         return failure([
           {
-            message: `Expected single value for query parameter "${key}" ("${name}.${key}")`,
+            message: `should have a single value (found ${values.length})`,
             path: `${name}.${key}`,
             severity: 'error',
             type: '',
@@ -72,7 +72,7 @@ function queryFormObjectNoExplode<T extends PrimitiveRecord>(
       if (options.required) {
         return failure([
           {
-            message: `Missing query parameter "${name}"`,
+            message: `should be present`,
             path: name,
             severity: 'error',
             type: '',
@@ -86,7 +86,7 @@ function queryFormObjectNoExplode<T extends PrimitiveRecord>(
     default:
       return failure([
         {
-          message: `Expected single query parameter "${name}"`,
+          message: `should have a single value (found ${values.length})`,
           path: name,
           severity: 'error',
           type: '',
@@ -98,7 +98,7 @@ function queryFormObjectNoExplode<T extends PrimitiveRecord>(
   if (parts.length % 2 !== 0) {
     return failure([
       {
-        message: `Malformed value "${value}" for query parameter "${name}"`,
+        message: `malformed parameter value "${value}"`,
         path: name,
         severity: 'error',
         type: '',
@@ -112,7 +112,7 @@ function queryFormObjectNoExplode<T extends PrimitiveRecord>(
     const parser = parsers[key]
     if (isNil(parser)) {
       collectedIssues.push({
-        message: `Unexpected key "${key}" in query parameter "${name}"`,
+        message: `should not have "${key}"`,
         path: name,
         severity: 'error',
         type: '',

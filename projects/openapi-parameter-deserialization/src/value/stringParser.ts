@@ -1,4 +1,5 @@
 import { Try, failure } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from '../types'
 import { identityParser } from './identityParser'
 
@@ -9,9 +10,9 @@ type StringParserFn = {
 
 export const stringParser: StringParserFn =
   <T extends Primitive>(parser: ValueParser<string, any> = identityParser): ValueParser<string, T> =>
-  (name: string, value: string): Try<T> => {
+  (value: string, name: string, path: string, config: ValidatorConfig): Try<T> => {
     if (typeof value !== 'string') {
-      return failure([{ message: `Parameter "${name}" should be a string.`, path: name, severity: 'error', type: '' }])
+      return failure([{ message: `should be a string.`, path, severity: 'error', type: '' }])
     }
-    return parser(name, value)
+    return parser(value, name, path, config)
   }

@@ -24,7 +24,7 @@ export const queryDeepObjectObject =
       if (values.length > 1) {
         acc[key] = failure([
           {
-            message: `Expected single value for query parameter "${key}" ("${queryKey}")`,
+            message: `should have a single value (found ${values.length})`,
             path: name,
             severity: 'error',
             type: '',

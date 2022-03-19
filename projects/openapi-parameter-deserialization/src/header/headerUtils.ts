@@ -2,13 +2,13 @@ import { failure, success, Try } from '@oats-ts/try'
 import { RawHeaders, PrimitiveRecord, FieldParsers, ParameterValue } from '../types'
 import { isNil, decode, mapRecord } from '../utils'
 
-export function getHeaderValue(name: string, raw: RawHeaders, required: boolean): Try<string> {
+export function getHeaderValue(name: string, path: string, raw: RawHeaders, required: boolean): Try<string> {
   const value = raw[name] ?? raw[name.toLowerCase()]
   if (isNil(value) && required) {
     return failure([
       {
-        message: `Header parameter "${name}" cannot be ${value}`,
-        path: name,
+        message: `should not be ${value}`,
+        path,
         severity: 'error',
         type: '',
       },

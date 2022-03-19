@@ -1,5 +1,5 @@
 import { Try, success, failure, isFailure } from '@oats-ts/try'
-import { Issue } from '@oats-ts/validators'
+import { Issue, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from './types'
 
 export function isNil(input: any): input is null | undefined {
@@ -76,7 +76,7 @@ export const createDelimitedRecordParser =
     const issues: Issue[] = []
     if (parts.length % 2 !== 0) {
       issues.push({
-        message: `Malformed value "${value}" for ${location} parameter "${name}"`,
+        message: `malformed parameter value "${value}"`,
         path: name,
         severity: 'error',
         type: '',
@@ -102,7 +102,7 @@ export const createKeyValuePairRecordParser =
       const pair = kvPairStr.split(kvSeparator)
       if (pair.length !== 2) {
         issues.push({
-          message: `Unexpected content "${value}" in ${location} parameter "${name}"`,
+          message: `unexpected content "${value}"`,
           path: name,
           severity: 'error',
           type: '',
@@ -115,9 +115,9 @@ export const createKeyValuePairRecordParser =
   }
 
 export const createArrayParser =
-  (separator: string) =>
-  <T extends Primitive>(name: string, value: string, parse: ValueParser<string, T>): Try<T[]> => {
+  <T extends Primitive>(separator: string, parse: ValueParser<string, T>) =>
+  (value: string, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return isNil(value)
       ? success(undefined)
-      : mapArray(value.split(separator), (value, i) => parse(`${name}[${i}]`, decode(value)))
+      : mapArray(value.split(separator), (value, i) => parse(decode(value), name, config.append(path, i), config))
   }

@@ -1,14 +1,14 @@
 import { fluent, Try } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser, HeaderOptions, RawHeaders } from '../types'
 import { createArrayParser } from '../utils'
 import { getHeaderValue } from './headerUtils'
 
-const arrayParser = createArrayParser(',')
-
-export const headerSimpleArray =
-  <T extends Primitive>(parse: ValueParser<string, T>, options: HeaderOptions = {}) =>
-  (name: string, data: RawHeaders): Try<T[]> => {
-    return fluent(getHeaderValue(name, data, options.required))
-      .flatMap((value) => arrayParser(name, value, parse))
+export const headerSimpleArray = <T extends Primitive>(parse: ValueParser<string, T>, options: HeaderOptions = {}) => {
+  const arrayParser = createArrayParser(',', parse)
+  return (data: RawHeaders, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
+    return fluent(getHeaderValue(name, path, data, options.required))
+      .flatMap((value) => arrayParser(value, name, path, config))
       .toJson()
   }
+}

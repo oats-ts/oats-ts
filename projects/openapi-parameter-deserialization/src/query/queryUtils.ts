@@ -6,7 +6,14 @@ export function getQueryValue(name: string, params: RawQueryParams, options: Que
   switch (values.length) {
     case 0: {
       if (options.required) {
-        return failure([{ message: `Query parameter "${name}" is required`, path: name, severity: 'error', type: '' }])
+        return failure([
+          {
+            message: 'should occur once (found 0 times in query string)',
+            path: name,
+            severity: 'error',
+            type: '',
+          },
+        ])
       }
       return success(undefined)
     }
@@ -16,7 +23,7 @@ export function getQueryValue(name: string, params: RawQueryParams, options: Que
     default:
       return failure([
         {
-          message: `Query parameter "${name}" should occur once (found ${values.length} times in query string)`,
+          message: `should occur once (found ${values.length} times in query string)`,
           path: name,
           severity: 'error',
           type: '',

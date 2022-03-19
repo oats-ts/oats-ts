@@ -1,4 +1,5 @@
 import { Try, failure } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from '../types'
 import { identityParser } from './identityParser'
 
@@ -9,22 +10,27 @@ type NumberParserFn = {
 
 export const numberParser: NumberParserFn =
   <T extends Primitive>(parser: ValueParser<number, any> = identityParser): ValueParser<string, T> =>
-  (name: string, value: string): Try<T> => {
+  (value: string, name: string, path: string, config: ValidatorConfig): Try<T> => {
     if (typeof value !== 'string') {
       return failure([
-        { message: `Unexpected value ${value} for parameter "${name}"`, path: name, severity: 'error', type: '' },
+        {
+          message: `should not be ${value}`,
+          path,
+          severity: 'error',
+          type: '',
+        },
       ])
     }
     const numValue = Number(value)
     if (value.length === 0 || isNaN(numValue)) {
       return failure([
         {
-          message: `Parameter "${name}" should be a number, but was ${value}`,
-          path: name,
+          message: `should be a number, but was ${value}`,
+          path,
           severity: 'error',
           type: '',
         },
       ])
     }
-    return parser(name, numValue)
+    return parser(numValue, name, path, config)
   }

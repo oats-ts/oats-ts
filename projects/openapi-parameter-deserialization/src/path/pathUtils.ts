@@ -2,13 +2,13 @@ import { failure, success, Try } from '@oats-ts/try'
 import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '../types'
 import { isNil, decode, mapRecord } from '../utils'
 
-export function getPathValue(name: string, raw: RawPathParams): Try<string> {
+export function getPathValue(name: string, path: string, raw: RawPathParams): Try<string> {
   const value = raw[name]
   if (isNil(value)) {
     return failure([
       {
-        message: `Path parameter "${name}" cannot be ${value}`,
-        path: name,
+        message: `should not be ${value}`,
+        path,
         severity: 'error',
         type: '',
       },
@@ -21,7 +21,7 @@ export function getPrefixedValue(name: string, value: string, prefix: string): T
   if (value.indexOf(prefix) !== 0) {
     return failure([
       {
-        message: `Path parameter "${name}" should start with a "${prefix}"`,
+        message: `should start with "${prefix}"`,
         path: name,
         severity: 'error',
         type: '',

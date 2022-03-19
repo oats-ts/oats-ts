@@ -16,7 +16,7 @@ function pathMatrixArrayExplode<T extends Primitive>(
         if (parts.length !== 2) {
           return failure([
             {
-              message: `Malformed value "${rawString}" for path parameter "${name}"`,
+              message: `malformed parameter value "${rawString}"`,
               path: name,
               severity: 'error',
               type: '',
@@ -27,7 +27,7 @@ function pathMatrixArrayExplode<T extends Primitive>(
         if (key !== name) {
           return failure([
             {
-              message: `Malformed value "${rawString}" for path parameter "${name}"`,
+              message: `malformed parameter value "${rawString}"`,
               path: name,
               severity: 'error',
               type: '',
