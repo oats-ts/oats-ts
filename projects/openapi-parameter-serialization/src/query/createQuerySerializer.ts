@@ -1,14 +1,15 @@
 import { Try, fromArray, fluent } from '@oats-ts/try'
+import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { ParameterObject, QuerySerializers } from '../types'
 
 export const createQuerySerializer =
   <T extends ParameterObject>(serializers: QuerySerializers<T>) =>
-  (input: T): Try<string> => {
+  (input: T, path: string = 'query', config: ValidatorConfig = DefaultConfig): Try<string> => {
     const serializedParts = fromArray(
       Object.keys(serializers).map((name: string) => {
         const key = name as keyof T
         const serializer = serializers[key]
-        return serializer(name.toString(), input[key])
+        return serializer(input[key], name, config.append(path, name), config)
       }),
     )
     return fluent(serializedParts)

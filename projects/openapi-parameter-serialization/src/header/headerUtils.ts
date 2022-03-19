@@ -3,7 +3,7 @@ import { HeaderOptions, ParameterValue } from '../types'
 import { isNil } from '../utils'
 
 export function getHeaderValue<T extends ParameterValue>(
-  name: string,
+  path: string,
   value: T | undefined,
   options: HeaderOptions<T>,
 ): Try<T> {
@@ -15,8 +15,8 @@ export function getHeaderValue<T extends ParameterValue>(
   }
   return failure([
     {
-      message: `Header "${name}" should not be ${value}`,
-      path: name,
+      message: `should not be ${value}`,
+      path,
       severity: 'error',
       type: '',
     },

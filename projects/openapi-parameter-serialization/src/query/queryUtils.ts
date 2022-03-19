@@ -3,7 +3,7 @@ import { ParameterValue, QueryOptions } from '../types'
 import { isNil } from '../utils'
 
 export function getQueryValue<T extends ParameterValue>(
-  name: string,
+  path: string,
   value: T | undefined,
   options: QueryOptions<T>,
 ): Try<T> {
@@ -15,8 +15,8 @@ export function getQueryValue<T extends ParameterValue>(
   }
   return failure([
     {
-      message: `Query parameter "${name}" not be ${value}`,
-      path: name,
+      message: `should not be ${value}`,
+      path,
       severity: 'error',
       type: '',
     },

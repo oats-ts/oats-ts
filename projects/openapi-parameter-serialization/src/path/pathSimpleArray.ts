@@ -5,9 +5,9 @@ import { getPathValue, validatePathArray } from './pathUtils'
 
 export const pathSimpleArray =
   <T extends PrimitiveArray>(options: PathOptions<T> = {}): PathSerializer<T> =>
-  (name: string, data?: T): Try<string> => {
-    return fluent(getPathValue(name, data, options))
-      .flatMap((value) => validatePathArray(name, value))
+  (data: T, name: string, path: string): Try<string> => {
+    return fluent(getPathValue(path, data, options))
+      .flatMap((value) => validatePathArray(path, value))
       .map((value) => joinArrayItems('', ',', value))
       .toJson()
   }

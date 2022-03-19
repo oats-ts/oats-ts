@@ -6,9 +6,9 @@ import { getPathValue, validatePathObject } from './pathUtils'
 
 export const pathSimpleObject =
   <T extends PrimitiveRecord>(options: PathOptions<T> = {}): PathSerializer<T> =>
-  (name: string, data?: T): Try<string> => {
-    return fluent(getPathValue(name, data, options))
-      .flatMap((value) => validatePathObject(name, value))
+  (data: T, name: string, path: string): Try<string> => {
+    return fluent(getPathValue(path, data, options))
+      .flatMap((value) => validatePathObject(path, value))
       .map((value) => joinKeyValuePairs('', options.explode ? '=' : ',', ',', entries(value)))
       .toJson()
   }

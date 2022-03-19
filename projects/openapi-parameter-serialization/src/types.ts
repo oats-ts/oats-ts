@@ -1,4 +1,5 @@
 import { Try } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 
 /** Types that can be individual parameter values */
 export type Primitive = string | number | boolean
@@ -17,7 +18,12 @@ export type QueryOptions<T> = {
   required?: boolean
 }
 
-export type QuerySerializer<T extends ParameterValue | undefined> = (name: string, value?: T) => Try<string[]>
+export type QuerySerializer<T extends ParameterValue | undefined> = (
+  value: T | undefined,
+  name: string,
+  path: string,
+  config: ValidatorConfig,
+) => Try<string[]>
 export type QuerySerializers<T extends ParameterObject> = { [P in keyof T]: QuerySerializer<T[P]> }
 
 /** Path related types */
@@ -25,7 +31,12 @@ export type PathOptions<T> = {
   explode?: boolean
 }
 
-export type PathSerializer<T extends ParameterValue | undefined> = (name: string, value: T) => Try<string>
+export type PathSerializer<T extends ParameterValue | undefined> = (
+  value: T | undefined,
+  name: string,
+  path: string,
+  config: ValidatorConfig,
+) => Try<string>
 export type PathSerializers<T extends ParameterObject> = { [P in keyof T]: PathSerializer<T[P]> }
 
 /** Header related types */
@@ -34,5 +45,10 @@ export type HeaderOptions<T> = {
   required?: boolean
 }
 
-export type HeaderSerializer<T extends ParameterValue | undefined> = (name: string, value?: T) => Try<string>
+export type HeaderSerializer<T extends ParameterValue | undefined> = (
+  value: T | undefined,
+  name: string,
+  path: string,
+  config: ValidatorConfig,
+) => Try<string>
 export type HeaderSerializers<T extends ParameterObject> = { [P in keyof T]: HeaderSerializer<T[P]> }

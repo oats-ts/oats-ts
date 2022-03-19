@@ -5,15 +5,15 @@ import { getQueryValue } from './queryUtils'
 
 export const queryDeepObjectObject =
   <T extends PrimitiveRecord>(opts: QueryOptions<T> = {}): QuerySerializer<T> =>
-  (name: string, data?: T): Try<string[]> => {
+  (data: T, name: string, path: string): Try<string[]> => {
     const options: QueryOptions<T> = { explode: true, ...opts }
-    return fluent(getQueryValue(name, data, options))
+    return fluent(getQueryValue(path, data, options))
       .flatMap((value) => {
         if (!options.explode) {
           return failure([
             {
-              message: `"${name}" can only be serialized as with explode=true`,
-              path: name,
+              message: `can only be serialized with explode=true`,
+              path,
               severity: 'error',
               type: '',
             },
