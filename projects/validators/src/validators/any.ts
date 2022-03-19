@@ -1,3 +1,3 @@
-import { Issue, FullValidator } from '../typings'
+import { Issue, Validator } from '../typings'
 
-export const any = (): FullValidator<any> => (): Issue[] => []
+export const any = (): Validator<any> => (): Issue[] => []

@@ -57,12 +57,12 @@ export type ResponseHeadersDeserializers<S extends string = string> = {
   [statusCode in S]: (input: RawHttpHeaders) => Try<any>
 }
 
-export type ResponseBodyValidators<V = unknown> = {
+export type ResponseBodyValidators = {
   [statusCode: number]: {
-    [contentType: string]: V
+    [contentType: string]: Validator<any>
   }
   default?: {
-    [contentType: string]: V
+    [contentType: string]: Validator<any>
   }
 }
 

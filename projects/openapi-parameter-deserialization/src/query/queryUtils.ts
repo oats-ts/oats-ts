@@ -1,7 +1,12 @@
 import { Try, failure, success } from '@oats-ts/try'
 import { QueryOptions, RawQueryParams } from '../types'
 
-export function getQueryValue(name: string, params: RawQueryParams, options: QueryOptions): Try<string | undefined> {
+export function getQueryValue(
+  name: string,
+  path: string,
+  params: RawQueryParams,
+  options: QueryOptions,
+): Try<string | undefined> {
   const values = params[name] || []
   switch (values.length) {
     case 0: {
@@ -9,7 +14,7 @@ export function getQueryValue(name: string, params: RawQueryParams, options: Que
         return failure([
           {
             message: 'should occur once (found 0 times in query string)',
-            path: name,
+            path,
             severity: 'error',
             type: '',
           },
@@ -24,7 +29,7 @@ export function getQueryValue(name: string, params: RawQueryParams, options: Que
       return failure([
         {
           message: `should occur once (found ${values.length} times in query string)`,
-          path: name,
+          path,
           severity: 'error',
           type: '',
         },

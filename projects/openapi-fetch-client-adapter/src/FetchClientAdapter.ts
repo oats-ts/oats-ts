@@ -10,12 +10,18 @@ import {
   ClientAdapter,
 } from '@oats-ts/openapi-http'
 import { fluent, Try } from '@oats-ts/try'
+import { configure, stringify } from '@oats-ts/validators'
+
+export type FetchClientAdapterConfig = {
+  url?: string
+  skipResponseValidation?: boolean
+}
 
 export class FetchClientAdapter implements ClientAdapter {
-  private readonly baseUrl?: string
+  private readonly config: FetchClientAdapterConfig
 
-  constructor(baseUrl?: string) {
-    this.baseUrl = baseUrl
+  constructor(config: FetchClientAdapterConfig = {}) {
+    this.config = config
   }
 
   async request(request: RawHttpRequest): Promise<RawHttpResponse> {
@@ -27,7 +33,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return {
       statusCode: response.status,
       headers: this.asRawHttpHeaders(response),
-      body: this.getParsedResponseBody(response),
+      body: await this.getParsedResponseBody(response),
     }
   }
 
@@ -65,7 +71,8 @@ export class FetchClientAdapter implements ClientAdapter {
     return fluent(serializer(input.query)).getData()
   }
   async getUrl(path: string, query?: string): Promise<string> {
-    return [typeof this.baseUrl !== 'string' ? '' : this.baseUrl, path, typeof query !== 'string' ? '' : query].join('')
+    const { url } = this.config
+    return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
   async getRequestHeaders(
     input?: Partial<TypedHttpRequest>,
@@ -121,7 +128,7 @@ export class FetchClientAdapter implements ClientAdapter {
     response: RawHttpResponse,
     statusCode?: number,
     mimeType?: string,
-    validators?: ResponseBodyValidators<unknown>,
+    validators?: ResponseBodyValidators,
   ): Promise<any> {
     // If expectations not provided, return undefined, nothing to validate.
     if (validators === null || validators === undefined) {
@@ -131,31 +138,38 @@ export class FetchClientAdapter implements ClientAdapter {
     if (typeof statusCode !== 'number') {
       throw new Error(`Status code should not be ${statusCode}`)
     }
+    const { skipResponseValidation } = this.config
 
-    const validatorsForStatus = validators[statusCode] || validators.default
+    if (!skipResponseValidation) {
+      const validatorsForStatus = validators[statusCode] || validators.default
 
-    // In case the status code returned by the server was not found among the expectations, throw.
-    if (validatorsForStatus === undefined || validatorsForStatus === null) {
-      const statusCodes = Object.keys(validators)
-      const statusCodesHint =
-        statusCodes.length === 1
-          ? `Expected "${statusCodes[0]}".`
-          : `Expected one of ${statusCodes.map((code) => `"${code}"`).join(',')}`
-      throw new Error(`Unexpected status code: "${statusCode}". ${statusCodesHint}`)
+      // In case the status code returned by the server was not found among the expectations, throw.
+      if (validatorsForStatus === undefined || validatorsForStatus === null) {
+        const statusCodes = Object.keys(validators)
+        const statusCodesHint =
+          statusCodes.length === 1
+            ? `Expected "${statusCodes[0]}".`
+            : `Expected one of ${statusCodes.map((code) => `"${code}"`).join(',')}`
+        throw new Error(`Unexpected status code: "${statusCode}". ${statusCodesHint}`)
+      }
+
+      // In case the mime type returned by the server was not found amount expectations, throw.
+      if (typeof mimeType !== 'string' || typeof validatorsForStatus[mimeType] !== 'function') {
+        const mimeTypes = Object.keys(validatorsForStatus)
+        const mimeTypesHint =
+          mimeTypes.length === 1
+            ? `Expected "${mimeTypes[0]}".`
+            : `Expected one of ${mimeTypes.map((type) => `"${type}"`).join(',')}`
+        throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint}`)
+      }
+
+      const validator = configure(validatorsForStatus[mimeType], 'responseBody')
+      const issues = validator(response.body)
+      if (issues.length !== 0) {
+        throw new Error(issues.map(stringify).join('\n'))
+      }
     }
 
-    // In case the mime type returned by the server was not found amount expectations, throw.
-    if (typeof mimeType !== 'string' || typeof validatorsForStatus[mimeType] !== 'function') {
-      const mimeTypes = Object.keys(validatorsForStatus)
-      const mimeTypesHint =
-        mimeTypes.length === 1
-          ? `Expected "${mimeTypes[0]}".`
-          : `Expected one of ${mimeTypes.map((type) => `"${type}"`).join(',')}`
-      throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint}`)
-    }
-
-    // TODO validate!
-    // const validator = validatorsForStatus[mimeType]
     return response.body
   }
 }

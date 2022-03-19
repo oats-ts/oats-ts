@@ -1,10 +1,10 @@
-import { Issue, IssueType, FullValidator, ValidatorConfig } from '../typings'
+import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
 import { getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'length'
 
 export const tuple =
-  (...validators: FullValidator<any>[]): FullValidator<any> =>
+  (...validators: Validator<any>[]): Validator<any> =>
   (input: any[], path: string, config: ValidatorConfig) => {
     const severity = getSeverity(issueType, config)
     if (isNil(severity)) {

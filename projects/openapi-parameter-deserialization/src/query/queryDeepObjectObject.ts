@@ -1,4 +1,5 @@
 import { Try, failure, success, fromRecord } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 import {
   QueryOptions,
   PrimitiveRecord,
@@ -11,7 +12,7 @@ import { decode, encode, isNil } from '../utils'
 
 export const queryDeepObjectObject =
   <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: QueryOptions = {}): QueryValueDeserializer<T> =>
-  (name: string, data: RawQueryParams): Try<T> => {
+  (data: RawQueryParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
     const parserKeys = Object.keys(parsers)
     if (parserKeys.length === 0) {
       return success({} as T)
@@ -25,7 +26,7 @@ export const queryDeepObjectObject =
         acc[key] = failure([
           {
             message: `should have a single value (found ${values.length})`,
-            path: name,
+            path,
             severity: 'error',
             type: '',
           },
@@ -35,7 +36,7 @@ export const queryDeepObjectObject =
         if (!isNil(rawValue)) {
           hasKeys = true
         }
-        acc[key] = parser(`${name}.${key}`, decode(rawValue))
+        acc[key] = parser(decode(rawValue), name, config.append(path, key), config)
       }
 
       return acc

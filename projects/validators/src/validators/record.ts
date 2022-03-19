@@ -1,7 +1,7 @@
-import { Issue, FullValidator, ValidatorConfig } from '../typings'
+import { Issue, Validator, ValidatorConfig } from '../typings'
 
 export const record =
-  (keys: FullValidator<string>, values: FullValidator<any>): FullValidator<object> =>
+  (keys: Validator<string>, values: Validator<any>): Validator<object> =>
   (input: object, path: string, config: ValidatorConfig) => {
     const issues: Issue[] = []
     const objKeys = Object.keys(input)

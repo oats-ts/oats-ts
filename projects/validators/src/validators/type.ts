@@ -1,4 +1,4 @@
-import { Issue, FullValidator, ValidatorConfig } from '../typings'
+import { Issue, Validator, ValidatorConfig } from '../typings'
 import { getSeverity, isNil } from '../utils'
 
 export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'object' | 'string'
@@ -14,7 +14,7 @@ const TypeChecks: { [key in ValueType]: (input: any) => boolean } = {
 
 const type =
   <T>(type: ValueType) =>
-  (validate?: FullValidator<T>): FullValidator<any> =>
+  (validate?: Validator<T>): Validator<any> =>
   (input: any, path: string, config: ValidatorConfig): Issue[] => {
     const severity = getSeverity(type, config)
     if (isNil(severity)) {

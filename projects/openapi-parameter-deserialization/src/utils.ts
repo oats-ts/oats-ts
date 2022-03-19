@@ -70,14 +70,14 @@ export function mapRecord<I, V, K extends string>(
 }
 
 export const createDelimitedRecordParser =
-  (location: 'path' | 'header', separator: string) =>
-  (name: string, value: string): Try<Record<string, string>> => {
+  (separator: string) =>
+  (value: string, path: string): Try<Record<string, string>> => {
     const parts = value.split(separator)
     const issues: Issue[] = []
     if (parts.length % 2 !== 0) {
       issues.push({
         message: `malformed parameter value "${value}"`,
-        path: name,
+        path,
         severity: 'error',
         type: '',
       })
@@ -92,8 +92,8 @@ export const createDelimitedRecordParser =
   }
 
 export const createKeyValuePairRecordParser =
-  (location: 'path' | 'header', separator: string, kvSeparator: string) =>
-  (name: string, value: string): Try<Record<string, string>> => {
+  (separator: string, kvSeparator: string) =>
+  (value: string, path: string): Try<Record<string, string>> => {
     const kvPairStrs = value.split(separator)
     const record: Record<string, string> = {}
     const issues: Issue[] = []
@@ -103,7 +103,7 @@ export const createKeyValuePairRecordParser =
       if (pair.length !== 2) {
         issues.push({
           message: `unexpected content "${value}"`,
-          path: name,
+          path,
           severity: 'error',
           type: '',
         })

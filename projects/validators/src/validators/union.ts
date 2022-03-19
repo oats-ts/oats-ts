@@ -1,11 +1,11 @@
-import { FullValidator, IssueType, ValidatorConfig } from '../typings'
+import { Validator, IssueType, ValidatorConfig } from '../typings'
 import { getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'union'
 
 /** TODO better way of representing the issues. */
 export const union =
-  (validators: Record<string, FullValidator<any>>): FullValidator<any> =>
+  (validators: Record<string, Validator<any>>): Validator<any> =>
   (input: any, path: string, config: ValidatorConfig) => {
     const keys = Object.keys(validators)
     const severity = getSeverity(issueType, config)

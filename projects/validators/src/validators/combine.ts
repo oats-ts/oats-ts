@@ -1,7 +1,7 @@
-import { Issue, FullValidator, ValidatorConfig } from '../typings'
+import { Issue, Validator, ValidatorConfig } from '../typings'
 
 export const combine =
-  <T>(validators: FullValidator<T>[]): FullValidator<T> =>
+  <T>(validators: Validator<T>[]): Validator<T> =>
   (input: T, path: string, config: ValidatorConfig) => {
     const issues: Issue[] = []
     for (let i = 0; i < validators.length; i += 1) {

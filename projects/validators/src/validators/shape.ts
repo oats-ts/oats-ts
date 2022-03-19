@@ -1,17 +1,17 @@
-import { Issue, IssueType, FullValidator, ValidatorConfig } from '../typings'
+import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
 import { getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'extra-key'
 
 export type ShapeInput<T> = {
-  [P in keyof T]?: FullValidator<any>
+  [P in keyof T]?: Validator<any>
 }
 
 export const shape =
   <T extends Record<string, any>>(
     validators: ShapeInput<T>,
     allowExtraFields = false,
-  ): FullValidator<Record<string, any>> =>
+  ): Validator<Record<string, any>> =>
   (input: object, path: string, config: ValidatorConfig) => {
     const keys = Object.keys(input)
     const expectedKeys = Object.keys(validators)

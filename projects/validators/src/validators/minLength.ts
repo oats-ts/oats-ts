@@ -1,10 +1,10 @@
-import { IssueType, FullValidator, ValidatorConfig } from '../typings'
+import { IssueType, Validator, ValidatorConfig } from '../typings'
 import { getSeverity, isNil } from '../utils'
 
 const issueType: IssueType = 'length'
 
 export const minLength =
-  (length: number): FullValidator<any> =>
+  (length: number): Validator<any> =>
   (input: { length: number }, path: string, config: ValidatorConfig) => {
     const severity = getSeverity(issueType, config)
     if (!isNil(severity) && input.length < length) {

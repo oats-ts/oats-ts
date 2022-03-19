@@ -1,12 +1,12 @@
 import { DefaultConfig, DefaultPath } from './defaults'
-import { Validator, FullValidator, ValidatorConfig } from './typings'
+import { PartialValidator, Validator, ValidatorConfig } from './typings'
 
 export const configure =
   <T>(
-    validator: FullValidator<T>,
+    validator: Validator<T>,
     defaultPath: string = DefaultPath,
     defaultConfig: Partial<ValidatorConfig> = DefaultConfig,
-  ): Validator<T> =>
+  ): PartialValidator<T> =>
   (input: T, path?: string, config?: Partial<ValidatorConfig>) =>
     validator(
       input,

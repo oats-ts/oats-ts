@@ -11,7 +11,7 @@ export const pathLabelArray = <T extends Primitive>(
   const arrayParser = createArrayParser(options.explode ? '.' : ',', parse)
   return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return fluent(getPathValue(name, path, data))
-      .flatMap((pathValue) => getPrefixedValue(name, pathValue, '.'))
+      .flatMap((pathValue) => getPrefixedValue(path, pathValue, '.'))
       .flatMap((value) => arrayParser(value, name, path, config))
       .toJson()
   }
