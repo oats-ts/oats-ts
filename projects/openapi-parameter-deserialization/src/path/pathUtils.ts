@@ -1,5 +1,5 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '../types'
 import { isNil, decode, mapRecord } from '../utils'
 
@@ -11,7 +11,7 @@ export function getPathValue(name: string, path: string, raw: RawPathParams): Tr
         message: `should not be ${value}`,
         path,
         severity: 'error',
-        type: '',
+        type: IssueTypes.value,
       },
     ])
   }
@@ -25,7 +25,7 @@ export function getPrefixedValue(path: string, value: string, prefix: string): T
         message: `should start with "${prefix}"`,
         path,
         severity: 'error',
-        type: '',
+        type: IssueTypes.value,
       },
     ])
   }

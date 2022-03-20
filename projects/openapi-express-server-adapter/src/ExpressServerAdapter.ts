@@ -7,51 +7,21 @@ import {
   ServerAdapter,
 } from '@oats-ts/openapi-http'
 import { failure, fluent, success, Try } from '@oats-ts/try'
-import { configure, Issue } from '@oats-ts/validators'
+import { configure, Issue, IssueTypes } from '@oats-ts/validators'
 import { ExpressToolkit } from './typings'
 
 export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
-    try {
-      return deserializer(toolkit.request.url)
-    } catch (e) {
-      const issue: Issue = {
-        message: e.message,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return failure([issue])
-    }
+    return deserializer(toolkit.request.url)
   }
   async getQueryParameters<Q>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<Q>): Promise<Try<Q>> {
-    try {
-      return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
-    } catch (e) {
-      const issue: Issue = {
-        message: e.message,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return failure([issue])
-    }
+    return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
   }
   async getRequestHeaders<H>(
     toolkit: ExpressToolkit,
     deserializer: (input: RawHttpHeaders) => Try<H>,
   ): Promise<Try<H>> {
-    try {
-      return deserializer(toolkit.request.headers as RawHttpHeaders)
-    } catch (e) {
-      const issue: Issue = {
-        message: e.message,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return failure([issue])
-    }
+    return deserializer(toolkit.request.headers as RawHttpHeaders)
   }
 
   async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
@@ -72,8 +42,8 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       const issue: Issue = {
         message: `Missing "Content-Type" header`,
         severity: 'error',
-        path: '',
-        type: '',
+        path: 'headers',
+        type: IssueTypes.other,
       }
       return failure([issue])
     }
@@ -81,8 +51,8 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       const issue: Issue = {
         message: `Unexpected "Content-Type" request header "${mimeType}"`,
         severity: 'error',
-        path: '',
-        type: '',
+        path: 'headers',
+        type: IssueTypes.other,
       }
       return failure([issue])
     }

@@ -1,6 +1,6 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, shape, combine, array, items, minLength } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { flatMap } from 'lodash'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
@@ -28,7 +28,7 @@ export const intersectionSchemaObject =
       data,
     )(() => {
       const { uriOf } = context
-      return ordered(() => validator(data, uriOf(data), { append }))(() =>
+      return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
         flatMap(data.allOf, (schema): Issue[] => referenceable(alternatives)(schema, context, config)),
       )
     })

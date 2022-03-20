@@ -1,6 +1,6 @@
 import { Issue, object, optional, shape, combine, string, literal, boolean, enumeration } from '@oats-ts/validators'
 import { ParameterObject } from '@oats-ts/openapi-model'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { paramterObjectArraySchema, parameterObjectObjectSchema, parameterObjectSchema } from './parameterObjectSchema'
 import { warnContent } from '../utils/warnContent'
 import { ordered } from '../utils/ordered'
@@ -30,26 +30,26 @@ export function queryParameterObject(
 ): Issue[] {
   const { uriOf } = context
   const uri = uriOf(input)
-  return ordered(() => validator(input, uri, { append }))(() => {
+  return ordered(() => validator(input, uri, validatorConfig))(() => {
     switch (input.style) {
       case 'form': {
         return referenceable(parameterObjectSchema)(input.schema, context, config)
       }
       case 'spaceDelimited': {
         return [
-          ...literal(true)(input.explode, append(uri, 'explode'), { append }),
+          ...literal(true)(input.explode, validatorConfig.append(uri, 'explode'), validatorConfig),
           ...referenceable(paramterObjectArraySchema)(input.schema, context, config),
         ]
       }
       case 'pipeDelimited': {
         return [
-          ...literal(true)(input.explode, append(uri, 'explode'), { append }),
+          ...literal(true)(input.explode, validatorConfig.append(uri, 'explode'), validatorConfig),
           ...referenceable(paramterObjectArraySchema)(input.schema, context, config),
         ]
       }
       case 'deepObject': {
         return [
-          ...literal(true)(input.explode, append(uri, 'explode'), { append }),
+          ...literal(true)(input.explode, validatorConfig.append(uri, 'explode'), validatorConfig),
           ...referenceable(parameterObjectObjectSchema)(input.schema, context, config),
         ]
       }

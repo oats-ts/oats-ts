@@ -1,5 +1,5 @@
 import { Try, failure, success, fromRecord } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import {
   QueryOptions,
   PrimitiveRecord,
@@ -28,7 +28,7 @@ export const queryDeepObjectObject =
             message: `should have a single value (found ${values.length})`,
             path,
             severity: 'error',
-            type: '',
+            type: IssueTypes.shape,
           },
         ])
       } else {

@@ -1,5 +1,5 @@
 import { failure, fluent, fromArray, Try } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser, RawPathParams, PathOptions, PathValueDeserializer } from '../types'
 import { decode, encode } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
@@ -23,7 +23,7 @@ function pathMatrixArrayExplode<T extends Primitive>(
               message: `malformed parameter value "${rawString}"`,
               path: itemPath,
               severity: 'error',
-              type: '',
+              type: IssueTypes.value,
             },
           ])
         }
@@ -34,7 +34,7 @@ function pathMatrixArrayExplode<T extends Primitive>(
               message: `malformed parameter value "${rawString}"`,
               path: itemPath,
               severity: 'error',
-              type: '',
+              type: IssueTypes.value,
             },
           ])
         }

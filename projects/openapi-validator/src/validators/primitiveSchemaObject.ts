@@ -1,6 +1,6 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { combine, enumeration, Issue, object, shape } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ignore } from '../utils/ignore'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
@@ -38,6 +38,6 @@ export function primitiveSchemaObject(
     schema,
   )(() => {
     const { uriOf } = context
-    return validator(schema, uriOf(schema), { append })
+    return validator(schema, uriOf(schema), validatorConfig)
   })
 }

@@ -2,13 +2,13 @@ import { Issue, stringify } from '@oats-ts/validators'
 import { Failure, Fluent } from './types'
 
 export class FluentFailure implements Failure, Fluent<any> {
-  public readonly issues: Issue<string>[]
+  public readonly issues: Issue[]
 
-  public constructor(issues: Issue<string>[]) {
+  public constructor(issues: Issue[]) {
     this.issues = issues
   }
 
-  public get<S, F>(_: (input: never) => S, mapFailure: (input: Issue<string>[]) => F): F {
+  public get<S, F>(_: (input: never) => S, mapFailure: (input: Issue[]) => F): F {
     if (typeof mapFailure !== 'function') {
       throw new TypeError(
         `Can't call ${FluentFailure.prototype.get.name} on ${FluentFailure.name}\n${this.getIssues().map(stringify)}`,
@@ -45,7 +45,7 @@ export class FluentFailure implements Failure, Fluent<any> {
     return this.issues
   }
 
-  public getIssuesOrElse(): Issue<string>[] {
+  public getIssuesOrElse(): Issue[] {
     return this.getIssues()
   }
 

@@ -1,6 +1,6 @@
 import { PathsObject } from '@oats-ts/openapi-model'
 import { Issue, object, record, string } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { flatMap, entries } from 'lodash'
@@ -20,7 +20,7 @@ export function pathsObject(
   )(() => {
     const { pathItemObject } = config
     const { uriOf } = context
-    return ordered(() => validator(data, uriOf(data), { append }))(() =>
+    return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
       flatMap(entries(data), ([url, pathObj]) =>
         ordered(() => pathItemObject(pathObj, context, config))(() => pathItemObjectUrl(url, pathObj, context, config)),
       ),

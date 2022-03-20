@@ -1,6 +1,6 @@
 import { Issue } from '@oats-ts/validators'
 import { ParameterObject } from '@oats-ts/openapi-model'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 
 export function cookieParameterObject(
@@ -12,7 +12,7 @@ export function cookieParameterObject(
   return [
     {
       message: '"cookie" parameters are ignored',
-      path: append(uriOf(input), 'in'),
+      path: validatorConfig.append(uriOf(input), 'in'),
       severity: 'warning',
       type: 'other',
     },

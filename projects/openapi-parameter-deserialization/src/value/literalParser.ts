@@ -1,5 +1,5 @@
 import { Try, failure, success } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from '../types'
 
 export const literalParser =
@@ -12,7 +12,7 @@ export const literalParser =
           message: `should be ${strLiteral}.`,
           path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.value,
         },
       ])
     }

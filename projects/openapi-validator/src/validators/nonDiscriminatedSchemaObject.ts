@@ -1,6 +1,6 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, array, literal, minLength } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { flatMap } from 'lodash'
 import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
@@ -31,7 +31,7 @@ export function nonDiscriminatedSchemaObject(
     input,
   )(() => {
     const { uriOf } = context
-    return ordered(() => validator(input, uriOf(input), { append }))(() =>
+    return ordered(() => validator(input, uriOf(input), validatorConfig))(() =>
       flatMap(input.oneOf, (schema: Referenceable<SchemaObject>): Issue[] =>
         referenceable(schemaObject)(schema, context, config),
       ),

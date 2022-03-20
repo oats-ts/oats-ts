@@ -1,6 +1,6 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue, object, optional, shape, combine, literal } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
@@ -39,7 +39,7 @@ export const arraySchemaObject =
       data,
     )(() => {
       const { uriOf } = context
-      return ordered(() => validator(data, uriOf(data), { append }))(() =>
+      return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
         typeof data.items === 'boolean' ? [] : referenceable(items)(data.items, context, config),
       )
     })

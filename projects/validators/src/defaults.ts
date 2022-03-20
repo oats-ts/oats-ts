@@ -3,7 +3,7 @@ import { ValidatorConfig } from './typings'
 
 export const DefaultConfig: ValidatorConfig = {
   append: jsonPathAppender,
-  severities: undefined,
+  severity: () => 'error',
 }
 
 export const DefaultPath = '$'

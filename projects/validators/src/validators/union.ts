@@ -1,14 +1,13 @@
-import { Validator, IssueType, ValidatorConfig } from '../typings'
-import { getSeverity, isNil } from '../utils'
-
-const issueType: IssueType = 'union'
+import { IssueTypes } from '../issueTypes'
+import { Validator, ValidatorConfig } from '../typings'
+import { isNil } from '../utils'
 
 /** TODO better way of representing the issues. */
 export const union =
   (validators: Record<string, Validator<any>>): Validator<any> =>
   (input: any, path: string, config: ValidatorConfig) => {
     const keys = Object.keys(validators)
-    const severity = getSeverity(issueType, config)
+    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.type)
 
     if (isNil(severity)) {
       return []
@@ -25,7 +24,7 @@ export const union =
 
     return [
       {
-        type: issueType,
+        type: IssueTypes.type,
         message: `should be one of [${keys.join(', ')}]`,
         path: path,
         severity,

@@ -1,5 +1,5 @@
 import { Try, failure } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from '../types'
 import { identityParser } from './identityParser'
 
@@ -17,7 +17,7 @@ export const numberParser: NumberParserFn =
           message: `should not be ${value}`,
           path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.type,
         },
       ])
     }
@@ -28,7 +28,7 @@ export const numberParser: NumberParserFn =
           message: `should be a number, but was ${value}`,
           path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.value,
         },
       ])
     }

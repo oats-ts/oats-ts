@@ -1,7 +1,6 @@
-import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
-import { getSeverity, isNil } from '../utils'
-
-const issueType: IssueType = 'extra-key'
+import { IssueTypes } from '../issueTypes'
+import { Issue, Validator, ValidatorConfig } from '../typings'
+import { isNil } from '../utils'
 
 export type ShapeInput<T> = {
   [P in keyof T]?: Validator<any>
@@ -25,13 +24,13 @@ export const shape =
       const newIssues = validator(value, config.append(path, key), config)
       issues.push(...newIssues)
     }
-    const severity = getSeverity(issueType, config)
+    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.shape)
 
     if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
       issues.push(
         ...extraKeys.map(
           (key): Issue => ({
-            type: issueType,
+            type: IssueTypes.shape,
             message: `should not have key "${key}"`,
             path: config.append(path, key),
             severity,

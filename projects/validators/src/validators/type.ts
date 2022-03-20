@@ -1,7 +1,26 @@
+import { IssueTypes } from '../issueTypes'
 import { Issue, Validator, ValidatorConfig } from '../typings'
-import { getSeverity, isNil } from '../utils'
+import { isNil } from '../utils'
 
 export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'object' | 'string'
+
+const ValueTypeToIssueType: Record<ValueType, string> = {
+  array: IssueTypes.type,
+  boolean: IssueTypes.type,
+  nil: IssueTypes.value,
+  number: IssueTypes.type,
+  object: IssueTypes.type,
+  string: IssueTypes.type,
+}
+
+const Messages: Record<ValueType, string> = {
+  array: 'should be an array',
+  boolean: 'should be a boolean',
+  nil: 'should be null or undefined',
+  number: 'should be a number',
+  object: 'should be an object',
+  string: 'should be a string',
+}
 
 const TypeChecks: { [key in ValueType]: (input: any) => boolean } = {
   array: Array.isArray,
@@ -16,15 +35,16 @@ const type =
   <T>(type: ValueType) =>
   (validate?: Validator<T>): Validator<any> =>
   (input: any, path: string, config: ValidatorConfig): Issue[] => {
-    const severity = getSeverity(type, config)
+    const issueType = ValueTypeToIssueType[type]
+    const severity = isNil(config.severity) ? 'error' : config.severity(issueType)
     if (isNil(severity)) {
       return []
     }
     if (!TypeChecks[type](input)) {
       return [
         {
-          type,
-          message: `should be a(n) ${type}`,
+          type: issueType,
+          message: Messages[type],
           path: path,
           severity,
         },

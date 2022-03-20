@@ -1,4 +1,5 @@
 import { failure, fluent, success, Try } from '@oats-ts/try'
+import { IssueTypes } from '@oats-ts/validators'
 import { QueryOptions, PrimitiveRecord, QuerySerializer } from '../types'
 import { encode, entries, isNil } from '../utils'
 import { getQueryValue } from './queryUtils'
@@ -15,7 +16,7 @@ export const queryDeepObjectObject =
               message: `can only be serialized with explode=true`,
               path,
               severity: 'error',
-              type: '',
+              type: IssueTypes.other,
             },
           ])
         }

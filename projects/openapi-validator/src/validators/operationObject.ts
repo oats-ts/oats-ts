@@ -1,7 +1,7 @@
 import { OperationObject } from '@oats-ts/openapi-model'
 import { isNil, flatMap } from 'lodash'
 import { Issue, object, optional, shape, combine, record, string, minLength, array } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ignore } from '../utils/ignore'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
@@ -35,7 +35,7 @@ export function operationObject(
   )(() => {
     const { uriOf } = context
     const { parameterObject, requestBodyObject, responsesObject } = config
-    return ordered(() => validator(data, uriOf(data), { append }))(
+    return ordered(() => validator(data, uriOf(data), validatorConfig))(
       () => flatMap(parametersOf(data, context), (p) => referenceable(parameterObject, true)(p, context, config)),
       () => (isNil(data.requestBody) ? [] : referenceable(requestBodyObject)(data.requestBody, context, config)),
       () => responsesObject(data.responses, context, config),

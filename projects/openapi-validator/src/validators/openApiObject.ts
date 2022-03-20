@@ -1,6 +1,6 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Issue, object, optional, shape } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { isNil } from 'lodash'
@@ -27,7 +27,7 @@ export function openApiObject(
   )(() => {
     const { componentsObject, pathsObject } = config
     const { uriOf } = context
-    return ordered(() => validator(data, uriOf(data), { append }))(
+    return ordered(() => validator(data, uriOf(data), validatorConfig))(
       () => (isNil(data.components) ? [] : componentsObject(data.components, context, config)),
       () => (isNil(data.paths) ? [] : pathsObject(data.paths, context, config)),
     )

@@ -1,15 +1,8 @@
-import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
-import { getSeverity, isNil } from '../utils'
-
-const issueType: IssueType = 'length'
+import { Issue, Validator, ValidatorConfig } from '../typings'
 
 export const tuple =
   (...validators: Validator<any>[]): Validator<any> =>
   (input: any[], path: string, config: ValidatorConfig) => {
-    const severity = getSeverity(issueType, config)
-    if (isNil(severity)) {
-      return []
-    }
     const issues: Issue[] = []
     for (let i = 0; i < validators.length; i += 1) {
       const validator = validators[i]

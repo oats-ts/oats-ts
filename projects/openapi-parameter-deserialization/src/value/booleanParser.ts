@@ -1,5 +1,5 @@
 import { Try, failure } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from '../types'
 import { identityParser } from './identityParser'
 
@@ -17,7 +17,7 @@ export const booleanParser: BooleanParserFn =
           message: `should be a boolean ("true" or "false")`,
           path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.value,
         },
       ])
     }

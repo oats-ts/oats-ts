@@ -1,5 +1,5 @@
 import { Try, success, failure, isFailure } from '@oats-ts/try'
-import { Issue, ValidatorConfig } from '@oats-ts/validators'
+import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from './types'
 
 export function isNil(input: any): input is null | undefined {
@@ -79,7 +79,7 @@ export const createDelimitedRecordParser =
         message: `malformed parameter value "${value}"`,
         path,
         severity: 'error',
-        type: '',
+        type: IssueTypes.value,
       })
     }
     const record: Record<string, string> = {}
@@ -105,7 +105,7 @@ export const createKeyValuePairRecordParser =
           message: `unexpected content "${value}"`,
           path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.value,
         })
       }
       const [rawKey, rawValue] = pair

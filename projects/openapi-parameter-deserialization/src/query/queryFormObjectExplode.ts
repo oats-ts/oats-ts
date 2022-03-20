@@ -1,5 +1,5 @@
 import { Try, failure, success, fromArray, fluent } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
 import { decode, isNil } from '../utils'
 
@@ -23,7 +23,7 @@ export function queryFormObjectExplode<T extends PrimitiveRecord>(
             message: `should have a single value (found ${values.length})`,
             path: config.append(path, key),
             severity: 'error',
-            type: '',
+            type: IssueTypes.shape,
           },
         ])
       }
