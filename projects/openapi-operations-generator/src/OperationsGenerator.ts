@@ -35,7 +35,11 @@ export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'
     'openapi/query-serializer',
     'openapi/response-headers-deserializer',
   ]
-  public readonly runtimeDepencencies: string[] = [RuntimePackages.Http.name]
+  public readonly runtimeDepencencies: string[] = [
+    RuntimePackages.Http.name,
+    /* Adding this as runtime package as otherwise it's undiscoverable */
+    '@oats-ts/openapi-fetch-client-adapter',
+  ]
 
   public constructor(config: OperationsGeneratorConfig) {
     this.operationsConfig = config

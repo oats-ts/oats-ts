@@ -15,6 +15,7 @@ import { configure, stringify } from '@oats-ts/validators'
 export type FetchClientAdapterConfig = {
   url?: string
   skipResponseValidation?: boolean
+  options?: RequestInit
 }
 
 export class FetchClientAdapter implements ClientAdapter {
@@ -26,6 +27,7 @@ export class FetchClientAdapter implements ClientAdapter {
 
   async request(request: RawHttpRequest): Promise<RawHttpResponse> {
     const response = await crossFetch.fetch(request.url, {
+      ...(this.config.options ?? {}),
       headers: request.headers,
       method: request.method,
       ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
