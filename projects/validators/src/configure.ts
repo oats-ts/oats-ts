@@ -1,6 +1,17 @@
-import { Validator, ValidatorConfig } from './typings'
+import { DefaultConfig, DefaultPath } from './defaults'
+import { PartialValidator, Validator, ValidatorConfig } from './typings'
 
-export const configure = <T>(config: Partial<ValidatorConfig>, validator: Validator<T>): Validator<T> => {
-  return (input: T, c?: Partial<ValidatorConfig>) =>
-    validator(input, c === undefined || c === null ? config : { ...config, ...c })
-}
+export const configure =
+  <T>(
+    validator: Validator<T>,
+    defaultPath: string = DefaultPath,
+    defaultConfig: Partial<ValidatorConfig> = DefaultConfig,
+  ): PartialValidator<T> =>
+  (input: T, path?: string, config?: Partial<ValidatorConfig>) =>
+    validator(
+      input,
+      path ?? defaultPath ?? '$',
+      config === undefined || config === null
+        ? { ...DefaultConfig, ...defaultConfig }
+        : { ...DefaultConfig, ...defaultConfig, ...config },
+    )

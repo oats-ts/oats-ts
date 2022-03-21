@@ -1,9 +1,10 @@
+import { configure } from '../configure'
 import { items } from './items'
 import { array, string } from './type'
 
 describe('items', () => {
   it('items', () => {
-    const v = array(items(string()))
+    const v = configure(array(items(string())))
     expect(v([])).toHaveLength(0)
     expect(v(['a'])).toHaveLength(0)
     expect(v(['a', 'b'])).toHaveLength(0)

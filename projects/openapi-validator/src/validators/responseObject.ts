@@ -1,6 +1,6 @@
 import { ResponseObject } from '@oats-ts/openapi-model'
 import { Issue, object, shape, combine, record, string, optional } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ignore } from '../utils/ignore'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
@@ -30,7 +30,7 @@ export function responseObject(
   )(() => {
     const { uriOf } = context
     const { contentObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(() =>
+    return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
       contentObject(data.content, context, config),
     )
   })

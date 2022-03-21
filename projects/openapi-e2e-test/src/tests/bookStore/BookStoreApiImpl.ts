@@ -1,6 +1,6 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { failure, fluent, success, zip } from '@oats-ts/try'
-import { Issue, stringify } from '@oats-ts/validators'
+import { Issue, IssueTypes, stringify } from '@oats-ts/validators'
 import {
   BookStoreApi,
   CreateBookResponse,
@@ -54,7 +54,14 @@ export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
       .flatMap(({ bookId }) => {
         const book = this.books.find(({ id }) => id === bookId)
         return book === undefined
-          ? failure([{ message: `No book with id ${bookId}`, severity: 'error', path: 'path.bookId', type: '' }])
+          ? failure([
+              {
+                message: `No book with id ${bookId}`,
+                severity: 'error',
+                path: 'path.bookId',
+                type: IssueTypes.value,
+              },
+            ])
           : success(book)
       })
       .get(
@@ -76,7 +83,14 @@ export class BookStoreApiImpl implements BookStoreApi<ExpressToolkit> {
       .flatMap<Book>(([{ bookId }, updates]) => {
         const book = this.books.find(({ id }) => id === bookId)
         return book === undefined
-          ? failure([{ message: `No book with id ${bookId}`, severity: 'error', path: 'path.bookId', type: '' }])
+          ? failure([
+              {
+                message: `No book with id ${bookId}`,
+                severity: 'error',
+                path: 'path.bookId',
+                type: IssueTypes.value,
+              },
+            ])
           : success({ ...book, ...updates, id: bookId })
       })
       .doIfSuccess((updatedBook) => {

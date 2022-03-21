@@ -1,5 +1,5 @@
 import { Try, success, failure, isFailure } from '@oats-ts/try'
-import { Issue } from '@oats-ts/validators'
+import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from './types'
 
 export function isNil(input: any): input is null | undefined {
@@ -70,16 +70,16 @@ export function mapRecord<I, V, K extends string>(
 }
 
 export const createDelimitedRecordParser =
-  (location: 'path' | 'header', separator: string) =>
-  (name: string, value: string): Try<Record<string, string>> => {
+  (separator: string) =>
+  (value: string, path: string): Try<Record<string, string>> => {
     const parts = value.split(separator)
     const issues: Issue[] = []
     if (parts.length % 2 !== 0) {
       issues.push({
-        message: `Malformed value "${value}" for ${location} parameter "${name}"`,
-        path: name,
+        message: `malformed parameter value "${value}"`,
+        path,
         severity: 'error',
-        type: '',
+        type: IssueTypes.value,
       })
     }
     const record: Record<string, string> = {}
@@ -92,8 +92,8 @@ export const createDelimitedRecordParser =
   }
 
 export const createKeyValuePairRecordParser =
-  (location: 'path' | 'header', separator: string, kvSeparator: string) =>
-  (name: string, value: string): Try<Record<string, string>> => {
+  (separator: string, kvSeparator: string) =>
+  (value: string, path: string): Try<Record<string, string>> => {
     const kvPairStrs = value.split(separator)
     const record: Record<string, string> = {}
     const issues: Issue[] = []
@@ -102,10 +102,10 @@ export const createKeyValuePairRecordParser =
       const pair = kvPairStr.split(kvSeparator)
       if (pair.length !== 2) {
         issues.push({
-          message: `Unexpected content "${value}" in ${location} parameter "${name}"`,
-          path: name,
+          message: `unexpected content "${value}"`,
+          path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.value,
         })
       }
       const [rawKey, rawValue] = pair
@@ -115,9 +115,9 @@ export const createKeyValuePairRecordParser =
   }
 
 export const createArrayParser =
-  (separator: string) =>
-  <T extends Primitive>(name: string, value: string, parse: ValueParser<string, T>): Try<T[]> => {
+  <T extends Primitive>(separator: string, parse: ValueParser<string, T>) =>
+  (value: string, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return isNil(value)
       ? success(undefined)
-      : mapArray(value.split(separator), (value, i) => parse(`${name}[${i}]`, decode(value)))
+      : mapArray(value.split(separator), (value, i) => parse(decode(value), name, config.append(path, i), config))
   }

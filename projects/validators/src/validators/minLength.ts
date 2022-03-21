@@ -1,19 +1,17 @@
-import { IssueType, Validator, ValidatorConfig } from '../typings'
-import { getConfig, getSeverity, isNil } from '../utils'
-
-const issueType: IssueType = 'length'
+import { IssueTypes } from '../issueTypes'
+import { Validator, ValidatorConfig } from '../typings'
+import { isNil } from '../utils'
 
 export const minLength =
   (length: number): Validator<any> =>
-  (input: { length: number }, config?: Partial<ValidatorConfig>) => {
-    const cfg = getConfig(config)
-    const severity = getSeverity(issueType, cfg)
+  (input: { length: number }, path: string, config: ValidatorConfig) => {
+    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.length)
     if (!isNil(severity) && input.length < length) {
       return [
         {
-          type: issueType,
+          type: IssueTypes.length,
           message: `length should be at least ${length}`,
-          path: cfg.path,
+          path,
           severity,
         },
       ]

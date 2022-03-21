@@ -1,20 +1,20 @@
 import { Try, fluent, fromRecord } from '@oats-ts/try'
+import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { ParameterObject, PathValueDeserializers, ParameterValue, PathDeserializer } from '../types'
-import { createRawPathParser } from './createRawPathParser'
+import { parseRawPath } from './parseRawPath'
 
 export const createPathDeserializer = <T extends ParameterObject>(
   parameterNames: string[],
   regex: RegExp,
   deserializers: PathValueDeserializers<T>,
 ): PathDeserializer<T> => {
-  const parseRawPath = createRawPathParser(parameterNames, regex)
-  return (input: string): Try<T> => {
-    return fluent(parseRawPath(input))
+  return (input: string, path: string = 'path', config: ValidatorConfig = DefaultConfig): Try<T> => {
+    return fluent(parseRawPath(parameterNames, regex, input, path))
       .flatMap((raw) => {
         const deserialized = Object.keys(deserializers).reduce(
           (acc: Record<string, Try<ParameterValue>>, key: string) => {
             const deserializer = deserializers[key]
-            acc[key] = deserializer(key, raw)
+            acc[key] = deserializer(raw, key, config.append(path, key), config)
             return acc
           },
           {},

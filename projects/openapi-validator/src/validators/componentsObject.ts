@@ -1,6 +1,6 @@
 import { ComponentsObject } from '@oats-ts/openapi-model'
 import { Issue, object, optional, shape } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { flatMap } from 'lodash'
@@ -28,7 +28,7 @@ export function componentsObject(
   )(() => {
     const { uriOf } = context
     const { schemaObject, parameterObject, responseObject, requestBodyObject } = config
-    return ordered(() => validator(data, { append, path: uriOf(data) }))(
+    return ordered(() => validator(data, uriOf(data), validatorConfig))(
       () => flatMap(schemasOf(data, context), (schema) => referenceable(schemaObject)(schema, context, config)),
       () => flatMap(parametersOf(data, context), (schema) => referenceable(parameterObject)(schema, context, config)),
       () => flatMap(responsesOf(data, context), (schema) => referenceable(responseObject)(schema, context, config)),

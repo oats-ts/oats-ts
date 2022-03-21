@@ -4,7 +4,7 @@ import { isReferenceObject } from '@oats-ts/model-common'
 import { Issue, object, shape, string } from '@oats-ts/validators'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { ordered } from '../utils/ordered'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { isNil } from 'lodash'
 
 const validator = object(shape<ReferenceObject>({ $ref: string() }, true))
@@ -39,7 +39,7 @@ export function referenceObject(
     input,
   )(() => {
     const { uriOf, dereference } = context
-    return ordered(() => validator(input, { append, path: uriOf(input) }))(() =>
+    return ordered(() => validator(input, uriOf(input), validatorConfig))(() =>
       ordered((): Issue[] => {
         if (isNil(dereference(input))) {
           return [

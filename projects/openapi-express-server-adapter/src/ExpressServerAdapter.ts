@@ -7,62 +7,29 @@ import {
   ServerAdapter,
 } from '@oats-ts/openapi-http'
 import { failure, fluent, success, Try } from '@oats-ts/try'
-import { Issue } from '@oats-ts/validators'
+import { configure, Issue, IssueTypes } from '@oats-ts/validators'
 import { ExpressToolkit } from './typings'
 
 export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
-  async getPathParameters<P>({ request }: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
-    try {
-      return deserializer(request.url)
-    } catch (e) {
-      const issue: Issue = {
-        message: e.message,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return failure([issue])
-    }
+  async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
+    return deserializer(toolkit.request.url)
   }
-  async getQueryParameters<Q>(
-    { request }: ExpressToolkit,
-    deserializer: (input: string) => Try<Q>,
-  ): Promise<Try<Q>> {
-    try {
-      return deserializer(new URL(request.url, 'http://test.com').search)
-    } catch (e) {
-      const issue: Issue = {
-        message: e.message,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return failure([issue])
-    }
+  async getQueryParameters<Q>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<Q>): Promise<Try<Q>> {
+    return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
   }
   async getRequestHeaders<H>(
-    { request }: ExpressToolkit,
+    toolkit: ExpressToolkit,
     deserializer: (input: RawHttpHeaders) => Try<H>,
   ): Promise<Try<H>> {
-    try {
-      return deserializer(request.headers as RawHttpHeaders)
-    } catch (e) {
-      const issue: Issue = {
-        message: e.message,
-        severity: 'error',
-        path: '',
-        type: '',
-      }
-      return failure([issue])
-    }
+    return deserializer(toolkit.request.headers as RawHttpHeaders)
   }
 
-  async getMimeType<M extends string>({ request }: ExpressToolkit): Promise<M> {
-    return request.header('Content-Type') as M
+  async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
+    return toolkit.request.header('Content-Type') as M
   }
 
   async getRequestBody<M extends string, B>(
-    { request }: ExpressToolkit,
+    toolkit: ExpressToolkit,
     mimeType: M | undefined,
     validators: RequestBodyValidators<M>,
   ): Promise<Try<B>> {
@@ -75,8 +42,8 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       const issue: Issue = {
         message: `Missing "Content-Type" header`,
         severity: 'error',
-        path: '',
-        type: '',
+        path: 'headers',
+        type: IssueTypes.other,
       }
       return failure([issue])
     }
@@ -84,67 +51,68 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       const issue: Issue = {
         message: `Unexpected "Content-Type" request header "${mimeType}"`,
         severity: 'error',
-        path: '',
-        type: '',
+        path: 'headers',
+        type: IssueTypes.other,
       }
       return failure([issue])
     }
-    const validator = validators[mimeType]
-    const issues = validator(request.body)
-    return issues.length > 0 ? failure(issues) : success(request.body as B)
+    const validator = configure(validators[mimeType], 'requestBody')
+    const issues = validator(toolkit.request.body)
+    return issues.length > 0 ? failure(issues) : success(toolkit.request.body as B)
   }
 
-  async getStatusCode(input: ExpressToolkit, resp: HttpResponse): Promise<number> {
-    return resp.statusCode
+  async getStatusCode(input: ExpressToolkit, response: HttpResponse): Promise<number> {
+    return response.statusCode
   }
 
-  async getResponseBody(input: ExpressToolkit, resp: HttpResponse): Promise<any> {
-    if (resp.body === null || resp.body === undefined) {
+  async getResponseBody(input: ExpressToolkit, response: HttpResponse): Promise<any> {
+    if (response.body === null || response.body === undefined) {
       return undefined
     }
-    switch (resp.mimeType) {
+    switch (response.mimeType) {
       case 'application/json':
-        return JSON.stringify(resp.body)
+        return JSON.stringify(response.body)
       case 'text/plain':
-        return `${resp.body}`
+        return `${response.body}`
       default:
-        return resp.body
+        return response.body
     }
   }
 
   async getResponseHeaders(
     input: ExpressToolkit,
-    { mimeType, statusCode, headers }: HttpResponse,
+    response: HttpResponse,
     serializers?: ResponseHeadersSerializer,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders = mimeType === null || mimeType === undefined ? {} : { 'content-type': mimeType }
+    const mimeTypeHeaders =
+      response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }
     if (serializers === null || serializers === undefined) {
       return mimeTypeHeaders
     }
-    const serializer = serializers[statusCode]
-    if (serializers === null || serializers === undefined) {
+    const serializer = serializers[response.statusCode]
+    if (serializer === null || serializer === undefined) {
       return mimeTypeHeaders
     }
-    return { ...fluent(serializer(headers)).getData(), ...mimeTypeHeaders }
+    return { ...fluent(serializer(response.headers)).getData(), ...mimeTypeHeaders }
   }
 
-  async respond({ response, next }: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
-    response.status(rawResponse.statusCode)
-    if (rawResponse.headers !== null && rawResponse.headers !== undefined && !response.headersSent) {
+  async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
+    toolkit.response.status(rawResponse.statusCode)
+    if (rawResponse.headers !== null && rawResponse.headers !== undefined && !toolkit.response.headersSent) {
       const headerNames = Object.keys(rawResponse.headers)
       for (let i = 0; i < headerNames.length; i += 1) {
         const headerName = headerNames[i]
         const headerValue = rawResponse.headers[headerName]
-        response.setHeader(headerName, headerValue)
+        toolkit.response.setHeader(headerName, headerValue)
       }
     }
-    if (response.writable) {
-      response.send(rawResponse.body ?? '')
+    if (toolkit.response.writable) {
+      toolkit.response.send(rawResponse.body ?? '')
     }
-    next()
+    toolkit.next()
   }
 
-  async handleError({ next }: ExpressToolkit, error: Error): Promise<void> {
-    return next(error)
+  async handleError(toolkit: ExpressToolkit, error: Error): Promise<void> {
+    return toolkit.next(error)
   }
 }

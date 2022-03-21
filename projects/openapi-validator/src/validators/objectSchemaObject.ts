@@ -1,7 +1,7 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { values, flatMap } from 'lodash'
 import { Issue, object, optional, shape, combine, array, items, string, literal } from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
@@ -31,11 +31,8 @@ export const objectSchemaObject =
       data,
     )(() => {
       const { uriOf } = context
-      return ordered(() =>
-        validator(data, {
-          path: uriOf(data),
-          append,
-        }),
-      )(() => flatMap(values(data.properties), (schema) => referenceable(properties)(schema, context, config)))
+      return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
+        flatMap(values(data.properties), (schema) => referenceable(properties)(schema, context, config)),
+      )
     })
   }

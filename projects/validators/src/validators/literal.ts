@@ -1,19 +1,17 @@
-import { IssueType, Validator, ValidatorConfig } from '../typings'
-import { getConfig, getSeverity, isNil } from '../utils'
-
-const issueType: IssueType = 'literal'
+import { IssueTypes } from '../issueTypes'
+import { Validator, ValidatorConfig } from '../typings'
+import { isNil } from '../utils'
 
 export const literal =
   (value: string | number | boolean | null): Validator<any> =>
-  (input: any, config?: Partial<ValidatorConfig>) => {
-    const cfg = getConfig(config)
-    const severity = getSeverity(issueType, cfg)
+  (input: any, path: string, config: ValidatorConfig) => {
+    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.value)
     if (!isNil(severity) && value !== input) {
       return [
         {
-          type: issueType,
+          type: IssueTypes.value,
           message: `should be ${typeof value === 'string' ? `"${value}"` : value}`,
-          path: cfg.path,
+          path,
           severity,
         },
       ]

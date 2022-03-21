@@ -41,7 +41,7 @@ export class FluentSuccess<T> implements Success<T>, Fluent<T> {
     throw new TypeError(`Can't call ${FluentSuccess.prototype.getIssues.name} on ${FluentSuccess.name}`)
   }
 
-  public getIssuesOrElse(issues: Issue<string>[]): Issue<string>[] {
+  public getIssuesOrElse(issues: Issue[]): Issue[] {
     return issues
   }
 

@@ -1,12 +1,25 @@
 import { Try, failure, success } from '@oats-ts/try'
+import { IssueTypes } from '@oats-ts/validators'
 import { QueryOptions, RawQueryParams } from '../types'
 
-export function getQueryValue(name: string, params: RawQueryParams, options: QueryOptions): Try<string | undefined> {
+export function getQueryValue(
+  name: string,
+  path: string,
+  params: RawQueryParams,
+  options: QueryOptions,
+): Try<string | undefined> {
   const values = params[name] || []
   switch (values.length) {
     case 0: {
       if (options.required) {
-        return failure([{ message: `Query parameter "${name}" is required`, path: name, severity: 'error', type: '' }])
+        return failure([
+          {
+            message: 'should occur once (found 0 times in query string)',
+            path,
+            severity: 'error',
+            type: IssueTypes.value,
+          },
+        ])
       }
       return success(undefined)
     }
@@ -16,10 +29,10 @@ export function getQueryValue(name: string, params: RawQueryParams, options: Que
     default:
       return failure([
         {
-          message: `Query parameter "${name}" should occur once (found ${values.length} times in query string)`,
-          path: name,
+          message: `should occur once (found ${values.length} times in query string)`,
+          path,
           severity: 'error',
-          type: '',
+          type: IssueTypes.value,
         },
       ])
   }

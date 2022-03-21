@@ -1,18 +1,18 @@
 import { fluent, Try } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { RawPathParams, PathOptions, FieldParsers, PrimitiveRecord, PathValueDeserializer } from '../types'
 import { createKeyValuePairRecordParser, createDelimitedRecordParser } from '../utils'
 import { getPathValue, parsePathFromRecord } from './pathUtils'
 
-const parseKeyValuePairRecord = createKeyValuePairRecordParser('path', ',', '=')
-const parseDelimitedRecord = createDelimitedRecordParser('path', ',')
-
-export const pathSimpleObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: PathOptions = {}): PathValueDeserializer<T> =>
-  (name: string, data: RawPathParams): Try<T> => {
-    return fluent(getPathValue(name, data))
-      .flatMap((rawDataStr) =>
-        options.explode ? parseKeyValuePairRecord(name, rawDataStr) : parseDelimitedRecord(name, rawDataStr),
-      )
-      .flatMap((rawRecord) => parsePathFromRecord(name, parsers, rawRecord))
+export const pathSimpleObject = <T extends PrimitiveRecord>(
+  parsers: FieldParsers<T>,
+  options: PathOptions = {},
+): PathValueDeserializer<T> => {
+  const parseRecord = options.explode ? createKeyValuePairRecordParser(',', '=') : createDelimitedRecordParser(',')
+  return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
+    return fluent(getPathValue(name, path, data))
+      .flatMap((rawDataStr) => parseRecord(rawDataStr, path))
+      .flatMap((rawRecord) => parsePathFromRecord(parsers, rawRecord, name, path, config))
       .toJson()
   }
+}

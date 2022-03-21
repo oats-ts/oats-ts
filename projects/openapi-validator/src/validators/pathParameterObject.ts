@@ -1,6 +1,6 @@
 import { Issue, object, optional, shape, combine, string, literal, enumeration } from '@oats-ts/validators'
 import { ParameterObject } from '@oats-ts/openapi-model'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { parameterObjectSchema } from './parameterObjectSchema'
 import { warnContent } from '../utils/warnContent'
 import { ordered } from '../utils/ordered'
@@ -29,7 +29,7 @@ export function pathParameterObject(
   config: OpenAPIValidatorConfig,
 ): Issue[] {
   const { uriOf } = context
-  return ordered(() => validator(data, { path: uriOf(data), append }))(() =>
+  return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
     referenceable(parameterObjectSchema)(data.schema, context, config),
   )
 }

@@ -1,9 +1,10 @@
 import { fluent, Try } from '@oats-ts/try'
+import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { QueryOptions, ParameterValue, PathOptions, HeaderOptions } from './types'
 
 export type SerialzerCreator<Result, Options> = (
   options: Options,
-) => (name: string, data: ParameterValue) => Try<Result>
+) => (data: ParameterValue, name: string, path: string, config: ValidatorConfig) => Try<Result>
 
 export type TestDataInput<Result, Options> = [Result, Options, string, ParameterValue]
 export type TestErrorInput<Options> = [Options, string, ParameterValue]
@@ -29,13 +30,15 @@ export function createSerializerTest<Result, Options>(
   data: TestData<Result, Options>,
   fn: SerialzerCreator<Result, Options>,
 ): void {
+  const config = DefaultConfig
+  const location = name.split('.')[0]
   describe(name, () => {
     it.each(data.data)('should be "%s", given options: %s, name %s, value: %s', (expected, options, name, value) => {
-      const result = fn(options)(name, value)
+      const result = fn(options)(value, name, config.append(location, name), config)
       expect(fluent(result).getData()).toEqual(expected)
     })
     it.each(data.error)('should throw, given options: %s, name %s, value: %s', (options, name, value) => {
-      const result = fn(options)(name, value)
+      const result = fn(options)(value, name, config.append(location, name), config)
       expect(fluent(result).getIssues()).not.toHaveLength(0)
     })
   })

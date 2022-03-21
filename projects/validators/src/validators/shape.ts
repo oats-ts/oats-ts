@@ -1,7 +1,6 @@
-import { Issue, IssueType, Validator, ValidatorConfig } from '../typings'
-import { getConfig, getSeverity, isNil } from '../utils'
-
-const issueType: IssueType = 'extra-key'
+import { IssueTypes } from '../issueTypes'
+import { Issue, Validator, ValidatorConfig } from '../typings'
+import { isNil } from '../utils'
 
 export type ShapeInput<T> = {
   [P in keyof T]?: Validator<any>
@@ -12,8 +11,7 @@ export const shape =
     validators: ShapeInput<T>,
     allowExtraFields = false,
   ): Validator<Record<string, any>> =>
-  (input: object, config?: Partial<ValidatorConfig>) => {
-    const cfg = getConfig(config)
+  (input: object, path: string, config: ValidatorConfig) => {
     const keys = Object.keys(input)
     const expectedKeys = Object.keys(validators)
     const extraKeys: string[] = keys.filter((key) => expectedKeys.indexOf(key) < 0)
@@ -23,21 +21,18 @@ export const shape =
       const key = expectedKeys[i]
       const value = (input as any)[key]
       const validator = (validators as any)[key]
-      const newIssues = validator(value, {
-        ...cfg,
-        path: cfg.append(cfg.path, key),
-      })
+      const newIssues = validator(value, config.append(path, key), config)
       issues.push(...newIssues)
     }
-    const severity = getSeverity(issueType, cfg)
+    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.shape)
 
     if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
       issues.push(
         ...extraKeys.map(
           (key): Issue => ({
-            type: issueType,
+            type: IssueTypes.shape,
             message: `should not have key "${key}"`,
-            path: cfg.append(cfg.path, key),
+            path: config.append(path, key),
             severity,
           }),
         ),

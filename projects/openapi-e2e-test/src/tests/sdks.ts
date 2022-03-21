@@ -16,8 +16,8 @@ class YamlFetchClientAdapter extends FetchClientAdapter {
   }
 }
 
-const defaultAdapter = new FetchClientAdapter(PATH)
-const yamlAdapter = new YamlFetchClientAdapter(PATH)
+const defaultAdapter = new FetchClientAdapter({ url: PATH })
+const yamlAdapter = new YamlFetchClientAdapter({ url: PATH })
 
 export const bodiesSdk = (mimeType: 'application/json' | 'application/yaml') =>
   new BodiesSdkImpl(mimeType === 'application/json' ? defaultAdapter : yamlAdapter)

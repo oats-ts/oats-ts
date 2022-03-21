@@ -1,17 +1,6 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import {
-  enumeration,
-  Issue,
-  object,
-  optional,
-  shape,
-  combine,
-  array,
-  items,
-  string,
-  minLength,
-} from '@oats-ts/validators'
-import { append } from '../utils/append'
+import { Issue, object, shape, combine, array, minLength } from '@oats-ts/validators'
+import { validatorConfig } from '../utils/validatorConfig'
 import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
@@ -48,6 +37,6 @@ export function enumSchemaObject(
     data,
   )(() => {
     const { uriOf } = context
-    return validator(data, { path: uriOf(data), append })
+    return validator(data, uriOf(data), validatorConfig)
   })
 }

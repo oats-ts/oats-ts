@@ -1,23 +1,24 @@
 import { fluent, success, Try } from '@oats-ts/try'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { PrimitiveRecord, FieldParsers, HeaderOptions, RawHeaders } from '../types'
 import { createDelimitedRecordParser, createKeyValuePairRecordParser, isNil } from '../utils'
 import { getHeaderValue, parseHeadersFromRecord } from './headerUtils'
 
-const parseKeyValuePairRecord = createKeyValuePairRecordParser('path', ',', '=')
-const parseDelimitedRecord = createDelimitedRecordParser('path', ',')
+const parseKeyValuePairRecord = createKeyValuePairRecordParser(',', '=')
+const parseDelimitedRecord = createDelimitedRecordParser(',')
 
 export const headerSimpleObject =
   <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: HeaderOptions = {}) =>
-  (name: string, data: RawHeaders): Try<T> => {
-    return fluent(getHeaderValue(name, data, options.required))
+  (data: RawHeaders, name: string, path: string, config: ValidatorConfig): Try<T> => {
+    return fluent(getHeaderValue(name, path, data, options.required))
       .flatMap((rawDataStr) => {
         if (isNil(rawDataStr)) {
           return success(undefined)
         }
-        return options.explode ? parseKeyValuePairRecord(name, rawDataStr) : parseDelimitedRecord(name, rawDataStr)
+        return options.explode ? parseKeyValuePairRecord(rawDataStr, path) : parseDelimitedRecord(rawDataStr, path)
       })
       .flatMap((rawRecord?: Record<string, string>) =>
-        isNil(rawRecord) ? success(undefined) : parseHeadersFromRecord(name, parsers, rawRecord),
+        isNil(rawRecord) ? success(undefined) : parseHeadersFromRecord(parsers, rawRecord, name, path, config),
       )
       .toJson()
   }

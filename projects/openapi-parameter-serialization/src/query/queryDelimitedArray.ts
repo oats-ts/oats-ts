@@ -6,9 +6,9 @@ import { getQueryValue } from './queryUtils'
 export const queryDelimitedArray =
   (delimiter: string) =>
   <T extends PrimitiveArray>(opts: QueryOptions<T> = {}): QuerySerializer<T> =>
-  (name: string, data?: T): Try<string[]> => {
+  (data: T, name: string, path: string): Try<string[]> => {
     const options: QueryOptions<T> = { explode: true, ...opts }
-    return fluent(getQueryValue(name, data, options))
+    return fluent(getQueryValue(path, data, options))
       .map((value) => {
         if (isNil(value)) {
           return []

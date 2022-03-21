@@ -13,7 +13,7 @@ import {
   minLength,
 } from '@oats-ts/validators'
 import { getInferredType } from '@oats-ts/json-schema-common'
-import { append } from '../utils/append'
+import { validatorConfig } from '../utils/validatorConfig'
 import { entries, isNil, flatMap } from 'lodash'
 import { objectSchemaObject } from './objectSchemaObject'
 import { ordered } from '../utils/ordered'
@@ -76,12 +76,7 @@ export function discriminatedUnionSchemaObject(
     const discriminatorValues = entries(discriminator.mapping || {})
     const oneOfRefs = (oneOf || []) as ReferenceObject[]
 
-    return ordered(() =>
-      validator(data, {
-        append,
-        path: uriOf(data),
-      }),
-    )(
+    return ordered(() => validator(data, uriOf(data), validatorConfig))(
       () =>
         oneOfRefs
           .filter((ref) => !discriminatorValues.some(([, refTarget]) => ref.$ref === refTarget))

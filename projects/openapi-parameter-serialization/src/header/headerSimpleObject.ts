@@ -5,8 +5,8 @@ import { getHeaderValue } from './headerUtils'
 
 export const headerSimpleObject =
   <T extends PrimitiveRecord>(options: HeaderOptions<T> = {}): HeaderSerializer<T> =>
-  (name: string, data?: T): Try<string> => {
-    return fluent(getHeaderValue(name, data, options))
+  (data: T, name: string, path: string): Try<string> => {
+    return fluent(getHeaderValue(path, data, options))
       .map((value) => {
         if (isNil(value)) {
           return undefined
