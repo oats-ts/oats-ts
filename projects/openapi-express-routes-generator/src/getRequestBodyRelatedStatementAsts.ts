@@ -62,7 +62,7 @@ export function getRequestBodyRelatedStatementAsts(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier('getMimeType'),
               ),
               [mediaTypeUnion],
@@ -86,7 +86,7 @@ export function getRequestBodyRelatedStatementAsts(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier('getRequestBody'),
               ),
               [mediaTypeUnion, bodiesUnion],

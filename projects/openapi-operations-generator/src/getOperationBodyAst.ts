@@ -31,7 +31,7 @@ export function getOperationBodyAst(
                 factory.createAwaitExpression(
                   factory.createCallExpression(
                     factory.createPropertyAccessExpression(
-                      factory.createIdentifier(Names.configuration),
+                      factory.createIdentifier(Names.adapter),
                       factory.createIdentifier(Names.getPath),
                     ),
                     undefined,
@@ -57,7 +57,7 @@ export function getOperationBodyAst(
                 factory.createAwaitExpression(
                   factory.createCallExpression(
                     factory.createPropertyAccessExpression(
-                      factory.createIdentifier(Names.configuration),
+                      factory.createIdentifier(Names.adapter),
                       factory.createIdentifier(Names.getQuery),
                     ),
                     undefined,
@@ -81,7 +81,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.getUrl),
               ),
               undefined,
@@ -107,7 +107,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.getRequestHeaders),
               ),
               undefined,
@@ -136,7 +136,7 @@ export function getOperationBodyAst(
               factory.createAwaitExpression(
                 factory.createCallExpression(
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(Names.configuration),
+                    factory.createIdentifier(Names.adapter),
                     factory.createIdentifier(Names.getRequestBody),
                   ),
                   undefined,
@@ -198,7 +198,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.request),
               ),
               undefined,
@@ -221,7 +221,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.getMimeType),
               ),
               undefined,
@@ -244,7 +244,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.getStatusCode),
               ),
               undefined,
@@ -267,7 +267,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.getResponseHeaders),
               ),
               undefined,
@@ -297,7 +297,7 @@ export function getOperationBodyAst(
           factory.createAwaitExpression(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(Names.configuration),
+                factory.createIdentifier(Names.adapter),
                 factory.createIdentifier(Names.getResponseBody),
               ),
               undefined,

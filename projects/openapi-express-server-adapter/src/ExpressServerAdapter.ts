@@ -35,12 +35,8 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   ): Promise<Try<B>> {
     // No mimetype means that getMimeType failed
     if (mimeType === null || mimeType === undefined) {
-      return success(undefined)
-    }
-
-    if (mimeType === null || mimeType === undefined) {
       const issue: Issue = {
-        message: `Missing "Content-Type" header`,
+        message: `missing "content-type" header`,
         severity: 'error',
         path: 'headers',
         type: IssueTypes.other,
@@ -49,7 +45,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
     if (validators[mimeType] === null || validators[mimeType] === undefined) {
       const issue: Issue = {
-        message: `Unexpected "Content-Type" request header "${mimeType}"`,
+        message: `unexpected "content-type" request header "${mimeType}"`,
         severity: 'error',
         path: 'headers',
         type: IssueTypes.other,

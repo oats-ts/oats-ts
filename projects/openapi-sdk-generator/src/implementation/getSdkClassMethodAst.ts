@@ -2,6 +2,7 @@ import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
 import { hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getSdkMethodParameterAsts } from '../getSdkMethodParameterAsts'
+import { Names } from './Names'
 
 export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): MethodDeclaration {
   const { nameOf } = context
@@ -12,7 +13,7 @@ export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
       [],
       [
         ...(hasInput(data, context) ? [factory.createIdentifier('input')] : []),
-        factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'config'),
+        factory.createPropertyAccessExpression(factory.createIdentifier('this'), Names.adapter),
       ],
     ),
   )

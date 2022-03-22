@@ -1,5 +1,5 @@
 export const Names = {
-  configuration: 'configuration',
+  adapter: 'adapter',
   url: 'url',
   input: 'input',
   path: 'path',

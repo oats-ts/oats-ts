@@ -525,11 +525,11 @@ export const arrObjRouter: Router = Router().post(
   '/arr-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithArrays>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithArrays>(
         toolkit,
         mimeType,
         arrObjRequestBodyValidator,
@@ -540,14 +540,13 @@ export const arrObjRouter: Router = Router().post(
       }
       const typedResponse = await api.arrObj(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -556,11 +555,11 @@ export const boolRouter: Router = Router().post(
   '/bool',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean>(
         toolkit,
         mimeType,
         boolRequestBodyValidator,
@@ -571,14 +570,13 @@ export const boolRouter: Router = Router().post(
       }
       const typedResponse = await api.bool(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -587,11 +585,11 @@ export const boolArrRouter: Router = Router().post(
   '/bool-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', boolean[]>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean[]>(
         toolkit,
         mimeType,
         boolArrRequestBodyValidator,
@@ -602,14 +600,13 @@ export const boolArrRouter: Router = Router().post(
       }
       const typedResponse = await api.boolArr(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -618,11 +615,11 @@ export const enmRouter: Router = Router().post(
   '/enm',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType>(
         toolkit,
         mimeType,
         enmRequestBodyValidator,
@@ -633,14 +630,13 @@ export const enmRouter: Router = Router().post(
       }
       const typedResponse = await api.enm(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -649,11 +645,11 @@ export const enmArrRouter: Router = Router().post(
   '/enm-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', EnumType[]>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType[]>(
         toolkit,
         mimeType,
         enmArrRequestBodyValidator,
@@ -664,14 +660,13 @@ export const enmArrRouter: Router = Router().post(
       }
       const typedResponse = await api.enmArr(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -680,11 +675,11 @@ export const nestedObjRouter: Router = Router().post(
   '/nested-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithNestedObjects>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithNestedObjects>(
         toolkit,
         mimeType,
         nestedObjRequestBodyValidator,
@@ -695,14 +690,13 @@ export const nestedObjRouter: Router = Router().post(
       }
       const typedResponse = await api.nestedObj(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -711,11 +705,11 @@ export const numRouter: Router = Router().post(
   '/num',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number>(
         toolkit,
         mimeType,
         numRequestBodyValidator,
@@ -726,14 +720,13 @@ export const numRouter: Router = Router().post(
       }
       const typedResponse = await api.num(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -742,11 +735,11 @@ export const numArrRouter: Router = Router().post(
   '/num-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', number[]>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number[]>(
         toolkit,
         mimeType,
         numArrRequestBodyValidator,
@@ -757,14 +750,13 @@ export const numArrRouter: Router = Router().post(
       }
       const typedResponse = await api.numArr(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -773,28 +765,28 @@ export const optPrimTupleRouter: Router = Router().post(
   '/opt-prim-tuple',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<
-        'application/json' | 'application/yaml',
-        PrimitiveOptionalTupleType
-      >(toolkit, mimeType, optPrimTupleRequestBodyValidator)
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', PrimitiveOptionalTupleType>(
+        toolkit,
+        mimeType,
+        optPrimTupleRequestBodyValidator,
+      )
       const typedRequest: OptPrimTupleServerRequest = {
         mimeType,
         body,
       }
       const typedResponse = await api.optPrimTuple(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -803,11 +795,11 @@ export const primObjRouter: Router = Router().post(
   '/prim-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', ObjectWithPrimitives>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithPrimitives>(
         toolkit,
         mimeType,
         primObjRequestBodyValidator,
@@ -818,14 +810,13 @@ export const primObjRouter: Router = Router().post(
       }
       const typedResponse = await api.primObj(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -834,11 +825,11 @@ export const primTupleRouter: Router = Router().post(
   '/prim-tuple',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', PrimitiveTupleType>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', PrimitiveTupleType>(
         toolkit,
         mimeType,
         primTupleRequestBodyValidator,
@@ -849,14 +840,13 @@ export const primTupleRouter: Router = Router().post(
       }
       const typedResponse = await api.primTuple(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -865,11 +855,11 @@ export const strRouter: Router = Router().post(
   '/str',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string>(
         toolkit,
         mimeType,
         strRequestBodyValidator,
@@ -880,14 +870,13 @@ export const strRouter: Router = Router().post(
       }
       const typedResponse = await api.str(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -896,11 +885,11 @@ export const strArrRouter: Router = Router().post(
   '/str-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json' | 'application/yaml', string[]>(
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string[]>(
         toolkit,
         mimeType,
         strArrRequestBodyValidator,
@@ -911,14 +900,13 @@ export const strArrRouter: Router = Router().post(
       }
       const typedResponse = await api.strArr(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -941,13 +929,13 @@ export type BodiesRouters = {
 
 export function createBodiesRouter(
   api: BodiesApi<ExpressToolkit>,
-  configuration: ServerAdapter<ExpressToolkit>,
+  adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<BodiesRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {
       response.locals['__oats_api'] = api
-      response.locals['__oats_configuration'] = configuration
+      response.locals['__oats_adapter'] = adapter
       next()
     },
     routes.arrObjRouter ?? arrObjRouter,
@@ -1164,26 +1152,21 @@ export const strArrResponseBodyValidator = {
 
 export const strResponseBodyValidator = { 200: { 'application/json': string(), 'application/yaml': string() } } as const
 
-export async function arrObj(input: ArrObjRequest, configuration: ClientAdapter): Promise<ArrObjResponse> {
-  const requestUrl = await configuration.getUrl('/arr-obj', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function arrObj(input: ArrObjRequest, adapter: ClientAdapter): Promise<ArrObjResponse> {
+  const requestUrl = await adapter.getUrl('/arr-obj', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    arrObjResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, arrObjResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1193,21 +1176,21 @@ export async function arrObj(input: ArrObjRequest, configuration: ClientAdapter)
   return response
 }
 
-export async function bool(input: BoolRequest, configuration: ClientAdapter): Promise<BoolResponse> {
-  const requestUrl = await configuration.getUrl('/bool', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function bool(input: BoolRequest, adapter: ClientAdapter): Promise<BoolResponse> {
+  const requestUrl = await adapter.getUrl('/bool', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1217,26 +1200,21 @@ export async function bool(input: BoolRequest, configuration: ClientAdapter): Pr
   return response
 }
 
-export async function boolArr(input: BoolArrRequest, configuration: ClientAdapter): Promise<BoolArrResponse> {
-  const requestUrl = await configuration.getUrl('/bool-arr', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function boolArr(input: BoolArrRequest, adapter: ClientAdapter): Promise<BoolArrResponse> {
+  const requestUrl = await adapter.getUrl('/bool-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    boolArrResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolArrResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1246,21 +1224,21 @@ export async function boolArr(input: BoolArrRequest, configuration: ClientAdapte
   return response
 }
 
-export async function enm(input: EnmRequest, configuration: ClientAdapter): Promise<EnmResponse> {
-  const requestUrl = await configuration.getUrl('/enm', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function enm(input: EnmRequest, adapter: ClientAdapter): Promise<EnmResponse> {
+  const requestUrl = await adapter.getUrl('/enm', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1270,26 +1248,21 @@ export async function enm(input: EnmRequest, configuration: ClientAdapter): Prom
   return response
 }
 
-export async function enmArr(input: EnmArrRequest, configuration: ClientAdapter): Promise<EnmArrResponse> {
-  const requestUrl = await configuration.getUrl('/enm-arr', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function enmArr(input: EnmArrRequest, adapter: ClientAdapter): Promise<EnmArrResponse> {
+  const requestUrl = await adapter.getUrl('/enm-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    enmArrResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmArrResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1299,26 +1272,21 @@ export async function enmArr(input: EnmArrRequest, configuration: ClientAdapter)
   return response
 }
 
-export async function nestedObj(input: NestedObjRequest, configuration: ClientAdapter): Promise<NestedObjResponse> {
-  const requestUrl = await configuration.getUrl('/nested-obj', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function nestedObj(input: NestedObjRequest, adapter: ClientAdapter): Promise<NestedObjResponse> {
+  const requestUrl = await adapter.getUrl('/nested-obj', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    nestedObjResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, nestedObjResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1328,21 +1296,21 @@ export async function nestedObj(input: NestedObjRequest, configuration: ClientAd
   return response
 }
 
-export async function num(input: NumRequest, configuration: ClientAdapter): Promise<NumResponse> {
-  const requestUrl = await configuration.getUrl('/num', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function num(input: NumRequest, adapter: ClientAdapter): Promise<NumResponse> {
+  const requestUrl = await adapter.getUrl('/num', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1352,26 +1320,21 @@ export async function num(input: NumRequest, configuration: ClientAdapter): Prom
   return response
 }
 
-export async function numArr(input: NumArrRequest, configuration: ClientAdapter): Promise<NumArrResponse> {
-  const requestUrl = await configuration.getUrl('/num-arr', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function numArr(input: NumArrRequest, adapter: ClientAdapter): Promise<NumArrResponse> {
+  const requestUrl = await adapter.getUrl('/num-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    numArrResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numArrResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1381,24 +1344,21 @@ export async function numArr(input: NumArrRequest, configuration: ClientAdapter)
   return response
 }
 
-export async function optPrimTuple(
-  input: OptPrimTupleRequest,
-  configuration: ClientAdapter,
-): Promise<OptPrimTupleResponse> {
-  const requestUrl = await configuration.getUrl('/opt-prim-tuple', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function optPrimTuple(input: OptPrimTupleRequest, adapter: ClientAdapter): Promise<OptPrimTupleResponse> {
+  const requestUrl = await adapter.getUrl('/opt-prim-tuple', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -1413,26 +1373,21 @@ export async function optPrimTuple(
   return response
 }
 
-export async function primObj(input: PrimObjRequest, configuration: ClientAdapter): Promise<PrimObjResponse> {
-  const requestUrl = await configuration.getUrl('/prim-obj', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function primObj(input: PrimObjRequest, adapter: ClientAdapter): Promise<PrimObjResponse> {
+  const requestUrl = await adapter.getUrl('/prim-obj', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    primObjResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primObjResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1442,26 +1397,21 @@ export async function primObj(input: PrimObjRequest, configuration: ClientAdapte
   return response
 }
 
-export async function primTuple(input: PrimTupleRequest, configuration: ClientAdapter): Promise<PrimTupleResponse> {
-  const requestUrl = await configuration.getUrl('/prim-tuple', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function primTuple(input: PrimTupleRequest, adapter: ClientAdapter): Promise<PrimTupleResponse> {
+  const requestUrl = await adapter.getUrl('/prim-tuple', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    primTupleResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primTupleResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1471,21 +1421,21 @@ export async function primTuple(input: PrimTupleRequest, configuration: ClientAd
   return response
 }
 
-export async function str(input: StrRequest, configuration: ClientAdapter): Promise<StrResponse> {
-  const requestUrl = await configuration.getUrl('/str', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function str(input: StrRequest, adapter: ClientAdapter): Promise<StrResponse> {
+  const requestUrl = await adapter.getUrl('/str', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1495,26 +1445,21 @@ export async function str(input: StrRequest, configuration: ClientAdapter): Prom
   return response
 }
 
-export async function strArr(input: StrArrRequest, configuration: ClientAdapter): Promise<StrArrResponse> {
-  const requestUrl = await configuration.getUrl('/str-arr', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function strArr(input: StrArrRequest, adapter: ClientAdapter): Promise<StrArrResponse> {
+  const requestUrl = await adapter.getUrl('/str-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    strArrResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strArrResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -1541,48 +1486,48 @@ export type BodiesSdk = {
 }
 
 export class BodiesSdkImpl implements BodiesSdk {
-  protected readonly config: ClientAdapter
-  public constructor(config: ClientAdapter) {
-    this.config = config
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
   }
   public async arrObj(input: ArrObjRequest): Promise<ArrObjResponse> {
-    return arrObj(input, this.config)
+    return arrObj(input, this.adapter)
   }
   public async bool(input: BoolRequest): Promise<BoolResponse> {
-    return bool(input, this.config)
+    return bool(input, this.adapter)
   }
   public async boolArr(input: BoolArrRequest): Promise<BoolArrResponse> {
-    return boolArr(input, this.config)
+    return boolArr(input, this.adapter)
   }
   public async enm(input: EnmRequest): Promise<EnmResponse> {
-    return enm(input, this.config)
+    return enm(input, this.adapter)
   }
   public async enmArr(input: EnmArrRequest): Promise<EnmArrResponse> {
-    return enmArr(input, this.config)
+    return enmArr(input, this.adapter)
   }
   public async nestedObj(input: NestedObjRequest): Promise<NestedObjResponse> {
-    return nestedObj(input, this.config)
+    return nestedObj(input, this.adapter)
   }
   public async num(input: NumRequest): Promise<NumResponse> {
-    return num(input, this.config)
+    return num(input, this.adapter)
   }
   public async numArr(input: NumArrRequest): Promise<NumArrResponse> {
-    return numArr(input, this.config)
+    return numArr(input, this.adapter)
   }
   public async optPrimTuple(input: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
-    return optPrimTuple(input, this.config)
+    return optPrimTuple(input, this.adapter)
   }
   public async primObj(input: PrimObjRequest): Promise<PrimObjResponse> {
-    return primObj(input, this.config)
+    return primObj(input, this.adapter)
   }
   public async primTuple(input: PrimTupleRequest): Promise<PrimTupleResponse> {
-    return primTuple(input, this.config)
+    return primTuple(input, this.adapter)
   }
   public async str(input: StrRequest): Promise<StrResponse> {
-    return str(input, this.config)
+    return str(input, this.adapter)
   }
   public async strArr(input: StrArrRequest): Promise<StrArrResponse> {
-    return strArr(input, this.config)
+    return strArr(input, this.adapter)
   }
 }
 
