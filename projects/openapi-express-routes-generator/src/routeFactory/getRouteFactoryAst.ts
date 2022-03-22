@@ -31,7 +31,7 @@ export function getMainRouteFactoryAst(
         undefined,
         undefined,
         undefined,
-        factory.createIdentifier(Names.configuration),
+        factory.createIdentifier(Names.adapter),
         undefined,
         factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
           factory.createTypeReferenceNode(
@@ -107,7 +107,7 @@ export function getMainRouteFactoryAst(
                             factory.createIdentifier(Names.response),
                             factory.createIdentifier(Names.locals),
                           ),
-                          factory.createStringLiteral(config.apiImplKey),
+                          factory.createStringLiteral(config.apiKey),
                         ),
                         factory.createToken(SyntaxKind.EqualsToken),
                         factory.createIdentifier(Names.api),
@@ -120,10 +120,10 @@ export function getMainRouteFactoryAst(
                             factory.createIdentifier(Names.response),
                             factory.createIdentifier(Names.locals),
                           ),
-                          factory.createStringLiteral(config.configurationKey),
+                          factory.createStringLiteral(config.adapterKey),
                         ),
                         factory.createToken(SyntaxKind.EqualsToken),
-                        factory.createIdentifier(Names.configuration),
+                        factory.createIdentifier(Names.adapter),
                       ),
                     ),
                     factory.createExpressionStatement(

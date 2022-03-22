@@ -200,11 +200,11 @@ export const createBookRouter: Router = Router().post(
   '/books',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json', Book>(
+      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json', Book>(
         toolkit,
         mimeType,
         createBookRequestBodyValidator,
@@ -215,14 +215,13 @@ export const createBookRouter: Router = Router().post(
       }
       const typedResponse = await api.createBook(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -231,23 +230,22 @@ export const getBookRouter: Router = Router().get(
   '/books/:bookId',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(toolkit, getBookPathDeserializer)
+      const path = await adapter.getPathParameters(toolkit, getBookPathDeserializer)
       const typedRequest: GetBookServerRequest = {
         path,
       }
       const typedResponse = await api.getBook(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -256,19 +254,18 @@ export const getBooksRouter: Router = Router().get(
   '/books',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.getBooks(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -277,12 +274,12 @@ export const updateBookRouter: Router = Router().patch(
   '/books/:bookId',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(toolkit, updateBookPathDeserializer)
-      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json', Book>(
+      const path = await adapter.getPathParameters(toolkit, updateBookPathDeserializer)
+      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json', Book>(
         toolkit,
         mimeType,
         updateBookRequestBodyValidator,
@@ -294,14 +291,13 @@ export const updateBookRouter: Router = Router().patch(
       }
       const typedResponse = await api.updateBook(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -315,13 +311,13 @@ export type BookStoreRouters = {
 
 export function createBookStoreRouter(
   api: BookStoreApi<ExpressToolkit>,
-  configuration: ServerAdapter<ExpressToolkit>,
+  adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<BookStoreRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {
       response.locals['__oats_api'] = api
-      response.locals['__oats_configuration'] = configuration
+      response.locals['__oats_adapter'] = adapter
       next()
     },
     routes.createBookRouter ?? createBookRouter,
@@ -392,26 +388,21 @@ export const updateBookPathSerializer = createPathSerializer<UpdateBookPathParam
 /**
  * Creates a new book based on the request body. The id field can be ommited (will be ignored)
  */
-export async function createBook(input: CreateBookRequest, configuration: ClientAdapter): Promise<CreateBookResponse> {
-  const requestUrl = await configuration.getUrl('/books', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function createBook(input: CreateBookRequest, adapter: ClientAdapter): Promise<CreateBookResponse> {
+  const requestUrl = await adapter.getUrl('/books', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    createBookResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, createBookResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -424,25 +415,20 @@ export async function createBook(input: CreateBookRequest, configuration: Client
 /**
  * Returns the book associated with the given bookId
  */
-export async function getBook(input: GetBookRequest, configuration: ClientAdapter): Promise<GetBookResponse> {
-  const path = await configuration.getPath(input, getBookPathSerializer)
-  const requestUrl = await configuration.getUrl(path, undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+export async function getBook(input: GetBookRequest, adapter: ClientAdapter): Promise<GetBookResponse> {
+  const path = await adapter.getPath(input, getBookPathSerializer)
+  const requestUrl = await adapter.getUrl(path, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    getBookResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getBookResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -452,24 +438,19 @@ export async function getBook(input: GetBookRequest, configuration: ClientAdapte
   return response
 }
 
-export async function getBooks(configuration: ClientAdapter): Promise<GetBooksResponse> {
-  const requestUrl = await configuration.getUrl('/books', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function getBooks(adapter: ClientAdapter): Promise<GetBooksResponse> {
+  const requestUrl = await adapter.getUrl('/books', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    getBooksResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getBooksResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -482,27 +463,22 @@ export async function getBooks(configuration: ClientAdapter): Promise<GetBooksRe
 /**
  * Updates the book associated with the given bookId
  */
-export async function updateBook(input: UpdateBookRequest, configuration: ClientAdapter): Promise<UpdateBookResponse> {
-  const path = await configuration.getPath(input, updateBookPathSerializer)
-  const requestUrl = await configuration.getUrl(path, undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+export async function updateBook(input: UpdateBookRequest, adapter: ClientAdapter): Promise<UpdateBookResponse> {
+  const path = await adapter.getPath(input, updateBookPathSerializer)
+  const requestUrl = await adapter.getUrl(path, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'patch',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    updateBookResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, updateBookResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -529,21 +505,21 @@ export type BookStoreSdk = {
 }
 
 export class BookStoreSdkImpl implements BookStoreSdk {
-  protected readonly config: ClientAdapter
-  public constructor(config: ClientAdapter) {
-    this.config = config
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
   }
   public async createBook(input: CreateBookRequest): Promise<CreateBookResponse> {
-    return createBook(input, this.config)
+    return createBook(input, this.adapter)
   }
   public async getBook(input: GetBookRequest): Promise<GetBookResponse> {
-    return getBook(input, this.config)
+    return getBook(input, this.adapter)
   }
   public async getBooks(): Promise<GetBooksResponse> {
-    return getBooks(this.config)
+    return getBooks(this.adapter)
   }
   public async updateBook(input: UpdateBookRequest): Promise<UpdateBookResponse> {
-    return updateBook(input, this.config)
+    return updateBook(input, this.adapter)
   }
 }
 

@@ -3,6 +3,7 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { RuntimePackages, EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getSdkClassMethodAst } from './getSdkClassMethodAst'
 import { SdkGeneratorConfig } from '../typings'
+import { Names } from './Names'
 
 export function getSdkClassAst(
   document: OpenAPIObject,
@@ -15,7 +16,7 @@ export function getSdkClassAst(
   const configField = factory.createPropertyDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
-    'config',
+    Names.adapter,
     undefined,
     factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
     undefined,
@@ -29,7 +30,7 @@ export function getSdkClassAst(
         [],
         [],
         undefined,
-        'config',
+        Names.adapter,
         undefined,
         factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
       ),
@@ -37,9 +38,9 @@ export function getSdkClassAst(
     factory.createBlock([
       factory.createExpressionStatement(
         factory.createBinaryExpression(
-          factory.createPropertyAccessExpression(factory.createIdentifier('this'), 'config'),
+          factory.createPropertyAccessExpression(factory.createIdentifier('this'), Names.adapter),
           SyntaxKind.EqualsToken,
-          factory.createIdentifier('config'),
+          factory.createIdentifier(Names.adapter),
         ),
       ),
     ]),

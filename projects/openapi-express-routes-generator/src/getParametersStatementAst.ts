@@ -52,7 +52,7 @@ export function getParametersStatementAst(
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(Names.configuration),
+                  factory.createIdentifier(Names.adapter),
                   factory.createIdentifier(configGetterNameMap[location]),
                 ),
                 undefined,

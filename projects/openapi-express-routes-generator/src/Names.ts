@@ -5,7 +5,7 @@ export const Names = {
   locals: 'locals',
 
   api: 'api',
-  configuration: 'configuration',
+  adapter: 'adapter',
   toolkit: 'toolkit',
   issues: 'issues',
   mimeType: 'mimeType',

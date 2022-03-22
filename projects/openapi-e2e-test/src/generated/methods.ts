@@ -70,19 +70,18 @@ export const deleteMethodRouter: Router = Router().delete(
   '/delete-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.deleteMethod(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -91,19 +90,18 @@ export const getMethodRouter: Router = Router().get(
   '/get-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.getMethod(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -112,19 +110,18 @@ export const optionsMethodRouter: Router = Router().options(
   '/options-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.optionsMethod(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -133,19 +130,18 @@ export const patchMethodRouter: Router = Router().patch(
   '/patch-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.patchMethod(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -154,19 +150,18 @@ export const postMethodRouter: Router = Router().post(
   '/post-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.postMethod(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -175,19 +170,18 @@ export const putMethodRouter: Router = Router().put(
   '/put-method',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
     try {
       const typedResponse = await api.putMethod(toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -203,13 +197,13 @@ export type HttpMethodsRouters = {
 
 export function createHttpMethodsRouter(
   api: HttpMethodsApi<ExpressToolkit>,
-  configuration: ServerAdapter<ExpressToolkit>,
+  adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<HttpMethodsRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {
       response.locals['__oats_api'] = api
-      response.locals['__oats_configuration'] = configuration
+      response.locals['__oats_adapter'] = adapter
       next()
     },
     routes.deleteMethodRouter ?? deleteMethodRouter,
@@ -256,19 +250,19 @@ export const putMethodResponseBodyValidator = {
   200: { 'application/json': object(shape({ methodUsed: string() })) },
 } as const
 
-export async function deleteMethod(configuration: ClientAdapter): Promise<DeleteMethodResponse> {
-  const requestUrl = await configuration.getUrl('/delete-method', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function deleteMethod(adapter: ClientAdapter): Promise<DeleteMethodResponse> {
+  const requestUrl = await adapter.getUrl('/delete-method', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'delete',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -283,24 +277,19 @@ export async function deleteMethod(configuration: ClientAdapter): Promise<Delete
   return response
 }
 
-export async function getMethod(configuration: ClientAdapter): Promise<GetMethodResponse> {
-  const requestUrl = await configuration.getUrl('/get-method', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function getMethod(adapter: ClientAdapter): Promise<GetMethodResponse> {
+  const requestUrl = await adapter.getUrl('/get-method', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    getMethodResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getMethodResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -310,19 +299,19 @@ export async function getMethod(configuration: ClientAdapter): Promise<GetMethod
   return response
 }
 
-export async function optionsMethod(configuration: ClientAdapter): Promise<OptionsMethodResponse> {
-  const requestUrl = await configuration.getUrl('/options-method', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function optionsMethod(adapter: ClientAdapter): Promise<OptionsMethodResponse> {
+  const requestUrl = await adapter.getUrl('/options-method', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'options',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -337,19 +326,19 @@ export async function optionsMethod(configuration: ClientAdapter): Promise<Optio
   return response
 }
 
-export async function patchMethod(configuration: ClientAdapter): Promise<PatchMethodResponse> {
-  const requestUrl = await configuration.getUrl('/patch-method', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function patchMethod(adapter: ClientAdapter): Promise<PatchMethodResponse> {
+  const requestUrl = await adapter.getUrl('/patch-method', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'patch',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -364,24 +353,19 @@ export async function patchMethod(configuration: ClientAdapter): Promise<PatchMe
   return response
 }
 
-export async function postMethod(configuration: ClientAdapter): Promise<PostMethodResponse> {
-  const requestUrl = await configuration.getUrl('/post-method', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function postMethod(adapter: ClientAdapter): Promise<PostMethodResponse> {
+  const requestUrl = await adapter.getUrl('/post-method', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    postMethodResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, postMethodResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -391,24 +375,19 @@ export async function postMethod(configuration: ClientAdapter): Promise<PostMeth
   return response
 }
 
-export async function putMethod(configuration: ClientAdapter): Promise<PutMethodResponse> {
-  const requestUrl = await configuration.getUrl('/put-method', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(undefined, undefined)
+export async function putMethod(adapter: ClientAdapter): Promise<PutMethodResponse> {
+  const requestUrl = await adapter.getUrl('/put-method', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'put',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    putMethodResponseBodyValidator,
-  )
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, putMethodResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
@@ -428,27 +407,27 @@ export type HttpMethodsSdk = {
 }
 
 export class HttpMethodsSdkImpl implements HttpMethodsSdk {
-  protected readonly config: ClientAdapter
-  public constructor(config: ClientAdapter) {
-    this.config = config
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
   }
   public async deleteMethod(): Promise<DeleteMethodResponse> {
-    return deleteMethod(this.config)
+    return deleteMethod(this.adapter)
   }
   public async getMethod(): Promise<GetMethodResponse> {
-    return getMethod(this.config)
+    return getMethod(this.adapter)
   }
   public async optionsMethod(): Promise<OptionsMethodResponse> {
-    return optionsMethod(this.config)
+    return optionsMethod(this.adapter)
   }
   public async patchMethod(): Promise<PatchMethodResponse> {
-    return patchMethod(this.config)
+    return patchMethod(this.adapter)
   }
   public async postMethod(): Promise<PostMethodResponse> {
-    return postMethod(this.config)
+    return postMethod(this.adapter)
   }
   public async putMethod(): Promise<PutMethodResponse> {
-    return putMethod(this.config)
+    return putMethod(this.adapter)
   }
 }
 

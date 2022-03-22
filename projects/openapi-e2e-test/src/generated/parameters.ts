@@ -2264,23 +2264,22 @@ export const deepObjectQueryParametersRouter: Router = Router().get(
   '/deepObject-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const query = await configuration.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
+      const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
       const typedRequest: DeepObjectQueryParametersServerRequest = {
         query,
       }
       const typedResponse = await api.deepObjectQueryParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2289,23 +2288,22 @@ export const formQueryParametersRouter: Router = Router().get(
   '/form-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const query = await configuration.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
+      const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
       const typedRequest: FormQueryParametersServerRequest = {
         query,
       }
       const typedResponse = await api.formQueryParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2314,23 +2312,22 @@ export const labelPathParametersRouter: Router = Router().get(
   '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(toolkit, labelPathParametersPathDeserializer)
+      const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
       const typedRequest: LabelPathParametersServerRequest = {
         path,
       }
       const typedResponse = await api.labelPathParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2339,23 +2336,22 @@ export const matrixPathParametersRouter: Router = Router().get(
   '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
+      const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
       const typedRequest: MatrixPathParametersServerRequest = {
         path,
       }
       const typedResponse = await api.matrixPathParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2364,23 +2360,22 @@ export const pipeDelimitedQueryParametersRouter: Router = Router().get(
   '/pipeDelimited-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const query = await configuration.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
+      const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
       const typedRequest: PipeDelimitedQueryParametersServerRequest = {
         query,
       }
       const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2389,23 +2384,22 @@ export const simpleHeaderParametersRouter: Router = Router().get(
   '/simple-header-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const headers = await configuration.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
+      const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
       const typedRequest: SimpleHeaderParametersServerRequest = {
         headers,
       }
       const typedResponse = await api.simpleHeaderParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2414,23 +2408,22 @@ export const simplePathParametersRouter: Router = Router().get(
   '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const path = await configuration.getPathParameters(toolkit, simplePathParametersPathDeserializer)
+      const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
       const typedRequest: SimplePathParametersServerRequest = {
         path,
       }
       const typedResponse = await api.simplePathParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2439,11 +2432,11 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
   '/simple-response-header-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const mimeType = await configuration.getMimeType<'application/json'>(toolkit)
-      const body = await configuration.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
+      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
         toolkit,
         mimeType,
         simpleResponseHeaderParametersRequestBodyValidator,
@@ -2454,18 +2447,17 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
       }
       const typedResponse = await api.simpleResponseHeaderParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(
+        headers: await adapter.getResponseHeaders(
           toolkit,
           typedResponse,
           simpleResponseHeaderParametersResponseHeadersSerializer,
         ),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2474,23 +2466,22 @@ export const spaceDelimitedQueryParametersRouter: Router = Router().get(
   '/spaceDelimited-query-parameters',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
-    const configuration: ServerAdapter<ExpressToolkit> = response.locals['__oats_configuration']
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
     try {
-      const query = await configuration.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
+      const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
       const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
         query,
       }
       const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest, toolkit)
       const rawResponse: RawHttpResponse = {
-        headers: await configuration.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await configuration.getStatusCode(toolkit, typedResponse),
-        body: await configuration.getResponseBody(toolkit, typedResponse),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
       }
-      return configuration.respond(toolkit, rawResponse)
+      return adapter.respond(toolkit, rawResponse)
     } catch (error) {
-      configuration.handleError(toolkit, error)
-      throw error
+      adapter.handleError(toolkit, error)
     }
   },
 )
@@ -2509,13 +2500,13 @@ export type ParametersRouters = {
 
 export function createParametersRouter(
   api: ParametersApi<ExpressToolkit>,
-  configuration: ServerAdapter<ExpressToolkit>,
+  adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<ParametersRouters> = {},
 ): Router {
   return Router().use(
     (_, response, next) => {
       response.locals['__oats_api'] = api
-      response.locals['__oats_configuration'] = configuration
+      response.locals['__oats_adapter'] = adapter
       next()
     },
     routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
@@ -3017,21 +3008,21 @@ export const simpleHeaderParametersRequestHeadersSerializer =
  */
 export async function deepObjectQueryParameters(
   input: DeepObjectQueryParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<DeepObjectQueryParametersResponse> {
-  const query = await configuration.getQuery(input, deepObjectQueryParametersQuerySerializer)
-  const requestUrl = await configuration.getUrl('/deepObject-query-parameters', query)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const query = await adapter.getQuery(input, deepObjectQueryParametersQuerySerializer)
+  const requestUrl = await adapter.getUrl('/deepObject-query-parameters', query)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3051,21 +3042,21 @@ export async function deepObjectQueryParameters(
  */
 export async function formQueryParameters(
   input: FormQueryParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<FormQueryParametersResponse> {
-  const query = await configuration.getQuery(input, formQueryParametersQuerySerializer)
-  const requestUrl = await configuration.getUrl('/form-query-parameters', query)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const query = await adapter.getQuery(input, formQueryParametersQuerySerializer)
+  const requestUrl = await adapter.getUrl('/form-query-parameters', query)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3085,21 +3076,21 @@ export async function formQueryParameters(
  */
 export async function labelPathParameters(
   input: LabelPathParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<LabelPathParametersResponse> {
-  const path = await configuration.getPath(input, labelPathParametersPathSerializer)
-  const requestUrl = await configuration.getUrl(path, undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const path = await adapter.getPath(input, labelPathParametersPathSerializer)
+  const requestUrl = await adapter.getUrl(path, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3119,21 +3110,21 @@ export async function labelPathParameters(
  */
 export async function matrixPathParameters(
   input: MatrixPathParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<MatrixPathParametersResponse> {
-  const path = await configuration.getPath(input, matrixPathParametersPathSerializer)
-  const requestUrl = await configuration.getUrl(path, undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const path = await adapter.getPath(input, matrixPathParametersPathSerializer)
+  const requestUrl = await adapter.getUrl(path, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3153,21 +3144,21 @@ export async function matrixPathParameters(
  */
 export async function pipeDelimitedQueryParameters(
   input: PipeDelimitedQueryParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<PipeDelimitedQueryParametersResponse> {
-  const query = await configuration.getQuery(input, pipeDelimitedQueryParametersQuerySerializer)
-  const requestUrl = await configuration.getUrl('/pipeDelimited-query-parameters', query)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const query = await adapter.getQuery(input, pipeDelimitedQueryParametersQuerySerializer)
+  const requestUrl = await adapter.getUrl('/pipeDelimited-query-parameters', query)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3187,20 +3178,20 @@ export async function pipeDelimitedQueryParameters(
  */
 export async function simpleHeaderParameters(
   input: SimpleHeaderParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<SimpleHeaderParametersResponse> {
-  const requestUrl = await configuration.getUrl('/simple-header-parameters', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, simpleHeaderParametersRequestHeadersSerializer)
+  const requestUrl = await adapter.getUrl('/simple-header-parameters', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, simpleHeaderParametersRequestHeadersSerializer)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3220,21 +3211,21 @@ export async function simpleHeaderParameters(
  */
 export async function simplePathParameters(
   input: SimplePathParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<SimplePathParametersResponse> {
-  const path = await configuration.getPath(input, simplePathParametersPathSerializer)
-  const requestUrl = await configuration.getUrl(path, undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const path = await adapter.getPath(input, simplePathParametersPathSerializer)
+  const requestUrl = await adapter.getUrl(path, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3254,26 +3245,26 @@ export async function simplePathParameters(
  */
 export async function simpleResponseHeaderParameters(
   input: SimpleResponseHeaderParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<SimpleResponseHeaderParametersResponse> {
-  const requestUrl = await configuration.getUrl('/simple-response-header-parameters', undefined)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
-  const requestBody = await configuration.getRequestBody(input)
+  const requestUrl = await adapter.getUrl('/simple-response-header-parameters', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestBody = await adapter.getRequestBody(input)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(
     rawResponse,
     statusCode,
     simpleResponseHeaderParametersResponseHeadersDeserializer,
   )
-  const responseBody = await configuration.getResponseBody(
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3293,21 +3284,21 @@ export async function simpleResponseHeaderParameters(
  */
 export async function spaceDelimitedQueryParameters(
   input: SpaceDelimitedQueryParametersRequest,
-  configuration: ClientAdapter,
+  adapter: ClientAdapter,
 ): Promise<SpaceDelimitedQueryParametersResponse> {
-  const query = await configuration.getQuery(input, spaceDelimitedQueryParametersQuerySerializer)
-  const requestUrl = await configuration.getUrl('/spaceDelimited-query-parameters', query)
-  const requestHeaders = await configuration.getRequestHeaders(input, undefined)
+  const query = await adapter.getQuery(input, spaceDelimitedQueryParametersQuerySerializer)
+  const requestUrl = await adapter.getUrl('/spaceDelimited-query-parameters', query)
+  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
   }
-  const rawResponse = await configuration.request(rawRequest)
-  const mimeType = await configuration.getMimeType(rawResponse)
-  const statusCode = await configuration.getStatusCode(rawResponse)
-  const responseHeaders = await configuration.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await configuration.getResponseBody(
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
@@ -3368,44 +3359,44 @@ export type ParametersSdk = {
 }
 
 export class ParametersSdkImpl implements ParametersSdk {
-  protected readonly config: ClientAdapter
-  public constructor(config: ClientAdapter) {
-    this.config = config
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
   }
   public async deepObjectQueryParameters(
     input: DeepObjectQueryParametersRequest,
   ): Promise<DeepObjectQueryParametersResponse> {
-    return deepObjectQueryParameters(input, this.config)
+    return deepObjectQueryParameters(input, this.adapter)
   }
   public async formQueryParameters(input: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
-    return formQueryParameters(input, this.config)
+    return formQueryParameters(input, this.adapter)
   }
   public async labelPathParameters(input: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
-    return labelPathParameters(input, this.config)
+    return labelPathParameters(input, this.adapter)
   }
   public async matrixPathParameters(input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
-    return matrixPathParameters(input, this.config)
+    return matrixPathParameters(input, this.adapter)
   }
   public async pipeDelimitedQueryParameters(
     input: PipeDelimitedQueryParametersRequest,
   ): Promise<PipeDelimitedQueryParametersResponse> {
-    return pipeDelimitedQueryParameters(input, this.config)
+    return pipeDelimitedQueryParameters(input, this.adapter)
   }
   public async simpleHeaderParameters(input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
-    return simpleHeaderParameters(input, this.config)
+    return simpleHeaderParameters(input, this.adapter)
   }
   public async simplePathParameters(input: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
-    return simplePathParameters(input, this.config)
+    return simplePathParameters(input, this.adapter)
   }
   public async simpleResponseHeaderParameters(
     input: SimpleResponseHeaderParametersRequest,
   ): Promise<SimpleResponseHeaderParametersResponse> {
-    return simpleResponseHeaderParameters(input, this.config)
+    return simpleResponseHeaderParameters(input, this.adapter)
   }
   public async spaceDelimitedQueryParameters(
     input: SpaceDelimitedQueryParametersRequest,
   ): Promise<SpaceDelimitedQueryParametersResponse> {
-    return spaceDelimitedQueryParameters(input, this.config)
+    return spaceDelimitedQueryParameters(input, this.adapter)
   }
 }
 

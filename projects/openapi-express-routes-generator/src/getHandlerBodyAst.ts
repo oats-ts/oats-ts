@@ -2,11 +2,10 @@ import {
   EnhancedOperation,
   hasInput,
   hasRequestBody,
-  hasResponseHeaders,
   OpenAPIGeneratorContext,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { factory, NodeFlags, SyntaxKind } from 'typescript'
+import { factory, NodeFlags } from 'typescript'
 import { ExpressRouteGeneratorConfig } from './typings'
 import { Names } from './Names'
 import { getParametersStatementAst } from './getParametersStatementAst'
@@ -48,12 +47,12 @@ export function getHandlerBodyAst(
     ),
   )
 
-  const configuration = factory.createVariableStatement(
+  const adapter = factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          factory.createIdentifier(Names.configuration),
+          factory.createIdentifier(Names.adapter),
           undefined,
           factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
             factory.createTypeReferenceNode(factory.createIdentifier(ExpressParameters), undefined),
@@ -63,7 +62,7 @@ export function getHandlerBodyAst(
               factory.createIdentifier(Names.response),
               factory.createIdentifier(Names.locals),
             ),
-            factory.createStringLiteral(config.configurationKey),
+            factory.createStringLiteral(config.adapterKey),
           ),
         ),
       ],
@@ -86,7 +85,7 @@ export function getHandlerBodyAst(
               factory.createIdentifier(Names.response),
               factory.createIdentifier(Names.locals),
             ),
-            factory.createStringLiteral(config.apiImplKey),
+            factory.createStringLiteral(config.apiKey),
           ),
         ),
       ],
@@ -184,7 +183,7 @@ export function getHandlerBodyAst(
                 factory.createAwaitExpression(
                   factory.createCallExpression(
                     factory.createPropertyAccessExpression(
-                      factory.createIdentifier(Names.configuration),
+                      factory.createIdentifier(Names.adapter),
                       factory.createIdentifier('getResponseHeaders'),
                     ),
                     undefined,
@@ -202,7 +201,7 @@ export function getHandlerBodyAst(
                 factory.createAwaitExpression(
                   factory.createCallExpression(
                     factory.createPropertyAccessExpression(
-                      factory.createIdentifier(Names.configuration),
+                      factory.createIdentifier(Names.adapter),
                       factory.createIdentifier('getStatusCode'),
                     ),
                     undefined,
@@ -215,7 +214,7 @@ export function getHandlerBodyAst(
                 factory.createAwaitExpression(
                   factory.createCallExpression(
                     factory.createPropertyAccessExpression(
-                      factory.createIdentifier(Names.configuration),
+                      factory.createIdentifier(Names.adapter),
                       factory.createIdentifier('getResponseBody'),
                     ),
                     undefined,
@@ -234,7 +233,7 @@ export function getHandlerBodyAst(
   const returnStatement = factory.createReturnStatement(
     factory.createCallExpression(
       factory.createPropertyAccessExpression(
-        factory.createIdentifier(Names.configuration),
+        factory.createIdentifier(Names.adapter),
         factory.createIdentifier('respond'),
       ),
       undefined,
@@ -252,14 +251,13 @@ export function getHandlerBodyAst(
       factory.createExpressionStatement(
         factory.createCallExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(Names.configuration),
+            factory.createIdentifier(Names.adapter),
             factory.createIdentifier('handleError'),
           ),
           undefined,
           [factory.createIdentifier(Names.toolkit), factory.createIdentifier(Names.error)],
         ),
       ),
-      factory.createThrowStatement(factory.createIdentifier(Names.error)),
     ],
     true,
   )
@@ -273,5 +271,5 @@ export function getHandlerBodyAst(
     undefined,
   )
 
-  return factory.createBlock([expressParams, configuration, api, tryCatch])
+  return factory.createBlock([expressParams, adapter, api, tryCatch])
 }
