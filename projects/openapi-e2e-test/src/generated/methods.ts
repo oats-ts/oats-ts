@@ -57,13 +57,13 @@ export type PutMethodResponse = {
   }
 }
 
-export type HttpMethodsApi<T> = {
-  deleteMethod(toolkit: T): Promise<DeleteMethodResponse>
-  getMethod(toolkit: T): Promise<GetMethodResponse>
-  optionsMethod(toolkit: T): Promise<OptionsMethodResponse>
-  patchMethod(toolkit: T): Promise<PatchMethodResponse>
-  postMethod(toolkit: T): Promise<PostMethodResponse>
-  putMethod(toolkit: T): Promise<PutMethodResponse>
+export type HttpMethodsApi = {
+  deleteMethod(): Promise<DeleteMethodResponse>
+  getMethod(): Promise<GetMethodResponse>
+  optionsMethod(): Promise<OptionsMethodResponse>
+  patchMethod(): Promise<PatchMethodResponse>
+  postMethod(): Promise<PostMethodResponse>
+  putMethod(): Promise<PutMethodResponse>
 }
 
 export const deleteMethodRouter: Router = Router().delete(
@@ -71,9 +71,9 @@ export const deleteMethodRouter: Router = Router().delete(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: HttpMethodsApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.deleteMethod(toolkit)
+      const typedResponse = await api.deleteMethod()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -91,9 +91,9 @@ export const getMethodRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: HttpMethodsApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.getMethod(toolkit)
+      const typedResponse = await api.getMethod()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -111,9 +111,9 @@ export const optionsMethodRouter: Router = Router().options(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: HttpMethodsApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.optionsMethod(toolkit)
+      const typedResponse = await api.optionsMethod()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -131,9 +131,9 @@ export const patchMethodRouter: Router = Router().patch(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: HttpMethodsApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.patchMethod(toolkit)
+      const typedResponse = await api.patchMethod()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -151,9 +151,9 @@ export const postMethodRouter: Router = Router().post(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: HttpMethodsApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.postMethod(toolkit)
+      const typedResponse = await api.postMethod()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -171,9 +171,9 @@ export const putMethodRouter: Router = Router().put(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: HttpMethodsApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.putMethod(toolkit)
+      const typedResponse = await api.putMethod()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -196,7 +196,7 @@ export type HttpMethodsRouters = {
 }
 
 export function createHttpMethodsRouter(
-  api: HttpMethodsApi<ExpressToolkit>,
+  api: HttpMethodsApi,
   adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<HttpMethodsRouters> = {},
 ): Router {

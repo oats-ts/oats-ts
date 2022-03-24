@@ -22,13 +22,12 @@ import {
 } from '../../generated/parameters'
 import { fluent, isFailure, Try } from '@oats-ts/try'
 import { HttpResponse } from '@oats-ts/openapi-http'
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
   | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
 
-export class ParametersApiImpl implements ParametersApi<ExpressToolkit> {
+export class ParametersApiImpl implements ParametersApi {
   private respond<T>(params: Try<T>): ParameterResponse<T> {
     if (isFailure(params)) {
       return {

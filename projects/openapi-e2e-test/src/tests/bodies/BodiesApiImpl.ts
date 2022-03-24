@@ -1,4 +1,3 @@
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { HasRequestBody, HttpResponse } from '@oats-ts/openapi-http'
 import { isFailure, Try, fluent } from '@oats-ts/try'
 import {
@@ -31,7 +30,7 @@ import {
   StrServerRequest,
 } from '../../generated/bodies'
 
-export class BodiesApiImpl implements BodiesApi<ExpressToolkit> {
+export class BodiesApiImpl implements BodiesApi {
   async respond(request: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
     if (isFailure(request.body)) {
       const issues = fluent(request.body).getIssues()

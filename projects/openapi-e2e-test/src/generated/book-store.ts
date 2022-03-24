@@ -180,20 +180,20 @@ export const updateBookPathDeserializer = createPathDeserializer<UpdateBookPathP
   { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
 )
 
-export type BookStoreApi<T> = {
+export type BookStoreApi = {
   /**
    * Creates a new book based on the request body. The id field can be ommited (will be ignored)
    */
-  createBook(request: CreateBookServerRequest, toolkit: T): Promise<CreateBookResponse>
+  createBook(request: CreateBookServerRequest): Promise<CreateBookResponse>
   /**
    * Returns the book associated with the given bookId
    */
-  getBook(request: GetBookServerRequest, toolkit: T): Promise<GetBookResponse>
-  getBooks(toolkit: T): Promise<GetBooksResponse>
+  getBook(request: GetBookServerRequest): Promise<GetBookResponse>
+  getBooks(): Promise<GetBooksResponse>
   /**
    * Updates the book associated with the given bookId
    */
-  updateBook(request: UpdateBookServerRequest, toolkit: T): Promise<UpdateBookResponse>
+  updateBook(request: UpdateBookServerRequest): Promise<UpdateBookResponse>
 }
 
 export const createBookRouter: Router = Router().post(
@@ -201,7 +201,7 @@ export const createBookRouter: Router = Router().post(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: BookStoreApi = response.locals['__oats_api']
     try {
       const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
       const body = await adapter.getRequestBody<'application/json', Book>(
@@ -213,7 +213,7 @@ export const createBookRouter: Router = Router().post(
         mimeType,
         body,
       }
-      const typedResponse = await api.createBook(typedRequest, toolkit)
+      const typedResponse = await api.createBook(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -231,13 +231,13 @@ export const getBookRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: BookStoreApi = response.locals['__oats_api']
     try {
       const path = await adapter.getPathParameters(toolkit, getBookPathDeserializer)
       const typedRequest: GetBookServerRequest = {
         path,
       }
-      const typedResponse = await api.getBook(typedRequest, toolkit)
+      const typedResponse = await api.getBook(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -255,9 +255,9 @@ export const getBooksRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: BookStoreApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.getBooks(toolkit)
+      const typedResponse = await api.getBooks()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -275,7 +275,7 @@ export const updateBookRouter: Router = Router().patch(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: BookStoreApi = response.locals['__oats_api']
     try {
       const path = await adapter.getPathParameters(toolkit, updateBookPathDeserializer)
       const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
@@ -289,7 +289,7 @@ export const updateBookRouter: Router = Router().patch(
         mimeType,
         body,
       }
-      const typedResponse = await api.updateBook(typedRequest, toolkit)
+      const typedResponse = await api.updateBook(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -310,7 +310,7 @@ export type BookStoreRouters = {
 }
 
 export function createBookStoreRouter(
-  api: BookStoreApi<ExpressToolkit>,
+  api: BookStoreApi,
   adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<BookStoreRouters> = {},
 ): Router {
