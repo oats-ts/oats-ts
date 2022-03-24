@@ -22,9 +22,7 @@ export function getMainRouteFactoryAst(
         undefined,
         factory.createIdentifier(Names.api),
         undefined,
-        factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type'), [
-          factory.createTypeReferenceNode(RuntimePackages.HttpServerExpress.ExpressToolkit),
-        ]),
+        factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type')),
         undefined,
       ),
       factory.createParameterDeclaration(

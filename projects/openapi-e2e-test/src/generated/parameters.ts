@@ -2206,57 +2206,48 @@ export const simpleHeaderParametersRequestHeadersDeserializer =
     ),
   })
 
-export type ParametersApi<T> = {
+export type ParametersApi = {
   /**
    * Endpoint for testing query parameters with deepObject serialization
    */
-  deepObjectQueryParameters(
-    request: DeepObjectQueryParametersServerRequest,
-    toolkit: T,
-  ): Promise<DeepObjectQueryParametersResponse>
+  deepObjectQueryParameters(request: DeepObjectQueryParametersServerRequest): Promise<DeepObjectQueryParametersResponse>
   /**
    * Endpoint for testing query parameters with form serialization
    */
-  formQueryParameters(request: FormQueryParametersServerRequest, toolkit: T): Promise<FormQueryParametersResponse>
+  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersResponse>
   /**
    * Endpoint for testing path parameters with label serialization
    */
-  labelPathParameters(request: LabelPathParametersServerRequest, toolkit: T): Promise<LabelPathParametersResponse>
+  labelPathParameters(request: LabelPathParametersServerRequest): Promise<LabelPathParametersResponse>
   /**
    * Endpoint for testing path parameters with matrix serialization
    */
-  matrixPathParameters(request: MatrixPathParametersServerRequest, toolkit: T): Promise<MatrixPathParametersResponse>
+  matrixPathParameters(request: MatrixPathParametersServerRequest): Promise<MatrixPathParametersResponse>
   /**
    * Endpoint for testing query parameters with pipeDelimited serialization
    */
   pipeDelimitedQueryParameters(
     request: PipeDelimitedQueryParametersServerRequest,
-    toolkit: T,
   ): Promise<PipeDelimitedQueryParametersResponse>
   /**
    * Endpoint for testing header parameters with simple serialization
    */
-  simpleHeaderParameters(
-    request: SimpleHeaderParametersServerRequest,
-    toolkit: T,
-  ): Promise<SimpleHeaderParametersResponse>
+  simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersResponse>
   /**
    * Endpoint for testing path parameters with simple serialization
    */
-  simplePathParameters(request: SimplePathParametersServerRequest, toolkit: T): Promise<SimplePathParametersResponse>
+  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersResponse>
   /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
     request: SimpleResponseHeaderParametersServerRequest,
-    toolkit: T,
   ): Promise<SimpleResponseHeaderParametersResponse>
   /**
    * Endpoint for testing query parameters with spaceDelimited serialization
    */
   spaceDelimitedQueryParameters(
     request: SpaceDelimitedQueryParametersServerRequest,
-    toolkit: T,
   ): Promise<SpaceDelimitedQueryParametersResponse>
 }
 
@@ -2265,13 +2256,13 @@ export const deepObjectQueryParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
       const typedRequest: DeepObjectQueryParametersServerRequest = {
         query,
       }
-      const typedResponse = await api.deepObjectQueryParameters(typedRequest, toolkit)
+      const typedResponse = await api.deepObjectQueryParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2289,13 +2280,13 @@ export const formQueryParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
       const typedRequest: FormQueryParametersServerRequest = {
         query,
       }
-      const typedResponse = await api.formQueryParameters(typedRequest, toolkit)
+      const typedResponse = await api.formQueryParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2313,13 +2304,13 @@ export const labelPathParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
       const typedRequest: LabelPathParametersServerRequest = {
         path,
       }
-      const typedResponse = await api.labelPathParameters(typedRequest, toolkit)
+      const typedResponse = await api.labelPathParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2337,13 +2328,13 @@ export const matrixPathParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
       const typedRequest: MatrixPathParametersServerRequest = {
         path,
       }
-      const typedResponse = await api.matrixPathParameters(typedRequest, toolkit)
+      const typedResponse = await api.matrixPathParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2361,13 +2352,13 @@ export const pipeDelimitedQueryParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
       const typedRequest: PipeDelimitedQueryParametersServerRequest = {
         query,
       }
-      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest, toolkit)
+      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2385,13 +2376,13 @@ export const simpleHeaderParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
       const typedRequest: SimpleHeaderParametersServerRequest = {
         headers,
       }
-      const typedResponse = await api.simpleHeaderParameters(typedRequest, toolkit)
+      const typedResponse = await api.simpleHeaderParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2409,13 +2400,13 @@ export const simplePathParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
       const typedRequest: SimplePathParametersServerRequest = {
         path,
       }
-      const typedResponse = await api.simplePathParameters(typedRequest, toolkit)
+      const typedResponse = await api.simplePathParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2433,7 +2424,7 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
       const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
@@ -2445,7 +2436,7 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
         mimeType,
         body,
       }
-      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest, toolkit)
+      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(
           toolkit,
@@ -2467,13 +2458,13 @@ export const spaceDelimitedQueryParametersRouter: Router = Router().get(
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi<ExpressToolkit> = response.locals['__oats_api']
+    const api: ParametersApi = response.locals['__oats_api']
     try {
       const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
       const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
         query,
       }
-      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest, toolkit)
+      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2499,7 +2490,7 @@ export type ParametersRouters = {
 }
 
 export function createParametersRouter(
-  api: ParametersApi<ExpressToolkit>,
+  api: ParametersApi,
   adapter: ServerAdapter<ExpressToolkit>,
   routes: Partial<ParametersRouters> = {},
 ): Router {

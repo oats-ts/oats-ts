@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-validator",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -33,15 +33,15 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.19",
-    "@oats-ts/openapi-model": "0.0.19",
-    "@oats-ts/json-schema-common": "0.0.19",
+    "@oats-ts/json-schema-model": "0.0.20",
+    "@oats-ts/openapi-model": "0.0.20",
+    "@oats-ts/json-schema-common": "0.0.20",
     "typescript": "4.3.5",
-    "@oats-ts/generator": "0.0.19",
-    "@oats-ts/validators": "0.0.19",
-    "@oats-ts/openapi-reader": "0.0.19",
-    "@oats-ts/openapi-common": "0.0.19",
-    "@oats-ts/model-common": "0.0.19",
-    "@oats-ts/openapi-parameter-common": "0.0.19"
+    "@oats-ts/generator": "0.0.20",
+    "@oats-ts/validators": "0.0.20",
+    "@oats-ts/openapi-reader": "0.0.20",
+    "@oats-ts/openapi-common": "0.0.20",
+    "@oats-ts/model-common": "0.0.20",
+    "@oats-ts/openapi-parameter-common": "0.0.20"
   }
 }

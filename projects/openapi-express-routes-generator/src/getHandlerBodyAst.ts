@@ -77,9 +77,7 @@ export function getHandlerBodyAst(
         factory.createVariableDeclaration(
           factory.createIdentifier(Names.api),
           undefined,
-          factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type'), [
-            factory.createTypeReferenceNode(factory.createIdentifier(ExpressParameters), undefined),
-          ]),
+          factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type')),
           factory.createElementAccessExpression(
             factory.createPropertyAccessExpression(
               factory.createIdentifier(Names.response),
@@ -157,10 +155,7 @@ export function getHandlerBodyAst(
                 nameOf(data.operation, 'openapi/operation'),
               ),
               undefined,
-              [
-                ...(hasInputParams ? [factory.createIdentifier(Names.typedRequest)] : []),
-                factory.createIdentifier(Names.toolkit),
-              ],
+              hasInputParams ? [factory.createIdentifier(Names.typedRequest)] : [],
             ),
           ),
         ),
