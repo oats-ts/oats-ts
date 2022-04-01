@@ -115,7 +115,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     toolkit.next()
   }
 
-  async handleError(toolkit: ExpressToolkit, error: Error): Promise<void> {
+  async handleError(toolkit: ExpressToolkit, error: any): Promise<void> {
     return toolkit.next(error)
   }
 }

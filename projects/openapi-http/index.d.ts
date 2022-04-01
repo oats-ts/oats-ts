@@ -43,7 +43,7 @@ export type ServerAdapter<T> = {
   getResponseHeaders(toolkit: T, resp: HttpResponse, serializer?: ResponseHeadersSerializer): Promise<RawHttpHeaders>
 
   respond(toolkit: T, response: RawHttpResponse): Promise<void>
-  handleError(toolkit: T, error: Error): Promise<void>
+  handleError(toolkit: T, error: any): Promise<void>
 }
 
 export type RequestBodyValidators<C extends string = string> = {
