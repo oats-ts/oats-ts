@@ -9,6 +9,7 @@ import {
 import { failure, fluent, success, Try } from '@oats-ts/try'
 import { configure, Issue, IssueTypes } from '@oats-ts/validators'
 import { ExpressToolkit } from './typings'
+import MIMEType from 'whatwg-mimetype'
 
 export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
@@ -25,7 +26,11 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   }
 
   async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
-    return toolkit.request.header('Content-Type') as M
+    const mimeType = toolkit.request.header('Content-Type')
+    if (mimeType === null || mimeType === undefined) {
+      return undefined as M
+    }
+    return new MIMEType(mimeType).essence as M
   }
 
   async getRequestBody<M extends string, B>(
