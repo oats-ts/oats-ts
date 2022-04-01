@@ -4,10 +4,10 @@ import { isNil } from 'lodash'
 import { defaultCommentsConfig } from './defaultCommentsConfig'
 
 export function defaultTypeScriptWriterConfig(config: Partial<TypeScriptWriterConfig>): TypeScriptWriterConfig {
-  const { write, stringify, comments } = config
+  const { write, comments, format } = config
   return {
     comments: defaultCommentsConfig(comments),
     write: isNil(write) ? defaultWrite : write,
-    stringify,
+    format,
   }
 }

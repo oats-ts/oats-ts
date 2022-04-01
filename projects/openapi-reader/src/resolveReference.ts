@@ -4,6 +4,7 @@ import { findByFragments } from './findByFragments'
 import { register } from './register'
 import { isNil } from 'lodash'
 import { isReferenceObject } from '@oats-ts/model-common'
+import { isFailure } from '@oats-ts/try'
 
 export function getReferenceTarget<T>(uri: string, context: ReadContext): T {
   const specUri = context.uri.document(uri)
@@ -40,17 +41,12 @@ export async function resolveReferenceUri<T>(input: ReadInput<string>, context: 
   const specUri = context.uri.document(fullUri)
 
   if (!context.documents.has(specUri)) {
-    try {
-      const spec = await context.resolve(specUri)
-      context.documents.set(specUri, spec)
+    const specTry = await context.resolve(specUri)
+    if (isFailure(specTry)) {
+      context.issues.push(...specTry.issues)
       return { uri: fullUri, data: getReferenceTarget<T>(fullUri, context) }
-    } catch (e) {
-      context.issues.push({
-        path: specUri,
-        message: `Failed to load document at "${specUri}" (${e.message}).`,
-        severity: 'error',
-        type: 'load',
-      })
+    } else {
+      context.documents.set(specUri, specTry.data)
     }
   }
 

@@ -8,9 +8,7 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bali182/oats.git"
@@ -32,10 +30,10 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@types/prettier": "2.2.3",
+    "@types/prettier": "2.4.4",
     "lodash": "4.17.21",
     "@oats-ts/json-schema-model": "0.0.20",
-    "prettier": "2.3.1",
+    "prettier": "2.6.1",
     "typescript": "4.3.5",
     "@oats-ts/generator": "0.0.20"
   }

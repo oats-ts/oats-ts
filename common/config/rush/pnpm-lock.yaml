@@ -51,7 +51,7 @@ specifiers:
   '@types/node': 16.7.1
   '@types/node-fetch': 2.6.1
   '@types/pascalcase': 1.0.1
-  '@types/prettier': 2.2.3
+  '@types/prettier': 2.4.4
   '@types/urijs': 1.19.19
   '@types/valid-url': 1.0.3
   '@types/websocket': ~1.0.4
@@ -70,7 +70,7 @@ specifiers:
   open-api-mocker: 1.7.2
   pascalcase: 1.0.0
   path-to-regexp: 6.2.0
-  prettier: 2.3.1
+  prettier: 2.6.1
   rimraf: 3.0.2
   ts-jest: 27.0.2
   ts-node: 10.0.0
@@ -134,7 +134,7 @@ dependencies:
   '@types/node': 16.7.1
   '@types/node-fetch': 2.6.1
   '@types/pascalcase': 1.0.1
-  '@types/prettier': 2.2.3
+  '@types/prettier': 2.4.4
   '@types/urijs': 1.19.19
   '@types/valid-url': 1.0.3
   '@types/websocket': 1.0.4
@@ -153,7 +153,7 @@ dependencies:
   open-api-mocker: 1.7.2
   pascalcase: 1.0.0
   path-to-regexp: 6.2.0
-  prettier: 2.3.1
+  prettier: 2.6.1
   rimraf: 3.0.2
   ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
   ts-node: 10.0.0_f50b86b1778cd2aa4e5405c08bb39559
@@ -1076,6 +1076,10 @@ packages:
 
   /@types/prettier/2.3.0:
     resolution: {integrity: sha512-hkc1DATxFLQo4VxPDpMH1gCkPpBbpOoJ/4nhuXw4n63/0R6bCpQECj4+K226UJ4JO/eJQz+1mC2I7JsWanAdQw==}
+    dev: false
+
+  /@types/prettier/2.4.4:
+    resolution: {integrity: sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==}
     dev: false
 
   /@types/qs/6.9.6:
@@ -3412,6 +3416,12 @@ packages:
     hasBin: true
     dev: false
 
+  /prettier/2.6.1:
+    resolution: {integrity: sha512-8UVbTBYGwN37Bs9LERmxCPjdvPxlEowx2urIL6urHzdb3SDq4B/Z6xLFCblrSnE4iKWcS6ziJ3aOYrc1kz/E2A==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dev: false
+
   /pretty-format/26.6.2:
     resolution: {integrity: sha512-7AeGuCYNGmycyQbCqd/3PWH4eOoX/OiCa0uphp57NVTeAGdJGaAliecxwBDHYQCIvrW7aDBZCYeNTP/WX69mkg==}
     engines: {node: '>= 10'}
@@ -4865,7 +4875,7 @@ packages:
     dev: false
 
   file:projects/openapi-reader.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-hBz5VZfulVBYd6+VBe4WMJMu3lPV1BzXUgVkbrczecTCBGP/7r8eNw/Zm6l+zwwog+//XHPEtxjSlM2bmSgZag==, tarball: file:projects/openapi-reader.tgz}
+    resolution: {integrity: sha512-RLSRRg1XAWR61YPgmtkMXM8Q23RaJ6H+yrWPJNuNHTOwInODz0qVf4eBYq8RK9bCb9zVW2VS9Uicvera9mblDw==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
     version: 0.0.0
@@ -5032,7 +5042,7 @@ packages:
     dev: false
 
   file:projects/openapi.tgz_ts-node@10.0.0+typescript@4.3.5:
-    resolution: {integrity: sha512-UDCEwfYBOAa/FqxF3zcm6Mn/DTN/UjIJmpG9wC50GvJsNT/YRStCpF7yQAbkoZWxYgmg+ILwTU+3k+dw/H7ESg==, tarball: file:projects/openapi.tgz}
+    resolution: {integrity: sha512-NrQSLkzajm+Ac+SlE5EZNvkwklMfTulB/DHbPZnbqqLxhNkjkepnQYec7yvlYn8oAOD+ADsGedj+/X5WDhCJrA==, tarball: file:projects/openapi.tgz}
     id: file:projects/openapi.tgz
     name: '@rush-temp/openapi'
     version: 0.0.0
@@ -5041,7 +5051,9 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       '@types/pascalcase': 1.0.1
+      '@types/prettier': 2.4.4
       jest: 27.0.4_ts-node@10.0.0
+      prettier: 2.6.1
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
     transitivePeerDependencies:
@@ -5105,7 +5117,7 @@ packages:
     dev: false
 
   file:projects/typescript-writer.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-IeBQFTr9P12Jjgsm+scyN6YoRwhT6BJY//Xf7+Nq4hhQvWfphv6XtdyBUyocowsDtWTLoZum1eZB7rI4hv9JFg==, tarball: file:projects/typescript-writer.tgz}
+    resolution: {integrity: sha512-RTxqj+BKGRMj5hxRbrcg0VKg0j32ZRfjxZ7iNaNT1KEb/kkZ0QsUehuLKpeQX/ICorkuIR8DFXdlH7Q6m/K6yg==, tarball: file:projects/typescript-writer.tgz}
     id: file:projects/typescript-writer.tgz
     name: '@rush-temp/typescript-writer'
     version: 0.0.0
@@ -5113,11 +5125,11 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
-      '@types/prettier': 2.2.3
+      '@types/prettier': 2.4.4
       jest: 27.0.4_ts-node@10.0.0
       lodash: 4.17.21
       openapi3-ts: 2.0.1
-      prettier: 2.3.1
+      prettier: 2.6.1
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
       typescript: 4.3.5

@@ -41,6 +41,7 @@
     "@oats-ts/openapi-model": "0.0.20",
     "@oats-ts/json-schema-common": "0.0.20",
     "@oats-ts/model-common": "0.0.20",
+    "@oats-ts/try": "0.0.20",
     "urijs": "1.19.10",
     "valid-url": "1.0.9",
     "yamljs": "0.3.0",

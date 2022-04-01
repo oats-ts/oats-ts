@@ -25,11 +25,10 @@ export type TypeScriptWriterConfig = {
   /** Optional comments placed in the beginning/end of the file */
   comments?: CommentsConfig
   /**
-   * @param module A module containing ast, imports and full file path.
-   * @param comments Object describing comments placed in the beginning and/or end of a file.
-   * @returns The module as a source code string.
+   * @param code The code to format
+   * @returns The formatted code.
    */
-  stringify(module: TypeScriptModule, comments: CommentsConfig): Promise<string>
+  format?(code: string): string
   /**
    * Writes the given content to the given path.
    * Creating possibly missing folders is part of it's responsibilty.

@@ -55,7 +55,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     if (validators[mimeType] === null || validators[mimeType] === undefined) {
       const contentTypes = Object.keys(validators)
       const expectedContentTypes =
-        contentTypes.length === 1 ? `"${contentTypes[0]}"` : `one of ${contentTypes.map((ct) => `"${ct}"`)}`
+        contentTypes.length === 1 ? `"${contentTypes[0]}"` : `one of ${contentTypes.map((ct) => `"${ct}"`).join(', ')}`
       const issue: Issue = {
         message: `"content-type" should be ${expectedContentTypes}`,
         severity: 'error',

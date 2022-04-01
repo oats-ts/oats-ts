@@ -1,20 +1,30 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
+import { Try } from '@oats-ts/try'
 
 /** Configuration object for reading OpenAPI documents. */
 export type OpenAPIReadConfig = {
   /** The path of the documents. Either a full URI or local file path. */
   path: string
   /**
-   * @param uri The full URI of the document.
-   * @returns The contents of the URI parsed as an OpenAPI document.
+   * @param path The input path
+   * @returns A sanitized, fully qualified URI
    */
-  resolve?(uri: string): Promise<OpenAPIObject>
-  /** Collection of functions to manipualte URIs */
-  uriManipulator?: URIManipulator
+  sanitize(path: string): Try<string>
+  /**
+   * @param uri The full URI of the document.
+   * @returns The contents of the document at the URI as string.
+   */
+  read(uri: string): Promise<Try<string>>
+  /**
+   * @param uri The full URI of the document parsed.
+   * @param input The string contents of an OpenAPI document
+   * @returns The parsed openapi document
+   */
+  parse(uri: string, input: string): Promise<Try<OpenAPIObject>>
 }
 
 /** Globaly used utility to work with URIs found in OpenAPI refs and discriminators. */
-export type URIManipulator = {
+export type URIManipulatorType = {
   /**
    * @param path A URI fragment.
    * @param segments Possibly other URI fragment pieces.
@@ -27,11 +37,6 @@ export type URIManipulator = {
    * @returns A resolved full URI.
    */
   resolve(ref: string, parent: string): string
-  /**
-   * @param path A path or URI
-   * @returns A full URI based on the path. If it's a valid URI returns as is, if a file turns it into a URI with file:// protocol.
-   */
-  sanitize(path: string): string
   /**
    * @param path A full URI.
    * @returns The URI without any fragments.

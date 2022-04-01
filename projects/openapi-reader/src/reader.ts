@@ -4,7 +4,9 @@ import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadContext } from './internalTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
-import { defaultOpenAPIReadConfig } from './defaults/defaultOpenAPIReadConfig'
+import { URIManipulator } from './utils/URIManipulator'
+import { fluent, isFailure } from '@oats-ts/try'
+import { createResolver } from './utils/createResolver'
 
 function getUnresolved(resolved: Set<string>, documents: Map<string, OpenAPIObject>): Map<string, OpenAPIObject> {
   const unresolved: Map<string, OpenAPIObject> = new Map()
@@ -38,21 +40,31 @@ async function resolveAll(resolved: Set<string>, context: ReadContext) {
 }
 
 export const reader = (config: OpenAPIReadConfig) => async (): Promise<Result<OpenAPIReadOutput>> => {
-  const { path, resolve, uriManipulator } = defaultOpenAPIReadConfig(config)
-
-  const documentUri = uriManipulator.sanitize(path)
-
+  const { path, sanitize } = config
+  const resolve = createResolver(config)
+  const docUriTry = sanitize(path)
+  if (isFailure(docUriTry)) {
+    return {
+      isOk: false,
+      issues: docUriTry.issues,
+    }
+  }
+  const documentUri = docUriTry.data
   const context: ReadContext = {
     resolve,
-    uri: uriManipulator,
-    issues: [],
+    uri: new URIManipulator(),
     objectToName: new Map(),
     documents: new Map(),
     objectToUri: new Map(),
     uriToObject: new Map(),
+    issues: [],
   }
 
-  const document = await resolve(documentUri)
+  const documentTry = await resolve(documentUri)
+  if (isFailure(documentTry)) {
+    return { isOk: false, issues: documentTry.issues }
+  }
+  const document = documentTry.data
   context.documents.set(documentUri, document)
 
   await resolveOpenAPIObject({ data: document, uri: documentUri }, context)
