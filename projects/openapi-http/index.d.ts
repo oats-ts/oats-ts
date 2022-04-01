@@ -33,6 +33,7 @@ export type ServerAdapter<T> = {
   getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
     toolkit: T,
+    required: boolean,
     mimeType: M | undefined,
     validator: RequestBodyValidators<M>,
   ): Promise<Try<B>>

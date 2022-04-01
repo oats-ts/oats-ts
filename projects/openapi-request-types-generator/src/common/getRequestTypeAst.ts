@@ -3,32 +3,35 @@ import { factory, PropertySignature, SyntaxKind, TypeAliasDeclaration, TypeNode 
 import { EnhancedOperation, getRequestBodyContent, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getParameterTypesAst } from './getParameterTypesAst'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { PropertyFactory } from './types'
 
 function getBodyTypeProperties(
   mimeType: string,
   schema: Referenceable<SchemaObject>,
+  operation: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  transform: (node: TypeNode) => TypeNode,
+  createProperty: PropertyFactory,
 ): PropertySignature[] {
-  const { referenceOf } = context
+  const { referenceOf, dereference } = context
+  const body = dereference(operation.operation.requestBody)
   return [
     factory.createPropertySignature(
       undefined,
       'mimeType',
-      undefined,
+      body?.required ? undefined : factory.createToken(SyntaxKind.QuestionToken),
       factory.createLiteralTypeNode(factory.createStringLiteral(mimeType)),
     ),
-    factory.createPropertySignature(undefined, 'body', undefined, transform(referenceOf(schema, 'json-schema/type'))),
+    createProperty('body', referenceOf(schema, 'json-schema/type'), operation, context),
   ]
 }
 
 function getFullType(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  transform: (node: TypeNode) => TypeNode = identity,
+  createProperty: PropertyFactory,
 ): TypeNode {
   const bodies = entries(getRequestBodyContent(data, context))
-  const paramProps = getParameterTypesAst(data, context, transform)
+  const paramProps = getParameterTypesAst(data, context, createProperty)
   switch (bodies.length) {
     case 0: {
       return factory.createTypeLiteralNode(paramProps)
@@ -38,7 +41,7 @@ function getFullType(
         bodies.map(([mimeType, mediaType]) =>
           factory.createTypeLiteralNode([
             ...paramProps,
-            ...getBodyTypeProperties(mimeType, mediaType.schema, context, transform),
+            ...getBodyTypeProperties(mimeType, mediaType.schema, data, context, createProperty),
           ]),
         ),
       )
@@ -50,9 +53,9 @@ export function getRequestTypeAst(
   typeName: string,
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  transform: (node: TypeNode) => TypeNode = identity,
+  createProperty: PropertyFactory,
 ): TypeAliasDeclaration {
-  const fullType = getFullType(data, context, transform)
+  const fullType = getFullType(data, context, createProperty)
   return isNil(fullType)
     ? undefined
     : factory.createTypeAliasDeclaration(

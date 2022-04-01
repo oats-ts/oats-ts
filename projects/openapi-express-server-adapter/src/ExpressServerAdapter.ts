@@ -30,11 +30,15 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
 
   async getRequestBody<M extends string, B>(
     toolkit: ExpressToolkit,
+    required: boolean,
     mimeType: M | undefined,
     validators: RequestBodyValidators<M>,
   ): Promise<Try<B>> {
-    // No mimetype means that getMimeType failed
+    // No mimetype means we can only pass if the request body is not required.
     if (mimeType === null || mimeType === undefined) {
+      if (!required) {
+        return success(undefined)
+      }
       const issue: Issue = {
         message: `missing "content-type" header`,
         severity: 'error',
@@ -44,8 +48,11 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       return failure([issue])
     }
     if (validators[mimeType] === null || validators[mimeType] === undefined) {
+      const contentTypes = Object.keys(validators)
+      const expectedContentTypes =
+        contentTypes.length === 1 ? `"${contentTypes[0]}"` : `one of ${contentTypes.map((ct) => `"${ct}"`)}`
       const issue: Issue = {
-        message: `unexpected "content-type" request header "${mimeType}"`,
+        message: `"content-type" should be ${expectedContentTypes}`,
         severity: 'error',
         path: 'headers',
         type: IssueTypes.other,
