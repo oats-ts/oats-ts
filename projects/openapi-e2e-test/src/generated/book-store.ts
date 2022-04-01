@@ -6,10 +6,20 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
-import { createPathDeserializer, deserializers } from '@oats-ts/openapi-parameter-deserialization'
-import { createPathSerializer, serializers } from '@oats-ts/openapi-parameter-serialization'
+import {
+  createHeaderDeserializer,
+  createPathDeserializer,
+  createQueryDeserializer,
+  deserializers,
+} from '@oats-ts/openapi-parameter-deserialization'
+import {
+  createHeaderSerializer,
+  createPathSerializer,
+  createQuerySerializer,
+  serializers,
+} from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
-import { array, items, lazy, literal, number, object, optional, shape, string, union } from '@oats-ts/validators'
+import { array, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
 export type AppError = {
@@ -18,27 +28,17 @@ export type AppError = {
 
 export type Book = {
   author: string
-  bookType: BookType
   description?: string
   id: number
   price: number
   title: string
 }
 
-export type BookType = 'paperback' | 'digital' | 'audio'
-
 export const appErrorTypeValidator = object(shape({ message: string() }))
-
-export const bookTypeTypeValidator = union({
-  paperback: literal('paperback'),
-  digital: literal('digital'),
-  audio: literal('audio'),
-})
 
 export const bookTypeValidator = object(
   shape({
     author: string(),
-    bookType: lazy(() => bookTypeTypeValidator),
     description: optional(string()),
     id: number(),
     price: number(),
@@ -55,7 +55,6 @@ export function isBook(input: any): input is Book {
     input !== null &&
     typeof input === 'object' &&
     typeof input.author === 'string' &&
-    isBookType(input.bookType) &&
     (input.description === null || input.description === undefined || typeof input.description === 'string') &&
     typeof input.id === 'number' &&
     typeof input.price === 'number' &&
@@ -63,8 +62,11 @@ export function isBook(input: any): input is Book {
   )
 }
 
-export function isBookType(input: any): input is BookType {
-  return input === 'paperback' || input === 'digital' || input === 'audio'
+export type GetBooksQueryParameters = {
+  /**
+   * Parameter used for pagination, the index of the first record
+   */
+  offset?: number
 }
 
 export type GetBookPathParameters = {
@@ -74,14 +76,21 @@ export type GetBookPathParameters = {
   bookId: number
 }
 
-export type UpdateBookPathParameters = {
+export type GetBooksRequestHeaderParameters = {
   /**
-   * The id of the book
+   * Parameter used for pagination, the amount of records you need
    */
-  bookId: number
+  'x-limit'?: number
 }
 
-export type CreateBookResponse =
+export type GetBooks200ResponseHeaderParameters = {
+  /**
+   * The number of records returned
+   */
+  'x-length': number
+}
+
+export type AddBookResponse =
   | {
       mimeType: 'application/json'
       statusCode: 201
@@ -120,6 +129,7 @@ export type GetBooksResponse =
       mimeType: 'application/json'
       statusCode: 200
       body: Book[]
+      headers: GetBooks200ResponseHeaderParameters
     }
   | {
       mimeType: 'application/json'
@@ -132,24 +142,7 @@ export type GetBooksResponse =
       body: AppError[]
     }
 
-export type UpdateBookResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: Book
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: AppError[]
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 500
-      body: AppError[]
-    }
-
-export type CreateBookServerRequest = {
+export type AddBookServerRequest = {
   mimeType: 'application/json'
   body: Try<Book>
 }
@@ -158,15 +151,18 @@ export type GetBookServerRequest = {
   path: Try<GetBookPathParameters>
 }
 
-export type UpdateBookServerRequest = {
-  path: Try<UpdateBookPathParameters>
-  mimeType: 'application/json'
-  body: Try<Book>
+export type GetBooksServerRequest = {
+  headers: Try<GetBooksRequestHeaderParameters>
+  query: Try<GetBooksQueryParameters>
 }
 
-export const createBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
+export const addBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
 
-export const updateBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
+export const getBooksResponseHeadersSerializer = {
+  200: createHeaderSerializer<GetBooks200ResponseHeaderParameters>({
+    'x-length': serializers.header.simple.primitive<number>({ required: true }),
+  }),
+} as const
 
 export const getBookPathDeserializer = createPathDeserializer<GetBookPathParameters>(
   ['bookId'],
@@ -174,29 +170,30 @@ export const getBookPathDeserializer = createPathDeserializer<GetBookPathParamet
   { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
 )
 
-export const updateBookPathDeserializer = createPathDeserializer<UpdateBookPathParameters>(
-  ['bookId'],
-  /^\/books(?:\/([^\/#\?]+?))[\/#\?]?$/i,
-  { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
-)
+export const getBooksQueryDeserializer = createQueryDeserializer<GetBooksQueryParameters>({
+  offset: deserializers.query.form.primitive(deserializers.value.number(), { required: false }),
+})
+
+export const getBooksRequestHeadersDeserializer = createHeaderDeserializer<GetBooksRequestHeaderParameters>({
+  'x-limit': deserializers.header.simple.primitive(deserializers.value.number(), { required: false }),
+})
 
 export type BookStoreApi = {
   /**
-   * Creates a new book based on the request body. The id field can be ommited (will be ignored)
+   * Creates a new book based on the request body.
    */
-  createBook(request: CreateBookServerRequest): Promise<CreateBookResponse>
+  addBook(request: AddBookServerRequest): Promise<AddBookResponse>
   /**
    * Returns the book associated with the given bookId
    */
   getBook(request: GetBookServerRequest): Promise<GetBookResponse>
-  getBooks(): Promise<GetBooksResponse>
   /**
-   * Updates the book associated with the given bookId
+   * Returns a list of books, can be paginated
    */
-  updateBook(request: UpdateBookServerRequest): Promise<UpdateBookResponse>
+  getBooks(request: GetBooksServerRequest): Promise<GetBooksResponse>
 }
 
-export const createBookRouter: Router = Router().post(
+export const addBookRouter: Router = Router().post(
   '/books',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
@@ -206,14 +203,15 @@ export const createBookRouter: Router = Router().post(
       const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
       const body = await adapter.getRequestBody<'application/json', Book>(
         toolkit,
+        true,
         mimeType,
-        createBookRequestBodyValidator,
+        addBookRequestBodyValidator,
       )
-      const typedRequest: CreateBookServerRequest = {
+      const typedRequest: AddBookServerRequest = {
         mimeType,
         body,
       }
-      const typedResponse = await api.createBook(typedRequest)
+      const typedResponse = await api.addBook(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -257,41 +255,15 @@ export const getBooksRouter: Router = Router().get(
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BookStoreApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.getBooks()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
+      const query = await adapter.getQueryParameters(toolkit, getBooksQueryDeserializer)
+      const headers = await adapter.getRequestHeaders(toolkit, getBooksRequestHeadersDeserializer)
+      const typedRequest: GetBooksServerRequest = {
+        query,
+        headers,
       }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const updateBookRouter: Router = Router().patch(
-  '/books/:bookId',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, updateBookPathDeserializer)
-      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json', Book>(
-        toolkit,
-        mimeType,
-        updateBookRequestBodyValidator,
-      )
-      const typedRequest: UpdateBookServerRequest = {
-        path,
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.updateBook(typedRequest)
+      const typedResponse = await api.getBooks(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
       }
@@ -303,10 +275,9 @@ export const updateBookRouter: Router = Router().patch(
 )
 
 export type BookStoreRouters = {
-  createBookRouter: Router
+  addBookRouter: Router
   getBookRouter: Router
   getBooksRouter: Router
-  updateBookRouter: Router
 }
 
 export function createBookStoreRouter(
@@ -320,10 +291,9 @@ export function createBookStoreRouter(
       response.locals['__oats_adapter'] = adapter
       next()
     },
-    routes.createBookRouter ?? createBookRouter,
+    routes.addBookRouter ?? addBookRouter,
     routes.getBookRouter ?? getBookRouter,
     routes.getBooksRouter ?? getBooksRouter,
-    routes.updateBookRouter ?? updateBookRouter,
   )
 }
 
@@ -332,13 +302,13 @@ export const bookStoreCorsMiddleware =
   (request: Request, response: Response, next: NextFunction) => {
     if (isAccepted(request)) {
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+      response.setHeader('Access-Control-Allow-Methods', 'POST, GET')
+      response.setHeader('Access-Control-Allow-Headers', 'x-length, content-type')
     }
     next()
   }
 
-export type CreateBookRequest = {
+export type AddBookRequest = {
   mimeType: 'application/json'
   body: Book
 }
@@ -347,13 +317,12 @@ export type GetBookRequest = {
   path: GetBookPathParameters
 }
 
-export type UpdateBookRequest = {
-  path: UpdateBookPathParameters
-  mimeType: 'application/json'
-  body: Book
+export type GetBooksRequest = {
+  headers: GetBooksRequestHeaderParameters
+  query: GetBooksQueryParameters
 }
 
-export const createBookResponseBodyValidator = {
+export const addBookResponseBodyValidator = {
   201: { 'application/json': bookTypeValidator },
   400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
   500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
@@ -371,24 +340,28 @@ export const getBooksResponseBodyValidator = {
   500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
 } as const
 
-export const updateBookResponseBodyValidator = {
-  200: { 'application/json': bookTypeValidator },
-  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+export const getBooksResponseHeadersDeserializer = {
+  200: createHeaderDeserializer<GetBooks200ResponseHeaderParameters>({
+    'x-length': deserializers.header.simple.primitive(deserializers.value.number(), { required: true }),
+  }),
 } as const
 
 export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>('/books/{bookId}', {
   bookId: serializers.path.simple.primitive<number>({}),
 })
 
-export const updateBookPathSerializer = createPathSerializer<UpdateBookPathParameters>('/books/{bookId}', {
-  bookId: serializers.path.simple.primitive<number>({}),
+export const getBooksQuerySerializer = createQuerySerializer<GetBooksQueryParameters>({
+  offset: serializers.query.form.primitive<number>({ required: false }),
+})
+
+export const getBooksRequestHeadersSerializer = createHeaderSerializer<GetBooksRequestHeaderParameters>({
+  'x-limit': serializers.header.simple.primitive<number>({ required: false }),
 })
 
 /**
- * Creates a new book based on the request body. The id field can be ommited (will be ignored)
+ * Creates a new book based on the request body.
  */
-export async function createBook(input: CreateBookRequest, adapter: ClientAdapter): Promise<CreateBookResponse> {
+export async function addBook(input: AddBookRequest, adapter: ClientAdapter): Promise<AddBookResponse> {
   const requestUrl = await adapter.getUrl('/books', undefined)
   const requestHeaders = await adapter.getRequestHeaders(input, undefined)
   const requestBody = await adapter.getRequestBody(input)
@@ -402,13 +375,13 @@ export async function createBook(input: CreateBookRequest, adapter: ClientAdapte
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
   const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, createBookResponseBodyValidator)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, addBookResponseBodyValidator)
   const response = {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
-  } as CreateBookResponse
+  } as AddBookResponse
   return response
 }
 
@@ -438,9 +411,13 @@ export async function getBook(input: GetBookRequest, adapter: ClientAdapter): Pr
   return response
 }
 
-export async function getBooks(adapter: ClientAdapter): Promise<GetBooksResponse> {
-  const requestUrl = await adapter.getUrl('/books', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+/**
+ * Returns a list of books, can be paginated
+ */
+export async function getBooks(input: GetBooksRequest, adapter: ClientAdapter): Promise<GetBooksResponse> {
+  const query = await adapter.getQuery(input, getBooksQuerySerializer)
+  const requestUrl = await adapter.getUrl('/books', query)
+  const requestHeaders = await adapter.getRequestHeaders(input, getBooksRequestHeadersSerializer)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -449,7 +426,7 @@ export async function getBooks(adapter: ClientAdapter): Promise<GetBooksResponse
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, getBooksResponseHeadersDeserializer)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getBooksResponseBodyValidator)
   const response = {
     mimeType,
@@ -460,48 +437,19 @@ export async function getBooks(adapter: ClientAdapter): Promise<GetBooksResponse
   return response
 }
 
-/**
- * Updates the book associated with the given bookId
- */
-export async function updateBook(input: UpdateBookRequest, adapter: ClientAdapter): Promise<UpdateBookResponse> {
-  const path = await adapter.getPath(input, updateBookPathSerializer)
-  const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'patch',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, updateBookResponseBodyValidator)
-  const response = {
-    mimeType,
-    statusCode,
-    headers: responseHeaders,
-    body: responseBody,
-  } as UpdateBookResponse
-  return response
-}
-
 export type BookStoreSdk = {
   /**
-   * Creates a new book based on the request body. The id field can be ommited (will be ignored)
+   * Creates a new book based on the request body.
    */
-  createBook(input: CreateBookRequest): Promise<CreateBookResponse>
+  addBook(input: AddBookRequest): Promise<AddBookResponse>
   /**
    * Returns the book associated with the given bookId
    */
   getBook(input: GetBookRequest): Promise<GetBookResponse>
-  getBooks(): Promise<GetBooksResponse>
   /**
-   * Updates the book associated with the given bookId
+   * Returns a list of books, can be paginated
    */
-  updateBook(input: UpdateBookRequest): Promise<UpdateBookResponse>
+  getBooks(input: GetBooksRequest): Promise<GetBooksResponse>
 }
 
 export class BookStoreSdkImpl implements BookStoreSdk {
@@ -509,31 +457,25 @@ export class BookStoreSdkImpl implements BookStoreSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async createBook(input: CreateBookRequest): Promise<CreateBookResponse> {
-    return createBook(input, this.adapter)
+  public async addBook(input: AddBookRequest): Promise<AddBookResponse> {
+    return addBook(input, this.adapter)
   }
   public async getBook(input: GetBookRequest): Promise<GetBookResponse> {
     return getBook(input, this.adapter)
   }
-  public async getBooks(): Promise<GetBooksResponse> {
-    return getBooks(this.adapter)
-  }
-  public async updateBook(input: UpdateBookRequest): Promise<UpdateBookResponse> {
-    return updateBook(input, this.adapter)
+  public async getBooks(input: GetBooksRequest): Promise<GetBooksResponse> {
+    return getBooks(input, this.adapter)
   }
 }
 
 export class BookStoreSdkStub implements BookStoreSdk {
-  public async createBook(_input: CreateBookRequest): Promise<CreateBookResponse> {
-    throw new Error('Stub method "createBook" called. You should implement this method if you want to use it.')
+  public async addBook(_input: AddBookRequest): Promise<AddBookResponse> {
+    throw new Error('Stub method "addBook" called. You should implement this method if you want to use it.')
   }
   public async getBook(_input: GetBookRequest): Promise<GetBookResponse> {
     throw new Error('Stub method "getBook" called. You should implement this method if you want to use it.')
   }
-  public async getBooks(): Promise<GetBooksResponse> {
+  public async getBooks(_input: GetBooksRequest): Promise<GetBooksResponse> {
     throw new Error('Stub method "getBooks" called. You should implement this method if you want to use it.')
-  }
-  public async updateBook(_input: UpdateBookRequest): Promise<UpdateBookResponse> {
-    throw new Error('Stub method "updateBook" called. You should implement this method if you want to use it.')
   }
 }

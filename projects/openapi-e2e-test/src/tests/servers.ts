@@ -3,10 +3,12 @@ import { HttpResponse } from '@oats-ts/openapi-http'
 import { testExpressServer } from '@oats-ts/openapi-test-utils'
 import YAML from 'yamljs'
 import { createBodiesRouter } from '../generated/bodies'
+import { createBodiesRouter as createOptionalRequestBodyRouter } from '../generated/optional-request-body'
 import { createBookStoreRouter } from '../generated/book-store'
 import { createHttpMethodsRouter } from '../generated/methods'
 import { createParametersRouter } from '../generated/Parameters'
 import { BodiesApiImpl } from './bodies/BodiesApiImpl'
+import { OptionalBodiesImpl } from './bodies/OptionalBodiesApiImpl'
 import { BookStoreApiImpl } from './bookStore/BookStoreApiImpl'
 import { customBodyParsers } from './common/customBodyParsers'
 import { PORT } from './constants'
@@ -20,6 +22,17 @@ export function testBookStoreServer() {
     handlers: () => [
       customBodyParsers.json(),
       createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerAdapter()),
+    ],
+  })
+}
+
+export function testOptionalBodiesServer() {
+  testExpressServer({
+    port: PORT,
+    runBeforeAndAfter: 'each',
+    handlers: () => [
+      customBodyParsers.json(),
+      createOptionalRequestBodyRouter(new OptionalBodiesImpl(), new ExpressServerAdapter()),
     ],
   })
 }

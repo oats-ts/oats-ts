@@ -2429,6 +2429,7 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
       const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
       const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
         toolkit,
+        true,
         mimeType,
         simpleResponseHeaderParametersRequestBodyValidator,
       )

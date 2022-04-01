@@ -8,7 +8,7 @@ describe('Http methods', () => {
 
   describe('happy path', () => {
     it('should retrieve the default books', async () => {
-      const response = await bookstoreSdk.getBooks()
+      const response = await bookstoreSdk.getBooks({ headers: {}, query: {} })
       expect(response.body).toEqual(defaultBooks)
     })
 
@@ -23,28 +23,14 @@ describe('Http methods', () => {
       const hippoBook: Book = {
         id: 0,
         author: 'Hippo',
-        bookType: 'digital',
         price: 200,
         title: 'The Hippo book',
       }
-      const hippoBookResponse = await bookstoreSdk.createBook({
+      const hippoBookResponse = await bookstoreSdk.addBook({
         body: hippoBook,
         mimeType: 'application/json',
       })
       expect(hippoBookResponse.body).toEqual({ ...hippoBook, id: 3 })
-    })
-
-    it('should update an existing book', async () => {
-      const updatedCatBook: Book = {
-        ...catBook,
-        title: 'Dog book',
-      }
-      const catBookResponse = await bookstoreSdk.updateBook({
-        path: { bookId: catBook.id },
-        body: updatedCatBook,
-        mimeType: 'application/json',
-      })
-      expect(catBookResponse.body).toEqual(updatedCatBook)
     })
   })
   // With the SDK we can't produce structural issues, but can do semantic issues that the server checks
