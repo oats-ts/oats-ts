@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "lib",
+    "strict": true,
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": true,

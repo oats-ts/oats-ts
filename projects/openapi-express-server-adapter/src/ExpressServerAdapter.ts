@@ -28,7 +28,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
     const mimeType = toolkit.request.header('Content-Type')
     if (mimeType === null || mimeType === undefined) {
-      return undefined as M
+      return undefined as unknown as M
     }
     return new MIMEType(mimeType).essence as M
   }
@@ -42,7 +42,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     // No mimetype means we can only pass if the request body is not required.
     if (mimeType === null || mimeType === undefined) {
       if (!required) {
-        return success(undefined)
+        return success(undefined as unknown as B)
       }
       const issue: Issue = {
         message: `missing "content-type" header`,
@@ -92,7 +92,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     response: HttpResponse,
     serializers?: ResponseHeadersSerializer,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders =
+    const mimeTypeHeaders: RawHttpHeaders =
       response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }
     if (serializers === null || serializers === undefined) {
       return mimeTypeHeaders
