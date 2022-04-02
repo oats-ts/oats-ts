@@ -8,15 +8,13 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bali182/oats.git"
   },
   "scripts": {
-    "test": "echo 'TODO'",
+    "test": "jest",
     "build": "rimraf lib && tsc",
     "typecheck": "tsc --noEmit"
   },
