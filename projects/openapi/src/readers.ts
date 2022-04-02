@@ -6,12 +6,12 @@ import {
   httpsRead,
   httpsUriSanitizer,
   httpUriSanitizer,
+  mixedUriSanitizer,
   jsonParse,
   mixedParse,
   mixedRead,
   yamlParse,
 } from '@oats-ts/openapi-reader'
-import { mixedUriSanitizer } from '@oats-ts/openapi-reader/lib/utils/mixedUriSanitizer'
 
 export const readers = {
   custom: reader,

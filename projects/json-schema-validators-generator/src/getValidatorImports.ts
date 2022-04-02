@@ -2,11 +2,10 @@ import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-sche
 import { isReferenceObject } from '@oats-ts/model-common'
 import { isEmpty, entries, isNil, sortBy, values } from 'lodash'
 import { getDiscriminators, RuntimePackages } from '@oats-ts/model-common'
-import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { getInferredType, JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { ImportDeclaration } from 'typescript'
 import { ValidatorsGeneratorConfig } from './typings'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common/lib/types'
 
 export type ImportCollector = (
   data: Referenceable<SchemaObject>,
