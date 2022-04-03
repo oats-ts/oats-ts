@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-express-server-adapter",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -33,9 +33,9 @@
   },
   "dependencies": {
     "@types/whatwg-mimetype": "2.1.1",
-    "@oats-ts/openapi-http": "0.0.20",
-    "@oats-ts/try": "0.0.20",
-    "@oats-ts/validators": "0.0.20",
+    "@oats-ts/openapi-http": "0.0.21",
+    "@oats-ts/try": "0.0.21",
+    "@oats-ts/validators": "0.0.21",
     "@types/express": "4.17.13",
     "whatwg-mimetype": "2.3.0"
   },

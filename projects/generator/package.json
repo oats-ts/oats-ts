@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/generator",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -35,6 +35,6 @@
   "dependencies": {
     "chalk": "4.1.1",
     "lodash": "4.17.21",
-    "@oats-ts/validators": "0.0.20"
+    "@oats-ts/validators": "0.0.21"
   }
 }
