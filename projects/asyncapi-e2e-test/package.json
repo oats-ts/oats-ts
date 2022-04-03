@@ -17,7 +17,7 @@
   "scripts": {
     "build": "echo 'Nothing to build'",
     "g": "ts-node ./src/generate.ts",
-    "test": "cross-env jest --runInBand",
+    "test": "echo 'TODO'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

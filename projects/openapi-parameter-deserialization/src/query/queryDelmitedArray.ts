@@ -24,5 +24,5 @@ export const queryDelimitedArray =
           ? success(undefined)
           : fromArray(values.map((value, index) => parse(decode(value), name, config.append(path, index), config))),
       )
-      .toJson()
+      .toTry()
   }

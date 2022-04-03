@@ -10,5 +10,5 @@ export const pathLabelPrimitive =
     return fluent(getPathValue(name, path, data))
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, '.'))
       .flatMap((rawValue) => parse(decode(rawValue), name, path, config))
-      .toJson()
+      .toTry()
   }

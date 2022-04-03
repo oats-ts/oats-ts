@@ -34,7 +34,7 @@ export function queryFormObjectExplode<T extends PrimitiveRecord>(
       const decodedValue = isNil(value) ? value : decode(value)
       return fluent(parser(decodedValue, key, config.append(path, key), config))
         .map((valueForKey): [string, Primitive] => [key, valueForKey])
-        .toJson()
+        .toTry()
     }),
   )
 

@@ -14,5 +14,5 @@ export const pathLabelObject =
         const separator = options.explode ? '.' : ','
         return joinKeyValuePairs('.', kvSeparator, separator, entries(value))
       })
-      .toJson()
+      .toTry()
   }

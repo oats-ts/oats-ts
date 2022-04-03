@@ -42,7 +42,7 @@ function pathMatrixArrayExplode<T extends Primitive>(
       })
       return fromArray(parsed)
     })
-    .toJson()
+    .toTry()
 }
 
 function pathMatrixArrayNoExplode<T extends Primitive>(
@@ -59,7 +59,7 @@ function pathMatrixArrayNoExplode<T extends Primitive>(
         rawValue.split(',').map((value, index) => parse(decode(value), name, config.append(path, index), config)),
       )
     })
-    .toJson()
+    .toTry()
 }
 
 export const pathMatrixArray =

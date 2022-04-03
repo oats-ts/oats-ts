@@ -9,5 +9,5 @@ export const pathSimplePrimitive =
     return fluent(getPathValue(path, data, options))
       .flatMap((value) => validatePathPrimitive(path, value))
       .map((value) => encode(value))
-      .toJson()
+      .toTry()
   }

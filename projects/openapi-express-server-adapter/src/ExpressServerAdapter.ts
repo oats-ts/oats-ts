@@ -6,8 +6,8 @@ import {
   ResponseHeadersSerializer,
   ServerAdapter,
 } from '@oats-ts/openapi-http'
-import { failure, fluent, success, Try } from '@oats-ts/try'
-import { configure, Issue, IssueTypes } from '@oats-ts/validators'
+import { failure, isFailure, success, Try } from '@oats-ts/try'
+import { configure, Issue, IssueTypes, stringify } from '@oats-ts/validators'
 import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
 
@@ -101,7 +101,14 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     if (serializer === null || serializer === undefined) {
       return mimeTypeHeaders
     }
-    return { ...fluent(serializer(response.headers)).getData(), ...mimeTypeHeaders }
+    const headers = serializer(response.headers)
+    if (isFailure(headers)) {
+      throw new Error(`Failed to serialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
+    }
+    return {
+      ...headers.data,
+      ...mimeTypeHeaders,
+    }
   }
 
   async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {

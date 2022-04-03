@@ -9,5 +9,5 @@ export const queryFormPrimitive =
   (data: RawQueryParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
     return fluent(getQueryValue(name, path, data, options))
       .flatMap((value) => (isNil(value) ? success(undefined) : parse(decode(value), name, path, config)))
-      .toJson()
+      .toTry()
   }

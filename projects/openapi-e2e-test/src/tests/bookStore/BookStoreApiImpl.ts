@@ -18,13 +18,14 @@ export class BookStoreApiImpl implements BookStoreApi {
 
   async addBook(request: AddBookServerRequest): Promise<AddBookResponse> {
     return fluent(request.body)
-      .map(
-        (book): Book => ({
-          ...book,
+      .map((body): Book => {
+        const book: Book = {
+          ...body,
           id: Math.max(...this.books.map(({ id }) => id)) + 1,
-        }),
-      )
-      .doIfSuccess((book) => this.books.push(book))
+        }
+        this.books.push(book)
+        return book
+      })
       .get(
         (book): AddBookResponse => ({
           body: book,

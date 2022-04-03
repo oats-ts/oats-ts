@@ -9,5 +9,5 @@ export const headerSimplePrimitive =
   (data: RawHeaders, name: string, path: string, config: ValidatorConfig): Try<T> => {
     return fluent(getHeaderValue(name, path, data, options.required))
       .flatMap((value) => (isNil(value) ? success(undefined) : parse(decode(value), name, path, config)))
-      .toJson()
+      .toTry()
   }

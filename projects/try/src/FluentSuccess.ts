@@ -10,7 +10,7 @@ export class FluentSuccess<T> implements Success<T>, Fluent<T> {
   }
 
   public get<S, F>(mapSuccess: (input: T) => S, _: (issues: Issue[]) => F): S {
-    return mapSuccess(this.getData())
+    return mapSuccess(this.data)
   }
 
   public isSuccess(): boolean {
@@ -22,39 +22,14 @@ export class FluentSuccess<T> implements Success<T>, Fluent<T> {
   }
 
   public map<R>(transform: (input: T) => R): FluentSuccess<R> {
-    return new FluentSuccess(transform(this.getData()))
+    return new FluentSuccess(transform(this.data))
   }
 
   public flatMap<R>(transform: (input: T) => Try<R>): FluentTry<R> {
-    return fluent(transform(this.getData()))
+    return fluent(transform(this.data))
   }
 
-  public getData(): T {
-    return this.data
-  }
-
-  public getDataOrElse(): T {
-    return this.getData()
-  }
-
-  public getIssues(): never {
-    throw new TypeError(`Can't call ${FluentSuccess.prototype.getIssues.name} on ${FluentSuccess.name}`)
-  }
-
-  public getIssuesOrElse(issues: Issue[]): Issue[] {
-    return issues
-  }
-
-  public doIfSuccess(effect: (data: T) => void): FluentSuccess<T> {
-    effect(this.getData())
-    return this
-  }
-
-  public doIfFailure(): FluentSuccess<T> {
-    return this
-  }
-
-  public toJson(): Success<T> {
-    return { data: this.getData() }
+  public toTry(): Success<T> {
+    return { data: this.data }
   }
 }

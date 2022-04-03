@@ -14,6 +14,6 @@ export const pathLabelObject = <T extends PrimitiveRecord>(
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, '.'))
       .flatMap((rawDataStr) => parseRecord(rawDataStr, path))
       .flatMap((rawRecord) => parsePathFromRecord(parsers, rawRecord, name, path, config))
-      .toJson()
+      .toTry()
   }
 }

@@ -1,4 +1,4 @@
-import { fluent, isFailure } from '@oats-ts/try'
+import { Failure, isFailure, Success } from '@oats-ts/try'
 import { DefaultConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from '../types'
 
@@ -19,14 +19,14 @@ export const createValueParserTest = <Input extends Primitive, Output extends Pr
     if (data.data.length > 0) {
       it.each(data.data)('should parse to %j, given input: %j', (expected: Output, input: Input) => {
         const result = parser(input, 'test', 'test.test', DefaultConfig)
-        expect(fluent(result).getData()).toEqual(expected)
+        expect((result as Success<string>).data).toEqual(expected)
       })
     }
     if (data.error.length > 0) {
       it.each(data.error)('should produce issues, given input: %j', (input: Input) => {
         const result = parser(input, 'test', 'test.test', DefaultConfig)
         expect(isFailure(result)).toBe(true)
-        expect(fluent(result).getIssues()).not.toHaveLength(0)
+        expect((result as Failure).issues).not.toHaveLength(0)
       })
     }
   })
