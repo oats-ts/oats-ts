@@ -15,19 +15,19 @@ export const combineMiddlewares =
     const _middlewares = Array.from(middlewares)
     function step(middleware?: Handler): void {
       if (middleware === undefined) {
-        return
+        return next()
       }
       try {
         middleware(request, response, (error: any) => {
           if (error) {
-            next(error)
+            return next(error)
           } else {
-            step(_middlewares.shift())
+            return step(_middlewares.shift())
           }
         })
       } catch (error) {
-        next(error)
+        return next(error)
       }
     }
-    step(_middlewares.shift())
+    return step(_middlewares.shift())
   }
