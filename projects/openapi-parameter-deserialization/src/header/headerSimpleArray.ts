@@ -9,6 +9,6 @@ export const headerSimpleArray = <T extends Primitive>(parse: ValueParser<string
   return (data: RawHeaders, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return fluent(getHeaderValue(name, path, data, options.required))
       .flatMap((value) => arrayParser(value, name, path, config))
-      .toJson()
+      .toTry()
   }
 }

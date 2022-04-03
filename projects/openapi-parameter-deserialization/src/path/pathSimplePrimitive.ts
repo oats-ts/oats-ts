@@ -9,5 +9,5 @@ export const pathSimplePrimitive =
   (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
     return fluent(getPathValue(name, path, data))
       .flatMap((pathValue) => parse(decode(pathValue), name, path, config))
-      .toJson()
+      .toTry()
   }

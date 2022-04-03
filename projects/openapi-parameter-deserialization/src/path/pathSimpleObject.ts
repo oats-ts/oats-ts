@@ -13,6 +13,6 @@ export const pathSimpleObject = <T extends PrimitiveRecord>(
     return fluent(getPathValue(name, path, data))
       .flatMap((rawDataStr) => parseRecord(rawDataStr, path))
       .flatMap((rawRecord) => parsePathFromRecord(parsers, rawRecord, name, path, config))
-      .toJson()
+      .toTry()
   }
 }

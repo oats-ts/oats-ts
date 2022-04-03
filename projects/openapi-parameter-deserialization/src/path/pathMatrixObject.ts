@@ -15,6 +15,6 @@ export const pathMatrixObject = <T extends PrimitiveRecord>(
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, prefix))
       .flatMap((rawValue) => parseRecord(rawValue, path))
       .flatMap((rawRecord) => parsePathFromRecord(parsers, rawRecord, name, path, config))
-      .toJson()
+      .toTry()
   }
 }

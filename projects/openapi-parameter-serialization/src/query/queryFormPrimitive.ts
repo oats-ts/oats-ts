@@ -15,5 +15,5 @@ export const queryFormPrimitive =
         const valStr = encode(value)
         return [`${keyStr}=${valStr}`]
       })
-      .toJson()
+      .toTry()
   }

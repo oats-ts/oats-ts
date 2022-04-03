@@ -8,8 +8,7 @@ import { Expression, ImportDeclaration, factory } from 'typescript'
 import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common/lib/types'
+import { JsonSchemaGeneratorTarget, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
   implements CodeGenerator<T, TypeScriptModule>

@@ -8,5 +8,5 @@ export const headerSimplePrimitive =
   (data: T, name: string, path: string): Try<string> => {
     return fluent(getHeaderValue(path, data, options))
       .map((value) => (isNil(value) ? undefined : encode(value)))
-      .toJson()
+      .toTry()
   }

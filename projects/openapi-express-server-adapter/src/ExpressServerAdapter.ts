@@ -6,9 +6,10 @@ import {
   ResponseHeadersSerializer,
   ServerAdapter,
 } from '@oats-ts/openapi-http'
-import { failure, fluent, success, Try } from '@oats-ts/try'
-import { configure, Issue, IssueTypes } from '@oats-ts/validators'
+import { failure, isFailure, success, Try } from '@oats-ts/try'
+import { configure, Issue, IssueTypes, stringify } from '@oats-ts/validators'
 import { ExpressToolkit } from './typings'
+import MIMEType from 'whatwg-mimetype'
 
 export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
@@ -25,16 +26,24 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   }
 
   async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
-    return toolkit.request.header('Content-Type') as M
+    const mimeType = toolkit.request.header('Content-Type')
+    if (mimeType === null || mimeType === undefined) {
+      return undefined as unknown as M
+    }
+    return new MIMEType(mimeType).essence as M
   }
 
   async getRequestBody<M extends string, B>(
     toolkit: ExpressToolkit,
+    required: boolean,
     mimeType: M | undefined,
     validators: RequestBodyValidators<M>,
   ): Promise<Try<B>> {
-    // No mimetype means that getMimeType failed
+    // No mimetype means we can only pass if the request body is not required.
     if (mimeType === null || mimeType === undefined) {
+      if (!required) {
+        return success(undefined as unknown as B)
+      }
       const issue: Issue = {
         message: `missing "content-type" header`,
         severity: 'error',
@@ -44,8 +53,11 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       return failure([issue])
     }
     if (validators[mimeType] === null || validators[mimeType] === undefined) {
+      const contentTypes = Object.keys(validators)
+      const expectedContentTypes =
+        contentTypes.length === 1 ? `"${contentTypes[0]}"` : `one of ${contentTypes.map((ct) => `"${ct}"`).join(', ')}`
       const issue: Issue = {
-        message: `unexpected "content-type" request header "${mimeType}"`,
+        message: `"content-type" should be ${expectedContentTypes}`,
         severity: 'error',
         path: 'headers',
         type: IssueTypes.other,
@@ -80,7 +92,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     response: HttpResponse,
     serializers?: ResponseHeadersSerializer,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders =
+    const mimeTypeHeaders: RawHttpHeaders =
       response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }
     if (serializers === null || serializers === undefined) {
       return mimeTypeHeaders
@@ -89,7 +101,14 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     if (serializer === null || serializer === undefined) {
       return mimeTypeHeaders
     }
-    return { ...fluent(serializer(response.headers)).getData(), ...mimeTypeHeaders }
+    const headers = serializer(response.headers)
+    if (isFailure(headers)) {
+      throw new Error(`Failed to serialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
+    }
+    return {
+      ...headers.data,
+      ...mimeTypeHeaders,
+    }
   }
 
   async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
@@ -108,7 +127,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     toolkit.next()
   }
 
-  async handleError(toolkit: ExpressToolkit, error: Error): Promise<void> {
+  async handleError(toolkit: ExpressToolkit, error: any): Promise<void> {
     return toolkit.next(error)
   }
 }

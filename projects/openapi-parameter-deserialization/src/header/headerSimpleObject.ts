@@ -20,5 +20,5 @@ export const headerSimpleObject =
       .flatMap((rawRecord?: Record<string, string>) =>
         isNil(rawRecord) ? success(undefined) : parseHeadersFromRecord(parsers, rawRecord, name, path, config),
       )
-      .toJson()
+      .toTry()
   }

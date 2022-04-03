@@ -6,8 +6,9 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getContentTypeBasedValidatorsAst } from '../getContentTypeBasedValidatorsAst'
 
 export function getRequestBodyValidatorAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
-  const { nameOf } = context
+  const { nameOf, dereference } = context
   const { operation } = data
+  const body = dereference(data.operation.requestBody)
 
   const varName = nameOf(operation, 'openapi/request-body-validator')
 
@@ -21,7 +22,7 @@ export function getRequestBodyValidatorAst(data: EnhancedOperation, context: Ope
           undefined,
           factory.createAsExpression(
             factory.createObjectLiteralExpression(
-              getContentTypeBasedValidatorsAst(getRequestBodyContent(data, context), context),
+              getContentTypeBasedValidatorsAst(Boolean(body?.required), getRequestBodyContent(data, context), context),
             ),
             factory.createTypeReferenceNode('const'),
           ),

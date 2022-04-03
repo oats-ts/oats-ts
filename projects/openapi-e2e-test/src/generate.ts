@@ -4,10 +4,10 @@ import {
   nameProviders,
   pathProviders,
   validator,
-  writer,
-  reader,
-  prettierStringify,
+  writers,
+  readers,
   presets,
+  formatters,
 } from '@oats-ts/openapi'
 import { promises as fs } from 'fs'
 import { join, parse } from 'path'
@@ -48,11 +48,11 @@ export async function generateCode(path: string) {
   return generate({
     configuration: {
       log: true,
-      name: nameProviders.default(),
-      path: pathProviders.singleFile(codePath),
+      nameProvider: nameProviders.default(),
+      pathProvider: pathProviders.singleFile(codePath),
     },
     validator: validator(),
-    reader: reader({ path: url }),
+    reader: readers.https.json(url),
     generators: presets.fullStack({
       'json-schema/type-guard': {
         ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
@@ -61,7 +61,15 @@ export async function generateCode(path: string) {
         ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
       },
     }),
-    writer: writer({
+    writer: writers.typescript({
+      format: formatters.prettier({
+        parser: 'typescript',
+        arrowParens: 'always',
+        printWidth: 120,
+        semi: false,
+        singleQuote: true,
+        trailingComma: 'all',
+      }),
       comments: {
         leadingComments: [
           {
@@ -70,14 +78,6 @@ export async function generateCode(path: string) {
           },
         ],
       },
-      stringify: prettierStringify({
-        parser: 'typescript',
-        arrowParens: 'always',
-        printWidth: 120,
-        semi: false,
-        singleQuote: true,
-        trailingComma: 'all',
-      }),
     }),
   })
 }

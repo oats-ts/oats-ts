@@ -9,5 +9,5 @@ export const pathLabelArray =
     return fluent(getPathValue(path, data, options))
       .flatMap((pathValue) => validatePathArray(path, pathValue))
       .map((value) => joinArrayItems('.', options.explode ? '.' : ',', value))
-      .toJson()
+      .toTry()
   }

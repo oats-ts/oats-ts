@@ -7,6 +7,6 @@ export function nameOf(data: ReadOutput<any>, config: GeneratorConfig): NameProv
     if (isNil(config) || isNil(target)) {
       return data.objectToName.get(input)
     }
-    return config.name(input, data.objectToName.get(input), target)
+    return config.nameProvider(input, data.objectToName.get(input), target)
   }
 }

@@ -9,7 +9,7 @@ import {
   ResponseBodyValidators,
   ClientAdapter,
 } from '@oats-ts/openapi-http'
-import { fluent, Try } from '@oats-ts/try'
+import { isFailure, Try } from '@oats-ts/try'
 import { configure, stringify } from '@oats-ts/validators'
 
 export type FetchClientAdapterConfig = {
@@ -60,7 +60,11 @@ export class FetchClientAdapter implements ClientAdapter {
   }
 
   async getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string> {
-    return fluent(serializer(input.path)).getData()
+    const path = serializer(input.path)
+    if (isFailure(path)) {
+      throw new Error(`Failed to serialize path:\n${path.issues.map(stringify).join('\n')}`)
+    }
+    return path.data
   }
   async getQuery(
     input: Partial<TypedHttpRequest>,
@@ -70,7 +74,11 @@ export class FetchClientAdapter implements ClientAdapter {
     if (serializer === undefined || serializer === null) {
       return undefined
     }
-    return fluent(serializer(input.query)).getData()
+    const query = serializer(input.query)
+    if (isFailure(query)) {
+      throw new Error(`Failed to serialize query:\n${query.issues.map(stringify).join('\n')}`)
+    }
+    return query.data
   }
   async getUrl(path: string, query?: string): Promise<string> {
     const { url } = this.config
@@ -80,11 +88,19 @@ export class FetchClientAdapter implements ClientAdapter {
     input?: Partial<TypedHttpRequest>,
     serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders> {
-    return {
-      ...(serializer === undefined || serializer === null || input === undefined || input === null
-        ? {}
-        : fluent(serializer(input.headers)).getData()),
+    const mimeTypeHeaders = {
       ...(typeof input?.mimeType === 'string' ? { 'content-type': input.mimeType } : {}),
+    }
+    if (serializer === undefined || serializer === null || input === undefined || input === null) {
+      return mimeTypeHeaders
+    }
+    const headers = serializer(input.headers)
+    if (isFailure(headers)) {
+      throw new Error(`Failed to serialize request headers:\n${headers.issues.map(stringify).join('\n')}`)
+    }
+    return {
+      ...headers.data,
+      ...mimeTypeHeaders,
     }
   }
   async getRequestBody(input: Partial<TypedHttpRequest>): Promise<any> {
@@ -124,7 +140,11 @@ export class FetchClientAdapter implements ClientAdapter {
     if (response.headers === null || response.headers === undefined) {
       throw new Error(`Response headers should not be ${response.headers}`)
     }
-    return fluent(deserializers[statusCode](response.headers)).getData()
+    const headers = deserializers[statusCode](response.headers)
+    if (isFailure(headers)) {
+      throw new Error(`Failed to deserialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
+    }
+    return headers.data
   }
   async getResponseBody(
     response: RawHttpResponse,

@@ -11,18 +11,10 @@ export class FluentFailure implements Failure, Fluent<any> {
   public get<S, F>(_: (input: never) => S, mapFailure: (input: Issue[]) => F): F {
     if (typeof mapFailure !== 'function') {
       throw new TypeError(
-        `Can't call ${FluentFailure.prototype.get.name} on ${FluentFailure.name}\n${this.getIssues().map(stringify)}`,
+        `Can't call ${FluentFailure.prototype.get.name} on ${FluentFailure.name}\n${this.issues.map(stringify)}`,
       )
     }
-    return mapFailure(this.getIssues())
-  }
-
-  public isSuccess(): boolean {
-    return false
-  }
-
-  public isFailure(): boolean {
-    return true
+    return mapFailure(this.issues)
   }
 
   public map(): FluentFailure {
@@ -33,32 +25,7 @@ export class FluentFailure implements Failure, Fluent<any> {
     return this
   }
 
-  public getData(): never {
-    throw new TypeError(`Can't call ${FluentFailure.prototype.getData.name} on ${FluentFailure.name}`)
-  }
-
-  public getDataOrElse(data: any): any {
-    return data
-  }
-
-  public getIssues(): Issue[] {
-    return this.issues
-  }
-
-  public getIssuesOrElse(): Issue[] {
-    return this.getIssues()
-  }
-
-  public doIfSuccess(): FluentFailure {
-    return this
-  }
-
-  public doIfFailure(effect: (issues: Issue[]) => void): FluentFailure {
-    effect(this.getIssues())
-    return this
-  }
-
-  public toJson(): Failure {
-    return { issues: this.getIssues() }
+  public toTry(): Failure {
+    return { issues: this.issues }
   }
 }

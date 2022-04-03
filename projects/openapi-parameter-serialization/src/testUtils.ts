@@ -1,4 +1,4 @@
-import { fluent, Try } from '@oats-ts/try'
+import { Failure, Success, Try } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { QueryOptions, ParameterValue, PathOptions, HeaderOptions } from './types'
 
@@ -35,11 +35,11 @@ export function createSerializerTest<Result, Options>(
   describe(name, () => {
     it.each(data.data)('should be "%s", given options: %s, name %s, value: %s', (expected, options, name, value) => {
       const result = fn(options)(value, name, config.append(location, name), config)
-      expect(fluent(result).getData()).toEqual(expected)
+      expect((result as Success<any>).data).toEqual(expected)
     })
     it.each(data.error)('should throw, given options: %s, name %s, value: %s', (options, name, value) => {
       const result = fn(options)(value, name, config.append(location, name), config)
-      expect(fluent(result).getIssues()).not.toHaveLength(0)
+      expect((result as Failure).issues).not.toHaveLength(0)
     })
   })
 }

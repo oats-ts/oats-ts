@@ -48,7 +48,8 @@ export function getRequestBodyRelatedStatementAsts(
   if (!hasRequestBody(data, context)) {
     return []
   }
-  const { referenceOf } = context
+  const { referenceOf, dereference } = context
+  const reqBody = dereference(data.operation.requestBody, true)
   const mediaTypeUnion = getMimeTypesUnionType(data, context)
   const bodiesUnion = getBodyTypesUnionType(data, context)
   const mimeType = factory.createVariableStatement(
@@ -92,6 +93,7 @@ export function getRequestBodyRelatedStatementAsts(
               [mediaTypeUnion, bodiesUnion],
               [
                 factory.createIdentifier(Names.toolkit),
+                reqBody?.required ? factory.createTrue() : factory.createFalse(),
                 factory.createIdentifier(Names.mimeType),
                 referenceOf(data.operation, 'openapi/request-body-validator'),
               ],

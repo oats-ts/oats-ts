@@ -51,14 +51,14 @@ export type GeneratorConfig = {
    * @param target The generator target (type definition, operation, etc).
    * @returns The desired name based on the parameters.
    */
-  name: GeneratorNameProvider
+  nameProvider: GeneratorNameProvider
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param name A simplified name provider.
    * @param target The generator target (type definition, operation, etc).
    * @returns The operating system dependent path for the desired generator target.
    */
-  path: GeneratorPathProvider
+  pathProvider: GeneratorPathProvider
 }
 
 export type GeneratorPathProvider = (input: any, name: NameProvider, target: string) => string | undefined

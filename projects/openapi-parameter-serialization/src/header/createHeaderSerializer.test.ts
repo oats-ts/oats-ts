@@ -1,4 +1,4 @@
-import { fluent } from '@oats-ts/try'
+import { Success } from '@oats-ts/try'
 import { header } from '.'
 import { HeaderSerializers } from '../types'
 import { createHeaderSerializer } from './createHeaderSerializer'
@@ -22,17 +22,14 @@ const serializers: HeaderSerializers<HeaderParams> = {
 describe('createPathSerializer', () => {
   it('should successfuly serialize headers', () => {
     const serializer = createHeaderSerializer<HeaderParams>(serializers)
-    expect(
-      fluent(
-        serializer({
-          'X-Str': 'test',
-          'x-num': 42,
-          'x-Bool': true,
-          'x-Arr': ['a', 'b'],
-          'x-obj': { foo: 'bar' },
-        }),
-      ).getData(),
-    ).toEqual({
+    const result = serializer({
+      'X-Str': 'test',
+      'x-num': 42,
+      'x-Bool': true,
+      'x-Arr': ['a', 'b'],
+      'x-obj': { foo: 'bar' },
+    })
+    expect((result as Success<any>).data).toEqual({
       'x-str': 'test',
       'x-num': '42',
       'x-bool': 'true',

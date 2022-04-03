@@ -10,5 +10,5 @@ export const pathMatrixPrimitive =
     return fluent(getPathValue(name, path, data))
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, `;${encode(name)}=`))
       .flatMap((rawValue) => parse(decode(rawValue), name, path, config))
-      .toJson()
+      .toTry()
   }

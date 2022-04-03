@@ -21,6 +21,6 @@ export const createPathDeserializer = <T extends ParameterObject>(
         )
         return fromRecord(deserialized) as Try<T>
       })
-      .toJson()
+      .toTry()
   }
 }

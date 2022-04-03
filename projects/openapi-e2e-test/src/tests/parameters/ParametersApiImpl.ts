@@ -20,7 +20,7 @@ import {
   SpaceDelimitedQueryParametersResponse,
   SpaceDelimitedQueryParametersServerRequest,
 } from '../../generated/parameters'
-import { fluent, isFailure, Try } from '@oats-ts/try'
+import { isFailure, Try } from '@oats-ts/try'
 import { HttpResponse } from '@oats-ts/openapi-http'
 
 type ParameterResponse<T> =
@@ -33,15 +33,13 @@ export class ParametersApiImpl implements ParametersApi {
       return {
         mimeType: 'application/json',
         statusCode: 400,
-        body: fluent(params)
-          .getIssues()
-          .map((issue) => ({ message: issue.message })),
+        body: params.issues.map((issue) => ({ message: issue.message })),
       }
     }
     return {
       mimeType: 'application/json',
       statusCode: 200,
-      body: fluent(params).getData(),
+      body: params.data,
     }
   }
   async simpleResponseHeaderParameters(
@@ -51,14 +49,12 @@ export class ParametersApiImpl implements ParametersApi {
       return {
         mimeType: 'application/json',
         statusCode: 400,
-        body: fluent(input.body)
-          .getIssues()
-          .map((issue) => ({ message: issue.message })),
+        body: input.body.issues.map((issue) => ({ message: issue.message })),
       }
     }
     return {
       body: { ok: true },
-      headers: fluent(input.body).getData(),
+      headers: input.body.data,
       mimeType: 'application/json',
       statusCode: 200,
     }

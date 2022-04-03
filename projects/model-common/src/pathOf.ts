@@ -9,6 +9,6 @@ export function pathOf(data: ReadOutput<any>, config: GeneratorConfig) {
     if (isNil(config) || isNil(target)) {
       return undefined
     }
-    return config.path(input, nameProvider, target)
+    return config.pathProvider(input, nameProvider, target)
   }
 }

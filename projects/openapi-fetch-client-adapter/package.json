@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-fetch-client-adapter",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -25,7 +25,7 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "devDependencies": {
-    "@types/whatwg-mimetype": "2.1.0",
+    "@types/whatwg-mimetype": "2.1.1",
     "@types/jest": "26.0.23",
     "@types/node": "16.7.1",
     "jest": "27.0.4",
@@ -36,8 +36,8 @@
   "dependencies": {
     "cross-fetch": "3.1.5",
     "whatwg-mimetype": "2.3.0",
-    "@oats-ts/openapi-http": "0.0.20",
-    "@oats-ts/try": "0.0.20",
-    "@oats-ts/validators": "0.0.20"
+    "@oats-ts/openapi-http": "0.0.21",
+    "@oats-ts/try": "0.0.21",
+    "@oats-ts/validators": "0.0.21"
   }
 }

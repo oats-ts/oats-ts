@@ -33,6 +33,7 @@ export type ServerAdapter<T> = {
   getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
     toolkit: T,
+    required: boolean,
     mimeType: M | undefined,
     validator: RequestBodyValidators<M>,
   ): Promise<Try<B>>
@@ -42,7 +43,7 @@ export type ServerAdapter<T> = {
   getResponseHeaders(toolkit: T, resp: HttpResponse, serializer?: ResponseHeadersSerializer): Promise<RawHttpHeaders>
 
   respond(toolkit: T, response: RawHttpResponse): Promise<void>
-  handleError(toolkit: T, error: Error): Promise<void>
+  handleError(toolkit: T, error: any): Promise<void>
 }
 
 export type RequestBodyValidators<C extends string = string> = {

@@ -13,6 +13,6 @@ export const pathLabelArray = <T extends Primitive>(
     return fluent(getPathValue(name, path, data))
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, '.'))
       .flatMap((value) => arrayParser(value, name, path, config))
-      .toJson()
+      .toTry()
   }
 }
