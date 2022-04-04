@@ -1,4 +1,4 @@
-import { Result, GeneratorConfig } from '@oats-ts/generator'
+import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
 import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
@@ -29,8 +29,12 @@ export class RequestTypesGenerator implements OpenAPIGenerator<'openapi/request-
   ]
   public readonly runtimeDepencencies: string[] = []
 
-  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators)
+  public initialize(
+    data: OpenAPIReadOutput,
+    config: GeneratorConfig,
+    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
+  ): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, 'openapi/operation'),

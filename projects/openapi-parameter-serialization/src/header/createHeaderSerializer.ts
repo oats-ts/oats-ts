@@ -11,7 +11,7 @@ export const createHeaderSerializer =
       const inputValue = input[key as keyof T]
       const value = serializer(inputValue, key, config.append(path, key as string | number), config)
       if ((isSuccess(value) && !isNil(value.data)) || isFailure(value)) {
-        parts[key.toString().toLowerCase()] = value
+        parts[key.toString().toLowerCase()] = value as Try<string>
       }
       return parts
     }, {})

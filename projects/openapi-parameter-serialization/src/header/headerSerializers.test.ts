@@ -6,6 +6,6 @@ import {
   headerSimplePrimitiveTestData,
 } from './headerSerializers.testdata'
 
-createSerializerTest('header.simple.primitive', headerSimplePrimitiveTestData, header.simple.primitive)
-createSerializerTest('header.simple.array', headerSimpleArrayTestData, header.simple.array)
-createSerializerTest('header.simple.object', headerSimpleObjectTestData, header.simple.object)
+createSerializerTest('header.simple.primitive', headerSimplePrimitiveTestData, header.simple.primitive as any)
+createSerializerTest('header.simple.array', headerSimpleArrayTestData, header.simple.array as any)
+createSerializerTest('header.simple.object', headerSimpleObjectTestData, header.simple.object as any)

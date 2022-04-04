@@ -351,11 +351,11 @@ export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>
 })
 
 export const getBooksQuerySerializer = createQuerySerializer<GetBooksQueryParameters>({
-  offset: serializers.query.form.primitive<number>({ required: false }),
+  offset: serializers.query.form.primitive<number | undefined>({ required: false }),
 })
 
 export const getBooksRequestHeadersSerializer = createHeaderSerializer<GetBooksRequestHeaderParameters>({
-  'x-limit': serializers.header.simple.primitive<number>({ required: false }),
+  'x-limit': serializers.header.simple.primitive<number | undefined>({ required: false }),
 })
 
 /**

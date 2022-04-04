@@ -8,6 +8,7 @@ type Q = {
   c: boolean
   d: string[]
   e: Record<string, number>
+  opt?: string
 }
 
 const serializer = createQuerySerializer<Q>({
@@ -16,6 +17,7 @@ const serializer = createQuerySerializer<Q>({
   c: query.form.primitive<boolean>({}),
   d: query.form.array<string[]>({}),
   e: query.form.object<Record<string, number>>({}),
+  opt: query.form.primitive<string | undefined>({}),
 })
 
 // TODO more full scope tests
@@ -38,7 +40,7 @@ describe('createQuerySerializer', () => {
       c: undefined,
       d: null,
       e: undefined,
-    })
+    } as unknown as Q)
 
     expect((queryString as Success<string>).data).toBe(undefined)
   })

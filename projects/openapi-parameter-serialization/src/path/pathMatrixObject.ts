@@ -5,7 +5,7 @@ import { joinKeyValuePairs } from './joinKeyValuePairs'
 import { getPathValue, validatePathObject } from './pathUtils'
 
 export const pathMatrixObject =
-  <T extends PrimitiveRecord>(options: PathOptions<T> = {}): PathSerializer<T> =>
+  <T extends PrimitiveRecord>(options: PathOptions = {}): PathSerializer<T> =>
   (data: T, name: string, path: string): Try<string> => {
     return fluent(getPathValue(path, data, options))
       .flatMap((value) => validatePathObject(path, value))
@@ -14,7 +14,7 @@ export const pathMatrixObject =
           options.explode ? ';' : `;${encode(name)}=`,
           options.explode ? '=' : ',',
           options.explode ? ';' : ',',
-          entries(value),
+          entries(value!),
         ),
       )
       .toTry()

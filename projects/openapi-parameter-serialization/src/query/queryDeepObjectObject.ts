@@ -5,9 +5,9 @@ import { encode, entries, isNil } from '../utils'
 import { getQueryValue } from './queryUtils'
 
 export const queryDeepObjectObject =
-  <T extends PrimitiveRecord>(opts: QueryOptions<T> = {}): QuerySerializer<T> =>
+  <T extends PrimitiveRecord>(opts: QueryOptions = {}): QuerySerializer<T> =>
   (data: T, name: string, path: string): Try<string[]> => {
-    const options: QueryOptions<T> = { explode: true, ...opts }
+    const options: QueryOptions = { explode: true, ...opts }
     return fluent(getQueryValue(path, data, options))
       .flatMap((value) => {
         if (!options.explode) {

@@ -4,7 +4,7 @@ import { encode } from '../utils'
 import { getPathValue, validatePathPrimitive } from './pathUtils'
 
 export const pathMatrixPrimitive =
-  <T extends Primitive>(options: PathOptions<T> = {}): PathSerializer<T> =>
+  <T extends Primitive>(options: PathOptions = {}): PathSerializer<T> =>
   (data: T, name: string, path: string): Try<string> => {
     return fluent(getPathValue(path, data, options))
       .flatMap((value) => validatePathPrimitive(path, value))

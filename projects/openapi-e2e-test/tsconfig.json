@@ -7,6 +7,7 @@
     "target": "es6",
     "sourceMap": true,
     "esModuleInterop": true,
+    "strict": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
@@ -20,16 +21,8 @@
     "noUnusedParameters": true,
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
-    "lib": [
-      "es6",
-      "DOM"
-    ]
+    "lib": ["es6", "DOM"]
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules", "lib"]
 }

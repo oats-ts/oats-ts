@@ -12,7 +12,7 @@ import {
 } from '../types'
 import { isNil } from '../utils'
 
-export function validatePathArray<T extends PrimitiveArray>(path: string, input: T): Try<T> {
+export function validatePathArray<T extends Primitive>(path: string, input: ReadonlyArray<T>): Try<ReadonlyArray<T>> {
   switch (input.length) {
     case 0: {
       return failure([
@@ -44,7 +44,7 @@ export function validatePathArray<T extends PrimitiveArray>(path: string, input:
 }
 
 export function validatePathObject<T extends PrimitiveRecord>(path: string, input: T): Try<T> {
-  const keys = Object.keys(input)
+  const keys = Object.keys(input || {})
   switch (keys.length) {
     case 0: {
       return failure([
@@ -77,7 +77,7 @@ export function validatePathPrimitive<T extends Primitive>(path: string, input: 
   }
 }
 
-export function getPathValue<T extends ParameterValue>(path: string, value: T, options: PathOptions<T>): Try<T> {
+export function getPathValue<T extends ParameterValue>(path: string, value: T, options: PathOptions): Try<T> {
   if (!isNil(value)) {
     return success(value)
   }
@@ -96,8 +96,8 @@ export function validatePathSerializers<T extends ParameterObject>(
   serializers: PathSerializers<T>,
 ): void {
   const parameterNames = segments
-    .filter((segment) => segment.type === 'parameter')
-    .map((segment: ParameterSegment) => segment.name)
+    .filter((segment): segment is ParameterSegment => segment.type === 'parameter')
+    .map((segment) => segment.name)
   const serializerKeys = Object.keys(serializers)
 
   const missingKeys = parameterNames.filter((name) => serializerKeys.indexOf(name) < 0)

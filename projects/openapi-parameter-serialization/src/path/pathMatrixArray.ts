@@ -6,19 +6,19 @@ import { joinKeyValuePairs } from './joinKeyValuePairs'
 import { getPathValue, validatePathArray } from './pathUtils'
 
 export const pathMatrixArray =
-  <T extends PrimitiveArray>(options: PathOptions<T> = {}): PathSerializer<T> =>
+  <T extends PrimitiveArray>(options: PathOptions = {}): PathSerializer<T> =>
   (data: T, name: string, path: string): Try<string> => {
     return fluent(getPathValue(path, data, options))
-      .flatMap((value) => validatePathArray(path, value))
+      .flatMap((value) => validatePathArray(path, value!))
       .map((value) => {
         if (!options.explode) {
-          return joinArrayItems(`;${encode(name)}=`, ',', value)
+          return joinArrayItems(`;${encode(name)}=`, ',', value!)
         }
         return joinKeyValuePairs(
           ';',
           '=',
           ';',
-          value.map((v): [string, Primitive] => [name, v]),
+          value!.map((v): [string, Primitive] => [name, v]),
         )
       })
       .toTry()
