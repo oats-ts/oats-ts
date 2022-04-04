@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-fetch-client-adapter",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -36,8 +36,8 @@
   "dependencies": {
     "cross-fetch": "3.1.5",
     "whatwg-mimetype": "2.3.0",
-    "@oats-ts/openapi-http": "0.0.21",
-    "@oats-ts/try": "0.0.21",
-    "@oats-ts/validators": "0.0.21"
+    "@oats-ts/openapi-http": "0.0.22",
+    "@oats-ts/try": "0.0.22",
+    "@oats-ts/validators": "0.0.22"
   }
 }
