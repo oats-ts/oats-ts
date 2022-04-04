@@ -1,10 +1,22 @@
 import { BaseParameterObject, ParameterLocation, ParameterObject } from '@oats-ts/openapi-model'
-import { getParameterName, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
+import {
+  getParameterName,
+  OpenAPIGeneratorContext,
+  RuntimePackages,
+  getParameterStyle,
+  getParameterKind,
+  EnhancedOperation,
+} from '@oats-ts/openapi-common'
 import { has, isNil, negate } from 'lodash'
 import { getParameterSerializerFactoryName } from './getParameterSerializerFactoryName'
-import { getParameterStyle, getParameterKind } from '@oats-ts/openapi-common'
-import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { CallExpression, factory, ObjectLiteralExpression, PropertyAssignment, TypeReferenceType } from 'typescript'
+import {
+  CallExpression,
+  factory,
+  ObjectLiteralExpression,
+  PropertyAssignment,
+  TypeReferenceNode,
+  TypeReferenceType,
+} from 'typescript'
 import { isIdentifier } from '@oats-ts/typescript-common'
 import { Referenceable } from '@oats-ts/json-schema-model'
 
@@ -43,8 +55,13 @@ function getSerializerOptions(parameter: BaseParameterObject): ObjectLiteralExpr
 
 function createParameterSerializer(parameter: BaseParameterObject, context: OpenAPIGeneratorContext): CallExpression {
   const { dereference, referenceOf } = context
-  const { in: location = 'header' } = parameter as ParameterObject
+  const { in: location = 'header', required } = parameter as ParameterObject
   const { schema } = parameter
+  const baseType = referenceOf<TypeReferenceNode>(schema, 'json-schema/type')
+  const isRequired = location === 'path' || Boolean(required)
+  const type = isRequired
+    ? baseType
+    : factory.createUnionTypeNode([baseType, factory.createTypeReferenceNode('undefined')])
   return factory.createCallExpression(
     factory.createPropertyAccessExpression(
       factory.createPropertyAccessExpression(
@@ -56,7 +73,7 @@ function createParameterSerializer(parameter: BaseParameterObject, context: Open
       ),
       factory.createIdentifier(getParameterKind(dereference(schema))),
     ),
-    [referenceOf(schema, 'json-schema/type')],
+    [type],
     [getSerializerOptions(parameter)],
   )
 }

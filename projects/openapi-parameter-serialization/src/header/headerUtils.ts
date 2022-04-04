@@ -6,8 +6,8 @@ import { isNil } from '../utils'
 export function getHeaderValue<T extends ParameterValue>(
   path: string,
   value: T | undefined,
-  options: HeaderOptions<T>,
-): Try<T> {
+  options: HeaderOptions,
+): Try<T | undefined> {
   if (!isNil(value)) {
     return success(value)
   }

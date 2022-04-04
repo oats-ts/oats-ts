@@ -10,7 +10,7 @@ import {
   EnhancedOperation,
 } from '@oats-ts/openapi-common'
 import { generateSdkStub } from './generateSdkStub'
-import { Result, GeneratorConfig } from '@oats-ts/generator'
+import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
@@ -28,8 +28,12 @@ export class SdkStubGenerator implements OpenAPIGenerator<'openapi/sdk-stub'> {
   ]
   public readonly runtimeDepencencies: string[] = []
 
-  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators)
+  public initialize(
+    data: OpenAPIReadOutput,
+    config: GeneratorConfig,
+    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
+  ): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
   }
 
   public async generate(): Promise<Result<TypeScriptModule[]>> {

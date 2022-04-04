@@ -5,7 +5,7 @@ import { encode, isNil } from '../utils'
 import { getHeaderValue } from './headerUtils'
 
 export const headerSimpleArray =
-  <T extends PrimitiveArray>(options: HeaderOptions<T> = {}): HeaderSerializer<T> =>
+  <T extends PrimitiveArray>(options: HeaderOptions = {}): HeaderSerializer<T> =>
   (data: T, name: string, path: string, config: ValidatorConfig) => {
     return fluent(getHeaderValue(path, data, options))
       .map((value) => {

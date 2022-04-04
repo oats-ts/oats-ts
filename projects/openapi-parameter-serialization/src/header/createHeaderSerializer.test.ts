@@ -9,6 +9,7 @@ type HeaderParams = {
   'x-Bool': boolean
   'x-Arr': string[]
   'x-obj': Record<string, string>
+  'x-opt-str'?: string
 }
 
 const serializers: HeaderSerializers<HeaderParams> = {
@@ -17,6 +18,7 @@ const serializers: HeaderSerializers<HeaderParams> = {
   'x-Bool': header.simple.primitive<boolean>({}),
   'x-Arr': header.simple.array<string[]>({}),
   'x-obj': header.simple.object<Record<string, string>>({ explode: true }),
+  'x-opt-str': header.simple.primitive<string | undefined>({}),
 }
 
 describe('createPathSerializer', () => {

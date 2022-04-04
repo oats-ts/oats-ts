@@ -1,4 +1,4 @@
-import { GeneratorConfig, Result } from '@oats-ts/generator'
+import { CodeGenerator, GeneratorConfig, Result } from '@oats-ts/generator'
 import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
@@ -27,8 +27,12 @@ export class ResponseHeadersParameterSerializersGenerator
   public readonly consumes: OpenAPIGeneratorTarget[] = []
   public readonly runtimeDepencencies: string[] = [RuntimePackages.ParameterSerialization.name]
 
-  initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators)
+  public initialize(
+    data: OpenAPIReadOutput,
+    config: GeneratorConfig,
+    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
+  ): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
     const { document, nameOf } = this.context
     this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
       nameOf(operation, this.id),

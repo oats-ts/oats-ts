@@ -4,7 +4,7 @@ import { ParameterObject, QuerySerializers } from '../types'
 
 export const createQuerySerializer =
   <T extends ParameterObject>(serializers: QuerySerializers<T>) =>
-  (input: T, path: string = 'query', config: ValidatorConfig = DefaultConfig): Try<string> => {
+  (input: T, path: string = 'query', config: ValidatorConfig = DefaultConfig): Try<string | undefined> => {
     const serializedParts = fromArray(
       Object.keys(serializers).map((name: string) => {
         const key = name as keyof T

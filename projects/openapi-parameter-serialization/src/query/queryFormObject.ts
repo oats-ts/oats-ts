@@ -4,9 +4,9 @@ import { entries, isNil, encode } from '../utils'
 import { getQueryValue } from './queryUtils'
 
 export const queryFormObject =
-  <T extends PrimitiveRecord>(opts: QueryOptions<T> = {}): QuerySerializer<T> =>
+  <T extends PrimitiveRecord>(opts: QueryOptions = {}): QuerySerializer<T> =>
   (data: T, name: string, path: string): Try<string[]> => {
-    const options: QueryOptions<T> = { explode: true, ...opts }
+    const options: QueryOptions = { explode: true, ...opts }
     return fluent(getQueryValue(path, data, options))
       .map((value) => {
         if (isNil(value)) {

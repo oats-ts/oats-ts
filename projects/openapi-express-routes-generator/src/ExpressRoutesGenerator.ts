@@ -11,7 +11,7 @@ import {
 } from '@oats-ts/openapi-common'
 import { generateExpressRoute } from './generateExpressRoute'
 import { ExpressRouteGeneratorConfig } from './typings'
-import { Result, GeneratorConfig } from '@oats-ts/generator'
+import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
@@ -39,10 +39,13 @@ export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express
     this.routeConfig = config
   }
 
-  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators)
+  public initialize(
+    data: OpenAPIReadOutput,
+    config: GeneratorConfig,
+    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
+  ): void {
+    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
   }
-
   public async generate(): Promise<Result<TypeScriptModule[]>> {
     const { context, routeConfig } = this
     const { document, nameOf } = context

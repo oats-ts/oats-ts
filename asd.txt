@@ -1,0 +1,6 @@
+     1  node_modules/@oats-ts/openapi-response-types-generator/lib/ResponseTypesGenerator.d.ts:13
+     1  node_modules/@oats-ts/openapi-sdk-generator/lib/implementation/SdkImplementationGenerator.d.ts:16
+     1  node_modules/@oats-ts/openapi-sdk-generator/lib/stub/SdkStubGenerator.d.ts:13
+     1  node_modules/@oats-ts/openapi-sdk-generator/lib/type/SdkTypeGenerator.d.ts:17
+     1  node_modules/@oats-ts/openapi-validators-generator/lib/requestBody/RequestBodyValidatorsGenerator.d.ts:13
+     1  node_modules/@oats-ts/openapi-validators-generator/lib/responseBody/ResponseBodyValidatorsGenerator.d.ts:13

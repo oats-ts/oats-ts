@@ -6,13 +6,13 @@ import { isNil } from '../utils'
 export function getQueryValue<T extends ParameterValue>(
   path: string,
   value: T | undefined,
-  options: QueryOptions<T>,
+  options: QueryOptions,
 ): Try<T> {
   if (!isNil(value)) {
     return success(value)
   }
   if (!options.required) {
-    return success(undefined)
+    return success(undefined as unknown as T)
   }
   return failure([
     {

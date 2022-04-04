@@ -4,7 +4,7 @@ import { encode, isNil } from '../utils'
 import { getQueryValue } from './queryUtils'
 
 export const queryFormPrimitive =
-  <T extends Primitive>(options: QueryOptions<T> = {}): QuerySerializer<T> =>
+  <T extends Primitive>(options: QueryOptions = {}): QuerySerializer<T> =>
   (data: T, name: string, path: string): Try<string[]> => {
     return fluent(getQueryValue(path, data, options))
       .map((value) => {
