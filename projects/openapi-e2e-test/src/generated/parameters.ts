@@ -3050,12 +3050,12 @@ export const simpleHeaderParametersRequestHeadersSerializer =
  * Endpoint for testing query parameters with deepObject serialization
  */
 export async function deepObjectQueryParameters(
-  input: DeepObjectQueryParametersRequest,
+  request: DeepObjectQueryParametersRequest,
   adapter: ClientAdapter,
 ): Promise<DeepObjectQueryParametersResponse> {
-  const query = await adapter.getQuery(input, deepObjectQueryParametersQuerySerializer)
+  const query = await adapter.getQuery(request.query, deepObjectQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/deepObject-query-parameters', query)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3064,32 +3064,29 @@ export async function deepObjectQueryParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     deepObjectQueryParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as DeepObjectQueryParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing query parameters with form serialization
  */
 export async function formQueryParameters(
-  input: FormQueryParametersRequest,
+  request: FormQueryParametersRequest,
   adapter: ClientAdapter,
 ): Promise<FormQueryParametersResponse> {
-  const query = await adapter.getQuery(input, formQueryParametersQuerySerializer)
+  const query = await adapter.getQuery(request.query, formQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/form-query-parameters', query)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3098,32 +3095,29 @@ export async function formQueryParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     formQueryParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as FormQueryParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing path parameters with label serialization
  */
 export async function labelPathParameters(
-  input: LabelPathParametersRequest,
+  request: LabelPathParametersRequest,
   adapter: ClientAdapter,
 ): Promise<LabelPathParametersResponse> {
-  const path = await adapter.getPath(input, labelPathParametersPathSerializer)
+  const path = await adapter.getPath(request.path, labelPathParametersPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3132,32 +3126,29 @@ export async function labelPathParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     labelPathParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as LabelPathParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing path parameters with matrix serialization
  */
 export async function matrixPathParameters(
-  input: MatrixPathParametersRequest,
+  request: MatrixPathParametersRequest,
   adapter: ClientAdapter,
 ): Promise<MatrixPathParametersResponse> {
-  const path = await adapter.getPath(input, matrixPathParametersPathSerializer)
+  const path = await adapter.getPath(request.path, matrixPathParametersPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3166,32 +3157,29 @@ export async function matrixPathParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     matrixPathParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as MatrixPathParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing query parameters with pipeDelimited serialization
  */
 export async function pipeDelimitedQueryParameters(
-  input: PipeDelimitedQueryParametersRequest,
+  request: PipeDelimitedQueryParametersRequest,
   adapter: ClientAdapter,
 ): Promise<PipeDelimitedQueryParametersResponse> {
-  const query = await adapter.getQuery(input, pipeDelimitedQueryParametersQuerySerializer)
+  const query = await adapter.getQuery(request.query, pipeDelimitedQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/pipeDelimited-query-parameters', query)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3200,31 +3188,32 @@ export async function pipeDelimitedQueryParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     pipeDelimitedQueryParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as PipeDelimitedQueryParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing header parameters with simple serialization
  */
 export async function simpleHeaderParameters(
-  input: SimpleHeaderParametersRequest,
+  request: SimpleHeaderParametersRequest,
   adapter: ClientAdapter,
 ): Promise<SimpleHeaderParametersResponse> {
   const requestUrl = await adapter.getUrl('/simple-header-parameters', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, simpleHeaderParametersRequestHeadersSerializer)
+  const requestHeaders = await adapter.getRequestHeaders(
+    request.headers,
+    undefined,
+    simpleHeaderParametersRequestHeadersSerializer,
+  )
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3233,32 +3222,29 @@ export async function simpleHeaderParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     simpleHeaderParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as SimpleHeaderParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing path parameters with simple serialization
  */
 export async function simplePathParameters(
-  input: SimplePathParametersRequest,
+  request: SimplePathParametersRequest,
   adapter: ClientAdapter,
 ): Promise<SimplePathParametersResponse> {
-  const path = await adapter.getPath(input, simplePathParametersPathSerializer)
+  const path = await adapter.getPath(request.path, simplePathParametersPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3267,32 +3253,29 @@ export async function simplePathParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     simplePathParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as SimplePathParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing response-header parameters with simple serialization
  */
 export async function simpleResponseHeaderParameters(
-  input: SimpleResponseHeaderParametersRequest,
+  request: SimpleResponseHeaderParametersRequest,
   adapter: ClientAdapter,
 ): Promise<SimpleResponseHeaderParametersResponse> {
   const requestUrl = await adapter.getUrl('/simple-response-header-parameters', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -3313,25 +3296,24 @@ export async function simpleResponseHeaderParameters(
     mimeType,
     simpleResponseHeaderParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
   } as SimpleResponseHeaderParametersResponse
-  return response
 }
 
 /**
  * Endpoint for testing query parameters with spaceDelimited serialization
  */
 export async function spaceDelimitedQueryParameters(
-  input: SpaceDelimitedQueryParametersRequest,
+  request: SpaceDelimitedQueryParametersRequest,
   adapter: ClientAdapter,
 ): Promise<SpaceDelimitedQueryParametersResponse> {
-  const query = await adapter.getQuery(input, spaceDelimitedQueryParametersQuerySerializer)
+  const query = await adapter.getQuery(request.query, spaceDelimitedQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/spaceDelimited-query-parameters', query)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3340,64 +3322,61 @@ export async function spaceDelimitedQueryParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     spaceDelimitedQueryParametersResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as SpaceDelimitedQueryParametersResponse
-  return response
 }
 
 export type ParametersSdk = {
   /**
    * Endpoint for testing query parameters with deepObject serialization
    */
-  deepObjectQueryParameters(input: DeepObjectQueryParametersRequest): Promise<DeepObjectQueryParametersResponse>
+  deepObjectQueryParameters(request: DeepObjectQueryParametersRequest): Promise<DeepObjectQueryParametersResponse>
   /**
    * Endpoint for testing query parameters with form serialization
    */
-  formQueryParameters(input: FormQueryParametersRequest): Promise<FormQueryParametersResponse>
+  formQueryParameters(request: FormQueryParametersRequest): Promise<FormQueryParametersResponse>
   /**
    * Endpoint for testing path parameters with label serialization
    */
-  labelPathParameters(input: LabelPathParametersRequest): Promise<LabelPathParametersResponse>
+  labelPathParameters(request: LabelPathParametersRequest): Promise<LabelPathParametersResponse>
   /**
    * Endpoint for testing path parameters with matrix serialization
    */
-  matrixPathParameters(input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse>
+  matrixPathParameters(request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse>
   /**
    * Endpoint for testing query parameters with pipeDelimited serialization
    */
   pipeDelimitedQueryParameters(
-    input: PipeDelimitedQueryParametersRequest,
+    request: PipeDelimitedQueryParametersRequest,
   ): Promise<PipeDelimitedQueryParametersResponse>
   /**
    * Endpoint for testing header parameters with simple serialization
    */
-  simpleHeaderParameters(input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse>
+  simpleHeaderParameters(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse>
   /**
    * Endpoint for testing path parameters with simple serialization
    */
-  simplePathParameters(input: SimplePathParametersRequest): Promise<SimplePathParametersResponse>
+  simplePathParameters(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse>
   /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
-    input: SimpleResponseHeaderParametersRequest,
+    request: SimpleResponseHeaderParametersRequest,
   ): Promise<SimpleResponseHeaderParametersResponse>
   /**
    * Endpoint for testing query parameters with spaceDelimited serialization
    */
   spaceDelimitedQueryParameters(
-    input: SpaceDelimitedQueryParametersRequest,
+    request: SpaceDelimitedQueryParametersRequest,
   ): Promise<SpaceDelimitedQueryParametersResponse>
 }
 
@@ -3407,87 +3386,89 @@ export class ParametersSdkImpl implements ParametersSdk {
     this.adapter = adapter
   }
   public async deepObjectQueryParameters(
-    input: DeepObjectQueryParametersRequest,
+    request: DeepObjectQueryParametersRequest,
   ): Promise<DeepObjectQueryParametersResponse> {
-    return deepObjectQueryParameters(input, this.adapter)
+    return deepObjectQueryParameters(request, this.adapter)
   }
-  public async formQueryParameters(input: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
-    return formQueryParameters(input, this.adapter)
+  public async formQueryParameters(request: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
+    return formQueryParameters(request, this.adapter)
   }
-  public async labelPathParameters(input: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
-    return labelPathParameters(input, this.adapter)
+  public async labelPathParameters(request: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
+    return labelPathParameters(request, this.adapter)
   }
-  public async matrixPathParameters(input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
-    return matrixPathParameters(input, this.adapter)
+  public async matrixPathParameters(request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
+    return matrixPathParameters(request, this.adapter)
   }
   public async pipeDelimitedQueryParameters(
-    input: PipeDelimitedQueryParametersRequest,
+    request: PipeDelimitedQueryParametersRequest,
   ): Promise<PipeDelimitedQueryParametersResponse> {
-    return pipeDelimitedQueryParameters(input, this.adapter)
+    return pipeDelimitedQueryParameters(request, this.adapter)
   }
-  public async simpleHeaderParameters(input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
-    return simpleHeaderParameters(input, this.adapter)
+  public async simpleHeaderParameters(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
+    return simpleHeaderParameters(request, this.adapter)
   }
-  public async simplePathParameters(input: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
-    return simplePathParameters(input, this.adapter)
+  public async simplePathParameters(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
+    return simplePathParameters(request, this.adapter)
   }
   public async simpleResponseHeaderParameters(
-    input: SimpleResponseHeaderParametersRequest,
+    request: SimpleResponseHeaderParametersRequest,
   ): Promise<SimpleResponseHeaderParametersResponse> {
-    return simpleResponseHeaderParameters(input, this.adapter)
+    return simpleResponseHeaderParameters(request, this.adapter)
   }
   public async spaceDelimitedQueryParameters(
-    input: SpaceDelimitedQueryParametersRequest,
+    request: SpaceDelimitedQueryParametersRequest,
   ): Promise<SpaceDelimitedQueryParametersResponse> {
-    return spaceDelimitedQueryParameters(input, this.adapter)
+    return spaceDelimitedQueryParameters(request, this.adapter)
   }
 }
 
 export class ParametersSdkStub implements ParametersSdk {
   public async deepObjectQueryParameters(
-    _input: DeepObjectQueryParametersRequest,
+    _request: DeepObjectQueryParametersRequest,
   ): Promise<DeepObjectQueryParametersResponse> {
     throw new Error(
       'Stub method "deepObjectQueryParameters" called. You should implement this method if you want to use it.',
     )
   }
-  public async formQueryParameters(_input: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
+  public async formQueryParameters(_request: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
     throw new Error('Stub method "formQueryParameters" called. You should implement this method if you want to use it.')
   }
-  public async labelPathParameters(_input: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
+  public async labelPathParameters(_request: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
     throw new Error('Stub method "labelPathParameters" called. You should implement this method if you want to use it.')
   }
-  public async matrixPathParameters(_input: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
+  public async matrixPathParameters(_request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
     throw new Error(
       'Stub method "matrixPathParameters" called. You should implement this method if you want to use it.',
     )
   }
   public async pipeDelimitedQueryParameters(
-    _input: PipeDelimitedQueryParametersRequest,
+    _request: PipeDelimitedQueryParametersRequest,
   ): Promise<PipeDelimitedQueryParametersResponse> {
     throw new Error(
       'Stub method "pipeDelimitedQueryParameters" called. You should implement this method if you want to use it.',
     )
   }
-  public async simpleHeaderParameters(_input: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
+  public async simpleHeaderParameters(
+    _request: SimpleHeaderParametersRequest,
+  ): Promise<SimpleHeaderParametersResponse> {
     throw new Error(
       'Stub method "simpleHeaderParameters" called. You should implement this method if you want to use it.',
     )
   }
-  public async simplePathParameters(_input: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
+  public async simplePathParameters(_request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
     throw new Error(
       'Stub method "simplePathParameters" called. You should implement this method if you want to use it.',
     )
   }
   public async simpleResponseHeaderParameters(
-    _input: SimpleResponseHeaderParametersRequest,
+    _request: SimpleResponseHeaderParametersRequest,
   ): Promise<SimpleResponseHeaderParametersResponse> {
     throw new Error(
       'Stub method "simpleResponseHeaderParameters" called. You should implement this method if you want to use it.',
     )
   }
   public async spaceDelimitedQueryParameters(
-    _input: SpaceDelimitedQueryParametersRequest,
+    _request: SpaceDelimitedQueryParametersRequest,
   ): Promise<SpaceDelimitedQueryParametersResponse> {
     throw new Error(
       'Stub method "spaceDelimitedQueryParameters" called. You should implement this method if you want to use it.',

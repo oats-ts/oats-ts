@@ -16,7 +16,7 @@ export function getSdkMethodParameterAsts(
           [],
           [],
           undefined,
-          unused ? '_input' : 'input',
+          unused ? '_request' : 'request',
           undefined,
           factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
         ),

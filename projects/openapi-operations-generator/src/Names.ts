@@ -1,7 +1,6 @@
 export const Names = {
   adapter: 'adapter',
   url: 'url',
-  input: 'input',
   path: 'path',
   query: 'query',
   headers: 'headers',
@@ -16,7 +15,6 @@ export const Names = {
   rawRequest: 'rawRequest',
   rawResponse: 'rawResponse',
   responseBody: 'responseBody',
-  response: 'response',
 
   getPath: 'getPath',
   getQuery: 'getQuery',

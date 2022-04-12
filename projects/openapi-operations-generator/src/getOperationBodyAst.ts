@@ -35,7 +35,13 @@ export function getOperationBodyAst(
                       factory.createIdentifier(Names.getPath),
                     ),
                     undefined,
-                    [factory.createIdentifier(Names.input), referenceOf(data.operation, 'openapi/path-serializer')],
+                    [
+                      factory.createPropertyAccessExpression(
+                        factory.createIdentifier(Names.request),
+                        factory.createIdentifier(Names.path),
+                      ),
+                      referenceOf(data.operation, 'openapi/path-serializer'),
+                    ],
                   ),
                 ),
               ),
@@ -61,7 +67,13 @@ export function getOperationBodyAst(
                       factory.createIdentifier(Names.getQuery),
                     ),
                     undefined,
-                    [factory.createIdentifier(Names.input), referenceOf(data.operation, 'openapi/query-serializer')],
+                    [
+                      factory.createPropertyAccessExpression(
+                        factory.createIdentifier(Names.request),
+                        factory.createIdentifier(Names.query),
+                      ),
+                      referenceOf(data.operation, 'openapi/query-serializer'),
+                    ],
                   ),
                 ),
               ),
@@ -112,7 +124,18 @@ export function getOperationBodyAst(
               ),
               undefined,
               [
-                hasInput(data, context) ? factory.createIdentifier(Names.input) : factory.createIdentifier('undefined'),
+                data.header.length > 0
+                  ? factory.createPropertyAccessExpression(
+                      factory.createIdentifier(Names.request),
+                      factory.createIdentifier(Names.headers),
+                    )
+                  : factory.createIdentifier('undefined'),
+                hasRequestBody(data, context)
+                  ? factory.createPropertyAccessExpression(
+                      factory.createIdentifier(Names.request),
+                      factory.createIdentifier(Names.mimeType),
+                    )
+                  : factory.createIdentifier('undefined'),
                 data.header.length > 0
                   ? referenceOf(data.operation, 'openapi/request-headers-serializer')
                   : factory.createIdentifier('undefined'),
@@ -140,7 +163,16 @@ export function getOperationBodyAst(
                     factory.createIdentifier(Names.getRequestBody),
                   ),
                   undefined,
-                  [factory.createIdentifier(Names.input)],
+                  [
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(Names.request),
+                      factory.createIdentifier(Names.mimeType),
+                    ),
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(Names.request),
+                      factory.createIdentifier(Names.body),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -316,35 +348,29 @@ export function getOperationBodyAst(
       NodeFlags.Const,
     ),
   )
-  const response = factory.createVariableStatement(
-    undefined,
-    factory.createVariableDeclarationList(
-      [
-        factory.createVariableDeclaration(
-          factory.createIdentifier(Names.response),
-          undefined,
-          undefined,
-          factory.createAsExpression(
-            factory.createObjectLiteralExpression(
-              [
-                factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.mimeType), undefined),
-                factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.statusCode), undefined),
+
+  const returnStatement = factory.createReturnStatement(
+    factory.createAsExpression(
+      factory.createObjectLiteralExpression(
+        [
+          factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.mimeType), undefined),
+          factory.createShorthandPropertyAssignment(factory.createIdentifier(Names.statusCode), undefined),
+          ...(hasResponseHeaders(data.operation, context)
+            ? [
                 factory.createPropertyAssignment(
                   factory.createIdentifier(Names.headers),
                   factory.createIdentifier(Names.responseHeaders),
                 ),
-                factory.createPropertyAssignment(
-                  factory.createIdentifier(Names.body),
-                  factory.createIdentifier(Names.responseBody),
-                ),
-              ],
-              true,
-            ),
-            factory.createTypeReferenceNode(referenceOf(data.operation, 'openapi/response-type'), undefined),
+              ]
+            : []),
+          factory.createPropertyAssignment(
+            factory.createIdentifier(Names.body),
+            factory.createIdentifier(Names.responseBody),
           ),
-        ),
-      ],
-      NodeFlags.Const,
+        ],
+        true,
+      ),
+      factory.createTypeReferenceNode(referenceOf(data.operation, 'openapi/response-type'), undefined),
     ),
   )
 
@@ -359,10 +385,9 @@ export function getOperationBodyAst(
       rawResponse,
       mimeType,
       statusCode,
-      responseHeaders,
+      ...(hasResponseHeaders(data.operation, context) ? [responseHeaders] : []),
       responseBody,
-      response,
-      factory.createReturnStatement(factory.createIdentifier(Names.response)),
+      returnStatement,
     ],
     true,
   )

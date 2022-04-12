@@ -22,7 +22,7 @@ export function getOperationFunctionAst(
             [],
             [],
             undefined,
-            Names.input,
+            Names.request,
             undefined,
             factory.createTypeReferenceNode(nameOf(operation, 'openapi/request-type')),
           ),

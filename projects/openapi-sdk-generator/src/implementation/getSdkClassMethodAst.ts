@@ -12,7 +12,7 @@ export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
       factory.createIdentifier(nameOf(data.operation, 'openapi/operation')),
       [],
       [
-        ...(hasInput(data, context) ? [factory.createIdentifier('input')] : []),
+        ...(hasInput(data, context) ? [factory.createIdentifier('request')] : []),
         factory.createPropertyAccessExpression(factory.createIdentifier('this'), Names.adapter),
       ],
     ),

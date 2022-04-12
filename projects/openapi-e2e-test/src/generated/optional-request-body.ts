@@ -106,12 +106,12 @@ export const optionalRequestBodyResponseBodyValidator = {
 } as const
 
 export async function optionalRequestBody(
-  input: OptionalRequestBodyRequest,
+  request: OptionalRequestBodyRequest,
   adapter: ClientAdapter,
 ): Promise<OptionalRequestBodyResponse> {
   const requestUrl = await adapter.getUrl('/optional-request-body', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -121,24 +121,21 @@ export async function optionalRequestBody(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     optionalRequestBodyResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as OptionalRequestBodyResponse
-  return response
 }
 
 export type BodiesSdk = {
-  optionalRequestBody(input: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse>
+  optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse>
 }
 
 export class BodiesSdkImpl implements BodiesSdk {
@@ -146,13 +143,13 @@ export class BodiesSdkImpl implements BodiesSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async optionalRequestBody(input: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
-    return optionalRequestBody(input, this.adapter)
+  public async optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
+    return optionalRequestBody(request, this.adapter)
   }
 }
 
 export class BodiesSdkStub implements BodiesSdk {
-  public async optionalRequestBody(_input: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
+  public async optionalRequestBody(_request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
     throw new Error('Stub method "optionalRequestBody" called. You should implement this method if you want to use it.')
   }
 }
