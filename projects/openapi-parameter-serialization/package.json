@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-parameter-serialization",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -25,9 +25,9 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "dependencies": {
-    "@oats-ts/openapi-parameter-common": "0.0.22",
-    "@oats-ts/validators": "0.0.22",
-    "@oats-ts/try": "0.0.22"
+    "@oats-ts/openapi-parameter-common": "0.0.23",
+    "@oats-ts/validators": "0.0.23",
+    "@oats-ts/try": "0.0.23"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",

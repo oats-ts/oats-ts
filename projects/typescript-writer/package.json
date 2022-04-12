@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/typescript-writer",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -32,9 +32,9 @@
   "dependencies": {
     "@types/prettier": "2.4.4",
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.22",
+    "@oats-ts/json-schema-model": "0.0.23",
     "prettier": "2.6.1",
     "typescript": "4.3.5",
-    "@oats-ts/generator": "0.0.22"
+    "@oats-ts/generator": "0.0.23"
   }
 }
