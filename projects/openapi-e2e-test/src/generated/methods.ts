@@ -252,7 +252,7 @@ export const putMethodResponseBodyValidator = {
 
 export async function deleteMethod(adapter: ClientAdapter): Promise<DeleteMethodResponse> {
   const requestUrl = await adapter.getUrl('/delete-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'delete',
@@ -261,25 +261,22 @@ export async function deleteMethod(adapter: ClientAdapter): Promise<DeleteMethod
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     deleteMethodResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as DeleteMethodResponse
-  return response
 }
 
 export async function getMethod(adapter: ClientAdapter): Promise<GetMethodResponse> {
   const requestUrl = await adapter.getUrl('/get-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -288,20 +285,17 @@ export async function getMethod(adapter: ClientAdapter): Promise<GetMethodRespon
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getMethodResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as GetMethodResponse
-  return response
 }
 
 export async function optionsMethod(adapter: ClientAdapter): Promise<OptionsMethodResponse> {
   const requestUrl = await adapter.getUrl('/options-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'options',
@@ -310,25 +304,22 @@ export async function optionsMethod(adapter: ClientAdapter): Promise<OptionsMeth
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     optionsMethodResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as OptionsMethodResponse
-  return response
 }
 
 export async function patchMethod(adapter: ClientAdapter): Promise<PatchMethodResponse> {
   const requestUrl = await adapter.getUrl('/patch-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'patch',
@@ -337,25 +328,22 @@ export async function patchMethod(adapter: ClientAdapter): Promise<PatchMethodRe
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     patchMethodResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as PatchMethodResponse
-  return response
 }
 
 export async function postMethod(adapter: ClientAdapter): Promise<PostMethodResponse> {
   const requestUrl = await adapter.getUrl('/post-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -364,20 +352,17 @@ export async function postMethod(adapter: ClientAdapter): Promise<PostMethodResp
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, postMethodResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as PostMethodResponse
-  return response
 }
 
 export async function putMethod(adapter: ClientAdapter): Promise<PutMethodResponse> {
   const requestUrl = await adapter.getUrl('/put-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'put',
@@ -386,15 +371,12 @@ export async function putMethod(adapter: ClientAdapter): Promise<PutMethodRespon
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, putMethodResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as PutMethodResponse
-  return response
 }
 
 export type HttpMethodsSdk = {

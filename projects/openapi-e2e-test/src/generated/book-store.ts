@@ -361,10 +361,10 @@ export const getBooksRequestHeadersSerializer = createHeaderSerializer<GetBooksR
 /**
  * Creates a new book based on the request body.
  */
-export async function addBook(input: AddBookRequest, adapter: ClientAdapter): Promise<AddBookResponse> {
+export async function addBook(request: AddBookRequest, adapter: ClientAdapter): Promise<AddBookResponse> {
   const requestUrl = await adapter.getUrl('/books', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -374,24 +374,21 @@ export async function addBook(input: AddBookRequest, adapter: ClientAdapter): Pr
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, addBookResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as AddBookResponse
-  return response
 }
 
 /**
  * Returns the book associated with the given bookId
  */
-export async function getBook(input: GetBookRequest, adapter: ClientAdapter): Promise<GetBookResponse> {
-  const path = await adapter.getPath(input, getBookPathSerializer)
+export async function getBook(request: GetBookRequest, adapter: ClientAdapter): Promise<GetBookResponse> {
+  const path = await adapter.getPath(request.path, getBookPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -400,24 +397,21 @@ export async function getBook(input: GetBookRequest, adapter: ClientAdapter): Pr
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getBookResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as GetBookResponse
-  return response
 }
 
 /**
  * Returns a list of books, can be paginated
  */
-export async function getBooks(input: GetBooksRequest, adapter: ClientAdapter): Promise<GetBooksResponse> {
-  const query = await adapter.getQuery(input, getBooksQuerySerializer)
+export async function getBooks(request: GetBooksRequest, adapter: ClientAdapter): Promise<GetBooksResponse> {
+  const query = await adapter.getQuery(request.query, getBooksQuerySerializer)
   const requestUrl = await adapter.getUrl('/books', query)
-  const requestHeaders = await adapter.getRequestHeaders(input, getBooksRequestHeadersSerializer)
+  const requestHeaders = await adapter.getRequestHeaders(request.headers, undefined, getBooksRequestHeadersSerializer)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -428,28 +422,27 @@ export async function getBooks(input: GetBooksRequest, adapter: ClientAdapter): 
   const statusCode = await adapter.getStatusCode(rawResponse)
   const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, getBooksResponseHeadersDeserializer)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, getBooksResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
     headers: responseHeaders,
     body: responseBody,
   } as GetBooksResponse
-  return response
 }
 
 export type BookStoreSdk = {
   /**
    * Creates a new book based on the request body.
    */
-  addBook(input: AddBookRequest): Promise<AddBookResponse>
+  addBook(request: AddBookRequest): Promise<AddBookResponse>
   /**
    * Returns the book associated with the given bookId
    */
-  getBook(input: GetBookRequest): Promise<GetBookResponse>
+  getBook(request: GetBookRequest): Promise<GetBookResponse>
   /**
    * Returns a list of books, can be paginated
    */
-  getBooks(input: GetBooksRequest): Promise<GetBooksResponse>
+  getBooks(request: GetBooksRequest): Promise<GetBooksResponse>
 }
 
 export class BookStoreSdkImpl implements BookStoreSdk {
@@ -457,25 +450,25 @@ export class BookStoreSdkImpl implements BookStoreSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async addBook(input: AddBookRequest): Promise<AddBookResponse> {
-    return addBook(input, this.adapter)
+  public async addBook(request: AddBookRequest): Promise<AddBookResponse> {
+    return addBook(request, this.adapter)
   }
-  public async getBook(input: GetBookRequest): Promise<GetBookResponse> {
-    return getBook(input, this.adapter)
+  public async getBook(request: GetBookRequest): Promise<GetBookResponse> {
+    return getBook(request, this.adapter)
   }
-  public async getBooks(input: GetBooksRequest): Promise<GetBooksResponse> {
-    return getBooks(input, this.adapter)
+  public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
+    return getBooks(request, this.adapter)
   }
 }
 
 export class BookStoreSdkStub implements BookStoreSdk {
-  public async addBook(_input: AddBookRequest): Promise<AddBookResponse> {
+  public async addBook(_request: AddBookRequest): Promise<AddBookResponse> {
     throw new Error('Stub method "addBook" called. You should implement this method if you want to use it.')
   }
-  public async getBook(_input: GetBookRequest): Promise<GetBookResponse> {
+  public async getBook(_request: GetBookRequest): Promise<GetBookResponse> {
     throw new Error('Stub method "getBook" called. You should implement this method if you want to use it.')
   }
-  public async getBooks(_input: GetBooksRequest): Promise<GetBooksResponse> {
+  public async getBooks(_request: GetBooksRequest): Promise<GetBooksResponse> {
     throw new Error('Stub method "getBooks" called. You should implement this method if you want to use it.')
   }
 }

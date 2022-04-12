@@ -1,7 +1,6 @@
 import MIMEType from 'whatwg-mimetype'
 import * as crossFetch from 'cross-fetch'
 import {
-  TypedHttpRequest,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
@@ -32,17 +31,15 @@ export class FetchClientAdapter implements ClientAdapter {
       method: request.method,
       ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
     })
-    return {
-      statusCode: response.status,
-      headers: this.asRawHttpHeaders(response),
-      body: await this.getParsedResponseBody(response),
-    }
-  }
 
-  protected asRawHttpHeaders(response: Response): RawHttpHeaders {
     const rawHeaders: Record<string, string> = {}
     response.headers.forEach((value, key) => (rawHeaders[key.toLowerCase()] = value))
-    return rawHeaders
+
+    return {
+      statusCode: response.status,
+      headers: rawHeaders,
+      body: await this.getParsedResponseBody(response),
+    }
   }
 
   protected async getParsedResponseBody(response: Response): Promise<any> {
@@ -59,22 +56,15 @@ export class FetchClientAdapter implements ClientAdapter {
     return response.blob()
   }
 
-  async getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string> {
-    const path = serializer(input.path)
+  async getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string> {
+    const path = serializer(input)
     if (isFailure(path)) {
       throw new Error(`Failed to serialize path:\n${path.issues.map(stringify).join('\n')}`)
     }
     return path.data
   }
-  async getQuery(
-    input: Partial<TypedHttpRequest>,
-    serializer: (input: any) => Try<string>,
-  ): Promise<string | undefined> {
-    // There are no query parameters, no query string returned by this
-    if (serializer === undefined || serializer === null) {
-      return undefined
-    }
-    const query = serializer(input.query)
+  async getQuery<Q>(input: Q, serializer: (input: Q) => Try<string>): Promise<string | undefined> {
+    const query = serializer(input)
     if (isFailure(query)) {
       throw new Error(`Failed to serialize query:\n${query.issues.map(stringify).join('\n')}`)
     }
@@ -84,17 +74,18 @@ export class FetchClientAdapter implements ClientAdapter {
     const { url } = this.config
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
-  async getRequestHeaders(
-    input?: Partial<TypedHttpRequest>,
+  async getRequestHeaders<H>(
+    input?: H,
+    mimeType?: string,
     serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders> {
     const mimeTypeHeaders = {
-      ...(typeof input?.mimeType === 'string' ? { 'content-type': input.mimeType } : {}),
+      ...(typeof mimeType === 'string' ? { 'content-type': mimeType } : {}),
     }
     if (serializer === undefined || serializer === null || input === undefined || input === null) {
       return mimeTypeHeaders
     }
-    const headers = serializer(input.headers)
+    const headers = serializer(input)
     if (isFailure(headers)) {
       throw new Error(`Failed to serialize request headers:\n${headers.issues.map(stringify).join('\n')}`)
     }
@@ -103,15 +94,12 @@ export class FetchClientAdapter implements ClientAdapter {
       ...mimeTypeHeaders,
     }
   }
-  async getRequestBody(input: Partial<TypedHttpRequest>): Promise<any> {
-    if (typeof input.mimeType !== 'string') {
-      return undefined
-    }
-    switch (input.mimeType) {
+  async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {
+    switch (mimeType) {
       case 'application/json':
-        return JSON.stringify(input.body)
+        return JSON.stringify(body)
       default:
-        return input.body
+        return body
     }
   }
   async getStatusCode(response: RawHttpResponse): Promise<number | undefined> {

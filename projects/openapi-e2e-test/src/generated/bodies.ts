@@ -1165,10 +1165,10 @@ export const strArrResponseBodyValidator = {
 
 export const strResponseBodyValidator = { 200: { 'application/json': string(), 'application/yaml': string() } } as const
 
-export async function arrObj(input: ArrObjRequest, adapter: ClientAdapter): Promise<ArrObjResponse> {
+export async function arrObj(request: ArrObjRequest, adapter: ClientAdapter): Promise<ArrObjResponse> {
   const requestUrl = await adapter.getUrl('/arr-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1178,21 +1178,18 @@ export async function arrObj(input: ArrObjRequest, adapter: ClientAdapter): Prom
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, arrObjResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as ArrObjResponse
-  return response
 }
 
-export async function bool(input: BoolRequest, adapter: ClientAdapter): Promise<BoolResponse> {
+export async function bool(request: BoolRequest, adapter: ClientAdapter): Promise<BoolResponse> {
   const requestUrl = await adapter.getUrl('/bool', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1202,21 +1199,18 @@ export async function bool(input: BoolRequest, adapter: ClientAdapter): Promise<
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as BoolResponse
-  return response
 }
 
-export async function boolArr(input: BoolArrRequest, adapter: ClientAdapter): Promise<BoolArrResponse> {
+export async function boolArr(request: BoolArrRequest, adapter: ClientAdapter): Promise<BoolArrResponse> {
   const requestUrl = await adapter.getUrl('/bool-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1226,21 +1220,18 @@ export async function boolArr(input: BoolArrRequest, adapter: ClientAdapter): Pr
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolArrResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as BoolArrResponse
-  return response
 }
 
-export async function enm(input: EnmRequest, adapter: ClientAdapter): Promise<EnmResponse> {
+export async function enm(request: EnmRequest, adapter: ClientAdapter): Promise<EnmResponse> {
   const requestUrl = await adapter.getUrl('/enm', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1250,21 +1241,18 @@ export async function enm(input: EnmRequest, adapter: ClientAdapter): Promise<En
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as EnmResponse
-  return response
 }
 
-export async function enmArr(input: EnmArrRequest, adapter: ClientAdapter): Promise<EnmArrResponse> {
+export async function enmArr(request: EnmArrRequest, adapter: ClientAdapter): Promise<EnmArrResponse> {
   const requestUrl = await adapter.getUrl('/enm-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1274,21 +1262,18 @@ export async function enmArr(input: EnmArrRequest, adapter: ClientAdapter): Prom
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmArrResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as EnmArrResponse
-  return response
 }
 
-export async function nestedObj(input: NestedObjRequest, adapter: ClientAdapter): Promise<NestedObjResponse> {
+export async function nestedObj(request: NestedObjRequest, adapter: ClientAdapter): Promise<NestedObjResponse> {
   const requestUrl = await adapter.getUrl('/nested-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1298,21 +1283,18 @@ export async function nestedObj(input: NestedObjRequest, adapter: ClientAdapter)
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, nestedObjResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as NestedObjResponse
-  return response
 }
 
-export async function num(input: NumRequest, adapter: ClientAdapter): Promise<NumResponse> {
+export async function num(request: NumRequest, adapter: ClientAdapter): Promise<NumResponse> {
   const requestUrl = await adapter.getUrl('/num', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1322,21 +1304,18 @@ export async function num(input: NumRequest, adapter: ClientAdapter): Promise<Nu
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as NumResponse
-  return response
 }
 
-export async function numArr(input: NumArrRequest, adapter: ClientAdapter): Promise<NumArrResponse> {
+export async function numArr(request: NumArrRequest, adapter: ClientAdapter): Promise<NumArrResponse> {
   const requestUrl = await adapter.getUrl('/num-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1346,21 +1325,21 @@ export async function numArr(input: NumArrRequest, adapter: ClientAdapter): Prom
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numArrResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as NumArrResponse
-  return response
 }
 
-export async function optPrimTuple(input: OptPrimTupleRequest, adapter: ClientAdapter): Promise<OptPrimTupleResponse> {
+export async function optPrimTuple(
+  request: OptPrimTupleRequest,
+  adapter: ClientAdapter,
+): Promise<OptPrimTupleResponse> {
   const requestUrl = await adapter.getUrl('/opt-prim-tuple', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1370,26 +1349,23 @@ export async function optPrimTuple(input: OptPrimTupleRequest, adapter: ClientAd
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
     mimeType,
     optPrimTupleResponseBodyValidator,
   )
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as OptPrimTupleResponse
-  return response
 }
 
-export async function primObj(input: PrimObjRequest, adapter: ClientAdapter): Promise<PrimObjResponse> {
+export async function primObj(request: PrimObjRequest, adapter: ClientAdapter): Promise<PrimObjResponse> {
   const requestUrl = await adapter.getUrl('/prim-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1399,21 +1375,18 @@ export async function primObj(input: PrimObjRequest, adapter: ClientAdapter): Pr
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primObjResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as PrimObjResponse
-  return response
 }
 
-export async function primTuple(input: PrimTupleRequest, adapter: ClientAdapter): Promise<PrimTupleResponse> {
+export async function primTuple(request: PrimTupleRequest, adapter: ClientAdapter): Promise<PrimTupleResponse> {
   const requestUrl = await adapter.getUrl('/prim-tuple', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1423,21 +1396,18 @@ export async function primTuple(input: PrimTupleRequest, adapter: ClientAdapter)
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primTupleResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as PrimTupleResponse
-  return response
 }
 
-export async function str(input: StrRequest, adapter: ClientAdapter): Promise<StrResponse> {
+export async function str(request: StrRequest, adapter: ClientAdapter): Promise<StrResponse> {
   const requestUrl = await adapter.getUrl('/str', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1447,21 +1417,18 @@ export async function str(input: StrRequest, adapter: ClientAdapter): Promise<St
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as StrResponse
-  return response
 }
 
-export async function strArr(input: StrArrRequest, adapter: ClientAdapter): Promise<StrArrResponse> {
+export async function strArr(request: StrArrRequest, adapter: ClientAdapter): Promise<StrArrResponse> {
   const requestUrl = await adapter.getUrl('/str-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(input, undefined)
-  const requestBody = await adapter.getRequestBody(input)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -1471,31 +1438,28 @@ export async function strArr(input: StrArrRequest, adapter: ClientAdapter): Prom
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, undefined)
   const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strArrResponseBodyValidator)
-  const response = {
+  return {
     mimeType,
     statusCode,
-    headers: responseHeaders,
     body: responseBody,
   } as StrArrResponse
-  return response
 }
 
 export type BodiesSdk = {
-  arrObj(input: ArrObjRequest): Promise<ArrObjResponse>
-  bool(input: BoolRequest): Promise<BoolResponse>
-  boolArr(input: BoolArrRequest): Promise<BoolArrResponse>
-  enm(input: EnmRequest): Promise<EnmResponse>
-  enmArr(input: EnmArrRequest): Promise<EnmArrResponse>
-  nestedObj(input: NestedObjRequest): Promise<NestedObjResponse>
-  num(input: NumRequest): Promise<NumResponse>
-  numArr(input: NumArrRequest): Promise<NumArrResponse>
-  optPrimTuple(input: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
-  primObj(input: PrimObjRequest): Promise<PrimObjResponse>
-  primTuple(input: PrimTupleRequest): Promise<PrimTupleResponse>
-  str(input: StrRequest): Promise<StrResponse>
-  strArr(input: StrArrRequest): Promise<StrArrResponse>
+  arrObj(request: ArrObjRequest): Promise<ArrObjResponse>
+  bool(request: BoolRequest): Promise<BoolResponse>
+  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
+  enm(request: EnmRequest): Promise<EnmResponse>
+  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
+  nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
+  num(request: NumRequest): Promise<NumResponse>
+  numArr(request: NumArrRequest): Promise<NumArrResponse>
+  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
+  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
+  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
+  str(request: StrRequest): Promise<StrResponse>
+  strArr(request: StrArrRequest): Promise<StrArrResponse>
 }
 
 export class BodiesSdkImpl implements BodiesSdk {
@@ -1503,85 +1467,85 @@ export class BodiesSdkImpl implements BodiesSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async arrObj(input: ArrObjRequest): Promise<ArrObjResponse> {
-    return arrObj(input, this.adapter)
+  public async arrObj(request: ArrObjRequest): Promise<ArrObjResponse> {
+    return arrObj(request, this.adapter)
   }
-  public async bool(input: BoolRequest): Promise<BoolResponse> {
-    return bool(input, this.adapter)
+  public async bool(request: BoolRequest): Promise<BoolResponse> {
+    return bool(request, this.adapter)
   }
-  public async boolArr(input: BoolArrRequest): Promise<BoolArrResponse> {
-    return boolArr(input, this.adapter)
+  public async boolArr(request: BoolArrRequest): Promise<BoolArrResponse> {
+    return boolArr(request, this.adapter)
   }
-  public async enm(input: EnmRequest): Promise<EnmResponse> {
-    return enm(input, this.adapter)
+  public async enm(request: EnmRequest): Promise<EnmResponse> {
+    return enm(request, this.adapter)
   }
-  public async enmArr(input: EnmArrRequest): Promise<EnmArrResponse> {
-    return enmArr(input, this.adapter)
+  public async enmArr(request: EnmArrRequest): Promise<EnmArrResponse> {
+    return enmArr(request, this.adapter)
   }
-  public async nestedObj(input: NestedObjRequest): Promise<NestedObjResponse> {
-    return nestedObj(input, this.adapter)
+  public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
+    return nestedObj(request, this.adapter)
   }
-  public async num(input: NumRequest): Promise<NumResponse> {
-    return num(input, this.adapter)
+  public async num(request: NumRequest): Promise<NumResponse> {
+    return num(request, this.adapter)
   }
-  public async numArr(input: NumArrRequest): Promise<NumArrResponse> {
-    return numArr(input, this.adapter)
+  public async numArr(request: NumArrRequest): Promise<NumArrResponse> {
+    return numArr(request, this.adapter)
   }
-  public async optPrimTuple(input: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
-    return optPrimTuple(input, this.adapter)
+  public async optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
+    return optPrimTuple(request, this.adapter)
   }
-  public async primObj(input: PrimObjRequest): Promise<PrimObjResponse> {
-    return primObj(input, this.adapter)
+  public async primObj(request: PrimObjRequest): Promise<PrimObjResponse> {
+    return primObj(request, this.adapter)
   }
-  public async primTuple(input: PrimTupleRequest): Promise<PrimTupleResponse> {
-    return primTuple(input, this.adapter)
+  public async primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse> {
+    return primTuple(request, this.adapter)
   }
-  public async str(input: StrRequest): Promise<StrResponse> {
-    return str(input, this.adapter)
+  public async str(request: StrRequest): Promise<StrResponse> {
+    return str(request, this.adapter)
   }
-  public async strArr(input: StrArrRequest): Promise<StrArrResponse> {
-    return strArr(input, this.adapter)
+  public async strArr(request: StrArrRequest): Promise<StrArrResponse> {
+    return strArr(request, this.adapter)
   }
 }
 
 export class BodiesSdkStub implements BodiesSdk {
-  public async arrObj(_input: ArrObjRequest): Promise<ArrObjResponse> {
+  public async arrObj(_request: ArrObjRequest): Promise<ArrObjResponse> {
     throw new Error('Stub method "arrObj" called. You should implement this method if you want to use it.')
   }
-  public async bool(_input: BoolRequest): Promise<BoolResponse> {
+  public async bool(_request: BoolRequest): Promise<BoolResponse> {
     throw new Error('Stub method "bool" called. You should implement this method if you want to use it.')
   }
-  public async boolArr(_input: BoolArrRequest): Promise<BoolArrResponse> {
+  public async boolArr(_request: BoolArrRequest): Promise<BoolArrResponse> {
     throw new Error('Stub method "boolArr" called. You should implement this method if you want to use it.')
   }
-  public async enm(_input: EnmRequest): Promise<EnmResponse> {
+  public async enm(_request: EnmRequest): Promise<EnmResponse> {
     throw new Error('Stub method "enm" called. You should implement this method if you want to use it.')
   }
-  public async enmArr(_input: EnmArrRequest): Promise<EnmArrResponse> {
+  public async enmArr(_request: EnmArrRequest): Promise<EnmArrResponse> {
     throw new Error('Stub method "enmArr" called. You should implement this method if you want to use it.')
   }
-  public async nestedObj(_input: NestedObjRequest): Promise<NestedObjResponse> {
+  public async nestedObj(_request: NestedObjRequest): Promise<NestedObjResponse> {
     throw new Error('Stub method "nestedObj" called. You should implement this method if you want to use it.')
   }
-  public async num(_input: NumRequest): Promise<NumResponse> {
+  public async num(_request: NumRequest): Promise<NumResponse> {
     throw new Error('Stub method "num" called. You should implement this method if you want to use it.')
   }
-  public async numArr(_input: NumArrRequest): Promise<NumArrResponse> {
+  public async numArr(_request: NumArrRequest): Promise<NumArrResponse> {
     throw new Error('Stub method "numArr" called. You should implement this method if you want to use it.')
   }
-  public async optPrimTuple(_input: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
+  public async optPrimTuple(_request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
     throw new Error('Stub method "optPrimTuple" called. You should implement this method if you want to use it.')
   }
-  public async primObj(_input: PrimObjRequest): Promise<PrimObjResponse> {
+  public async primObj(_request: PrimObjRequest): Promise<PrimObjResponse> {
     throw new Error('Stub method "primObj" called. You should implement this method if you want to use it.')
   }
-  public async primTuple(_input: PrimTupleRequest): Promise<PrimTupleResponse> {
+  public async primTuple(_request: PrimTupleRequest): Promise<PrimTupleResponse> {
     throw new Error('Stub method "primTuple" called. You should implement this method if you want to use it.')
   }
-  public async str(_input: StrRequest): Promise<StrResponse> {
+  public async str(_request: StrRequest): Promise<StrResponse> {
     throw new Error('Stub method "str" called. You should implement this method if you want to use it.')
   }
-  public async strArr(_input: StrArrRequest): Promise<StrArrResponse> {
+  public async strArr(_request: StrArrRequest): Promise<StrArrResponse> {
     throw new Error('Stub method "strArr" called. You should implement this method if you want to use it.')
   }
 }

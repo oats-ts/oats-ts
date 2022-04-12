@@ -2,17 +2,15 @@ import type { Validator } from '@oats-ts/validators'
 import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
-  getPath(input: Partial<TypedHttpRequest>, serializer: (input: any) => Try<string>): Promise<string>
-  getQuery(
-    input: Partial<TypedHttpRequest>,
-    serializer?: (input: any) => Try<string | undefined>,
-  ): Promise<string | undefined>
+  getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
+  getQuery<Q>(input: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
-  getRequestHeaders(
-    input?: Partial<TypedHttpRequest>,
-    serializer?: (input: any) => Try<RawHttpHeaders>,
+  getRequestHeaders<H>(
+    input?: H,
+    mimeType?: string,
+    serializer?: (input: H) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders>
-  getRequestBody(input: Partial<TypedHttpRequest>): Promise<any>
+  getRequestBody<B>(mimeType?: string, input?: B): Promise<any>
   request(request: RawHttpRequest): Promise<RawHttpResponse>
   getMimeType(response: RawHttpResponse): Promise<string | undefined>
   getStatusCode(response: RawHttpResponse): Promise<number | undefined>
@@ -86,11 +84,6 @@ export type HasRequestBody<M extends string, T> = {
   mimeType: M
   body: T
 }
-
-export type TypedHttpRequest<P = any, Q = any, H = any, M extends string = any, B = any> = HasHeaders<H> &
-  HasPathParameters<P> &
-  HasQueryParameters<Q> &
-  HasRequestBody<M, B>
 
 /** Http methods which are possible to describe using OpenAPI spec. */
 export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace'

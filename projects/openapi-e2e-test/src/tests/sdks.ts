@@ -1,5 +1,4 @@
 import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
-import { TypedHttpRequest } from '@oats-ts/openapi-http'
 import YAML from 'yamljs'
 import { BodiesSdkImpl } from '../generated/bodies'
 import { BodiesSdkImpl as OptionalReqBodySdkImpl } from '../generated/optional-request-body'
@@ -12,8 +11,8 @@ class YamlFetchClientAdapter extends FetchClientAdapter {
   override async getParsedResponseBody(response: any): Promise<any> {
     return YAML.parse(await response.text())
   }
-  override async getRequestBody(response: Partial<TypedHttpRequest>): Promise<any> {
-    return YAML.stringify(response.body)
+  override async getRequestBody(_mimeType: string, body: any): Promise<any> {
+    return YAML.stringify(body)
   }
 }
 

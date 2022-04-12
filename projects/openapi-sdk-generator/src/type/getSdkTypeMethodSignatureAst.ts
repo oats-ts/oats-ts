@@ -17,7 +17,7 @@ export function getSdkTypeMethodSignatureAst(
           [],
           [],
           undefined,
-          'input',
+          'request',
           undefined,
           factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
         ),
