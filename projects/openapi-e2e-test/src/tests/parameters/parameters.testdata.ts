@@ -1,4 +1,3 @@
-import { datatype, random } from 'faker'
 import {
   CommonEnumType,
   CommonObjectType,
@@ -14,83 +13,83 @@ import {
   SimplePathParameters,
   SpaceDelimitedQueryParameters,
 } from '../../generated/parameters'
-import { arrayOf, optional } from '../common/testData'
+import { random } from '../common/random'
 
 const enumValues: CommonEnumType[] = ['A', 'B', 'C']
 
 function commonObject(): CommonObjectType {
   return {
-    objBoolField: datatype.boolean(),
+    objBoolField: random.boolean(),
     objEnmField: random.arrayElement(enumValues),
-    objNumField: datatype.number(),
-    objStrField: datatype.string(datatype.number({ min: 1, max: 10 })),
-    objOptBoolField: optional(() => datatype.boolean()),
-    objOptEnmField: optional(() => random.arrayElement(enumValues)),
-    objOptNumField: optional(() => datatype.number()),
-    objOptStrField: optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
+    objNumField: random.number(),
+    objStrField: random.string(),
+    objOptBoolField: random.optional(() => random.boolean()),
+    objOptEnmField: random.optional(() => random.arrayElement(enumValues)),
+    objOptNumField: random.optional(() => random.number()),
+    objOptStrField: random.optional(() => random.string()),
   }
 }
 
 function commonExplObject(): CommonObjectTypeExpl {
   return {
-    objExplBoolField: datatype.boolean(),
+    objExplBoolField: random.boolean(),
     objExplEnmField: random.arrayElement(enumValues),
-    objExplNumField: datatype.number(),
-    objExplStrField: datatype.string(datatype.number({ min: 1, max: 10 })),
-    objExplOptBoolField: optional(() => datatype.boolean()),
-    objExplOptEnmField: optional(() => random.arrayElement(enumValues)),
-    objExplOptNumField: optional(() => datatype.number()),
-    objExplOptStrField: optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
+    objExplNumField: random.number(),
+    objExplStrField: random.string(),
+    objExplOptBoolField: random.optional(() => random.boolean()),
+    objExplOptEnmField: random.optional(() => random.arrayElement(enumValues)),
+    objExplOptNumField: random.optional(() => random.number()),
+    objExplOptStrField: random.optional(() => random.string()),
   }
 }
 
 function optCommonObject(): CommonOptObjectType {
   return {
-    optObjBoolField: datatype.boolean(),
+    optObjBoolField: random.boolean(),
     optObjEnmField: random.arrayElement(enumValues),
-    optObjNumField: datatype.number(),
-    optObjStrField: datatype.string(datatype.number({ min: 1, max: 10 })),
-    optObjOptBoolField: optional(() => datatype.boolean()),
-    optObjOptEnmField: optional(() => random.arrayElement(enumValues)),
-    optObjOptNumField: optional(() => datatype.number()),
-    optObjOptStrField: optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
+    optObjNumField: random.number(),
+    optObjStrField: random.string(),
+    optObjOptBoolField: random.optional(() => random.boolean()),
+    optObjOptEnmField: random.optional(() => random.arrayElement(enumValues)),
+    optObjOptNumField: random.optional(() => random.number()),
+    optObjOptStrField: random.optional(() => random.string()),
   }
 }
 
 function optCommonExplObject(): CommonOptObjectTypeExpl {
   return {
-    optObjExplBoolField: datatype.boolean(),
+    optObjExplBoolField: random.boolean(),
     optObjExplEnmField: random.arrayElement(enumValues),
-    optObjExplNumField: datatype.number(),
-    optObjExplStrField: datatype.string(datatype.number({ min: 1, max: 10 })),
-    optObjExplOptBoolField: optional(() => datatype.boolean()),
-    optObjExplOptEnmField: optional(() => random.arrayElement(enumValues)),
-    optObjExplOptNumField: optional(() => datatype.number()),
-    optObjExplOptStrField: optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
+    optObjExplNumField: random.number(),
+    optObjExplStrField: random.string(),
+    optObjExplOptBoolField: random.optional(() => random.boolean()),
+    optObjExplOptEnmField: random.optional(() => random.arrayElement(enumValues)),
+    optObjExplOptNumField: random.optional(() => random.number()),
+    optObjExplOptStrField: random.optional(() => random.string()),
   }
 }
 
 export function randomPathParameters(): SimplePathParameters & MatrixPathParameters & LabelPathParameters {
   return {
-    str: datatype.string(datatype.number({ min: 2, max: 10 })),
-    strExpl: datatype.string(datatype.number({ min: 2, max: 10 })),
-    strArr: arrayOf(() => datatype.string(datatype.number({ min: 2, max: 10 }))),
-    strArrExpl: arrayOf(() => datatype.string(datatype.number({ min: 2, max: 10 }))),
+    str: random.string(),
+    strExpl: random.string(),
+    strArr: random.arrayOf(() => random.string()),
+    strArrExpl: random.arrayOf(() => random.string()),
 
-    num: datatype.number(),
-    numExpl: datatype.number(),
-    numArr: arrayOf(() => datatype.number()),
-    numArrExpl: arrayOf(() => datatype.number()),
+    num: random.number(),
+    numExpl: random.number(),
+    numArr: random.arrayOf(() => random.number()),
+    numArrExpl: random.arrayOf(() => random.number()),
 
-    bool: datatype.boolean(),
-    boolExpl: datatype.boolean(),
-    boolArr: arrayOf(() => datatype.boolean()),
-    boolArrExpl: arrayOf(() => datatype.boolean()),
+    bool: random.boolean(),
+    boolExpl: random.boolean(),
+    boolArr: random.arrayOf(() => random.boolean()),
+    boolArrExpl: random.arrayOf(() => random.boolean()),
 
     enm: random.arrayElement(enumValues),
     enmExpl: random.arrayElement(enumValues),
-    enmArr: arrayOf(() => random.arrayElement(enumValues)),
-    enmArrExpl: arrayOf(() => random.arrayElement(enumValues)),
+    enmArr: random.arrayOf(() => random.arrayElement(enumValues)),
+    enmArrExpl: random.arrayOf(() => random.arrayElement(enumValues)),
 
     obj: commonObject(),
     objExpl: commonExplObject(),
@@ -99,110 +98,110 @@ export function randomPathParameters(): SimplePathParameters & MatrixPathParamet
 
 export function randomFormQueryParameters(): FormQueryParameters {
   return {
-    str: datatype.string(datatype.number({ min: 1, max: 10 })),
-    strExpl: datatype.string(datatype.number({ min: 1, max: 10 })),
-    strArr: arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    strArrExpl: arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    optStr: optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    optStrExpl: optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    optStrArr: optional(() => arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 })))),
-    optStrArrExpl: optional(() => arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 })))),
+    str: random.string(),
+    strExpl: random.string(),
+    strArr: random.arrayOf(() => random.string()),
+    strArrExpl: random.arrayOf(() => random.string()),
+    optStr: random.optional(() => random.string()),
+    optStrExpl: random.optional(() => random.string()),
+    optStrArr: random.optional(() => random.arrayOf(() => random.string())),
+    optStrArrExpl: random.optional(() => random.arrayOf(() => random.string())),
 
-    num: datatype.number(),
-    numExpl: datatype.number(),
-    numArr: arrayOf(() => datatype.number()),
-    numArrExpl: arrayOf(() => datatype.number()),
-    optNum: optional(() => datatype.number()),
-    optNumExpl: optional(() => datatype.number()),
-    optNumArr: optional(() => arrayOf(() => datatype.number())),
-    optNumArrExpl: optional(() => arrayOf(() => datatype.number())),
+    num: random.number(),
+    numExpl: random.number(),
+    numArr: random.arrayOf(() => random.number()),
+    numArrExpl: random.arrayOf(() => random.number()),
+    optNum: random.optional(() => random.number()),
+    optNumExpl: random.optional(() => random.number()),
+    optNumArr: random.optional(() => random.arrayOf(() => random.number())),
+    optNumArrExpl: random.optional(() => random.arrayOf(() => random.number())),
 
-    bool: datatype.boolean(),
-    boolExpl: datatype.boolean(),
-    boolArr: arrayOf(() => datatype.boolean()),
-    boolArrExpl: arrayOf(() => datatype.boolean()),
-    optBool: optional(() => datatype.boolean()),
-    optBoolExpl: optional(() => datatype.boolean()),
-    optBoolArr: optional(() => arrayOf(() => datatype.boolean())),
-    optBoolArrExpl: optional(() => arrayOf(() => datatype.boolean())),
+    bool: random.boolean(),
+    boolExpl: random.boolean(),
+    boolArr: random.arrayOf(() => random.boolean()),
+    boolArrExpl: random.arrayOf(() => random.boolean()),
+    optBool: random.optional(() => random.boolean()),
+    optBoolExpl: random.optional(() => random.boolean()),
+    optBoolArr: random.optional(() => random.arrayOf(() => random.boolean())),
+    optBoolArrExpl: random.optional(() => random.arrayOf(() => random.boolean())),
 
     enm: random.arrayElement(enumValues),
     enmExpl: random.arrayElement(enumValues),
-    enmArr: arrayOf(() => random.arrayElement(enumValues)),
-    enmArrExpl: arrayOf(() => random.arrayElement(enumValues)),
-    optEnm: optional(() => random.arrayElement(enumValues)),
-    optEnmExpl: optional(() => random.arrayElement(enumValues)),
-    optEnmArr: optional(() => arrayOf(() => random.arrayElement(enumValues))),
-    optEnmArrExpl: optional(() => arrayOf(() => random.arrayElement(enumValues))),
+    enmArr: random.arrayOf(() => random.arrayElement(enumValues)),
+    enmArrExpl: random.arrayOf(() => random.arrayElement(enumValues)),
+    optEnm: random.optional(() => random.arrayElement(enumValues)),
+    optEnmExpl: random.optional(() => random.arrayElement(enumValues)),
+    optEnmArr: random.optional(() => random.arrayOf(() => random.arrayElement(enumValues))),
+    optEnmArrExpl: random.optional(() => random.arrayOf(() => random.arrayElement(enumValues))),
 
     obj: commonObject(),
     objExpl: commonExplObject(),
-    optObj: optional(optCommonObject),
-    optObjExpl: optional(optCommonExplObject),
+    optObj: random.optional(optCommonObject),
+    optObjExpl: random.optional(optCommonExplObject),
   }
 }
 
 export function randomDelimitedQueryParameters(): SpaceDelimitedQueryParameters & PipeDelimitedQueryParameters {
   return {
-    strArrExpl: arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    boolArrExpl: arrayOf(() => datatype.boolean()),
-    numArrExpl: arrayOf(() => datatype.number()),
-    enmArrExpl: arrayOf(() => random.arrayElement(enumValues)),
-    optStrArrExpl: optional(() => arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 })))),
-    optNumArrExpl: optional(() => arrayOf(() => datatype.number())),
-    optBoolArrExpl: optional(() => arrayOf(() => datatype.boolean())),
-    optEnmArrExpl: optional(() => arrayOf(() => random.arrayElement(enumValues))),
+    strArrExpl: random.arrayOf(() => random.string()),
+    boolArrExpl: random.arrayOf(() => random.boolean()),
+    numArrExpl: random.arrayOf(() => random.number()),
+    enmArrExpl: random.arrayOf(() => random.arrayElement(enumValues)),
+    optStrArrExpl: random.optional(() => random.arrayOf(() => random.string())),
+    optNumArrExpl: random.optional(() => random.arrayOf(() => random.number())),
+    optBoolArrExpl: random.optional(() => random.arrayOf(() => random.boolean())),
+    optEnmArrExpl: random.optional(() => random.arrayOf(() => random.arrayElement(enumValues))),
   }
 }
 
 export function randomDeepObjectQueryParameters(): DeepObjectQueryParameters {
   return {
     objExpl: commonExplObject(),
-    optObjExpl: optional(optCommonExplObject),
+    optObjExpl: random.optional(optCommonExplObject),
   }
 }
 
 export function randomHeaderParameters(): SimpleHeaderParameters {
   return {
-    'X-Str-Header': datatype.string(datatype.number({ min: 1, max: 10 })),
-    'X-StrExpl-Header': datatype.string(datatype.number({ min: 1, max: 10 })),
-    'X-StrArr-Header': arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    'X-StrArrExpl-Header': arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    'X-OptStr-Header': optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    'X-OptStrExpl-Header': optional(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    'X-OptStrArr-Header': optional(() => arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 })))),
-    'X-OptStrArrExpl-Header': optional(() => arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 })))),
+    'X-Str-Header': random.string(),
+    'X-StrExpl-Header': random.string(),
+    'X-StrArr-Header': random.arrayOf(() => random.string()),
+    'X-StrArrExpl-Header': random.arrayOf(() => random.string()),
+    'X-OptStr-Header': random.optional(() => random.string()),
+    'X-OptStrExpl-Header': random.optional(() => random.string()),
+    'X-OptStrArr-Header': random.optional(() => random.arrayOf(() => random.string())),
+    'X-OptStrArrExpl-Header': random.optional(() => random.arrayOf(() => random.string())),
 
-    'X-Num-Header': datatype.number(),
-    'X-NumExpl-Header': datatype.number(),
-    'X-NumArr-Header': arrayOf(() => datatype.number()),
-    'X-NumArrExpl-Header': arrayOf(() => datatype.number()),
-    'X-OptNum-Header': optional(() => datatype.number()),
-    'X-OptNumExpl-Header': optional(() => datatype.number()),
-    'X-OptNumArr-Header': optional(() => arrayOf(() => datatype.number())),
-    'X-OptNumArrExpl-Header': optional(() => arrayOf(() => datatype.number())),
+    'X-Num-Header': random.number(),
+    'X-NumExpl-Header': random.number(),
+    'X-NumArr-Header': random.arrayOf(() => random.number()),
+    'X-NumArrExpl-Header': random.arrayOf(() => random.number()),
+    'X-OptNum-Header': random.optional(() => random.number()),
+    'X-OptNumExpl-Header': random.optional(() => random.number()),
+    'X-OptNumArr-Header': random.optional(() => random.arrayOf(() => random.number())),
+    'X-OptNumArrExpl-Header': random.optional(() => random.arrayOf(() => random.number())),
 
-    'X-Bool-Header': datatype.boolean(),
-    'X-BoolExpl-Header': datatype.boolean(),
-    'X-BoolArr-Header': arrayOf(() => datatype.boolean()),
-    'X-BoolArrExpl-Header': arrayOf(() => datatype.boolean()),
-    'X-OptBool-Header': optional(() => datatype.boolean()),
-    'X-OptBoolExpl-Header': optional(() => datatype.boolean()),
-    'X-OptBoolArr-Header': optional(() => arrayOf(() => datatype.boolean())),
-    'X-OptBoolArrExpl-Header': optional(() => arrayOf(() => datatype.boolean())),
+    'X-Bool-Header': random.boolean(),
+    'X-BoolExpl-Header': random.boolean(),
+    'X-BoolArr-Header': random.arrayOf(() => random.boolean()),
+    'X-BoolArrExpl-Header': random.arrayOf(() => random.boolean()),
+    'X-OptBool-Header': random.optional(() => random.boolean()),
+    'X-OptBoolExpl-Header': random.optional(() => random.boolean()),
+    'X-OptBoolArr-Header': random.optional(() => random.arrayOf(() => random.boolean())),
+    'X-OptBoolArrExpl-Header': random.optional(() => random.arrayOf(() => random.boolean())),
 
     'X-Enm-Header': random.arrayElement(enumValues),
     'X-EnmExpl-Header': random.arrayElement(enumValues),
-    'X-EnmArr-Header': arrayOf(() => random.arrayElement(enumValues)),
-    'X-EnmArrExpl-Header': arrayOf(() => random.arrayElement(enumValues)),
-    'X-OptEnm-Header': optional(() => random.arrayElement(enumValues)),
-    'X-OptEnmExpl-Header': optional(() => random.arrayElement(enumValues)),
-    'X-OptEnmArr-Header': optional(() => arrayOf(() => random.arrayElement(enumValues))),
-    'X-OptEnmArrExpl-Header': optional(() => arrayOf(() => random.arrayElement(enumValues))),
+    'X-EnmArr-Header': random.arrayOf(() => random.arrayElement(enumValues)),
+    'X-EnmArrExpl-Header': random.arrayOf(() => random.arrayElement(enumValues)),
+    'X-OptEnm-Header': random.optional(() => random.arrayElement(enumValues)),
+    'X-OptEnmExpl-Header': random.optional(() => random.arrayElement(enumValues)),
+    'X-OptEnmArr-Header': random.optional(() => random.arrayOf(() => random.arrayElement(enumValues))),
+    'X-OptEnmArrExpl-Header': random.optional(() => random.arrayOf(() => random.arrayElement(enumValues))),
 
     'X-Obj-Header': commonObject(),
     'X-ObjExpl-Header': commonExplObject(),
-    'X-OptObj-Header': optional(optCommonObject),
-    'X-OptObjExpl-Header': optional(optCommonExplObject),
+    'X-OptObj-Header': random.optional(optCommonObject),
+    'X-OptObjExpl-Header': random.optional(optCommonExplObject),
   }
 }

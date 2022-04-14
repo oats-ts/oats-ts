@@ -1,4 +1,3 @@
-import { datatype, random } from 'faker'
 import {
   EnumType,
   ObjectWithArrays,
@@ -7,7 +6,7 @@ import {
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
 } from '../../generated/bodies'
-import { arrayOf } from '../common/testData'
+import { random } from '../common/random'
 
 const enumValues: EnumType[] = ['A', 'B', 'C']
 
@@ -17,20 +16,20 @@ export function randomEnum(): EnumType {
 
 export function randomObjectWithPrimitives(): ObjectWithPrimitives {
   return {
-    str: datatype.string(datatype.number({ min: 1, max: 10 })),
-    num: datatype.number(),
+    str: random.string(),
+    num: random.number(),
     lit: 'Literal Value',
-    bool: datatype.boolean(),
+    bool: random.boolean(),
     enm: randomEnum(),
   }
 }
 
 export function randomObjectWithArrays(): ObjectWithArrays {
   return {
-    strArr: arrayOf(() => datatype.string(datatype.number({ min: 1, max: 10 }))),
-    numArr: arrayOf(() => datatype.number()),
-    boolArr: arrayOf(() => datatype.boolean()),
-    enmArr: arrayOf(randomEnum),
+    strArr: random.arrayOf(() => random.string()),
+    numArr: random.arrayOf(() => random.number()),
+    boolArr: random.arrayOf(() => random.boolean()),
+    enmArr: random.arrayOf(randomEnum),
   }
 }
 
@@ -42,9 +41,9 @@ export function randomObjectWithNestedObjects(): ObjectWithNestedObjects {
 }
 
 export function randomTuple(): PrimitiveTupleType {
-  return ['Literal Value', datatype.string(), datatype.number(), randomEnum(), datatype.boolean()]
+  return ['Literal Value', random.string(), random.number(), randomEnum(), random.boolean()]
 }
 
 export function randomOptionalTuple(): PrimitiveOptionalTupleType {
-  return randomTuple().slice(0, datatype.number({ min: 0, max: 5 })) as PrimitiveOptionalTupleType
+  return randomTuple().slice(0, random.number()) as PrimitiveOptionalTupleType
 }
