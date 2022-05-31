@@ -100,8 +100,20 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/log",
+      "projectFolder": "projects/log",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/model-common",
       "projectFolder": "projects/model-common",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/oats",
+      "projectFolder": "projects/oats",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

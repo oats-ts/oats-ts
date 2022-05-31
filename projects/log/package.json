@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/generator",
+  "name": "@oats-ts/log",
   "version": "0.0.24",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
@@ -32,9 +32,6 @@
   },
   "dependencies": {
     "chalk": "4.1.1",
-    "lodash": "4.17.21",
-    "@oats-ts/log": "0.0.24",
-    "@oats-ts/try": "0.0.24",
-    "@oats-ts/validators": "0.0.24"
+    "lodash": "4.17.21"
   }
 }

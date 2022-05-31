@@ -65,8 +65,16 @@
       "path": "projects/json-schema-validators-generator"
     },
     {
+      "name": "log",
+      "path": "projects/log"
+    },
+    {
       "name": "model-common",
       "path": "projects/model-common"
+    },
+    {
+      "name": "oats",
+      "path": "projects/oats"
     },
     {
       "name": "openapi",
