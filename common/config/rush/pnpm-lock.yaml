@@ -1,15 +1,6 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@rush-temp/asyncapi': file:./projects/asyncapi.tgz
-  '@rush-temp/asyncapi-common': file:./projects/asyncapi-common.tgz
-  '@rush-temp/asyncapi-e2e-test': file:./projects/asyncapi-e2e-test.tgz
-  '@rush-temp/asyncapi-model': file:./projects/asyncapi-model.tgz
-  '@rush-temp/asyncapi-reader': file:./projects/asyncapi-reader.tgz
-  '@rush-temp/asyncapi-ws-api-generator': file:./projects/asyncapi-ws-api-generator.tgz
-  '@rush-temp/asyncapi-ws-channels-generator': file:./projects/asyncapi-ws-channels-generator.tgz
-  '@rush-temp/asyncapi-ws-client': file:./projects/asyncapi-ws-client.tgz
-  '@rush-temp/asyncapi-ws-parameter-serialization': file:./projects/asyncapi-ws-parameter-serialization.tgz
   '@rush-temp/events': file:./projects/events.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/json-schema-common': file:./projects/json-schema-common.tgz
@@ -48,7 +39,6 @@ specifiers:
   '@rush-temp/typescript-writer': file:./projects/typescript-writer.tgz
   '@rush-temp/validators': file:./projects/validators.tgz
   '@types/express': 4.x.x
-  '@types/faker': 5.5.9
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
   '@types/node-fetch': 2.6.1
@@ -56,7 +46,6 @@ specifiers:
   '@types/prettier': 2.4.4
   '@types/urijs': 1.19.19
   '@types/valid-url': 1.0.3
-  '@types/websocket': ~1.0.4
   '@types/whatwg-mimetype': 2.1.1
   '@types/yamljs': 0.2.31
   camelcase: 6.2.0
@@ -65,12 +54,10 @@ specifiers:
   cross-fetch: 3.1.5
   eventemitter3: 4.0.7
   express: 4.x.x
-  faker: 5.5.3
   http-terminator: 3.0.4
   lodash: 4.17.21
   nanoid: 3.3.4
   node-fetch: 2.6.7
-  open-api-mocker: 1.7.2
   pascalcase: 1.0.0
   path-to-regexp: 6.2.0
   prettier: 2.6.1
@@ -80,22 +67,10 @@ specifiers:
   typescript: 4.3.5
   urijs: 1.19.11
   valid-url: 1.0.9
-  websocket: ~1.0.34
   whatwg-mimetype: 2.3.0
   yamljs: 0.3.0
-  yup: 0.32.9
-  zod: 3.2.0
 
 dependencies:
-  '@rush-temp/asyncapi': file:projects/asyncapi.tgz
-  '@rush-temp/asyncapi-common': file:projects/asyncapi-common.tgz
-  '@rush-temp/asyncapi-e2e-test': file:projects/asyncapi-e2e-test.tgz
-  '@rush-temp/asyncapi-model': file:projects/asyncapi-model.tgz
-  '@rush-temp/asyncapi-reader': file:projects/asyncapi-reader.tgz_ts-node@10.0.0
-  '@rush-temp/asyncapi-ws-api-generator': file:projects/asyncapi-ws-api-generator.tgz
-  '@rush-temp/asyncapi-ws-channels-generator': file:projects/asyncapi-ws-channels-generator.tgz
-  '@rush-temp/asyncapi-ws-client': file:projects/asyncapi-ws-client.tgz
-  '@rush-temp/asyncapi-ws-parameter-serialization': file:projects/asyncapi-ws-parameter-serialization.tgz_ts-node@10.0.0
   '@rush-temp/events': file:projects/events.tgz_ts-node@10.0.0
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-common': file:projects/json-schema-common.tgz
@@ -134,7 +109,6 @@ dependencies:
   '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
   '@rush-temp/validators': file:projects/validators.tgz_ts-node@10.0.0
   '@types/express': 4.17.13
-  '@types/faker': 5.5.9
   '@types/lodash': 4.14.172
   '@types/node': 16.7.1
   '@types/node-fetch': 2.6.1
@@ -142,7 +116,6 @@ dependencies:
   '@types/prettier': 2.4.4
   '@types/urijs': 1.19.19
   '@types/valid-url': 1.0.3
-  '@types/websocket': 1.0.5
   '@types/whatwg-mimetype': 2.1.1
   '@types/yamljs': 0.2.31
   camelcase: 6.2.0
@@ -151,12 +124,10 @@ dependencies:
   cross-fetch: 3.1.5
   eventemitter3: 4.0.7
   express: 4.17.1
-  faker: 5.5.3
   http-terminator: 3.0.4
   lodash: 4.17.21
   nanoid: 3.3.4
   node-fetch: 2.6.7
-  open-api-mocker: 1.7.2
   pascalcase: 1.0.0
   path-to-regexp: 6.2.0
   prettier: 2.6.1
@@ -166,11 +137,8 @@ dependencies:
   typescript: 4.3.5
   urijs: 1.19.11
   valid-url: 1.0.9
-  websocket: 1.0.34
   whatwg-mimetype: 2.3.0
   yamljs: 0.3.0
-  yup: 0.32.9
-  zod: 3.2.0
 
 packages:
 
@@ -1129,12 +1097,6 @@ packages:
     resolution: {integrity: sha512-+33x29mg+ecU88ODdWpqaie2upIuRkhujVLA7TuJjM823cNMbeggfI6NhxewaRaRF8dy+g33e4uIg/m5Mb3xDQ==}
     dev: false
 
-  /@types/websocket/1.0.5:
-    resolution: {integrity: sha512-NbsqiNX9CnEfC1Z0Vf4mE1SgAJ07JnRYcNex7AJ9zAVzmiGHmjKFEk7O4TJIsgv2B1sLEb6owKFZrACwdYngsQ==}
-    dependencies:
-      '@types/node': 16.7.1
-    dev: false
-
   /@types/whatwg-mimetype/2.1.1:
     resolution: {integrity: sha512-ojnf89qt5AWnqsjyPqMLN8uVaxm5x23vxNQ1me6EPBOdJe1YYuIZUzg809MZUG8UU6HKhkr6ah4fi2WUvD0DFw==}
     dev: false
@@ -1433,14 +1395,6 @@ packages:
     resolution: {integrity: sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==}
     dev: false
 
-  /bufferutil/4.0.6:
-    resolution: {integrity: sha512-jduaYOYtnio4aIAyc6UbvPCVcgq7nYpVnucyxr6eCYg/Woad9Hf/oxxBRDnGGjPfjUm6j5O/uBWhIu4iLebFaw==}
-    engines: {node: '>=6.14.2'}
-    requiresBuild: true
-    dependencies:
-      node-gyp-build: 4.4.0
-    dev: false
-
   /bytes/3.1.0:
     resolution: {integrity: sha512-zauLjrfCG+xvoyaqLoV8bLVXXNGC4JqlxFCutSDWA6fJrTo2ZuvLYTqZ7aHBLZSMOopbzwv8f+wZcVzfVTI2Dg==}
     engines: {node: '>= 0.8'}
@@ -1689,13 +1643,6 @@ packages:
       cssom: 0.3.8
     dev: false
 
-  /d/1.0.1:
-    resolution: {integrity: sha512-m62ShEObQ39CfralilEQRjH6oAMtNCV1xJyEx5LpRYUVN+EviphDgUc/F3hnYbADmkiNs67Y+3ylmlG7Lnu+FA==}
-    dependencies:
-      es5-ext: 0.10.61
-      type: 1.2.0
-    dev: false
-
   /data-urls/2.0.0:
     resolution: {integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==}
     engines: {node: '>=10'}
@@ -1828,31 +1775,6 @@ packages:
     engines: {node: '>= 0.8'}
     dev: false
 
-  /es5-ext/0.10.61:
-    resolution: {integrity: sha512-yFhIqQAzu2Ca2I4SE2Au3rxVfmohU9Y7wqGR+s7+H7krk26NXhIRAZDgqd6xqjCEFUomDEA3/Bo/7fKmIkW1kA==}
-    engines: {node: '>=0.10'}
-    requiresBuild: true
-    dependencies:
-      es6-iterator: 2.0.3
-      es6-symbol: 3.1.3
-      next-tick: 1.1.0
-    dev: false
-
-  /es6-iterator/2.0.3:
-    resolution: {integrity: sha512-zw4SRzoUkd+cl+ZoE15A9o1oQd920Bb0iOJMQkQhl3jNc03YqVjAhG7scf9C5KWRU/R13Orf588uCC6525o02g==}
-    dependencies:
-      d: 1.0.1
-      es5-ext: 0.10.61
-      es6-symbol: 3.1.3
-    dev: false
-
-  /es6-symbol/3.1.3:
-    resolution: {integrity: sha512-NJ6Yn3FuDinBaBRWl/q5X/s4koRHBrgKAu+yGI6JCBeiu3qrcbJhwT2GeR/EXVfylRk8dpQVJoLEFhK+Mu31NA==}
-    dependencies:
-      d: 1.0.1
-      ext: 1.6.0
-    dev: false
-
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
@@ -1976,12 +1898,6 @@ packages:
       type-is: 1.6.18
       utils-merge: 1.0.1
       vary: 1.1.2
-    dev: false
-
-  /ext/1.6.0:
-    resolution: {integrity: sha512-sdBImtzkq2HpkdRLtlLWDa6w4DX22ijZLKx8BMPUuKe1c5lbN6xwQDQCxSfxBQnHZ13ls/FH0MQZx/q/gr6FQg==}
-    dependencies:
-      type: 2.6.0
     dev: false
 
   /extend/3.0.2:
@@ -3258,10 +3174,6 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /next-tick/1.1.0:
-    resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
-    dev: false
-
   /node-fetch/2.6.1:
     resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
     engines: {node: 4.x || >=6.0.0}
@@ -3277,11 +3189,6 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-    dev: false
-
-  /node-gyp-build/4.4.0:
-    resolution: {integrity: sha512-amJnQCcgtRVw9SvoebO3BKGESClrfXGCUTX9hSn1OuGQTQBOZmVd0Z0OlecpuRksKvbsUqALE8jls/ErClAPuQ==}
-    hasBin: true
     dev: false
 
   /node-int64/0.4.0:
@@ -4133,14 +4040,6 @@ packages:
       mime-types: 2.1.31
     dev: false
 
-  /type/1.2.0:
-    resolution: {integrity: sha512-+5nt5AAniqsCnu2cEQQdpzCAh33kVx8n0VoFidKpB1dVVLAN/F+bgVOqOJqOnEnrhp222clB5p3vUlD+1QAnfg==}
-    dev: false
-
-  /type/2.6.0:
-    resolution: {integrity: sha512-eiDBDOmkih5pMbo9OqsqPRGMljLodLcwd5XD5JbtNB0o89xZAwynY9EdCDsJU7LtcVCClu9DvM7/0Ep1hYX3EQ==}
-    dev: false
-
   /typedarray-to-buffer/3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
     dependencies:
@@ -4175,14 +4074,6 @@ packages:
 
   /urijs/1.19.7:
     resolution: {integrity: sha512-Id+IKjdU0Hx+7Zx717jwLPsPeUqz7rAtuVBRLLs+qn+J2nf9NGITWVCxcijgYxBqe83C7sqsQPs6H1pyz3x9gA==}
-    dev: false
-
-  /utf-8-validate/5.0.9:
-    resolution: {integrity: sha512-Yek7dAy0v3Kl0orwMlvi7TPtiCNrdfHNd7Gcc/pLq4BLXqfAmd0J7OWMizUQnTTJsyjKn02mU7anqwfmUP4J8Q==}
-    engines: {node: '>=6.14.2'}
-    requiresBuild: true
-    dependencies:
-      node-gyp-build: 4.4.0
     dev: false
 
   /util-deprecate/1.0.2:
@@ -4243,18 +4134,6 @@ packages:
   /webidl-conversions/6.1.0:
     resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==}
     engines: {node: '>=10.4'}
-    dev: false
-
-  /websocket/1.0.34:
-    resolution: {integrity: sha512-PRDso2sGwF6kM75QykIesBijKSVceR6jL2G8NGYyq2XrItNC2P5/qL5XeR056GhA+Ly7JMFvJb9I312mJfmqnQ==}
-    engines: {node: '>=4.0.0'}
-    dependencies:
-      bufferutil: 4.0.6
-      debug: 2.6.9
-      es5-ext: 0.10.61
-      typedarray-to-buffer: 3.1.5
-      utf-8-validate: 5.0.9
-      yaeti: 0.0.6
     dev: false
 
   /whatwg-encoding/1.0.5:
@@ -4348,11 +4227,6 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /yaeti/0.0.6:
-    resolution: {integrity: sha1-8m9ITXJoTPQr7ft2lwqhYI+/lXc=}
-    engines: {node: '>=0.10.32'}
-    dev: false
-
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: false
@@ -4408,158 +4282,6 @@ packages:
 
   /zod/3.2.0:
     resolution: {integrity: sha512-yvcO3FZ8URR+LliMGqaW7tlVOOTzmup3vzKEe9Ds7twyJtdhvYa7dIYr0FbD1wVfWC1OuS83vZfHtCKslPuRhA==}
-    dev: false
-
-  file:projects/asyncapi-common.tgz:
-    resolution: {integrity: sha512-L0CIIdUFhnjkq+gZ+zyUTQAKLM8Jo30KFcH0sAKz/vk29U96UI2Zu+2qo23bOFwxshu3JYEKwKQ1YydoPA5MFA==, tarball: file:projects/asyncapi-common.tgz}
-    name: '@rush-temp/asyncapi-common'
-    version: 0.0.0
-    dependencies:
-      '@types/lodash': 4.14.172
-      lodash: 4.17.21
-      typescript: 4.3.5
-    dev: false
-
-  file:projects/asyncapi-e2e-test.tgz:
-    resolution: {integrity: sha512-UYzMxUcPFxzxrmeqMPOjEP9HZq8owfkmtIZIrnei2HJQQaeY29lWq7Ho3/ZnHi9Vf7lYyNYgCT433NWwXVyOkw==, tarball: file:projects/asyncapi-e2e-test.tgz}
-    name: '@rush-temp/asyncapi-e2e-test'
-    version: 0.0.0
-    dependencies:
-      '@types/faker': 5.5.9
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      '@types/pascalcase': 1.0.1
-      '@types/urijs': 1.19.19
-      '@types/valid-url': 1.0.3
-      '@types/yamljs': 0.2.31
-      camelcase: 6.2.0
-      cross-env: 7.0.3
-      faker: 5.5.3
-      http-terminator: 3.0.4
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      node-fetch: 2.6.7
-      open-api-mocker: 1.7.2
-      pascalcase: 1.0.0
-      path-to-regexp: 6.2.0
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      ts-node: 10.0.0_f50b86b1778cd2aa4e5405c08bb39559
-      typescript: 4.3.5
-      urijs: 1.19.11
-      valid-url: 1.0.9
-      yamljs: 0.3.0
-      yup: 0.32.9
-      zod: 3.2.0
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - bufferutil
-      - canvas
-      - encoding
-      - node-notifier
-      - supports-color
-      - utf-8-validate
-    dev: false
-
-  file:projects/asyncapi-model.tgz:
-    resolution: {integrity: sha512-T17+LKclF9i1XkgmxljVzxGAYqcEFvEJqnfyTLn+oSk2wGgZbJ8DU4KH+Q/AZs4aIP7nqH6ASIMlETmGkVaz5Q==, tarball: file:projects/asyncapi-model.tgz}
-    name: '@rush-temp/asyncapi-model'
-    version: 0.0.0
-    dev: false
-
-  file:projects/asyncapi-reader.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-eNEXGQ/Nk/WyIyOBVZYJIeag7FVTlCvtbMAsakJtIaymUQuX7OOp4wVEHGQMg4oSa5HFpKuWZJpeyyc+FgkXAA==, tarball: file:projects/asyncapi-reader.tgz}
-    id: file:projects/asyncapi-reader.tgz
-    name: '@rush-temp/asyncapi-reader'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      '@types/urijs': 1.19.19
-      '@types/valid-url': 1.0.3
-      '@types/yamljs': 0.2.31
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-      urijs: 1.19.11
-      valid-url: 1.0.9
-      yamljs: 0.3.0
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/asyncapi-ws-api-generator.tgz:
-    resolution: {integrity: sha512-fjzFIYDA5B5VYiLMYzP2tnsumT/3B3T1KRxAcDZRhTcSrpxHjfBAzl4Czg4TRLoNOa56OBt4BqGxqPUKZUPi4A==, tarball: file:projects/asyncapi-ws-api-generator.tgz}
-    name: '@rush-temp/asyncapi-ws-api-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/lodash': 4.14.172
-      lodash: 4.17.21
-      typescript: 4.3.5
-    dev: false
-
-  file:projects/asyncapi-ws-channels-generator.tgz:
-    resolution: {integrity: sha512-9eiPyllkcK9qLqWqw0yt+vlmTHNP5/6ks+HgKCsXtY+NdE7WjGwK4NNPsPICxKW0xlLBOVci3LFN0kfdoM/tiQ==, tarball: file:projects/asyncapi-ws-channels-generator.tgz}
-    name: '@rush-temp/asyncapi-ws-channels-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/lodash': 4.14.172
-      lodash: 4.17.21
-      typescript: 4.3.5
-    dev: false
-
-  file:projects/asyncapi-ws-client.tgz:
-    resolution: {integrity: sha512-GGQkNSd2aaK9X39Z3a4c6RSX0KwB2NMAlZibq3QiHwoGZtnio6ilJj8vLDJesFVdtOU+PC6V2EC8/xkPZoCp1Q==, tarball: file:projects/asyncapi-ws-client.tgz}
-    name: '@rush-temp/asyncapi-ws-client'
-    version: 0.0.0
-    dependencies:
-      '@types/websocket': 1.0.5
-      typescript: 4.3.5
-      websocket: 1.0.34
-    dev: false
-
-  file:projects/asyncapi-ws-parameter-serialization.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-9vcQtrYeTf93v/32XBWRNRjym3GM5Njmty2vJ3/kN7oFqE0V4WeoZd6y2aP8Z8MMEEgkxxXeFZa2ZQHuHGCIbA==, tarball: file:projects/asyncapi-ws-parameter-serialization.tgz}
-    id: file:projects/asyncapi-ws-parameter-serialization.tgz
-    name: '@rush-temp/asyncapi-ws-parameter-serialization'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/asyncapi.tgz:
-    resolution: {integrity: sha512-dSbd+reMAWg8cbRwRw8ZIMZEOBKYJtdMhFIyVKaBSQfpt5RARtVswhe5tr/rFv8SZtXgc80mq4xJYb51okt0sA==, tarball: file:projects/asyncapi.tgz}
-    name: '@rush-temp/asyncapi'
-    version: 0.0.0
-    dependencies:
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      '@types/pascalcase': 1.0.1
-      camelcase: 6.2.0
-      lodash: 4.17.21
-      pascalcase: 1.0.0
-      typescript: 4.3.5
     dev: false
 
   file:projects/events.tgz_ts-node@10.0.0:

@@ -19,51 +19,6 @@
   "telemetryEnabled": false,
   "projects": [
     {
-      "packageName": "@oats-ts/asyncapi",
-      "projectFolder": "projects/asyncapi",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-common",
-      "projectFolder": "projects/asyncapi-common",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-e2e-test",
-      "projectFolder": "projects/asyncapi-e2e-test",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-model",
-      "projectFolder": "projects/asyncapi-model",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-reader",
-      "projectFolder": "projects/asyncapi-reader",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-api-generator",
-      "projectFolder": "projects/asyncapi-ws-api-generator",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-channels-generator",
-      "projectFolder": "projects/asyncapi-ws-channels-generator",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-parameter-serialization",
-      "projectFolder": "projects/asyncapi-ws-parameter-serialization",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-client",
-      "projectFolder": "projects/asyncapi-ws-client",
-      "shouldPublish": false
-    },
-    {
       "packageName": "@oats-ts/events",
       "projectFolder": "projects/events",
       "versionPolicyName": "oats",

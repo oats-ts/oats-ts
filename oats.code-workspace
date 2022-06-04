@@ -5,42 +5,6 @@
       "path": "."
     },
     {
-      "name": "asyncapi",
-      "path": "projects/asyncapi"
-    },
-    {
-      "name": "asyncapi-common",
-      "path": "projects/asyncapi-common"
-    },
-    {
-      "name": "asyncapi-e2e-test",
-      "path": "projects/asyncapi-e2e-test"
-    },
-    {
-      "name": "asyncapi-model",
-      "path": "projects/asyncapi-model"
-    },
-    {
-      "name": "asyncapi-reader",
-      "path": "projects/asyncapi-reader"
-    },
-    {
-      "name": "asyncapi-ws-api-generator",
-      "path": "projects/asyncapi-ws-api-generator"
-    },
-    {
-      "name": "asyncapi-ws-channels-generator",
-      "path": "projects/asyncapi-ws-channels-generator"
-    },
-    {
-      "name": "asyncapi-ws-parameter-serialization",
-      "path": "projects/asyncapi-ws-parameter-serialization"
-    },
-    {
-      "name": "asyncapi-ws-client",
-      "path": "projects/asyncapi-ws-client"
-    },
-    {
       "name": "events",
       "path": "projects/events"
     },
