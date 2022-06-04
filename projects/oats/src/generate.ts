@@ -1,28 +1,30 @@
-import { GeneratorInput } from './typings'
+import EventEmitter from 'eventemitter3'
 import { isFailure, Try } from '@oats-ts/try'
-import { DefaultLogger } from '@oats-ts/log'
+import { OatsEventEmitter } from '@oats-ts/events'
+import { GeneratorInput } from './typings'
 
-export async function generate<R, G>(input: GeneratorInput<R, G>): Promise<Try<G>> {
-  const { reader, generator, writer, validator, logger = DefaultLogger.create() } = input
+export async function generate<P, R, G>(input: GeneratorInput<P, R, G>): Promise<Try<G>> {
+  const { reader, generator, writer, validator } = input
+  const emitter: OatsEventEmitter<P, R, G> = new EventEmitter()
 
   // Read
-  const readResult = await reader(logger)
+  const readResult = await reader(emitter)
   if (isFailure(readResult)) {
     return readResult
   }
 
   // Validate
-  const validatorResult = await validator?.(readResult.data, logger)
+  const validatorResult = await validator?.(readResult.data, emitter)
   if (isFailure(validatorResult)) {
     return validatorResult
   }
 
   // Generate
-  const generatorResult = await generator(readResult.data, logger)
+  const generatorResult = await generator(readResult.data, emitter)
   if (isFailure(generatorResult)) {
     return generatorResult
   }
 
   // Write
-  return writer(generatorResult.data, logger)
+  return writer(generatorResult.data, emitter)
 }

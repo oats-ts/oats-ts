@@ -1,37 +1,25 @@
-import { Issue } from '@oats-ts/validators'
+import { Try } from '@oats-ts/try'
+import { GeneratorEventEmitter } from '@oats-ts/events'
 
-export type Result<T> = {
-  issues: Issue[]
-  isOk: boolean
-  data?: T
+export type GeneratorInit<R, G> = {
+  parent?: CodeGenerator<R, G>
+  input: R
+  config: GeneratorConfig
+  emitter: GeneratorEventEmitter<G>
+  dependencies: CodeGenerator<R, G>[]
 }
 
-export type ContentReader<R> = () => Promise<Result<R>>
-export type ContentValidator<R> = (data: R) => Promise<Issue[]>
-export type ContentWriter<G> = (data: G[]) => Promise<Result<G[]>>
-
-export type Module<C = any, D = any> = {
-  path: string
-  content: C[]
-  dependencies: D[]
-}
-
-export type CodeGenerator<R, G extends Module, P = string, C = string> = {
-  id: P
-  consumes: C[]
-  runtimeDepencencies: string[]
-  initialize: (data: R, configuration: GeneratorConfig, generators: CodeGenerator<R, G>[]) => void
-  generate: () => Promise<Result<G[]>>
-  referenceOf: (input: any) => any
-  dependenciesOf: (fromPath: string, input: any) => any[]
-}
-
-export type GeneratorInput<R, G extends Module> = {
-  reader: ContentReader<R>
-  validator?: ContentValidator<R>
-  generators: CodeGenerator<R, G>[]
-  writer: ContentWriter<G>
-  configuration: GeneratorConfig
+export type CodeGenerator<R, G> = {
+  readonly id: string
+  name(): string
+  produces(): string[]
+  consumes(): string[]
+  runtimeDependencies(): string[]
+  initialize(init: GeneratorInit<R, G>): void
+  resolve(name: string): CodeGenerator<R, G> | undefined
+  generate(): Promise<Try<G[]>>
+  referenceOf<Model = any, Code = any>(input: Model): Code
+  dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[]
 }
 
 /**
@@ -43,7 +31,6 @@ export type NameProvider = (input: any, target: string) => string
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type GeneratorConfig = {
-  log: boolean
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param originalName The name of the object as described in the document.

@@ -41,6 +41,10 @@
       "path": "projects/asyncapi-ws-client"
     },
     {
+      "name": "events",
+      "path": "projects/events"
+    },
+    {
       "name": "generator",
       "path": "projects/generator"
     },

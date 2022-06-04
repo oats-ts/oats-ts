@@ -1,15 +1,15 @@
 import { Try } from '@oats-ts/try'
 import { Logger } from '@oats-ts/log'
+import { GeneratorEventEmitter, ReaderEventEmitter, ValidatorEventEmitter, WriterEventEmitter } from '@oats-ts/events'
 
-export type ContentReader<R> = (logger: Logger) => Promise<Try<R>>
-export type ContentValidator<R> = (data: R, logger: Logger) => Promise<Try<R>>
-export type ContentGenerator<R, G> = (data: R, logger: Logger) => Promise<Try<G>>
-export type ContentWriter<G> = (data: G, logger: Logger) => Promise<Try<G>>
+export type ContentReader<P, R> = (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
+export type ContentValidator<P, R> = (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
+export type ContentGenerator<R, G> = (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G>>
+export type ContentWriter<G> = (data: G, emitter: WriterEventEmitter<G>) => Promise<Try<G>>
 
-export type GeneratorInput<R, G> = {
-  logger?: Logger
-  validator?: ContentValidator<R>
-  reader: ContentReader<R>
+export type GeneratorInput<P, R, G> = {
+  validator?: ContentValidator<P, R>
+  reader: ContentReader<P, R>
   generator: ContentGenerator<R, G>
   writer: ContentWriter<G>
 }

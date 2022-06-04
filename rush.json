@@ -64,6 +64,12 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@oats-ts/events",
+      "projectFolder": "projects/events",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/generator",
       "projectFolder": "projects/generator",
       "versionPolicyName": "oats",

@@ -1,11 +1,10 @@
-import { Result } from '@oats-ts/generator'
 import { isOk } from '@oats-ts/validators'
 import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadContext } from './internalTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
 import { URIManipulator } from './utils/URIManipulator'
-import { fluent, isFailure } from '@oats-ts/try'
+import { isFailure, Try } from '@oats-ts/try'
 import { createResolver } from './utils/createResolver'
 
 function getUnresolved(resolved: Set<string>, documents: Map<string, OpenAPIObject>): Map<string, OpenAPIObject> {
@@ -39,7 +38,7 @@ async function resolveAll(resolved: Set<string>, context: ReadContext) {
   await resolveAll(resolved, context)
 }
 
-export const reader = (config: OpenAPIReadConfig) => async (): Promise<Result<OpenAPIReadOutput>> => {
+export const reader = (config: OpenAPIReadConfig) => async (): Promise<Try<OpenAPIReadOutput>> => {
   const { path, sanitize } = config
   const resolve = createResolver(config)
   const docUriTry = sanitize(path)

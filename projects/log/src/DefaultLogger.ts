@@ -16,16 +16,16 @@ export class DefaultLogger implements Logger {
     console.log(input)
   }
   public info(input: string): void {
-    console.log(`${this.i()} ${input}`)
+    console.log(`${this.indent()}${this.i()} ${input}`)
   }
   public success(input: string): void {
-    console.log(`${this.c()} ${input}`)
+    console.log(`${this.indent()}${this.c()} ${input}`)
   }
   public warn(input: string): void {
-    console.log(`${this.w()} ${input}`)
+    console.log(`${this.indent()}${this.w()} ${input}`)
   }
   public error(input: string): void {
-    console.log(`${this.x()} ${input}`)
+    console.log(`${this.indent()}${this.x()} ${input}`)
   }
   public child(name?: string): Logger {
     return new DefaultLogger(name, this.level + 1)
@@ -35,6 +35,10 @@ export class DefaultLogger implements Logger {
   }
   public static create(name?: string): Logger {
     return new DefaultLogger(name)
+  }
+
+  private indent() {
+    return ' '.repeat(this.level)
   }
 
   private x() {
