@@ -1,7 +1,5 @@
-import type { ImportDeclaration, Statement } from 'typescript'
-import type { Module } from '@oats-ts/generator'
-
-export type TypeScriptModule = Module<Statement, ImportDeclaration>
+import { ContentWriter } from '@oats-ts/oats'
+import { SourceFile } from 'typescript'
 
 export type CommentType = 'jsdoc' | 'block' | 'line'
 

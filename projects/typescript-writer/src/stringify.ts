@@ -1,12 +1,13 @@
-import { CommentsConfig, TypeScriptModule } from './typings'
 import { factory, createPrinter, NewLineKind, SyntaxKind, NodeFlags, Statement, SourceFile } from 'typescript'
+import { getImportDeclarations, getStatements } from '@oats-ts/typescript-common'
+import { CommentsConfig } from './typings'
 import { createCommentFactory } from './createCommentFactory'
 
 function file(nodes: Statement[]): SourceFile {
   return factory.createSourceFile([...nodes], factory.createToken(SyntaxKind.EndOfFileToken), NodeFlags.None)
 }
 
-export const stringify = async (data: TypeScriptModule, comments: CommentsConfig): Promise<string> => {
+export const stringify = async (data: SourceFile, comments: CommentsConfig): Promise<string> => {
   const printer = createPrinter({
     newLine: NewLineKind.LineFeed,
     removeComments: false,
@@ -14,10 +15,11 @@ export const stringify = async (data: TypeScriptModule, comments: CommentsConfig
 
   const { leadingComments, trailingComments, lineSeparator } = comments
   const createComment = createCommentFactory(lineSeparator)
+  const imports = getImportDeclarations(data)
 
   const asts = [
-    ...(data.dependencies.length > 0 ? [file(data.dependencies)] : []),
-    ...data.content.map((statement) => file([statement])),
+    ...(imports.length > 0 ? [file(imports)] : []),
+    ...getStatements(data).map((statement) => file([statement])),
   ]
 
   const printedWithComments = [

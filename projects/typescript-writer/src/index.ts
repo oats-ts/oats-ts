@@ -1,6 +1,5 @@
-export type { TypeScriptModule, TypeScriptWriterConfig, CommentsConfig, CommentConfig, CommentType } from './typings'
+export type { TypeScriptWriterConfig, CommentsConfig, CommentConfig, CommentType } from './typings'
 export { prettierFormatter } from './prettierFormatter'
 export { defaultCommentsConfig } from './defaults/defaultCommentsConfig'
 export { writer } from './writer'
 export { defaultWrite } from './defaults/defaultWrite'
-export { mergeTypeScriptModules } from './mergeTypeScriptModules'

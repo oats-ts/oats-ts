@@ -4,8 +4,8 @@ import { GeneratorEventEmitter, ReaderEventEmitter, ValidatorEventEmitter, Write
 
 export type ContentReader<P, R> = (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
 export type ContentValidator<P, R> = (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
-export type ContentGenerator<R, G> = (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G>>
-export type ContentWriter<G> = (data: G, emitter: WriterEventEmitter<G>) => Promise<Try<G>>
+export type ContentGenerator<R, G> = (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G[]>>
+export type ContentWriter<G> = (data: G[], emitter: WriterEventEmitter<G>) => Promise<Try<G[]>>
 
 export type GeneratorInput<P, R, G> = {
   validator?: ContentValidator<P, R>

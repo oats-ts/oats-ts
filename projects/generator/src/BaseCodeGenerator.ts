@@ -34,6 +34,7 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
       id: this.id,
       name: this.name(),
       data: result,
+      issues: [],
     })
 
     await this.tick()
@@ -50,6 +51,7 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
       name: this.name(),
       input: model,
       data: result,
+      issues: [],
     })
 
     await this.tick()

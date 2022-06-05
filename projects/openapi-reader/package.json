@@ -44,6 +44,8 @@
     "valid-url": "1.0.9",
     "yamljs": "0.3.0",
     "@oats-ts/validators": "0.0.24",
-    "@oats-ts/generator": "0.0.24"
+    "@oats-ts/generator": "0.0.24",
+    "@oats-ts/oats": "0.0.24",
+    "@oats-ts/events": "0.0.24"
   }
 }

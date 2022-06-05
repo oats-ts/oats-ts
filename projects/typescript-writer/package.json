@@ -30,11 +30,14 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
+    "@oats-ts/json-schema-model": "0.0.24",
+    "@oats-ts/oats": "0.0.24",
+    "@oats-ts/events": "0.0.24",
+    "@oats-ts/typescript-common": "0.0.24",
+    "@oats-ts/try": "0.0.24",
     "@types/prettier": "2.4.4",
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.24",
     "prettier": "2.6.1",
-    "typescript": "4.3.5",
-    "@oats-ts/generator": "0.0.24"
+    "typescript": "4.3.5"
   }
 }

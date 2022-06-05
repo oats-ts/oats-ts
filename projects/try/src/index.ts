@@ -3,6 +3,8 @@ export { FluentFailure } from './FluentFailure'
 export { FluentSuccess } from './FluentSuccess'
 
 export { fromArray } from './fromArray'
+export { fromPromise } from './fromPromise'
+export { fromPromiseSettledResult } from './fromPromiseSettledResult'
 export { fromRecord } from './fromRecord'
 export { failure } from './failure'
 export { fluent } from './fluent'

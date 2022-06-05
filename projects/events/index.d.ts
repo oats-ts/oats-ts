@@ -1,3 +1,6 @@
+import { Try } from '@oats-ts/try'
+import { Issue } from '@oats-ts/validators'
+
 export type EventMap = Record<string, any>
 export type EventKey<T extends EventMap> = string & keyof T
 export type EventReceiver<T> = (params: T) => void
@@ -14,8 +17,6 @@ export interface EventEmitter<T extends EventMap> {
   //   eventNames<K extends EventKey<T>>(): Array<K>
 }
 
-import { Try } from '@oats-ts/try'
-
 export type ReadStepStarted = {
   type: 'read-step-started'
 }
@@ -29,11 +30,13 @@ export type ReadFileCompleted<P> = {
   type: 'read-file-completed'
   path: string
   data: Try<P>
+  issues: Issue[]
 }
 
 export type ReadStepCompleted<R> = {
   type: 'read-step-completed'
   data: Try<R>
+  issues: Issue[]
 }
 
 export type ReadEvent<P, R> = ReadStepStarted | ReadFileStarted | ReadFileCompleted<P> | ReadStepCompleted<R>
@@ -52,10 +55,12 @@ export type ValidateFileCompleted<P> = {
   type: 'validate-file-completed'
   path: string
   data: Try<P>
+  issues: Issue[]
 }
 
 export type ValidatorStepCompleted = {
   type: 'validate-step-completed'
+  issues: Issue[]
 }
 
 export type ValidatorEvent<P> =
@@ -80,6 +85,7 @@ export type GeneratorProgress<G> = {
   name: string
   input: any
   data: Try<G>
+  issues: Issue[]
 }
 
 export type GeneratorCompleted<G> = {
@@ -87,11 +93,13 @@ export type GeneratorCompleted<G> = {
   id: string
   name: string
   data: Try<G[]>
+  issues: Issue[]
 }
 
 export type GeneratorStepCompleted<G> = {
   type: 'generator-step-completed'
   data: Try<G[]>
+  issues: Issue[]
 }
 
 export type GeneratorEvent<G> =
@@ -113,13 +121,16 @@ export type WriteFileStarted<G> = {
 export type WriteFileCompleted<G> = {
   type: 'write-file-completed'
   data: Try<G>
+  issues: Issue[]
 }
 
-export type WriterStepCompleted = {
+export type WriterStepCompleted<G> = {
   type: 'writer-step-completed'
+  data: Try<G[]>
+  issues: Issue[]
 }
 
-export type WriterEvent<G> = WriterStepStarted | WriteFileStarted<G> | WriteFileCompleted<G> | WriterStepCompleted
+export type WriterEvent<G> = WriterStepStarted | WriteFileStarted<G> | WriteFileCompleted<G> | WriterStepCompleted<G>
 
 export type ReadEventMap<P, R> = {
   'read-step-started': ReadStepStarted
@@ -144,10 +155,10 @@ export type GeneratorEventMap<G> = {
 }
 
 export type WriterEventMap<G> = {
-  'generator-step-started': WriterStepStarted
-  'generator-started': WriteFileStarted<G>
-  'generator-progress': WriteFileCompleted<G>
-  'generator-completed': WriterStepCompleted
+  'writer-step-started': WriterStepStarted
+  'write-file-started': WriteFileStarted<G>
+  'write-file-completed': WriteFileCompleted<G>
+  'writer-step-completed': WriterStepCompleted<G>
 }
 
 export type OatsEventMap<P, R, G> = ReadEventMap<P, R> & ValidatorEventMap<P> & GeneratorEventMap<G> & WriterEventMap<G>

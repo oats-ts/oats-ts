@@ -1,4 +1,4 @@
-import { isImportDeclaration, SourceFile, Statement } from 'typescript'
+import { SourceFile } from 'typescript'
 import {
   factory,
   ImportClause,
@@ -10,6 +10,8 @@ import {
 } from 'typescript'
 import { flatMap, groupBy, head, sortBy, uniqBy, values } from 'lodash'
 import { createSourceFile } from './createSourceFile'
+import { getStatements } from './getStatements'
+import { getImportDeclarations } from './getImportDeclarations'
 
 function mergeNamedImportBindings(bindings: NamedImportBindings[]): NamedImports {
   const specifiers = sortBy(
@@ -61,17 +63,9 @@ function mergeImportDeclarations(declarations: ImportDeclaration[]): ImportDecla
   })
 }
 
-function getImports(file: SourceFile): ImportDeclaration[] {
-  return file.statements.filter((node): node is ImportDeclaration => isImportDeclaration(node))
-}
-
-function getStatements(file: SourceFile): Statement[] {
-  return file.statements.filter((node) => !isImportDeclaration(node))
-}
-
 export function mergeSourceFiles(input: SourceFile[]): SourceFile[] {
   return Array.from(values(groupBy(input, (unit) => unit.fileName))).map((units: SourceFile[]): SourceFile => {
-    const imports = mergeImportDeclarations(flatMap(units, (file) => getImports(file)))
+    const imports = mergeImportDeclarations(flatMap(units, (file) => getImportDeclarations(file)))
     const statements = flatMap(units, (file) => getStatements(file))
     const path = head(units).fileName
     return createSourceFile(path, imports, statements)
