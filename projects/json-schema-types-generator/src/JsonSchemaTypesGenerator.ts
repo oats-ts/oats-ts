@@ -2,12 +2,14 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { TypeNode, ImportDeclaration, SourceFile } from 'typescript'
 import { sortBy } from 'lodash'
-import { GeneratorConfig, BaseCodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { createGeneratorContext, getNamedSchemas, HasSchemas, ReadOutput } from '@oats-ts/model-common'
 import { TypesGeneratorConfig } from './typings'
-import { generateType } from './generateType'
 import { getTypeImports } from './getTypeImports'
 import { getExternalTypeReferenceAst } from './getExternalTypeReferenceAst'
+import { success, Try } from '@oats-ts/try'
+import { createSourceFile } from '@oats-ts/typescript-common'
+import { getNamedTypeAst } from './getNamedTypeAst'
 
 export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>> extends BaseCodeGenerator<
   T,
@@ -15,6 +17,10 @@ export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>> extends 
   Referenceable<SchemaObject>,
   JsonSchemaGeneratorContext
 > {
+  constructor(private readonly config: TypesGeneratorConfig) {
+    super()
+  }
+
   public name(): JsonSchemaGeneratorTarget {
     return 'json-schema/type'
   }
@@ -23,8 +29,12 @@ export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>> extends 
     return []
   }
 
+  public runtimeDependencies(): string[] {
+    return []
+  }
+
   protected createContext(): JsonSchemaGeneratorContext {
-    return createGeneratorContext(this.input, this.config, this.dependencies)
+    return createGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
   protected getItems(): Referenceable<SchemaObject>[] {
@@ -32,43 +42,19 @@ export class JsonSchemaTypesGenerator<T extends ReadOutput<HasSchemas>> extends 
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
-    const { context, config } = this
-    return getExternalTypeReferenceAst(input, context, config)
+    return getExternalTypeReferenceAst(input, this.context, this.config)
   }
 
-  public dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[] {
-    throw new Error('Method not implemented.')
+  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
+    return getTypeImports(fromPath, input, this.context, true)
   }
 
-  public runtimeDependencies(): string[] {
-    throw new Error('Method not implemented.')
+  public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
+    const path = this.context.pathOf(schema, 'json-schema/type')
+    return success(
+      createSourceFile(path, getTypeImports(path, schema, this.context, false), [
+        getNamedTypeAst(schema, this.context, this.config),
+      ]),
+    )
   }
-
-  // public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
-  //   this.context =
-  // }
-
-  // public async generate(): Promise<Result<TypeScriptModule[]>> {
-  //   const { context, config } = this
-  //   const { nameOf } = context
-  //   const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema))
-  //   const data = mergeTypeScriptModules(
-  //     schemas.map((schema): TypeScriptModule => generateType(schema, context, config)),
-  //   )
-  //   return {
-  //     isOk: true,
-  //     data,
-  //     issues: [],
-  //   }
-  // }
-
-  // public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
-  //   const { context, config } = this
-  //   return getExternalTypeReferenceAst(input, context, config)
-  // }
-
-  // public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
-  //   const { context } = this
-  //   return getTypeImports(fromPath, input, context, true)
-  // }
 }

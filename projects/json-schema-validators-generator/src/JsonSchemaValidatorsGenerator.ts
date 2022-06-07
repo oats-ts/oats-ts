@@ -1,56 +1,64 @@
-import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
 import { sortBy, isNil } from 'lodash'
 import { getNamedSchemas, ReadOutput, HasSchemas, createGeneratorContext, RuntimePackages } from '@oats-ts/model-common'
-import { generateValidator } from './generateValidator'
 import { ValidatorsGeneratorConfig } from './typings'
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
-import { Expression, ImportDeclaration, factory } from 'typescript'
-import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
+import { BaseCodeGenerator } from '@oats-ts/generator'
+import { Expression, ImportDeclaration, factory, SourceFile } from 'typescript'
+import { SchemaObject, Referenceable } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { JsonSchemaGeneratorTarget, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { success, Try } from '@oats-ts/try'
+import { createSourceFile } from '@oats-ts/typescript-common'
+import { getValidatorAst } from './getValidatorAst'
 
-export class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>, Id extends string, C extends string>
-  implements CodeGenerator<T, TypeScriptModule>
-{
-  private context: JsonSchemaGeneratorContext = null
-
-  public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type-validator'
-  public readonly consumes: JsonSchemaGeneratorTarget[] = ['json-schema/type']
-  public readonly runtimeDepencencies: string[] = [RuntimePackages.Validators.name]
-
-  public constructor(public readonly config: ValidatorsGeneratorConfig) {}
-
-  public initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
-    this.context = createGeneratorContext(data, config, generators)
+export class JsonSchemaValidatorsGenerator<T extends ReadOutput<HasSchemas>> extends BaseCodeGenerator<
+  T,
+  SourceFile,
+  Referenceable<SchemaObject>,
+  JsonSchemaGeneratorContext
+> {
+  constructor(private readonly config: ValidatorsGeneratorConfig) {
+    super()
   }
 
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
-    const { uriOf, nameOf } = context
-    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-validator')).filter(
-      (schema) => !config.ignore(schema, uriOf(schema)),
+  public name(): JsonSchemaGeneratorTarget {
+    return 'json-schema/type-validator'
+  }
+
+  public consumes(): string[] {
+    return ['json-schema/type']
+  }
+
+  public runtimeDependencies(): string[] {
+    return [RuntimePackages.Validators.name]
+  }
+
+  protected createContext(): JsonSchemaGeneratorContext {
+    return createGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
+
+  protected getItems(): Referenceable<SchemaObject>[] {
+    return sortBy(getNamedSchemas(this.context), (schema) => this.context.nameOf(schema, 'json-schema/type-validator'))
+  }
+
+  public referenceOf(input: Referenceable<SchemaObject>): Expression {
+    const schema = this.context.dereference(input)
+    const name = this.context.nameOf(schema, 'json-schema/type-validator')
+    return isNil(name)
+      ? getRightHandSideValidatorAst(input, this.context, this.config, 0)
+      : factory.createIdentifier(name)
+  }
+
+  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
+    return getValidatorImports(fromPath, input, this.context, this.config, collectExternalReferenceImports)
+  }
+
+  public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
+    const path = this.context.pathOf(schema, 'json-schema/type-validator')
+    return success(
+      createSourceFile(path, getValidatorImports(path, schema, this.context, this.config), [
+        getValidatorAst(schema, this.context, this.config),
+      ]),
     )
-    const data = mergeTypeScriptModules(
-      schemas.map((schema): TypeScriptModule => generateValidator(schema, context, config)),
-    )
-    return {
-      data,
-      isOk: true,
-      issues: [],
-    }
-  }
-
-  public referenceOf(input: SchemaObject | ReferenceObject): Expression {
-    const { context, config: config } = this
-    const { nameOf, dereference } = context
-    const schema = dereference(input)
-    const name = nameOf(schema, 'json-schema/type-validator')
-    return isNil(name) ? getRightHandSideValidatorAst(input, context, config, 0) : factory.createIdentifier(name)
-  }
-
-  public dependenciesOf(fromPath: string, input: SchemaObject | ReferenceObject): ImportDeclaration[] {
-    const { context, config: config } = this
-    return getValidatorImports(fromPath, input, context, config, collectExternalReferenceImports)
   }
 }

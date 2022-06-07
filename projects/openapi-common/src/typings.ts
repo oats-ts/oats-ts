@@ -1,6 +1,5 @@
 import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { CodeGenerator, GeneratorNameProvider, NameProvider } from '@oats-ts/generator'
 import { HttpMethod } from '@oats-ts/openapi-http'
@@ -53,12 +52,6 @@ export type OpenAPIGeneratorTarget =
   | 'openapi/express-route-factory'
   | 'openapi/express-cors-middleware'
 
-export type OpenAPIGenerator<P extends OpenAPIGeneratorTarget = OpenAPIGeneratorTarget> = CodeGenerator<
-  OpenAPIReadOutput,
-  TypeScriptModule,
-  P,
-  OpenAPIGeneratorTarget
->
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
 /**

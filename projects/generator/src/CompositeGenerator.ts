@@ -89,7 +89,7 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G> {
 
     child.initialize({
       parent: this,
-      config: this.config,
+      globalConfig: this.globalConfig,
       dependencies: deps.data,
       emitter: this.emitter,
       input: this.input,

@@ -8,14 +8,14 @@ export abstract class BaseGenerator<R, G> implements CodeGenerator<R, G> {
 
   protected parent?: CodeGenerator<R, G>
   protected input!: R
-  protected config!: GeneratorConfig
+  protected globalConfig!: GeneratorConfig
   protected emitter!: GeneratorEventEmitter<G>
   protected dependencies: CodeGenerator<R, G>[] = []
 
-  public initialize({ config, input, dependencies, emitter, parent }: GeneratorInit<R, G>): void {
+  public initialize({ globalConfig, input, dependencies, emitter, parent }: GeneratorInit<R, G>): void {
     this.parent = parent
     this.input = input
-    this.config = config
+    this.globalConfig = globalConfig
     this.emitter = emitter
     this.dependencies = dependencies ?? []
   }

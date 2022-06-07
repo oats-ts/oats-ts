@@ -7,7 +7,7 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
   public readonly id = nanoid(6)
 
   protected input!: R
-  protected config!: GeneratorConfig
+  protected globalConfig!: GeneratorConfig
   protected dependencies!: CodeGenerator<R, G>[]
   protected context!: C
   protected items!: M[]
@@ -67,8 +67,8 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
   protected abstract createContext(): C
   protected abstract getItems(): M[]
 
-  public abstract referenceOf<Model = any, Code = any>(input: Model): Code
-  public abstract dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[]
+  public abstract referenceOf(input: any): any
+  public abstract dependenciesOf(fromPath: string, input: any): any[]
   public abstract name(): string
   public abstract consumes(): string[]
   public abstract runtimeDependencies(): string[]

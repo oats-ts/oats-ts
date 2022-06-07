@@ -4,7 +4,7 @@ import { GeneratorEventEmitter } from '@oats-ts/events'
 export type GeneratorInit<R, G> = {
   parent?: CodeGenerator<R, G>
   input: R
-  config: GeneratorConfig
+  globalConfig: GeneratorConfig
   emitter: GeneratorEventEmitter<G>
   dependencies: CodeGenerator<R, G>[]
 }

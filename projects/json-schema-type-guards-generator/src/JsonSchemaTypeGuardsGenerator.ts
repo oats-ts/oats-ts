@@ -1,55 +1,74 @@
-import { TypeScriptModule, mergeTypeScriptModules } from '@oats-ts/typescript-writer'
-import { isNil, negate, sortBy } from 'lodash'
+import { isNil, sortBy } from 'lodash'
 import { getNamedSchemas, ReadOutput, createGeneratorContext, HasSchemas } from '@oats-ts/model-common'
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
-import { generateTypeGuard } from './generateTypeGuard'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { TypeGuardGeneratorConfig } from './typings'
-import { ImportDeclaration, Identifier, factory } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
+import { ImportDeclaration, factory, SourceFile } from 'typescript'
+import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { success, Try } from '@oats-ts/try'
+import { getTypeGuardImports } from './getTypeGuardImports'
+import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
+import { getTypeAssertionAst } from './getTypeAssertionAst'
 
-export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>>
-  implements CodeGenerator<T, TypeScriptModule>
-{
-  private context: JsonSchemaGeneratorContext = null
-
-  public readonly id: JsonSchemaGeneratorTarget = 'json-schema/type-guard'
-  public readonly consumes: JsonSchemaGeneratorTarget[] = ['json-schema/type']
-  public readonly runtimeDepencencies: string[] = []
-
-  constructor(private readonly config: TypeGuardGeneratorConfig) {}
-
-  initialize(data: T, config: GeneratorConfig, generators: CodeGenerator<T, TypeScriptModule>[]): void {
-    this.context = createGeneratorContext(data, config, generators)
+export class JsonSchemaTypeGuardsGenerator<T extends ReadOutput<HasSchemas>> extends BaseCodeGenerator<
+  T,
+  SourceFile,
+  Referenceable<SchemaObject>,
+  JsonSchemaGeneratorContext
+> {
+  constructor(private readonly config: TypeGuardGeneratorConfig) {
+    super()
   }
 
-  async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, config } = this
-    const { uriOf, nameOf } = context
-    const schemas = sortBy(getNamedSchemas(context), (schema) => nameOf(schema, 'json-schema/type-guard')).filter(
-      (schema) => !config.ignore(schema, uriOf(schema)),
+  public name(): JsonSchemaGeneratorTarget {
+    return 'json-schema/type-guard'
+  }
+
+  public consumes(): JsonSchemaGeneratorTarget[] {
+    return ['json-schema/type']
+  }
+
+  public runtimeDependencies(): string[] {
+    return []
+  }
+
+  protected createContext(): JsonSchemaGeneratorContext {
+    return createGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
+
+  protected getItems(): Referenceable<SchemaObject>[] {
+    return sortBy(getNamedSchemas(this.context), (schema) => this.context.nameOf(schema, this.name())).filter(
+      (schema) => !this.config.ignore(schema, this.context.uriOf(schema)),
     )
-    const data = mergeTypeScriptModules(
-      schemas.map((schema) => generateTypeGuard(schema, context, config)).filter(negate(isNil)),
-    )
-    // TODO maybe try catch
-    return {
-      isOk: true,
-      issues: [],
-      data,
-    }
   }
 
-  referenceOf(input: any): Identifier {
-    const { context } = this
-    // TODO does it make sense to generate the assertion AST for non named type?
-    // We lose the type guard nature at that point.
-    const { nameOf } = context
-    return isNil(nameOf(input)) ? undefined : factory.createIdentifier(nameOf(input, this.id))
+  public referenceOf(input: any) {
+    return isNil(this.context.nameOf(input))
+      ? undefined
+      : factory.createIdentifier(this.context.nameOf(input, this.name()))
   }
 
-  dependenciesOf(fromPath: string, input: any): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
     const { context } = this
     return getModelImports(fromPath, this.id, [input], context)
+  }
+
+  public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
+    const path = this.context.pathOf(schema, 'json-schema/type-guard')
+    const typeImports = this.context.dependenciesOf(path, schema, 'json-schema/type')
+    return success(
+      createSourceFile(
+        path,
+        [...typeImports, ...getTypeGuardImports(schema, this.context, this.config)],
+        [
+          getTypeGuardFunctionAst(
+            schema,
+            this.context,
+            getTypeAssertionAst(schema, this.context, factory.createIdentifier('input'), this.config, 0),
+          ),
+        ],
+      ),
+    )
   }
 }
