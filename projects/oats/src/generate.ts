@@ -3,7 +3,7 @@ import { isFailure, Try } from '@oats-ts/try'
 import { OatsEventEmitter } from '@oats-ts/events'
 import { GeneratorInput } from './typings'
 
-export async function generate<P, R, G>(input: GeneratorInput<P, R, G>): Promise<Try<G>> {
+export async function generate<P, R, G>(input: GeneratorInput<P, R, G>): Promise<Try<G[]>> {
   const { reader, generator, writer, validator } = input
   const emitter: OatsEventEmitter<P, R, G> = new EventEmitter()
 

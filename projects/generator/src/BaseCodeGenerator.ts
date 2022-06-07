@@ -18,6 +18,10 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
     this.items = this.getItems()
   }
 
+  public produces(): string[] {
+    return [this.name()]
+  }
+
   async generate(): Promise<Try<G[]>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
@@ -66,7 +70,6 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
   public abstract referenceOf<Model = any, Code = any>(input: Model): Code
   public abstract dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[]
   public abstract name(): string
-  public abstract produces(): string[]
   public abstract consumes(): string[]
   public abstract runtimeDependencies(): string[]
 }

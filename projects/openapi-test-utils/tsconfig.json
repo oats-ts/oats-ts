@@ -4,7 +4,7 @@
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": true,
-    "target": "es6",
+    "target": "ES2020",
     "sourceMap": true,
     "esModuleInterop": true,
     "strictNullChecks": true,
@@ -19,15 +19,8 @@
     "noStrictGenericChecks": true,
     "noUnusedParameters": true,
     "noUncheckedIndexedAccess": true,
-    "lib": [
-      "es6"
-    ]
+    "lib": ["ES2020"]
   },
-  "include": [
-    "./src"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "include": ["./src"],
+  "exclude": ["node_modules", "lib"]
 }

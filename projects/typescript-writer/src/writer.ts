@@ -29,6 +29,7 @@ async function writeSourceFileWithEvents(
   emitter.emit('write-file-completed', {
     type: 'write-file-completed',
     data: fileTry,
+    issues: [],
   })
 
   return fileTry
@@ -52,6 +53,7 @@ export const writer =
     emitter.emit('writer-step-completed', {
       type: 'writer-step-completed',
       data: output,
+      issues: [],
     })
 
     return output

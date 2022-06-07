@@ -18,8 +18,8 @@ export type CodeGenerator<R, G> = {
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined
   generate(): Promise<Try<G[]>>
-  referenceOf<Model = any, Code = any>(input: Model): Code
-  dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[]
+  referenceOf(input: any): any
+  dependenciesOf(fromPath: string, input: any): any[]
 }
 
 /**

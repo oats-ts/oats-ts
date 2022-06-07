@@ -82,6 +82,7 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G> {
         id: child.id,
         name: child.name(),
         data: deps,
+        issues: [],
       })
       return this.tick()
     }
@@ -124,6 +125,7 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G> {
       id: this.id,
       name: this.name(),
       data: output,
+      issues: [],
     })
 
     await this.tick()
