@@ -1,19 +1,33 @@
-import type { Issue } from '@oats-ts/validators'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { URIManipulatorType } from './typings'
 import { Try } from '@oats-ts/try'
+import { Referenceable } from '@oats-ts/json-schema-model'
+
+export type ReferenceResolver = {
+  resolveReferenceable<T>(
+    input: ReadInput<Referenceable<T>>,
+    context: ReadContext,
+    resolveTarget: (input: ReadInput<T>, context: ReadContext) => Try<T>,
+  ): Try<Referenceable<T>>
+  resolveReferenceUri(input: ReadInput<string>, context: ReadContext): Try<string>
+}
 
 export type ReadContext = {
-  documents: Map<string, OpenAPIObject>
-  uriToObject: Map<string, any>
-  objectToUri: Map<any, string>
-  objectToName: Map<any, string>
-  issues: Issue[]
-  uri: URIManipulatorType
+  readonly cache: ReadCache
+  readonly externalDocumentUris: Set<string>
+  readonly uri: URIManipulatorType
+  readonly ref: ReferenceResolver
   resolve(uri: string): Promise<Try<OpenAPIObject>>
 }
 
+export type ReadCache = {
+  readonly documents: Map<string, OpenAPIObject>
+  readonly uriToObject: Map<string, any>
+  readonly objectToUri: Map<any, string>
+  readonly objectToName: Map<any, string>
+}
+
 export type ReadInput<T> = {
-  data: T
-  uri: string
+  readonly data: T
+  readonly uri: string
 }

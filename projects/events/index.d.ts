@@ -26,6 +26,13 @@ export type ReadFileStarted = {
   path: string
 }
 
+export type ReadFileProgress = {
+  type: 'read-file-progress'
+  path: string
+  status: string
+  issues: Issue[]
+}
+
 export type ReadFileCompleted<P> = {
   type: 'read-file-completed'
   path: string
@@ -39,7 +46,12 @@ export type ReadStepCompleted<R> = {
   issues: Issue[]
 }
 
-export type ReadEvent<P, R> = ReadStepStarted | ReadFileStarted | ReadFileCompleted<P> | ReadStepCompleted<R>
+export type ReadEvent<P, R> =
+  | ReadStepStarted
+  | ReadFileStarted
+  | ReadFileProgress
+  | ReadFileCompleted<P>
+  | ReadStepCompleted<R>
 
 export type ValidatorStepStarted = {
   type: 'validator-step-started'
@@ -135,6 +147,7 @@ export type WriterEvent<G> = WriterStepStarted | WriteFileStarted<G> | WriteFile
 export type ReadEventMap<P, R> = {
   'read-step-started': ReadStepStarted
   'read-file-started': ReadFileStarted
+  'read-file-progress': ReadFileProgress
   'read-file-completed': ReadFileCompleted<P>
   'read-step-completed': ReadStepCompleted<R>
 }

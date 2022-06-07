@@ -6,7 +6,7 @@ import { drop, isEmpty } from 'lodash'
 export class URIManipulator implements URIManipulatorType {
   protected setFragments = (uri: string, fragments: string[]): string => {
     const fragment = fragments.length > 0 ? `/${fragments.map(encode).join('/')}` : null
-    return new URI(uri).fragment(fragment).valueOf()
+    return new URI(uri).fragment(fragment!).valueOf()
   }
   /**
    * @param uri A URI fragment.

@@ -1,16 +1,12 @@
-import { DefaultConfig, Issue, Validator } from '@oats-ts/validators'
-import { flatMap } from 'lodash'
+import { failure, success, Try } from '@oats-ts/try'
+import { DefaultConfig, Validator } from '@oats-ts/validators'
 import { ReadContext, ReadInput } from './internalTypings'
 
-export function validate<T>(input: ReadInput<T>, context: ReadContext, ...validators: Validator<T>[]): Issue[] {
+export function validate<T>(input: ReadInput<T>, context: ReadContext, validator: Validator<any>): Try<void> {
   const { data, uri } = input
-  const issues = flatMap(validators, (validator) =>
-    validator(data, uri, { ...DefaultConfig, append: context.uri.append }),
-  )
-  context.issues.push(...issues)
-
-  if (context.uriToObject.has(uri)) {
-    return []
+  if (context.cache.uriToObject.has(uri)) {
+    return success(undefined)
   }
-  return issues
+  const issues = validator(data, uri, { ...DefaultConfig, append: context.uri.append })
+  return issues.length === 0 ? success(undefined) : failure(issues)
 }

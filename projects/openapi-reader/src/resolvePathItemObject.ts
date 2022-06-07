@@ -2,54 +2,62 @@ import { ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
-import { resolveReferenceable } from './resolveReferenceable'
 import { resolveParameterObject } from './resolveParameterObject'
 import { resolveOperation } from './resolveOperation'
 import { pathItemObject } from './validators/pathItemObject'
 import { entries, isNil } from 'lodash'
+import { fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 
-export async function resolvePathItemObject(input: ReadInput<PathItemObject>, context: ReadContext): Promise<void> {
-  if (!validate(input, context, pathItemObject)) {
-    return
+export function resolvePathItemObject(input: ReadInput<PathItemObject>, context: ReadContext): Try<PathItemObject> {
+  const validationResult = validate(input, context, pathItemObject)
+  if (isFailure(validationResult)) {
+    return validationResult
   }
+
+  register(input, context)
+
   const { data, uri } = input
-  const { get, post, put, delete: _delete, head, patch, options, trace, parameters } = data
+  const { get, post, put, delete: _delete, head, patch, options, trace, parameters } = data ?? {}
+  const parts: Try<any>[] = []
 
   if (!isNil(get)) {
-    await resolveOperation({ data: get, uri: context.uri.append(uri, 'get') }, context)
+    parts.push(resolveOperation({ data: get, uri: context.uri.append(uri, 'get') }, context))
   }
   if (!isNil(post)) {
-    await resolveOperation({ data: post, uri: context.uri.append(uri, 'post') }, context)
+    parts.push(resolveOperation({ data: post, uri: context.uri.append(uri, 'post') }, context))
   }
   if (!isNil(put)) {
-    await resolveOperation({ data: put, uri: context.uri.append(uri, 'put') }, context)
+    parts.push(resolveOperation({ data: put, uri: context.uri.append(uri, 'put') }, context))
   }
   if (!isNil(_delete)) {
-    await resolveOperation({ data: _delete, uri: context.uri.append(uri, 'delete') }, context)
+    parts.push(resolveOperation({ data: _delete, uri: context.uri.append(uri, 'delete') }, context))
   }
   if (!isNil(head)) {
-    await resolveOperation({ data: head, uri: context.uri.append(uri, 'head') }, context)
+    parts.push(resolveOperation({ data: head, uri: context.uri.append(uri, 'head') }, context))
   }
   if (!isNil(patch)) {
-    await resolveOperation({ data: patch, uri: context.uri.append(uri, 'patch') }, context)
+    parts.push(resolveOperation({ data: patch, uri: context.uri.append(uri, 'patch') }, context))
   }
   if (!isNil(options)) {
-    await resolveOperation({ data: options, uri: context.uri.append(uri, 'options') }, context)
+    parts.push(resolveOperation({ data: options, uri: context.uri.append(uri, 'options') }, context))
   }
   if (!isNil(trace)) {
-    await resolveOperation({ data: options, uri: context.uri.append(uri, 'options') }, context)
+    parts.push(resolveOperation({ data: trace, uri: context.uri.append(uri, 'trace') }, context))
   }
   if (!isNil(parameters)) {
     const parametersUri = context.uri.append(uri, 'parameters')
     register({ data: parameters, uri: parametersUri }, context)
     for (const [name, paramOrRef] of entries(parameters)) {
-      await resolveReferenceable<ParameterObject>(
-        { data: paramOrRef, uri: context.uri.append(parametersUri, name) },
-        context,
-        resolveParameterObject,
+      parts.push(
+        context.ref.resolveReferenceable<ParameterObject>(
+          { data: paramOrRef, uri: context.uri.append(parametersUri, name) },
+          context,
+          resolveParameterObject,
+        ),
       )
     }
   }
 
-  register(input, context)
+  const merged = fromArray(parts)
+  return isSuccess(merged) ? success(data) : merged
 }
