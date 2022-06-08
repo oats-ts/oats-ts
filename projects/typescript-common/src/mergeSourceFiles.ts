@@ -64,6 +64,9 @@ function mergeImportDeclarations(declarations: ImportDeclaration[]): ImportDecla
 }
 
 export function mergeSourceFiles(input: SourceFile[]): SourceFile[] {
+  if (input.length === 0) {
+    return []
+  }
   return Array.from(values(groupBy(input, (unit) => unit.fileName))).map((units: SourceFile[]): SourceFile => {
     const imports = mergeImportDeclarations(flatMap(units, (file) => getImportDeclarations(file)))
     const statements = flatMap(units, (file) => getStatements(file))

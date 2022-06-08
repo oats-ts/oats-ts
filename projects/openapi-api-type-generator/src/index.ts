@@ -1,4 +1,3 @@
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { ApiTypeGenerator } from './ApiTypeGenerator'
 import { ApiTypeGeneratorConfig } from './typings'
 
@@ -11,6 +10,6 @@ function defaultConfig(config: Partial<ApiTypeGeneratorConfig>): ApiTypeGenerato
   }
 }
 
-export function apiType(config: Partial<ApiTypeGeneratorConfig> = {}): OpenAPIGenerator {
+export function apiType(config: Partial<ApiTypeGeneratorConfig> = {}): ApiTypeGenerator {
   return new ApiTypeGenerator(defaultConfig(config))
 }

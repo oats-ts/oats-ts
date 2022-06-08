@@ -1,76 +1,74 @@
-import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import {
   getEnhancedOperations,
-  OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   RuntimePackages,
+  EnhancedOperation,
 } from '@oats-ts/openapi-common'
-import { generateExpressRoute } from './generateExpressRoute'
 import { ExpressRouteGeneratorConfig } from './typings'
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
+import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
+import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
+import { success, Try } from '@oats-ts/try'
+import { getExpressRouterImports } from './getExpressRouterImports'
+import { getExpressRouteAst } from './getExpressRouteAst'
 
-export class ExpressRoutesGenerator implements OpenAPIGenerator<'openapi/express-route'> {
-  private context: OpenAPIGeneratorContext = null
-  private routeConfig: ExpressRouteGeneratorConfig
-
-  public readonly id = 'openapi/express-route'
-  public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'openapi/request-server-type',
-    'openapi/response-type',
-    'openapi/api-type',
-    'openapi/path-deserializer',
-    'openapi/query-deserializer',
-    'openapi/request-headers-deserializer',
-  ]
-  public readonly runtimeDepencencies: string[] = [
-    RuntimePackages.Http.name,
-    RuntimePackages.HttpServerExpress.name,
-    RuntimePackages.Express.name,
-  ]
-
-  public constructor(config: ExpressRouteGeneratorConfig) {
-    this.routeConfig = config
+export class ExpressRoutesGenerator extends BaseCodeGenerator<
+  OpenAPIReadOutput,
+  SourceFile,
+  EnhancedOperation,
+  OpenAPIGeneratorContext
+> {
+  constructor(private config: ExpressRouteGeneratorConfig) {
+    super()
   }
 
-  public initialize(
-    data: OpenAPIReadOutput,
-    config: GeneratorConfig,
-    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  ): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
+  public name(): OpenAPIGeneratorTarget {
+    return 'openapi/express-route'
   }
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, routeConfig } = this
-    const { document, nameOf } = context
-    const operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
-      nameOf(operation, 'openapi/operation'),
-    )
-    const data: TypeScriptModule[] = mergeTypeScriptModules(
-      operations.map((operation) => generateExpressRoute(operation, context, routeConfig)),
-    )
 
-    return {
-      isOk: true,
-      data,
-      issues: [],
-    }
+  public consumes(): OpenAPIGeneratorTarget[] {
+    return [
+      'openapi/request-server-type',
+      'openapi/response-type',
+      'openapi/api-type',
+      'openapi/path-deserializer',
+      'openapi/query-deserializer',
+      'openapi/request-headers-deserializer',
+    ]
+  }
+
+  public runtimeDependencies(): string[] {
+    return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
+  }
+
+  protected getItems(): EnhancedOperation[] {
+    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+      this.context.nameOf(operation, this.name()),
+    )
+  }
+
+  protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
+    return success(
+      createSourceFile(this.context.pathOf(item.operation, this.name()), getExpressRouterImports(item, this.context), [
+        getExpressRouteAst(item, this.context, this.config),
+      ]),
+    )
+  }
+
+  protected createContext(): OpenAPIGeneratorContext {
+    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression {
-    const { context } = this
-    const { nameOf } = context
-    return factory.createIdentifier(nameOf(input, this.id))
+    return factory.createIdentifier(this.context.nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return getModelImports(fromPath, this.id, [input], this.context)
   }
 }

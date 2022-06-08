@@ -1,5 +1,4 @@
 import { OperationsGeneratorConfig } from './typings'
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { OperationsGenerator } from './OperationsGenerator'
 
 export type { OperationsGeneratorConfig } from './typings'
@@ -12,6 +11,6 @@ function defaultConfig(config: Partial<OperationsGeneratorConfig>): OperationsGe
   }
 }
 
-export function operations(config: Partial<OperationsGeneratorConfig> = {}): OpenAPIGenerator {
+export function operations(config: Partial<OperationsGeneratorConfig> = {}): OperationsGenerator {
   return new OperationsGenerator(defaultConfig(config))
 }

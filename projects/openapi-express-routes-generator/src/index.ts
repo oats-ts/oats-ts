@@ -1,5 +1,3 @@
-import { GeneratorConfig } from '@oats-ts/generator'
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { ExpressCorsMiddlewareGenerator } from './corsMiddleware/ExpressCorsMiddlewareGenerator'
 import { ExpressRoutesGenerator } from './ExpressRoutesGenerator'
 import { ExpressRouteFactoryGenerator } from './routeFactory/ExpressRouteFactoryGenerator'
@@ -19,18 +17,18 @@ function defaultConfig(config: Partial<ExpressRouteGeneratorConfig>): ExpressRou
   }
 }
 
-export function expressRoute(config: Partial<ExpressRouteGeneratorConfig> = {}): OpenAPIGenerator {
+export function expressRoute(config: Partial<ExpressRouteGeneratorConfig> = {}): ExpressRoutesGenerator {
   return new ExpressRoutesGenerator(defaultConfig(config))
 }
 
-export function expressRoutesType(): OpenAPIGenerator {
+export function expressRoutesType(): ExpressRoutesTypeGenerator {
   return new ExpressRoutesTypeGenerator()
 }
 
-export function expressRouteFactory(config: Partial<ExpressRouteGeneratorConfig> = {}): OpenAPIGenerator {
+export function expressRouteFactory(config: Partial<ExpressRouteGeneratorConfig> = {}): ExpressRouteFactoryGenerator {
   return new ExpressRouteFactoryGenerator(defaultConfig(config))
 }
 
-export function expressCorsMiddleware(): OpenAPIGenerator {
+export function expressCorsMiddleware(): ExpressCorsMiddlewareGenerator {
   return new ExpressCorsMiddlewareGenerator()
 }

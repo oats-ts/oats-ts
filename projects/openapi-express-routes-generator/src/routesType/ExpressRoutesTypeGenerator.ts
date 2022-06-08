@@ -1,61 +1,70 @@
-import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import {
   getEnhancedOperations,
-  OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
-  EnhancedOperation,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
-import { generateRoutesType } from './generateRoutesType'
+import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
+import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
+import { GeneratorItem } from '../internalTypings'
+import { success, Try } from '@oats-ts/try'
+import { getRoutesTypeAst } from './getRoutesTypeAst'
 
-export class ExpressRoutesTypeGenerator implements OpenAPIGenerator<'openapi/express-routes-type'> {
-  private context: OpenAPIGeneratorContext = null
-  private operations: EnhancedOperation[] = []
-
-  public readonly id = 'openapi/express-routes-type'
-  public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/express-route']
-  public readonly runtimeDepencencies: string[] = [RuntimePackages.Express.name]
-
-  public initialize(
-    data: OpenAPIReadOutput,
-    config: GeneratorConfig,
-    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  ): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
+export class ExpressRoutesTypeGenerator extends BaseCodeGenerator<
+  OpenAPIReadOutput,
+  SourceFile,
+  GeneratorItem,
+  OpenAPIGeneratorContext
+> {
+  public name(): OpenAPIGeneratorTarget {
+    return 'openapi/express-routes-type'
   }
 
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context } = this
-    const { document, nameOf } = context
-    this.operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
-      nameOf(operation, 'openapi/express-route'),
-    )
-    const data: TypeScriptModule[] =
-      this.operations.length > 0 ? mergeTypeScriptModules([generateRoutesType(this.operations, context)]) : []
+  public consumes(): OpenAPIGeneratorTarget[] {
+    return ['openapi/express-route']
+  }
 
-    return {
-      isOk: true,
-      data,
-      issues: [],
-    }
+  public runtimeDependencies(): string[] {
+    return [RuntimePackages.Express.name]
+  }
+
+  protected createContext(): OpenAPIGeneratorContext {
+    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
+
+  protected getItems(): GeneratorItem[] {
+    return [
+      {
+        document: this.input.document,
+        operations: sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+          this.context.nameOf(operation, 'openapi/express-route'),
+        ),
+      },
+    ]
+  }
+
+  protected async generateItem({ document, operations }: GeneratorItem): Promise<Try<SourceFile>> {
+    return success(
+      createSourceFile(
+        this.context.pathOf(document, this.name()),
+        [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router])],
+        [getRoutesTypeAst(operations, this.context)],
+      ),
+    )
   }
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression {
-    const { context } = this
-    const { nameOf } = context
-    return this.operations.length > 0 ? factory.createTypeReferenceNode(nameOf(input, this.id)) : undefined
+    const [{ operations }] = this.items
+    return operations.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
-    const { context } = this
-    return this.operations.length > 0 ? getModelImports(fromPath, this.id, [input], context) : []
+    const [{ operations }] = this.items
+    return operations.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
 }

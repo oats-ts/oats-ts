@@ -18,6 +18,7 @@ specifiers:
   '@rush-temp/openapi-express-routes-generator': file:./projects/openapi-express-routes-generator.tgz
   '@rush-temp/openapi-express-server-adapter': file:./projects/openapi-express-server-adapter.tgz
   '@rush-temp/openapi-fetch-client-adapter': file:./projects/openapi-fetch-client-adapter.tgz
+  '@rush-temp/openapi-generator': file:./projects/openapi-generator.tgz
   '@rush-temp/openapi-http': file:./projects/openapi-http.tgz
   '@rush-temp/openapi-model': file:./projects/openapi-model.tgz
   '@rush-temp/openapi-operations-generator': file:./projects/openapi-operations-generator.tgz
@@ -88,6 +89,7 @@ dependencies:
   '@rush-temp/openapi-express-routes-generator': file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-express-server-adapter': file:projects/openapi-express-server-adapter.tgz_ts-node@10.0.0
   '@rush-temp/openapi-fetch-client-adapter': file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-generator': file:projects/openapi-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-http': file:projects/openapi-http.tgz_ts-node@10.0.0
   '@rush-temp/openapi-model': file:projects/openapi-model.tgz
   '@rush-temp/openapi-operations-generator': file:projects/openapi-operations-generator.tgz_ts-node@10.0.0
@@ -3549,7 +3551,7 @@ packages:
     dev: false
 
   /require-directory/2.1.1:
-    resolution: {integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=}
+    resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
     dev: false
 
@@ -4285,7 +4287,7 @@ packages:
     dev: false
 
   file:projects/events.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-zhwP2ezLZrsti37vLbzmCCz6EgrPvbHBIWZTUphn/LE0cFJV2MPJPziyHVQD9vEdIacRffIqoCQzxlu6dd224g==, tarball: file:projects/events.tgz}
+    resolution: {integrity: sha512-7bTPwwXUxTQYl9HikzBvzDNatnUNyexUPSp/JyQiVjxd8NdgrLSoAx6iI5UQog7CPGepdsJJP8q5ItMJ94b1cA==, tarball: file:projects/events.tgz}
     id: file:projects/events.tgz
     name: '@rush-temp/events'
     version: 0.0.0
@@ -4350,7 +4352,7 @@ packages:
     dev: false
 
   file:projects/json-schema-type-guards-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-Z3rEfXE8wJje/sfszKnJAY9w9uiY0RY8fX8G4I2njNUPzP0cQULMdLkKDD68FZy2pEf6AciiLZhe55X8XEG+PQ==, tarball: file:projects/json-schema-type-guards-generator.tgz}
+    resolution: {integrity: sha512-wi16Ke4cCYNUbpasHTLfjBNVfn6wKQV33cBVvVhJcxiHrUUXD8fSmqdoVVrn78Thc4GC2dmcY4yn0nTBpWifIQ==, tarball: file:projects/json-schema-type-guards-generator.tgz}
     id: file:projects/json-schema-type-guards-generator.tgz
     name: '@rush-temp/json-schema-type-guards-generator'
     version: 0.0.0
@@ -4373,7 +4375,7 @@ packages:
     dev: false
 
   file:projects/json-schema-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-9VGt6zqaFVxV6i8MtCLYQWf9fJXxd1c3g7TokLmql2riZo49OEEczJqXt74Jharufl0JjG2gZg0kKl9vyh+fpw==, tarball: file:projects/json-schema-types-generator.tgz}
+    resolution: {integrity: sha512-t35vhe7U/XjdbpLVAKNVNyxAhJ5cShrKo57rOctLrd6cRVK4pfiLShWMcQv2KutaBkt2jRXzl7xE8wdrn9Romg==, tarball: file:projects/json-schema-types-generator.tgz}
     id: file:projects/json-schema-types-generator.tgz
     name: '@rush-temp/json-schema-types-generator'
     version: 0.0.0
@@ -4396,7 +4398,7 @@ packages:
     dev: false
 
   file:projects/json-schema-validators-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-hhMRocoFiOAAtUF0MvPJ5BmxGyATqIv7o6Rj/WY1pgnUQ+D1FSXidvThRBT50EtUj4CKbNc/IRzQG2DKGMX+hQ==, tarball: file:projects/json-schema-validators-generator.tgz}
+    resolution: {integrity: sha512-GPLfc6DqK9uODzdQOp69BRIDGYI0o6DQ56dn0mMM1QIwsIitTDqFVu6MBwyCJwO5122eeo3gkpc6/khKMKxemg==, tarball: file:projects/json-schema-validators-generator.tgz}
     id: file:projects/json-schema-validators-generator.tgz
     name: '@rush-temp/json-schema-validators-generator'
     version: 0.0.0
@@ -4665,6 +4667,31 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/openapi-generator.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-j6NJxT9bECsh8NHP5VFfkVXxcYbo4ZL5p5dSZ0uwTx0HvQ4t+hkaDVVmlDacGNqEVWdxLjSh1EsuPy54l6MYHA==, tarball: file:projects/openapi-generator.tgz}
+    id: file:projects/openapi-generator.tgz
+    name: '@rush-temp/openapi-generator'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.172
+      '@types/node': 16.7.1
+      chalk: 4.1.1
+      jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
+      nanoid: 3.3.4
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
+      typescript: 4.3.5
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/openapi-http.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-D3IvoRMrlgr08EPySqnnBPRtC2Bx4TzSS02ptX0Fff1SDyGekk21B+7arvQasFMBYQjGiXvRe7/1AgzzbnURTQ==, tarball: file:projects/openapi-http.tgz}
     id: file:projects/openapi-http.tgz
@@ -4855,7 +4882,7 @@ packages:
     dev: false
 
   file:projects/openapi-reader.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-As+DHDVDEFKvfCUNdUeHtUFErDCOguA+dOhP9eJTRf0dcGk26e06t8HjW6KIixYBREw9iFaQNgg1EfxKFHFvxQ==, tarball: file:projects/openapi-reader.tgz}
+    resolution: {integrity: sha512-NMWAVWc7Kxt1YyXjRu1uvJTqVBLYv878T81Dnq991u2sb1EUeaUKZXPAlrLfgDaHp5X8OQuOmeAbj1odqW4E4A==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
     version: 0.0.0
@@ -5097,7 +5124,7 @@ packages:
     dev: false
 
   file:projects/typescript-writer.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-j4pKrLsdqiN+u5wKIEhkqsHL7VfW9KKzIRtPOypSnrn3qoGesobNimxlN1DfMBomVDwoHModHWOCYDvqL5izfQ==, tarball: file:projects/typescript-writer.tgz}
+    resolution: {integrity: sha512-LVIWZN8WEYDsriijOhLqrcej7UkZCNu63nrh3hq9YONeu2G+p1a2XJeLlBgEzC0UaxYIdaKqO6sSEAtBAuUKnQ==, tarball: file:projects/typescript-writer.tgz}
     id: file:projects/typescript-writer.tgz
     name: '@rush-temp/typescript-writer'
     version: 0.0.0

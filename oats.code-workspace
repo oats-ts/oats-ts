@@ -73,6 +73,10 @@
       "path": "projects/openapi-fetch-client-adapter"
     },
     {
+      "name": "openapi-generator",
+      "path": "projects/openapi-generator"
+    },
+    {
       "name": "openapi-http",
       "path": "projects/openapi-http"
     },

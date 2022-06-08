@@ -1,66 +1,66 @@
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
-import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { generateResponseBodyValidator } from './generateResponseBodyValidator'
+import { flatMap, sortBy } from 'lodash'
 import {
   EnhancedOperation,
   getEnhancedOperations,
-  OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   hasResponses,
   OpenAPIGeneratorTarget,
+  getEnhancedResponses,
 } from '@oats-ts/openapi-common'
-import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
+import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
+import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { RuntimePackages } from '@oats-ts/model-common'
+import { success, Try } from '@oats-ts/try'
+import { getResponseBodyValidatorAst } from './getResponseBodyValidatorAst'
 
-export class ResponseBodyValidatorsGenerator implements OpenAPIGenerator<'openapi/response-body-validator'> {
-  private context: OpenAPIGeneratorContext = null
-  private operations: EnhancedOperation[]
+export class ResponseBodyValidatorsGenerator extends BaseCodeGenerator<
+  OpenAPIReadOutput,
+  SourceFile,
+  EnhancedOperation,
+  OpenAPIGeneratorContext
+> {
+  public name(): OpenAPIGeneratorTarget {
+    return 'openapi/response-body-validator'
+  }
 
-  public readonly id = 'openapi/response-body-validator'
-  public readonly consumes: OpenAPIGeneratorTarget[] = ['json-schema/type', 'json-schema/type-validator']
-  public readonly runtimeDepencencies: string[] = [RuntimePackages.Validators.name]
+  public consumes(): OpenAPIGeneratorTarget[] {
+    return ['json-schema/type', 'json-schema/type-validator']
+  }
 
-  public initialize(
-    data: OpenAPIReadOutput,
-    config: GeneratorConfig,
-    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  ): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
-    const { document, nameOf } = this.context
-    this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, 'openapi/response-body-validator'),
+  public runtimeDependencies(): string[] {
+    return [RuntimePackages.Validators.name]
+  }
+
+  protected createContext(): OpenAPIGeneratorContext {
+    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
+
+  protected getItems(): EnhancedOperation[] {
+    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+      this.context.nameOf(operation, this.name()),
     )
   }
 
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context } = this
-
-    const data: TypeScriptModule[] = mergeTypeScriptModules(
-      flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateResponseBodyValidator(operation, context)].filter(negate(isNil)),
-      ),
-    )
-
-    return {
-      isOk: true,
-      issues: [],
-      data,
-    }
+  protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
+    const path = this.context.pathOf(data.operation, 'openapi/response-body-validator')
+    const responses = getEnhancedResponses(data.operation, this.context)
+    const dependencies = [
+      ...flatMap(responses, ({ schema }) => this.context.dependenciesOf(path, schema, 'json-schema/type-validator')),
+    ]
+    return success(createSourceFile(path, dependencies, [getResponseBodyValidatorAst(data, this.context)]))
   }
 
-  public referenceOf(input: OperationObject): TypeNode | Expression {
-    const { context } = this
-    const { nameOf } = context
-    return hasResponses(input, context) ? factory.createIdentifier(nameOf(input, this.id)) : undefined
+  public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
+    return hasResponses(input, this.context)
+      ? factory.createIdentifier(this.context.nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    const { context } = this
-    return hasResponses(input, context) ? getModelImports(fromPath, this.id, [input], this.context) : undefined
+    return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : undefined
   }
 }

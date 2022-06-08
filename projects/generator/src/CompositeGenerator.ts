@@ -1,5 +1,5 @@
 import { flatMap } from 'lodash'
-import { CodeGenerator, GeneratorInit } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
 import { Try, fromArray, fluent, isFailure, success, isSuccess, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
@@ -12,8 +12,12 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G> {
 
   public children: ReadonlyArray<CodeGenerator<R, G>>
 
-  public constructor(name: string, children: CodeGenerator<R, G>[]) {
-    super()
+  public constructor(
+    name: string,
+    children: CodeGenerator<R, G>[],
+    globalConfigOverride: Partial<GeneratorConfig> = {},
+  ) {
+    super(globalConfigOverride)
     this._name = name
     this.children = children
   }
@@ -113,7 +117,9 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G> {
 
     const childResults: Try<G[]>[] = []
 
-    await Promise.all(this.children.map((child) => this.generateChild(child, childResults)))
+    if (!this.globalConfig.noEmit) {
+      await Promise.all(this.children.map((child) => this.generateChild(child, childResults)))
+    }
 
     const output = fluent(fromArray(childResults))
       .map((result) => flatMap(result, (items) => items))

@@ -1,89 +1,100 @@
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
-import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, isNil, negate, sortBy } from 'lodash'
-import { generateOperationFunction } from './generateOperationFunction'
+import { sortBy } from 'lodash'
 import { OperationsGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
   getEnhancedOperations,
-  OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
+import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
+import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
+import { success, Try } from '@oats-ts/try'
+import { getOperationFunctionAst } from './getOperationFunctionAst'
 
-export class OperationsGenerator implements OpenAPIGenerator<'openapi/operation'> {
-  private context: OpenAPIGeneratorContext = null
-  private operationsConfig: OperationsGeneratorConfig
-  private operations: EnhancedOperation[]
-
-  public readonly id = 'openapi/operation'
-  public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'json-schema/type',
-    'openapi/request-headers-type',
-    'openapi/query-type',
-    'openapi/path-type',
-    'openapi/response-type',
-    'openapi/request-type',
-    'openapi/request-headers-serializer',
-    'openapi/path-serializer',
-    'openapi/query-serializer',
-    'openapi/response-headers-deserializer',
-  ]
-  public readonly runtimeDepencencies: string[] = [
-    RuntimePackages.Http.name,
-    /* Adding this as runtime package as otherwise it's undiscoverable */
-    '@oats-ts/openapi-fetch-client-adapter',
-  ]
-
-  public constructor(config: OperationsGeneratorConfig) {
-    this.operationsConfig = config
-    if (config.validate) {
-      this.consumes.push('openapi/response-body-validator')
-    }
+export class OperationsGenerator extends BaseCodeGenerator<
+  OpenAPIReadOutput,
+  SourceFile,
+  EnhancedOperation,
+  OpenAPIGeneratorContext
+> {
+  constructor(private readonly config: OperationsGeneratorConfig) {
+    super()
   }
-  public initialize(
-    data: OpenAPIReadOutput,
-    config: GeneratorConfig,
-    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  ): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
-    const { document, nameOf } = this.context
-    this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, 'openapi/operation'),
+
+  name(): OpenAPIGeneratorTarget {
+    return 'openapi/operation'
+  }
+
+  consumes(): OpenAPIGeneratorTarget[] {
+    const validatorDep: OpenAPIGeneratorTarget[] = ['openapi/response-body-validator']
+    return [
+      'json-schema/type',
+      'openapi/request-headers-type',
+      'openapi/query-type',
+      'openapi/path-type',
+      'openapi/response-type',
+      'openapi/request-type',
+      'openapi/request-headers-serializer',
+      'openapi/path-serializer',
+      'openapi/query-serializer',
+      'openapi/response-headers-deserializer',
+      ...(this.config.validate ? validatorDep : []),
+    ]
+  }
+
+  runtimeDependencies(): string[] {
+    return [
+      RuntimePackages.Http.name,
+      /* Adding this as runtime package as otherwise it's undiscoverable */
+      '@oats-ts/openapi-fetch-client-adapter',
+    ]
+  }
+
+  protected createContext(): OpenAPIGeneratorContext {
+    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
+
+  protected getItems(): EnhancedOperation[] {
+    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+      this.context.nameOf(operation, this.name()),
     )
   }
 
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, operationsConfig } = this
-
-    const data: TypeScriptModule[] = mergeTypeScriptModules(
-      flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateOperationFunction(operation, context, operationsConfig)].filter(negate(isNil)),
+  protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
+    const path = this.context.pathOf(item.operation, 'openapi/operation')
+    return success(
+      createSourceFile(
+        path,
+        [
+          getNamedImports(RuntimePackages.Http.name, [
+            RuntimePackages.Http.RawHttpRequest,
+            RuntimePackages.Http.ClientAdapter,
+          ]),
+          ...this.context.dependenciesOf(path, item.operation, 'openapi/request-type'),
+          ...this.context.dependenciesOf(path, item.operation, 'openapi/response-type'),
+          ...this.context.dependenciesOf(path, item.operation, 'openapi/path-serializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'openapi/query-serializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'openapi/request-headers-serializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'openapi/response-headers-deserializer'),
+          ...(this.config.validate
+            ? this.context.dependenciesOf(path, item.operation, 'openapi/response-body-validator')
+            : []),
+        ],
+        [getOperationFunctionAst(item, this.context, this.config)],
       ),
     )
-
-    // TODO maybe try-catch?
-    return {
-      isOk: true,
-      issues: [],
-      data,
-    }
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression {
-    const { context } = this
-    const { nameOf } = context
-    return factory.createIdentifier(nameOf(input, this.id))
+    return factory.createIdentifier(this.context.nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return getModelImports(fromPath, this.name(), [input], this.context)
   }
 }

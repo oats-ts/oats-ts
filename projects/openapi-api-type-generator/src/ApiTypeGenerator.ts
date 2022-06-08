@@ -1,68 +1,74 @@
-import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import {
   getEnhancedOperations,
-  OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
-  EnhancedOperation,
 } from '@oats-ts/openapi-common'
-import { generateApiType } from './generateApiType'
-import { ApiTypeGeneratorConfig } from './typings'
-import { Result, GeneratorConfig, CodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { TypeNode, Expression, factory, ImportDeclaration } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
+import { factory, ImportDeclaration, SourceFile, TypeReferenceNode } from 'typescript'
+import { success, Try } from '@oats-ts/try'
+import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
+import { ApiTypeGeneratorConfig } from './typings'
+import { ApiTypeGeneratorItem } from './internalTypings'
+import { getApiTypeImports } from './getApiTypeImports'
+import { getApiTypeAst } from './getApiTypeAst'
 
-export class ApiTypeGenerator implements OpenAPIGenerator<'openapi/api-type'> {
-  private context: OpenAPIGeneratorContext = null
-  private operations: EnhancedOperation[] = []
-  private apiTypeConfig: ApiTypeGeneratorConfig
-
-  public readonly id = 'openapi/api-type'
-  public readonly consumes: OpenAPIGeneratorTarget[] = ['openapi/request-server-type', 'openapi/response-type']
-  public readonly runtimeDepencencies: string[] = []
-
-  public constructor(config: ApiTypeGeneratorConfig) {
-    this.apiTypeConfig = config
+export class ApiTypeGenerator extends BaseCodeGenerator<
+  OpenAPIReadOutput,
+  SourceFile,
+  ApiTypeGeneratorItem,
+  OpenAPIGeneratorContext
+> {
+  public constructor(private readonly config: ApiTypeGeneratorConfig) {
+    super()
   }
 
-  public initialize(
-    data: OpenAPIReadOutput,
-    config: GeneratorConfig,
-    generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  ): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
+  public name(): OpenAPIGeneratorTarget {
+    return 'openapi/api-type'
   }
 
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context, apiTypeConfig } = this
-    const { document, nameOf } = context
-    this.operations = sortBy(getEnhancedOperations(document, context), ({ operation }) =>
-      nameOf(operation, 'openapi/operation'),
+  public consumes(): OpenAPIGeneratorTarget[] {
+    return ['openapi/request-server-type', 'openapi/response-type']
+  }
+
+  public runtimeDependencies(): string[] {
+    return []
+  }
+
+  protected createContext(): OpenAPIGeneratorContext {
+    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
+
+  protected getItems(): ApiTypeGeneratorItem[] {
+    return [
+      {
+        document: this.input.document,
+        operations: sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+          this.context.nameOf(operation, 'openapi/operation'),
+        ),
+      },
+    ]
+  }
+
+  public async generateItem({ document, operations }: ApiTypeGeneratorItem): Promise<Try<SourceFile>> {
+    return success(
+      createSourceFile(
+        this.context.pathOf(document, this.name()),
+        getApiTypeImports(document, operations, this.context, true),
+        [getApiTypeAst(document, operations, this.context, this.config)],
+      ),
     )
-    const data: TypeScriptModule[] =
-      this.operations.length > 0
-        ? mergeTypeScriptModules([generateApiType(document, this.operations, context, apiTypeConfig)])
-        : []
-
-    return {
-      isOk: true,
-      data,
-      issues: [],
-    }
   }
 
-  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
-    const { context } = this
-    const { nameOf } = context
-    return this.operations.length > 0 ? factory.createTypeReferenceNode(nameOf(input, this.id)) : undefined
+  public referenceOf(input: OpenAPIObject): TypeReferenceNode | undefined {
+    const [{ operations }] = this.items
+    return operations.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
   }
-
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
-    const { context } = this
-    return this.operations.length > 0 ? getModelImports(fromPath, this.id, [input], context) : []
+    const [{ operations }] = this.items
+    return operations.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
 }

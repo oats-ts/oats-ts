@@ -12,10 +12,12 @@ export abstract class BaseGenerator<R, G> implements CodeGenerator<R, G> {
   protected emitter!: GeneratorEventEmitter<G>
   protected dependencies: CodeGenerator<R, G>[] = []
 
+  constructor(private globalConfigOverride: Partial<GeneratorConfig> = {}) {}
+
   public initialize({ globalConfig, input, dependencies, emitter, parent }: GeneratorInit<R, G>): void {
     this.parent = parent
     this.input = input
-    this.globalConfig = globalConfig
+    this.globalConfig = { ...globalConfig, ...this.globalConfigOverride }
     this.emitter = emitter
     this.dependencies = dependencies ?? []
   }

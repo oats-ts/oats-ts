@@ -46,6 +46,10 @@ export type GeneratorConfig = {
    * @returns The operating system dependent path for the desired generator target.
    */
   pathProvider: GeneratorPathProvider
+  /**
+   * When true, generators with this configuration should emit no outputs from the generate method
+   */
+  noEmit?: boolean
 }
 
 export type GeneratorPathProvider = (input: any, name: NameProvider, target: string) => string | undefined
