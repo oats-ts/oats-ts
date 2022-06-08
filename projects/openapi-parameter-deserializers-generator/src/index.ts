@@ -1,38 +1,36 @@
-import { GeneratorConfig } from '@oats-ts/generator'
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { InputParameterDeserializersGenerator } from './InputParameterDeserializersGenerator'
 import { ResponseHeadersParameterDeserializersGenerator } from './responseHeaders/ResponseHeadersParameterDeserializersGenerator'
 
-export class QueryParameterDeserializersGenerator extends InputParameterDeserializersGenerator<'openapi/query-deserializer'> {
+export class QueryParameterDeserializersGenerator extends InputParameterDeserializersGenerator {
   constructor() {
     super('openapi/query-deserializer', 'openapi/query-type', 'query')
   }
 }
 
-export class PathParameterDeserializersGenerator extends InputParameterDeserializersGenerator<'openapi/path-deserializer'> {
+export class PathParameterDeserializersGenerator extends InputParameterDeserializersGenerator {
   constructor() {
     super('openapi/path-deserializer', 'openapi/path-type', 'path')
   }
 }
 
-export class RequestHeaderParameterDeserializersGenerator extends InputParameterDeserializersGenerator<'openapi/request-headers-deserializer'> {
+export class RequestHeaderParameterDeserializersGenerator extends InputParameterDeserializersGenerator {
   constructor() {
     super('openapi/request-headers-deserializer', 'openapi/request-headers-type', 'header')
   }
 }
 
-export function queryParameterDeserializers(): OpenAPIGenerator {
+export function queryParameterDeserializers(): QueryParameterDeserializersGenerator {
   return new QueryParameterDeserializersGenerator()
 }
 
-export function pathParameterDeserializers(): OpenAPIGenerator {
+export function pathParameterDeserializers(): PathParameterDeserializersGenerator {
   return new PathParameterDeserializersGenerator()
 }
 
-export function requestHeaderParameterDeserializers(): OpenAPIGenerator {
+export function requestHeaderParameterDeserializers(): RequestHeaderParameterDeserializersGenerator {
   return new RequestHeaderParameterDeserializersGenerator()
 }
 
-export function responseHeaderParameterDeserializers(): OpenAPIGenerator {
+export function responseHeaderParameterDeserializers(): ResponseHeadersParameterDeserializersGenerator {
   return new ResponseHeadersParameterDeserializersGenerator()
 }

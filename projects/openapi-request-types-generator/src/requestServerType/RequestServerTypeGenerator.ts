@@ -1,78 +1,88 @@
-import { Result, GeneratorConfig } from '@oats-ts/generator'
-import { mergeTypeScriptModules, TypeScriptModule } from '@oats-ts/typescript-writer'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, isNil, negate, sortBy } from 'lodash'
+import { isNil, sortBy } from 'lodash'
 import {
   EnhancedOperation,
   getEnhancedOperations,
-  OpenAPIGenerator,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   hasInput,
   OpenAPIGeneratorTarget,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { Expression, TypeNode, ImportDeclaration, factory } from 'typescript'
-import { getModelImports } from '@oats-ts/typescript-common'
-import { generateRequestServerType } from './generateRequestServerType'
+import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
+import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
+import { success, Try } from '@oats-ts/try'
+import { getRequestTypeAst } from '../common/getRequestTypeAst'
+import { serverRequestPropertyFactory } from './serverRequestPropertyFactory'
+import { getCommonImports } from '../common/getCommonImports'
 
-export class RequestServerTypesGenerator implements OpenAPIGenerator<'openapi/request-server-type'> {
-  private context: OpenAPIGeneratorContext = null
-  private operations: EnhancedOperation[]
+export class RequestServerTypesGenerator extends BaseCodeGenerator<
+  OpenAPIReadOutput,
+  SourceFile,
+  EnhancedOperation,
+  OpenAPIGeneratorContext
+> {
+  protected createContext(): OpenAPIGeneratorContext {
+    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+  }
 
-  public readonly id = 'openapi/request-server-type'
-  public readonly consumes: OpenAPIGeneratorTarget[] = [
-    'json-schema/type',
-    'openapi/request-headers-type',
-    'openapi/query-type',
-    'openapi/path-type',
-  ]
-  public readonly runtimeDepencencies: string[] = [RuntimePackages.Try.name]
+  protected getItems(): EnhancedOperation[] {
+    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+      this.context.nameOf(operation, 'openapi/operation'),
+    ).filter((operation) => hasInput(operation, this.context))
+  }
 
-  public initialize(data: OpenAPIReadOutput, config: GeneratorConfig, generators: OpenAPIGenerator[]): void {
-    this.context = createOpenAPIGeneratorContext(data, config, generators)
-    const { document, nameOf } = this.context
-    this.operations = sortBy(getEnhancedOperations(document, this.context), ({ operation }) =>
-      nameOf(operation, 'openapi/operation'),
+  public name(): OpenAPIGeneratorTarget {
+    throw 'openapi/request-server-type'
+  }
+
+  public consumes(): OpenAPIGeneratorTarget[] {
+    return ['json-schema/type', 'openapi/request-headers-type', 'openapi/query-type', 'openapi/path-type']
+  }
+
+  public runtimeDependencies(): string[] {
+    return [RuntimePackages.Try.name]
+  }
+
+  protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
+    const path = this.context.pathOf(data.operation, this.name())
+    const ast = getRequestTypeAst(
+      this.context.nameOf(data.operation, this.name()),
+      data,
+      this.context,
+      serverRequestPropertyFactory,
+    )
+    return success(
+      createSourceFile(
+        path,
+        [
+          getNamedImports(RuntimePackages.Try.name, [RuntimePackages.Try.Try]),
+          ...getCommonImports(path, data, this.context),
+        ],
+        isNil(ast) ? [] : [ast],
+      ),
     )
   }
 
   private enhance(input: OperationObject): EnhancedOperation {
-    const operation = this.operations.find(({ operation }) => operation === input)
+    const operation = this.items.find(({ operation }) => operation === input)
     if (isNil(operation)) {
       throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
     }
     return operation
   }
 
-  public async generate(): Promise<Result<TypeScriptModule[]>> {
-    const { context } = this
-
-    const data: TypeScriptModule[] = mergeTypeScriptModules(
-      flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-        [generateRequestServerType(operation, context)].filter(negate(isNil)),
-      ),
-    )
-
-    // TODO maybe try-catch?
-    return {
-      isOk: true,
-      issues: [],
-      data,
-    }
-  }
-
   public referenceOf(input: OperationObject): TypeNode | Expression {
-    const { context } = this
-    const { nameOf } = context
-    return hasInput(this.enhance(input), context) ? factory.createTypeReferenceNode(nameOf(input, this.id)) : undefined
+    return hasInput(this.enhance(input), this.context)
+      ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    const { context } = this
-    return hasInput(this.enhance(input), context)
-      ? getModelImports(fromPath, this.id, [input], this.context)
+    return hasInput(this.enhance(input), this.context)
+      ? getModelImports(fromPath, this.name(), [input], this.context)
       : undefined
   }
 }

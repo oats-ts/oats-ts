@@ -1,13 +1,12 @@
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { RequestTypesGenerator } from './requestType/RequestTypesGenerator'
 import { RequestServerTypesGenerator } from './requestServerType/RequestServerTypeGenerator'
 
 export { RequestTypesGenerator } from './requestType/RequestTypesGenerator'
 
-export function requestTypes(): OpenAPIGenerator {
+export function requestTypes(): RequestTypesGenerator {
   return new RequestTypesGenerator()
 }
 
-export function requestServerTypes(): OpenAPIGenerator {
+export function requestServerTypes(): RequestServerTypesGenerator {
   return new RequestServerTypesGenerator()
 }

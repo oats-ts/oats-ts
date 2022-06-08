@@ -1,10 +1,9 @@
 import { ParameterLocation } from '@oats-ts/openapi-model'
-import { TypeScriptModule } from '@oats-ts/typescript-writer'
 import { getParameterDeserializerFactoryName } from './getParameterDeserializerFactoryName'
 import { OpenAPIGeneratorContext, RuntimePackages, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
-import { factory, NodeFlags, SyntaxKind, VariableStatement } from 'typescript'
-import { getNamedImports } from '@oats-ts/typescript-common'
+import { factory, NodeFlags, SourceFile, SyntaxKind, VariableStatement } from 'typescript'
+import { createSourceFile, getNamedImports } from '@oats-ts/typescript-common'
 import { getParameterDeserializerFactoryCallAst } from './getParameterDeserializerFactoryCallAst'
 import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
 import { collectSchemaImports } from './collectSchemaImports'
@@ -40,17 +39,14 @@ function createDeserializerConstant(
 
 export const generateOperationParameterTypeDeserializer =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
-  (data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeScriptModule => {
+  (data: EnhancedOperation, context: OpenAPIGeneratorContext): SourceFile => {
     const parameters = data[location]
-    const { pathOf, dependenciesOf, dereference } = context
-    if (parameters.length === 0) {
-      return undefined
-    }
+    const { pathOf, dependenciesOf } = context
 
     const path = pathOf(data.operation, target)
-    return {
+    return createSourceFile(
       path,
-      dependencies: [
+      [
         getNamedImports(RuntimePackages.ParameterDeserialization.name, [
           RuntimePackages.ParameterDeserialization.deserializers,
           getParameterDeserializerFactoryName(location),
@@ -58,8 +54,8 @@ export const generateOperationParameterTypeDeserializer =
         ...dependenciesOf(path, data.operation, typeTarget),
         ...collectSchemaImports(path, parameters, context),
       ],
-      content: [createDeserializerConstant(location, data, context, target)],
-    }
+      [createDeserializerConstant(location, data, context, target)],
+    )
   }
 
 export const generateQueryParameterTypeDeserializer = generateOperationParameterTypeDeserializer(
