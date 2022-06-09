@@ -31,7 +31,6 @@ const fileNameByTarget: NameByTarget = {
   'openapi/express-cors-middleware': 'expressCorsMiddleware.ts',
   'openapi/api-type': 'apiType.ts',
   'openapi/sdk-impl': 'sdkImpl.ts',
-  'openapi/sdk-stub': 'sdkStub.ts',
   'openapi/sdk-type': 'sdkType.ts',
 }
 
@@ -92,7 +91,6 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'openapi/express-cors-middleware': routers,
 
     'openapi/sdk-type': sdk,
-    'openapi/sdk-stub': sdk,
     'openapi/sdk-impl': sdk,
   }
 })()

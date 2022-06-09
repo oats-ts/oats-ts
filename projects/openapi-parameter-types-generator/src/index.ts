@@ -1,4 +1,3 @@
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { InputParameterTypesGenerator } from './InputParameterTypesGenerator'
 import { ResponseHeaderTypesGenerator } from './response/ResponseHeaderTypesGenerator'
@@ -11,36 +10,40 @@ function defaultConfig(config: Partial<ParameterTypesGeneratorConfig>): Paramete
   }
 }
 
-export class QueryParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/query-type'> {
-  constructor(config: Partial<ParameterTypesGeneratorConfig> = {}) {
-    super('openapi/query-type', 'query', defaultConfig(config))
+export class QueryParameterTypesGenerator extends InputParameterTypesGenerator {
+  constructor(config: ParameterTypesGeneratorConfig) {
+    super('openapi/query-type', 'query', config)
   }
 }
 
-export class PathParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/path-type'> {
-  constructor(config: Partial<ParameterTypesGeneratorConfig> = {}) {
-    super('openapi/path-type', 'path', defaultConfig(config))
+export class PathParameterTypesGenerator extends InputParameterTypesGenerator {
+  constructor(config: ParameterTypesGeneratorConfig) {
+    super('openapi/path-type', 'path', config)
   }
 }
 
-export class RequestHeaderParameterTypesGenerator extends InputParameterTypesGenerator<'openapi/request-headers-type'> {
-  constructor(config: Partial<ParameterTypesGeneratorConfig> = {}) {
-    super('openapi/request-headers-type', 'header', defaultConfig(config))
+export class RequestHeaderParameterTypesGenerator extends InputParameterTypesGenerator {
+  constructor(config: ParameterTypesGeneratorConfig) {
+    super('openapi/request-headers-type', 'header', config)
   }
 }
 
-export function queryParameterTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
+export function queryParameterTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): QueryParameterTypesGenerator {
   return new QueryParameterTypesGenerator(defaultConfig(config))
 }
 
-export function pathParameterTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
+export function pathParameterTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): PathParameterTypesGenerator {
   return new PathParameterTypesGenerator(defaultConfig(config))
 }
 
-export function requestHeaderParameterTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
+export function requestHeaderParameterTypes(
+  config: Partial<ParameterTypesGeneratorConfig> = {},
+): RequestHeaderParameterTypesGenerator {
   return new RequestHeaderParameterTypesGenerator(defaultConfig(config))
 }
 
-export function responseHeaderParameterTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
+export function responseHeaderParameterTypes(
+  config: Partial<ParameterTypesGeneratorConfig> = {},
+): ResponseHeaderTypesGenerator {
   return new ResponseHeaderTypesGenerator(defaultConfig(config))
 }

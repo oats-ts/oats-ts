@@ -52,7 +52,6 @@ const resBodyValidator = nonNull(operation)((input: any, name: string) => camelC
 const expressRouter = nonNull(operation)((input: any, name: string) => camelCase(`${name}Router`))
 const documentTitle = (doc: any) => pascalCase(doc.info?.title || '')
 const sdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Sdk`
-const sdkStub: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkStub`
 const sdkImpl: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkImpl`
 const api: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Api`
 const routerFactory: GeneratorNameProvider = (doc: any) => `create${documentTitle(doc)}Router`
@@ -83,7 +82,6 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'openapi/response-body-validator': resBodyValidator,
   'openapi/express-route': expressRouter,
   'openapi/sdk-type': sdk,
-  'openapi/sdk-stub': sdkStub,
   'openapi/sdk-impl': sdkImpl,
   'openapi/api-type': api,
   'openapi/express-route-factory': routerFactory,

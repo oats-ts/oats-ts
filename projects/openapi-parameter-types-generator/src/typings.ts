@@ -1,3 +1,4 @@
+import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
 
 export type ParameterTypesGeneratorConfig = {
@@ -8,4 +9,5 @@ export type ParameterTypesGeneratorConfig = {
   documentation: boolean
 }
 
+export type ResponseParameterInputInternal = [EnhancedOperation, string]
 export type ResponseParameterInput = [OperationObject, string]

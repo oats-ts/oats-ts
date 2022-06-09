@@ -43,14 +43,18 @@ export class ApiTypeGenerator extends BaseCodeGenerator<
   }
 
   protected getItems(): ApiTypeGeneratorItem[] {
-    return [
-      {
-        document: this.input.document,
-        operations: sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-          this.context.nameOf(operation, 'openapi/operation'),
-        ),
-      },
-    ]
+    const operations = sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+      this.context.nameOf(operation, 'openapi/operation'),
+    )
+
+    return operations.length > 0
+      ? [
+          {
+            document: this.input.document,
+            operations,
+          },
+        ]
+      : []
   }
 
   public async generateItem({ document, operations }: ApiTypeGeneratorItem): Promise<Try<SourceFile>> {

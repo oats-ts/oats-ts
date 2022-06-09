@@ -1,8 +1,7 @@
-import { OpenAPIGenerator } from '@oats-ts/openapi-common'
 import { ResponseTypesGenerator } from './ResponseTypesGenerator'
 
 export { ResponseTypesGenerator } from './ResponseTypesGenerator'
 
-export function responseTypes(): OpenAPIGenerator {
+export function responseTypes(): ResponseTypesGenerator {
   return new ResponseTypesGenerator()
 }
