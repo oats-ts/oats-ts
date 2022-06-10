@@ -120,8 +120,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi-generator",
-      "projectFolder": "projects/openapi-generator",
+      "packageName": "@oats-ts/openapi-generators",
+      "projectFolder": "projects/openapi-generators",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

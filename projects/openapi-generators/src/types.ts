@@ -6,8 +6,4 @@ export type RootGeneratorConfig = GeneratorConfig & {
   name?: string
 }
 
-export type GroupGeneratorConfig = Partial<GeneratorConfig> & {
-  name: string
-}
-
-export type OAGen = CodeGenerator<OpenAPIReadOutput, SourceFile>
+export type OpenAPIGenerator = CodeGenerator<OpenAPIReadOutput, SourceFile>

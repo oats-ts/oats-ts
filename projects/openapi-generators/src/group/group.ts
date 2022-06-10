@@ -1,10 +1,11 @@
-import { flattenChildren } from './flattenChildren'
+import { flattenChildren } from '../utils/flattenChildren'
 import { GroupGenerator } from './GroupGenerator'
-import { GroupGeneratorConfig, OAGen } from './types'
+import { OpenAPIGenerator } from '../types'
+import { GroupGeneratorConfig } from './types'
 
 export const group =
   (config: GroupGeneratorConfig) =>
-  (...children: (OAGen | OAGen[])[]): GroupGenerator => {
+  (...children: (OpenAPIGenerator | OpenAPIGenerator[])[]): GroupGenerator => {
     const { name, ...globalConfig } = config
     return new GroupGenerator(name, flattenChildren(children), globalConfig)
   }
