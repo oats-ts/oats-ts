@@ -4013,7 +4013,7 @@ packages:
     dev: false
 
   /type-check/0.3.2:
-    resolution: {integrity: sha1-WITKtRLPHTVeP7eE8wgEsrUg23I=}
+    resolution: {integrity: sha512-ZCmOJdvOWDBYJlzAoFkC+Q0+bUyEOS1ltgp1MGU03fqHG+dbi9tBFU2Rd9QKiDZFAYrhPh2JUf7rZRIuHRKtOg==}
     engines: {node: '>= 0.8.0'}
     dependencies:
       prelude-ls: 1.1.2
@@ -4668,7 +4668,7 @@ packages:
     dev: false
 
   file:projects/openapi-generators.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-oJ+ZDp8JqqVyKXmmGpHvgBJxXwony+ar7T1aAjMxwD4+Py+dEc1lMqs2175rFJafI6L2/APT8rGBikTKLf3xcw==, tarball: file:projects/openapi-generators.tgz}
+    resolution: {integrity: sha512-dnFKTdkvrRVOHcBmdwG54/FB9ZiFOm9PgMLYZVpwYNuvlmpDbZ8mQ6y1MsiN7FOEeGTnvQZJuejxK25Bd5QDOA==, tarball: file:projects/openapi-generators.tgz}
     id: file:projects/openapi-generators.tgz
     name: '@rush-temp/openapi-generators'
     version: 0.0.0
@@ -4679,6 +4679,7 @@ packages:
       chalk: 4.1.1
       jest: 27.0.4_ts-node@10.0.0
       lodash: 4.17.21
+      path-to-regexp: 6.2.0
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
       typescript: 4.3.5

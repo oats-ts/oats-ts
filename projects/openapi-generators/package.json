@@ -33,10 +33,13 @@
   "dependencies": {
     "chalk": "4.1.1",
     "lodash": "4.17.21",
+    "path-to-regexp": "6.2.0",
     "@oats-ts/try": "0.0.24",
     "@oats-ts/validators": "0.0.24",
     "@oats-ts/events": "0.0.24",
     "@oats-ts/generator": "0.0.24",
+    "@oats-ts/json-schema-common": "0.0.24",
+    "@oats-ts/json-schema-model": "0.0.24",
     "@oats-ts/openapi-reader": "0.0.24",
     "@oats-ts/typescript-common": "0.0.24",
     "@oats-ts/openapi-common": "0.0.24",
