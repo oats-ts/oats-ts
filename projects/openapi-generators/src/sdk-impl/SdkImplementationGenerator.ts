@@ -1,7 +1,5 @@
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { flatMap, sortBy } from 'lodash'
+import { flatMap } from 'lodash'
 import {
-  getEnhancedOperations,
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
@@ -9,11 +7,9 @@ import {
   EnhancedOperation,
 } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
-import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { ApiTypeGeneratorItem } from '../utils/sdk/internalTypings'
 import { Try, success } from '@oats-ts/try'
 import { getSdkTypeImports } from '../utils/sdk/getSdkTypeImports'
 import { getSdkClassAst } from './getSdkClassAst'

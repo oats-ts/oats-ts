@@ -1,5 +1,5 @@
 import { factory, ParameterDeclaration } from 'typescript'
-import { hasInput, RuntimePackages } from '@oats-ts/openapi-common'
+import { hasInput } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 

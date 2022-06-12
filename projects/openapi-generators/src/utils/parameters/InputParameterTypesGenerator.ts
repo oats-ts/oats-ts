@@ -1,7 +1,7 @@
-import { GeneratorConfig, CodeGenerator, BaseCodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
-import { flatMap, isNil, isEmpty, negate, sortBy } from 'lodash'
+import { isNil, isEmpty, sortBy } from 'lodash'
 import {
   EnhancedOperation,
   getEnhancedOperations,

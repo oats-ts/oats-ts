@@ -1,4 +1,4 @@
-import { entries, identity, isNil } from 'lodash'
+import { entries, isNil } from 'lodash'
 import { factory, PropertySignature, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
 import { EnhancedOperation, getRequestBodyContent, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getParameterTypesAst } from './getParameterTypesAst'

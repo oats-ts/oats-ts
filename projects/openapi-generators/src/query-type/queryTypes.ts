@@ -1,3 +1,4 @@
+import { OpenAPIGenerator } from '../types'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { QueryTypesGenerator } from './QueryTypesGenerator'
 
@@ -7,6 +8,6 @@ function defaultConfig(config: Partial<ParameterTypesGeneratorConfig>): Paramete
   }
 }
 
-export function queryTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): QueryTypesGenerator {
+export function queryTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
   return new QueryTypesGenerator(defaultConfig(config))
 }

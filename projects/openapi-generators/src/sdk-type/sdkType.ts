@@ -1,3 +1,4 @@
+import { OpenAPIGenerator } from '../types'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { SdkTypeGenerator } from './SdkTypeGenerator'
 
@@ -7,6 +8,6 @@ function defaultConfig(config: Partial<SdkGeneratorConfig>): SdkGeneratorConfig 
   }
 }
 
-export function sdkType(config: Partial<SdkGeneratorConfig> = {}): SdkTypeGenerator {
+export function sdkType(config: Partial<SdkGeneratorConfig> = {}): OpenAPIGenerator {
   return new SdkTypeGenerator(defaultConfig(config))
 }

@@ -8,7 +8,7 @@ import {
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { entries, flatMap, sortBy, values } from 'lodash'
+import { entries, flatMap, values } from 'lodash'
 import { factory, Identifier, ImportDeclaration, SourceFile } from 'typescript'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { collectSchemaImports } from '../utils/serializers/collectSchemaImports'

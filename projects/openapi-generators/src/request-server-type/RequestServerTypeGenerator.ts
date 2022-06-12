@@ -1,16 +1,6 @@
-import { BaseCodeGenerator } from '@oats-ts/generator'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { isNil, sortBy } from 'lodash'
-import {
-  EnhancedOperation,
-  getEnhancedOperations,
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  hasInput,
-  OpenAPIGeneratorTarget,
-  RuntimePackages,
-} from '@oats-ts/openapi-common'
+import { isNil } from 'lodash'
+import { EnhancedOperation, hasInput, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'

@@ -1,3 +1,4 @@
+import { OpenAPIGenerator } from '../types'
 import { ApiTypeGenerator } from './ApiTypeGenerator'
 import { ApiTypeGeneratorConfig } from './typings'
 
@@ -7,6 +8,6 @@ function defaultConfig(config: Partial<ApiTypeGeneratorConfig>): ApiTypeGenerato
   }
 }
 
-export function apiType(config: Partial<ApiTypeGeneratorConfig> = {}): ApiTypeGenerator {
+export function apiType(config: Partial<ApiTypeGeneratorConfig> = {}): OpenAPIGenerator {
   return new ApiTypeGenerator(defaultConfig(config))
 }

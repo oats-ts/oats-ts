@@ -1,3 +1,4 @@
+import { OpenAPIGenerator } from '../types'
 import { ExpressRouteFactoryGenerator } from './ExpressRouteFactoryGenerator'
 import { ExpressRouterFactoryGeneratorConfig } from './typings'
 
@@ -8,8 +9,6 @@ function defaultConfig(config: Partial<ExpressRouterFactoryGeneratorConfig>): Ex
   }
 }
 
-export function expressRouteFactory(
-  config: Partial<ExpressRouterFactoryGeneratorConfig> = {},
-): ExpressRouteFactoryGenerator {
+export function expressRouteFactory(config: Partial<ExpressRouterFactoryGeneratorConfig> = {}): OpenAPIGenerator {
   return new ExpressRouteFactoryGenerator(defaultConfig(config))
 }

@@ -1,6 +1,5 @@
 import {
   EnhancedOperation,
-  hasInput,
   hasRequestBody,
   hasResponseHeaders,
   hasResponses,

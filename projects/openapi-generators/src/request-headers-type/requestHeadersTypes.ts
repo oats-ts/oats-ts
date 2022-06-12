@@ -1,3 +1,4 @@
+import { OpenAPIGenerator } from '../types'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { RequestHeadersTypesGenerator } from './RequestHeadersTypesGenerator'
 
@@ -7,6 +8,6 @@ function defaultConfig(config: Partial<ParameterTypesGeneratorConfig>): Paramete
   }
 }
 
-export function requestHeadersTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): RequestHeadersTypesGenerator {
+export function requestHeadersTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
   return new RequestHeadersTypesGenerator(defaultConfig(config))
 }

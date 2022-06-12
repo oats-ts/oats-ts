@@ -5,7 +5,7 @@ import { GroupGeneratorConfig } from './types'
 
 export const group =
   (config: GroupGeneratorConfig) =>
-  (...children: (OpenAPIGenerator | OpenAPIGenerator[])[]): GroupGenerator => {
+  (...children: (OpenAPIGenerator | OpenAPIGenerator[])[]): OpenAPIGenerator => {
     const { name, ...globalConfig } = config
     return new GroupGenerator(name, flattenChildren(children), globalConfig)
   }

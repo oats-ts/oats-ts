@@ -1,6 +1,5 @@
 import { EnhancedOperation, hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { factory, MethodSignature, ParameterDeclaration, SyntaxKind } from 'typescript'
-import { RuntimePackages } from '@oats-ts/openapi-common'
+import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
 import { documentNode } from '@oats-ts/typescript-common'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 
