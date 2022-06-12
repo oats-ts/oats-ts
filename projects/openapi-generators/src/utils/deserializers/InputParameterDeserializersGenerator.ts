@@ -61,14 +61,14 @@ export class InputParameterDeserializersGenerator extends BaseCodeGenerator<
     return success(this._generate(data, this.context))
   }
 
-  public referenceOf(input: OperationObject): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
     const params = this.enhance(input)[this._location]
     return isEmpty(params) ? undefined : factory.createIdentifier(this.context.nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const params = this.enhance(input)[this._location]
-    return isEmpty(params) ? undefined : getModelImports(fromPath, this.name(), [input], this.context)
+    return isEmpty(params) ? [] : getModelImports(fromPath, this.name(), [input], this.context)
   }
 
   private enhance(input: OperationObject): EnhancedOperation {

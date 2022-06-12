@@ -5,8 +5,8 @@ import {
   OpenAPIGeneratorContext,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { flatMap, isNil, keys, negate, values } from 'lodash'
-import { factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
+import { flatMap, isNil, keys, values } from 'lodash'
+import { ExpressionStatement, factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
 
 export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: OpenAPIGeneratorContext): Statement {
   const { nameOf, document } = context
@@ -121,7 +121,9 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
       )
     : undefined
 
-  const corsHeaderStatements = [corsOrigin, corsMethods, corsAllowedHeaders, corsCreds].filter(negate(isNil))
+  const corsHeaderStatements = [corsOrigin, corsMethods, corsAllowedHeaders, corsCreds].filter(
+    (statement): statement is ExpressionStatement => !isNil(statement),
+  )
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

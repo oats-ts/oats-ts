@@ -94,7 +94,7 @@ export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
     return values(headers).length > 0
   }
 
-  public referenceOf(input: ResponseParameterInput): TypeNode {
+  public referenceOf(input: ResponseParameterInput): TypeNode | undefined {
     if (isNil(input) || !Array.isArray(input)) {
       return undefined
     }

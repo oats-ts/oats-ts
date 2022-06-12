@@ -48,7 +48,7 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator {
     )
   }
 
-  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
+  public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
     const [operations] = this.items
     return operations.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
   }

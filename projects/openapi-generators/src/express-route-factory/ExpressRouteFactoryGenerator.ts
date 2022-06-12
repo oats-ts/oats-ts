@@ -22,16 +22,6 @@ export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator {
     return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
   }
 
-  public referenceOf(input: OpenAPIObject): TypeNode | Expression {
-    const [operations] = this.items
-    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
-  }
-
-  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
-    const [operations] = this.items
-    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
-  }
-
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(this.input.document, this.name())
     return success(
@@ -58,5 +48,15 @@ export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator {
         [getMainRouteFactoryAst(operations, this.context, this.config)],
       ),
     )
+  }
+
+  public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
+    const [operations] = this.items
+    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+  }
+
+  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
+    const [operations] = this.items
+    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
 }

@@ -34,11 +34,8 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(data.operation, 'openapi/request-body-validator')
     const content = entries(getRequestBodyContent(data, this.context)).map(
-      ([contentType, { schema }]): [string, Referenceable<SchemaObject>] => [contentType, schema],
+      ([contentType, { schema }]): [string, Referenceable<SchemaObject>] => [contentType, schema!],
     )
-    if (content.length === 0) {
-      return undefined
-    }
     const body = this.context.dereference(data.operation.requestBody)
     const needsOptional = !Boolean(body?.required)
     const dependencies = [

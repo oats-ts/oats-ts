@@ -41,7 +41,7 @@ export class ResponseTypesGenerator extends OperationBasedCodeGenerator {
     )
   }
 
-  public referenceOf(input: OperationObject): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
     return hasResponses(input, this.context)
       ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
       : undefined

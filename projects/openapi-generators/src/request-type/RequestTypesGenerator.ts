@@ -45,15 +45,13 @@ export class RequestTypesGenerator extends OperationBasedCodeGenerator {
     return operation
   }
 
-  public referenceOf(input: OperationObject): TypeNode | Expression {
+  public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
     return hasInput(this.enhance(input), this.context)
       ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasInput(this.enhance(input), this.context)
-      ? getModelImports(fromPath, this.id, [input], this.context)
-      : undefined
+    return hasInput(this.enhance(input), this.context) ? getModelImports(fromPath, this.id, [input], this.context) : []
   }
 }

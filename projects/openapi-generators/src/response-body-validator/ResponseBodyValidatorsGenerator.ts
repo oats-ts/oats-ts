@@ -61,6 +61,6 @@ export class ResponseBodyValidatorsGenerator extends BaseCodeGenerator<
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : undefined
+    return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
 }

@@ -10,7 +10,7 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
 export class ApiTypeGenerator extends DocumentBasedCodeGenerator {
   public constructor(private readonly config: ApiTypeGeneratorConfig) {
-    super()
+    super(config)
   }
 
   public name(): OpenAPIGeneratorTarget {

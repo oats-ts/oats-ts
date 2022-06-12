@@ -2,9 +2,10 @@ import { OpenAPIGenerator } from '../types'
 import { ApiTypeGenerator } from './ApiTypeGenerator'
 import { ApiTypeGeneratorConfig } from './typings'
 
-function defaultConfig(config: Partial<ApiTypeGeneratorConfig>): ApiTypeGeneratorConfig {
+function defaultConfig({ documentation, ...rest }: Partial<ApiTypeGeneratorConfig>): ApiTypeGeneratorConfig {
   return {
-    documentation: config?.documentation ?? true,
+    documentation: documentation ?? true,
+    ...rest,
   }
 }
 

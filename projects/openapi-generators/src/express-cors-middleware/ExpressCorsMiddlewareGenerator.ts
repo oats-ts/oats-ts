@@ -19,7 +19,7 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator {
     return [RuntimePackages.Express.name]
   }
 
-  public referenceOf(input: OpenAPIObject): TypeReferenceNode {
+  public referenceOf(input: OpenAPIObject): TypeReferenceNode | undefined {
     const [operations] = this.items
     return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
   }

@@ -1,4 +1,4 @@
-import { entries, isNil } from 'lodash'
+import { entries } from 'lodash'
 import { factory, PropertySignature, SyntaxKind, TypeAliasDeclaration, TypeNode } from 'typescript'
 import { EnhancedOperation, getRequestBodyContent, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { getParameterTypesAst } from './getParameterTypesAst'
@@ -7,7 +7,7 @@ import { PropertyFactory } from './types'
 
 function getBodyTypeProperties(
   mimeType: string,
-  schema: Referenceable<SchemaObject>,
+  schema: Referenceable<SchemaObject> | undefined,
   operation: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   createProperty: PropertyFactory,
@@ -56,13 +56,11 @@ export function getRequestTypeAst(
   createProperty: PropertyFactory,
 ): TypeAliasDeclaration {
   const fullType = getFullType(data, context, createProperty)
-  return isNil(fullType)
-    ? undefined
-    : factory.createTypeAliasDeclaration(
-        [],
-        [factory.createModifier(SyntaxKind.ExportKeyword)],
-        typeName,
-        undefined,
-        fullType,
-      )
+  return factory.createTypeAliasDeclaration(
+    [],
+    [factory.createModifier(SyntaxKind.ExportKeyword)],
+    typeName,
+    undefined,
+    fullType,
+  )
 }

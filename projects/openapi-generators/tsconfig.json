@@ -8,7 +8,8 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "lib": ["ES2020"],
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "strict": false
   },
   "include": ["./src"],
   "exclude": ["node_modules", "lib"]

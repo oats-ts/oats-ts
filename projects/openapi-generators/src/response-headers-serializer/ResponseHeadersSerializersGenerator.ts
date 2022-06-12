@@ -53,7 +53,7 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
     )
   }
 
-  public referenceOf(input: OperationObject): Identifier {
+  public referenceOf(input: OperationObject): Identifier | undefined {
     return hasResponseHeaders(input, this.context)
       ? factory.createIdentifier(this.context.nameOf(input, this.name()))
       : undefined
