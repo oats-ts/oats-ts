@@ -17,23 +17,9 @@ import { success, Try } from '@oats-ts/try'
 import { getRequestTypeAst } from '../utils/request/getRequestTypeAst'
 import { serverRequestPropertyFactory } from './serverRequestPropertyFactory'
 import { getCommonImports } from '../utils/request/getCommonImports'
+import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class RequestServerTypesGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  EnhancedOperation,
-  OpenAPIGeneratorContext
-> {
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
-  }
-
-  protected getItems(): EnhancedOperation[] {
-    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation, 'openapi/operation'),
-    ).filter((operation) => hasInput(operation, this.context))
-  }
-
+export class RequestServerTypesGenerator extends OperationBasedCodeGenerator {
   public name(): OpenAPIGeneratorTarget {
     throw 'openapi/request-server-type'
   }
@@ -44,6 +30,10 @@ export class RequestServerTypesGenerator extends BaseCodeGenerator<
 
   public runtimeDependencies(): string[] {
     return [RuntimePackages.Try.name]
+  }
+
+  protected itemFilter(operation: EnhancedOperation): boolean {
+    return hasInput(operation, this.context)
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {

@@ -24,5 +24,7 @@ export { responseHeadersDeserializers, ResponseHeadersDeserializersGenerator } f
 export { responseHeadersSerializers, ResponseHeadersSerializersGenerator } from './response-headers-serializer'
 export { responseHeadersTypes, ResponseHeadersTypesGenerator } from './response-headers-type'
 export { responseTypes, ResponseTypesGenerator } from './response-type'
+export { sdkImpl, SdkImplGeneratorConfig, SdkImplementationGenerator } from './sdk-impl'
+export { sdkType, SdkTypeGenerator, SdkTypeGeneratorConfig } from './sdk-type'
 export { RootGeneratorConfig } from './types'
 export { generator } from './generator'

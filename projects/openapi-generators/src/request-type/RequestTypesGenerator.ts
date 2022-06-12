@@ -1,28 +1,15 @@
-import { BaseCodeGenerator } from '@oats-ts/generator'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { isNil, sortBy } from 'lodash'
-import {
-  EnhancedOperation,
-  getEnhancedOperations,
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  hasInput,
-  OpenAPIGeneratorTarget,
-} from '@oats-ts/openapi-common'
+import { isNil } from 'lodash'
+import { EnhancedOperation, hasInput, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { getRequestTypeAst } from '../utils/request/getRequestTypeAst'
 import { requestPropertyFactory } from './requestPropertyFactory'
 import { getCommonImports } from '../utils/request/getCommonImports'
+import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class RequestTypesGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  EnhancedOperation,
-  OpenAPIGeneratorContext
-> {
+export class RequestTypesGenerator extends OperationBasedCodeGenerator {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/request-type'
   }
@@ -35,14 +22,8 @@ export class RequestTypesGenerator extends BaseCodeGenerator<
     return []
   }
 
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
-  }
-
-  protected getItems(): EnhancedOperation[] {
-    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation, 'openapi/operation'),
-    ).filter((operation) => hasInput(operation, this.context))
+  protected itemFilter(operation: EnhancedOperation): boolean {
+    return hasInput(operation, this.context)
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
@@ -55,41 +36,6 @@ export class RequestTypesGenerator extends BaseCodeGenerator<
     )
     return success(createSourceFile(path, getCommonImports(path, data, this.context), [ast]))
   }
-
-  // private context: OpenAPIGeneratorContext = null
-  // private operations: EnhancedOperation[]
-  // public readonly id = 'openapi/request-type'
-  // public readonly consumes: OpenAPIGeneratorTarget[] = [
-  //   'json-schema/type',
-  //   'openapi/request-headers-type',
-  //   'openapi/query-type',
-  //   'openapi/path-type',
-  // ]
-  // public readonly runtimeDepencencies: string[] = []
-  // public initialize(
-  //   data: OpenAPIReadOutput,
-  //   config: GeneratorConfig,
-  //   generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  // ): void {
-  //   this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
-  //   const { document, nameOf } = this.context
-  //   this.operations =
-  // }
-  //
-  // public async generate(): Promise<Result<TypeScriptModule[]>> {
-  //   const { context } = this
-  //   const data: TypeScriptModule[] = mergeTypeScriptModules(
-  //     flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-  //       [generateRequestType(operation, context)].filter(negate(isNil)),
-  //     ),
-  //   )
-  //   // TODO maybe try-catch?
-  //   return {
-  //     isOk: true,
-  //     issues: [],
-  //     data,
-  //   }
-  // }
 
   private enhance(input: OperationObject): EnhancedOperation {
     const operation = this.items.find(({ operation }) => operation === input)

@@ -1,27 +1,13 @@
-import { BaseCodeGenerator } from '@oats-ts/generator'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, sortBy } from 'lodash'
-import {
-  EnhancedOperation,
-  getEnhancedOperations,
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  hasResponses,
-  OpenAPIGeneratorTarget,
-  getEnhancedResponses,
-} from '@oats-ts/openapi-common'
+import { flatMap } from 'lodash'
+import { EnhancedOperation, hasResponses, OpenAPIGeneratorTarget, getEnhancedResponses } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { getReturnTypeAst } from './getResponseTypeAst'
+import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class ResponseTypesGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  EnhancedOperation,
-  OpenAPIGeneratorContext
-> {
+export class ResponseTypesGenerator extends OperationBasedCodeGenerator {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/response-type'
   }
@@ -34,14 +20,8 @@ export class ResponseTypesGenerator extends BaseCodeGenerator<
     return []
   }
 
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
-  }
-
-  protected getItems(): EnhancedOperation[] {
-    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation, 'openapi/operation'),
-    ).filter(({ operation }) => hasResponses(operation, this.context))
+  protected itemFilter({ operation }: EnhancedOperation): boolean {
+    return hasResponses(operation, this.context)
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
@@ -70,38 +50,4 @@ export class ResponseTypesGenerator extends BaseCodeGenerator<
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
-
-  // private context: OpenAPIGeneratorContext = null
-  // private operations: EnhancedOperation[]
-
-  // public readonly id =
-  // public readonly consumes: OpenAPIGeneratorTarget[] =
-  // public readonly runtimeDepencencies: string[] = []
-
-  // public initialize(
-  //   data: OpenAPIReadOutput,
-  //   config: GeneratorConfig,
-  //   generators: CodeGenerator<OpenAPIReadOutput, TypeScriptModule>[],
-  // ): void {
-  //   this.context = createOpenAPIGeneratorContext(data, config, generators as OpenAPIGenerator[])
-  //   const { document, nameOf } = this.context
-
-  // }
-
-  // public async generate(): Promise<Result<TypeScriptModule[]>> {
-  //   const { context } = this
-
-  //   const data: TypeScriptModule[] = mergeTypeScriptModules(
-  //     flatMap(this.operations, (operation: EnhancedOperation): TypeScriptModule[] =>
-  //       [generateOperationReturnType(operation, context)].filter(negate(isNil)),
-  //     ),
-  //   )
-
-  //   // TODO maybe try-catch?
-  //   return {
-  //     isOk: true,
-  //     issues: [],
-  //     data,
-  //   }
-  // }
 }
