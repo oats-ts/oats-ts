@@ -6,7 +6,7 @@ import { success, Try } from '@oats-ts/try'
 import { getRoutesTypeAst } from './getRoutesTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
-export class ExpressRoutesTypeGenerator extends DocumentBasedCodeGenerator {
+export class ExpressRoutesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/express-routes-type'
   }

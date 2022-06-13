@@ -9,7 +9,7 @@ import { requestPropertyFactory } from './requestPropertyFactory'
 import { getCommonImports } from '../utils/request/getCommonImports'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class RequestTypesGenerator extends OperationBasedCodeGenerator {
+export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/request-type'
   }

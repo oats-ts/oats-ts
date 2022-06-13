@@ -7,7 +7,7 @@ import { success, Try } from '@oats-ts/try'
 import { getReturnTypeAst } from './getResponseTypeAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class ResponseTypesGenerator extends OperationBasedCodeGenerator {
+export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/response-type'
   }

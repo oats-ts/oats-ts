@@ -3,13 +3,13 @@ import { fromArray, success, Try } from '@oats-ts/try'
 import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 
-export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> {
+export abstract class BaseCodeGenerator<R, G, Cfg extends object, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
 
   protected input!: R
   protected globalConfig!: GeneratorConfig
   protected dependencies!: CodeGenerator<R, G>[]
-  protected context!: C
+  protected context!: Ctx
   protected items!: M[]
 
   public initialize(init: GeneratorInit<R, G>): void {
@@ -71,7 +71,7 @@ export abstract class BaseCodeGenerator<R, G, M, C> extends BaseGenerator<R, G> 
   }
 
   protected abstract generateItem(item: M): Promise<Try<G>>
-  protected abstract createContext(): C
+  protected abstract createContext(): Ctx
   protected abstract getItems(): M[]
 
   public abstract referenceOf(input: any): any

@@ -1,7 +1,8 @@
+import { GeneratorConfig } from '@oats-ts/generator'
 import { InputParameterSerializerGenerator } from '../utils/serializers/InputParameterSerializerGenerator'
 
 export class QuerySerializersGenerator extends InputParameterSerializerGenerator {
-  constructor() {
-    super('openapi/query-deserializer', 'openapi/query-type', 'query')
+  constructor(config: Partial<GeneratorConfig>) {
+    super(config, 'openapi/query-deserializer', 'openapi/query-type', 'query')
   }
 }

@@ -1,5 +1,5 @@
 import { OpenAPIGeneratorTarget, RuntimePackages, EnhancedOperation } from '@oats-ts/openapi-common'
-import { ExpressRouteGeneratorConfig } from './typings'
+import { ExpressRoutesGeneratorConfig } from './typings'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
@@ -8,11 +8,7 @@ import { getExpressRouterImports } from './getExpressRouterImports'
 import { getExpressRouteAst } from './getExpressRouteAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class ExpressRoutesGenerator extends OperationBasedCodeGenerator {
-  constructor(private config: ExpressRouteGeneratorConfig) {
-    super()
-  }
-
+export class ExpressRoutesGenerator extends OperationBasedCodeGenerator<ExpressRoutesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/express-route'
   }

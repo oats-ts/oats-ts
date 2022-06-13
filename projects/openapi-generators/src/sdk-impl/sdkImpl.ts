@@ -1,13 +1,18 @@
+import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '../types'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { SdkImplementationGenerator } from './SdkImplementationGenerator'
 
-function defaultConfig(config: Partial<SdkGeneratorConfig>): SdkGeneratorConfig {
+function defaultConfig({
+  documentation,
+  ...rest
+}: Partial<SdkGeneratorConfig & GeneratorConfig>): SdkGeneratorConfig & Partial<GeneratorConfig> {
   return {
-    documentation: config?.documentation ?? true,
+    documentation: documentation ?? true,
+    ...rest,
   }
 }
 
-export function sdkImpl(config: Partial<SdkGeneratorConfig> = {}): OpenAPIGenerator {
+export function sdkImpl(config: Partial<SdkGeneratorConfig & GeneratorConfig> = {}): OpenAPIGenerator {
   return new SdkImplementationGenerator(defaultConfig(config))
 }

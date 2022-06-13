@@ -1,4 +1,4 @@
-import { BaseCodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { isNil, isEmpty, sortBy } from 'lodash'
@@ -18,6 +18,7 @@ import { success, Try } from '@oats-ts/try'
 export class InputParameterSerializerGenerator extends BaseCodeGenerator<
   OpenAPIReadOutput,
   SourceFile,
+  {},
   EnhancedOperation,
   OpenAPIGeneratorContext
 > {
@@ -26,8 +27,13 @@ export class InputParameterSerializerGenerator extends BaseCodeGenerator<
   private readonly _location: ParameterLocation
   private readonly _generate: (data: EnhancedOperation, context: OpenAPIGeneratorContext) => SourceFile
 
-  public constructor(name: OpenAPIGeneratorTarget, consumed: OpenAPIGeneratorTarget, location: ParameterLocation) {
-    super()
+  public constructor(
+    config: Partial<GeneratorConfig>,
+    name: OpenAPIGeneratorTarget,
+    consumed: OpenAPIGeneratorTarget,
+    location: ParameterLocation,
+  ) {
+    super(config)
     this._name = name
     this._consumed = consumed
     this._location = location

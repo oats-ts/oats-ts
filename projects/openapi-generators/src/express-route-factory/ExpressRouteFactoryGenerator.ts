@@ -5,13 +5,9 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { getMainRouteFactoryAst } from './getRouteFactoryAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { ExpressRouteGeneratorConfig } from '../express-route/typings'
+import { ExpressRoutesGeneratorConfig } from '../express-route/typings'
 
-export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator {
-  constructor(private readonly config: ExpressRouteGeneratorConfig) {
-    super()
-  }
-
+export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator<ExpressRoutesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/express-route-factory'
   }

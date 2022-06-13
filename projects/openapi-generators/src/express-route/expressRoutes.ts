@@ -1,14 +1,20 @@
+import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '../types'
 import { ExpressRoutesGenerator } from './ExpressRoutesGenerator'
-import { ExpressRouteGeneratorConfig } from './typings'
+import { ExpressRoutesGeneratorConfig } from './typings'
 
-function defaultConfig(config: Partial<ExpressRouteGeneratorConfig>): ExpressRouteGeneratorConfig {
+function defaultConfig({
+  apiKey,
+  adapterKey,
+  ...rest
+}: Partial<ExpressRoutesGeneratorConfig & GeneratorConfig>): ExpressRoutesGeneratorConfig & Partial<GeneratorConfig> {
   return {
-    apiKey: config?.apiKey ?? '__oats_api',
-    adapterKey: config?.adapterKey ?? '__oats_adapter',
+    apiKey: apiKey ?? '__oats_api',
+    adapterKey: adapterKey ?? '__oats_adapter',
+    ...rest,
   }
 }
 
-export function expressRoutes(config: Partial<ExpressRouteGeneratorConfig> = {}): OpenAPIGenerator {
+export function expressRoutes(config: Partial<ExpressRoutesGeneratorConfig & GeneratorConfig> = {}): OpenAPIGenerator {
   return new ExpressRoutesGenerator(defaultConfig(config))
 }

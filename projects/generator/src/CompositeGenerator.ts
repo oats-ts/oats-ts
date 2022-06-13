@@ -4,7 +4,7 @@ import { Try, fromArray, fluent, isFailure, success, isSuccess, failure } from '
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
 
-export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G> {
+export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
   public name(): string {
     return this._name
   }

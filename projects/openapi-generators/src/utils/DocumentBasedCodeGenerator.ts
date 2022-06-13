@@ -10,9 +10,10 @@ import {
 import { BaseCodeGenerator } from '@oats-ts/generator'
 import { SourceFile } from 'typescript'
 
-export abstract class DocumentBasedCodeGenerator extends BaseCodeGenerator<
+export abstract class DocumentBasedCodeGenerator<Cfg extends object> extends BaseCodeGenerator<
   OpenAPIReadOutput,
   SourceFile,
+  Cfg,
   EnhancedOperation[],
   OpenAPIGeneratorContext
 > {

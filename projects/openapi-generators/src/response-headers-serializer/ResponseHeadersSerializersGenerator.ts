@@ -14,7 +14,7 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 import { collectSchemaImports } from '../utils/serializers/collectSchemaImports'
 import { getResponseHeadersSerializerAst } from './getResponseHeadersSerializerAst'
 
-export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGenerator {
+export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/response-headers-serializer'
   }

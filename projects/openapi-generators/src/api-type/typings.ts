@@ -1,5 +1,3 @@
-import { GeneratorConfig } from '@oats-ts/generator'
-
-export type ApiTypeGeneratorConfig = Partial<GeneratorConfig> & {
+export type ApiTypeGeneratorConfig = {
   documentation: boolean
 }

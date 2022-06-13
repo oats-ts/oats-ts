@@ -7,11 +7,7 @@ import { success, Try } from '@oats-ts/try'
 import { getOperationFunctionAst } from './getOperationFunctionAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class OperationsGenerator extends OperationBasedCodeGenerator {
-  constructor(private readonly config: OperationsGeneratorConfig) {
-    super()
-  }
-
+export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
   name(): OpenAPIGeneratorTarget {
     return 'openapi/operation'
   }

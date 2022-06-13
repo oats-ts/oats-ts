@@ -15,11 +15,7 @@ import { getSdkTypeImports } from '../utils/sdk/getSdkTypeImports'
 import { getSdkClassAst } from './getSdkClassAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
-export class SdkImplementationGenerator extends DocumentBasedCodeGenerator {
-  public constructor(private readonly config: SdkGeneratorConfig) {
-    super()
-  }
-
+export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/sdk-impl'
   }

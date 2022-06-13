@@ -14,7 +14,7 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getRequestBodyValidatorAst } from './getRequestBodyValidatorAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator {
+export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/request-body-validator'
   }

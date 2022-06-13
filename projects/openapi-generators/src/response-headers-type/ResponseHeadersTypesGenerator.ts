@@ -24,13 +24,10 @@ type ResponseParameterInputInternal = [EnhancedOperation, string]
 export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
   OpenAPIReadOutput,
   SourceFile,
+  ParameterTypesGeneratorConfig,
   ResponseParameterInputInternal,
   OpenAPIGeneratorContext
 > {
-  public constructor(private readonly config: ParameterTypesGeneratorConfig) {
-    super()
-  }
-
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/response-headers-type'
   }

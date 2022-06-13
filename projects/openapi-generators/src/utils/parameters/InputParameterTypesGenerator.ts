@@ -1,4 +1,4 @@
-import { BaseCodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator, GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { isNil, isEmpty, sortBy } from 'lodash'
@@ -18,10 +18,10 @@ import { getModelImports } from '@oats-ts/typescript-common'
 export class InputParameterTypesGenerator extends BaseCodeGenerator<
   OpenAPIReadOutput,
   SourceFile,
+  ParameterTypesGeneratorConfig,
   EnhancedOperation,
   OpenAPIGeneratorContext
 > {
-  private readonly config: ParameterTypesGeneratorConfig
   private readonly _name: OpenAPIGeneratorTarget
   private readonly _location: ParameterLocation
   private readonly _generate: (
@@ -30,11 +30,14 @@ export class InputParameterTypesGenerator extends BaseCodeGenerator<
     config: ParameterTypesGeneratorConfig,
   ) => SourceFile
 
-  public constructor(name: OpenAPIGeneratorTarget, location: ParameterLocation, config: ParameterTypesGeneratorConfig) {
-    super()
+  public constructor(
+    config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>,
+    name: OpenAPIGeneratorTarget,
+    location: ParameterLocation,
+  ) {
+    super(config)
     this._name = name
     this._location = location
-    this.config = config
 
     this._generate = generateOperationParameterType(location)
   }

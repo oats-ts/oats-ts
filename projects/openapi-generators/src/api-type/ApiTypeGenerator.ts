@@ -8,11 +8,7 @@ import { getApiTypeImports } from './getApiTypeImports'
 import { getApiTypeAst } from './getApiTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
-export class ApiTypeGenerator extends DocumentBasedCodeGenerator {
-  public constructor(private readonly config: ApiTypeGeneratorConfig) {
-    super(config)
-  }
-
+export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/api-type'
   }

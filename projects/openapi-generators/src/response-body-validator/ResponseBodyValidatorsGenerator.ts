@@ -1,28 +1,14 @@
-import { BaseCodeGenerator } from '@oats-ts/generator'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, sortBy } from 'lodash'
-import {
-  EnhancedOperation,
-  getEnhancedOperations,
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  hasResponses,
-  OpenAPIGeneratorTarget,
-  getEnhancedResponses,
-} from '@oats-ts/openapi-common'
+import { flatMap } from 'lodash'
+import { EnhancedOperation, hasResponses, OpenAPIGeneratorTarget, getEnhancedResponses } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { success, Try } from '@oats-ts/try'
 import { getResponseBodyValidatorAst } from './getResponseBodyValidatorAst'
+import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
-export class ResponseBodyValidatorsGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  EnhancedOperation,
-  OpenAPIGeneratorContext
-> {
+export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/response-body-validator'
   }
@@ -33,16 +19,6 @@ export class ResponseBodyValidatorsGenerator extends BaseCodeGenerator<
 
   public runtimeDependencies(): string[] {
     return [RuntimePackages.Validators.name]
-  }
-
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
-  }
-
-  protected getItems(): EnhancedOperation[] {
-    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation, this.name()),
-    )
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {

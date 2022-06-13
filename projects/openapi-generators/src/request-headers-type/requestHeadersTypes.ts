@@ -1,13 +1,20 @@
+import { GeneratorConfig } from '@oats-ts/generator'
 import { OpenAPIGenerator } from '../types'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { RequestHeadersTypesGenerator } from './RequestHeadersTypesGenerator'
 
-function defaultConfig(config: Partial<ParameterTypesGeneratorConfig>): ParameterTypesGeneratorConfig {
+function defaultConfig({
+  documentation,
+  ...rest
+}: Partial<ParameterTypesGeneratorConfig & GeneratorConfig>): ParameterTypesGeneratorConfig & Partial<GeneratorConfig> {
   return {
-    documentation: config?.documentation ?? true,
+    documentation: documentation ?? true,
+    ...rest,
   }
 }
 
-export function requestHeadersTypes(config: Partial<ParameterTypesGeneratorConfig> = {}): OpenAPIGenerator {
+export function requestHeadersTypes(
+  config: Partial<ParameterTypesGeneratorConfig & Partial<GeneratorConfig>> = {},
+): OpenAPIGenerator {
   return new RequestHeadersTypesGenerator(defaultConfig(config))
 }

@@ -13,11 +13,7 @@ import { getSdkTypeImports } from '../utils/sdk/getSdkTypeImports'
 import { getSdkTypeAst } from './getSdkTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
-export class SdkTypeGenerator extends DocumentBasedCodeGenerator {
-  public constructor(private readonly config: SdkGeneratorConfig) {
-    super()
-  }
-
+export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'openapi/sdk-type'
   }

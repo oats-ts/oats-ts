@@ -3,7 +3,7 @@ import { Try } from '@oats-ts/try'
 import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
 import { GeneratorEventEmitter } from '@oats-ts/events'
 
-export abstract class BaseGenerator<R, G> implements CodeGenerator<R, G> {
+export abstract class BaseGenerator<R, G, C extends object> implements CodeGenerator<R, G> {
   public readonly id = nanoid(6)
 
   protected parent?: CodeGenerator<R, G>
@@ -11,8 +11,17 @@ export abstract class BaseGenerator<R, G> implements CodeGenerator<R, G> {
   protected globalConfig!: GeneratorConfig
   protected emitter!: GeneratorEventEmitter<G>
   protected dependencies: CodeGenerator<R, G>[] = []
+  protected readonly config: C
+  private readonly globalConfigOverride: Partial<GeneratorConfig>
 
-  constructor(private globalConfigOverride: Partial<GeneratorConfig> = {}) {}
+  constructor(config: C & Partial<GeneratorConfig>) {
+    const { nameProvider, pathProvider, ...cfg } = config
+    this.globalConfigOverride = {
+      ...(nameProvider ? { nameProvider } : {}),
+      ...(pathProvider ? { pathProvider } : {}),
+    }
+    this.config = cfg as C
+  }
 
   public initialize({ globalConfig, input, dependencies, emitter, parent }: GeneratorInit<R, G>): void {
     this.parent = parent
