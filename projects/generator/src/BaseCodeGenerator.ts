@@ -3,7 +3,7 @@ import { fromArray, success, Try } from '@oats-ts/try'
 import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 
-export abstract class BaseCodeGenerator<R, G, Cfg extends object, M, Ctx> extends BaseGenerator<R, G, Cfg> {
+export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
 
   protected input!: R

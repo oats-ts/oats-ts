@@ -4,6 +4,7 @@ specifiers:
   '@rush-temp/events': file:./projects/events.tgz
   '@rush-temp/generator': file:./projects/generator.tgz
   '@rush-temp/json-schema-common': file:./projects/json-schema-common.tgz
+  '@rush-temp/json-schema-generators': file:./projects/json-schema-generators.tgz
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
   '@rush-temp/json-schema-type-guards-generator': file:./projects/json-schema-type-guards-generator.tgz
   '@rush-temp/json-schema-types-generator': file:./projects/json-schema-types-generator.tgz
@@ -75,6 +76,7 @@ dependencies:
   '@rush-temp/events': file:projects/events.tgz_ts-node@10.0.0
   '@rush-temp/generator': file:projects/generator.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-common': file:projects/json-schema-common.tgz
+  '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/json-schema-type-guards-generator': file:projects/json-schema-type-guards-generator.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-types-generator': file:projects/json-schema-types-generator.tgz_ts-node@10.0.0
@@ -4119,7 +4121,7 @@ packages:
     dev: false
 
   /walker/1.0.7:
-    resolution: {integrity: sha1-L3+bj9ENZ3JisYqITijRlhjgKPs=}
+    resolution: {integrity: sha512-cF4je9Fgt6sj1PKfuFt9jpQPeHosM+Ryma/hfY9U7uXGKM7pJCsF0v2r55o+Il54+i77SyYWetB4tD1dEygRkw==}
     dependencies:
       makeerror: 1.0.11
     dev: false
@@ -4341,6 +4343,29 @@ packages:
       '@types/lodash': 4.14.172
       lodash: 4.17.21
       typescript: 4.3.5
+    dev: false
+
+  file:projects/json-schema-generators.tgz_ts-node@10.0.0:
+    resolution: {integrity: sha512-uiduW9effl9wkDr5QbNfCWMSdVSoDUk5uCeY11JFNcZrYKNavJ23QFh9etni4ikf37PJqdkjm28ynO4kwoXTEw==, tarball: file:projects/json-schema-generators.tgz}
+    id: file:projects/json-schema-generators.tgz
+    name: '@rush-temp/json-schema-generators'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 26.0.23
+      '@types/lodash': 4.14.172
+      '@types/node': 16.7.1
+      jest: 27.0.4_ts-node@10.0.0
+      lodash: 4.17.21
+      rimraf: 3.0.2
+      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
+      typescript: 4.3.5
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
     dev: false
 
   file:projects/json-schema-model.tgz:
@@ -4668,7 +4693,7 @@ packages:
     dev: false
 
   file:projects/openapi-generators.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-dnFKTdkvrRVOHcBmdwG54/FB9ZiFOm9PgMLYZVpwYNuvlmpDbZ8mQ6y1MsiN7FOEeGTnvQZJuejxK25Bd5QDOA==, tarball: file:projects/openapi-generators.tgz}
+    resolution: {integrity: sha512-YsGZi/jFqMSB+UZtPfi0s4UXY7MNJEY2DDv5zmJu7y6mH2l7dDAr2Dr8cNPSHCQUMDzRFvLPzLCveJjX74uAAA==, tarball: file:projects/openapi-generators.tgz}
     id: file:projects/openapi-generators.tgz
     name: '@rush-temp/openapi-generators'
     version: 0.0.0

@@ -1,7 +1,10 @@
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { OpenAPIGenerator } from './types'
-import { factories } from './factories'
+import { OpenAPIGenerator } from '../types'
+import { factories } from '../factories'
 import { entries, isNil } from 'lodash'
+import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
+import { GroupGenerator } from '../group'
+import { PresetConfiguration, PresetGeneratorConfiguration } from './types'
 
 const factoryMap: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPIGenerator> = {
   'openapi/api-type': factories.apiType,
@@ -29,14 +32,15 @@ const factoryMap: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPIGenera
   'openapi/response-type': factories.responseTypes,
   'openapi/sdk-impl': factories.sdkImpl,
   'openapi/sdk-type': factories.sdkType,
-  'json-schema/type': undefined,
-  'json-schema/type-validator': undefined,
-  'json-schema/type-guard': undefined,
+  'json-schema/type': types,
+  'json-schema/type-validator': typeValidators,
+  'json-schema/type-guard': typeGuards,
 }
 
 export const createPreset =
-  (defaultConfig: PresetConfiguration) =>
-  (overrides: PresetConfiguration = {}): OpenAPIGenerator[] => {
+  (name: string, defaultConfig: PresetGeneratorConfiguration) =>
+  (config: Partial<PresetConfiguration> = {}): OpenAPIGenerator => {
+    const { overrides = {}, ...cfg } = config
     const generators: OpenAPIGenerator[] = []
     for (const [target, generatorConfig] of entries({ ...defaultConfig, ...overrides })) {
       if (generatorConfig !== false && !isNil(generatorConfig)) {
@@ -47,5 +51,5 @@ export const createPreset =
         generators.push(generatorConfig === true ? factory() : factory(generatorConfig))
       }
     }
-    return generators
+    return new GroupGenerator(name, generators, cfg)
   }
