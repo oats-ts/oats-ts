@@ -1,8 +1,8 @@
 import { ParameterObject, PathSerializers } from '../types'
-import { parsePathToSegments } from '@oats-ts/openapi-parameter-common'
 import { validatePathSerializers } from './pathUtils'
 import { fluent, fromRecord, Try } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
+import { parsePathToSegments } from '../../common'
 
 export const createPathSerializer = <T extends ParameterObject>(path: string, serializers: PathSerializers<T>) => {
   const segments = parsePathToSegments(path)

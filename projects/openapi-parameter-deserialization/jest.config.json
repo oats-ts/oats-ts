@@ -1,6 +1,0 @@
-{
-  "preset": "ts-jest",
-  "testMatch": [
-    "**/?(*.)+(spec|test).ts"
-  ]
-}

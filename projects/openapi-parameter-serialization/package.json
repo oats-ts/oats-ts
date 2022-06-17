@@ -8,10 +8,7 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": [
-    "lib",
-    "src"
-  ],
+  "files": ["lib", "src"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bali182/oats.git"
@@ -25,9 +22,9 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "dependencies": {
-    "@oats-ts/openapi-parameter-common": "0.0.24",
     "@oats-ts/validators": "0.0.24",
-    "@oats-ts/try": "0.0.24"
+    "@oats-ts/try": "0.0.24",
+    "path-to-regexp": "6.2.1"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",

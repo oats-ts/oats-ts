@@ -1,4 +1,4 @@
-import { Try, success, failure, isFailure } from '@oats-ts/try'
+import { Try, success, failure, isFailure, fromArray } from '@oats-ts/try'
 import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueParser } from './types'
 
@@ -20,20 +20,6 @@ export function encode(value: string): string {
 
 export function has(input: Record<string, any>, key: string): boolean {
   return Object.prototype.hasOwnProperty.call(input, key)
-}
-
-export function mapArray<I, O>(input: I[], transform: (input: I, index: number, array: I[]) => Try<O>): Try<O[]> {
-  const output: O[] = []
-  const allIssues: Issue[] = []
-  for (let i = 0; i < input.length; i += 1) {
-    const result = transform(input[i], i, input)
-    if (isFailure(result)) {
-      allIssues.push(...result.issues)
-    } else {
-      output[i] = result.data
-    }
-  }
-  return allIssues.length === 0 ? success(output) : failure(allIssues)
 }
 
 const identity = (input: any) => input
@@ -119,5 +105,5 @@ export const createArrayParser =
   (value: string, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return isNil(value)
       ? success(undefined)
-      : mapArray(value.split(separator), (value, i) => parse(decode(value), name, config.append(path, i), config))
+      : fromArray(value.split(separator).map((value, i) => parse(decode(value), name, config.append(path, i), config)))
   }

@@ -93,14 +93,6 @@
       "path": "projects/openapi-operations-generator"
     },
     {
-      "name": "openapi-parameter-common",
-      "path": "projects/openapi-parameter-common"
-    },
-    {
-      "name": "openapi-parameter-deserialization",
-      "path": "projects/openapi-parameter-deserialization"
-    },
-    {
       "name": "openapi-parameter-deserializers-generator",
       "path": "projects/openapi-parameter-deserializers-generator"
     },

@@ -150,18 +150,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi-parameter-common",
-      "projectFolder": "projects/openapi-parameter-common",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-parameter-deserialization",
-      "projectFolder": "projects/openapi-parameter-deserialization",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/openapi-parameter-deserializers-generator",
       "projectFolder": "projects/openapi-parameter-deserializers-generator",
       "versionPolicyName": "oats",

@@ -1,6 +1,6 @@
-import { ParameterSegment, PathSegment } from '@oats-ts/openapi-parameter-common'
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
+import { ParameterSegment, PathSegment } from '../../common'
 import {
   ParameterValue,
   PathOptions,
