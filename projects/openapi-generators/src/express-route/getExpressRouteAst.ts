@@ -1,13 +1,13 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, VariableStatement, SyntaxKind, NodeFlags } from 'typescript'
-import { ExpressRouteGeneratorConfig } from '.'
+import { ExpressRoutesGeneratorConfig } from './typings'
 import { getPathTemplate } from './getPathTemplate'
 import { getExpressRouteHandlerAst } from './getExpressRouteHandlerAst'
 
 export function getExpressRouteAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  config: ExpressRouteGeneratorConfig,
+  config: ExpressRoutesGeneratorConfig,
 ): VariableStatement {
   const { nameOf } = context
   const { operation, url } = data

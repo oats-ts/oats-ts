@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@oats-ts/openapi': 0.0.24
   '@oats-ts/openapi-parameter-common': 0.0.24
   '@oats-ts/openapi-parameter-deserialization': 0.0.24
   '@rush-temp/events': file:./projects/events.tgz
@@ -8,34 +9,20 @@ specifiers:
   '@rush-temp/json-schema-common': file:./projects/json-schema-common.tgz
   '@rush-temp/json-schema-generators': file:./projects/json-schema-generators.tgz
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
-  '@rush-temp/json-schema-type-guards-generator': file:./projects/json-schema-type-guards-generator.tgz
-  '@rush-temp/json-schema-types-generator': file:./projects/json-schema-types-generator.tgz
-  '@rush-temp/json-schema-validators-generator': file:./projects/json-schema-validators-generator.tgz
   '@rush-temp/log': file:./projects/log.tgz
   '@rush-temp/model-common': file:./projects/model-common.tgz
   '@rush-temp/oats': file:./projects/oats.tgz
-  '@rush-temp/openapi': file:./projects/openapi.tgz
-  '@rush-temp/openapi-api-type-generator': file:./projects/openapi-api-type-generator.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-e2e-test': file:./projects/openapi-e2e-test.tgz
-  '@rush-temp/openapi-express-routes-generator': file:./projects/openapi-express-routes-generator.tgz
   '@rush-temp/openapi-express-server-adapter': file:./projects/openapi-express-server-adapter.tgz
   '@rush-temp/openapi-fetch-client-adapter': file:./projects/openapi-fetch-client-adapter.tgz
   '@rush-temp/openapi-generators': file:./projects/openapi-generators.tgz
   '@rush-temp/openapi-http': file:./projects/openapi-http.tgz
   '@rush-temp/openapi-model': file:./projects/openapi-model.tgz
-  '@rush-temp/openapi-operations-generator': file:./projects/openapi-operations-generator.tgz
-  '@rush-temp/openapi-parameter-deserializers-generator': file:./projects/openapi-parameter-deserializers-generator.tgz
   '@rush-temp/openapi-parameter-serialization': file:./projects/openapi-parameter-serialization.tgz
-  '@rush-temp/openapi-parameter-serializers-generator': file:./projects/openapi-parameter-serializers-generator.tgz
-  '@rush-temp/openapi-parameter-types-generator': file:./projects/openapi-parameter-types-generator.tgz
   '@rush-temp/openapi-reader': file:./projects/openapi-reader.tgz
-  '@rush-temp/openapi-request-types-generator': file:./projects/openapi-request-types-generator.tgz
-  '@rush-temp/openapi-response-types-generator': file:./projects/openapi-response-types-generator.tgz
-  '@rush-temp/openapi-sdk-generator': file:./projects/openapi-sdk-generator.tgz
   '@rush-temp/openapi-test-utils': file:./projects/openapi-test-utils.tgz
   '@rush-temp/openapi-validator': file:./projects/openapi-validator.tgz
-  '@rush-temp/openapi-validators-generator': file:./projects/openapi-validators-generator.tgz
   '@rush-temp/try': file:./projects/try.tgz
   '@rush-temp/typescript-common': file:./projects/typescript-common.tgz
   '@rush-temp/typescript-writer': file:./projects/typescript-writer.tgz
@@ -72,6 +59,7 @@ specifiers:
   yamljs: 0.3.0
 
 dependencies:
+  '@oats-ts/openapi': 0.0.24
   '@oats-ts/openapi-parameter-common': 0.0.24
   '@oats-ts/openapi-parameter-deserialization': 0.0.24
   '@rush-temp/events': file:projects/events.tgz_ts-node@10.0.0
@@ -79,34 +67,20 @@ dependencies:
   '@rush-temp/json-schema-common': file:projects/json-schema-common.tgz
   '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.0.0
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
-  '@rush-temp/json-schema-type-guards-generator': file:projects/json-schema-type-guards-generator.tgz_ts-node@10.0.0
-  '@rush-temp/json-schema-types-generator': file:projects/json-schema-types-generator.tgz_ts-node@10.0.0
-  '@rush-temp/json-schema-validators-generator': file:projects/json-schema-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/log': file:projects/log.tgz_ts-node@10.0.0
   '@rush-temp/model-common': file:projects/model-common.tgz
   '@rush-temp/oats': file:projects/oats.tgz_ts-node@10.0.0
-  '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.0.0+typescript@4.3.5
-  '@rush-temp/openapi-api-type-generator': file:projects/openapi-api-type-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
-  '@rush-temp/openapi-express-routes-generator': file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-express-server-adapter': file:projects/openapi-express-server-adapter.tgz_ts-node@10.0.0
   '@rush-temp/openapi-fetch-client-adapter': file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.0.0
   '@rush-temp/openapi-generators': file:projects/openapi-generators.tgz_ts-node@10.0.0
   '@rush-temp/openapi-http': file:projects/openapi-http.tgz_ts-node@10.0.0
   '@rush-temp/openapi-model': file:projects/openapi-model.tgz
-  '@rush-temp/openapi-operations-generator': file:projects/openapi-operations-generator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-parameter-deserializers-generator': file:projects/openapi-parameter-deserializers-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-parameter-serializers-generator': file:projects/openapi-parameter-serializers-generator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-parameter-types-generator': file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-request-types-generator': file:projects/openapi-request-types-generator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-response-types-generator': file:projects/openapi-response-types-generator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-sdk-generator': file:projects/openapi-sdk-generator.tgz_ts-node@10.0.0
   '@rush-temp/openapi-test-utils': file:projects/openapi-test-utils.tgz_ts-node@10.0.0
   '@rush-temp/openapi-validator': file:projects/openapi-validator.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-validators-generator': file:projects/openapi-validators-generator.tgz_ts-node@10.0.0
   '@rush-temp/try': file:projects/try.tgz_ts-node@10.0.0
   '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.0.0
   '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
@@ -710,6 +684,14 @@ packages:
       chalk: 4.1.1
     dev: false
 
+  /@oats-ts/generator/0.0.24:
+    resolution: {integrity: sha512-IxFPEFXcpZUPOq0KLz4YMjrDrgaD4+bpalSc/G0KEzkbloH3SVBnRp1q2lia2vIZmFxs6JQbinfwEaKuAeRHIA==}
+    dependencies:
+      '@oats-ts/validators': 0.0.24
+      chalk: 4.1.1
+      lodash: 4.17.21
+    dev: false
+
   /@oats-ts/generator/0.0.5:
     resolution: {integrity: sha512-ReR7xaANNoO1SNmyADMB6D+o0NOsSn/6ED6VQAjT8nb5BdDlWL7kJy1tRrV45Z7iU2tmbKMK7tDOvsRHtpROKg==}
     dependencies:
@@ -725,6 +707,14 @@ packages:
       whatwg-mimetype: 2.3.0
     dev: false
 
+  /@oats-ts/json-schema-common/0.0.24:
+    resolution: {integrity: sha512-ujntCTcph1O5jKheOCxLicHff1COjCh/3oTUcp0ZaMpaInsfjkI8AlghSSGs7IPsNKHVMAyZC5U4oY8KI+2wag==}
+    dependencies:
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      lodash: 4.17.21
+    dev: false
+
   /@oats-ts/json-schema-common/0.0.5:
     resolution: {integrity: sha512-L0ikESc+7Cv/MX0IR4F+lhA2yuDaqfSfv31a/3Yd9zkECkVYn8Off6F57QSbKJZsCv/O/bFpdvWfQQHhBjoB+g==}
     dependencies:
@@ -732,8 +722,62 @@ packages:
       lodash: 4.17.21
     dev: false
 
+  /@oats-ts/json-schema-model/0.0.24:
+    resolution: {integrity: sha512-VUBJ4X/hKUDBq468e8c2+pPjysqeghYVFHa4CiHgxINGdV/+4e7gqoRf+OnGWNbwSskz4pC6quAjCoj2AY9Neg==}
+    dev: false
+
   /@oats-ts/json-schema-model/0.0.5:
     resolution: {integrity: sha512-mRbamyG7v2hNHSPYXNsIhWJGpnj/rHvhwmfJpc1gQea2aTn4eZtvcKRbBeeUfQLSU8Xq2C/8N1OsTdMrjt567Q==}
+    dev: false
+
+  /@oats-ts/json-schema-type-guards-generator/0.0.24:
+    resolution: {integrity: sha512-vwIBrVG2KmfE0QyVrRCp5cgunWcadp7F5zKrYG2bwL4BrT0ZPZXALXcUTVB7ADJNSP3H5zkym5qUQxzIAJObNQ==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/json-schema-types-generator/0.0.24:
+    resolution: {integrity: sha512-JamuU6Pxw+SnvlEnHPi9SCKO5p9paM2hdEJY913Icv6hdusiPtl/OVSqYR/3xdT1bWtc0wwrI6zc0ix6EFMRaw==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/json-schema-validators-generator/0.0.24:
+    resolution: {integrity: sha512-Qt+4Dcd74HzjYsLQB6ReHBNFdZQRKNhKAHW01GyupeeUkYl9vngv9dZ6r5AZpvw5f7cKvCvU9DCNiW/QERPwqw==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/model-common/0.0.24:
+    resolution: {integrity: sha512-mimv5BzRZ7CRm7fhy0OYJVHq0YTg5cgjSL3s/7kAPlaqi/P084EaZs0127+QnsRgOXbY9U9SxDTK3yX3rERfPw==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
     dev: false
 
   /@oats-ts/model-common/0.0.5:
@@ -762,6 +806,39 @@ packages:
       typescript: 4.3.5
     dev: false
 
+  /@oats-ts/openapi-api-type-generator/0.0.24:
+    resolution: {integrity: sha512-RON72L/d3HtpassrVe92cRSP4C1NmRcSO9rQ7r9nUhh2wWd2thcZN3VQfEzyFpo72N74ZYeWO+BKpG3S77tQdQ==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-common/0.0.24:
+    resolution: {integrity: sha512-OL282w0ady/95x5zOvTYoC5c9hpj+gU0q44Q+93a+4YZ4RbsSboSIsaf91T125D+UIV5XHVW7YmbYPK7TXSY5w==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/openapi-http': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      camelcase: 6.2.0
+      lodash: 4.17.21
+      pascalcase: 1.0.0
+      typescript: 4.3.5
+    dev: false
+
   /@oats-ts/openapi-common/0.0.5:
     resolution: {integrity: sha512-EhwTIaZUPEbXjb2HeCQbhuEliTWJxtfg8qLtni6EXZFWUmn3hREOOsHLd6VCSb6wQ6LGX5QmcMBGOJ2HtVa0Aw==}
     dependencies:
@@ -775,6 +852,22 @@ packages:
       '@oats-ts/openapi-reader': 0.0.5
       '@oats-ts/typescript-writer': 0.0.5
       '@oats-ts/validators': 0.0.5
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-express-routes-generator/0.0.24:
+    resolution: {integrity: sha512-1zJNelwn4lVHdU2eRf7GpX/QJ6or2LdWicSZYn+osfae6ZNp8eHZBmdZgKgYOdc30dYKJ0koWI08wMjBc+fnwA==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-parameter-common': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
       lodash: 4.17.21
       typescript: 4.3.5
     dev: false
@@ -798,10 +891,38 @@ packages:
       '@oats-ts/validators': 0.0.11
     dev: false
 
+  /@oats-ts/openapi-http/0.0.24:
+    resolution: {integrity: sha512-qKR28EgzBKBCrh7KzG6WJkaD7sw1PkO/s5hRVdfVGOPAy7CkLImayrPRy94AwUXHWluacNpobRgtaxdvblXP/A==}
+    dependencies:
+      '@oats-ts/try': 0.0.24
+      '@oats-ts/validators': 0.0.24
+    dev: false
+
+  /@oats-ts/openapi-model/0.0.24:
+    resolution: {integrity: sha512-bBVoKzzJWxPZKBHQVQQOQTSwVcZNQVarNxcPck7Cqpc6rHiVTHCjqcGsUCgPxkx08tk13XBMkHm8LklCa1ulSQ==}
+    dependencies:
+      '@oats-ts/json-schema-model': 0.0.24
+    dev: false
+
   /@oats-ts/openapi-model/0.0.5:
     resolution: {integrity: sha512-ycFverBa+0s9+ihYIvW/5aVInHvYqH0uqX1oWjyOPEOQgI1BnrC3K0jJoD1ZRvU7X7g88e8cV451uXCqcQEGAw==}
     dependencies:
       '@oats-ts/json-schema-model': 0.0.5
+    dev: false
+
+  /@oats-ts/openapi-operations-generator/0.0.24:
+    resolution: {integrity: sha512-g4S5XoF1lDOESsgGF47zQPj50/pUW/1FD+45mNfn7zza6bTXrw6mzeQ3zE/CZnGSlb8ERJT4ePT/TmAT2DzKvA==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
     dev: false
 
   /@oats-ts/openapi-parameter-common/0.0.24:
@@ -813,6 +934,82 @@ packages:
     dependencies:
       '@oats-ts/openapi-parameter-common': 0.0.24
       '@oats-ts/try': 0.0.24
+    dev: false
+
+  /@oats-ts/openapi-parameter-deserializers-generator/0.0.24:
+    resolution: {integrity: sha512-/MiRzZ8icxS+PMVILbuK6axyi4cDCsvFt1QcF10sgu37n4E0C+c5p547f8wZ+QXHdg5uKYdzxhw+zEQiX6ZXtg==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-parameter-common': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      path-to-regexp: 6.2.0
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-parameter-serialization/0.0.24:
+    resolution: {integrity: sha512-9iS5KdL8qJpeRx/0B0t4oQk5byBHJbP5RcdEHUHyQ7tyfpQUUTwwYxxtPeuvJu1pBi89kfu3FsKV86ww7MOVkw==}
+    dependencies:
+      '@oats-ts/openapi-parameter-common': 0.0.24
+      '@oats-ts/try': 0.0.24
+      '@oats-ts/validators': 0.0.24
+    dev: false
+
+  /@oats-ts/openapi-parameter-serializers-generator/0.0.24:
+    resolution: {integrity: sha512-4kh0DYsvXZMKGEBbo/G5z+tlsxg/wg43JjxaYg5Y8jeRCSo3qDiABPeoqp8sSTaS3lx5Bh0wXRWD1d/HAWmJvw==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-parameter-types-generator/0.0.24:
+    resolution: {integrity: sha512-BPu07MC/gdxQwQYjZjZwkR0+m9qP39hqExJZQE6Cq+QLDE+m/vvp0vcsxHZl8l7ELrpZjuqPQHrnautRiaKHQg==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-reader/0.0.24:
+    resolution: {integrity: sha512-YbSoNP4GUD8IOFAq0QZ4cc8jG6/CKoN5Z+Sj36YTUoj+DX0VZEQlJcsZf0ljvhw1sMtjtg8yjGWKRQa6Wyx5Bg==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/try': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      '@types/urijs': 1.19.19
+      '@types/valid-url': 1.0.3
+      '@types/yamljs': 0.2.31
+      lodash: 4.17.21
+      urijs: 1.19.11
+      valid-url: 1.0.9
+      yamljs: 0.3.0
     dev: false
 
   /@oats-ts/openapi-reader/0.0.5:
@@ -830,6 +1027,115 @@ packages:
       urijs: 1.19.7
       valid-url: 1.0.9
       yamljs: 0.3.0
+    dev: false
+
+  /@oats-ts/openapi-request-types-generator/0.0.24:
+    resolution: {integrity: sha512-pILs3NOf/Vh0sTxioLKcdQYgrZPIjsQDTapAMdn7inp0oh+FwGO9ae50+RtKDQ1N5uw/Ik0RJe7UsYkzkmAN/g==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-response-types-generator/0.0.24:
+    resolution: {integrity: sha512-6mRgQfNtsobEKfovi/gk28E4O46752t6QaNJ8SW56YYv6ghnh5NTHpZkQs44IOvExPY4XrE6UAhYAoYNB3HNlg==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-sdk-generator/0.0.24:
+    resolution: {integrity: sha512-8VsVQorPOBZoiUFk8F7/bB7qdcXIa48yYbKOn8PhpoYc5rW+bJBGzBIapx7m/5iDyHU63v7SRqrvI3hg9jRLOg==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-validator/0.0.24:
+    resolution: {integrity: sha512-w2i6q/ATY9amoDaOqErIIGzV38mf+ZdB3IC7JY9IIqOK3Nhaf+HdfMo1dug2w9dHb3msEL3hSB0d/LzAc1oi7Q==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-parameter-common': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi-validators-generator/0.0.24:
+    resolution: {integrity: sha512-xjJt4OZz4cZ/sa55V09hSuPTrFksFh+DFrBdy6V5Gtnv7JIPmkix9diYxo2XSLU6T2jsXLQlN4Tn7yLO4Gxkvg==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/json-schema-validators-generator': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/typescript-common': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      lodash: 4.17.21
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/openapi/0.0.24:
+    resolution: {integrity: sha512-bwfsstz8RoxQNlaesKKzhnkBpTNNrALdYs9cFwvLNvox3pBZVsIzF0hY6yaorR+hyBa0s0dqE6XKFTlmUONx6g==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-common': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@oats-ts/json-schema-type-guards-generator': 0.0.24
+      '@oats-ts/json-schema-types-generator': 0.0.24
+      '@oats-ts/json-schema-validators-generator': 0.0.24
+      '@oats-ts/model-common': 0.0.24
+      '@oats-ts/openapi-api-type-generator': 0.0.24
+      '@oats-ts/openapi-common': 0.0.24
+      '@oats-ts/openapi-express-routes-generator': 0.0.24
+      '@oats-ts/openapi-http': 0.0.24
+      '@oats-ts/openapi-model': 0.0.24
+      '@oats-ts/openapi-operations-generator': 0.0.24
+      '@oats-ts/openapi-parameter-deserialization': 0.0.24
+      '@oats-ts/openapi-parameter-deserializers-generator': 0.0.24
+      '@oats-ts/openapi-parameter-serialization': 0.0.24
+      '@oats-ts/openapi-parameter-serializers-generator': 0.0.24
+      '@oats-ts/openapi-parameter-types-generator': 0.0.24
+      '@oats-ts/openapi-reader': 0.0.24
+      '@oats-ts/openapi-request-types-generator': 0.0.24
+      '@oats-ts/openapi-response-types-generator': 0.0.24
+      '@oats-ts/openapi-sdk-generator': 0.0.24
+      '@oats-ts/openapi-validator': 0.0.24
+      '@oats-ts/openapi-validators-generator': 0.0.24
+      '@oats-ts/typescript-writer': 0.0.24
+      '@oats-ts/validators': 0.0.24
+      '@types/prettier': 2.4.4
+      prettier: 2.6.1
     dev: false
 
   /@oats-ts/openapi/0.0.5:
@@ -856,10 +1162,28 @@ packages:
       '@oats-ts/validators': 0.0.24
     dev: false
 
+  /@oats-ts/typescript-common/0.0.24:
+    resolution: {integrity: sha512-d0UT8rMcUQUKMXgpKQ3mH+NExaNeJcd0KJp4BUBc9SvoSUlEATk1ipQGcGR3ytgo2RH+obtw6ScQuqRZ+2c+vg==}
+    dependencies:
+      '@oats-ts/json-schema-model': 0.0.24
+      typescript: 4.3.5
+    dev: false
+
   /@oats-ts/typescript-common/0.0.5:
     resolution: {integrity: sha512-nzDmBQDF8+DJ787ELE/lLd226xF1eUuvW0rKSOMYg3JiOpdBoqOPtjUOdPo9W3A+obj9QvyxuXcByNMg2eiCzg==}
     dependencies:
       '@oats-ts/json-schema-model': 0.0.5
+      typescript: 4.3.5
+    dev: false
+
+  /@oats-ts/typescript-writer/0.0.24:
+    resolution: {integrity: sha512-kA1qERhipFNycVMXwLp9++WUE9Zm6WN2zfcVYZw5vi/Ri2YOBCpyTcCAmCVwYDZySBMqV1eVU6quT+RUIyeLWw==}
+    dependencies:
+      '@oats-ts/generator': 0.0.24
+      '@oats-ts/json-schema-model': 0.0.24
+      '@types/prettier': 2.4.4
+      lodash: 4.17.21
+      prettier: 2.6.1
       typescript: 4.3.5
     dev: false
 
@@ -4392,75 +4716,6 @@ packages:
       typescript: 4.3.5
     dev: false
 
-  file:projects/json-schema-type-guards-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-wi16Ke4cCYNUbpasHTLfjBNVfn6wKQV33cBVvVhJcxiHrUUXD8fSmqdoVVrn78Thc4GC2dmcY4yn0nTBpWifIQ==, tarball: file:projects/json-schema-type-guards-generator.tgz}
-    id: file:projects/json-schema-type-guards-generator.tgz
-    name: '@rush-temp/json-schema-type-guards-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/json-schema-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-t35vhe7U/XjdbpLVAKNVNyxAhJ5cShrKo57rOctLrd6cRVK4pfiLShWMcQv2KutaBkt2jRXzl7xE8wdrn9Romg==, tarball: file:projects/json-schema-types-generator.tgz}
-    id: file:projects/json-schema-types-generator.tgz
-    name: '@rush-temp/json-schema-types-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/json-schema-validators-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-GPLfc6DqK9uODzdQOp69BRIDGYI0o6DQ56dn0mMM1QIwsIitTDqFVu6MBwyCJwO5122eeo3gkpc6/khKMKxemg==, tarball: file:projects/json-schema-validators-generator.tgz}
-    id: file:projects/json-schema-validators-generator.tgz
-    name: '@rush-temp/json-schema-validators-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
   file:projects/log.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-JLmLYGyjYFhbIoSidWsz1jTBhbrpkKaEOSvl0oHrt8B0zQpdYCKnOPGDLcFcw2nHHZTDYAP6C6xfABWQd6nVqw==, tarball: file:projects/log.tgz}
     id: file:projects/log.tgz
@@ -4523,29 +4778,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-api-type-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-tOAoqZhxrIfPYyhZZtcYt+TghZF687Z/bJEtNgv0F3W/GDCbcsKMMuHloDoX9Vwbhrr0T15ITTtOfqB5nReaKw==, tarball: file:projects/openapi-api-type-generator.tgz}
-    id: file:projects/openapi-api-type-generator.tgz
-    name: '@rush-temp/openapi-api-type-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
   file:projects/openapi-common.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-1ctLxfd0zwC8bCyslvWoRtYgEVokt+fQwmNmgLLWz5rCJX3qO/t2peKbH5RJ/SVOhVrpYnGKHQ3Gz1KOsgD4bQ==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
@@ -4578,11 +4810,12 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-l19WXLUv430/bTua8MVN7+7zICxpLmzfEdsosIiRp875Ztk5vovwMB3vCiypKqCnKFpomFCDbZmzCBrmmGs3+A==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-Blq6PXV8bdY3dcy1c0lGVhJH/SOKW5xnCADbGJKOmDci+3ppyCCX9Z/oQ6NL3GY3/QUIZA/4XXSMUVKkBL7j/A==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
       '@oats-ts/http': 0.0.5
+      '@oats-ts/openapi': 0.0.24
       '@oats-ts/openapi-api-generator': 0.0.5
       '@oats-ts/openapi-http-server': 0.0.11_express@4.17.1
       '@oats-ts/openapi-parameter-deserialization': 0.0.24
@@ -4625,30 +4858,6 @@ packages:
       - encoding
       - node-notifier
       - supports-color
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-express-routes-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-Zk6m4Chp3v1cBtzE3hQprRN7T5qsi/ZaDmwW8Xon+/jFs8wDUENbX2KxnoYYsybPQvGZ66pZVsrzJpLF3utgtw==, tarball: file:projects/openapi-express-routes-generator.tgz}
-    id: file:projects/openapi-express-routes-generator.tgz
-    name: '@rush-temp/openapi-express-routes-generator'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/openapi-parameter-common': 0.0.24
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
       - utf-8-validate
     dev: false
 
@@ -4763,56 +4972,6 @@ packages:
     version: 0.0.0
     dev: false
 
-  file:projects/openapi-operations-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-EqxBGbaflkRRU4A9jG30Az7cMcArWEAbU9JkqVv/Xn+lsAIl1CUgxSg+BJyIO8tjY7mEsfrtKzTkBb6TYRBYPg==, tarball: file:projects/openapi-operations-generator.tgz}
-    id: file:projects/openapi-operations-generator.tgz
-    name: '@rush-temp/openapi-operations-generator'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/http': 0.0.5
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      openapi3-ts: 2.0.1
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-parameter-deserializers-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-HR4kc+SNQs/0gcM6yxckVD2vVB0v5pZ2qip3OYzpJ1i0dt8PtIf7N+ao9U181UBpUx6zGYD8M4utIzuSTB/U0Q==, tarball: file:projects/openapi-parameter-deserializers-generator.tgz}
-    id: file:projects/openapi-parameter-deserializers-generator.tgz
-    name: '@rush-temp/openapi-parameter-deserializers-generator'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/openapi-parameter-common': 0.0.24
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      path-to-regexp: 6.2.0
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
   file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0:
     resolution: {integrity: sha512-KLFRaMghjsgN5d9GlLYj2LGXFmU7IXqDHzaYd3JImKzsuf/IpY27SbckI740mNdPzhOc8qfc5f81fb4FdGKSXA==, tarball: file:projects/openapi-parameter-serialization.tgz}
     id: file:projects/openapi-parameter-serialization.tgz
@@ -4823,54 +4982,6 @@ packages:
       '@types/node': 16.7.1
       jest: 27.0.4_ts-node@10.0.0
       path-to-regexp: 6.2.1
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-parameter-serializers-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-B6bwmxxe+SEbwxWhjyDA3mXTJ/Uw7vbOF9O6Rj0ctDJeVl/fVwuUdDnimuJwJ52AFnbvJqMtG60ztJVCFTcOuA==, tarball: file:projects/openapi-parameter-serializers-generator.tgz}
-    id: file:projects/openapi-parameter-serializers-generator.tgz
-    name: '@rush-temp/openapi-parameter-serializers-generator'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/http': 0.0.5
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-parameter-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-OoRqtgS5trDCLg623I4kPURysmckKLacDQkR1saKiuAshISP5cQsFdtUvFkf4L2vY+HCLB1zo70n+M7/IUBfLw==, tarball: file:projects/openapi-parameter-types-generator.tgz}
-    id: file:projects/openapi-parameter-types-generator.tgz
-    name: '@rush-temp/openapi-parameter-types-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      openapi3-ts: 2.0.1
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
       typescript: 4.3.5
@@ -4904,76 +5015,6 @@ packages:
       urijs: 1.19.11
       valid-url: 1.0.9
       yamljs: 0.3.0
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-request-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-HZllVX2O6Q9r4c4PfSAVGPZYcEJSk/tphYTyjhfOk7rHgge8bloZZga3n5Ay2JJe/u5rmUAx0cMwycWRi1JmbQ==, tarball: file:projects/openapi-request-types-generator.tgz}
-    id: file:projects/openapi-request-types-generator.tgz
-    name: '@rush-temp/openapi-request-types-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-response-types-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-tDUOKU7Ser1p1/5uJxirfcBItKXWIUpc3x6O/39EdUV9J/PobSxmDSjnzeUWFfDV2dlDudPLekL+obqwJoT0Fg==, tarball: file:projects/openapi-response-types-generator.tgz}
-    id: file:projects/openapi-response-types-generator.tgz
-    name: '@rush-temp/openapi-response-types-generator'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/http': 0.0.5
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-sdk-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-MXowi5JXujXxmjSduOpCCUisn0+9xm3KEFqRSFC1ByE8oAZ+NeQMvrrQpxRk4clXfbC03DF4fFOh1BX2Okcq0Q==, tarball: file:projects/openapi-sdk-generator.tgz}
-    id: file:projects/openapi-sdk-generator.tgz
-    name: '@rush-temp/openapi-sdk-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -5025,55 +5066,6 @@ packages:
       - node-notifier
       - supports-color
       - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi-validators-generator.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-hDDM/+7iTPchE/t40Dl8W83B4mQ21T7PAk/qrQWJ5jxbWG9o+7ZRAM5gBm0O3hegSXR0/RpPlUK6pXsR7Krkqw==, tarball: file:projects/openapi-validators-generator.tgz}
-    id: file:projects/openapi-validators-generator.tgz
-    name: '@rush-temp/openapi-validators-generator'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-      typescript: 4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
-  file:projects/openapi.tgz_ts-node@10.0.0+typescript@4.3.5:
-    resolution: {integrity: sha512-vc/TrBObwz+E4gw81hIgxA6QXCh3JKcSxvD+dKj3IbJ76LjFB8bRmIT+lkb1drtm21HkBa9wWkcNBK9/yionFw==, tarball: file:projects/openapi.tgz}
-    id: file:projects/openapi.tgz
-    name: '@rush-temp/openapi'
-    version: 0.0.0
-    dependencies:
-      '@oats-ts/openapi-parameter-deserialization': 0.0.24
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.172
-      '@types/node': 16.7.1
-      '@types/pascalcase': 1.0.1
-      '@types/prettier': 2.4.4
-      jest: 27.0.4_ts-node@10.0.0
-      prettier: 2.6.1
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.3.5
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - typescript
       - utf-8-validate
     dev: false
 
