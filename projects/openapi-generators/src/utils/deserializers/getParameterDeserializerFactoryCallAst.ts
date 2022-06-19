@@ -77,7 +77,7 @@ function createParameterDeserializer(parameter: BaseParameterObject, context: Op
     factory.createPropertyAccessExpression(
       factory.createPropertyAccessExpression(
         factory.createPropertyAccessExpression(
-          factory.createIdentifier(RuntimePackages.ParameterDeserialization.deserializers),
+          factory.createIdentifier(RuntimePackages.ParameterSerialization.deserializers),
           factory.createIdentifier(location),
         ),
         factory.createIdentifier(getParameterStyle(parameter)),

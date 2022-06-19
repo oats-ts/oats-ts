@@ -1,0 +1,58 @@
+{
+  "name": "@oats-ts/openapi",
+  "version": "0.0.24",
+  "description": "",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "license": "ISC",
+  "typings": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "directories": {},
+  "files": ["lib"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "scripts": {
+    "test": "echo 'TODO'",
+    "build": "rimraf lib && tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "26.0.23",
+    "@types/node": "16.7.1",
+    "@types/lodash": "4.14.172",
+    "@types/pascalcase": "1.0.1",
+    "jest": "27.0.4",
+    "ts-jest": "27.0.2",
+    "rimraf": "3.0.2"
+  },
+  "dependencies": {
+    "@oats-ts/oats": "0.0.24",
+    "@oats-ts/openapi-model": "0.0.24",
+    "@oats-ts/openapi-common": "0.0.24",
+    "@oats-ts/openapi-reader": "0.0.24",
+    "@oats-ts/openapi-validator": "0.0.24",
+    "@oats-ts/openapi-generators": "0.0.24",
+    "@oats-ts/typescript-writer": "0.0.24",
+    "@oats-ts/openapi-operations-generator": "0.0.24",
+    "@oats-ts/openapi-parameter-deserialization": "0.0.24",
+    "@oats-ts/openapi-parameter-deserializers-generator": "0.0.24",
+    "@oats-ts/openapi-parameter-serialization": "0.0.24",
+    "@oats-ts/openapi-parameter-serializers-generator": "0.0.24",
+    "@oats-ts/openapi-parameter-types-generator": "0.0.24",
+    "@oats-ts/openapi-request-types-generator": "0.0.24",
+    "@oats-ts/openapi-response-types-generator": "0.0.24",
+    "@oats-ts/openapi-sdk-generator": "0.0.24",
+    "@oats-ts/json-schema-type-guards-generator": "0.0.24",
+    "@oats-ts/json-schema-types-generator": "0.0.24",
+    "@oats-ts/json-schema-validators-generator": "0.0.24",
+    "@oats-ts/openapi-validators-generator": "0.0.24",
+    "@oats-ts/validators": "0.0.24",
+    "@types/prettier": "2.4.4",
+    "prettier": "2.6.1"
+  }
+}

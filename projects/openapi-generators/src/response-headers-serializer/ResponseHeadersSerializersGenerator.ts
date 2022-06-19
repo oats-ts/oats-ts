@@ -27,7 +27,7 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
     return [RuntimePackages.ParameterSerialization.name]
   }
 
-  protected itemFilter(data: EnhancedOperation): boolean {
+  protected shouldGenerate(data: EnhancedOperation): boolean {
     return hasResponseHeaders(data.operation, this.context)
   }
 

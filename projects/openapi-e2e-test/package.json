@@ -21,7 +21,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@oats-ts/oats": "0.0.24",
     "@oats-ts/openapi": "0.0.24",
+    "@oats-ts/openapi-reader": "0.0.24",
     "@oats-ts/openapi-model": "0.0.24",
     "@oats-ts/json-schema-model": "0.0.24",
     "@oats-ts/json-schema-common": "0.0.24",
@@ -30,7 +32,6 @@
     "@oats-ts/openapi-fetch-client-adapter": "0.0.24",
     "@oats-ts/openapi-express-server-adapter": "0.0.24",
     "@oats-ts/openapi-parameter-serialization": "0.0.24",
-    "@oats-ts/openapi-parameter-deserialization": "0.0.24",
     "@oats-ts/validators": "0.0.24",
     "@oats-ts/openapi-test-utils": "0.0.24",
     "@oats-ts/try": "0.0.24",

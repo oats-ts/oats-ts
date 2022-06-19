@@ -15,17 +15,11 @@ export abstract class SchemaBasedCodeGenerator<T extends ReadOutput<HasSchemas>,
   public abstract name(): JsonSchemaGeneratorTarget
   public abstract consumes(): JsonSchemaGeneratorTarget[]
 
-  protected itemFilter(_item: Referenceable<SchemaObject>): boolean {
-    return true
-  }
-
   protected createContext(): JsonSchemaGeneratorContext {
     return createGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
   protected getItems(): Referenceable<SchemaObject>[] {
-    return sortBy(getNamedSchemas(this.context), (schema) => this.context.nameOf(schema, this.name())).filter((item) =>
-      this.itemFilter(item),
-    )
+    return sortBy(getNamedSchemas(this.context), (schema) => this.context.nameOf(schema, this.name()))
   }
 }

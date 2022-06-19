@@ -29,10 +29,6 @@ const ParameterSerialization = {
   createPathSerializer: 'createPathSerializer',
   createQuerySerializer: 'createQuerySerializer',
   serializers: 'serializers',
-}
-
-const ParameterDeserialization = {
-  name: '@oats-ts/openapi-parameter-deserialization',
   createQueryDeserializer: 'createQueryDeserializer',
   createPathDeserializer: 'createPathDeserializer',
   createHeaderDeserializer: 'createHeaderDeserializer',
@@ -61,6 +57,5 @@ export const RuntimePackages = {
   Express,
   HttpServerExpress,
   ParameterSerialization,
-  ParameterDeserialization,
   Try,
 }

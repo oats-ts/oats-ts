@@ -20,6 +20,10 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     return [this.name()]
   }
 
+  protected shouldGenerate(item: M): boolean {
+    return true
+  }
+
   async generate(): Promise<Try<G[]>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
@@ -38,7 +42,11 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
     const result = noEmit
       ? success([])
-      : fromArray(await Promise.all(this.items.map((model) => this.generateItemInternal(model))))
+      : fromArray(
+          await Promise.all(
+            this.items.filter((model) => this.shouldGenerate(model)).map((model) => this.generateItemInternal(model)),
+          ),
+        )
 
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',

@@ -24,10 +24,10 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   }
 
   public runtimeDependencies(): string[] {
-    return [RuntimePackages.ParameterDeserialization.name]
+    return [RuntimePackages.ParameterSerialization.name]
   }
 
-  protected itemFilter(item: EnhancedOperation): boolean {
+  protected shouldGenerate(item: EnhancedOperation): boolean {
     return hasResponseHeaders(item.operation, this.context)
   }
 
@@ -39,9 +39,9 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
       createSourceFile(
         path,
         [
-          getNamedImports(RuntimePackages.ParameterDeserialization.name, [
-            RuntimePackages.ParameterDeserialization.deserializers,
-            RuntimePackages.ParameterDeserialization.createHeaderDeserializer,
+          getNamedImports(RuntimePackages.ParameterSerialization.name, [
+            RuntimePackages.ParameterSerialization.deserializers,
+            RuntimePackages.ParameterSerialization.createHeaderDeserializer,
           ]),
           ...flatMap(entries(headersByStatus), ([statusCode]) =>
             this.context.dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),

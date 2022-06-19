@@ -21,10 +21,6 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
     return []
   }
 
-  protected itemFilter(items: EnhancedOperation[]): boolean {
-    return items.length > 0
-  }
-
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(

@@ -3,6 +3,6 @@ import { InputParameterSerializerGenerator } from '../utils/serializers/InputPar
 
 export class QuerySerializersGenerator extends InputParameterSerializerGenerator {
   constructor(config: Partial<GeneratorConfig>) {
-    super(config, 'openapi/query-deserializer', 'openapi/query-type', 'query')
+    super(config, 'openapi/query-serializer', 'openapi/query-type', 'query')
   }
 }

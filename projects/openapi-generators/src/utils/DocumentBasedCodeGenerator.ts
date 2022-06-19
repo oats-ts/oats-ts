@@ -20,8 +20,8 @@ export abstract class DocumentBasedCodeGenerator<Cfg> extends BaseCodeGenerator<
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 
-  protected itemFilter(_item: EnhancedOperation[]): boolean {
-    return true
+  protected shouldGenerate(operations: EnhancedOperation[]): boolean {
+    return operations.length > 0
   }
 
   protected createContext(): OpenAPIGeneratorContext {
@@ -32,6 +32,6 @@ export abstract class DocumentBasedCodeGenerator<Cfg> extends BaseCodeGenerator<
     const operations = sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
       this.context.nameOf(operation),
     )
-    return this.itemFilter(operations) ? [operations] : []
+    return this.shouldGenerate(operations) ? [operations] : []
   }
 }

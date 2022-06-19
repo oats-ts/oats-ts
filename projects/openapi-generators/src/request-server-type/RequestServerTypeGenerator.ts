@@ -11,7 +11,7 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class RequestServerTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    throw 'openapi/request-server-type'
+    return 'openapi/request-server-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
@@ -22,7 +22,7 @@ export class RequestServerTypesGenerator extends OperationBasedCodeGenerator<{}>
     return [RuntimePackages.Try.name]
   }
 
-  protected itemFilter(operation: EnhancedOperation): boolean {
+  protected shouldGenerate(operation: EnhancedOperation): boolean {
     return hasInput(operation, this.context)
   }
 
@@ -46,22 +46,14 @@ export class RequestServerTypesGenerator extends OperationBasedCodeGenerator<{}>
     )
   }
 
-  private enhance(input: OperationObject): EnhancedOperation {
-    const operation = this.items.find(({ operation }) => operation === input)
-    if (isNil(operation)) {
-      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
-    }
-    return operation
-  }
-
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasInput(this.enhance(input), this.context)
+    return hasInput(this.enhanced(input), this.context)
       ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasInput(this.enhance(input), this.context)
+    return hasInput(this.enhanced(input), this.context)
       ? getModelImports(fromPath, this.name(), [input], this.context)
       : []
   }

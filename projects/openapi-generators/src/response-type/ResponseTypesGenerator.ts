@@ -20,7 +20,7 @@ export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
     return []
   }
 
-  protected itemFilter({ operation }: EnhancedOperation): boolean {
+  protected shouldGenerate({ operation }: EnhancedOperation): boolean {
     return hasResponses(operation, this.context)
   }
 

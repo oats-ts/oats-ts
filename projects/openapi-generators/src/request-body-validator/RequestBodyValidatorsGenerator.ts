@@ -1,5 +1,5 @@
 import { OperationObject } from '@oats-ts/openapi-model'
-import { entries, flatMap, isNil } from 'lodash'
+import { entries, flatMap } from 'lodash'
 import {
   EnhancedOperation,
   hasRequestBody,
@@ -27,7 +27,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     return [RuntimePackages.Validators.name]
   }
 
-  protected itemFilter(data: EnhancedOperation): boolean {
+  protected shouldGenerate(data: EnhancedOperation): boolean {
     return entries(getRequestBodyContent(data, this.context)).length > 0
   }
 
@@ -47,24 +47,16 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     return success(createSourceFile(path, dependencies, [getRequestBodyValidatorAst(data, this.context)]))
   }
 
-  private enhance(input: OperationObject): EnhancedOperation {
-    const operation = this.items.find(({ operation }) => operation === input)
-    if (isNil(operation)) {
-      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
-    }
-    return operation
-  }
-
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
     const { context } = this
     const { nameOf } = context
-    return hasRequestBody(this.enhance(input), context)
+    return hasRequestBody(this.enhanced(input), context)
       ? factory.createIdentifier(nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasRequestBody(this.enhance(input), this.context)
+    return hasRequestBody(this.enhanced(input), this.context)
       ? getModelImports(fromPath, this.name(), [input], this.context)
       : []
   }

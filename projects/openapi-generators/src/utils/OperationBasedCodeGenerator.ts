@@ -1,5 +1,5 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { sortBy } from 'lodash'
+import { isNil, sortBy } from 'lodash'
 import {
   getEnhancedOperations,
   OpenAPIGeneratorContext,
@@ -9,6 +9,7 @@ import {
 } from '@oats-ts/openapi-common'
 import { BaseCodeGenerator } from '@oats-ts/generator'
 import { SourceFile } from 'typescript'
+import { OperationObject } from '@oats-ts/openapi-model'
 
 export abstract class OperationBasedCodeGenerator<Cfg> extends BaseCodeGenerator<
   OpenAPIReadOutput,
@@ -20,10 +21,6 @@ export abstract class OperationBasedCodeGenerator<Cfg> extends BaseCodeGenerator
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 
-  protected itemFilter(_item: EnhancedOperation): boolean {
-    return true
-  }
-
   protected createContext(): OpenAPIGeneratorContext {
     return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
@@ -31,6 +28,15 @@ export abstract class OperationBasedCodeGenerator<Cfg> extends BaseCodeGenerator
   protected getItems(): EnhancedOperation[] {
     return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
       this.context.nameOf(operation, this.name()),
-    ).filter((item) => this.itemFilter(item))
+    )
+  }
+
+  protected enhanced(input: OperationObject): EnhancedOperation {
+    const operation = this.items.find(({ operation }) => operation === input)
+    if (isNil(operation)) {
+      console.log(this.items, operation)
+      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
+    }
+    return operation
   }
 }

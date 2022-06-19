@@ -1,5 +1,4 @@
 import { OperationObject } from '@oats-ts/openapi-model'
-import { isNil } from 'lodash'
 import { EnhancedOperation, hasInput, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
@@ -22,7 +21,7 @@ export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
     return []
   }
 
-  protected itemFilter(operation: EnhancedOperation): boolean {
+  protected shouldGenerate(operation: EnhancedOperation): boolean {
     return hasInput(operation, this.context)
   }
 
@@ -37,21 +36,13 @@ export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
     return success(createSourceFile(path, getCommonImports(path, data, this.context), [ast]))
   }
 
-  private enhance(input: OperationObject): EnhancedOperation {
-    const operation = this.items.find(({ operation }) => operation === input)
-    if (isNil(operation)) {
-      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
-    }
-    return operation
-  }
-
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasInput(this.enhance(input), this.context)
+    return hasInput(this.enhanced(input), this.context)
       ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasInput(this.enhance(input), this.context) ? getModelImports(fromPath, this.id, [input], this.context) : []
+    return hasInput(this.enhanced(input), this.context) ? getModelImports(fromPath, this.id, [input], this.context) : []
   }
 }

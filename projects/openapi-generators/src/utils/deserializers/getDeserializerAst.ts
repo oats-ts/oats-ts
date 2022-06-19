@@ -8,7 +8,7 @@ import { entries } from 'lodash'
 function valueAccess(field: string): PropertyAccessExpression {
   return factory.createPropertyAccessExpression(
     factory.createPropertyAccessExpression(
-      factory.createIdentifier(RuntimePackages.ParameterDeserialization.deserializers),
+      factory.createIdentifier(RuntimePackages.ParameterSerialization.deserializers),
       factory.createIdentifier('value'),
     ),
     field,

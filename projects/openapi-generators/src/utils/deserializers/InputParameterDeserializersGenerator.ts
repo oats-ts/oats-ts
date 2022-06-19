@@ -1,27 +1,19 @@
-import { BaseCodeGenerator, GeneratorConfig } from '@oats-ts/generator'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { GeneratorConfig } from '@oats-ts/generator'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
-import { isNil, isEmpty, sortBy } from 'lodash'
+import { isEmpty } from 'lodash'
 import { generateOperationParameterTypeDeserializer } from './generateOperationParameterTypeDeserializer'
 import {
   EnhancedOperation,
-  getEnhancedOperations,
   OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
+import { OperationBasedCodeGenerator } from '../OperationBasedCodeGenerator'
 
-export class InputParameterDeserializersGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  {},
-  EnhancedOperation,
-  OpenAPIGeneratorContext
-> {
+export class InputParameterDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
   private readonly _name: OpenAPIGeneratorTarget
   private readonly _consumed: OpenAPIGeneratorTarget
   private readonly _location: ParameterLocation
@@ -50,17 +42,11 @@ export class InputParameterDeserializersGenerator extends BaseCodeGenerator<
   }
 
   public runtimeDependencies(): string[] {
-    return [RuntimePackages.ParameterDeserialization.name]
+    return [RuntimePackages.ParameterSerialization.name]
   }
 
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
-  }
-
-  protected getItems(): EnhancedOperation[] {
-    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation, this.name()),
-    ).filter((data) => data[this._location].length > 0)
+  protected shouldGenerate(data: EnhancedOperation) {
+    return data[this._location].length > 0
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
@@ -68,20 +54,12 @@ export class InputParameterDeserializersGenerator extends BaseCodeGenerator<
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    const params = this.enhance(input)[this._location]
+    const params = this.enhanced(input)[this._location]
     return isEmpty(params) ? undefined : factory.createIdentifier(this.context.nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    const params = this.enhance(input)[this._location]
+    const params = this.enhanced(input)[this._location]
     return isEmpty(params) ? [] : getModelImports(fromPath, this.name(), [input], this.context)
-  }
-
-  private enhance(input: OperationObject): EnhancedOperation {
-    const operation = this.items.find(({ operation }) => operation === input)
-    if (isNil(operation)) {
-      throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
-    }
-    return operation
   }
 }

@@ -47,8 +47,8 @@ export const generateOperationParameterTypeDeserializer =
     return createSourceFile(
       path,
       [
-        getNamedImports(RuntimePackages.ParameterDeserialization.name, [
-          RuntimePackages.ParameterDeserialization.deserializers,
+        getNamedImports(RuntimePackages.ParameterSerialization.name, [
+          RuntimePackages.ParameterSerialization.deserializers,
           getParameterDeserializerFactoryName(location),
         ]),
         ...dependenciesOf(path, data.operation, typeTarget),

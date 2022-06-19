@@ -73,6 +73,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi",
+      "projectFolder": "projects/openapi",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-e2e-test",
       "projectFolder": "projects/openapi-e2e-test",
       "shouldPublish": false

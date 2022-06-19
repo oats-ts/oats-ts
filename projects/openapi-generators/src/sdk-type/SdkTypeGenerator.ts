@@ -30,10 +30,6 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
     return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
-  protected itemFilter(operations: EnhancedOperation[]): boolean {
-    return operations.length > 0
-  }
-
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(

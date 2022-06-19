@@ -28,11 +28,11 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     return [RuntimePackages.Validators.name]
   }
 
-  protected itemFilter(schema: Referenceable<SchemaObject>): boolean {
+  protected shouldGenerate(schema: Referenceable<SchemaObject>): boolean {
     if (isNil(this.config?.ignore)) {
       return true
     }
-    return this.config.ignore(schema, this.context.uriOf(schema))
+    return !this.config.ignore(schema, this.context.uriOf(schema))
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): Expression {

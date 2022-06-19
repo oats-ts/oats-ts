@@ -32,10 +32,6 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
-  protected itemFilter(operations: EnhancedOperation[]): boolean {
-    return operations.length > 0
-  }
-
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(this.input.document, this.name())
     return success(
