@@ -12,7 +12,7 @@ export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator<Exp
     return 'openapi/express-route-factory'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/express-route']
+    return ['openapi/express-route', 'openapi/express-routes-type', 'openapi/api-type']
   }
   public runtimeDependencies(): string[] {
     return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]

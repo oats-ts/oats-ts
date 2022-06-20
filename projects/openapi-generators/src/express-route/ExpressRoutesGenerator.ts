@@ -15,12 +15,15 @@ export class ExpressRoutesGenerator extends OperationBasedCodeGenerator<ExpressR
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return [
+      'json-schema/type',
       'openapi/request-server-type',
       'openapi/response-type',
       'openapi/api-type',
       'openapi/path-deserializer',
       'openapi/query-deserializer',
       'openapi/request-headers-deserializer',
+      'openapi/response-headers-serializer',
+      'openapi/request-body-validator',
     ]
   }
 

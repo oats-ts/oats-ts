@@ -1,11 +1,5 @@
 import { flatMap } from 'lodash'
-import {
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  RuntimePackages,
-  EnhancedOperation,
-} from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, RuntimePackages, EnhancedOperation } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
@@ -26,10 +20,6 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
   public runtimeDependencies(): string[] {
     return [RuntimePackages.Http.name]
-  }
-
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {

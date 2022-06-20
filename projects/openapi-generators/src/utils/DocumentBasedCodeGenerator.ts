@@ -25,7 +25,7 @@ export abstract class DocumentBasedCodeGenerator<Cfg> extends BaseCodeGenerator<
   }
 
   protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
   }
 
   protected getItems(): [] | [EnhancedOperation[]] {

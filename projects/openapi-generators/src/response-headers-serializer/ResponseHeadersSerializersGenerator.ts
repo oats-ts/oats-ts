@@ -20,7 +20,7 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return []
+    return ['json-schema/type', 'openapi/response-headers-type']
   }
 
   public runtimeDependencies(): string[] {

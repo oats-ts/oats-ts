@@ -16,7 +16,7 @@ export abstract class SchemaBasedCodeGenerator<T extends ReadOutput<HasSchemas>,
   public abstract consumes(): JsonSchemaGeneratorTarget[]
 
   protected createContext(): JsonSchemaGeneratorContext {
-    return createGeneratorContext(this.input, this.globalConfig, this.dependencies)
+    return createGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
   }
 
   protected getItems(): Referenceable<SchemaObject>[] {

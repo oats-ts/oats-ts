@@ -1,9 +1,4 @@
-import {
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  EnhancedOperation,
-} from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
@@ -24,10 +19,6 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
 
   public runtimeDependencies(): string[] {
     return []
-  }
-
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
   }
 
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {

@@ -43,6 +43,8 @@ export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasInput(this.enhanced(input), this.context) ? getModelImports(fromPath, this.id, [input], this.context) : []
+    return hasInput(this.enhanced(input), this.context)
+      ? getModelImports(fromPath, this.name(), [input], this.context)
+      : []
   }
 }

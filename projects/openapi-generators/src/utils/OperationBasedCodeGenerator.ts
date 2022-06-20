@@ -22,7 +22,7 @@ export abstract class OperationBasedCodeGenerator<Cfg> extends BaseCodeGenerator
   public abstract consumes(): OpenAPIGeneratorTarget[]
 
   protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this.input, this.globalConfig, this.dependencies)
+    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
   }
 
   protected getItems(): EnhancedOperation[] {
@@ -34,7 +34,6 @@ export abstract class OperationBasedCodeGenerator<Cfg> extends BaseCodeGenerator
   protected enhanced(input: OperationObject): EnhancedOperation {
     const operation = this.items.find(({ operation }) => operation === input)
     if (isNil(operation)) {
-      console.log(this.items, operation)
       throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
     }
     return operation

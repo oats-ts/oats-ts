@@ -5,9 +5,10 @@ import { createGeneratorContext } from '@oats-ts/model-common'
 import { SourceFile } from 'typescript'
 
 export function createOpenAPIGeneratorContext<T extends GeneratorConfig>(
+  owner: CodeGenerator<OpenAPIReadOutput, SourceFile>,
   data: OpenAPIReadOutput,
   config: T,
   generators: CodeGenerator<OpenAPIReadOutput, SourceFile>[],
 ): OpenAPIGeneratorContext {
-  return createGeneratorContext(data, config, generators)
+  return createGeneratorContext(owner, data, config, generators)
 }

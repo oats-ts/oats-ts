@@ -53,7 +53,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
           : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
       const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
       const headersType = hasResponseHeaders
-        ? referenceOf<TypeNode>([data.operation, statusCode], 'openapi/response-headers-type')
+        ? factory.createTypeReferenceNode(context.nameOf([data.operation, statusCode], 'openapi/response-headers-type'))
         : undefined
 
       return createResponseTypeLiteral(mediaTypeType, statusCodeType, bodyType, headersType)
@@ -65,7 +65,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    referenceOf(data.operation, 'openapi/response-type'),
+    factory.createIdentifier(context.nameOf(data.operation, 'openapi/response-type')),
     undefined,
     types.length === 1 ? head(types) : factory.createUnionTypeNode(types),
   )

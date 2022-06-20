@@ -93,30 +93,10 @@ export async function generateCode(path: string) {
 
 async function generateAll() {
   await fs.rm(PATH, { force: true, recursive: true })
-  // const files = await getFiles(['schemas', 'generated-schemas'])
-  const files = [
-    // 'generated-schemas/bodies.json',
-    // 'generated-schemas/methods.json',
-    // 'generated-schemas/parameters.json',
-    // 'schemas/book-store.json',
-    // 'schemas/optional-request-body.json',
-    'schemas/array-schemas.json',
-    'schemas/const-schemas.json',
-    'schemas/discriminated-union-type-schemas.json',
-    'schemas/enum-schemas.json',
-    'schemas/ignored-schemas.json',
-    'schemas/object-schemas.json',
-    'schemas/primitive-schemas.json',
-    'schemas/record-schemas.json',
-    'schemas/reference-target-schema.json',
-    'schemas/references.json',
-    'schemas/remote-ref-schemas.json',
-    'schemas/tuple-schemas.json',
-    'schemas/union-type-schemas.json',
-  ]
+  const files = await getFiles(['schemas', 'generated-schemas'])
   console.log(files)
   for (const path of files) {
-    console.log(`===\n${path}\n===`)
+    console.log(`===\ngenerating ${path}\n===`)
     await generateCode(path)
   }
 }
