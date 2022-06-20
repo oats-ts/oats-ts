@@ -12,7 +12,7 @@ export const pathLabelArray = <T extends Primitive>(
   return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return fluent(getPathValue(name, path, data))
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, '.'))
-      .flatMap((value) => arrayParser(value, name, path, config))
+      .flatMap((value) => arrayParser(value, name, path, config) as Try<T[]>)
       .toTry()
   }
 }

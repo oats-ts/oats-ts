@@ -17,11 +17,11 @@ function createPrimitiveTypesTests<F, D>(
     return
   }
   describe(name, () => {
-    testFactory('string', parsers.string, data.string)
-    testFactory('number', parsers.number, data.number)
-    testFactory('boolean', parsers.boolean, data.boolean)
-    testFactory('literal', parsers.literal, data.literal)
-    testFactory('enumeration', parsers.enumeration, data.enumeration)
+    testFactory('string', parsers.string!, data.string!)
+    testFactory('number', parsers.number!, data.number!)
+    testFactory('boolean', parsers.boolean!, data.boolean!)
+    testFactory('literal', parsers.literal!, data.literal!)
+    testFactory('enumeration', parsers.enumeration!, data.enumeration!)
   })
 }
 
@@ -35,8 +35,8 @@ function createObjectTypesTests<F, D>(
     return
   }
   describe(name, () => {
-    testFactory('requiredFields', parsers.requiredFields, data?.requiredFields)
-    testFactory('optionalFields', parsers.optionalFields, data?.optionalFields)
+    testFactory('requiredFields', parsers.requiredFields!, data?.requiredFields!)
+    testFactory('optionalFields', parsers.optionalFields!, data?.optionalFields!)
   })
 }
 
@@ -50,9 +50,9 @@ function createTestsForPossibleTypes<F, D>(
     return
   }
   describe(name, () => {
-    createPrimitiveTypesTests('primitves', testFactory, parsers.primitive, data.primitive)
-    createPrimitiveTypesTests('array', testFactory, parsers.array, data.array)
-    createObjectTypesTests('object', testFactory, parsers.object, data.object)
+    createPrimitiveTypesTests('primitves', testFactory, parsers.primitive!, data.primitive!)
+    createPrimitiveTypesTests('array', testFactory, parsers.array!, data.array!)
+    createObjectTypesTests('object', testFactory, parsers.object!, data.object!)
   })
 }
 
@@ -66,8 +66,8 @@ function createStyleObjectTests<F, D>(
     return
   }
   describe(name, () => {
-    createTestsForPossibleTypes('required', testFactory, parsers.required, data.required)
-    createTestsForPossibleTypes('optional', testFactory, parsers.optional, data.optional)
+    createTestsForPossibleTypes('required', testFactory, parsers.required!, data.required!)
+    createTestsForPossibleTypes('optional', testFactory, parsers.optional!, data.optional!)
   })
 }
 
@@ -75,7 +75,7 @@ export const createTestSuiteFactory =
   <F, D>(testFactory: TestFactory<F, D>) =>
   (name: string, parsers: TestDataObject<F>, data: TestDataObject<D>): void => {
     describe(name, () => {
-      createStyleObjectTests('explode', testFactory, parsers.explode, data.explode)
-      createStyleObjectTests('noExplode', testFactory, parsers.noExplode, data.noExplode)
+      createStyleObjectTests('explode', testFactory, parsers.explode!, data.explode!)
+      createStyleObjectTests('noExplode', testFactory, parsers.noExplode!, data.noExplode!)
     })
   }

@@ -102,7 +102,7 @@ export const createKeyValuePairRecordParser =
 
 export const createArrayParser =
   <T extends Primitive>(separator: string, parse: ValueParser<string, T>) =>
-  (value: string, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
+  (value: string, name: string, path: string, config: ValidatorConfig): Try<T[] | undefined> => {
     return isNil(value)
       ? success(undefined)
       : fromArray(value.split(separator).map((value, i) => parse(decode(value), name, config.append(path, i), config)))

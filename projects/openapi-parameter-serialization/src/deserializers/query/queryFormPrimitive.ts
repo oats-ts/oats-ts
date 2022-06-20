@@ -8,6 +8,6 @@ export const queryFormPrimitive =
   <T extends Primitive>(parse: ValueParser<string, T>, options: QueryOptions = {}): QueryValueDeserializer<T> =>
   (data: RawQueryParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
     return fluent(getQueryValue(name, path, data, options))
-      .flatMap((value) => (isNil(value) ? success(undefined) : parse(decode(value), name, path, config)))
+      .flatMap((value) => (isNil(value) ? success(undefined!) : parse(decode(value), name, path, config)))
       .toTry()
   }

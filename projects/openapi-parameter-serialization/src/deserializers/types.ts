@@ -2,14 +2,14 @@ import { Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
 
 /** Types that can be individual parameter values */
-export type Primitive = string | number | boolean
-export type PrimitiveArray = ReadonlyArray<Primitive>
+export type Primitive = string | number | boolean | undefined
+export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
 export type PrimitiveRecord = Record<string, Primitive>
 
 /** Union type for above */
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 
-export type FieldParsers<T extends PrimitiveRecord> = { [P in keyof T]: ValueParser<string, T[P]> }
+export type FieldParsers<T extends PrimitiveRecord> = { [P in keyof Required<T>]: ValueParser<string, T[P]> }
 
 /** Object, collection of named parameter values */
 export type ParameterObject = Record<string, ParameterValue>

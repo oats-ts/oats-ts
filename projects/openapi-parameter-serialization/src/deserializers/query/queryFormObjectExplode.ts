@@ -39,7 +39,7 @@ export function queryFormObjectExplode<T extends PrimitiveRecord>(
   )
 
   if (!hasKeys && !options.required) {
-    return success(undefined)
+    return success(undefined!)
   }
 
   return fluent(keyValuePairsTry).map((keyValuePairs) => {

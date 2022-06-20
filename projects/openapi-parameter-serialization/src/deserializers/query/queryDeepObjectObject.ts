@@ -41,5 +41,5 @@ export const queryDeepObjectObject =
 
       return acc
     }, {})
-    return !hasKeys && !options.required ? success(undefined) : fromRecord(parsed)
+    return !hasKeys && !options.required ? success(undefined!) : (fromRecord(parsed) as Try<T>)
   }

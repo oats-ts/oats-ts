@@ -25,7 +25,7 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
             type: IssueTypes.value,
           },
         ])
-      : success(undefined)
+      : success(undefined!)
   } else if (values.length !== 1) {
     return failure([
       {

@@ -11,7 +11,7 @@ export const pathSimpleArray = <T extends Primitive>(
   const arrayParser = createArrayParser(',', parse)
   return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return fluent(getPathValue(name, path, data))
-      .flatMap((pathValue) => arrayParser(pathValue, name, path, config))
+      .flatMap((pathValue) => arrayParser(pathValue, name, path, config) as Try<T[]>)
       .toTry()
   }
 }

@@ -21,7 +21,7 @@ export const queryDelimitedArray =
     return getValues(delimiter, options, name, path, data)
       .flatMap((values) =>
         isNil(values)
-          ? success(undefined)
+          ? success(undefined!)
           : fromArray(values.map((value, index) => parse(decode(value), name, config.append(path, index), config))),
       )
       .toTry()
