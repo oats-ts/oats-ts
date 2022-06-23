@@ -1,12 +1,17 @@
 import { ParameterLocation } from '@oats-ts/openapi-model'
-import { getParameterDeserializerFactoryName } from './getParameterDeserializerFactoryName'
 import { OpenAPIGeneratorContext, RuntimePackages, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, SourceFile, SyntaxKind, VariableStatement } from 'typescript'
 import { createSourceFile, getNamedImports } from '@oats-ts/typescript-common'
-import { getParameterDeserializerFactoryCallAst } from './getParameterDeserializerFactoryCallAst'
-import { collectDeserializerSchemaImports } from './collectParameterSchemaImports'
 import { getParameterTypeGeneratorTarget } from '../parameters/getParameterTypeGeneratorTarget'
+import { getDslObject } from './getDslObject'
+
+const DslTypeMap: Record<ParameterLocation, string> = {
+  cookie: RuntimePackages.ParameterSerialization.CookieDsl,
+  header: RuntimePackages.ParameterSerialization.HeaderDsl,
+  path: RuntimePackages.ParameterSerialization.PathDsl,
+  query: RuntimePackages.ParameterSerialization.QueryDsl,
+}
 
 function createDeserializerConstant(
   location: ParameterLocation,
@@ -14,22 +19,17 @@ function createDeserializerConstant(
   context: OpenAPIGeneratorContext,
   target: OpenAPIGeneratorTarget,
 ): VariableStatement {
-  const { nameOf, referenceOf } = context
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          nameOf(data.operation, target),
+          context.nameOf(data.operation, target),
           undefined,
-          undefined,
-          getParameterDeserializerFactoryCallAst(
-            location,
-            data,
-            data[location],
-            referenceOf(data.operation, getParameterTypeGeneratorTarget(location)),
-            context,
-          ),
+          factory.createTypeReferenceNode(DslTypeMap[location], [
+            context.referenceOf(data.operation, getParameterTypeGeneratorTarget(location)),
+          ]),
+          getDslObject(data[location], context),
         ),
       ],
       NodeFlags.Const,
@@ -37,22 +37,19 @@ function createDeserializerConstant(
   )
 }
 
-export const generateOperationParameterTypeDeserializer =
+export const createDslGenerator =
   (location: ParameterLocation, target: OpenAPIGeneratorTarget, typeTarget: OpenAPIGeneratorTarget) =>
   (data: EnhancedOperation, context: OpenAPIGeneratorContext): SourceFile => {
-    const parameters = data[location]
     const { pathOf, dependenciesOf } = context
-
     const path = pathOf(data.operation, target)
     return createSourceFile(
       path,
       [
         getNamedImports(RuntimePackages.ParameterSerialization.name, [
-          RuntimePackages.ParameterSerialization.deserializers,
-          getParameterDeserializerFactoryName(location),
+          RuntimePackages.ParameterSerialization.dsl,
+          DslTypeMap[location],
         ]),
         ...dependenciesOf(path, data.operation, typeTarget),
-        ...collectDeserializerSchemaImports(path, parameters, context),
       ],
       [createDeserializerConstant(location, data, context, target)],
     )

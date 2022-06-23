@@ -3,7 +3,7 @@ import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openap
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, SyntaxKind, VariableStatement } from 'typescript'
 import { getParameterSerializerFactoryCall } from './getParameterSerializerFactoryCall'
-import { getParameterTypeGeneratorTarget } from './getParameterTypeGeneratorTarget'
+import { getParameterTypeGeneratorTarget } from '../parameters/getParameterTypeGeneratorTarget'
 
 export function getParameterSerializerConstant(
   location: ParameterLocation,

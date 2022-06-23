@@ -7,6 +7,7 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
+  PathDsl,
   createHeaderDeserializer,
   createHeaderSerializer,
   createPathDeserializer,
@@ -14,6 +15,7 @@ import {
   createQueryDeserializer,
   createQuerySerializer,
   deserializers,
+  dsl,
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
@@ -139,6 +141,8 @@ export type GetBooksResponse =
       statusCode: 500
       body: AppError[]
     }
+
+export const getBookPathDsl: PathDsl<GetBookPathParameters> = { bookId: dsl.path.simple.primitive(dsl.value.number()) }
 
 export type AddBookServerRequest = {
   mimeType: 'application/json'

@@ -31,22 +31,25 @@ const responseHeadersType = (input: any, name: string) => {
 const responseType = nonNull(operation)((input: any, name: string) => pascalCase(`${name}Response`))
 const requestType = nonNull(operation)((input: any, name: string) => pascalCase(`${name}Request`))
 const serverRequest = nonNull(operation)((input: any, name: string) => pascalCase(`${name}ServerRequest`))
+
 const pathSerializer = nonNull(operation)((input: any, name: string) => camelCase(`${name}PathSerializer`))
-const pathDeserializer = nonNull(operation)((input: any, name: string) => camelCase(`${name}PathDeserializer`))
 const querySerializer = nonNull(operation)((input: any, name: string) => camelCase(`${name}QuerySerializer`))
-const queryDeserializer = nonNull(operation)((input: any, name: string) => camelCase(`${name}QueryDeserializer`))
 const reqHeadersSerializer = nonNull(operation)((input: any, name: string) =>
   camelCase(`${name}RequestHeadersSerializer`),
-)
-const reqHeadersDeserializer = nonNull(operation)((input: any, name: string) =>
-  camelCase(`${name}RequestHeadersDeserializer`),
 )
 const resHeadersSerializer = nonNull(operation)((input: any, name: string) =>
   camelCase(`${name}ResponseHeadersSerializer`),
 )
+
+const pathDeserializer = nonNull(operation)((input: any, name: string) => camelCase(`${name}PathDeserializer`))
+const queryDeserializer = nonNull(operation)((input: any, name: string) => camelCase(`${name}QueryDeserializer`))
+const reqHeadersDeserializer = nonNull(operation)((input: any, name: string) =>
+  camelCase(`${name}RequestHeadersDeserializer`),
+)
 const resHeadersDeserializer = nonNull(operation)((input: any, name: string) =>
   camelCase(`${name}ResponseHeadersDeserializer`),
 )
+
 const reqBodyValidator = nonNull(operation)((input: any, name: string) => camelCase(`${name}RequestBodyValidator`))
 const resBodyValidator = nonNull(operation)((input: any, name: string) => camelCase(`${name}ResponseBodyValidator`))
 const expressRouter = nonNull(operation)((input: any, name: string) => camelCase(`${name}Router`))

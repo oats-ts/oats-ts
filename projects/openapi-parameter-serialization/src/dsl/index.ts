@@ -1,7 +1,18 @@
-import { arrayDsl, booleanDsl, enumDsl, literalDsl, numberDsl, objectDsl, primitiveDsl, stringDsl } from './factories'
+import {
+  arrayDsl,
+  booleanDsl,
+  enumDsl,
+  literalDsl,
+  numberDsl,
+  objectDsl,
+  optionalDsl,
+  primitiveDsl,
+  stringDsl,
+} from './factories'
 
 export const dsl = {
   value: {
+    optional: optionalDsl,
     string: stringDsl,
     number: numberDsl,
     boolean: booleanDsl,

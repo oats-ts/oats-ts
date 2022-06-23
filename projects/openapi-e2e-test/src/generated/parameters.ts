@@ -7,6 +7,7 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
+  PathDsl,
   createHeaderDeserializer,
   createHeaderSerializer,
   createPathDeserializer,
@@ -14,6 +15,7 @@ import {
   createQueryDeserializer,
   createQuerySerializer,
   deserializers,
+  dsl,
   serializers,
 } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
@@ -1404,6 +1406,141 @@ export type SpaceDelimitedQueryParametersResponse =
       statusCode: 400
       body: ParameterIssue[]
     }
+
+export const labelPathParametersPathDsl: PathDsl<LabelPathParametersPathParameters> = {
+  strExpl: dsl.path.label.primitive(dsl.value.string(), { explode: true }),
+  str: dsl.path.label.primitive(dsl.value.string(), { explode: false }),
+  numExpl: dsl.path.label.primitive(dsl.value.number(), { explode: true }),
+  num: dsl.path.label.primitive(dsl.value.number(), { explode: false }),
+  boolExpl: dsl.path.label.primitive(dsl.value.boolean(), { explode: true }),
+  bool: dsl.path.label.primitive(dsl.value.boolean(), { explode: false }),
+  enmExpl: dsl.path.label.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+  enm: dsl.path.label.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+  strArrExpl: dsl.path.label.array(dsl.value.string(), { explode: true }),
+  strArr: dsl.path.label.array(dsl.value.string(), { explode: false }),
+  numArrExpl: dsl.path.label.array(dsl.value.number(), { explode: true }),
+  numArr: dsl.path.label.array(dsl.value.number(), { explode: false }),
+  boolArrExpl: dsl.path.label.array(dsl.value.boolean(), { explode: true }),
+  boolArr: dsl.path.label.array(dsl.value.boolean(), { explode: false }),
+  enmArrExpl: dsl.path.label.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+  enmArr: dsl.path.label.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+  objExpl: dsl.path.label.object(
+    {
+      objExplStrField: dsl.value.string(),
+      objExplNumField: dsl.value.number(),
+      objExplBoolField: dsl.value.boolean(),
+      objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objExplOptStrField: dsl.value.optional(dsl.value.string()),
+      objExplOptNumField: dsl.value.optional(dsl.value.number()),
+      objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: true },
+  ),
+  obj: dsl.path.label.object(
+    {
+      objStrField: dsl.value.string(),
+      objNumField: dsl.value.number(),
+      objBoolField: dsl.value.boolean(),
+      objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objOptStrField: dsl.value.optional(dsl.value.string()),
+      objOptNumField: dsl.value.optional(dsl.value.number()),
+      objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: false },
+  ),
+}
+
+export const matrixPathParametersPathDsl: PathDsl<MatrixPathParametersPathParameters> = {
+  strExpl: dsl.path.matrix.primitive(dsl.value.string(), { explode: true }),
+  str: dsl.path.matrix.primitive(dsl.value.string(), { explode: false }),
+  numExpl: dsl.path.matrix.primitive(dsl.value.number(), { explode: true }),
+  num: dsl.path.matrix.primitive(dsl.value.number(), { explode: false }),
+  boolExpl: dsl.path.matrix.primitive(dsl.value.boolean(), { explode: true }),
+  bool: dsl.path.matrix.primitive(dsl.value.boolean(), { explode: false }),
+  enmExpl: dsl.path.matrix.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+  enm: dsl.path.matrix.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+  strArrExpl: dsl.path.matrix.array(dsl.value.string(), { explode: true }),
+  strArr: dsl.path.matrix.array(dsl.value.string(), { explode: false }),
+  numArrExpl: dsl.path.matrix.array(dsl.value.number(), { explode: true }),
+  numArr: dsl.path.matrix.array(dsl.value.number(), { explode: false }),
+  boolArrExpl: dsl.path.matrix.array(dsl.value.boolean(), { explode: true }),
+  boolArr: dsl.path.matrix.array(dsl.value.boolean(), { explode: false }),
+  enmArrExpl: dsl.path.matrix.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+  enmArr: dsl.path.matrix.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+  objExpl: dsl.path.matrix.object(
+    {
+      objExplStrField: dsl.value.string(),
+      objExplNumField: dsl.value.number(),
+      objExplBoolField: dsl.value.boolean(),
+      objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objExplOptStrField: dsl.value.optional(dsl.value.string()),
+      objExplOptNumField: dsl.value.optional(dsl.value.number()),
+      objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: true },
+  ),
+  obj: dsl.path.matrix.object(
+    {
+      objStrField: dsl.value.string(),
+      objNumField: dsl.value.number(),
+      objBoolField: dsl.value.boolean(),
+      objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objOptStrField: dsl.value.optional(dsl.value.string()),
+      objOptNumField: dsl.value.optional(dsl.value.number()),
+      objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: false },
+  ),
+}
+
+export const simplePathParametersPathDsl: PathDsl<SimplePathParametersPathParameters> = {
+  strExpl: dsl.path.simple.primitive(dsl.value.string(), { explode: true }),
+  str: dsl.path.simple.primitive(dsl.value.string(), { explode: false }),
+  numExpl: dsl.path.simple.primitive(dsl.value.number(), { explode: true }),
+  num: dsl.path.simple.primitive(dsl.value.number(), { explode: false }),
+  boolExpl: dsl.path.simple.primitive(dsl.value.boolean(), { explode: true }),
+  bool: dsl.path.simple.primitive(dsl.value.boolean(), { explode: false }),
+  enmExpl: dsl.path.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+  enm: dsl.path.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+  strArrExpl: dsl.path.simple.array(dsl.value.string(), { explode: true }),
+  strArr: dsl.path.simple.array(dsl.value.string(), { explode: false }),
+  numArrExpl: dsl.path.simple.array(dsl.value.number(), { explode: true }),
+  numArr: dsl.path.simple.array(dsl.value.number(), { explode: false }),
+  boolArrExpl: dsl.path.simple.array(dsl.value.boolean(), { explode: true }),
+  boolArr: dsl.path.simple.array(dsl.value.boolean(), { explode: false }),
+  enmArrExpl: dsl.path.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+  enmArr: dsl.path.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+  objExpl: dsl.path.simple.object(
+    {
+      objExplStrField: dsl.value.string(),
+      objExplNumField: dsl.value.number(),
+      objExplBoolField: dsl.value.boolean(),
+      objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objExplOptStrField: dsl.value.optional(dsl.value.string()),
+      objExplOptNumField: dsl.value.optional(dsl.value.number()),
+      objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: true },
+  ),
+  obj: dsl.path.simple.object(
+    {
+      objStrField: dsl.value.string(),
+      objNumField: dsl.value.number(),
+      objBoolField: dsl.value.boolean(),
+      objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objOptStrField: dsl.value.optional(dsl.value.string()),
+      objOptNumField: dsl.value.optional(dsl.value.number()),
+      objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: false },
+  ),
+}
 
 export type DeepObjectQueryParametersServerRequest = {
   query: Try<DeepObjectQueryParametersQueryParameters>

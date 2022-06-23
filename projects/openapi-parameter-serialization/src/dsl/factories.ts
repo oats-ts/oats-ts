@@ -13,8 +13,10 @@ import {
   PrimitiveDsl,
   PrimitiveRecord,
   StringDsl,
-  ValidatorDsl,
   ValueDsl,
+  PropertiesDsl,
+  ItemsDsl,
+  OptionalDsl,
 } from './types'
 
 export const primitiveDsl =
@@ -30,10 +32,7 @@ export const primitiveDsl =
 
 export const arrayDsl =
   <P extends DslLocation, S extends DslStyle>(location: P, style: S, defaultConfg: DslConfig) =>
-  <T extends PrimitiveArray>(
-    items: ValueDsl<T[number]>,
-    config: Partial<DslConfig> = {},
-  ): ArrayDsl<T, P, S> => ({
+  <T extends PrimitiveArray>(items: ItemsDsl<T>, config: Partial<DslConfig> = {}): ArrayDsl<T, P, S> => ({
     ...defaultConfg,
     ...config,
     type: 'array',
@@ -44,10 +43,7 @@ export const arrayDsl =
 
 export const objectDsl =
   <P extends DslLocation, S extends DslStyle>(location: P, style: S, defaultConfg: DslConfig) =>
-  <T extends PrimitiveRecord>(
-    properties: { [P in keyof T]: ValueDsl<T[P]> },
-    config: Partial<DslConfig> = {},
-  ): ObjectDsl<T, P, S> => ({
+  <T extends PrimitiveRecord>(properties: PropertiesDsl<T>, config: Partial<DslConfig> = {}): ObjectDsl<T, P, S> => ({
     ...defaultConfg,
     ...config,
     type: 'object',
@@ -56,24 +52,31 @@ export const objectDsl =
     properties,
   })
 
-export function stringDsl<T extends string = string>(validator?: ValidatorDsl<T>): StringDsl<T> {
+export function optionalDsl<T extends Primitive>(validator: ValueDsl<T>): OptionalDsl<T> {
+  return {
+    type: 'optional',
+    dsl: validator,
+  }
+}
+
+export function stringDsl<T extends string = string>(validator?: ValueDsl<T>): StringDsl<T> {
   return {
     type: 'string',
-    validator,
+    dsl: validator,
   }
 }
 
-export function numberDsl<T extends number = number>(validator?: ValidatorDsl<T>): NumberDsl<T> {
+export function numberDsl<T extends number = number>(validator?: ValueDsl<T>): NumberDsl<T> {
   return {
     type: 'number',
-    validator,
+    dsl: validator,
   }
 }
 
-export function booleanDsl<T extends boolean = boolean>(validator?: ValidatorDsl<T>): BooleanDsl<T> {
+export function booleanDsl<T extends boolean = boolean>(validator?: ValueDsl<T>): BooleanDsl<T> {
   return {
     type: 'boolean',
-    validator,
+    dsl: validator,
   }
 }
 

@@ -46,7 +46,6 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
   const routers = delegate('routers')
   const parameters = delegate('parameters')
   const serializers = delegate('serializers')
-  const deserializers = delegate('deserializers')
   const validators = delegate('validators')
   const responses = delegate('responses')
   const requests = delegate('requests')
@@ -78,10 +77,10 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'openapi/path-serializer': serializers,
     'openapi/response-headers-serializer': serializers,
 
-    'openapi/response-headers-deserializer': deserializers,
-    'openapi/request-headers-deserializer': deserializers,
-    'openapi/query-deserializer': deserializers,
-    'openapi/path-deserializer': deserializers,
+    'openapi/response-headers-deserializer': serializers,
+    'openapi/request-headers-deserializer': serializers,
+    'openapi/query-deserializer': serializers,
+    'openapi/path-deserializer': serializers,
 
     'openapi/operation': operations,
 

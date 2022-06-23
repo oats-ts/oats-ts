@@ -33,6 +33,11 @@ const ParameterSerialization = {
   createPathDeserializer: 'createPathDeserializer',
   createHeaderDeserializer: 'createHeaderDeserializer',
   deserializers: 'deserializers',
+  dsl: 'dsl',
+  HeaderDsl: 'HeaderDsl',
+  CookieDsl: 'CookieDsl',
+  PathDsl: 'PathDsl',
+  QueryDsl: 'QueryDsl',
 }
 
 const Express = {

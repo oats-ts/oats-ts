@@ -1,33 +1,36 @@
 import { GeneratorConfig } from '@oats-ts/generator'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { isEmpty } from 'lodash'
-import { EnhancedOperation, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
-import { ParameterTypesGeneratorConfig } from './typings'
-import { generateOperationParameterType } from './generateOperationParameterType'
-import { success, Try } from '@oats-ts/try'
+import {
+  EnhancedOperation,
+  OpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  RuntimePackages,
+} from '@oats-ts/openapi-common'
+import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
+import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../OperationBasedCodeGenerator'
+import { createDslGenerator } from './createDslGenerator'
 
-export class InputParameterTypesGenerator extends OperationBasedCodeGenerator<ParameterTypesGeneratorConfig> {
+export class InputParameterDslGenerator extends OperationBasedCodeGenerator<{}> {
   private readonly _name: OpenAPIGeneratorTarget
+  private readonly _consumed: OpenAPIGeneratorTarget
   private readonly _location: ParameterLocation
-  private readonly _generate: (
-    data: EnhancedOperation,
-    context: OpenAPIGeneratorContext,
-    config: ParameterTypesGeneratorConfig,
-  ) => SourceFile
+  private readonly _generate: (data: EnhancedOperation, context: OpenAPIGeneratorContext) => SourceFile
 
   public constructor(
-    config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>,
+    config: Partial<GeneratorConfig>,
     name: OpenAPIGeneratorTarget,
+    consumed: OpenAPIGeneratorTarget,
     location: ParameterLocation,
   ) {
     super(config)
     this._name = name
+    this._consumed = consumed
     this._location = location
 
-    this._generate = generateOperationParameterType(location)
+    this._generate = createDslGenerator(location, name, consumed)
   }
 
   public name(): OpenAPIGeneratorTarget {
@@ -35,24 +38,24 @@ export class InputParameterTypesGenerator extends OperationBasedCodeGenerator<Pa
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type']
+    return ['json-schema/type', this._consumed]
   }
 
   public runtimeDependencies(): string[] {
-    return []
+    return [RuntimePackages.ParameterSerialization.name]
   }
 
-  protected shouldGenerate(data: EnhancedOperation): boolean {
+  protected shouldGenerate(data: EnhancedOperation) {
     return data[this._location].length > 0
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    return success(this._generate(data, this.context, this.config))
+    return success(this._generate(data, this.context))
   }
 
-  public referenceOf(input: OperationObject): TypeNode | undefined {
+  public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
     const params = this.enhanced(input)[this._location]
-    return isEmpty(params) ? undefined : factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
+    return isEmpty(params) ? undefined : factory.createIdentifier(this.context.nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
