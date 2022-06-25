@@ -4,52 +4,51 @@ import { ValidatorConfig } from '@oats-ts/validators'
 export type Primitive = string | number | boolean | undefined
 export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
 export type PrimitiveRecord = Record<string, Primitive> | undefined
-export type PrimitiveValue = Primitive | PrimitiveArray | PrimitiveRecord
-export type ParameterType = Record<string, PrimitiveValue>
+export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
+export type ParameterType = Record<string, ParameterValue>
 
 export type DslType = 'primitive' | 'array' | 'object'
 export type DslLocation = 'query' | 'header' | 'path' | 'cookie'
 export type DslStyle = 'matrix' | 'label' | 'form' | 'simple' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
 
-export type EnumDsl<T> = {
+export type QueryStyle = 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
+export type PathStyle = 'simple' | 'label' | 'matrix'
+export type HeaderStyle = 'simple'
+export type CookieStyle = 'form'
+
+export type EnumDsl = {
   type: 'enum'
-  values: T[]
+  values: any[]
 }
 
-export type LiteralDsl<T> = {
+export type LiteralDsl = {
   type: 'literal'
-  value: T
+  value: any
 }
 
-export type OptionalDsl<T extends Primitive> = {
+export type OptionalDsl = {
   type: 'optional'
-  dsl: ValueDsl<T>
+  dsl: ValueDsl
 }
 
-export type StringDsl<T extends Primitive = string> = {
+export type StringDsl = {
   type: 'string'
-  dsl?: ValueDsl<T>
+  dsl?: ValueDsl
 }
 
-export type NumberDsl<T extends Primitive = number> = {
+export type NumberDsl = {
   type: 'number'
-  dsl?: ValueDsl<T>
+  dsl?: ValueDsl
 }
 
-export type BooleanDsl<T extends Primitive = boolean> = {
+export type BooleanDsl = {
   type: 'boolean'
-  dsl?: ValueDsl<T>
+  dsl?: ValueDsl
 }
 
-export type ValueDsl<T extends Primitive> =
-  | StringDsl<T>
-  | NumberDsl<T>
-  | BooleanDsl<T>
-  | EnumDsl<T>
-  | OptionalDsl<T>
-  | LiteralDsl<T>
+export type ValueDsl = StringDsl | NumberDsl | BooleanDsl | EnumDsl | OptionalDsl | LiteralDsl
 
-export type DslCommon<T extends PrimitiveValue, D extends DslType, L extends DslLocation, S extends DslStyle> = {
+export type DslCommon<D extends DslType, L extends DslLocation, S extends DslStyle> = {
   type: D
   location: L
   style: S
@@ -57,52 +56,33 @@ export type DslCommon<T extends PrimitiveValue, D extends DslType, L extends Dsl
   explode: boolean
 }
 
-export type PrimitiveDsl<T extends Primitive, L extends DslLocation, S extends DslStyle> = DslCommon<
-  T,
-  'primitive',
-  L,
-  S
-> & {
-  value: ValueDsl<T>
+export type PrimitiveDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'primitive', L, S> & {
+  value: ValueDsl
 }
 
-export type ItemsDsl<T extends PrimitiveArray> = ValueDsl<Exclude<T, undefined>[number]>
-
-export type ArrayDsl<T extends PrimitiveArray, L extends DslLocation, S extends DslStyle> = DslCommon<
-  T,
-  'array',
-  L,
-  S
-> & {
-  items: ItemsDsl<T>
+export type ArrayDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'array', L, S> & {
+  items: ValueDsl
 }
 
-export type PropertiesDsl<T extends PrimitiveRecord> = { [P in keyof T]: ValueDsl<Exclude<T, undefined>[P]> }
+export type PropertiesDsl = Record<string, ValueDsl>
 
-export type ObjectDsl<T extends PrimitiveRecord, L extends DslLocation, S extends DslStyle> = DslCommon<
-  T,
-  'object',
-  L,
-  S
-> & {
-  properties: PropertiesDsl<T>
+export type ObjectDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'object', L, S> & {
+  properties: PropertiesDsl
 }
 
-export type DslRoot<T extends ParameterType, L extends DslLocation, S extends DslStyle> = {
-  [P in keyof T]: DslCommon<T[P], DslType, L, S>
+export type Dsl<L extends DslLocation, S extends DslStyle> = PrimitiveDsl<L, S> | ArrayDsl<L, S> | ObjectDsl<L, S>
+
+export type DslRoot<T, L extends DslLocation, S extends DslStyle> = {
+  [P in keyof T]: Dsl<L, S>
 }
 
-export type QueryDsl<T extends ParameterType> = DslRoot<
-  T,
-  'query',
-  'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
->
+export type QueryDslRoot<T> = DslRoot<T, 'query', QueryStyle>
 
-export type PathDsl<T extends ParameterType> = DslRoot<T, 'path', 'simple' | 'label' | 'matrix'>
+export type PathDslRoot<T> = DslRoot<T, 'path', PathStyle>
 
-export type HeaderDsl<T extends ParameterType> = DslRoot<T, 'header', 'simple'>
+export type HeaderDslRoot<T> = DslRoot<T, 'header', HeaderStyle>
 
-export type CookieDsl<T extends ParameterType> = DslRoot<T, 'cookie', 'form'>
+export type CookieDslRoot<T> = DslRoot<T, 'cookie', CookieStyle>
 
 export type DslConfig = {
   required: boolean
@@ -119,6 +99,11 @@ export type ValueDeserializer<I extends Primitive, O extends Primitive = I> = (
   path: string,
   config: ValidatorConfig,
 ) => Try<O>
+
+export type FieldValueDeserializers<T extends PrimitiveRecord> = {
+  // TODO T[P] does not compile, why?
+  [P in keyof Exclude<T, undefined>]: ValueDeserializer<string, any>
+}
 
 export type Deserializer<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
 

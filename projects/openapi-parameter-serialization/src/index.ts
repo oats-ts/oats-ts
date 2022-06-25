@@ -48,7 +48,7 @@ export type {
 } from './serializers/types'
 
 export { dsl } from './dsl'
-export { CookieDsl, HeaderDsl, PathDsl, QueryDsl } from './dsl/types'
+export { CookieDslRoot as CookieDsl, HeaderDslRoot as HeaderDsl, PathDslRoot as PathDsl, QueryDslRoot as QueryDsl } from './dsl/types'
 
 export const serializers = {
   path: pathS,
