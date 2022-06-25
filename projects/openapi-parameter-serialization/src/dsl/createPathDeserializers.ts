@@ -1,5 +1,5 @@
 import { entries } from '../utils'
-import { Deserializer, DslConfig, PathDslRoot, RawPathParams } from './types'
+import { Transform, DslConfig, PathDslRoot, RawPathParams } from './types'
 import { unexpectedStyle, unexpectedType } from './errors'
 import { createValueDeserializer } from './createValueDeserializer'
 import { createPropertyValueDeserializers } from './createPropertyValueDeserializers'
@@ -15,7 +15,7 @@ import { pathSimpleObject } from '../deserializers/path/pathSimpleObject'
 import { pathSimplePrimitive } from '../deserializers/path/pathSimplePrimitive'
 
 export function createPathDeserializers<T>(root: PathDslRoot<T>) {
-  return entries(root).reduce((obj: Record<string, Deserializer<RawPathParams, any>>, [key, dsl]) => {
+  return entries(root).reduce((obj: Record<string, Transform<RawPathParams, any>>, [key, dsl]) => {
     const options: DslConfig = { explode: dsl.explode, required: dsl.required }
     const { style, type } = dsl
     switch (dsl.style) {

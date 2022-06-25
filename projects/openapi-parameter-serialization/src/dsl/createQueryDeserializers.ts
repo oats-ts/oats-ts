@@ -1,5 +1,5 @@
 import { entries } from '../utils'
-import { Deserializer, DslConfig, ParameterType, QueryDslRoot, RawQueryParams } from './types'
+import { Transform, DslConfig, ParameterType, QueryDslRoot, RawQueryParams } from './types'
 import { unexpectedStyle, unexpectedType } from './errors'
 import { createValueDeserializer } from './createValueDeserializer'
 import { createPropertyValueDeserializers } from './createPropertyValueDeserializers'
@@ -12,7 +12,7 @@ import { querySpaceDelimitedArray } from '../deserializers/query/querySpaceDelim
 import { queryDeepObjectObject } from '../deserializers/query/queryDeepObjectObject'
 
 export function createQueryDeserializers<T extends ParameterType>(root: QueryDslRoot<T>) {
-  return entries(root).reduce((obj: Record<string, Deserializer<RawQueryParams, any>>, [key, dsl]) => {
+  return entries(root).reduce((obj: Record<string, Transform<RawQueryParams, any>>, [key, dsl]) => {
     const options: DslConfig = { explode: dsl.explode, required: dsl.required }
     const { style, type } = dsl
     switch (dsl.style) {

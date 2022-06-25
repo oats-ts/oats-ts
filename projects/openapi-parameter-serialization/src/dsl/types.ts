@@ -105,6 +105,6 @@ export type FieldValueDeserializers<T extends PrimitiveRecord> = {
   [P in keyof Exclude<T, undefined>]: ValueDeserializer<string, any>
 }
 
-export type Deserializer<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
+export type Transform<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
 
-export type Deserializers<I, O extends ParameterType> = { [P in keyof O]: Deserializer<I, O> }
+export type Transforms<I, O extends ParameterType> = { [P in keyof O]: Transform<I, O> }

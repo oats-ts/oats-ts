@@ -91,10 +91,7 @@ export function getPathValue<T extends ParameterValue>(path: string, value: T, o
   ])
 }
 
-export function validatePathSerializers<T extends ParameterObject>(
-  segments: PathSegment[],
-  serializers: PathSerializers<T>,
-): void {
+export function validatePathSerializers(segments: PathSegment[], serializers: PathSerializers<any>): void {
   const parameterNames = segments
     .filter((segment): segment is ParameterSegment => segment.type === 'parameter')
     .map((segment) => segment.name)
