@@ -1,10 +1,11 @@
 import { Try, fluent, fromRecord } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { parseRawQuery } from '../deserializers/query/parseRawQuery'
+import { QueryDeserializer } from '../deserializers/types'
 import { createQueryDeserializers } from './createQueryDeserializers'
 import { ParameterType, ParameterValue, QueryDslRoot } from './types'
 
-export function createQueryDeserializer<T extends ParameterType>(dsl: QueryDslRoot<T>) {
+export function createQueryDeserializer<T extends ParameterType>(dsl: QueryDslRoot<T>): QueryDeserializer<T> {
   const deserializers = createQueryDeserializers(dsl)
   return function queryDeserializer(
     input: string,

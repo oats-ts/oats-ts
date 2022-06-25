@@ -11,7 +11,7 @@ export function createValueDeserializer<I extends Primitive = Primitive, O exten
   dsl: ValueDsl,
 ): ValueDeserializer<I, O> {
   const type = dsl.type
-  switch (type) {
+  switch (dsl.type) {
     case 'boolean': {
       const deserializer = isNil(dsl.dsl) ? booleanParser() : booleanParser(createValueDeserializer<boolean>(dsl.dsl))
       return deserializer as ValueDeserializer<I, O>

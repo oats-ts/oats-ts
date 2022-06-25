@@ -15,9 +15,9 @@ export function createQueryDeserializers<T extends ParameterType>(root: QueryDsl
   return entries(root).reduce((obj: Record<string, Deserializer<RawQueryParams, any>>, [key, dsl]) => {
     const options: DslConfig = { explode: dsl.explode, required: dsl.required }
     const { style, type } = dsl
-    switch (style) {
+    switch (dsl.style) {
       case 'form': {
-        switch (type) {
+        switch (dsl.type) {
           case 'primitive': {
             obj[key] = queryFormPrimitive(createValueDeserializer(dsl.value), options)
             return obj
@@ -36,7 +36,7 @@ export function createQueryDeserializers<T extends ParameterType>(root: QueryDsl
         }
       }
       case 'pipeDelimited': {
-        switch (type) {
+        switch (dsl.type) {
           case 'array': {
             obj[key] = queryPipeDelimitedArray(createValueDeserializer(dsl.items), options)
             return obj
@@ -47,7 +47,7 @@ export function createQueryDeserializers<T extends ParameterType>(root: QueryDsl
         }
       }
       case 'spaceDelimited': {
-        switch (type) {
+        switch (dsl.type) {
           case 'array': {
             obj[key] = querySpaceDelimitedArray(createValueDeserializer(dsl.items), options)
             return obj
@@ -58,7 +58,7 @@ export function createQueryDeserializers<T extends ParameterType>(root: QueryDsl
         }
       }
       case 'deepObject': {
-        switch (type) {
+        switch (dsl.type) {
           case 'object': {
             obj[key] = queryDeepObjectObject(createPropertyValueDeserializers(dsl.properties), options)
             return obj

@@ -108,18 +108,3 @@ export type FieldValueDeserializers<T extends PrimitiveRecord> = {
 export type Deserializer<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
 
 export type Deserializers<I, O extends ParameterType> = { [P in keyof O]: Deserializer<I, O> }
-
-export type PrimitiveDeserializerFactory<I, O extends Primitive> = (
-  delegate: ValueDeserializer<any, O>,
-  options?: Partial<DslConfig>,
-) => Deserializer<I, O>
-
-export type ArrayDeserializerFactory<I, O extends Primitive> = (
-  delegate: ValueDeserializer<any, O>,
-  options?: Partial<DslConfig>,
-) => Deserializer<I, O[]>
-
-export type ObjectDeserializerFactory<I, O extends ParameterType> = (
-  delegate: Deserializers<any, O>,
-  options?: Partial<DslConfig>,
-) => Deserializer<I, O>

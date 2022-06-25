@@ -12,9 +12,9 @@ export function createHeaderDeserializers<T extends ParameterType>(root: HeaderD
   return entries(root).reduce((obj: Record<string, Deserializer<RawHeaders, any>>, [key, dsl]) => {
     const options: DslConfig = { explode: dsl.explode, required: dsl.required }
     const { style, type } = dsl
-    switch (style) {
+    switch (dsl.style) {
       case 'simple': {
-        switch (type) {
+        switch (dsl.type) {
           case 'primitive': {
             obj[key] = headerSimplePrimitive(createValueDeserializer(dsl.value), options)
             return obj

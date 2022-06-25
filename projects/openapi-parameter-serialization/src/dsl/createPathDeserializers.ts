@@ -18,9 +18,9 @@ export function createPathDeserializers<T>(root: PathDslRoot<T>) {
   return entries(root).reduce((obj: Record<string, Deserializer<RawPathParams, any>>, [key, dsl]) => {
     const options: DslConfig = { explode: dsl.explode, required: dsl.required }
     const { style, type } = dsl
-    switch (style) {
+    switch (dsl.style) {
       case 'simple': {
-        switch (type) {
+        switch (dsl.type) {
           case 'primitive': {
             obj[key] = pathSimplePrimitive(createValueDeserializer(dsl.value), options)
             return obj
@@ -39,7 +39,7 @@ export function createPathDeserializers<T>(root: PathDslRoot<T>) {
         }
       }
       case 'label': {
-        switch (type) {
+        switch (dsl.type) {
           case 'primitive': {
             obj[key] = pathLabelPrimitive(createValueDeserializer(dsl.value), options)
             return obj
@@ -58,7 +58,7 @@ export function createPathDeserializers<T>(root: PathDslRoot<T>) {
         }
       }
       case 'matrix': {
-        switch (type) {
+        switch (dsl.type) {
           case 'primitive': {
             obj[key] = pathMatrixPrimitive(createValueDeserializer(dsl.value), options)
             return obj
