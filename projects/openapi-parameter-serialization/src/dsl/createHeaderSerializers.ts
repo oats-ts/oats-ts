@@ -1,5 +1,5 @@
 import { entries } from '../utils'
-import { Transform, DslConfig, HeaderDslRoot, ParameterType, RawHeaders } from './types'
+import { Transform, DslConfig, HeaderDslRoot, ParameterType } from './types'
 import { unexpectedStyle, unexpectedType } from './errors'
 
 import { headerSimpleArray } from '../serializers/header/headerSimpleArray'

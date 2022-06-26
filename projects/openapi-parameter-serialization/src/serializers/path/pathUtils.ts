@@ -1,15 +1,7 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
 import { ParameterSegment, PathSegment } from '../../common'
-import {
-  ParameterValue,
-  PathOptions,
-  Primitive,
-  PrimitiveArray,
-  PrimitiveRecord,
-  ParameterObject,
-  PathSerializers,
-} from '../types'
+import { ParameterValue, PathOptions, Primitive, PrimitiveRecord, PathSerializers } from '../types'
 import { isNil } from '../utils'
 
 export function validatePathArray<T extends Primitive>(path: string, input: ReadonlyArray<T>): Try<ReadonlyArray<T>> {
