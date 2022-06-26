@@ -18,7 +18,7 @@ describe('header', () => {
       for (const { from, to } of test.deserialize) {
         it(`Should deserialize ${JSON.stringify(from)} to ${JSON.stringify(to)}`, () => {
           const deserialize = createHeaderDeserializer(test.dsl)
-          expect(deserialize(from as RawHeaders)).toEqual(success(to))
+          expect(deserialize(from!)).toEqual(success(to))
         })
       }
       for (const serializerError of test.serializerErrors) {
@@ -28,7 +28,7 @@ describe('header', () => {
         })
       }
       for (const deserializerError of test.deserializerErrors) {
-        it(`Should fail serializing ${JSON.stringify(deserializerError)}`, () => {
+        it(`Should fail deserializing ${JSON.stringify(deserializerError)}`, () => {
           const deserialize = createHeaderDeserializer(test.dsl)
           expect(deserialize(deserializerError as RawHeaders)).toHaveProperty('issues')
         })
