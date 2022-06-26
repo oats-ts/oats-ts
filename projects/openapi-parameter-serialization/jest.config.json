@@ -1,4 +1,4 @@
 {
   "preset": "ts-jest",
-  "testRegex": ".*\\.test\\.ts$"
+  "testRegex": ".*\\.(test|spec)\\.ts$"
 }

@@ -12,8 +12,8 @@ export function createHeaderDeserializer<T extends ParameterType>(root: HeaderDs
     config: ValidatorConfig = DefaultConfig,
   ): Try<T> {
     const deserialized = Object.keys(deserializers).reduce((acc: Record<string, Try<ParameterValue>>, key: string) => {
-      const deserializer = deserializers[key]
-      acc[key] = deserializer(input, key, config.append(path, key), config)
+      const deserializer = deserializers?.[key]
+      acc[key] = deserializer(input ?? {}, key, config.append(path, key), config)
       return acc
     }, {})
     return fromRecord(deserialized) as Try<T>
