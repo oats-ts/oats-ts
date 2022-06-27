@@ -1,9 +1,9 @@
-import { ParameterObject } from '../../types'
+import { ParameterType } from '../../..//types'
 
-export type QuerySuccessData<Data extends ParameterObject> = [Data, string]
+export type QuerySuccessData<Data extends ParameterType> = [Data, string]
 export type QueryErrorData = [string]
 
-export type QueryTestData<Data extends ParameterObject> = {
+export type QueryTestData<Data extends ParameterType> = {
   data: QuerySuccessData<Data>[]
   error: QueryErrorData[]
 }

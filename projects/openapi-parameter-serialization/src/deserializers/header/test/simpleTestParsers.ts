@@ -1,5 +1,5 @@
 import { header } from '../index'
-import { HeaderValueDeserializers, HeaderOptions } from '../../types'
+import { HeaderValueDeserializers } from '../../types'
 import {
   enumParser,
   stringParser,
@@ -10,8 +10,9 @@ import {
   objectFieldParsers,
 } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
+import { DslConfig } from '../../..//types'
 
-function createTypesParsers(config: HeaderOptions): TypesObject<HeaderValueDeserializers<any>> {
+function createTypesParsers(config: DslConfig): TypesObject<HeaderValueDeserializers<any>> {
   return {
     primitive: {
       string: { value: header.simple.primitive(stringParser, config) },

@@ -1,16 +1,16 @@
-import { entries } from '../utils'
+import { entries } from './utils'
 import { Transform, DslConfig, PathDslRoot } from './types'
 import { unexpectedStyle, unexpectedType } from './errors'
 
-import { pathLabelArray } from '../serializers/path/pathLabelArray'
-import { pathLabelObject } from '../serializers/path/pathLabelObject'
-import { pathLabelPrimitive } from '../serializers/path/pathLabelPrimitive'
-import { pathMatrixArray } from '../serializers/path/pathMatrixArray'
-import { pathMatrixObject } from '../serializers/path/pathMatrixObject'
-import { pathMatrixPrimitive } from '../serializers/path/pathMatrixPrimitive'
-import { pathSimpleArray } from '../serializers/path/pathSimpleArray'
-import { pathSimpleObject } from '../serializers/path/pathSimpleObject'
-import { pathSimplePrimitive } from '../serializers/path/pathSimplePrimitive'
+import { pathLabelArray } from './serializers/path/pathLabelArray'
+import { pathLabelObject } from './serializers/path/pathLabelObject'
+import { pathLabelPrimitive } from './serializers/path/pathLabelPrimitive'
+import { pathMatrixArray } from './serializers/path/pathMatrixArray'
+import { pathMatrixObject } from './serializers/path/pathMatrixObject'
+import { pathMatrixPrimitive } from './serializers/path/pathMatrixPrimitive'
+import { pathSimpleArray } from './serializers/path/pathSimpleArray'
+import { pathSimpleObject } from './serializers/path/pathSimpleObject'
+import { pathSimplePrimitive } from './serializers/path/pathSimplePrimitive'
 
 export function createPathSerializers<T>(root: PathDslRoot<T>) {
   return entries(root).reduce((obj: Record<string, Transform<any, string>>, [key, dsl]) => {

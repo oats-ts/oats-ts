@@ -19,7 +19,7 @@ import {
 } from 'typescript'
 import { isIdentifier } from '@oats-ts/typescript-common'
 import { getDeserializerAst } from './getDeserializerAst'
-import { createPathRegex, getPathParameterNames } from './pathUtils'
+import { createPathRegex, getPathParameterNames } from '../../path-deserializer/pathUtils'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
 function getDeserializerOptionProperty(

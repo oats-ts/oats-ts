@@ -1,12 +1,12 @@
 import { Try, failure, success } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { QueryOptions, RawQueryParams } from '../types'
+import { DslConfig, RawQueryParams } from '../..//types'
 
 export function getQueryValue(
   name: string,
   path: string,
   params: RawQueryParams,
-  options: QueryOptions,
+  options: Partial<DslConfig>,
 ): Try<string | undefined> {
   const values = params[name] || []
   switch (values.length) {

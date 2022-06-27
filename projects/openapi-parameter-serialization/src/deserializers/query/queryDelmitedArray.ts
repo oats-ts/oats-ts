@@ -1,10 +1,11 @@
 import { Try, success, fluent, fromArray } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { Primitive, ValueParser, QueryOptions, RawQueryParams } from '../types'
+import { DslConfig, Primitive, RawQueryParams } from '../..//types'
+import { ValueParser } from '../types'
 import { decode, isNil } from '../utils'
 import { getQueryValue } from './queryUtils'
 
-function getValues(delimiter: string, options: QueryOptions, name: string, path: string, data: RawQueryParams) {
+function getValues(delimiter: string, options: DslConfig, name: string, path: string, data: RawQueryParams) {
   if (options.explode) {
     return fluent(success(data[name] ?? undefined))
   }
@@ -15,9 +16,9 @@ function getValues(delimiter: string, options: QueryOptions, name: string, path:
 
 export const queryDelimitedArray =
   (delimiter: string) =>
-  <T extends Primitive>(parse: ValueParser<string, T>, opts: QueryOptions = {}) =>
+  <T extends Primitive>(parse: ValueParser<string, T>, opts: Partial<DslConfig> = {}) =>
   (data: RawQueryParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
-    const options: QueryOptions = { explode: true, ...opts }
+    const options: DslConfig = { explode: true, required: false, ...opts }
     return getValues(delimiter, options, name, path, data)
       .flatMap((values) =>
         isNil(values)

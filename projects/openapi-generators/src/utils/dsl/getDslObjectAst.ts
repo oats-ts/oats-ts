@@ -12,7 +12,7 @@ import { isIdentifier, getLiteralAst } from '@oats-ts/typescript-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getInferredType } from '@oats-ts/json-schema-common'
 
-export function getDslObject(
+export function getDslObjectAst(
   parameters: Referenceable<BaseParameterObject>[],
   context: OpenAPIGeneratorContext,
 ): ObjectLiteralExpression {

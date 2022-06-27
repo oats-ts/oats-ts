@@ -7,16 +7,13 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
-  PathDsl,
   createHeaderDeserializer,
   createHeaderSerializer,
   createPathDeserializer,
   createPathSerializer,
   createQueryDeserializer,
   createQuerySerializer,
-  deserializers,
   dsl,
-  serializers,
 } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
 import { array, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
@@ -142,8 +139,6 @@ export type GetBooksResponse =
       body: AppError[]
     }
 
-export const getBookPathDsl: PathDsl<GetBookPathParameters> = { bookId: dsl.path.simple.primitive(dsl.value.number()) }
-
 export type AddBookServerRequest = {
   mimeType: 'application/json'
   body: Try<Book>
@@ -162,22 +157,22 @@ export const addBookRequestBodyValidator = { 'application/json': bookTypeValidat
 
 export const getBooksResponseHeadersSerializer = {
   200: createHeaderSerializer<GetBooks200ResponseHeaderParameters>({
-    'x-length': serializers.header.simple.primitive<number>({ required: true }),
+    'x-length': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
   }),
 } as const
 
 export const getBookPathDeserializer = createPathDeserializer<GetBookPathParameters>(
+  { bookId: dsl.path.simple.primitive(dsl.value.number()) },
   ['bookId'],
   /^\/books(?:\/([^\/#\?]+?))[\/#\?]?$/i,
-  { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
 )
 
 export const getBooksQueryDeserializer = createQueryDeserializer<GetBooksQueryParameters>({
-  offset: deserializers.query.form.primitive(deserializers.value.number(), { required: false }),
+  offset: dsl.query.form.primitive(dsl.value.number(), { required: false }),
 })
 
 export const getBooksRequestHeadersDeserializer = createHeaderDeserializer<GetBooksRequestHeaderParameters>({
-  'x-limit': deserializers.header.simple.primitive(deserializers.value.number(), { required: false }),
+  'x-limit': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
 })
 
 export type BookStoreApi = {
@@ -344,20 +339,21 @@ export const getBooksResponseBodyValidator = {
 
 export const getBooksResponseHeadersDeserializer = {
   200: createHeaderDeserializer<GetBooks200ResponseHeaderParameters>({
-    'x-length': deserializers.header.simple.primitive(deserializers.value.number(), { required: true }),
+    'x-length': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
   }),
 } as const
 
-export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>('/books/{bookId}', {
-  bookId: serializers.path.simple.primitive<number>({}),
-})
+export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>(
+  { bookId: dsl.path.simple.primitive(dsl.value.number()) },
+  '/books/{bookId}',
+)
 
 export const getBooksQuerySerializer = createQuerySerializer<GetBooksQueryParameters>({
-  offset: serializers.query.form.primitive<number | undefined>({ required: false }),
+  offset: dsl.query.form.primitive(dsl.value.number(), { required: false }),
 })
 
 export const getBooksRequestHeadersSerializer = createHeaderSerializer<GetBooksRequestHeaderParameters>({
-  'x-limit': serializers.header.simple.primitive<number | undefined>({ required: false }),
+  'x-limit': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
 })
 
 /**

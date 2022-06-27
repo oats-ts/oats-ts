@@ -1,12 +1,13 @@
 import { simpleTestData } from './simpleTestData'
 import { simpleTestParsers } from './simpleTestParsers'
 import { createHeaderDeserializer } from '../createHeaderDeserializer'
-import { ParameterObject, HeaderValueDeserializers, RawHeaders } from '../../types'
+import { HeaderValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { HeaderTestData } from './headerTestUtils'
 import { Failure, isFailure, Success } from '@oats-ts/try'
+import { ParameterType, RawHeaders } from '../../..//types'
 
-export function createHeaderParserTest<Data extends ParameterObject>(
+export function createHeaderParserTest<Data extends ParameterType>(
   name: string,
   config?: HeaderValueDeserializers<Data>,
   data?: HeaderTestData<Data>,

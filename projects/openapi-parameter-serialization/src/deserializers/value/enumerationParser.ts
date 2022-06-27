@@ -1,6 +1,7 @@
 import { Try, failure, success } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { Primitive, ValueParser } from '../types'
+import { Primitive } from '../..//types'
+import { ValueParser } from '../types'
 
 export const enumerationParser =
   <T extends Primitive, E extends T>(values: E[]): ValueParser<T, E> =>

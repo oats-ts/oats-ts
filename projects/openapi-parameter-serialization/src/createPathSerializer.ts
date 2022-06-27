@@ -1,8 +1,8 @@
 import { ParameterType, PathDslRoot } from './types'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { fluent, fromRecord, Try } from '@oats-ts/try'
-import { parsePathToSegments } from '../common'
-import { validatePathSerializers } from '../serializers/path/pathUtils'
+import { parsePathToSegments } from './common'
+import { validatePathSerializers } from './serializers/path/pathUtils'
 import { createPathSerializers } from './createPathSerializers'
 
 export function createPathSerializer<T extends ParameterType>(root: PathDslRoot<T>, path: string) {

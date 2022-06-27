@@ -1,11 +1,11 @@
-import { isNil } from '../common/utils'
+import { isNil } from './common/utils'
 import { Primitive, ValueDeserializer, ValueDsl } from './types'
-import { booleanParser } from '../deserializers/value/booleanParser'
-import { stringParser } from '../deserializers/value/stringParser'
-import { numberParser } from '../deserializers/value/numberParser'
-import { optionalParser } from '../deserializers/value/optionalParser'
-import { enumerationParser } from '../deserializers/value/enumerationParser'
-import { literalParser } from '../deserializers/value/literalParser'
+import { booleanParser } from './deserializers/value/booleanParser'
+import { stringParser } from './deserializers/value/stringParser'
+import { numberParser } from './deserializers/value/numberParser'
+import { optionalParser } from './deserializers/value/optionalParser'
+import { enumerationParser } from './deserializers/value/enumerationParser'
+import { literalParser } from './deserializers/value/literalParser'
 
 export function createValueDeserializer<I extends Primitive = Primitive, O extends Primitive = Primitive>(
   dsl: ValueDsl,

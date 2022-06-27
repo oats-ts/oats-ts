@@ -7,15 +7,16 @@ import { simpleTestParsers } from './simpleTestParsers'
 
 import { pathToRegexp } from 'path-to-regexp'
 import { createPathDeserializer } from '../createPathDeserializer'
-import { ParameterObject, PathValueDeserializers } from '../../types'
+import { PathValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { PathTestData } from './pathTestUtils'
 import { Failure, isFailure, Success } from '@oats-ts/try'
+import { ParameterType } from '../../..//types'
 
 const REGEXP = pathToRegexp('/test/:value/stuff')
 const NAMES = ['value']
 
-export const createPathParserTest = <Data extends ParameterObject>(
+export const createPathParserTest = <Data extends ParameterType>(
   name: string,
   config?: PathValueDeserializers<Data>,
   data?: PathTestData<Data>,

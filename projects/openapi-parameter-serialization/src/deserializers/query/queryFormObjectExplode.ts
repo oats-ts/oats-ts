@@ -1,11 +1,12 @@
 import { Try, failure, success, fromArray, fluent } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
+import { DslConfig, Primitive, PrimitiveRecord, RawQueryParams } from '../..//types'
+import { FieldParsers } from '../types'
 import { decode, isNil } from '../utils'
 
 export function queryFormObjectExplode<T extends PrimitiveRecord>(
   parsers: FieldParsers<T>,
-  options: QueryOptions,
+  options: DslConfig,
   name: string,
   path: string,
   data: RawQueryParams,
@@ -15,7 +16,7 @@ export function queryFormObjectExplode<T extends PrimitiveRecord>(
   let hasKeys = false
   const keyValuePairsTry = fromArray(
     parserKeys.map((key): Try<[string, Primitive]> => {
-      const parser = parsers[key]
+      const parser = parsers[key as keyof T]
       const values = data[key] || []
       if (values.length > 1) {
         return failure([

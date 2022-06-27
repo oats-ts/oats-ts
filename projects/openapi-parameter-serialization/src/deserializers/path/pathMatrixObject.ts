@@ -1,6 +1,8 @@
 import { fluent, Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { RawPathParams, PathOptions, FieldParsers, PrimitiveRecord, PathValueDeserializer } from '../types'
+import { PrimitiveRecord, RawPathParams } from '../..//types'
+import { PathOptions } from '../../serializers/types'
+import { FieldParsers, PathValueDeserializer } from '../types'
 import { createDelimitedRecordParser, createKeyValuePairRecordParser, encode } from '../utils'
 import { getPathValue, getPrefixedValue, parsePathFromRecord } from './pathUtils'
 

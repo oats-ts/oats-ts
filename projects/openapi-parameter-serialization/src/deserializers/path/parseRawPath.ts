@@ -1,6 +1,6 @@
 import { Try, failure, success } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { RawPathParams } from '../types'
+import { RawPathParams } from '../..//types'
 import { isNil } from '../utils'
 
 export function parseRawPath(

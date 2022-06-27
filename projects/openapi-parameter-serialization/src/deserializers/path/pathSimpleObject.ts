@@ -1,12 +1,13 @@
 import { fluent, Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { RawPathParams, PathOptions, FieldParsers, PrimitiveRecord, PathValueDeserializer } from '../types'
+import { DslConfig, PrimitiveRecord, RawPathParams } from '../..//types'
+import { FieldParsers, PathValueDeserializer } from '../types'
 import { createKeyValuePairRecordParser, createDelimitedRecordParser } from '../utils'
 import { getPathValue, parsePathFromRecord } from './pathUtils'
 
 export const pathSimpleObject = <T extends PrimitiveRecord>(
   parsers: FieldParsers<T>,
-  options: PathOptions = {},
+  options: Partial<DslConfig> = {},
 ): PathValueDeserializer<T> => {
   const parseRecord = options.explode ? createKeyValuePairRecordParser(',', '=') : createDelimitedRecordParser(',')
   return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T> => {

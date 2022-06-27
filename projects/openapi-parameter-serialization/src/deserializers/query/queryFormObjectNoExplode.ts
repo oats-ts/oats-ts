@@ -1,11 +1,12 @@
 import { Try, failure, success, isSuccess } from '@oats-ts/try'
 import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { QueryOptions, PrimitiveRecord, FieldParsers, Primitive, RawQueryParams } from '../types'
+import { DslConfig, Primitive, PrimitiveRecord, RawQueryParams } from '../..//types'
+import { FieldParsers } from '../types'
 import { decode, isNil } from '../utils'
 
 export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
   parsers: FieldParsers<T>,
-  options: QueryOptions,
+  options: DslConfig,
   name: string,
   path: string,
   data: RawQueryParams,
@@ -53,7 +54,7 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
   for (let i = 0; i < parts.length; i += 2) {
     const key = decode(parts[i])
     const rawValue = decode(parts[i + 1])
-    const parser = parsers[key]
+    const parser = parsers[key as keyof T]
     if (isNil(parser)) {
       collectedIssues.push({
         message: `should not have "${key}"`,

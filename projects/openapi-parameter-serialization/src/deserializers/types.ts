@@ -1,18 +1,13 @@
 import { Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
+import { ParameterValue, Primitive, PrimitiveRecord, RawHeaders, RawPathParams, RawQueryParams } from '..//types'
+import { ParameterObject } from '../serializers/types'
 
-/** Types that can be individual parameter values */
-export type Primitive = string | number | boolean | undefined
-export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
-export type PrimitiveRecord = Record<string, Primitive>
-
-/** Union type for above */
-export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
-
-export type FieldParsers<T extends PrimitiveRecord> = { [P in keyof Required<T>]: ValueParser<string, T[P]> }
+export type FieldParsers<T extends PrimitiveRecord> = {
+  [P in keyof Required<T>]: ValueParser<string, Exclude<T, undefined>[P]>
+}
 
 /** Object, collection of named parameter values */
-export type ParameterObject = Record<string, ParameterValue>
 
 export type ValueParser<I extends Primitive, O extends Primitive> = (
   input: I,
@@ -21,13 +16,6 @@ export type ValueParser<I extends Primitive, O extends Primitive> = (
   config: ValidatorConfig,
 ) => Try<O>
 
-/** Query related types */
-export type QueryOptions = {
-  explode?: boolean
-  required?: boolean
-}
-
-export type RawQueryParams = Record<string, string[]>
 export type QueryValueDeserializer<T extends ParameterValue> = (
   value: RawQueryParams,
   name: string,
@@ -41,12 +29,6 @@ export type QueryDeserializer<T extends ParameterObject> = (
   config?: ValidatorConfig,
 ) => Try<T>
 
-/** Path related types */
-export type PathOptions = {
-  explode?: boolean
-}
-
-export type RawPathParams = Record<string, string>
 export type PathValueDeserializer<T extends ParameterValue> = (
   value: RawPathParams,
   name: string,
@@ -60,13 +42,6 @@ export type PathDeserializer<T extends ParameterObject> = (
   config?: ValidatorConfig,
 ) => Try<T>
 
-/** Header related types */
-export type HeaderOptions = {
-  explode?: boolean
-  required?: boolean
-}
-
-export type RawHeaders = Record<string, string>
 export type HeaderValueDeserializer<T extends ParameterValue> = (
   value: RawHeaders,
   name: string,

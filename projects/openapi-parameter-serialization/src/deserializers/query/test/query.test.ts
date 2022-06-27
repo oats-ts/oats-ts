@@ -8,12 +8,13 @@ import { spaceDelimitedTestParsers } from './spaceDelimitedTestParsers'
 import { spaceDelimitedTestData } from './spaceDelimitedTestData'
 
 import { createQueryDeserializer } from '../createQueryDeserializer'
-import { ParameterObject, QueryValueDeserializers } from '../../types'
+import { QueryValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { QueryTestData } from './queryTestUtils'
 import { isFailure, Success } from '@oats-ts/try'
+import { ParameterType } from '../../..//types'
 
-export const createQueryParserTest = <Data extends ParameterObject>(
+export const createQueryParserTest = <Data extends ParameterType>(
   name: string,
   config?: QueryValueDeserializers<Data>,
   data?: QueryTestData<Data>,

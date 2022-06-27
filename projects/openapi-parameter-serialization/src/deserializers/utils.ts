@@ -1,6 +1,7 @@
 import { Try, success, failure, isFailure, fromArray } from '@oats-ts/try'
 import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { Primitive, ValueParser } from './types'
+import { Primitive } from '..//types'
+import { ValueParser } from './types'
 
 export function isNil(input: any): input is null | undefined {
   return input === null || input === undefined

@@ -1,23 +1,20 @@
-import { getResponseHeaders, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getResponseHeaders, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { entries, values } from 'lodash'
 import { factory, NodeFlags, PropertyAssignment, SyntaxKind } from 'typescript'
-import { getParameterSerializerFactoryCall } from '../utils/serializers/getParameterSerializerFactoryCall'
+import { getDslObjectAst } from '../utils/dsl/getDslObjectAst'
 
 export function getResponseHeadersSerializerAst(data: EnhancedOperation, context: OpenAPIGeneratorContext) {
-  const { nameOf, referenceOf } = context
   const headers = entries(getResponseHeaders(data.operation, context))
   const props = headers
     .filter(([, headers]) => values(headers).length > 0)
     .map(([status, headers]): PropertyAssignment => {
       return factory.createPropertyAssignment(
         status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
-        getParameterSerializerFactoryCall(
-          'header',
-          data,
-          values(headers),
-          referenceOf([data.operation, status], 'openapi/response-headers-type'),
-          context,
+        factory.createCallExpression(
+          factory.createIdentifier(RuntimePackages.ParameterSerialization.createHeaderSerializer),
+          [context.referenceOf([data.operation, status], 'openapi/response-headers-type')],
+          [getDslObjectAst(values(headers), context)],
         ),
       )
     })
@@ -27,7 +24,7 @@ export function getResponseHeadersSerializerAst(data: EnhancedOperation, context
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          nameOf(data.operation, 'openapi/response-headers-serializer'),
+          context.nameOf(data.operation, 'openapi/response-headers-serializer'),
           undefined,
           undefined,
           factory.createAsExpression(

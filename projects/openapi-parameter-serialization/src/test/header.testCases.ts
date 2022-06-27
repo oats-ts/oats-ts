@@ -1,4 +1,4 @@
-import { dsl } from '../dsl'
+import { dsl } from '..//dsl'
 import { EnumType } from './model'
 import { HeaderTestCase } from './types'
 

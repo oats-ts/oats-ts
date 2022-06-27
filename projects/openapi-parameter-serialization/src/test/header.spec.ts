@@ -1,10 +1,10 @@
 import * as headerTests from './header.testCases'
 
-import { createHeaderDeserializer } from '../dsl/createHeaderDeserializer'
-import { createHeaderSerializer } from '../dsl/createHeaderSerializer'
+import { createHeaderDeserializer } from '../createHeaderDeserializer'
+import { createHeaderSerializer } from '../createHeaderSerializer'
 import { HeaderTestCase } from './types'
 import { success } from '@oats-ts/try'
-import { RawHeaders } from '../dsl/types'
+import { RawHeaders } from '../types'
 
 describe('header', () => {
   Object.values(headerTests).forEach((test: HeaderTestCase<any>) => {

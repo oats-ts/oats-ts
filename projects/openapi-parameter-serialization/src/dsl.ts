@@ -49,7 +49,7 @@ export const dsl = {
       array: arrayDsl('query', 'pipeDelimited', { explode: true, required: false }),
     },
     deepObject: {
-      array: arrayDsl('query', 'deepObject', { explode: true, required: false }),
+      object: objectDsl('query', 'deepObject', { explode: true, required: false }),
     },
   },
   header: {

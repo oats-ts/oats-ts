@@ -1,8 +1,9 @@
 import { fromRecord, Try } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
-import { HeaderValueDeserializers, RawHeaders, ParameterObject, ParameterValue, HeaderDeserializer } from '../types'
+import { ParameterType, ParameterValue, RawHeaders } from '../..//types'
+import { HeaderValueDeserializers, HeaderDeserializer } from '../types'
 
-export const createHeaderDeserializer = <T extends ParameterObject>(
+export const createHeaderDeserializer = <T extends ParameterType>(
   deserializers: HeaderValueDeserializers<T>,
 ): HeaderDeserializer<T> => {
   return (input: RawHeaders, path: string = 'headers', config: ValidatorConfig = DefaultConfig): Try<T> => {

@@ -1,4 +1,4 @@
-import { entries } from '../utils'
+import { entries } from './utils'
 import { createValueDeserializer } from './createValueDeserializer'
 import { FieldValueDeserializers, PrimitiveRecord, PropertiesDsl } from './types'
 

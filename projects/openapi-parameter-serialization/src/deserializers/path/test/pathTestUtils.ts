@@ -1,9 +1,9 @@
-import { ParameterObject } from '../../types'
+import { ParameterType } from '../../..//types'
 
-export type PathSuccessData<Data extends ParameterObject> = [Data, string]
+export type PathSuccessData<Data extends ParameterType> = [Data, string]
 export type PathErrorData = [string]
 
-export type PathTestData<Data extends ParameterObject> = {
+export type PathTestData<Data extends ParameterType> = {
   data: PathSuccessData<Data>[]
   error: PathErrorData[]
 }

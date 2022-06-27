@@ -1,6 +1,7 @@
 import { Failure, isFailure, Success } from '@oats-ts/try'
 import { DefaultConfig } from '@oats-ts/validators'
-import { Primitive, ValueParser } from '../types'
+import { Primitive } from '../..//types'
+import { ValueParser } from '../types'
 
 export type ValueSuccessData<Input extends Primitive, Output extends Primitive> = [Output, Input]
 export type ValueErrorData<Input extends Primitive> = [Input]

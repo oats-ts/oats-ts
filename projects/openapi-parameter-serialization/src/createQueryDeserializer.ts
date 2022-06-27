@@ -1,7 +1,7 @@
 import { Try, fluent, fromRecord } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
-import { parseRawQuery } from '../deserializers/query/parseRawQuery'
-import { QueryDeserializer } from '../deserializers/types'
+import { parseRawQuery } from './deserializers/query/parseRawQuery'
+import { QueryDeserializer } from './deserializers/types'
 import { createQueryDeserializers } from './createQueryDeserializers'
 import { ParameterType, ParameterValue, QueryDslRoot } from './types'
 

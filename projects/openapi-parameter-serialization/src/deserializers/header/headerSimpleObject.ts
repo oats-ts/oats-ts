@@ -1,6 +1,7 @@
 import { fluent, success, Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { PrimitiveRecord, FieldParsers, HeaderOptions, RawHeaders } from '../types'
+import { DslConfig, PrimitiveRecord, RawHeaders } from '../..//types'
+import { FieldParsers } from '../types'
 import { createDelimitedRecordParser, createKeyValuePairRecordParser, isNil } from '../utils'
 import { getHeaderValue, parseHeadersFromRecord } from './headerUtils'
 
@@ -8,7 +9,7 @@ const parseKeyValuePairRecord = createKeyValuePairRecordParser(',', '=')
 const parseDelimitedRecord = createDelimitedRecordParser(',')
 
 export const headerSimpleObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: HeaderOptions = {}) =>
+  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: Partial<DslConfig> = {}) =>
   (data: RawHeaders, name: string, path: string, config: ValidatorConfig): Try<T> => {
     return fluent(getHeaderValue(name, path, data, options.required))
       .flatMap((rawDataStr: string): Try<Record<string, string> | undefined> => {

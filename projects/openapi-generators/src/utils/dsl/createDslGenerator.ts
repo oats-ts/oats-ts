@@ -4,7 +4,7 @@ import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, SourceFile, SyntaxKind, VariableStatement } from 'typescript'
 import { createSourceFile, getNamedImports } from '@oats-ts/typescript-common'
 import { getParameterTypeGeneratorTarget } from '../parameters/getParameterTypeGeneratorTarget'
-import { getDslObject } from './getDslObject'
+import { getDslObjectAst } from './getDslObjectAst'
 
 const DslTypeMap: Record<ParameterLocation, string> = {
   cookie: RuntimePackages.ParameterSerialization.CookieDsl,
@@ -29,7 +29,7 @@ function createDeserializerConstant(
           factory.createTypeReferenceNode(DslTypeMap[location], [
             context.referenceOf(data.operation, getParameterTypeGeneratorTarget(location)),
           ]),
-          getDslObject(data[location], context),
+          getDslObjectAst(data[location], context),
         ),
       ],
       NodeFlags.Const,

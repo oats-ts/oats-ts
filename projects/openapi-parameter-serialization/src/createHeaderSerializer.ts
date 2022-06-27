@@ -2,7 +2,7 @@ import { HeaderDslRoot, ParameterType } from './types'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { fromRecord, isFailure, isSuccess, Try } from '@oats-ts/try'
 import { createHeaderSerializers } from './createHeaderSerializers'
-import { isNil } from '../common/utils'
+import { isNil } from './common/utils'
 
 export function createHeaderSerializer<T extends ParameterType>(root: HeaderDslRoot<T>) {
   const serializers = createHeaderSerializers(root)

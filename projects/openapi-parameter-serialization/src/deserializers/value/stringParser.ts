@@ -1,6 +1,7 @@
 import { Try, failure } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { Primitive, ValueParser } from '../types'
+import { Primitive } from '../..//types'
+import { ValueParser } from '../types'
 import { identityParser } from './identityParser'
 
 type StringParserFn = {

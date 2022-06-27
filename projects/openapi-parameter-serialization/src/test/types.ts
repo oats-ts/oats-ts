@@ -1,4 +1,4 @@
-import { DslLocation, DslRoot, DslStyle, HeaderStyle, ParameterType, RawHeaders } from '../dsl/types'
+import { DslLocation, DslRoot, DslStyle, HeaderStyle, ParameterType, RawHeaders } from '..//types'
 
 type Nullable<A> = A | undefined | null
 

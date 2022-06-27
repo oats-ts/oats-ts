@@ -1,6 +1,6 @@
 import { Try, success, failure } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { RawQueryParams } from '../types'
+import { RawQueryParams } from '../..//types'
 import { isNil, has } from '../utils'
 
 export function parseRawQuery(query: string, path: string): Try<RawQueryParams> {
@@ -27,7 +27,7 @@ export function parseRawQuery(query: string, path: string): Try<RawQueryParams> 
   } catch (e) {
     return failure([
       {
-        message: e.message,
+        message: (e as Error)?.message,
         path,
         severity: 'error',
         type: IssueTypes.other,

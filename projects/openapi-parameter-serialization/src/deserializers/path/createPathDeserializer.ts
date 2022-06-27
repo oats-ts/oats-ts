@@ -1,9 +1,10 @@
 import { Try, fluent, fromRecord } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
-import { ParameterObject, PathValueDeserializers, ParameterValue, PathDeserializer } from '../types'
+import { ParameterType, ParameterValue } from '../..//types'
+import { PathValueDeserializers, PathDeserializer } from '../types'
 import { parseRawPath } from './parseRawPath'
 
-export const createPathDeserializer = <T extends ParameterObject>(
+export const createPathDeserializer = <T extends ParameterType>(
   parameterNames: string[],
   regex: RegExp,
   deserializers: PathValueDeserializers<T>,

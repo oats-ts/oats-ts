@@ -1,5 +1,5 @@
 import { path } from '../index'
-import { PathValueDeserializers, PathOptions } from '../../types'
+import { PathValueDeserializers } from '../../types'
 import {
   enumParser,
   stringParser,
@@ -10,8 +10,9 @@ import {
   objectFieldParsers,
 } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
+import { DslConfig } from '../../..//types'
 
-function createTypesParsers(config: PathOptions): TypesObject<PathValueDeserializers<any>> {
+function createTypesParsers(config: DslConfig): TypesObject<PathValueDeserializers<any>> {
   return {
     primitive: {
       string: { value: path.matrix.primitive(stringParser, config) },
@@ -36,9 +37,9 @@ function createTypesParsers(config: PathOptions): TypesObject<PathValueDeseriali
 
 export const matrixTestParsers: TestDataObject<PathValueDeserializers<any>> = {
   explode: {
-    required: createTypesParsers({ explode: true }),
+    required: createTypesParsers({ explode: true, required: true }),
   },
   noExplode: {
-    required: createTypesParsers({ explode: false }),
+    required: createTypesParsers({ explode: false, required: true }),
   },
 }

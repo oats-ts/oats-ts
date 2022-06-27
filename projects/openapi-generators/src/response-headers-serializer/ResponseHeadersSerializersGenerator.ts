@@ -8,10 +8,9 @@ import {
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { entries, flatMap, values } from 'lodash'
+import { entries, flatMap } from 'lodash'
 import { factory, Identifier, ImportDeclaration, SourceFile } from 'typescript'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { collectSchemaImports } from '../utils/serializers/collectSchemaImports'
 import { getResponseHeadersSerializerAst } from './getResponseHeadersSerializerAst'
 
 export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGenerator<{}> {
@@ -34,19 +33,17 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(data.operation, this.name())
     const headersByStatus = getResponseHeaders(data.operation, this.context)
-    const parameters = flatMap(values(headersByStatus), (headers) => values(headers))
     return success(
       createSourceFile(
         path,
         [
           getNamedImports(RuntimePackages.ParameterSerialization.name, [
             RuntimePackages.ParameterSerialization.createHeaderSerializer,
-            RuntimePackages.ParameterSerialization.serializers,
+            RuntimePackages.ParameterSerialization.dsl,
           ]),
           ...flatMap(entries(headersByStatus), ([statusCode]) =>
             this.context.dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),
           ),
-          ...collectSchemaImports(path, parameters, this.context),
         ],
         [getResponseHeadersSerializerAst(data, this.context)],
       ),

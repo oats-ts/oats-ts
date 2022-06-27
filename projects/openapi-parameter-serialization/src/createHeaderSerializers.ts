@@ -1,10 +1,10 @@
-import { entries } from '../utils'
+import { entries } from './utils'
 import { Transform, DslConfig, HeaderDslRoot, ParameterType } from './types'
 import { unexpectedStyle, unexpectedType } from './errors'
 
-import { headerSimpleArray } from '../serializers/header/headerSimpleArray'
-import { headerSimpleObject } from '../serializers/header/headerSimpleObject'
-import { headerSimplePrimitive } from '../serializers/header/headerSimplePrimitive'
+import { headerSimpleArray } from './serializers/header/headerSimpleArray'
+import { headerSimpleObject } from './serializers/header/headerSimpleObject'
+import { headerSimplePrimitive } from './serializers/header/headerSimplePrimitive'
 
 export function createHeaderSerializers<T extends ParameterType>(root: HeaderDslRoot<T>) {
   return entries(root).reduce((obj: Record<string, Transform<any, string | undefined>>, [key, dsl]) => {

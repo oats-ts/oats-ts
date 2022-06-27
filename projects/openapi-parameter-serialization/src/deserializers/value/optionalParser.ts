@@ -1,6 +1,7 @@
 import { Try, success } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { Primitive, ValueParser } from '../types'
+import { Primitive } from '../..//types'
+import { ValueParser } from '../types'
 import { isNil } from '../utils'
 
 export const optionalParser =

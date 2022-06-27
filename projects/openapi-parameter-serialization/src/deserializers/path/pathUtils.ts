@@ -1,6 +1,7 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { FieldParsers, Primitive, PrimitiveRecord, RawPathParams } from '../types'
+import { Primitive, PrimitiveRecord, RawPathParams } from '../..//types'
+import { FieldParsers } from '../types'
 import { isNil, decode, mapRecord } from '../utils'
 
 export function getPathValue(name: string, path: string, raw: RawPathParams): Try<string> {
@@ -43,7 +44,7 @@ export function parsePathFromRecord<T extends PrimitiveRecord>(
   const result = mapRecord(
     parserKeys,
     (key): Try<Primitive> => {
-      const parser = parsers[key]
+      const parser = parsers[key as keyof T]
       const value = paramData[key]
       return parser(decode(value), name, config.append(path, key), config)
     },

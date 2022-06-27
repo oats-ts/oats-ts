@@ -1,9 +1,9 @@
 import { ParameterType, ParameterValue, PathDslRoot } from './types'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { fluent, fromRecord, Try } from '@oats-ts/try'
-import { parseRawPath } from '../deserializers/path/parseRawPath'
+import { parseRawPath } from './deserializers/path/parseRawPath'
 import { createPathDeserializers } from './createPathDeserializers'
-import { PathDeserializer } from '../deserializers/types'
+import { PathDeserializer } from './deserializers/types'
 
 export function createPathDeserializer<T extends ParameterType>(
   root: PathDslRoot<T>,
