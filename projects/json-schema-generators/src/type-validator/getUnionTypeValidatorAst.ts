@@ -25,12 +25,11 @@ export function getUnionTypeValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  level: number,
 ): CallExpression | Identifier {
   const properties = (data.oneOf || []).map((item, index) =>
     factory.createPropertyAssignment(
       safeName(getSchemaKey(item, index, context)),
-      getRightHandSideValidatorAst(item, context, config, level),
+      getRightHandSideValidatorAst(item, context, config),
     ),
   )
   const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)

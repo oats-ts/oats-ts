@@ -6,7 +6,7 @@ import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
         enum: array(minLength(1)),
@@ -24,7 +24,7 @@ const validator = object(
       'additionalProperties',
       'required',
     ]),
-  ]),
+  ),
 )
 
 export function enumSchemaObject(

@@ -12,6 +12,7 @@ import { TypeGuardGeneratorConfig } from './typings'
 import { isReferenceObject } from '@oats-ts/model-common'
 import { getLiteralTypeAssertionAst } from './getLiteralTypeAssertionAst'
 import { getTupleTypeAssertionAst } from './getTupleTypeAssertionAst'
+import { getIntersectionTypeAssertionAst } from './getIntersectionTypeAssertionAst'
 
 export function getTypeAssertionAst(
   data: Referenceable<SchemaObject>,
@@ -38,6 +39,8 @@ export function getTypeAssertionAst(
       return getEnumAssertionAst(data, context, variable, config)
     case 'literal':
       return getLiteralTypeAssertionAst(data, context, variable, config)
+    case 'intersection':
+      return getIntersectionTypeAssertionAst(data, context, variable, config, level)
     case 'string':
     case 'number':
     case 'boolean':

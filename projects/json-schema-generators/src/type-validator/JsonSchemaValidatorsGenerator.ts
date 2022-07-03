@@ -38,9 +38,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   public referenceOf(input: Referenceable<SchemaObject>): Expression {
     const schema = this.context.dereference(input)
     const name = this.context.nameOf(schema, 'json-schema/type-validator')
-    return isNil(name)
-      ? getRightHandSideValidatorAst(input, this.context, this.config, 0)
-      : factory.createIdentifier(name)
+    return isNil(name) ? getRightHandSideValidatorAst(input, this.context, this.config) : factory.createIdentifier(name)
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {

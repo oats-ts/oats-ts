@@ -9,11 +9,10 @@ export function getTupleValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  level: number,
 ): CallExpression | Identifier {
   const { prefixItems = [], minItems = 0 } = data
   const parameters = prefixItems.map((item, index) => {
-    const validator = getRightHandSideValidatorAst(item, context, config, level)
+    const validator = getRightHandSideValidatorAst(item, context, config)
     return index < minItems
       ? validator
       : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [validator])

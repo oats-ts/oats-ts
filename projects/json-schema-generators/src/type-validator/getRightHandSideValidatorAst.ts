@@ -12,23 +12,25 @@ import { getArrayValidatorAst } from './getArrayValidatorAst'
 import { getEnumValidatorAst } from './getEnumValidatorAst'
 import { getLiteralValidatorAst } from './getLiteralValidatorAst'
 import { getTupleValidatorAst } from './getTupleValidatorAst'
+import { getIntersectionTypeValidatorAst } from './getIntersectionTypeValidatorAst'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  level: number,
 ): Expression {
   const { uriOf } = context
   if (config.ignore(data, uriOf(data))) {
-    return factory.createIdentifier(RuntimePackages.Validators.any)
+    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
   }
   if (isReferenceObject(data)) {
-    return getReferenceValidatorAst(data, context, config, level)
+    return getReferenceValidatorAst(data, context, config)
   }
   switch (getInferredType(data)) {
     case 'union':
-      return getUnionTypeValidatorAst(data, context, config, level)
+      return getUnionTypeValidatorAst(data, context, config)
+    case 'intersection':
+      return getIntersectionTypeValidatorAst(data, context, config)
     case 'enum':
       return getEnumValidatorAst(data)
     case 'string':
@@ -38,16 +40,16 @@ export function getRightHandSideValidatorAst(
     case 'boolean':
       return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.boolean), [], [])
     case 'record':
-      return getRecordValidatorAst(data, context, config, level)
+      return getRecordValidatorAst(data, context, config)
     case 'object':
-      return getObjectValidatorAst(data, context, config, level)
+      return getObjectValidatorAst(data, context, config)
     case 'array':
-      return getArrayValidatorAst(data, context, config, level)
+      return getArrayValidatorAst(data, context, config)
     case 'literal':
       return getLiteralValidatorAst(data)
     case 'tuple':
-      return getTupleValidatorAst(data, context, config, level)
+      return getTupleValidatorAst(data, context, config)
     default:
-      return factory.createIdentifier(RuntimePackages.Validators.any)
+      return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
   }
 }

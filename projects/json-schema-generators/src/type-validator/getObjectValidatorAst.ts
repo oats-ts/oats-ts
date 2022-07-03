@@ -12,7 +12,6 @@ export function getObjectValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  level: number,
 ): CallExpression | Identifier {
   const discriminators = getDiscriminators(data, context) || {}
   const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
@@ -30,7 +29,7 @@ export function getObjectValidatorAst(
     .filter(([name]) => !has(discriminators, name))
     .map(([name, schema]) => {
       const isOptional = (data.required || []).indexOf(name) < 0
-      const rhs = getRightHandSideValidatorAst(schema, context, config, level + 1)
+      const rhs = getRightHandSideValidatorAst(schema, context, config)
       const value = isOptional
         ? factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [rhs])
         : rhs

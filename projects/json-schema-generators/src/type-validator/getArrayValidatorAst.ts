@@ -9,7 +9,6 @@ export function getArrayValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  level: number,
 ): CallExpression | Identifier {
   const { uriOf } = context
   const itemsSchema = data.items as Referenceable<SchemaObject>
@@ -17,7 +16,7 @@ export function getArrayValidatorAst(
   const itemsValidator = factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.items),
     [],
-    [getRightHandSideValidatorAst(itemsSchema, context, config, level + 1)],
+    [getRightHandSideValidatorAst(itemsSchema, context, config)],
   )
   return factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.array),

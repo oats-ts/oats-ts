@@ -47,5 +47,5 @@ export function getJsonLiteralValidatorAst(data: any): Expression {
   } else if (typeof data === 'object') {
     return objectValidator(data)
   }
-  return factory.createIdentifier(RuntimePackages.Validators.any)
+  return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
 }

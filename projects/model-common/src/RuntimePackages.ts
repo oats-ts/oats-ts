@@ -1,6 +1,7 @@
 const Validators = {
   name: '@oats-ts/validators',
   string: 'string',
+  combine: 'combine',
   enumeration: 'enumeration',
   number: 'number',
   boolean: 'boolean',

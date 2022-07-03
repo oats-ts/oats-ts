@@ -1,5 +1,5 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { CallExpression, Expression, factory, SyntaxKind, TrueLiteral } from 'typescript'
+import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'

@@ -10,7 +10,7 @@ import { referenceable } from './referenceable'
 import { schemaObject } from './schemaObject'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
@@ -19,7 +19,7 @@ const validator = object(
       true,
     ),
     ignore(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'discriminator', 'enum']),
-  ]),
+  ),
 )
 export function nonDiscriminatedSchemaObject(
   input: SchemaObject,

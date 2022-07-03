@@ -9,7 +9,7 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
@@ -18,7 +18,7 @@ const validator = object(
       true,
     ),
     ignore(['discriminator', 'allOf', 'oneOf', 'anyOf', 'not', 'properties', 'required', 'items', 'enum']),
-  ]),
+  ),
 )
 
 export const recordSchemaObject =

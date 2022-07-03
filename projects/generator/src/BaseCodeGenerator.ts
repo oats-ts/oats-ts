@@ -1,7 +1,8 @@
 import { nanoid } from 'nanoid'
-import { fromArray, success, Try } from '@oats-ts/try'
+import { failure, fromArray, success, Try } from '@oats-ts/try'
 import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
 import { BaseGenerator } from './BaseGenerator'
+import { IssueTypes } from '@oats-ts/validators'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
@@ -24,6 +25,25 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     return true
   }
 
+  private async generateWithCatch(): Promise<Try<G[]>> {
+    try {
+      return fromArray(
+        await Promise.all(
+          this.items.filter((model) => this.shouldGenerate(model)).map((model) => this.generateItemInternal(model)),
+        ),
+      )
+    } catch (e) {
+      return failure([
+        {
+          message: `${e}`,
+          path: this.name(),
+          severity: 'error',
+          type: IssueTypes.other,
+        },
+      ])
+    }
+  }
+
   async generate(): Promise<Try<G[]>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
@@ -40,13 +60,7 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
     await this.tick()
 
-    const result = noEmit
-      ? success([])
-      : fromArray(
-          await Promise.all(
-            this.items.filter((model) => this.shouldGenerate(model)).map((model) => this.generateItemInternal(model)),
-          ),
-        )
+    const result = noEmit ? success([]) : await this.generateWithCatch()
 
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',

@@ -35,6 +35,13 @@ function getImportedRefs(
     return
   }
 
+  if (Array.isArray(data.allOf)) {
+    for (const allOfItemSchema of data.allOf) {
+      getImportedRefs(allOfItemSchema, context, config, refs, level)
+    }
+    return
+  }
+
   if (!isNil(data.additionalProperties) && typeof data.additionalProperties !== 'boolean') {
     return getImportedRefs(data.additionalProperties, context, config, refs, level + 1)
   }

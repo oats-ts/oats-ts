@@ -15,10 +15,10 @@ export function getValidatorAst(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          nameOf(schema, "json-schema/type-validator"),
+          nameOf(schema, 'json-schema/type-validator'),
           undefined,
           undefined,
-          getRightHandSideValidatorAst(schema, context, config, 0),
+          getRightHandSideValidatorAst(schema, context, config),
         ),
       ],
       NodeFlags.Const,

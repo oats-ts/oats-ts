@@ -13,7 +13,6 @@ const Http = {
   RawHttpResponse: 'RawHttpResponse',
   ResponseExpectation: 'ResponseExpectation',
   ResponseExpectations: 'ResponseExpectations',
-  StatusCode: 'StatusCode',
   ClientAdapter: 'ClientAdapter',
   ServerAdapter: 'ServerAdapter',
 } as const

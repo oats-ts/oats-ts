@@ -10,7 +10,6 @@ export function getReferenceValidatorAst(
   data: ReferenceObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
-  level: number,
 ): Expression {
   const { dereference, nameOf } = context
   const resolved = dereference(data)
@@ -21,5 +20,5 @@ export function getReferenceValidatorAst(
       factory.createArrowFunction([], [], [], undefined, undefined, validator),
     ])
   }
-  return getRightHandSideValidatorAst(resolved, context, config, level)
+  return getRightHandSideValidatorAst(resolved, context, config)
 }

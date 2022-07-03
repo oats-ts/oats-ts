@@ -1,11 +1,10 @@
 import { head, isNil, keys } from 'lodash'
 import { factory, SyntaxKind, TypeAliasDeclaration, TypeLiteralNode, TypeNode, TypeReferenceNode } from 'typescript'
-import { RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation, getEnhancedResponses } from '@oats-ts/openapi-common'
 
 function createDefaultStatusCodeType(knownStatusCodes: string[]): TypeReferenceNode {
-  const statusCodeTypeRef = factory.createTypeReferenceNode(RuntimePackages.Http.StatusCode)
+  const statusCodeTypeRef = factory.createTypeReferenceNode('number')
 
   const knownStatusCodesType = factory.createUnionTypeNode(
     knownStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),

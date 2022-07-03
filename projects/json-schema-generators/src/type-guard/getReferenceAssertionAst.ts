@@ -1,5 +1,5 @@
 import { ReferenceObject } from '@oats-ts/json-schema-model'
-import { Expression, factory } from 'typescript'
+import { Expression, factory, SyntaxKind } from 'typescript'
 import { TypeGuardGeneratorConfig } from './typings'
 import { isNil } from 'lodash'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
@@ -19,5 +19,8 @@ export function getReferenceAssertionAst(
     // Not increasing level here so named refs can be validated.
     return getTypeAssertionAst(refTarget, context, variable, config, level)
   }
-  return factory.createCallExpression(factory.createIdentifier(name), [], [variable])
+  return factory.createAsExpression(
+    factory.createCallExpression(factory.createIdentifier(name), [], [variable]),
+    factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword),
+  )
 }

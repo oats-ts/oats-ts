@@ -9,7 +9,7 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
         type: optional(literal('array')),
@@ -28,7 +28,7 @@ const validator = object(
       'required',
       'enum',
     ]),
-  ]),
+  ),
 )
 
 export const arraySchemaObject =

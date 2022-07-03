@@ -13,7 +13,6 @@ export type ImportCollector = (
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ) => void
 
 export function collectExternalReferenceImports(
@@ -22,14 +21,13 @@ export function collectExternalReferenceImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   const { dereference, nameOf, uriOf } = context
   const schema = dereference(data)
   if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
     refs.add(uriOf(schema))
   } else {
-    collectImports(schema, config, context, names, refs, level + 1)
+    collectImports(schema, config, context, names, refs)
   }
 }
 
@@ -39,7 +37,6 @@ export function collectReferenceImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   const { nameOf, dereference } = context
   const schema = dereference(data)
@@ -47,7 +44,7 @@ export function collectReferenceImports(
     names.add(RuntimePackages.Validators.lazy)
     refs.add(data.$ref)
   } else {
-    collectImports(schema, config, context, names, refs, level + 1)
+    collectImports(schema, config, context, names, refs)
   }
 }
 
@@ -57,20 +54,32 @@ export function collectUnionImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   names.add(RuntimePackages.Validators.union)
   if (!isNil(data.discriminator)) {
     for (const schemaOrRef of data.oneOf) {
-      collectImports(schemaOrRef, config, context, names, refs, level)
+      collectImports(schemaOrRef, config, context, names, refs)
     }
     if (data.oneOf.length > 0) {
       names.add(RuntimePackages.Validators.lazy)
     }
   } else {
     for (const schemaOrRef of data.oneOf) {
-      collectImports(schemaOrRef, config, context, names, refs, level)
+      collectImports(schemaOrRef, config, context, names, refs)
     }
+  }
+}
+
+export function collectIntersectionImports(
+  data: SchemaObject,
+  config: ValidatorsGeneratorConfig,
+  context: JsonSchemaGeneratorContext,
+  names: Set<string>,
+  refs: Set<string>,
+): void {
+  names.add(RuntimePackages.Validators.combine)
+  for (const schemaOrRef of data.allOf) {
+    collectImports(schemaOrRef, config, context, names, refs)
   }
 }
 
@@ -80,14 +89,13 @@ export function collectRecordImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   names.add(RuntimePackages.Validators.object)
   const { uriOf } = context
   if (!config.ignore(data.additionalProperties as Referenceable<SchemaObject>, uriOf(data.additionalProperties))) {
     names.add(RuntimePackages.Validators.record)
     names.add(RuntimePackages.Validators.string)
-    collectImports(data.additionalProperties as Referenceable<SchemaObject>, config, context, names, refs, level + 1)
+    collectImports(data.additionalProperties as Referenceable<SchemaObject>, config, context, names, refs)
   }
 }
 
@@ -97,7 +105,6 @@ export function collectObjectTypeImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   const discriminators = getDiscriminators(data, context)
   if (values(discriminators).length > 0) {
@@ -109,7 +116,7 @@ export function collectObjectTypeImports(
     if (isOptional) {
       names.add(RuntimePackages.Validators.optional)
     }
-    collectImports(propSchema, config, context, names, refs, level + 1)
+    collectImports(propSchema, config, context, names, refs)
   }
 }
 
@@ -119,13 +126,12 @@ export function collectArrayTypeImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   names.add(RuntimePackages.Validators.array)
   const { uriOf } = context
   if (!config.ignore(data.items as Referenceable<SchemaObject>, uriOf(data.items))) {
     names.add(RuntimePackages.Validators.items)
-    collectImports(data.items as Referenceable<SchemaObject>, config, context, names, refs, level + 1)
+    collectImports(data.items as Referenceable<SchemaObject>, config, context, names, refs)
   }
 }
 
@@ -135,7 +141,6 @@ export function collectTupleImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   const { prefixItems = [], minItems = 0 } = data
   if (minItems < prefixItems.length) {
@@ -143,7 +148,7 @@ export function collectTupleImports(
   }
   names.add(RuntimePackages.Validators.array)
   names.add(RuntimePackages.Validators.tuple)
-  return prefixItems.forEach((item) => collectImports(item, config, context, names, refs, level))
+  return prefixItems.forEach((item) => collectImports(item, config, context, names, refs))
 }
 
 export function collectLiteralImports(data: any, names: Set<string>): void {
@@ -166,7 +171,6 @@ export function collectImports(
   context: JsonSchemaGeneratorContext,
   names: Set<string>,
   refs: Set<string>,
-  level: number,
 ): void {
   const { uriOf } = context
   const type = getInferredType(data)
@@ -175,11 +179,13 @@ export function collectImports(
     return
   }
   if (isReferenceObject(data)) {
-    return collectReferenceImports(data, config, context, names, refs, level)
+    return collectReferenceImports(data, config, context, names, refs)
   }
   switch (type) {
     case 'union':
-      return collectUnionImports(data, config, context, names, refs, level)
+      return collectUnionImports(data, config, context, names, refs)
+    case 'intersection':
+      return collectIntersectionImports(data, config, context, names, refs)
     case 'enum':
       names.add(RuntimePackages.Validators.union)
       data.enum.forEach((value) => collectLiteralImports(value, names))
@@ -197,13 +203,13 @@ export function collectImports(
       names.add(RuntimePackages.Validators.boolean)
       return
     case 'record':
-      return collectRecordImports(data, config, context, names, refs, level)
+      return collectRecordImports(data, config, context, names, refs)
     case 'object':
-      return collectObjectTypeImports(data, config, context, names, refs, level)
+      return collectObjectTypeImports(data, config, context, names, refs)
     case 'array':
-      return collectArrayTypeImports(data, config, context, names, refs, level)
+      return collectArrayTypeImports(data, config, context, names, refs)
     case 'tuple':
-      return collectTupleImports(data, config, context, names, refs, level)
+      return collectTupleImports(data, config, context, names, refs)
     default:
       names.add(RuntimePackages.Validators.any)
       return
@@ -220,7 +226,7 @@ export function getValidatorImports(
   const { dereference } = context
   const nameSet = new Set<string>()
   const refSet = new Set<string>()
-  collector(schema, config, context, nameSet, refSet, 0)
+  collector(schema, config, context, nameSet, refSet)
   const names = Array.from(nameSet)
   const refs = Array.from(refSet)
   return [
