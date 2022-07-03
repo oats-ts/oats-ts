@@ -32,6 +32,10 @@
   },
   "dependencies": {
     "chalk": "4.1.1",
-    "lodash": "4.17.21"
+    "lodash": "4.17.21",
+    "@oats-ts/oats": "0.0.24",
+    "@oats-ts/validators": "0.0.24",
+    "@oats-ts/events": "0.0.24",
+    "@oats-ts/try": "0.0.24"
   }
 }

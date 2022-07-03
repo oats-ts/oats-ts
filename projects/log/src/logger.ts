@@ -1,8 +1,8 @@
 import { OatsEventEmitter } from '@oats-ts/events'
+import { Logger } from '@oats-ts/oats'
 import { isSuccess } from '@oats-ts/try'
 import { isOk, Issue, Severity } from '@oats-ts/validators'
 import { red, green, blue, yellow } from 'chalk'
-import { Logger } from './types'
 
 const x = red('✕')
 const s = green('✔')

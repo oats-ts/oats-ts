@@ -30,7 +30,6 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/log": "0.0.24",
     "@oats-ts/try": "0.0.24",
     "@oats-ts/validators": "0.0.24",
     "@oats-ts/events": "0.0.24",
