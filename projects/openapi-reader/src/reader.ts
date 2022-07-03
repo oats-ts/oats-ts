@@ -8,11 +8,14 @@ import { ReaderEventEmitter } from '@oats-ts/events'
 import { resolveDocument } from './resolveDocument'
 import { tick } from './utils/tick'
 
+const name = '@oats-ts/openapi-reader'
+
 export const reader =
   (config: OpenAPIReadConfig): ContentReader<OpenAPIObject, OpenAPIReadOutput> =>
   async (emitter: ReaderEventEmitter<OpenAPIObject, OpenAPIReadOutput>): Promise<Try<OpenAPIReadOutput>> => {
     emitter.emit('read-step-started', {
       type: 'read-step-started',
+      name,
     })
 
     await tick()
@@ -40,6 +43,7 @@ export const reader =
     emitter.emit('read-step-completed', {
       type: 'read-step-completed',
       issues: [],
+      name,
       data: result,
     })
 

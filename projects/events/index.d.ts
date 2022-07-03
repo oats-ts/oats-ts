@@ -11,14 +11,12 @@ export interface EventEmitter<T extends EventMap> {
   off<K extends EventKey<T>>(eventName: K, fn: EventReceiver<T[K]>): this
   removeListener<K extends EventKey<T>>(eventName: K, fn: EventReceiver<T[K]>): unknown
   emit<K extends EventKey<T>>(eventName: K, params: T[K]): unknown
-  //   once<K extends EventKey<T>>(eventName: K, fn: EventReceiver<T[K]>): unknown
-  //   removeAllListeners<K extends EventKey<T>>(eventName?: K): unknown
-  //   listenerCount<K extends EventKey<T>>(eventName: K): number
-  //   eventNames<K extends EventKey<T>>(): Array<K>
+  removeAllListeners<K extends EventKey<T>>(eventName?: K): unknown
 }
 
 export type ReadStepStarted = {
   type: 'read-step-started'
+  name: string
 }
 
 export type ReadFileStarted = {
@@ -43,6 +41,7 @@ export type ReadFileCompleted<P> = {
 export type ReadStepCompleted<R> = {
   type: 'read-step-completed'
   data: Try<R>
+  name: string
   issues: Issue[]
 }
 
@@ -54,6 +53,7 @@ export type ReadEvent<P, R> =
   | ReadStepCompleted<R>
 
 export type ValidatorStepStarted = {
+  name: string
   type: 'validator-step-started'
 }
 
@@ -72,6 +72,7 @@ export type ValidateFileCompleted<P> = {
 
 export type ValidatorStepCompleted = {
   type: 'validate-step-completed'
+  name: string
   issues: Issue[]
 }
 
@@ -82,6 +83,7 @@ export type ValidatorEvent<P> =
   | ValidatorStepCompleted
 
 export type GeneratorStepStarted = {
+  name: string
   type: 'generator-step-started'
 }
 
@@ -111,6 +113,7 @@ export type GeneratorCompleted<G> = {
 export type GeneratorStepCompleted<G> = {
   type: 'generator-step-completed'
   data: Try<G[]>
+  name: string
   issues: Issue[]
 }
 
@@ -122,6 +125,7 @@ export type GeneratorEvent<G> =
   | GeneratorStepCompleted<G>
 
 export type WriterStepStarted = {
+  name: string
   type: 'writer-step-started'
 }
 
@@ -139,6 +143,7 @@ export type WriteFileCompleted<G> = {
 export type WriterStepCompleted<G> = {
   type: 'writer-step-completed'
   data: Try<G[]>
+  name: string
   issues: Issue[]
 }
 
@@ -180,4 +185,4 @@ export type ReaderEventEmitter<P, R> = EventEmitter<ReadEventMap<P, R>>
 export type ValidatorEventEmitter<P> = EventEmitter<ValidatorEventMap<P>>
 export type GeneratorEventEmitter<G> = EventEmitter<GeneratorEventMap<G>>
 export type WriterEventEmitter<G> = EventEmitter<WriterEventMap<G>>
-export type OatsEventEmitter<P, R, G> = EventEmitter<OatsEventMap<P, R, G>>
+export type OatsEventEmitter<P = any, R = any, G = any> = EventEmitter<OatsEventMap<P, R, G>>

@@ -7,6 +7,8 @@ import { fluent, fromArray, fromPromise, fromPromiseSettledResult, isFailure, su
 import { ContentWriter } from '@oats-ts/oats'
 import { WriterEventEmitter } from '@oats-ts/events'
 
+const name = '@oats-ts/typescript-writer'
+
 async function writeSourceFile(file: SourceFile, config: TypeScriptWriterConfig): Promise<SourceFile> {
   const source = await stringify(file, config.comments)
   const formattedSource = isNil(config.format) ? source : config.format(source)
@@ -40,6 +42,7 @@ export const writer =
   async (files: SourceFile[], emitter: WriterEventEmitter<SourceFile>): Promise<Try<SourceFile[]>> => {
     emitter.emit('writer-step-started', {
       type: 'writer-step-started',
+      name,
     })
 
     const cfg = defaultTypeScriptWriterConfig(config)
@@ -53,6 +56,7 @@ export const writer =
     emitter.emit('writer-step-completed', {
       type: 'writer-step-completed',
       data: output,
+      name,
       issues: [],
     })
 

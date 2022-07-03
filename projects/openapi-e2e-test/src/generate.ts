@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import { promises as fs } from 'fs'
 import { join, parse } from 'path'
 import { generate } from '@oats-ts/oats'
+import { logger } from '@oats-ts/log'
 import {
   formatters,
   validator,
@@ -48,6 +49,7 @@ export async function generateCode(path: string) {
   const url = getSchemaUrl(path)
   try {
     await generate({
+      logger: logger(),
       validator: validator(),
       reader: readers.https.json(url),
       generator: generator({
@@ -84,7 +86,6 @@ export async function generateCode(path: string) {
         },
       }),
     })
-    console.log('ok', codePath, url)
   } catch (e) {
     console.error(codePath, url)
     console.error('thrown', e, typeof e)
@@ -94,9 +95,8 @@ export async function generateCode(path: string) {
 async function generateAll() {
   await fs.rm(PATH, { force: true, recursive: true })
   const files = await getFiles(['schemas', 'generated-schemas'])
-  console.log(files)
   for (const path of files) {
-    console.log(`===\ngenerating ${path}\n===`)
+    console.log(path)
     await generateCode(path)
   }
 }

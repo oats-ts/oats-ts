@@ -6,16 +6,19 @@ import { OpenAPIGenerator, RootGeneratorConfig } from './types'
 import { GroupGenerator } from './group/GroupGenerator'
 import { flattenChildren } from './utils/flattenChildren'
 
+const name = '@oats-ts/openapi-generators'
+
 export const generator =
   (config: RootGeneratorConfig) =>
   (...children: (OpenAPIGenerator | OpenAPIGenerator[])[]): ContentGenerator<OpenAPIReadOutput, SourceFile> =>
   async (input: OpenAPIReadOutput, emitter: GeneratorEventEmitter<SourceFile>) => {
     emitter.emit('generator-step-started', {
       type: 'generator-step-started',
+      name,
     })
 
-    const { name, ...globalConfig } = config
-    const generator = new GroupGenerator(name ?? 'root', flattenChildren(children))
+    const { name: genName, ...globalConfig } = config
+    const generator = new GroupGenerator(genName ?? 'root', flattenChildren(children))
 
     generator.initialize({
       globalConfig,
@@ -30,6 +33,7 @@ export const generator =
     emitter.emit('generator-step-completed', {
       type: 'generator-step-completed',
       data: result,
+      name,
       issues: [],
     })
 

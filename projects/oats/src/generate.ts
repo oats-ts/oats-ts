@@ -4,8 +4,11 @@ import { OatsEventEmitter } from '@oats-ts/events'
 import { GeneratorInput } from './typings'
 
 export async function generate<P, R, G>(input: GeneratorInput<P, R, G>): Promise<Try<G[]>> {
-  const { reader, generator, writer, validator } = input
+  const { reader, generator, writer, validator, logger } = input
   const emitter: OatsEventEmitter<P, R, G> = new EventEmitter()
+
+  // Log
+  logger?.(emitter)
 
   // Read
   const readResult = await reader(emitter)

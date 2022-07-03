@@ -9,6 +9,8 @@ import { ValidatorEventEmitter } from '@oats-ts/events'
 import { tick } from './utils/tick'
 import { validateDocument } from './validateDocument'
 
+const name = '@oats-ts/openapi-validator'
+
 export function validator(
   configuration: Partial<OpenAPIValidatorConfig> = {},
 ): ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
@@ -18,6 +20,7 @@ export function validator(
   ): Promise<Try<OpenAPIReadOutput>> {
     emitter.emit('validator-step-started', {
       type: 'validator-step-started',
+      name,
     })
 
     await tick()
@@ -33,6 +36,7 @@ export function validator(
 
     emitter.emit('validator-step-completed', {
       type: 'validate-step-completed',
+      name,
       issues: isSuccess(results) ? [] : results.issues,
     })
 

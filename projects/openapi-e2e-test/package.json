@@ -23,6 +23,7 @@
   "dependencies": {
     "@oats-ts/oats": "0.0.24",
     "@oats-ts/openapi": "0.0.24",
+    "@oats-ts/log": "0.0.24",
     "@oats-ts/openapi-reader": "0.0.24",
     "@oats-ts/openapi-model": "0.0.24",
     "@oats-ts/json-schema-model": "0.0.24",
