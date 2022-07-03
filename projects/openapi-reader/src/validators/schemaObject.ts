@@ -1,5 +1,18 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { boolean, shape, object, optional, string, number, array, items, any, record, union } from '@oats-ts/validators'
+import {
+  boolean,
+  shape,
+  object,
+  optional,
+  string,
+  number,
+  array,
+  items,
+  any,
+  record,
+  union,
+  literal,
+} from '@oats-ts/validators'
 
 export const schemaObject = object(
   shape<SchemaObject>(
@@ -32,7 +45,12 @@ export const schemaObject = object(
           boolean: boolean(),
         }),
       ),
-      additionalProperties: optional(object()),
+      additionalProperties: optional(
+        union({
+          schema: object(),
+          false: literal(false),
+        }),
+      ),
       default: optional(any()),
       examples: optional(array()),
       externalDocs: optional(object()),
