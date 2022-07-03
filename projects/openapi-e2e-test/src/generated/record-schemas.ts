@@ -91,7 +91,11 @@ export function isObjectRecordType(input: any): input is ObjectRecordType {
 }
 
 export function isRefRecordType(input: any): input is RefRecordType {
-  return input !== null && typeof input === 'object' && Object.keys(input).every((key) => isReferenceTarget(input[key]))
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    Object.keys(input).every((key) => isReferenceTarget(input[key]) as boolean)
+  )
 }
 
 export function isReferenceTarget(input: any): input is ReferenceTarget {

@@ -26,6 +26,18 @@ type FileDescriptor = {
   url: string
 }
 
+type ExternalFile = {
+  url: string
+  fileName: string
+}
+
+const externals: ExternalFile[] = [
+  {
+    url: 'https://api.apis.guru/v2/specs/1password.com/events/1.0.0/openapi.json',
+    fileName: '1password.json',
+  },
+]
+
 export async function getFiles(folders: string[]): Promise<string[]> {
   const response = await fetch(`https://api.github.com/repos/${REPO}/git/trees/master?recursive=true`)
   const tree = ((await response.json()) as any).tree as FileDescriptor[]
@@ -44,9 +56,7 @@ function getCodePath(path: string): string {
   return join(PATH, `${parse(path).name}.ts`)
 }
 
-export async function generateCode(path: string) {
-  const codePath = getCodePath(path)
-  const url = getSchemaUrl(path)
+export async function generateCode(url: string, codePath: string) {
   try {
     await generate({
       logger: logger(),
@@ -97,7 +107,12 @@ async function generateAll() {
   const files = await getFiles(['schemas', 'generated-schemas'])
   for (const path of files) {
     console.log(path)
-    await generateCode(path)
+    await generateCode(getSchemaUrl(path), getCodePath(path))
+  }
+
+  for (const { fileName, url } of externals) {
+    console.log(url)
+    await generateCode(url, getCodePath(fileName))
   }
 }
 

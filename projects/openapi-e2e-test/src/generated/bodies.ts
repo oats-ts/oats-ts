@@ -112,7 +112,7 @@ export function isObjectWithArrays(input: any): input is ObjectWithArrays {
     Array.isArray(input.boolArr) &&
     input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.enmArr) &&
-    input.enmArr.every((item: any) => isEnumType(item)) &&
+    input.enmArr.every((item: any) => isEnumType(item) as boolean) &&
     Array.isArray(input.numArr) &&
     input.numArr.every((item: any) => typeof item === 'number') &&
     Array.isArray(input.strArr) &&
@@ -124,8 +124,8 @@ export function isObjectWithNestedObjects(input: any): input is ObjectWithNested
   return (
     input !== null &&
     typeof input === 'object' &&
-    isObjectWithArrays(input.arrObj) &&
-    isObjectWithPrimitives(input.primObj)
+    (isObjectWithArrays(input.arrObj) as boolean) &&
+    (isObjectWithPrimitives(input.primObj) as boolean)
   )
 }
 
@@ -134,7 +134,7 @@ export function isObjectWithPrimitives(input: any): input is ObjectWithPrimitive
     input !== null &&
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
-    isEnumType(input.enm) &&
+    (isEnumType(input.enm) as boolean) &&
     input.lit === 'Literal Value' &&
     typeof input.num === 'number' &&
     typeof input.str === 'string'
@@ -147,7 +147,7 @@ export function isPrimitiveOptionalTupleType(input: any): input is PrimitiveOpti
     (input[0] === null || input[0] === undefined || input[0] === 'Literal Value') &&
     (input[1] === null || input[1] === undefined || typeof input[1] === 'string') &&
     (input[2] === null || input[2] === undefined || typeof input[2] === 'number') &&
-    (input[3] === null || input[3] === undefined || isEnumType(input[3])) &&
+    (input[3] === null || input[3] === undefined || (isEnumType(input[3]) as boolean)) &&
     (input[4] === null || input[4] === undefined || typeof input[4] === 'boolean')
   )
 }
@@ -158,7 +158,7 @@ export function isPrimitiveTupleType(input: any): input is PrimitiveTupleType {
     input[0] === 'Literal Value' &&
     typeof input[1] === 'string' &&
     typeof input[2] === 'number' &&
-    isEnumType(input[3]) &&
+    (isEnumType(input[3]) as boolean) &&
     typeof input[4] === 'boolean'
   )
 }
