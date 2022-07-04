@@ -1,10 +1,10 @@
 import { fluent, Try } from '@oats-ts/try'
-import { HeaderOptions, PrimitiveRecord, HeaderSerializer } from '../types'
-import { encode, entries, isNil } from '../utils'
+import { DslConfig, HeaderParameterSerializer, PrimitiveRecord } from '../../types'
+import { encode, entries, isNil } from '../../utils'
 import { getHeaderValue } from './headerUtils'
 
 export const headerSimpleObject =
-  <T extends PrimitiveRecord>(options: HeaderOptions = {}): HeaderSerializer<T> =>
+  <T extends PrimitiveRecord>(options: Partial<DslConfig> = {}): HeaderParameterSerializer<T> =>
   (data: T, name: string, path: string): Try<string | undefined> => {
     return fluent(getHeaderValue(path, data, options))
       .map((value) => {
@@ -13,7 +13,7 @@ export const headerSimpleObject =
         }
         const kvPairs = entries(value)
           .filter(([, value]) => !isNil(value))
-          .map(([key, value]): [string, string] => [encode(key), encode(value)])
+          .map(([key, value]): [string, string] => [encode(key), encode(value?.toString())])
         if (options.explode) {
           return kvPairs.map(([key, value]) => `${key}=${value}`).join(',')
         }

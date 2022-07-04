@@ -1,17 +1,16 @@
 import { Try, failure } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { Primitive } from '../..//types'
-import { ValueParser } from '../types'
+import { Primitive, ValueDeserializer } from '../../types'
 import { identityParser } from './identityParser'
 
 type NumberParserFn = {
-  <T extends Primitive>(parser: ValueParser<number, T>): ValueParser<string, T>
-  (): ValueParser<string, number>
+  <T extends Primitive>(parser: ValueDeserializer<number, T>): ValueDeserializer<string, T>
+  (): ValueDeserializer<string, number>
 }
 
 export const numberParser: NumberParserFn =
-  <T extends Primitive>(parser: ValueParser<number, any> = identityParser): ValueParser<string, T> =>
-  (value: string, name: string, path: string, config: ValidatorConfig): Try<T> => {
+  <T extends Primitive>(parser: ValueDeserializer<number, any> = identityParser): ValueDeserializer<string, T> =>
+  (value: string | undefined, name: string, path: string, config: ValidatorConfig): Try<T> => {
     if (typeof value !== 'string') {
       return failure([
         {

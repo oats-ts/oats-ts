@@ -8,15 +8,14 @@ import { spaceDelimitedTestParsers } from './spaceDelimitedTestParsers'
 import { spaceDelimitedTestData } from './spaceDelimitedTestData'
 
 import { createQueryDeserializer } from '../createQueryDeserializer'
-import { QueryValueDeserializers } from '../../types'
 import { createTestSuiteFactory } from '../../test/testUtils'
 import { QueryTestData } from './queryTestUtils'
 import { isFailure, Success } from '@oats-ts/try'
-import { ParameterType } from '../../..//types'
+import { ParameterType, QueryDeserializers } from '../../../types'
 
 export const createQueryParserTest = <Data extends ParameterType>(
   name: string,
-  config?: QueryValueDeserializers<Data>,
+  config?: QueryDeserializers<Data>,
   data?: QueryTestData<Data>,
 ): void => {
   if (config === undefined || data === undefined) {

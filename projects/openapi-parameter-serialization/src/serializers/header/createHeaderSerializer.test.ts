@@ -1,6 +1,6 @@
 import { Success } from '@oats-ts/try'
 import { header } from '.'
-import { HeaderSerializers } from '../types'
+import { HeaderSerializers } from '../../types'
 import { createHeaderSerializer } from './createHeaderSerializer'
 
 type HeaderParams = {

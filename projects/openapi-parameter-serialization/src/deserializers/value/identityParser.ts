@@ -1,4 +1,4 @@
 import { success } from '@oats-ts/try'
-import { ValueParser } from '../types'
+import { ValueDeserializer } from '../../types'
 
-export const identityParser: ValueParser<any, any> = <T>(value: T) => success(value)
+export const identityParser: ValueDeserializer<any, any> = <T>(value: T) => success(value)

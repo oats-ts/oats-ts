@@ -1,10 +1,13 @@
-import { ParameterObject, PathSerializers } from '../types'
 import { validatePathSerializers } from './pathUtils'
 import { fluent, fromRecord, Try } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
-import { parsePathToSegments } from '../../common'
+import { parsePathToSegments } from '../../parsePathToSegments'
+import { ParameterType, PathSerializer, PathSerializers } from '../../types'
 
-export const createPathSerializer = <T extends ParameterObject>(path: string, serializers: PathSerializers<T>) => {
+export const createPathSerializer = <T extends ParameterType>(
+  path: string,
+  serializers: PathSerializers<T>,
+): PathSerializer<T> => {
   const segments = parsePathToSegments(path)
   validatePathSerializers(segments, serializers)
   return (input: T, path: string = 'path', config: ValidatorConfig = DefaultConfig): Try<string> => {

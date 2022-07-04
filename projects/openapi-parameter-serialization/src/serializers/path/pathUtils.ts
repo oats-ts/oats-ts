@@ -1,8 +1,7 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { ParameterSegment, PathSegment } from '../../common'
-import { ParameterValue, PathOptions, Primitive, PrimitiveRecord, PathSerializers } from '../types'
-import { isNil } from '../utils'
+import { ParameterSegment, ParameterValue, PathSegment, PathSerializers, Primitive, PrimitiveRecord } from '../../types'
+import { isNil } from '../../utils'
 
 export function validatePathArray<T extends Primitive>(path: string, input: ReadonlyArray<T>): Try<ReadonlyArray<T>> {
   switch (input.length) {
@@ -69,7 +68,7 @@ export function validatePathPrimitive<T extends Primitive>(path: string, input: 
   }
 }
 
-export function getPathValue<T extends ParameterValue>(path: string, value: T, options: PathOptions): Try<T> {
+export function getPathValue<T extends ParameterValue>(path: string, value: T): Try<T> {
   if (!isNil(value)) {
     return success(value)
   }

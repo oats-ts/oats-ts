@@ -1,5 +1,5 @@
-import { Primitive } from '../types'
-import { encode, isNil } from '../utils'
+import { Primitive } from '../../types'
+import { encode, isNil } from '../../utils'
 
 export function joinKeyValuePairs(
   prefix: string,
@@ -11,7 +11,7 @@ export function joinKeyValuePairs(
     .filter(([, value]) => !isNil(value))
     .map(([key, value]) => {
       const keyStr = encode(key)
-      const valStr = encode(value)
+      const valStr = encode(value?.toString())
       return `${keyStr}${kvSeparator}${valStr}`
     })
     .join(separator)

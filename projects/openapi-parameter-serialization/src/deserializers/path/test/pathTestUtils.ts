@@ -1,4 +1,4 @@
-import { ParameterType } from '../../..//types'
+import { ParameterType } from '../../../types'
 
 export type PathSuccessData<Data extends ParameterType> = [Data, string]
 export type PathErrorData = [string]

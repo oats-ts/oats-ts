@@ -1,11 +1,10 @@
 import { Try, failure, success, isSuccess } from '@oats-ts/try'
 import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { DslConfig, Primitive, PrimitiveRecord, RawQueryParams } from '../..//types'
-import { FieldParsers } from '../types'
-import { decode, isNil } from '../utils'
+import { DslConfig, FieldValueDeserializers, Primitive, PrimitiveRecord, RawQueryParams } from '../../types'
+import { decode, isNil } from '../../utils'
 
 export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
-  parsers: FieldParsers<T>,
+  parsers: FieldValueDeserializers<T>,
   options: DslConfig,
   name: string,
   path: string,

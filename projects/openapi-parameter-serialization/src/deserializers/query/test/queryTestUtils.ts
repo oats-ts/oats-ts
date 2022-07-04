@@ -1,4 +1,4 @@
-import { ParameterType } from '../../..//types'
+import { ParameterType } from '../../../types'
 
 export type QuerySuccessData<Data extends ParameterType> = [Data, string]
 export type QueryErrorData = [string]

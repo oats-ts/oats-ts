@@ -1,15 +1,20 @@
 import { fluent, Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { PrimitiveRecord, RawPathParams } from '../..//types'
-import { PathOptions } from '../../serializers/types'
-import { FieldParsers, PathValueDeserializer } from '../types'
-import { createDelimitedRecordParser, createKeyValuePairRecordParser, encode } from '../utils'
+import {
+  DslConfig,
+  FieldValueDeserializers,
+  PathParameterDeserializer,
+  PrimitiveRecord,
+  RawPathParams,
+} from '../../types'
+import { encode } from '../../utils'
+import { createDelimitedRecordParser, createKeyValuePairRecordParser } from '../utils'
 import { getPathValue, getPrefixedValue, parsePathFromRecord } from './pathUtils'
 
 export const pathMatrixObject = <T extends PrimitiveRecord>(
-  parsers: FieldParsers<T>,
-  options: PathOptions = {},
-): PathValueDeserializer<T> => {
+  parsers: FieldValueDeserializers<T>,
+  options: Partial<DslConfig> = {},
+): PathParameterDeserializer<T> => {
   const parseRecord = options.explode ? createKeyValuePairRecordParser(';', '=') : createDelimitedRecordParser(',')
   return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
     const prefix = options.explode ? ';' : `;${encode(name)}=`
@@ -17,6 +22,6 @@ export const pathMatrixObject = <T extends PrimitiveRecord>(
       .flatMap((pathValue) => getPrefixedValue(path, pathValue, prefix))
       .flatMap((rawValue) => parseRecord(rawValue, path))
       .flatMap((rawRecord) => parsePathFromRecord(parsers, rawRecord, name, path, config))
-      .toTry()
+      .toTry() as Try<T>
   }
 }

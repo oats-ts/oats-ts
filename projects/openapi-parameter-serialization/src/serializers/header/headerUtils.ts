@@ -1,12 +1,12 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { HeaderOptions, ParameterValue } from '../types'
-import { isNil } from '../utils'
+import { DslConfig, ParameterValue } from '../../types'
+import { isNil } from '../../utils'
 
 export function getHeaderValue<T extends ParameterValue>(
   path: string,
   value: T | undefined,
-  options: HeaderOptions,
+  options: Partial<DslConfig>,
 ): Try<T | undefined> {
   if (!isNil(value)) {
     return success(value)

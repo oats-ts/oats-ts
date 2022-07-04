@@ -1,12 +1,12 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { ParameterValue, QueryOptions } from '../types'
-import { isNil } from '../utils'
+import { DslConfig, ParameterValue } from '../../types'
+import { isNil } from '../../utils'
 
 export function getQueryValue<T extends ParameterValue>(
   path: string,
   value: T | undefined,
-  options: QueryOptions,
+  options: Partial<DslConfig>,
 ): Try<T> {
   if (!isNil(value)) {
     return success(value)

@@ -1,8 +1,7 @@
-import { HeaderDslRoot, ParameterType, ParameterValue, RawHeaders } from './types'
+import { HeaderDeserializer, HeaderDslRoot, ParameterType, ParameterValue, RawHeaders } from './types'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { fromRecord, Try } from '@oats-ts/try'
 import { createHeaderDeserializers } from './createHeaderDeserializers'
-import { HeaderDeserializer } from './deserializers/types'
 
 export function createHeaderDeserializer<T extends ParameterType>(root: HeaderDslRoot<T>): HeaderDeserializer<T> {
   const deserializers = createHeaderDeserializers(root)

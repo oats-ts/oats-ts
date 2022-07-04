@@ -1,6 +1,6 @@
 import { Failure, Success, Try } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
-import { QueryOptions, ParameterValue, PathOptions, HeaderOptions } from './types'
+import { DslConfig, ParameterValue } from '../types'
 
 export type SerialzerCreator<Result, Options> = (
   options: Options,
@@ -13,17 +13,17 @@ export type TestData<Result, Options> = {
   error: TestErrorInput<Options>[]
 }
 
-export type QueryTestDataInput = TestDataInput<string[], QueryOptions>
-export type QueryTestErrorInput = TestErrorInput<QueryOptions>
-export type QueryTestData = TestData<string[], QueryOptions>
+export type QueryTestDataInput = TestDataInput<string[], Partial<DslConfig>>
+export type QueryTestErrorInput = TestErrorInput<Partial<DslConfig>>
+export type QueryTestData = TestData<string[], Partial<DslConfig>>
 
-export type PathTestDataInput = TestDataInput<string, PathOptions>
-export type PathTestErrorInput = TestErrorInput<PathOptions>
-export type PathTestData = TestData<string, PathOptions>
+export type PathTestDataInput = TestDataInput<string, Partial<DslConfig>>
+export type PathTestErrorInput = TestErrorInput<Partial<DslConfig>>
+export type PathTestData = TestData<string, Partial<DslConfig>>
 
-export type HeaderTestDataInput = TestDataInput<string, HeaderOptions>
-export type HeaderTestErrorInput = TestErrorInput<HeaderOptions>
-export type HeaderTestData = TestData<string, HeaderOptions>
+export type HeaderTestDataInput = TestDataInput<string, Partial<DslConfig>>
+export type HeaderTestErrorInput = TestErrorInput<Partial<DslConfig>>
+export type HeaderTestData = TestData<string, Partial<DslConfig>>
 
 export function createSerializerTest<Result, Options>(
   name: string,

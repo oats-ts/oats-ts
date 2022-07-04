@@ -1,8 +1,7 @@
 import { Try, success, fluent, fromArray } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { DslConfig, Primitive, RawQueryParams } from '../..//types'
-import { ValueParser } from '../types'
-import { decode, isNil } from '../utils'
+import { DslConfig, Primitive, QueryParameterDeserializer, RawQueryParams, ValueDeserializer } from '../../types'
+import { decode, isNil } from '../../utils'
 import { getQueryValue } from './queryUtils'
 
 function getValues(delimiter: string, options: DslConfig, name: string, path: string, data: RawQueryParams) {
@@ -16,7 +15,10 @@ function getValues(delimiter: string, options: DslConfig, name: string, path: st
 
 export const queryDelimitedArray =
   (delimiter: string) =>
-  <T extends Primitive>(parse: ValueParser<string, T>, opts: Partial<DslConfig> = {}) =>
+  <T extends Primitive>(
+    parse: ValueDeserializer<string, T>,
+    opts: Partial<DslConfig> = {},
+  ): QueryParameterDeserializer<T[]> =>
   (data: RawQueryParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     const options: DslConfig = { explode: true, required: false, ...opts }
     return getValues(delimiter, options, name, path, data)

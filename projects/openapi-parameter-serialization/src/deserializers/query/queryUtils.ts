@@ -1,6 +1,6 @@
 import { Try, failure, success } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { DslConfig, RawQueryParams } from '../..//types'
+import { DslConfig, RawQueryParams } from '../../types'
 
 export function getQueryValue(
   name: string,

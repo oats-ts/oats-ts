@@ -1,17 +1,16 @@
 import { Try, failure } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { Primitive } from '../..//types'
-import { ValueParser } from '../types'
+import { Primitive, ValueDeserializer } from '../../types'
 import { identityParser } from './identityParser'
 
 type BooleanParserFn = {
-  <T extends Primitive>(parser: ValueParser<boolean, T>): ValueParser<string, T>
-  (): ValueParser<string, boolean>
+  <T extends Primitive>(parser: ValueDeserializer<boolean, T>): ValueDeserializer<string, T>
+  (): ValueDeserializer<string, boolean>
 }
 
 export const booleanParser: BooleanParserFn =
-  <T extends Primitive>(parser: ValueParser<boolean, any> = identityParser): ValueParser<string, T> =>
-  (value: string, name: string, path: string, config: ValidatorConfig): Try<T> => {
+  <T extends Primitive>(parser: ValueDeserializer<boolean, any> = identityParser): ValueDeserializer<string, T> =>
+  (value: string | undefined, name: string, path: string, config: ValidatorConfig): Try<T> => {
     if (value !== 'true' && value !== 'false') {
       return failure([
         {

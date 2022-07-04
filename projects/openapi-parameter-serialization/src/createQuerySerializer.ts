@@ -1,9 +1,9 @@
 import { Try, fluent, fromArray } from '@oats-ts/try'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { createQuerySerializers } from './createQuerySerializers'
-import { ParameterType, QueryDslRoot } from './types'
+import { ParameterType, QueryDslRoot, QuerySerializer } from './types'
 
-export function createQuerySerializer<T extends ParameterType>(dsl: QueryDslRoot<T>) {
+export function createQuerySerializer<T extends ParameterType>(dsl: QueryDslRoot<T>): QuerySerializer<T> {
   const serializers = createQuerySerializers(dsl)
   return function querySerializer(
     input: T,

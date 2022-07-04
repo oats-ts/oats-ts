@@ -1,12 +1,11 @@
 import { failure, fluent, fromArray, Try } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { DslConfig, Primitive, RawPathParams } from '../..//types'
-import { ValueParser, PathValueDeserializer } from '../types'
-import { decode, encode } from '../utils'
+import { DslConfig, PathParameterDeserializer, Primitive, RawPathParams, ValueDeserializer } from '../../types'
+import { decode, encode } from '../../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
 
 function pathMatrixArrayExplode<T extends Primitive>(
-  parse: ValueParser<string, T>,
+  parse: ValueDeserializer<string, T>,
   data: RawPathParams,
   name: string,
   path: string,
@@ -47,7 +46,7 @@ function pathMatrixArrayExplode<T extends Primitive>(
 }
 
 function pathMatrixArrayNoExplode<T extends Primitive>(
-  parse: ValueParser<string, T>,
+  parse: ValueDeserializer<string, T>,
   data: RawPathParams,
   name: string,
   path: string,
@@ -64,7 +63,10 @@ function pathMatrixArrayNoExplode<T extends Primitive>(
 }
 
 export const pathMatrixArray =
-  <T extends Primitive>(parse: ValueParser<string, T>, options: Partial<DslConfig> = {}): PathValueDeserializer<T[]> =>
+  <T extends Primitive>(
+    parse: ValueDeserializer<string, T>,
+    options: Partial<DslConfig> = {},
+  ): PathParameterDeserializer<T[]> =>
   (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     const delegate = options.explode ? pathMatrixArrayExplode : pathMatrixArrayNoExplode
     return delegate(parse, data, name, path, config)

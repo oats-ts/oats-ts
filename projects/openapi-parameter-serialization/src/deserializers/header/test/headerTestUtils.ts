@@ -1,4 +1,4 @@
-import { ParameterType, RawHeaders } from '../../..//types'
+import { ParameterType, RawHeaders } from '../../../types'
 
 export type HeaderSuccessData<Data extends ParameterType> = [Data, RawHeaders]
 export type HeaderErrorData = [RawHeaders]

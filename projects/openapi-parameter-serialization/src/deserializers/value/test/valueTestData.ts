@@ -1,5 +1,5 @@
+import { FieldValueDeserializers } from '../../../types'
 import { EnumType, LiteralType, ObjType, OptObjType } from '../../test/testTypes'
-import { FieldParsers } from '../../types'
 import { value } from '../index'
 import { ValueErrorData, ValueSuccessData, ValueTestData } from '../value.testutils'
 
@@ -15,7 +15,7 @@ export const optionalBooleanParser = value.optional(booleanParser)
 export const optionalLiteralParser = value.optional(literalParser)
 export const optionalEnumParser = value.optional(enumParser)
 
-export const objectFieldParsers: FieldParsers<ObjType> = {
+export const objectFieldParsers: FieldValueDeserializers<ObjType> = {
   s: stringParser,
   n: numberParser,
   b: booleanParser,
@@ -23,7 +23,7 @@ export const objectFieldParsers: FieldParsers<ObjType> = {
   e: enumParser,
 }
 
-export const optionalObjectFieldParsers: FieldParsers<OptObjType> = {
+export const optionalObjectFieldParsers: FieldValueDeserializers<OptObjType> = {
   s: optionalStringParser,
   n: optionalNumberParser,
   b: optionalBooleanParser,

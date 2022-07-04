@@ -1,7 +1,6 @@
 import { Failure, isFailure, Success } from '@oats-ts/try'
 import { DefaultConfig } from '@oats-ts/validators'
-import { Primitive } from '../..//types'
-import { ValueParser } from '../types'
+import { Primitive, ValueDeserializer } from '../../types'
 
 export type ValueSuccessData<Input extends Primitive, Output extends Primitive> = [Output, Input]
 export type ValueErrorData<Input extends Primitive> = [Input]
@@ -14,7 +13,7 @@ export type ValueTestData<Input extends Primitive, Output extends Primitive> = {
 export const createValueParserTest = <Input extends Primitive, Output extends Primitive>(
   name: string,
   data: ValueTestData<Input, Output>,
-  parser: ValueParser<Input, Output>,
+  parser: ValueDeserializer<Input, Output>,
 ): void => {
   describe(name, () => {
     if (data.data.length > 0) {

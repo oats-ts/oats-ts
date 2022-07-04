@@ -1,10 +1,9 @@
 import { query } from '../index'
-import { QueryValueDeserializers } from '../../types'
 import { optionalObjectFieldParsers, objectFieldParsers } from '../../value/test/valueTestData'
 import { TestDataObject, TypesObject } from '../../test/testTypes'
-import { DslConfig } from '../../..//types'
+import { DslConfig, QueryDeserializers } from '../../../types'
 
-function createTypesParsers(config: DslConfig): TypesObject<QueryValueDeserializers<any>> {
+function createTypesParsers(config: DslConfig): TypesObject<QueryDeserializers<any>> {
   return {
     object: {
       optionalFields: { value: query.deepObject.object(optionalObjectFieldParsers, config) },
@@ -13,7 +12,7 @@ function createTypesParsers(config: DslConfig): TypesObject<QueryValueDeserializ
   }
 }
 
-export const deepObjectTestParsers: TestDataObject<QueryValueDeserializers<any>> = {
+export const deepObjectTestParsers: TestDataObject<QueryDeserializers<any>> = {
   explode: {
     required: createTypesParsers({ explode: true, required: true }),
     optional: createTypesParsers({ explode: true, required: false }),

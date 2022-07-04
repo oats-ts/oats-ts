@@ -1,14 +1,13 @@
 import { fluent, Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
-import { DslConfig, Primitive, RawPathParams } from '../..//types'
-import { ValueParser, PathValueDeserializer } from '../types'
+import { DslConfig, PathParameterDeserializer, Primitive, RawPathParams, ValueDeserializer } from '../../types'
 import { createArrayParser } from '../utils'
 import { getPathValue, getPrefixedValue } from './pathUtils'
 
 export const pathLabelArray = <T extends Primitive>(
-  parse: ValueParser<string, T>,
+  parse: ValueDeserializer<string, T>,
   options: Partial<DslConfig> = {},
-): PathValueDeserializer<T[]> => {
+): PathParameterDeserializer<T[]> => {
   const arrayParser = createArrayParser(options.explode ? '.' : ',', parse)
   return (data: RawPathParams, name: string, path: string, config: ValidatorConfig): Try<T[]> => {
     return fluent(getPathValue(name, path, data))

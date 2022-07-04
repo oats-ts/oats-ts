@@ -1,8 +1,8 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { ParameterValue, PrimitiveRecord, RawHeaders } from '../..//types'
-import { FieldParsers } from '../types'
-import { isNil, decode, mapRecord } from '../utils'
+import { FieldValueDeserializers, ParameterValue, PrimitiveRecord, RawHeaders } from '../../types'
+import { decode, isNil } from '../../utils'
+import { mapRecord } from '../utils'
 
 export function getHeaderValue(name: string, path: string, raw: RawHeaders, required?: boolean): Try<string> {
   const value = raw[name] ?? raw[name.toLowerCase()]
@@ -20,7 +20,7 @@ export function getHeaderValue(name: string, path: string, raw: RawHeaders, requ
 }
 
 export function parseHeadersFromRecord<T extends PrimitiveRecord>(
-  parsers: FieldParsers<T>,
+  parsers: FieldValueDeserializers<T>,
   paramData: Record<string, string>,
   name: string,
   path: string,

@@ -1,11 +1,20 @@
 import { Try, failure, success, fromRecord } from '@oats-ts/try'
 import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
-import { DslConfig, ParameterValue, PrimitiveRecord, RawQueryParams } from '../..//types'
-import { FieldParsers, QueryValueDeserializer } from '../types'
-import { decode, encode, isNil } from '../utils'
+import {
+  DslConfig,
+  FieldValueDeserializers,
+  ParameterValue,
+  PrimitiveRecord,
+  QueryParameterDeserializer,
+  RawQueryParams,
+} from '../../types'
+import { decode, encode, isNil } from '../../utils'
 
 export const queryDeepObjectObject =
-  <T extends PrimitiveRecord>(parsers: FieldParsers<T>, options: Partial<DslConfig> = {}): QueryValueDeserializer<T> =>
+  <T extends PrimitiveRecord>(
+    parsers: FieldValueDeserializers<T>,
+    options: Partial<DslConfig> = {},
+  ): QueryParameterDeserializer<T> =>
   (data: RawQueryParams, name: string, path: string, config: ValidatorConfig): Try<T> => {
     const parserKeys = Object.keys(parsers)
     if (parserKeys.length === 0) {

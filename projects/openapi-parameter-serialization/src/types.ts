@@ -93,18 +93,58 @@ export type RawHeaders = Record<string, string>
 export type RawPathParams = Record<string, string>
 export type RawQueryParams = Record<string, string[]>
 
-export type ValueDeserializer<I extends Primitive, O extends Primitive = I> = (
-  input: I,
-  name: string,
-  path: string,
-  config: ValidatorConfig,
-) => Try<O>
+export type Transform<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
+
+export type ValueDeserializer<I extends Primitive, O extends Primitive = I> = Transform<I | undefined, O>
 
 export type FieldValueDeserializers<T extends PrimitiveRecord> = {
   // TODO T[P] does not compile, why?
   [P in keyof Exclude<T, undefined>]: ValueDeserializer<string, any>
 }
 
-export type Transform<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
+export type Deserializer<I, O extends ParameterType> = (input: I, path?: string, config?: ValidatorConfig) => Try<O>
+export type Serializer<I extends ParameterType, O> = (input: I, path?: string, config?: ValidatorConfig) => Try<O>
 
-export type Transforms<I, O extends ParameterType> = { [P in keyof O]: Transform<I, O> }
+export type QuerySerializer<T extends ParameterType> = Serializer<T, string | undefined>
+export type QueryDeserializer<T extends ParameterType> = Deserializer<string, T>
+export type QueryParameterSerializer<T extends ParameterValue> = Transform<T, string[]>
+export type QueryParameterDeserializer<T extends ParameterValue> = Transform<RawQueryParams, T>
+export type QuerySerializers<T extends ParameterType> = {
+  [P in keyof T]: QueryParameterSerializer<T[P]>
+}
+export type QueryDeserializers<T extends ParameterType> = {
+  [P in keyof T]: QueryParameterDeserializer<T[P]>
+}
+
+export type PathSerializer<T extends ParameterType> = Serializer<T, string>
+export type PathDeserializer<T extends ParameterType> = Deserializer<string, T>
+export type PathParameterSerializer<T extends ParameterValue> = Transform<T, string>
+export type PathParameterDeserializer<T extends ParameterValue> = Transform<RawHeaders, T>
+export type PathSerializers<T extends ParameterType> = {
+  [P in keyof T]: PathParameterSerializer<T[P]>
+}
+export type PathDeserializers<T extends ParameterType> = {
+  [P in keyof T]: PathParameterDeserializer<T[P]>
+}
+export type HeaderSerializer<T extends ParameterType> = Serializer<T, RawHeaders>
+export type HeaderDeserializer<T extends ParameterType> = Deserializer<RawHeaders, T>
+export type HeaderParameterSerializer<T extends ParameterValue> = Transform<T, string | undefined>
+export type HeaderParameterDeserializer<T extends ParameterValue> = Transform<RawHeaders, T>
+export type HeaderSerializers<T extends ParameterType> = {
+  [P in keyof T]: HeaderParameterSerializer<T[P]>
+}
+export type HeaderDeserializers<T extends ParameterType> = {
+  [P in keyof T]: HeaderParameterDeserializer<T[P]>
+}
+
+export type ParameterSegment = {
+  type: 'parameter'
+  name: string
+}
+
+export type TextSegment = {
+  type: 'text'
+  value: string
+}
+
+export type PathSegment = ParameterSegment | TextSegment

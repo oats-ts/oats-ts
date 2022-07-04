@@ -1,14 +1,14 @@
 import { fluent, Try } from '@oats-ts/try'
-import { PrimitiveArray, PathOptions, Primitive, PathSerializer } from '../types'
-import { encode } from '../utils'
+import { DslConfig, PathParameterSerializer, Primitive, PrimitiveArray } from '../../types'
+import { encode } from '../../utils'
 import { joinArrayItems } from './joinArrayItems'
 import { joinKeyValuePairs } from './joinKeyValuePairs'
 import { getPathValue, validatePathArray } from './pathUtils'
 
 export const pathMatrixArray =
-  <T extends PrimitiveArray>(options: PathOptions = {}): PathSerializer<T> =>
+  <T extends PrimitiveArray>(options: Partial<DslConfig> = {}): PathParameterSerializer<T> =>
   (data: T, name: string, path: string): Try<string> => {
-    return fluent(getPathValue(path, data, options))
+    return fluent(getPathValue(path, data))
       .flatMap((value) => validatePathArray(path, value!))
       .map((value) => {
         if (!options.explode) {
