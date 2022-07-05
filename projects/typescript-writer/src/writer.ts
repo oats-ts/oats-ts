@@ -38,7 +38,7 @@ async function writeSourceFileWithEvents(
 }
 
 export const writer =
-  (config: TypeScriptWriterConfig): ContentWriter<SourceFile> =>
+  (config: Partial<TypeScriptWriterConfig>): ContentWriter<SourceFile> =>
   async (files: SourceFile[], emitter: WriterEventEmitter<SourceFile>): Promise<Try<SourceFile[]>> => {
     emitter.emit('writer-step-started', {
       type: 'writer-step-started',

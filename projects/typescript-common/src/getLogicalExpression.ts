@@ -9,7 +9,7 @@ export function getLogicalExpression(
     case 0:
       throw new TypeError(`Cannot create BinaryExpression from 0 elements`)
     case 1:
-      return head(expressions)
+      return head(expressions)!
     default: {
       const [h, ...t] = expressions
       return factory.createBinaryExpression(h, operator, getLogicalExpression(operator, t))

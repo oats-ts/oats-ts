@@ -13,7 +13,7 @@ export const stringify = async (data: SourceFile, comments: CommentsConfig): Pro
     removeComments: false,
   })
 
-  const { leadingComments, trailingComments, lineSeparator } = comments
+  const { leadingComments = [], trailingComments = [], lineSeparator = '\n' } = comments
   const createComment = createCommentFactory(lineSeparator)
   const imports = getImportDeclarations(data)
 

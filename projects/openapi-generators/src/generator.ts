@@ -2,23 +2,21 @@ import { ContentGenerator } from '@oats-ts/oats'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
 import { GeneratorEventEmitter } from '@oats-ts/events'
-import { OpenAPIGenerator, RootGeneratorConfig } from './types'
+import { RootGeneratorConfig } from './types'
 import { GroupGenerator } from './group/GroupGenerator'
-import { flattenChildren } from './utils/flattenChildren'
 
 const name = '@oats-ts/openapi-generators'
 
 export const generator =
-  (config: RootGeneratorConfig) =>
-  (...children: (OpenAPIGenerator | OpenAPIGenerator[])[]): ContentGenerator<OpenAPIReadOutput, SourceFile> =>
+  (config: RootGeneratorConfig): ContentGenerator<OpenAPIReadOutput, SourceFile> =>
   async (input: OpenAPIReadOutput, emitter: GeneratorEventEmitter<SourceFile>) => {
     emitter.emit('generator-step-started', {
       type: 'generator-step-started',
       name,
     })
 
-    const { name: genName, ...globalConfig } = config
-    const generator = new GroupGenerator(genName ?? 'root', flattenChildren(children))
+    const { name: generatorName, children, ...globalConfig } = config
+    const generator = new GroupGenerator(generatorName ?? 'root', Array.isArray(children) ? children : [children])
 
     generator.initialize({
       globalConfig,

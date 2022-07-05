@@ -21,17 +21,17 @@ export type CommentsConfig = {
 /** Configuration object for writing OpenAPI generated artifacts to file. */
 export type TypeScriptWriterConfig = {
   /** Optional comments placed in the beginning/end of the file */
-  comments?: CommentsConfig
+  comments: CommentsConfig
   /**
    * @param code The code to format
    * @returns The formatted code.
    */
-  format?(code: string): string
+  format(code: string): string
   /**
    * Writes the given content to the given path.
    * Creating possibly missing folders is part of it's responsibilty.
    * @param path The path to write the file to.
    * @param content The contents of the file.
    */
-  write?(path: string, content: string): Promise<void>
+  write(path: string, content: string): Promise<void>
 }

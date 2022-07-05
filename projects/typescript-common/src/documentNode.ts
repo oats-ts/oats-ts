@@ -10,7 +10,7 @@ export function documentNode<T extends Node>(node: T, model: Documentation): T {
   const jsDoc = factory.createJSDocComment(
     [model.summary, model.description]
       .filter(negate(isEmpty))
-      .map((docText) => docText.trim())
+      .map((docText) => docText!.trim())
       .join('\n\n'),
     model.deprecated ? [factory.createJSDocUnknownTag(factory.createIdentifier('deprecated'))] : [],
   )

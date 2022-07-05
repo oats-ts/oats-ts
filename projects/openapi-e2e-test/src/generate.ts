@@ -65,8 +65,7 @@ export async function generateCode(url: string, codePath: string) {
       generator: generator({
         nameProvider: nameProviders.default(),
         pathProvider: pathProviders.singleFile(codePath),
-      })(
-        presets.fullStack({
+        children: presets.fullStack({
           overrides: {
             'json-schema/type-guard': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
@@ -76,7 +75,7 @@ export async function generateCode(url: string, codePath: string) {
             },
           },
         }),
-      ),
+      }),
       writer: writers.typescript({
         format: formatters.prettier({
           parser: 'typescript',

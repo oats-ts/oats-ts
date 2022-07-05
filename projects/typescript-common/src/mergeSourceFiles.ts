@@ -1,4 +1,4 @@
-import { SourceFile } from 'typescript'
+import { ImportSpecifier, SourceFile } from 'typescript'
 import {
   factory,
   ImportClause,
@@ -8,7 +8,7 @@ import {
   StringLiteral,
   SyntaxKind,
 } from 'typescript'
-import { flatMap, groupBy, head, sortBy, uniqBy, values } from 'lodash'
+import { flatMap, groupBy, head, isNil, negate, sortBy, uniqBy, values } from 'lodash'
 import { createSourceFile } from './createSourceFile'
 import { getStatements } from './getStatements'
 import { getImportDeclarations } from './getImportDeclarations'
@@ -17,10 +17,8 @@ function mergeNamedImportBindings(bindings: NamedImportBindings[]): NamedImports
   const specifiers = sortBy(
     uniqBy(
       flatMap(
-        bindings.filter(({ kind }) => kind === SyntaxKind.NamedImports),
-        (imports: NamedImports) => {
-          return Array.from(imports.elements)
-        },
+        bindings.filter((node): node is NamedImports => node.kind === SyntaxKind.NamedImports),
+        (imports: NamedImports) => Array.from(imports.elements),
       ),
       (specifier) => specifier.name.text,
     ),
@@ -33,7 +31,9 @@ function mergeImportClauses(clauses: ImportClause[]): ImportClause {
   return factory.createImportClause(
     false,
     undefined,
-    mergeNamedImportBindings(clauses.map(({ namedBindings }) => namedBindings)),
+    mergeNamedImportBindings(
+      clauses.map(({ namedBindings }) => namedBindings).filter(negate(isNil)) as NamedImportBindings[],
+    ),
   )
 }
 
@@ -45,8 +45,8 @@ function mergeImportDeclarations(declarations: ImportDeclaration[]): ImportDecla
     factory.createImportDeclaration(
       [],
       [],
-      mergeImportClauses(declarations.map(({ importClause }) => importClause)),
-      head(declarations).moduleSpecifier,
+      mergeImportClauses(declarations.map(({ importClause }) => importClause).filter(negate(isNil)) as ImportClause[]),
+      head(declarations)!.moduleSpecifier,
     ),
   )
   return mergedImports.sort((imp1, imp2) => {
@@ -70,7 +70,7 @@ export function mergeSourceFiles(input: SourceFile[]): SourceFile[] {
   return Array.from(values(groupBy(input, (unit) => unit.fileName))).map((units: SourceFile[]): SourceFile => {
     const imports = mergeImportDeclarations(flatMap(units, (file) => getImportDeclarations(file)))
     const statements = flatMap(units, (file) => getStatements(file))
-    const path = head(units).fileName
+    const path = head(units)!.fileName
     return createSourceFile(path, imports, statements)
   })
 }
