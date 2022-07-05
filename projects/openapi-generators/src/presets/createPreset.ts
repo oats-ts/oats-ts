@@ -1,7 +1,7 @@
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIGenerator } from '../types'
 import { factories } from '../factories'
-import { entries, isNil } from 'lodash'
+import { entries, isNil, keys } from 'lodash'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 import { GroupGenerator } from '../group'
 import { PresetConfiguration, PresetGeneratorConfiguration } from './types'
@@ -51,5 +51,5 @@ export const createPreset =
         generators.push(generatorConfig === true ? factory() : factory(generatorConfig))
       }
     }
-    return new GroupGenerator(name, generators, cfg)
+    return new GroupGenerator(keys(overrides).length > 0 ? `${name} (custom)` : name, generators, cfg)
   }

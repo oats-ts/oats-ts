@@ -6,7 +6,7 @@ import { TypesGeneratorConfig } from './typings'
 import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 
 export function getTypeReferenceAst(
-  data: Referenceable<SchemaObject>,
+  data: Referenceable<SchemaObject> | undefined,
   context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ) {

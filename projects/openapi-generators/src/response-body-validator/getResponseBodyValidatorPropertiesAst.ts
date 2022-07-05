@@ -18,7 +18,7 @@ export function getResponseBodyValidatorPropertiesAst(
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
           factory.createObjectLiteralExpression(
-            getContentTypeBasedValidatorsAst(true, dereference(response).content || {}, context),
+            getContentTypeBasedValidatorsAst(true, dereference(response)?.content || {}, context),
           ),
         ),
     ),

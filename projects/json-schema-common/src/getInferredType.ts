@@ -5,7 +5,7 @@ import { isReferenceObject } from '@oats-ts/model-common'
 
 export function getInferredType(data: SchemaObject | ReferenceObject): InferredType {
   if (isNil(data)) {
-    return undefined
+    return 'unknown'
   }
 
   if (isReferenceObject(data)) {

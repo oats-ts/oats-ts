@@ -11,6 +11,6 @@ export function getExternalTypeReferenceAst(
   config: TypesGeneratorConfig,
 ) {
   const { nameOf } = context
-  const typeName = nameOf(data, 'json-schema/type')
+  const typeName = nameOf(data)
   return isNil(typeName) ? getTypeReferenceAst(data, context, config) : factory.createTypeReferenceNode(typeName)
 }

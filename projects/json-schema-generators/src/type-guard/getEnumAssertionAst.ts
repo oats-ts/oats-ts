@@ -13,6 +13,6 @@ export function getEnumAssertionAst(
 ): Expression {
   return getLogicalExpression(
     SyntaxKind.BarBarToken,
-    data.enum.map((value) => getJsonLiteralAssertionAst(value, variable)),
+    (data.enum ?? []).map((value) => getJsonLiteralAssertionAst(value, variable)),
   )
 }

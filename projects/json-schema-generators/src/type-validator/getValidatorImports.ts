@@ -24,7 +24,7 @@ export function collectExternalReferenceImports(
 ): void {
   const { dereference, nameOf, uriOf } = context
   const schema = dereference(data)
-  if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
+  if (!isNil(nameOf(schema))) {
     refs.add(uriOf(schema))
   } else {
     collectImports(schema, config, context, names, refs)
@@ -57,14 +57,14 @@ export function collectUnionImports(
 ): void {
   names.add(RuntimePackages.Validators.union)
   if (!isNil(data.discriminator)) {
-    for (const schemaOrRef of data.oneOf) {
+    for (const schemaOrRef of data.oneOf ?? []) {
       collectImports(schemaOrRef, config, context, names, refs)
     }
-    if (data.oneOf.length > 0) {
+    if ((data.oneOf?.length ?? 0) > 0) {
       names.add(RuntimePackages.Validators.lazy)
     }
   } else {
-    for (const schemaOrRef of data.oneOf) {
+    for (const schemaOrRef of data.oneOf ?? []) {
       collectImports(schemaOrRef, config, context, names, refs)
     }
   }
@@ -78,7 +78,7 @@ export function collectIntersectionImports(
   refs: Set<string>,
 ): void {
   names.add(RuntimePackages.Validators.combine)
-  for (const schemaOrRef of data.allOf) {
+  for (const schemaOrRef of data.allOf ?? []) {
     collectImports(schemaOrRef, config, context, names, refs)
   }
 }
@@ -186,10 +186,11 @@ export function collectImports(
       return collectUnionImports(data, config, context, names, refs)
     case 'intersection':
       return collectIntersectionImports(data, config, context, names, refs)
-    case 'enum':
+    case 'enum': {
       names.add(RuntimePackages.Validators.union)
-      data.enum.forEach((value) => collectLiteralImports(value, names))
+      data.enum?.forEach((value) => collectLiteralImports(value, names))
       return
+    }
     case 'literal':
       collectLiteralImports(data.const, names)
       return

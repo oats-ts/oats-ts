@@ -13,16 +13,17 @@ import { isReferenceObject } from '@oats-ts/model-common'
 import { getLiteralTypeAssertionAst } from './getLiteralTypeAssertionAst'
 import { getTupleTypeAssertionAst } from './getTupleTypeAssertionAst'
 import { getIntersectionTypeAssertionAst } from './getIntersectionTypeAssertionAst'
+import { isNil } from 'lodash'
 
 export function getTypeAssertionAst(
-  data: Referenceable<SchemaObject>,
+  data: Referenceable<SchemaObject> | undefined,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
   const { uriOf } = context
-  if (config.ignore(data, uriOf(data))) {
+  if (isNil(data) || config.ignore(data, uriOf(data))) {
     // If a top level schema is ignored, he type guard will always return false.
     // Otherwise the generated expression is true, meaning it's ignored.
     return level === 0 ? factory.createFalse() : factory.createTrue()

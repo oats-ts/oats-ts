@@ -13,6 +13,6 @@ export function getPrimitiveTypeAssertionAst(
   return factory.createBinaryExpression(
     factory.createTypeOfExpression(variable),
     SyntaxKind.EqualsEqualsEqualsToken,
-    factory.createStringLiteral(getPrimitiveType(data)),
+    factory.createStringLiteral(getPrimitiveType(data)!),
   )
 }

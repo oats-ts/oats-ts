@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "lib": ["ES2020"],
     "noUnusedLocals": true,
-    "strict": false
+    "strict": true
   },
   "include": ["./src"],
   "exclude": ["node_modules", "lib"]

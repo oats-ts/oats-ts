@@ -9,5 +9,5 @@ export function getUnionTypeAst(
   context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ): UnionTypeNode {
-  return factory.createUnionTypeNode(data.oneOf.map((type) => getTypeReferenceAst(type, context, config)))
+  return factory.createUnionTypeNode((data.oneOf ?? []).map((type) => getTypeReferenceAst(type, context, config)))
 }

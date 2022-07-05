@@ -66,6 +66,6 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createIdentifier(context.nameOf(data.operation, 'openapi/response-type')),
     undefined,
-    types.length === 1 ? head(types) : factory.createUnionTypeNode(types),
+    types.length === 1 ? head(types)! : factory.createUnionTypeNode(types),
   )
 }

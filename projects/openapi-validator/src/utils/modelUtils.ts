@@ -19,23 +19,19 @@ export function parametersOf(
   data: OperationObject | PathItemObject | ComponentsObject,
   context: OpenAPIValidatorContext,
 ): ParameterObject[] {
-  const { dereference } = context
   const { parameters } = data
   const unresolved = isNil(parameters) ? [] : Array.isArray(parameters) ? parameters : values(parameters)
-  return unresolved.map(dereference)
+  return unresolved.map((parameter) => context.dereference(parameter))
 }
 
 export function schemasOf(data: ComponentsObject, context: OpenAPIValidatorContext): SchemaObject[] {
-  const { dereference } = context
-  return values(data.schemas || {}).map(dereference)
+  return values(data.schemas || {}).map((schema) => context.dereference(schema))
 }
 
 export function responsesOf(data: ComponentsObject, context: OpenAPIValidatorContext): ResponseObject[] {
-  const { dereference } = context
-  return values(data.responses || {}).map(dereference)
+  return values(data.responses || {}).map((response) => context.dereference(response))
 }
 
 export function requestBodiesOf(data: ComponentsObject, context: OpenAPIValidatorContext): RequestBodyObject[] {
-  const { dereference } = context
-  return values(data.requestBodies || {}).map(dereference)
+  return values(data.requestBodies || {}).map((body) => context.dereference(body))
 }

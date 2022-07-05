@@ -2,12 +2,12 @@ import { ContentValidator } from '@oats-ts/oats'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OpenAPIValidatorConfig } from './typings'
 import { createOpenAPIValidatorConfig } from './createOpenAPIValidatorConfig'
-import { createOpenAPIValidatorContext } from './createOpenAPIValidatorContext'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { fluent, fromArray, fromPromiseSettledResult, isSuccess, Try } from '@oats-ts/try'
 import { ValidatorEventEmitter } from '@oats-ts/events'
 import { tick } from './utils/tick'
 import { validateDocument } from './validateDocument'
+import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 
 const name = '@oats-ts/openapi-validator'
 
@@ -26,7 +26,7 @@ export function validator(
     await tick()
 
     const config = createOpenAPIValidatorConfig(configuration)
-    const context = createOpenAPIValidatorContext(data)
+    const context = new OpenAPIValidatorContextImpl(data)
     const validationResult = await Promise.allSettled(
       context.documents.map((document) => validateDocument(document, context, config, emitter)),
     )

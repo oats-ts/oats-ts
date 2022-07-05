@@ -4,5 +4,5 @@ import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { getJsonLiteralTypeAst } from './getJsonLiteralTypeAst'
 
 export function getLiteralUnionTypeAst(data: SchemaObject, context: JsonSchemaGeneratorContext): UnionTypeNode {
-  return factory.createUnionTypeNode(data.enum.map((value) => getJsonLiteralTypeAst(value)))
+  return factory.createUnionTypeNode((data.enum ?? []).map((value) => getJsonLiteralTypeAst(value)))
 }

@@ -8,13 +8,13 @@ function collectFromSchema(
   input: Referenceable<SchemaObject>,
   context: GeneratorContext,
   discriminators: Record<string, string>,
-): string {
+): string | undefined {
   const { dereference, uriOf } = context
   const schema = isReferenceObject(input) ? dereference<SchemaObject>(input) : input
 
-  if (!isNil(schema.discriminator)) {
-    const { propertyName, mapping } = schema.discriminator
-    const mappingEntries = entries(mapping || {})
+  const { propertyName, mapping } = schema?.discriminator ?? {}
+  if (!isNil(propertyName)) {
+    const mappingEntries = entries(mapping ?? {})
     for (const [value, ref] of mappingEntries) {
       if (ref == uri && isNil(discriminators[propertyName])) {
         discriminators[propertyName] = value
@@ -26,7 +26,7 @@ function collectFromSchema(
 
   // TODO check for discriminators in nested objects, is it worth it???
 
-  return null
+  return undefined
 }
 
 function collectFromDocuments(
@@ -55,11 +55,17 @@ export function getDiscriminators<D extends HasSchemas>(
   const { uriOf } = context
   const schemaUri = uriOf(input)
   const discriminators: Record<string, string> = {}
+  if (isNil(schemaUri)) {
+    return discriminators
+  }
   const visited: string[] = []
   const toVisit: string[] = collectFromDocuments(schemaUri, context, discriminators)
 
   while (toVisit.length !== 0) {
     const parentUri = toVisit.shift()
+    if (isNil(parentUri)) {
+      continue
+    }
     const newParentUris = collectFromDocuments(parentUri, context, discriminators)
     const toVisitNew = newParentUris.filter((uri) => visited.indexOf(uri) < 0)
     visited.push(parentUri)

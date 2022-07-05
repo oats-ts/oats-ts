@@ -7,8 +7,8 @@ export function createPathRegex(path: string): RegExp {
   return pathToRegexp(regexpInput, [])
 }
 
-export function getPathParameterNames(path: string) {
+export function getPathParameterNames(path: string): string[] {
   return parsePathToSegments(path)
-    .filter((s) => s.type === 'parameter')
+    .filter((s): s is ParameterSegment => s.type === 'parameter')
     .map((p: ParameterSegment) => p.name)
 }

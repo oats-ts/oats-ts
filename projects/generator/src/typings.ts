@@ -27,7 +27,7 @@ export type CodeGenerator<R, G> = {
  * @param target The generator target (type definition, operation, etc).
  * @returns The desired name for the object based on target
  */
-export type NameProvider = (input: any, target: string) => string
+export type NameProvider = (input: any, target: string) => string | undefined
 
 /** Configuration object for generating code from OpenAPI documents. */
 export type GeneratorConfig = {
@@ -52,5 +52,5 @@ export type GeneratorConfig = {
   noEmit?: boolean
 }
 
-export type GeneratorPathProvider = (input: any, name: NameProvider, target: string) => string | undefined
-export type GeneratorNameProvider = (input: any, originalName: string, target: string) => string | undefined
+export type GeneratorPathProvider = (input: any, name: NameProvider, target: string) => string
+export type GeneratorNameProvider = (input: any, originalName: string | undefined, target: string) => string

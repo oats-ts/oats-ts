@@ -9,5 +9,7 @@ export function getParameterTypeGeneratorTarget(location: ParameterLocation): Op
       return 'openapi/path-type'
     case 'query':
       return 'openapi/query-type'
+    case 'cookie':
+      throw new TypeError(`cookie parameters are not supported`)
   }
 }

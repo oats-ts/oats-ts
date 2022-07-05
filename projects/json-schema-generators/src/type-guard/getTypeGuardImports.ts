@@ -76,5 +76,5 @@ export function getTypeGuardImports(
     (schema) => nameOf(schema, 'json-schema/type-guard'),
   )
   const path = pathOf(data, 'json-schema/type-guard')
-  return getModelImports(path, 'json-schema/type-guard', importedSchemas, context)
+  return isNil(path) ? [] : getModelImports(path, 'json-schema/type-guard', importedSchemas, context)
 }

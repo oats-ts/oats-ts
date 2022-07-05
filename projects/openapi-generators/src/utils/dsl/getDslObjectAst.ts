@@ -6,7 +6,7 @@ import {
   OpenAPIGeneratorContext,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { entries, flatMap, has } from 'lodash'
+import { entries, flatMap, has, isNil, negate } from 'lodash'
 import { Expression, factory, ObjectLiteralExpression, PropertyAccessExpression, PropertyAssignment } from 'typescript'
 import { isIdentifier, getLiteralAst } from '@oats-ts/typescript-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
@@ -16,17 +16,21 @@ export function getDslObjectAst(
   parameters: Referenceable<BaseParameterObject>[],
   context: OpenAPIGeneratorContext,
 ): ObjectLiteralExpression {
-  return factory.createObjectLiteralExpression(parameters.map((parameter) => getParameterDsl(parameter, context)))
+  return factory.createObjectLiteralExpression(
+    parameters.map((parameter) => getParameterDsl(parameter, context)).filter(negate(isNil)) as PropertyAssignment[],
+  )
 }
 
 function getParameterDsl(
   param: Referenceable<BaseParameterObject>,
   context: OpenAPIGeneratorContext,
-): PropertyAssignment {
+): PropertyAssignment | undefined {
   const name = getParameterName(param, context)
-
   const parameter = context.dereference(param, true)
   const schema = context.dereference(parameter.schema)
+  if (isNil(schema) || isNil(name)) {
+    return undefined
+  }
   const kind = getParameterKind(schema)
   const { in: location = 'header' } = parameter as ParameterObject
 
@@ -49,8 +53,14 @@ function getParameterDsl(
   )
 }
 
-function getTypeDsl(schemaOrRef: Referenceable<SchemaObject>, context: OpenAPIGeneratorContext): Expression {
+function getTypeDsl(
+  schemaOrRef: Referenceable<SchemaObject> | undefined,
+  context: OpenAPIGeneratorContext,
+): Expression {
   const schema = context.dereference(schemaOrRef, true)
+  if (isNil(schema)) {
+    return factory.createIdentifier('undefined')
+  }
   const inferredType = getInferredType(schema)
   switch (inferredType) {
     case 'string':
@@ -65,7 +75,7 @@ function getTypeDsl(schemaOrRef: Referenceable<SchemaObject>, context: OpenAPIGe
         [],
         [
           factory.createCallExpression(valueAccess('enum'), undefined, [
-            factory.createArrayLiteralExpression(schema.enum.map((v) => getLiteralAst(v))),
+            factory.createArrayLiteralExpression((schema.enum ?? []).map((v) => getLiteralAst(v))),
           ]),
         ],
       )

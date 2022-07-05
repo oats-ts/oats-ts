@@ -10,7 +10,7 @@ export function getDictionaryTypeAst(
   config: TypesGeneratorConfig,
 ) {
   const { additionalProperties } = data
-  const schema = typeof additionalProperties === 'boolean' ? null : additionalProperties
+  const schema = typeof additionalProperties === 'boolean' ? undefined : additionalProperties
   return factory.createTypeReferenceNode(factory.createIdentifier('Record'), [
     factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
     getTypeReferenceAst(schema, context, config),

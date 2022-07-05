@@ -9,7 +9,7 @@ export function getIntersectionTypeAst(
   context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeNode {
-  const types = data.allOf
+  const types = (data.allOf ?? [])
     .map((type) => getTypeReferenceAst(type, context, config))
     .filter((ast) => ast.kind !== SyntaxKind.AnyKeyword)
   return types.length > 0
