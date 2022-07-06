@@ -18,7 +18,7 @@ export async function generate<P, R, G>(input: GeneratorInput<P, R, G>): Promise
 
   // Validate
   const validatorResult = await validator?.(readResult.data, emitter)
-  if (isFailure(validatorResult)) {
+  if (validatorResult !== undefined && isFailure(validatorResult)) {
     return validatorResult
   }
 

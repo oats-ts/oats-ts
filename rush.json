@@ -126,12 +126,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi-test-utils",
-      "projectFolder": "projects/openapi-test-utils",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/openapi-validator",
       "projectFolder": "projects/openapi-validator",
       "versionPolicyName": "oats",

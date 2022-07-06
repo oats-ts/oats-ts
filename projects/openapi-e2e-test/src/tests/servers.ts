@@ -1,6 +1,5 @@
 import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { HttpResponse } from '@oats-ts/openapi-http'
-import { testExpressServer } from '@oats-ts/openapi-test-utils'
 import YAML from 'yamljs'
 import { createBodiesRouter } from '../generated/bodies'
 import { createBodiesRouter as createOptionalRequestBodyRouter } from '../generated/optional-request-body'
@@ -14,6 +13,7 @@ import { customBodyParsers } from './common/customBodyParsers'
 import { PORT } from './constants'
 import { HttpMethodsApiImpl } from './methods/HttpMethodsApiImpl'
 import { ParametersApiImpl } from './parameters/ParametersApiImpl'
+import { testExpressServer } from '../testExpressServer'
 
 export function testBookStoreServer() {
   testExpressServer({
