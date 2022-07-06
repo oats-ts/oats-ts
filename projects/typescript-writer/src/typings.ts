@@ -1,4 +1,4 @@
-import { ContentWriter } from '@oats-ts/oats'
+import { ContentWriter } from '@oats-ts/oats-ts'
 import { SourceFile } from 'typescript'
 
 export type CommentType = 'jsdoc' | 'block' | 'line'

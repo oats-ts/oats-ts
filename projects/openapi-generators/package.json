@@ -47,6 +47,6 @@
     "@oats-ts/openapi-parameter-common": "0.0.24",
     "@oats-ts/json-schema-generators": "0.0.24",
     "@oats-ts/model-common": "0.0.24",
-    "@oats-ts/oats": "0.0.24"
+    "@oats-ts/oats-ts": "0.0.24"
   }
 }

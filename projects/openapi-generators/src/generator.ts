@@ -1,4 +1,4 @@
-import { ContentGenerator } from '@oats-ts/oats'
+import { ContentGenerator } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
 import { GeneratorEventEmitter } from '@oats-ts/events'

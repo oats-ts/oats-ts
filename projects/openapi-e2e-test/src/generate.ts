@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import { promises as fs } from 'fs'
 import { join, parse } from 'path'
-import { generate } from '@oats-ts/oats'
+import { generate } from '@oats-ts/oats-ts'
 import { logger } from '@oats-ts/log'
 import {
   formatters,

@@ -1,4 +1,4 @@
-import { ContentReader } from '@oats-ts/oats'
+import { ContentReader } from '@oats-ts/oats-ts'
 import { ReadCache } from './internalTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'

@@ -1,4 +1,4 @@
-import { ContentValidator } from '@oats-ts/oats'
+import { ContentValidator } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OpenAPIValidatorConfig } from './typings'
 import { createOpenAPIValidatorConfig } from './createOpenAPIValidatorConfig'

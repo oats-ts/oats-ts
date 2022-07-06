@@ -1,5 +1,5 @@
 import { OatsEventEmitter } from '@oats-ts/events'
-import { Logger } from '@oats-ts/oats'
+import { Logger } from '@oats-ts/oats-ts'
 import { isSuccess } from '@oats-ts/try'
 import { isOk, Issue, Severity } from '@oats-ts/validators'
 import { red, green, blue, yellow } from 'chalk'

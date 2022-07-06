@@ -61,8 +61,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/oats",
-      "projectFolder": "projects/oats",
+      "packageName": "@oats-ts/oats-ts",
+      "projectFolder": "projects/oats-ts",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

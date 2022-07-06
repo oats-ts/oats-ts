@@ -4,7 +4,7 @@ import { TypeScriptWriterConfig } from './typings'
 import { isNil } from 'lodash'
 import { SourceFile } from 'typescript'
 import { fluent, fromArray, fromPromise, fromPromiseSettledResult, isFailure, success, Try } from '@oats-ts/try'
-import { ContentWriter } from '@oats-ts/oats'
+import { ContentWriter } from '@oats-ts/oats-ts'
 import { WriterEventEmitter } from '@oats-ts/events'
 
 const name = '@oats-ts/typescript-writer'

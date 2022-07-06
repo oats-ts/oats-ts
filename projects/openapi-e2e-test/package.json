@@ -21,7 +21,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@oats-ts/oats": "0.0.24",
+    "@oats-ts/oats-ts": "0.0.24",
     "@oats-ts/openapi": "0.0.24",
     "@oats-ts/log": "0.0.24",
     "@oats-ts/openapi-reader": "0.0.24",

@@ -31,7 +31,7 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/oats": "0.0.24",
+    "@oats-ts/oats-ts": "0.0.24",
     "@oats-ts/openapi-model": "0.0.24",
     "@oats-ts/openapi-common": "0.0.24",
     "@oats-ts/openapi-reader": "0.0.24",

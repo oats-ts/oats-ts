@@ -1,4 +1,4 @@
-import { ContentReader } from '@oats-ts/oats'
+import { ContentReader } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   reader,
