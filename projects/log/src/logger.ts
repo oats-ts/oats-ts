@@ -9,7 +9,7 @@ const s = green('✔')
 const w = yellow('!')
 const i = blue('i')
 
-const severityIcon = (severity: Severity) => {
+function severityIcon(severity: Severity): string {
   switch (severity) {
     case 'warning':
       return w
@@ -22,43 +22,49 @@ const severityIcon = (severity: Severity) => {
   }
 }
 
-const issueToString = (issue: Issue) => `    ${severityIcon(issue.severity)} ${issue.message} at "${issue.path}"`
-
-export const logger = (): Logger => (emitter: OatsEventEmitter) => {
-  emitter.addListener('read-step-completed', (e) => {
-    if (isSuccess(e.data)) {
-      console.log(`${s} read step using "${blue(e.name)}" completed`)
-      e.issues.forEach((issue) => console.log(issueToString(issue)))
-    } else {
-      console.log(`${x} read step using "${blue(e.name)}" failed`)
-      e.data.issues.forEach((issue) => console.log(issueToString(issue)))
-    }
-  })
-
-  emitter.addListener('validator-step-completed', (e) => {
-    console.log(
-      `${isOk(e.issues) ? s : x} validator step using "${blue(e.name)}" ${isOk(e.issues) ? 'completed' : 'failed'}`,
-    )
-    e.issues.forEach((issue) => console.log(issueToString(issue)))
-  })
-
-  emitter.addListener('generator-step-completed', (e) => {
-    if (isSuccess(e.data)) {
-      console.log(`${s} generator step using "${blue(e.name)}" completed`)
-      e.issues.forEach((issue) => console.log(issueToString(issue)))
-    } else {
-      console.log(`${x} generator step using "${blue(e.name)}" failed`)
-      e.data.issues.forEach((issue) => console.log(issueToString(issue)))
-    }
-  })
-
-  emitter.addListener('writer-step-completed', (e) => {
-    if (isSuccess(e.data)) {
-      console.log(`${s} write step using "${blue(e.name)}" completed`)
-      e.issues.forEach((issue) => console.log(issueToString(issue)))
-    } else {
-      console.log(`${x} write step using "${blue(e.name)}" failed`)
-      e.data.issues.forEach((issue) => console.log(issueToString(issue)))
-    }
-  })
+function issueToString(issue: Issue): string {
+  return `    ${severityIcon(issue.severity)} ${issue.message} at "${issue.path}"`
 }
+
+function statusText(step: string, status: 'completed' | 'failed', name: string): string {
+  return `${status === 'completed' ? s : x} ${step} step ${status} using "${blue(name)}"`
+}
+
+export const logger =
+  (): Logger =>
+  (emitter: OatsEventEmitter): void => {
+    emitter.addListener('read-step-completed', (e) => {
+      if (isSuccess(e.data)) {
+        console.log(statusText('reader', 'completed', e.name))
+        e.issues.forEach((issue) => console.log(issueToString(issue)))
+      } else {
+        console.log(statusText('reader', 'failed', e.name))
+        e.data.issues.forEach((issue) => console.log(issueToString(issue)))
+      }
+    })
+
+    emitter.addListener('validator-step-completed', (e) => {
+      console.log(statusText('validator', isOk(e.issues) ? 'completed' : 'failed', e.name))
+      e.issues.forEach((issue) => console.log(issueToString(issue)))
+    })
+
+    emitter.addListener('generator-step-completed', (e) => {
+      if (isSuccess(e.data)) {
+        console.log(statusText('generator', 'completed', e.name))
+        e.issues.forEach((issue) => console.log(issueToString(issue)))
+      } else {
+        console.log(statusText('generator', 'failed', e.name))
+        e.data.issues.forEach((issue) => console.log(issueToString(issue)))
+      }
+    })
+
+    emitter.addListener('writer-step-completed', (e) => {
+      if (isSuccess(e.data)) {
+        console.log(statusText('writer', 'completed', e.name))
+        e.issues.forEach((issue) => console.log(issueToString(issue)))
+      } else {
+        console.log(statusText('writer', 'failed', e.name))
+        e.data.issues.forEach((issue) => console.log(issueToString(issue)))
+      }
+    })
+  }
