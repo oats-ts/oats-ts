@@ -36,7 +36,7 @@
     "lodash": "4.17.21",
     "@oats-ts/json-schema-model": "0.0.25",
     "@oats-ts/openapi-model": "0.0.25",
-    "typescript": "4.3.5",
+    "typescript": ">=4.3.5 <5.0.0",
     "@oats-ts/validators": "0.0.25",
     "@oats-ts/openapi-reader": "0.0.25",
     "@oats-ts/typescript-writer": "0.0.25",
