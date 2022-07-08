@@ -31,7 +31,6 @@ const fileNameByTarget: NameByTarget = {
   'openapi/express-cors-middleware': 'expressCorsMiddleware.ts',
   'openapi/api-type': 'apiType.ts',
   'openapi/sdk-impl': 'sdkImpl.ts',
-  'openapi/sdk-stub': 'sdkStub.ts',
   'openapi/sdk-type': 'sdkType.ts',
 }
 
@@ -47,7 +46,6 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
   const routers = delegate('routers')
   const parameters = delegate('parameters')
   const serializers = delegate('serializers')
-  const deserializers = delegate('deserializers')
   const validators = delegate('validators')
   const responses = delegate('responses')
   const requests = delegate('requests')
@@ -79,10 +77,10 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'openapi/path-serializer': serializers,
     'openapi/response-headers-serializer': serializers,
 
-    'openapi/response-headers-deserializer': deserializers,
-    'openapi/request-headers-deserializer': deserializers,
-    'openapi/query-deserializer': deserializers,
-    'openapi/path-deserializer': deserializers,
+    'openapi/response-headers-deserializer': serializers,
+    'openapi/request-headers-deserializer': serializers,
+    'openapi/query-deserializer': serializers,
+    'openapi/path-deserializer': serializers,
 
     'openapi/operation': operations,
 
@@ -92,7 +90,6 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'openapi/express-cors-middleware': routers,
 
     'openapi/sdk-type': sdk,
-    'openapi/sdk-stub': sdk,
     'openapi/sdk-impl': sdk,
   }
 })()

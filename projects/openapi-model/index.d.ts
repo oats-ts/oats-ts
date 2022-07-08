@@ -149,7 +149,7 @@ export type EncodingPropertyObject = {
 }
 
 export type ResponsesObject = {
-  default?: Referenceable<ResponseObject>
+  default: Referenceable<ResponseObject> | undefined
   [statuscode: string]: Referenceable<ResponseObject> | undefined
 }
 

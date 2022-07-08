@@ -37,7 +37,7 @@ export function isTypeWithRemoteRefField(input: any): input is TypeWithRemoteRef
     input !== null &&
     typeof input === 'object' &&
     Array.isArray(input.referenceArrayField) &&
-    input.referenceArrayField.every((item: any) => isReferenceTarget(item)) &&
-    isReferenceTarget(input.referenceField)
+    input.referenceArrayField.every((item: any) => isReferenceTarget(item) as boolean) &&
+    (isReferenceTarget(input.referenceField) as boolean)
   )
 }

@@ -7,7 +7,7 @@ import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
 const validator = object(
-  combine([
+  combine(
     shape<ResponseObject>(
       {
         content: object(record(string(), object())),
@@ -16,7 +16,7 @@ const validator = object(
       true,
     ),
     ignore(['links']),
-  ]),
+  ),
 )
 
 export function responseObject(

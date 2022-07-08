@@ -25,7 +25,7 @@ function collectInChildren(input: SchemaObject, context: GeneratorContext, schem
 function collect(input: SchemaObject | ReferenceObject, context: GeneratorContext, schemas: SchemaObject[]): void {
   const { dereference, nameOf } = context
   const schema = dereference(input)
-  if (!isNil(nameOf(schema, 'json-schema/type'))) {
+  if (!isNil(nameOf(schema))) {
     schemas.push(schema)
   } else {
     if (isReferenceObject(schema)) {

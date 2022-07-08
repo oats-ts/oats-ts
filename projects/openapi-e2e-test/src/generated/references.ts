@@ -59,7 +59,7 @@ export function isInlineRefTarget(input: any): input is InlineRefTarget {
 }
 
 export function isInlineRefType(input: any): input is InlineRefType {
-  return isInlineRefTarget(input)
+  return isInlineRefTarget(input) as boolean
 }
 
 export function isReferenceTarget(input: any): input is ReferenceTarget {
@@ -71,7 +71,7 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
 }
 
 export function isRemoteRefType(input: any): input is RemoteRefType {
-  return isTypeWithRemoteRefField(input)
+  return isTypeWithRemoteRefField(input) as boolean
 }
 
 export function isTypeWithRefOfRemoteRef(input: any): input is TypeWithRefOfRemoteRef {
@@ -79,8 +79,8 @@ export function isTypeWithRefOfRemoteRef(input: any): input is TypeWithRefOfRemo
     input !== null &&
     typeof input === 'object' &&
     Array.isArray(input.referenceArrayField) &&
-    input.referenceArrayField.every((item: any) => isTypeWithRemoteRefField(item)) &&
-    isTypeWithRemoteRefField(input.referenceField)
+    input.referenceArrayField.every((item: any) => isTypeWithRemoteRefField(item) as boolean) &&
+    (isTypeWithRemoteRefField(input.referenceField) as boolean)
   )
 }
 
@@ -89,7 +89,7 @@ export function isTypeWithRemoteRefField(input: any): input is TypeWithRemoteRef
     input !== null &&
     typeof input === 'object' &&
     Array.isArray(input.referenceArrayField) &&
-    input.referenceArrayField.every((item: any) => isReferenceTarget(item)) &&
-    isReferenceTarget(input.referenceField)
+    input.referenceArrayField.every((item: any) => isReferenceTarget(item) as boolean) &&
+    (isReferenceTarget(input.referenceField) as boolean)
   )
 }

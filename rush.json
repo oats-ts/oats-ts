@@ -19,49 +19,10 @@
   "telemetryEnabled": false,
   "projects": [
     {
-      "packageName": "@oats-ts/asyncapi",
-      "projectFolder": "projects/asyncapi",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-common",
-      "projectFolder": "projects/asyncapi-common",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-e2e-test",
-      "projectFolder": "projects/asyncapi-e2e-test",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-model",
-      "projectFolder": "projects/asyncapi-model",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-reader",
-      "projectFolder": "projects/asyncapi-reader",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-api-generator",
-      "projectFolder": "projects/asyncapi-ws-api-generator",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-channels-generator",
-      "projectFolder": "projects/asyncapi-ws-channels-generator",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-parameter-serialization",
-      "projectFolder": "projects/asyncapi-ws-parameter-serialization",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/asyncapi-ws-client",
-      "projectFolder": "projects/asyncapi-ws-client",
-      "shouldPublish": false
+      "packageName": "@oats-ts/events",
+      "projectFolder": "projects/events",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/generator",
@@ -70,8 +31,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/json-schema-common",
-      "projectFolder": "projects/json-schema-common",
+      "packageName": "@oats-ts/json-schema-generators",
+      "projectFolder": "projects/json-schema-generators",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -82,20 +43,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/json-schema-type-guards-generator",
-      "projectFolder": "projects/json-schema-type-guards-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/json-schema-types-generator",
-      "projectFolder": "projects/json-schema-types-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/json-schema-validators-generator",
-      "projectFolder": "projects/json-schema-validators-generator",
+      "packageName": "@oats-ts/log",
+      "projectFolder": "projects/log",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -106,14 +55,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi",
-      "projectFolder": "projects/openapi",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-api-type-generator",
-      "projectFolder": "projects/openapi-api-type-generator",
+      "packageName": "@oats-ts/oats-ts",
+      "projectFolder": "projects/oats-ts",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -124,15 +67,15 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi",
+      "projectFolder": "projects/openapi",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-e2e-test",
       "projectFolder": "projects/openapi-e2e-test",
       "shouldPublish": false
-    },
-    {
-      "packageName": "@oats-ts/openapi-express-routes-generator",
-      "projectFolder": "projects/openapi-express-routes-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
     },
     {
       "packageName": "@oats-ts/openapi-express-server-adapter",
@@ -143,6 +86,12 @@
     {
       "packageName": "@oats-ts/openapi-fetch-client-adapter",
       "projectFolder": "projects/openapi-fetch-client-adapter",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-generators",
+      "projectFolder": "projects/openapi-generators",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -159,44 +108,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi-operations-generator",
-      "projectFolder": "projects/openapi-operations-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-parameter-common",
-      "projectFolder": "projects/openapi-parameter-common",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-parameter-deserialization",
-      "projectFolder": "projects/openapi-parameter-deserialization",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-parameter-deserializers-generator",
-      "projectFolder": "projects/openapi-parameter-deserializers-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/openapi-parameter-serialization",
       "projectFolder": "projects/openapi-parameter-serialization",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-parameter-serializers-generator",
-      "projectFolder": "projects/openapi-parameter-serializers-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-parameter-types-generator",
-      "projectFolder": "projects/openapi-parameter-types-generator",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -207,38 +120,8 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/openapi-request-types-generator",
-      "projectFolder": "projects/openapi-request-types-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-response-types-generator",
-      "projectFolder": "projects/openapi-response-types-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-sdk-generator",
-      "projectFolder": "projects/openapi-sdk-generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-test-utils",
-      "projectFolder": "projects/openapi-test-utils",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/openapi-validator",
       "projectFolder": "projects/openapi-validator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-validators-generator",
-      "projectFolder": "projects/openapi-validators-generator",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

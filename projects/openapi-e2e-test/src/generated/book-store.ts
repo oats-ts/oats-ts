@@ -8,15 +8,12 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
   createHeaderDeserializer,
-  createPathDeserializer,
-  createQueryDeserializer,
-  deserializers,
-} from '@oats-ts/openapi-parameter-deserialization'
-import {
   createHeaderSerializer,
+  createPathDeserializer,
   createPathSerializer,
+  createQueryDeserializer,
   createQuerySerializer,
-  serializers,
+  dsl,
 } from '@oats-ts/openapi-parameter-serialization'
 import { Try } from '@oats-ts/try'
 import { array, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
@@ -160,25 +157,29 @@ export const addBookRequestBodyValidator = { 'application/json': bookTypeValidat
 
 export const getBooksResponseHeadersSerializer = {
   200: createHeaderSerializer<GetBooks200ResponseHeaderParameters>({
-    'x-length': serializers.header.simple.primitive<number>({ required: true }),
+    'x-length': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
   }),
 } as const
 
 export const getBookPathDeserializer = createPathDeserializer<GetBookPathParameters>(
+  { bookId: dsl.path.simple.primitive(dsl.value.number()) },
   ['bookId'],
   /^\/books(?:\/([^\/#\?]+?))[\/#\?]?$/i,
-  { bookId: deserializers.path.simple.primitive(deserializers.value.number(), {}) },
 )
 
 export const getBooksQueryDeserializer = createQueryDeserializer<GetBooksQueryParameters>({
-  offset: deserializers.query.form.primitive(deserializers.value.number(), { required: false }),
+  offset: dsl.query.form.primitive(dsl.value.number(), { required: false }),
 })
 
 export const getBooksRequestHeadersDeserializer = createHeaderDeserializer<GetBooksRequestHeaderParameters>({
-  'x-limit': deserializers.header.simple.primitive(deserializers.value.number(), { required: false }),
+  'x-limit': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
 })
 
 export type BookStoreApi = {
+  /**
+   * Returns a list of books, can be paginated
+   */
+  getBooks(request: GetBooksServerRequest): Promise<GetBooksResponse>
   /**
    * Creates a new book based on the request body.
    */
@@ -187,10 +188,6 @@ export type BookStoreApi = {
    * Returns the book associated with the given bookId
    */
   getBook(request: GetBookServerRequest): Promise<GetBookResponse>
-  /**
-   * Returns a list of books, can be paginated
-   */
-  getBooks(request: GetBooksServerRequest): Promise<GetBooksResponse>
 }
 
 export const addBookRouter: Router = Router().post(
@@ -275,9 +272,9 @@ export const getBooksRouter: Router = Router().get(
 )
 
 export type BookStoreRouters = {
+  getBooksRouter: Router
   addBookRouter: Router
   getBookRouter: Router
-  getBooksRouter: Router
 }
 
 export function createBookStoreRouter(
@@ -291,9 +288,9 @@ export function createBookStoreRouter(
       response.locals['__oats_adapter'] = adapter
       next()
     },
+    routes.getBooksRouter ?? getBooksRouter,
     routes.addBookRouter ?? addBookRouter,
     routes.getBookRouter ?? getBookRouter,
-    routes.getBooksRouter ?? getBooksRouter,
   )
 }
 
@@ -302,7 +299,7 @@ export const bookStoreCorsMiddleware =
   (request: Request, response: Response, next: NextFunction) => {
     if (isAccepted(request)) {
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'POST, GET')
+      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
       response.setHeader('Access-Control-Allow-Headers', 'x-length, content-type')
     }
     next()
@@ -342,20 +339,21 @@ export const getBooksResponseBodyValidator = {
 
 export const getBooksResponseHeadersDeserializer = {
   200: createHeaderDeserializer<GetBooks200ResponseHeaderParameters>({
-    'x-length': deserializers.header.simple.primitive(deserializers.value.number(), { required: true }),
+    'x-length': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
   }),
 } as const
 
-export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>('/books/{bookId}', {
-  bookId: serializers.path.simple.primitive<number>({}),
-})
+export const getBookPathSerializer = createPathSerializer<GetBookPathParameters>(
+  { bookId: dsl.path.simple.primitive(dsl.value.number()) },
+  '/books/{bookId}',
+)
 
 export const getBooksQuerySerializer = createQuerySerializer<GetBooksQueryParameters>({
-  offset: serializers.query.form.primitive<number | undefined>({ required: false }),
+  offset: dsl.query.form.primitive(dsl.value.number(), { required: false }),
 })
 
 export const getBooksRequestHeadersSerializer = createHeaderSerializer<GetBooksRequestHeaderParameters>({
-  'x-limit': serializers.header.simple.primitive<number | undefined>({ required: false }),
+  'x-limit': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
 })
 
 /**
@@ -432,6 +430,10 @@ export async function getBooks(request: GetBooksRequest, adapter: ClientAdapter)
 
 export type BookStoreSdk = {
   /**
+   * Returns a list of books, can be paginated
+   */
+  getBooks(request: GetBooksRequest): Promise<GetBooksResponse>
+  /**
    * Creates a new book based on the request body.
    */
   addBook(request: AddBookRequest): Promise<AddBookResponse>
@@ -439,10 +441,6 @@ export type BookStoreSdk = {
    * Returns the book associated with the given bookId
    */
   getBook(request: GetBookRequest): Promise<GetBookResponse>
-  /**
-   * Returns a list of books, can be paginated
-   */
-  getBooks(request: GetBooksRequest): Promise<GetBooksResponse>
 }
 
 export class BookStoreSdkImpl implements BookStoreSdk {
@@ -450,25 +448,13 @@ export class BookStoreSdkImpl implements BookStoreSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
+  public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
+    return getBooks(request, this.adapter)
+  }
   public async addBook(request: AddBookRequest): Promise<AddBookResponse> {
     return addBook(request, this.adapter)
   }
   public async getBook(request: GetBookRequest): Promise<GetBookResponse> {
     return getBook(request, this.adapter)
-  }
-  public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
-    return getBooks(request, this.adapter)
-  }
-}
-
-export class BookStoreSdkStub implements BookStoreSdk {
-  public async addBook(_request: AddBookRequest): Promise<AddBookResponse> {
-    throw new Error('Stub method "addBook" called. You should implement this method if you want to use it.')
-  }
-  public async getBook(_request: GetBookRequest): Promise<GetBookResponse> {
-    throw new Error('Stub method "getBook" called. You should implement this method if you want to use it.')
-  }
-  public async getBooks(_request: GetBooksRequest): Promise<GetBooksResponse> {
-    throw new Error('Stub method "getBooks" called. You should implement this method if you want to use it.')
   }
 }

@@ -112,7 +112,7 @@ export function isObjectWithArrays(input: any): input is ObjectWithArrays {
     Array.isArray(input.boolArr) &&
     input.boolArr.every((item: any) => typeof item === 'boolean') &&
     Array.isArray(input.enmArr) &&
-    input.enmArr.every((item: any) => isEnumType(item)) &&
+    input.enmArr.every((item: any) => isEnumType(item) as boolean) &&
     Array.isArray(input.numArr) &&
     input.numArr.every((item: any) => typeof item === 'number') &&
     Array.isArray(input.strArr) &&
@@ -124,8 +124,8 @@ export function isObjectWithNestedObjects(input: any): input is ObjectWithNested
   return (
     input !== null &&
     typeof input === 'object' &&
-    isObjectWithArrays(input.arrObj) &&
-    isObjectWithPrimitives(input.primObj)
+    (isObjectWithArrays(input.arrObj) as boolean) &&
+    (isObjectWithPrimitives(input.primObj) as boolean)
   )
 }
 
@@ -134,7 +134,7 @@ export function isObjectWithPrimitives(input: any): input is ObjectWithPrimitive
     input !== null &&
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
-    isEnumType(input.enm) &&
+    (isEnumType(input.enm) as boolean) &&
     input.lit === 'Literal Value' &&
     typeof input.num === 'number' &&
     typeof input.str === 'string'
@@ -147,7 +147,7 @@ export function isPrimitiveOptionalTupleType(input: any): input is PrimitiveOpti
     (input[0] === null || input[0] === undefined || input[0] === 'Literal Value') &&
     (input[1] === null || input[1] === undefined || typeof input[1] === 'string') &&
     (input[2] === null || input[2] === undefined || typeof input[2] === 'number') &&
-    (input[3] === null || input[3] === undefined || isEnumType(input[3])) &&
+    (input[3] === null || input[3] === undefined || (isEnumType(input[3]) as boolean)) &&
     (input[4] === null || input[4] === undefined || typeof input[4] === 'boolean')
   )
 }
@@ -158,7 +158,7 @@ export function isPrimitiveTupleType(input: any): input is PrimitiveTupleType {
     input[0] === 'Literal Value' &&
     typeof input[1] === 'string' &&
     typeof input[2] === 'number' &&
-    isEnumType(input[3]) &&
+    (isEnumType(input[3]) as boolean) &&
     typeof input[4] === 'boolean'
   )
 }
@@ -175,18 +175,6 @@ export type ArrObjResponse =
       body: ObjectWithArrays
     }
 
-export type BoolResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: boolean
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: boolean
-    }
-
 export type BoolArrResponse =
   | {
       mimeType: 'application/json'
@@ -199,16 +187,16 @@ export type BoolArrResponse =
       body: boolean[]
     }
 
-export type EnmResponse =
+export type BoolResponse =
   | {
       mimeType: 'application/json'
       statusCode: 200
-      body: EnumType
+      body: boolean
     }
   | {
       mimeType: 'application/yaml'
       statusCode: 200
-      body: EnumType
+      body: boolean
     }
 
 export type EnmArrResponse =
@@ -223,6 +211,18 @@ export type EnmArrResponse =
       body: EnumType[]
     }
 
+export type EnmResponse =
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: EnumType
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: EnumType
+    }
+
 export type NestedObjResponse =
   | {
       mimeType: 'application/json'
@@ -235,18 +235,6 @@ export type NestedObjResponse =
       body: ObjectWithNestedObjects
     }
 
-export type NumResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: number
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: number
-    }
-
 export type NumArrResponse =
   | {
       mimeType: 'application/json'
@@ -257,6 +245,18 @@ export type NumArrResponse =
       mimeType: 'application/yaml'
       statusCode: 200
       body: number[]
+    }
+
+export type NumResponse =
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: number
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: number
     }
 
 export type OptPrimTupleResponse =
@@ -295,18 +295,6 @@ export type PrimTupleResponse =
       body: PrimitiveTupleType
     }
 
-export type StrResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: string
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: string
-    }
-
 export type StrArrResponse =
   | {
       mimeType: 'application/json'
@@ -319,6 +307,18 @@ export type StrArrResponse =
       body: string[]
     }
 
+export type StrResponse =
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: string
+    }
+  | {
+      mimeType: 'application/yaml'
+      statusCode: 200
+      body: string
+    }
+
 export type ArrObjServerRequest =
   | {
       mimeType: 'application/json'
@@ -327,16 +327,6 @@ export type ArrObjServerRequest =
   | {
       mimeType: 'application/yaml'
       body: Try<ObjectWithArrays>
-    }
-
-export type BoolServerRequest =
-  | {
-      mimeType: 'application/json'
-      body: Try<boolean>
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: Try<boolean>
     }
 
 export type BoolArrServerRequest =
@@ -349,14 +339,14 @@ export type BoolArrServerRequest =
       body: Try<boolean[]>
     }
 
-export type EnmServerRequest =
+export type BoolServerRequest =
   | {
       mimeType: 'application/json'
-      body: Try<EnumType>
+      body: Try<boolean>
     }
   | {
       mimeType: 'application/yaml'
-      body: Try<EnumType>
+      body: Try<boolean>
     }
 
 export type EnmArrServerRequest =
@@ -369,6 +359,16 @@ export type EnmArrServerRequest =
       body: Try<EnumType[]>
     }
 
+export type EnmServerRequest =
+  | {
+      mimeType: 'application/json'
+      body: Try<EnumType>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<EnumType>
+    }
+
 export type NestedObjServerRequest =
   | {
       mimeType: 'application/json'
@@ -379,16 +379,6 @@ export type NestedObjServerRequest =
       body: Try<ObjectWithNestedObjects>
     }
 
-export type NumServerRequest =
-  | {
-      mimeType: 'application/json'
-      body: Try<number>
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: Try<number>
-    }
-
 export type NumArrServerRequest =
   | {
       mimeType: 'application/json'
@@ -397,6 +387,16 @@ export type NumArrServerRequest =
   | {
       mimeType: 'application/yaml'
       body: Try<number[]>
+    }
+
+export type NumServerRequest =
+  | {
+      mimeType: 'application/json'
+      body: Try<number>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<number>
     }
 
 export type OptPrimTupleServerRequest =
@@ -429,16 +429,6 @@ export type PrimTupleServerRequest =
       body: Try<PrimitiveTupleType>
     }
 
-export type StrServerRequest =
-  | {
-      mimeType: 'application/json'
-      body: Try<string>
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: Try<string>
-    }
-
 export type StrArrServerRequest =
   | {
       mimeType: 'application/json'
@@ -447,6 +437,16 @@ export type StrArrServerRequest =
   | {
       mimeType: 'application/yaml'
       body: Try<string[]>
+    }
+
+export type StrServerRequest =
+  | {
+      mimeType: 'application/json'
+      body: Try<string>
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: Try<string>
     }
 
 export const arrObjRequestBodyValidator = {
@@ -506,19 +506,19 @@ export const strArrRequestBodyValidator = {
 export const strRequestBodyValidator = { 'application/json': string(), 'application/yaml': string() } as const
 
 export type BodiesApi = {
-  arrObj(request: ArrObjServerRequest): Promise<ArrObjResponse>
-  bool(request: BoolServerRequest): Promise<BoolResponse>
-  boolArr(request: BoolArrServerRequest): Promise<BoolArrResponse>
-  enm(request: EnmServerRequest): Promise<EnmResponse>
-  enmArr(request: EnmArrServerRequest): Promise<EnmArrResponse>
-  nestedObj(request: NestedObjServerRequest): Promise<NestedObjResponse>
-  num(request: NumServerRequest): Promise<NumResponse>
-  numArr(request: NumArrServerRequest): Promise<NumArrResponse>
-  optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleResponse>
-  primObj(request: PrimObjServerRequest): Promise<PrimObjResponse>
-  primTuple(request: PrimTupleServerRequest): Promise<PrimTupleResponse>
   str(request: StrServerRequest): Promise<StrResponse>
+  num(request: NumServerRequest): Promise<NumResponse>
+  enm(request: EnmServerRequest): Promise<EnmResponse>
+  bool(request: BoolServerRequest): Promise<BoolResponse>
+  primTuple(request: PrimTupleServerRequest): Promise<PrimTupleResponse>
+  optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleResponse>
   strArr(request: StrArrServerRequest): Promise<StrArrResponse>
+  numArr(request: NumArrServerRequest): Promise<NumArrResponse>
+  enmArr(request: EnmArrServerRequest): Promise<EnmArrResponse>
+  boolArr(request: BoolArrServerRequest): Promise<BoolArrResponse>
+  primObj(request: PrimObjServerRequest): Promise<PrimObjResponse>
+  arrObj(request: ArrObjServerRequest): Promise<ArrObjResponse>
+  nestedObj(request: NestedObjServerRequest): Promise<NestedObjResponse>
 }
 
 export const arrObjRouter: Router = Router().post(
@@ -540,37 +540,6 @@ export const arrObjRouter: Router = Router().post(
         body,
       }
       const typedResponse = await api.arrObj(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const boolRouter: Router = Router().post(
-  '/bool',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BodiesApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean>(
-        toolkit,
-        true,
-        mimeType,
-        boolRequestBodyValidator,
-      )
-      const typedRequest: BoolServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.bool(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -614,25 +583,25 @@ export const boolArrRouter: Router = Router().post(
   },
 )
 
-export const enmRouter: Router = Router().post(
-  '/enm',
+export const boolRouter: Router = Router().post(
+  '/bool',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: BodiesApi = response.locals['__oats_api']
     try {
       const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType>(
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean>(
         toolkit,
         true,
         mimeType,
-        enmRequestBodyValidator,
+        boolRequestBodyValidator,
       )
-      const typedRequest: EnmServerRequest = {
+      const typedRequest: BoolServerRequest = {
         mimeType,
         body,
       }
-      const typedResponse = await api.enm(typedRequest)
+      const typedResponse = await api.bool(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -676,6 +645,37 @@ export const enmArrRouter: Router = Router().post(
   },
 )
 
+export const enmRouter: Router = Router().post(
+  '/enm',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: BodiesApi = response.locals['__oats_api']
+    try {
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType>(
+        toolkit,
+        true,
+        mimeType,
+        enmRequestBodyValidator,
+      )
+      const typedRequest: EnmServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.enm(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
 export const nestedObjRouter: Router = Router().post(
   '/nested-obj',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -707,37 +707,6 @@ export const nestedObjRouter: Router = Router().post(
   },
 )
 
-export const numRouter: Router = Router().post(
-  '/num',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BodiesApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number>(
-        toolkit,
-        true,
-        mimeType,
-        numRequestBodyValidator,
-      )
-      const typedRequest: NumServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.num(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
 export const numArrRouter: Router = Router().post(
   '/num-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -757,6 +726,37 @@ export const numArrRouter: Router = Router().post(
         body,
       }
       const typedResponse = await api.numArr(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const numRouter: Router = Router().post(
+  '/num',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: BodiesApi = response.locals['__oats_api']
+    try {
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number>(
+        toolkit,
+        true,
+        mimeType,
+        numRequestBodyValidator,
+      )
+      const typedRequest: NumServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.num(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -862,37 +862,6 @@ export const primTupleRouter: Router = Router().post(
   },
 )
 
-export const strRouter: Router = Router().post(
-  '/str',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BodiesApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string>(
-        toolkit,
-        true,
-        mimeType,
-        strRequestBodyValidator,
-      )
-      const typedRequest: StrServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.str(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
 export const strArrRouter: Router = Router().post(
   '/str-arr',
   async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -924,20 +893,51 @@ export const strArrRouter: Router = Router().post(
   },
 )
 
+export const strRouter: Router = Router().post(
+  '/str',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: BodiesApi = response.locals['__oats_api']
+    try {
+      const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string>(
+        toolkit,
+        true,
+        mimeType,
+        strRequestBodyValidator,
+      )
+      const typedRequest: StrServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.str(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
 export type BodiesRouters = {
-  arrObjRouter: Router
-  boolArrRouter: Router
-  boolRouter: Router
-  enmArrRouter: Router
-  enmRouter: Router
-  nestedObjRouter: Router
-  numArrRouter: Router
-  numRouter: Router
-  optPrimTupleRouter: Router
-  primObjRouter: Router
-  primTupleRouter: Router
-  strArrRouter: Router
   strRouter: Router
+  numRouter: Router
+  enmRouter: Router
+  boolRouter: Router
+  primTupleRouter: Router
+  optPrimTupleRouter: Router
+  strArrRouter: Router
+  numArrRouter: Router
+  enmArrRouter: Router
+  boolArrRouter: Router
+  primObjRouter: Router
+  arrObjRouter: Router
+  nestedObjRouter: Router
 }
 
 export function createBodiesRouter(
@@ -951,19 +951,19 @@ export function createBodiesRouter(
       response.locals['__oats_adapter'] = adapter
       next()
     },
-    routes.arrObjRouter ?? arrObjRouter,
-    routes.boolArrRouter ?? boolArrRouter,
-    routes.boolRouter ?? boolRouter,
-    routes.enmArrRouter ?? enmArrRouter,
-    routes.enmRouter ?? enmRouter,
-    routes.nestedObjRouter ?? nestedObjRouter,
-    routes.numArrRouter ?? numArrRouter,
-    routes.numRouter ?? numRouter,
-    routes.optPrimTupleRouter ?? optPrimTupleRouter,
-    routes.primObjRouter ?? primObjRouter,
-    routes.primTupleRouter ?? primTupleRouter,
-    routes.strArrRouter ?? strArrRouter,
     routes.strRouter ?? strRouter,
+    routes.numRouter ?? numRouter,
+    routes.enmRouter ?? enmRouter,
+    routes.boolRouter ?? boolRouter,
+    routes.primTupleRouter ?? primTupleRouter,
+    routes.optPrimTupleRouter ?? optPrimTupleRouter,
+    routes.strArrRouter ?? strArrRouter,
+    routes.numArrRouter ?? numArrRouter,
+    routes.enmArrRouter ?? enmArrRouter,
+    routes.boolArrRouter ?? boolArrRouter,
+    routes.primObjRouter ?? primObjRouter,
+    routes.arrObjRouter ?? arrObjRouter,
+    routes.nestedObjRouter ?? nestedObjRouter,
   )
 }
 
@@ -988,16 +988,6 @@ export type ArrObjRequest =
       body: ObjectWithArrays
     }
 
-export type BoolRequest =
-  | {
-      mimeType: 'application/json'
-      body: boolean
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: boolean
-    }
-
 export type BoolArrRequest =
   | {
       mimeType: 'application/json'
@@ -1008,14 +998,14 @@ export type BoolArrRequest =
       body: boolean[]
     }
 
-export type EnmRequest =
+export type BoolRequest =
   | {
       mimeType: 'application/json'
-      body: EnumType
+      body: boolean
     }
   | {
       mimeType: 'application/yaml'
-      body: EnumType
+      body: boolean
     }
 
 export type EnmArrRequest =
@@ -1028,6 +1018,16 @@ export type EnmArrRequest =
       body: EnumType[]
     }
 
+export type EnmRequest =
+  | {
+      mimeType: 'application/json'
+      body: EnumType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: EnumType
+    }
+
 export type NestedObjRequest =
   | {
       mimeType: 'application/json'
@@ -1038,16 +1038,6 @@ export type NestedObjRequest =
       body: ObjectWithNestedObjects
     }
 
-export type NumRequest =
-  | {
-      mimeType: 'application/json'
-      body: number
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: number
-    }
-
 export type NumArrRequest =
   | {
       mimeType: 'application/json'
@@ -1056,6 +1046,16 @@ export type NumArrRequest =
   | {
       mimeType: 'application/yaml'
       body: number[]
+    }
+
+export type NumRequest =
+  | {
+      mimeType: 'application/json'
+      body: number
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: number
     }
 
 export type OptPrimTupleRequest =
@@ -1088,16 +1088,6 @@ export type PrimTupleRequest =
       body: PrimitiveTupleType
     }
 
-export type StrRequest =
-  | {
-      mimeType: 'application/json'
-      body: string
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: string
-    }
-
 export type StrArrRequest =
   | {
       mimeType: 'application/json'
@@ -1106,6 +1096,16 @@ export type StrArrRequest =
   | {
       mimeType: 'application/yaml'
       body: string[]
+    }
+
+export type StrRequest =
+  | {
+      mimeType: 'application/json'
+      body: string
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: string
     }
 
 export const arrObjResponseBodyValidator = {
@@ -1447,19 +1447,19 @@ export async function strArr(request: StrArrRequest, adapter: ClientAdapter): Pr
 }
 
 export type BodiesSdk = {
-  arrObj(request: ArrObjRequest): Promise<ArrObjResponse>
-  bool(request: BoolRequest): Promise<BoolResponse>
-  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
-  enm(request: EnmRequest): Promise<EnmResponse>
-  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
-  nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
-  num(request: NumRequest): Promise<NumResponse>
-  numArr(request: NumArrRequest): Promise<NumArrResponse>
-  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
-  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
-  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
   str(request: StrRequest): Promise<StrResponse>
+  num(request: NumRequest): Promise<NumResponse>
+  enm(request: EnmRequest): Promise<EnmResponse>
+  bool(request: BoolRequest): Promise<BoolResponse>
+  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
+  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
   strArr(request: StrArrRequest): Promise<StrArrResponse>
+  numArr(request: NumArrRequest): Promise<NumArrResponse>
+  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
+  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
+  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
+  arrObj(request: ArrObjRequest): Promise<ArrObjResponse>
+  nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
 }
 
 export class BodiesSdkImpl implements BodiesSdk {
@@ -1467,85 +1467,43 @@ export class BodiesSdkImpl implements BodiesSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async arrObj(request: ArrObjRequest): Promise<ArrObjResponse> {
-    return arrObj(request, this.adapter)
-  }
-  public async bool(request: BoolRequest): Promise<BoolResponse> {
-    return bool(request, this.adapter)
-  }
-  public async boolArr(request: BoolArrRequest): Promise<BoolArrResponse> {
-    return boolArr(request, this.adapter)
-  }
-  public async enm(request: EnmRequest): Promise<EnmResponse> {
-    return enm(request, this.adapter)
-  }
-  public async enmArr(request: EnmArrRequest): Promise<EnmArrResponse> {
-    return enmArr(request, this.adapter)
-  }
-  public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
-    return nestedObj(request, this.adapter)
+  public async str(request: StrRequest): Promise<StrResponse> {
+    return str(request, this.adapter)
   }
   public async num(request: NumRequest): Promise<NumResponse> {
     return num(request, this.adapter)
   }
-  public async numArr(request: NumArrRequest): Promise<NumArrResponse> {
-    return numArr(request, this.adapter)
+  public async enm(request: EnmRequest): Promise<EnmResponse> {
+    return enm(request, this.adapter)
   }
-  public async optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
-    return optPrimTuple(request, this.adapter)
-  }
-  public async primObj(request: PrimObjRequest): Promise<PrimObjResponse> {
-    return primObj(request, this.adapter)
+  public async bool(request: BoolRequest): Promise<BoolResponse> {
+    return bool(request, this.adapter)
   }
   public async primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse> {
     return primTuple(request, this.adapter)
   }
-  public async str(request: StrRequest): Promise<StrResponse> {
-    return str(request, this.adapter)
+  public async optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
+    return optPrimTuple(request, this.adapter)
   }
   public async strArr(request: StrArrRequest): Promise<StrArrResponse> {
     return strArr(request, this.adapter)
   }
-}
-
-export class BodiesSdkStub implements BodiesSdk {
-  public async arrObj(_request: ArrObjRequest): Promise<ArrObjResponse> {
-    throw new Error('Stub method "arrObj" called. You should implement this method if you want to use it.')
+  public async numArr(request: NumArrRequest): Promise<NumArrResponse> {
+    return numArr(request, this.adapter)
   }
-  public async bool(_request: BoolRequest): Promise<BoolResponse> {
-    throw new Error('Stub method "bool" called. You should implement this method if you want to use it.')
+  public async enmArr(request: EnmArrRequest): Promise<EnmArrResponse> {
+    return enmArr(request, this.adapter)
   }
-  public async boolArr(_request: BoolArrRequest): Promise<BoolArrResponse> {
-    throw new Error('Stub method "boolArr" called. You should implement this method if you want to use it.')
+  public async boolArr(request: BoolArrRequest): Promise<BoolArrResponse> {
+    return boolArr(request, this.adapter)
   }
-  public async enm(_request: EnmRequest): Promise<EnmResponse> {
-    throw new Error('Stub method "enm" called. You should implement this method if you want to use it.')
+  public async primObj(request: PrimObjRequest): Promise<PrimObjResponse> {
+    return primObj(request, this.adapter)
   }
-  public async enmArr(_request: EnmArrRequest): Promise<EnmArrResponse> {
-    throw new Error('Stub method "enmArr" called. You should implement this method if you want to use it.')
+  public async arrObj(request: ArrObjRequest): Promise<ArrObjResponse> {
+    return arrObj(request, this.adapter)
   }
-  public async nestedObj(_request: NestedObjRequest): Promise<NestedObjResponse> {
-    throw new Error('Stub method "nestedObj" called. You should implement this method if you want to use it.')
-  }
-  public async num(_request: NumRequest): Promise<NumResponse> {
-    throw new Error('Stub method "num" called. You should implement this method if you want to use it.')
-  }
-  public async numArr(_request: NumArrRequest): Promise<NumArrResponse> {
-    throw new Error('Stub method "numArr" called. You should implement this method if you want to use it.')
-  }
-  public async optPrimTuple(_request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
-    throw new Error('Stub method "optPrimTuple" called. You should implement this method if you want to use it.')
-  }
-  public async primObj(_request: PrimObjRequest): Promise<PrimObjResponse> {
-    throw new Error('Stub method "primObj" called. You should implement this method if you want to use it.')
-  }
-  public async primTuple(_request: PrimTupleRequest): Promise<PrimTupleResponse> {
-    throw new Error('Stub method "primTuple" called. You should implement this method if you want to use it.')
-  }
-  public async str(_request: StrRequest): Promise<StrResponse> {
-    throw new Error('Stub method "str" called. You should implement this method if you want to use it.')
-  }
-  public async strArr(_request: StrArrRequest): Promise<StrArrResponse> {
-    throw new Error('Stub method "strArr" called. You should implement this method if you want to use it.')
+  public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
+    return nestedObj(request, this.adapter)
   }
 }

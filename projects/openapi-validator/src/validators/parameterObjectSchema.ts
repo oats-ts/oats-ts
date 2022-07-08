@@ -4,9 +4,9 @@ import { primitiveSchemaObject } from './primitiveSchemaObject'
 import { recordSchemaObject } from './recordSchemaObject'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue } from '@oats-ts/validators'
-import { getInferredType } from '@oats-ts/json-schema-common'
 import { enumSchemaObject } from './enumSchemaObject'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
+import { getInferredType } from '@oats-ts/model-common'
 
 function parameterObjectEnumOrPrimitiveSchema(
   data: SchemaObject,

@@ -10,15 +10,15 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from '../validators/referenceable'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
-        allOf: array(combine([items(object()), minLength(1)])),
+        allOf: array(combine(items(object()), minLength(1))),
       },
       true,
     ),
     ignore(['oneOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'discriminator', 'enum']),
-  ]),
+  ),
 )
 export const intersectionSchemaObject =
   (alternatives: OpenAPIValidatorFn<SchemaObject> = schemaObject): OpenAPIValidatorFn<SchemaObject> =>

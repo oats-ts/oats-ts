@@ -26,12 +26,14 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @returns The dereferenced value (in case its not a string or a ReferenceObject the value itself).
    */
   dereference<T>(input: string | T | ReferenceObject, deep?: boolean): T
+
+  nameOf(input: any): string | undefined
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).
    * @returns The name of the value.
    */
-  nameOf(input: any, target?: Target): string
+  nameOf(input: any, target: Target): string
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).
@@ -64,3 +66,18 @@ export type HasSchemas = {
     schemas?: Record<string, Referenceable<SchemaObject>>
   }
 }
+
+export type InferredType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'enum'
+  | 'literal'
+  | 'object'
+  | 'array'
+  | 'tuple'
+  | 'record'
+  | 'union'
+  | 'intersection'
+  | 'unknown'
+  | 'ref'

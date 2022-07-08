@@ -9,12 +9,15 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
 const validator = object(
-  shape<ComponentsObject>({
-    schemas: optional(object()),
-    responses: optional(object()),
-    parameters: optional(object()),
-    requestBodies: optional(object()),
-  }),
+  shape<ComponentsObject>(
+    {
+      schemas: optional(object()),
+      responses: optional(object()),
+      parameters: optional(object()),
+      requestBodies: optional(object()),
+    },
+    true,
+  ),
 )
 
 export function componentsObject(

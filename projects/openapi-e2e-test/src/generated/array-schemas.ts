@@ -61,7 +61,7 @@ export function isObjectArrayType(input: any): input is ObjectArrayType {
 }
 
 export function isRefArrayType(input: any): input is RefArrayType {
-  return Array.isArray(input) && input.every((item: any) => isReferenceTarget(item))
+  return Array.isArray(input) && input.every((item: any) => isReferenceTarget(item) as boolean)
 }
 
 export function isReferenceTarget(input: any): input is ReferenceTarget {

@@ -13,15 +13,14 @@ const Http = {
   RawHttpResponse: 'RawHttpResponse',
   ResponseExpectation: 'ResponseExpectation',
   ResponseExpectations: 'ResponseExpectations',
-  StatusCode: 'StatusCode',
   ClientAdapter: 'ClientAdapter',
   ServerAdapter: 'ServerAdapter',
-}
+} as const
 
 const HttpServerExpress = {
   name: '@oats-ts/openapi-express-server-adapter',
   ExpressToolkit: 'ExpressToolkit',
-}
+} as const
 
 const ParameterSerialization = {
   name: '@oats-ts/openapi-parameter-serialization',
@@ -29,14 +28,15 @@ const ParameterSerialization = {
   createPathSerializer: 'createPathSerializer',
   createQuerySerializer: 'createQuerySerializer',
   serializers: 'serializers',
-}
-
-const ParameterDeserialization = {
-  name: '@oats-ts/openapi-parameter-deserialization',
   createQueryDeserializer: 'createQueryDeserializer',
   createPathDeserializer: 'createPathDeserializer',
   createHeaderDeserializer: 'createHeaderDeserializer',
   deserializers: 'deserializers',
+  dsl: 'dsl',
+  HeaderDsl: 'HeaderDsl',
+  CookieDsl: 'CookieDsl',
+  PathDsl: 'PathDsl',
+  QueryDsl: 'QueryDsl',
 }
 
 const Express = {
@@ -46,7 +46,7 @@ const Express = {
   Response: 'Response',
   NextFunction: 'NextFunction',
   RequestHandler: 'RequestHandler',
-}
+} as const
 
 const Try = {
   name: '@oats-ts/try',
@@ -54,13 +54,12 @@ const Try = {
   getData: 'getData',
   map: 'map',
   flatMap: 'flatMap',
-}
+} as const
 
 export const RuntimePackages = {
   Http,
   Express,
   HttpServerExpress,
   ParameterSerialization,
-  ParameterDeserialization,
   Try,
-}
+} as const

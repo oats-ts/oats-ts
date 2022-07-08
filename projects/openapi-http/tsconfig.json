@@ -4,16 +4,11 @@
     "module": "commonjs",
     "declaration": true,
     "noImplicitAny": true,
-    "target": "es6",
+    "target": "ES2020",
     "sourceMap": true,
+    "strict": true,
     "esModuleInterop": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ]
+    "lib": ["ESNext", "DOM"]
   },
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "exclude": ["node_modules", "lib"]
 }

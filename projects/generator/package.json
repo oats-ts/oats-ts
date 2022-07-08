@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/generator",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -8,9 +8,7 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bali182/oats.git"
@@ -35,6 +33,9 @@
   "dependencies": {
     "chalk": "4.1.1",
     "lodash": "4.17.21",
-    "@oats-ts/validators": "0.0.24"
+    "@oats-ts/try": "0.0.25",
+    "@oats-ts/validators": "0.0.25",
+    "@oats-ts/events": "0.0.25",
+    "nanoid": "3.3.4"
   }
 }

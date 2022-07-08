@@ -8,4 +8,5 @@ export function getLiteralAst(value: string | number | boolean): StringLiteral |
   } else if (typeof value === 'boolean') {
     return value ? factory.createTrue() : factory.createFalse()
   }
+  throw new TypeError(`Parameter must be a string, number or boolean literal`)
 }

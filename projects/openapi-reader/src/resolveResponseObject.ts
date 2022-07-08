@@ -2,34 +2,42 @@ import { HeaderObject, ResponseObject } from '@oats-ts/openapi-model'
 import { register } from './register'
 import { ReadContext, ReadInput } from './internalTypings'
 import { validate } from './validate'
-import { resolveReferenceable } from './resolveReferenceable'
 import { resolveHeaderObject } from './resolveParameterObject'
 import { responseObject } from './validators/responseObject'
 import { resolveContentObject } from './resolveContentObject'
 import { entries, isNil } from 'lodash'
 import { registerNamed } from './registerNamed'
+import { fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 
-export async function resolveResponseObject(input: ReadInput<ResponseObject>, context: ReadContext): Promise<void> {
-  if (!validate(input, context, responseObject)) {
-    return
+export function resolveResponseObject(input: ReadInput<ResponseObject>, context: ReadContext): Try<ResponseObject> {
+  const validationResult = validate(input, context, responseObject)
+  if (isFailure(validationResult)) {
+    return validationResult
   }
+
+  register(input, context)
+
   const { data, uri } = input
-  const { content, headers } = data
+  const { content, headers } = data ?? {}
+  const parts: Try<any>[] = []
 
   if (!isNil(headers)) {
     for (const [name, headerOrRef] of entries(headers)) {
-      await resolveReferenceable<HeaderObject>(
-        { data: headerOrRef, uri: context.uri.append(uri, 'headers', name) },
-        context,
-        resolveHeaderObject,
+      parts.push(
+        context.ref.resolveReferenceable<HeaderObject>(
+          { data: headerOrRef, uri: context.uri.append(uri, 'headers', name) },
+          context,
+          resolveHeaderObject,
+        ),
       )
       registerNamed(name, headerOrRef, context)
     }
   }
 
   if (!isNil(content)) {
-    await resolveContentObject({ data: content, uri: context.uri.append(uri, 'content') }, context)
+    parts.push(resolveContentObject({ data: content, uri: context.uri.append(uri, 'content') }, context))
   }
 
-  register(input, context)
+  const merged = fromArray(parts)
+  return isSuccess(merged) ? success(data) : merged
 }

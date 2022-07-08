@@ -91,6 +91,6 @@ export function isTupleType(input: any): input is TupleType {
     input[4] !== null &&
     typeof input[4] === 'object' &&
     (input[4].foo === null || input[4].foo === undefined || typeof input[4].foo === 'string') &&
-    isReferenceTarget(input[5])
+    (isReferenceTarget(input[5]) as boolean)
   )
 }

@@ -8,7 +8,7 @@ import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { referenceable } from './referenceable'
 
 const validator = object(
-  combine([
+  combine(
     shape<ParameterObject>(
       {
         name: string(),
@@ -20,7 +20,7 @@ const validator = object(
       true,
     ),
     warnContent,
-  ]),
+  ),
 )
 
 export function headerParameterObject(

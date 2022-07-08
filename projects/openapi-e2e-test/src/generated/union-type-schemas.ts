@@ -97,7 +97,7 @@ export function isLeafType3(input: any): input is LeafType3 {
 }
 
 export function isMidLevelUnionType(input: any): input is MidLevelUnionType {
-  return isLeafType2(input) || isLeafType3(input)
+  return (isLeafType2(input) as boolean) || (isLeafType3(input) as boolean)
 }
 
 export function isPrimitiveUnionType(input: any): input is PrimitiveUnionType {
@@ -105,5 +105,5 @@ export function isPrimitiveUnionType(input: any): input is PrimitiveUnionType {
 }
 
 export function isTopLevelUnionType(input: any): input is TopLevelUnionType {
-  return isLeafType1(input) || isMidLevelUnionType(input)
+  return (isLeafType1(input) as boolean) || (isMidLevelUnionType(input) as boolean)
 }

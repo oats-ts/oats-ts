@@ -12,6 +12,9 @@ import {
   ResponsesObject,
   ContentObject,
 } from '@oats-ts/openapi-model'
+import { GeneratorContextImpl } from '@oats-ts/model-common'
+import { GeneratorConfig } from '@oats-ts/generator'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 
 export type OpenAPIValidatorFn<T> = (
   input: T,
@@ -35,11 +38,6 @@ export type OpenAPIValidatorConfig = {
   referenceObject: OpenAPIValidatorFn<ReferenceObject>
 }
 
-export type OpenAPIValidatorContext = {
-  readonly document: OpenAPIObject
-  readonly documents: OpenAPIObject[]
+export type OpenAPIValidatorContext = GeneratorContextImpl<OpenAPIObject, GeneratorConfig, OpenAPIGeneratorTarget> & {
   readonly validated: Set<any>
-  dereference<T>(input: string | T | ReferenceObject): T
-  nameOf(input: any): string
-  uriOf(input: any): string
 }

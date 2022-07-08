@@ -12,12 +12,15 @@ const validator = object(
   record(
     string(),
     object(
-      combine([
-        shape<MediaTypeObject>({
-          schema: object(),
-        }),
+      combine(
+        shape<MediaTypeObject>(
+          {
+            schema: object(),
+          },
+          true,
+        ),
         ignore(['encoding']),
-      ]),
+      ),
     ),
   ),
 )

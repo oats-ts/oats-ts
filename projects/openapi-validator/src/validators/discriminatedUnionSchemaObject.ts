@@ -12,7 +12,6 @@ import {
   record,
   minLength,
 } from '@oats-ts/validators'
-import { getInferredType } from '@oats-ts/json-schema-common'
 import { validatorConfig } from '../utils/validatorConfig'
 import { entries, isNil, flatMap } from 'lodash'
 import { objectSchemaObject } from './objectSchemaObject'
@@ -20,9 +19,10 @@ import { ordered } from '../utils/ordered'
 import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { getInferredType } from '@oats-ts/model-common'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
@@ -33,7 +33,7 @@ const validator = object(
           }),
         ),
         oneOf: array(
-          combine([
+          combine(
             items(
               object(
                 shape<ReferenceObject>({
@@ -42,13 +42,13 @@ const validator = object(
               ),
             ),
             minLength(1),
-          ]),
+          ),
         ),
       },
       true,
     ),
     ignore(['allOf', 'anyOf', 'not', 'items', 'properties', 'additionalProperties', 'enum']),
-  ]),
+  ),
 )
 export function discriminatedUnionSchemaObject(
   data: SchemaObject,

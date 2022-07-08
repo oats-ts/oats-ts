@@ -5,20 +5,26 @@ import { validate } from './validate'
 import { resolveContentObject } from './resolveContentObject'
 import { requestBodyObject } from './validators/requestBodyObject'
 import { isNil } from 'lodash'
+import { fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 
-export async function resolveRequestBodyObject(
+export function resolveRequestBodyObject(
   input: ReadInput<RequestBodyObject>,
   context: ReadContext,
-): Promise<void> {
-  if (!validate(input, context, requestBodyObject)) {
-    return
+): Try<RequestBodyObject> {
+  const validationResult = validate(input, context, requestBodyObject)
+  if (isFailure(validationResult)) {
+    return validationResult
   }
+  register(input, context)
+
   const { data, uri } = input
-  const { content } = data
+  const { content } = data ?? {}
+  const parts: Try<any>[] = []
 
   if (!isNil(content)) {
-    await resolveContentObject({ data: content, uri: context.uri.append(uri, 'content') }, context)
+    parts.push(resolveContentObject({ data: content, uri: context.uri.append(uri, 'content') }, context))
   }
 
-  register(input, context)
+  const merged = fromArray(parts)
+  return isSuccess(merged) ? success(data) : merged
 }

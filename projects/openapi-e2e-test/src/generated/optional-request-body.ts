@@ -147,9 +147,3 @@ export class BodiesSdkImpl implements BodiesSdk {
     return optionalRequestBody(request, this.adapter)
   }
 }
-
-export class BodiesSdkStub implements BodiesSdk {
-  public async optionalRequestBody(_request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
-    throw new Error('Stub method "optionalRequestBody" called. You should implement this method if you want to use it.')
-  }
-}

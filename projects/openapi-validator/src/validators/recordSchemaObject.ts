@@ -1,5 +1,5 @@
 import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
-import { Issue, object, optional, shape, combine, literal } from '@oats-ts/validators'
+import { Issue, object, optional, shape, combine, literal, union } from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
@@ -9,16 +9,19 @@ import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
 const validator = object(
-  combine([
+  combine(
     shape<SchemaObject>(
       {
         type: optional(literal('object')),
-        additionalProperties: object(),
+        additionalProperties: union({
+          false: literal(false),
+          schema: object(),
+        }),
       },
       true,
     ),
     ignore(['discriminator', 'allOf', 'oneOf', 'anyOf', 'not', 'properties', 'required', 'items', 'enum']),
-  ]),
+  ),
 )
 
 export const recordSchemaObject =

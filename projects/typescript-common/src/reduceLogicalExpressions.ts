@@ -12,7 +12,7 @@ export function reduceLogicalExpressions(operator: LogicalOperator, expressions:
     case 0:
       return factory.createTrue()
     case 1:
-      return head(filtered)
+      return head(filtered)!
     default:
       return getLogicalExpression(operator, filtered)
   }

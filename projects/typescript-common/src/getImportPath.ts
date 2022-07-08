@@ -7,7 +7,7 @@ function removeExtension(path: string): string {
 
 export function getImportPath(from: string, to: string): string {
   if (from === to) {
-    return undefined
+    throw new Error(`Parameters from and to are both "${from}", no need for imports in this case.`)
   }
 
   const relativePath = removeExtension(relative(dirname(from), to))

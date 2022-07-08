@@ -58,12 +58,12 @@ export type PutMethodResponse = {
 }
 
 export type HttpMethodsApi = {
-  deleteMethod(): Promise<DeleteMethodResponse>
   getMethod(): Promise<GetMethodResponse>
-  optionsMethod(): Promise<OptionsMethodResponse>
-  patchMethod(): Promise<PatchMethodResponse>
   postMethod(): Promise<PostMethodResponse>
   putMethod(): Promise<PutMethodResponse>
+  patchMethod(): Promise<PatchMethodResponse>
+  optionsMethod(): Promise<OptionsMethodResponse>
+  deleteMethod(): Promise<DeleteMethodResponse>
 }
 
 export const deleteMethodRouter: Router = Router().delete(
@@ -187,12 +187,12 @@ export const putMethodRouter: Router = Router().put(
 )
 
 export type HttpMethodsRouters = {
-  deleteMethodRouter: Router
   getMethodRouter: Router
-  optionsMethodRouter: Router
-  patchMethodRouter: Router
   postMethodRouter: Router
   putMethodRouter: Router
+  patchMethodRouter: Router
+  optionsMethodRouter: Router
+  deleteMethodRouter: Router
 }
 
 export function createHttpMethodsRouter(
@@ -206,12 +206,12 @@ export function createHttpMethodsRouter(
       response.locals['__oats_adapter'] = adapter
       next()
     },
-    routes.deleteMethodRouter ?? deleteMethodRouter,
     routes.getMethodRouter ?? getMethodRouter,
-    routes.optionsMethodRouter ?? optionsMethodRouter,
-    routes.patchMethodRouter ?? patchMethodRouter,
     routes.postMethodRouter ?? postMethodRouter,
     routes.putMethodRouter ?? putMethodRouter,
+    routes.patchMethodRouter ?? patchMethodRouter,
+    routes.optionsMethodRouter ?? optionsMethodRouter,
+    routes.deleteMethodRouter ?? deleteMethodRouter,
   )
 }
 
@@ -220,7 +220,7 @@ export const httpMethodsCorsMiddleware =
   (request: Request, response: Response, next: NextFunction) => {
     if (isAccepted(request)) {
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'DELETE, GET, OPTIONS, PATCH, POST, PUT')
+      response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
       response.setHeader('Access-Control-Allow-Headers', 'content-type')
     }
     next()
@@ -380,12 +380,12 @@ export async function putMethod(adapter: ClientAdapter): Promise<PutMethodRespon
 }
 
 export type HttpMethodsSdk = {
-  deleteMethod(): Promise<DeleteMethodResponse>
   getMethod(): Promise<GetMethodResponse>
-  optionsMethod(): Promise<OptionsMethodResponse>
-  patchMethod(): Promise<PatchMethodResponse>
   postMethod(): Promise<PostMethodResponse>
   putMethod(): Promise<PutMethodResponse>
+  patchMethod(): Promise<PatchMethodResponse>
+  optionsMethod(): Promise<OptionsMethodResponse>
+  deleteMethod(): Promise<DeleteMethodResponse>
 }
 
 export class HttpMethodsSdkImpl implements HttpMethodsSdk {
@@ -393,17 +393,8 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async deleteMethod(): Promise<DeleteMethodResponse> {
-    return deleteMethod(this.adapter)
-  }
   public async getMethod(): Promise<GetMethodResponse> {
     return getMethod(this.adapter)
-  }
-  public async optionsMethod(): Promise<OptionsMethodResponse> {
-    return optionsMethod(this.adapter)
-  }
-  public async patchMethod(): Promise<PatchMethodResponse> {
-    return patchMethod(this.adapter)
   }
   public async postMethod(): Promise<PostMethodResponse> {
     return postMethod(this.adapter)
@@ -411,25 +402,13 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   public async putMethod(): Promise<PutMethodResponse> {
     return putMethod(this.adapter)
   }
-}
-
-export class HttpMethodsSdkStub implements HttpMethodsSdk {
-  public async deleteMethod(): Promise<DeleteMethodResponse> {
-    throw new Error('Stub method "deleteMethod" called. You should implement this method if you want to use it.')
-  }
-  public async getMethod(): Promise<GetMethodResponse> {
-    throw new Error('Stub method "getMethod" called. You should implement this method if you want to use it.')
+  public async patchMethod(): Promise<PatchMethodResponse> {
+    return patchMethod(this.adapter)
   }
   public async optionsMethod(): Promise<OptionsMethodResponse> {
-    throw new Error('Stub method "optionsMethod" called. You should implement this method if you want to use it.')
+    return optionsMethod(this.adapter)
   }
-  public async patchMethod(): Promise<PatchMethodResponse> {
-    throw new Error('Stub method "patchMethod" called. You should implement this method if you want to use it.')
-  }
-  public async postMethod(): Promise<PostMethodResponse> {
-    throw new Error('Stub method "postMethod" called. You should implement this method if you want to use it.')
-  }
-  public async putMethod(): Promise<PutMethodResponse> {
-    throw new Error('Stub method "putMethod" called. You should implement this method if you want to use it.')
+  public async deleteMethod(): Promise<DeleteMethodResponse> {
+    return deleteMethod(this.adapter)
   }
 }
