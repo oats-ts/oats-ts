@@ -4,9 +4,10 @@ import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { isEmpty } from 'lodash'
 import { Expression, factory, ImportDeclaration, NodeFlags, SourceFile, SyntaxKind } from 'typescript'
-import { createPathRegex, getPathParameterNames } from './pathUtils'
+import { getPathParameterNames } from './pathUtils'
 import { getDslObjectAst } from '../utils/dsl/getDslObjectAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { createPathRegExp } from '@oats-ts/openapi-parameter-serialization'
 
 export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -50,7 +51,7 @@ export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> 
                       factory.createArrayLiteralExpression(
                         getPathParameterNames(data.url).map((name) => factory.createStringLiteral(name)),
                       ),
-                      factory.createRegularExpressionLiteral(createPathRegex(data.url).toString()),
+                      factory.createRegularExpressionLiteral(createPathRegExp(data.url).toString()),
                     ],
                   ),
                 ),

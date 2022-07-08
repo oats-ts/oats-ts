@@ -1,11 +1,4 @@
-import { ParameterSegment, parsePathToSegments } from '@oats-ts/openapi-parameter-common'
-import { pathToRegexp } from 'path-to-regexp'
-
-export function createPathRegex(path: string): RegExp {
-  const segments = parsePathToSegments(path)
-  const regexpInput = segments.map((segment) => (segment.type === 'text' ? segment.value : `:${segment.name}`)).join('')
-  return pathToRegexp(regexpInput, [])
-}
+import { ParameterSegment, parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
 
 export function getPathParameterNames(path: string): string[] {
   return parsePathToSegments(path)

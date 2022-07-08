@@ -1,4 +1,4 @@
-import { parsePathToSegments } from '@oats-ts/openapi-parameter-common'
+import { parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
 
 export function getPathTemplate(path: string): string {
   const segments = parsePathToSegments(path)
