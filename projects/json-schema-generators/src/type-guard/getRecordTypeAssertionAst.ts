@@ -3,7 +3,7 @@ import { CallExpression, Expression, factory, SyntaxKind, TrueLiteral } from 'ty
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 function getRecordItemsAsserterAst(
   data: SchemaObject,

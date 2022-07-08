@@ -3,7 +3,7 @@ import { ImportDeclaration } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 import { getReferencedNamedSchemas } from '@oats-ts/model-common'
 import { isNil } from 'lodash'
-import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '../types'
 
 export function getTypeImports(
   fromPath: string,

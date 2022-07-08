@@ -5,7 +5,7 @@ import { getObjectPropertyAst } from './getObjectPropertyAst'
 import { TypesGeneratorConfig } from './typings'
 import { safeName } from '@oats-ts/typescript-common'
 import { getDiscriminators } from '@oats-ts/model-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getObjectPropertiesAst(
   data: SchemaObject,

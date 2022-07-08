@@ -31,12 +31,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/json-schema-common",
-      "projectFolder": "projects/json-schema-common",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/json-schema-generators",
       "projectFolder": "projects/json-schema-generators",
       "versionPolicyName": "oats",

@@ -1,6 +1,7 @@
 export { createGeneratorContext } from './createGeneratorContext'
 export { GeneratorContextImpl } from './GeneratorContextImpl'
 export { getDiscriminators } from './getDiscriminators'
+export { getInferredType } from './getInferredType'
 export { getNamedSchemas } from './getNamedSchemas'
 export { getPrimitiveType } from './getPrimitiveType'
 export { getReferencedNamedSchemas } from './getReferencedNamedSchemas'

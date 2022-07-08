@@ -1,8 +1,7 @@
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject } from '@oats-ts/model-common'
+import { getInferredType, isReferenceObject } from '@oats-ts/model-common'
 import { factory, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
-import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { getObjectValidatorAst } from './getObjectValidatorAst'
 import { getRecordValidatorAst } from './getRecordValidatorAst'
 import { getReferenceValidatorAst } from './getReferenceValidatorAst'
@@ -13,6 +12,7 @@ import { getEnumValidatorAst } from './getEnumValidatorAst'
 import { getLiteralValidatorAst } from './getLiteralValidatorAst'
 import { getTupleValidatorAst } from './getTupleValidatorAst'
 import { getIntersectionTypeValidatorAst } from './getIntersectionTypeValidatorAst'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,

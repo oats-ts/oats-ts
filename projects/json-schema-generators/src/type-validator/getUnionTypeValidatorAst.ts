@@ -1,10 +1,10 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier } from 'typescript'
-import { RuntimePackages } from '@oats-ts/model-common'
+import { getInferredType, RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
-import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { safeName } from '@oats-ts/typescript-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 function getSchemaKey(data: Referenceable<SchemaObject>, index: number, context: JsonSchemaGeneratorContext): string {
   const { dereference, nameOf } = context

@@ -8,9 +8,10 @@ import { getUnionTypeAst } from './getUnionTypeAst'
 import { TypesGeneratorConfig } from './typings'
 import { getIntersectionTypeAst } from './getIntersectionTypeAst'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
-import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { getTupleTypeAst } from './getTupleTypeAst'
 import { getConstantTypeAst } from './getConstantTypeAst'
+import { getInferredType } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getRighthandSideTypeAst(
   data: Referenceable<SchemaObject>,

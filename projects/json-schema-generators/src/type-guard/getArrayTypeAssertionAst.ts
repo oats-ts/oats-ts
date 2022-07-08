@@ -2,8 +2,8 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { TypeGuardGeneratorConfig } from './typings'
+import { JsonSchemaGeneratorContext } from '../types'
 
 function getArrayItemAsserterAst(
   data: SchemaObject,

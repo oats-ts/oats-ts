@@ -1,5 +1,5 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { factory, CallExpression, Identifier, Expression } from 'typescript'
+import { factory, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { safeName } from '@oats-ts/typescript-common'
 import { getJsonLiteralValidatorAst } from './getJsonLiteralValidatorAst'

@@ -1,5 +1,3 @@
-import { GeneratorContext, HasSchemas } from '@oats-ts/model-common'
-
 export type TypesGeneratorConfig = {
   /**
    * If set to true, the description and deprecated fields in SchemaObjects will be used to generate

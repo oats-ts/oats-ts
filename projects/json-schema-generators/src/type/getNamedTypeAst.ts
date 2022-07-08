@@ -3,8 +3,8 @@ import { EnumDeclaration, factory, SyntaxKind, TypeAliasDeclaration } from 'type
 import { getRighthandSideTypeAst } from './getRighthandSideTypeAst'
 import { TypesGeneratorConfig } from './typings'
 import { documentNode } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { isReferenceObject } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getNamedTypeAst(
   schema: Referenceable<SchemaObject>,

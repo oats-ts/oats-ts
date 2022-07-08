@@ -5,11 +5,10 @@ import { Expression, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { SchemaObject, Referenceable } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile } from '@oats-ts/typescript-common'
 import { getValidatorAst } from './getValidatorAst'
-import { JsonSchemaReadOutput } from '../types'
+import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
 
 export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<

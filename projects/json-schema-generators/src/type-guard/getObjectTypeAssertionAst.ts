@@ -5,7 +5,7 @@ import { getDiscriminators } from '@oats-ts/model-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
 import { getLogicalExpression, reduceLogicalExpressions, safeMemberAccess } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getObjectTypeAssertionAst(
   data: SchemaObject,

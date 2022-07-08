@@ -1,11 +1,11 @@
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, NodeFlags, SyntaxKind } from 'typescript'
+import { JsonSchemaGeneratorContext } from '../types'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 
 export function getValidatorAst(
-  schema: SchemaObject | ReferenceObject,
+  schema: Referenceable<SchemaObject>,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ) {

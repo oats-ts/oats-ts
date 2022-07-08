@@ -6,7 +6,7 @@ import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 import { safeName } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getObjectValidatorAst(
   data: SchemaObject,

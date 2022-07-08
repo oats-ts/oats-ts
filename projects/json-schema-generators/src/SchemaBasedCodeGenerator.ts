@@ -2,8 +2,8 @@ import { sortBy } from 'lodash'
 import { BaseCodeGenerator } from '@oats-ts/generator'
 import { SourceFile } from 'typescript'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { createGeneratorContext, getNamedSchemas, HasSchemas, ReadOutput } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget } from './types'
 
 export abstract class SchemaBasedCodeGenerator<T extends ReadOutput<HasSchemas>, Cfg> extends BaseCodeGenerator<
   T,

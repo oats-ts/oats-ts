@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { InferredType } from './types'
-import { isReferenceObject } from '@oats-ts/model-common'
+import { isReferenceObject } from './isReferenceObject'
 
 export function getInferredType(data: SchemaObject | ReferenceObject): InferredType {
   if (isNil(data)) {

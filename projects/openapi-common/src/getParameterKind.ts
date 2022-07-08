@@ -1,4 +1,4 @@
-import { getInferredType } from '@oats-ts/json-schema-common'
+import { getInferredType } from '@oats-ts/model-common'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { ParameterKind } from './typings'
 

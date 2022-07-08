@@ -1,10 +1,10 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { factory, PropertySignature, SyntaxKind } from 'typescript'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 import { documentNode, safeName } from '@oats-ts/typescript-common'
 import { isReferenceObject } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getObjectPropertyAst(
   name: string,

@@ -1,6 +1,6 @@
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, TypeLiteralNode } from 'typescript'
+import { JsonSchemaGeneratorContext } from '../types'
 import { getObjectPropertiesAst } from './getObjectPropertiesAst'
 import { TypesGeneratorConfig } from './typings'
 

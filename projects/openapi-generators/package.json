@@ -38,7 +38,6 @@
     "@oats-ts/validators": "0.0.24",
     "@oats-ts/events": "0.0.24",
     "@oats-ts/generator": "0.0.24",
-    "@oats-ts/json-schema-common": "0.0.24",
     "@oats-ts/json-schema-model": "0.0.24",
     "@oats-ts/openapi-reader": "0.0.24",
     "@oats-ts/typescript-common": "0.0.24",

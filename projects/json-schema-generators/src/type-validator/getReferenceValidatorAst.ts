@@ -4,7 +4,7 @@ import { factory, Expression } from 'typescript'
 import { ValidatorsGeneratorConfig } from './typings'
 import { isNil } from 'lodash'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getReferenceValidatorAst(
   data: ReferenceObject,

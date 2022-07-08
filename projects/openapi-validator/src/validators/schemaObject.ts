@@ -1,6 +1,5 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { Issue } from '@oats-ts/validators'
-import { getInferredType } from '@oats-ts/json-schema-common'
 import { unionSchemaObject } from './unionSchemaObject'
 import { enumSchemaObject } from './enumSchemaObject'
 import { primitiveSchemaObject } from './primitiveSchemaObject'
@@ -9,6 +8,7 @@ import { objectSchemaObject } from './objectSchemaObject'
 import { arraySchemaObject } from './arraySchemaObject'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { intersectionSchemaObject } from './intersectionSchemaObject'
+import { getInferredType } from '@oats-ts/model-common'
 
 export function schemaObject(
   data: SchemaObject,

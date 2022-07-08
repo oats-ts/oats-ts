@@ -13,10 +13,6 @@
       "path": "projects/generator"
     },
     {
-      "name": "json-schema-common",
-      "path": "projects/json-schema-common"
-    },
-    {
       "name": "json-schema-generators",
       "path": "projects/json-schema-generators"
     },

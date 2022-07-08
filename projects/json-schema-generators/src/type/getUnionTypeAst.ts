@@ -1,6 +1,6 @@
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, UnionTypeNode } from 'typescript'
+import { JsonSchemaGeneratorContext } from '../types'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
 import { TypesGeneratorConfig } from './typings'
 

@@ -2,8 +2,8 @@ import { SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, CallExpression, Identifier } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { ValidatorsGeneratorConfig } from './typings'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getTupleValidatorAst(
   data: SchemaObject,

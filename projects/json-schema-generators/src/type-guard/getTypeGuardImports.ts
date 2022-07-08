@@ -3,8 +3,8 @@ import { ImportDeclaration } from 'typescript'
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { TypeGuardGeneratorConfig } from './typings'
 import { getModelImports } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { isReferenceObject } from '@oats-ts/model-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 function getImportedRefs(
   data: Referenceable<SchemaObject>,

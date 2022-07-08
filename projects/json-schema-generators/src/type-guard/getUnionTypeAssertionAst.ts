@@ -4,7 +4,7 @@ import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getUnionTypeAssertionAst(
   data: SchemaObject,

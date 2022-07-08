@@ -10,7 +10,7 @@ import { entries, flatMap, has, isNil, negate } from 'lodash'
 import { Expression, factory, ObjectLiteralExpression, PropertyAccessExpression, PropertyAssignment } from 'typescript'
 import { isIdentifier, getLiteralAst } from '@oats-ts/typescript-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType } from '@oats-ts/json-schema-common'
+import { getInferredType } from '@oats-ts/model-common'
 
 export function getDslObjectAst(
   parameters: Referenceable<BaseParameterObject>[],

@@ -27,7 +27,6 @@
     "@oats-ts/openapi-reader": "0.0.24",
     "@oats-ts/openapi-model": "0.0.24",
     "@oats-ts/json-schema-model": "0.0.24",
-    "@oats-ts/json-schema-common": "0.0.24",
     "@oats-ts/model-common": "0.0.24",
     "@oats-ts/openapi-http": "0.0.24",
     "@oats-ts/openapi-fetch-client-adapter": "0.0.24",

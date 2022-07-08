@@ -1,16 +1,14 @@
 import { isNil } from 'lodash'
-import { ReadOutput, HasSchemas } from '@oats-ts/model-common'
 import { TypeGuardGeneratorConfig } from './typings'
 import { ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { success, Try } from '@oats-ts/try'
 import { getTypeGuardImports } from './getTypeGuardImports'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
-import { JsonSchemaReadOutput } from '../types'
+import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
 
 export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,

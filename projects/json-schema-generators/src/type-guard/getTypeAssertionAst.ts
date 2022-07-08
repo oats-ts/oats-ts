@@ -1,5 +1,4 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { Expression, factory } from 'typescript'
 import { getArrayTypeAssertionAst } from './getArrayTypeAssertionAst'
 import { getEnumAssertionAst } from './getEnumAssertionAst'
@@ -9,11 +8,12 @@ import { getRecordTypeAssertionAst } from './getRecordTypeAssertionAst'
 import { getReferenceAssertionAst } from './getReferenceAssertionAst'
 import { getUnionTypeAssertionAst } from './getUnionTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
-import { isReferenceObject } from '@oats-ts/model-common'
+import { getInferredType, isReferenceObject } from '@oats-ts/model-common'
 import { getLiteralTypeAssertionAst } from './getLiteralTypeAssertionAst'
 import { getTupleTypeAssertionAst } from './getTupleTypeAssertionAst'
 import { getIntersectionTypeAssertionAst } from './getIntersectionTypeAssertionAst'
 import { isNil } from 'lodash'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getTypeAssertionAst(
   data: Referenceable<SchemaObject> | undefined,

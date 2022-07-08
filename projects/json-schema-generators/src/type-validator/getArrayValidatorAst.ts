@@ -3,7 +3,7 @@ import { factory, CallExpression, Identifier, Expression } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getArrayValidatorAst(
   data: SchemaObject,

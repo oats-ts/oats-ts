@@ -3,7 +3,7 @@ import { Expression, factory, SyntaxKind } from 'typescript'
 import { TypeGuardGeneratorConfig } from './typings'
 import { isNil } from 'lodash'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getReferenceAssertionAst(
   data: ReferenceObject,

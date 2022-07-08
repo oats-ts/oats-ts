@@ -3,7 +3,7 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory } from 'typescript'
 import { TypesGeneratorConfig } from './typings'
 import { getTypeReferenceAst } from './getTypeReferenceAst'
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getExternalTypeReferenceAst(
   data: Referenceable<SchemaObject>,

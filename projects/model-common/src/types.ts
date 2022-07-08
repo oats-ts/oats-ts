@@ -66,3 +66,18 @@ export type HasSchemas = {
     schemas?: Record<string, Referenceable<SchemaObject>>
   }
 }
+
+export type InferredType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'enum'
+  | 'literal'
+  | 'object'
+  | 'array'
+  | 'tuple'
+  | 'record'
+  | 'union'
+  | 'intersection'
+  | 'unknown'
+  | 'ref'

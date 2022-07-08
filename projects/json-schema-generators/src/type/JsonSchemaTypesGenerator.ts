@@ -1,5 +1,4 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { JsonSchemaGeneratorTarget } from '@oats-ts/json-schema-common'
 import { TypeNode, ImportDeclaration, SourceFile } from 'typescript'
 import { TypesGeneratorConfig } from './typings'
 import { getTypeImports } from './getTypeImports'
@@ -8,7 +7,7 @@ import { success, Try } from '@oats-ts/try'
 import { createSourceFile } from '@oats-ts/typescript-common'
 import { getNamedTypeAst } from './getNamedTypeAst'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
-import { JsonSchemaReadOutput } from '../types'
+import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
 
 export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,

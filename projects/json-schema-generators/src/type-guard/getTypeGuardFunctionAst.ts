@@ -1,6 +1,6 @@
-import { JsonSchemaGeneratorContext } from '@oats-ts/json-schema-common'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { Expression, factory, FunctionDeclaration, SyntaxKind } from 'typescript'
+import { JsonSchemaGeneratorContext } from '../types'
 
 export function getTypeGuardFunctionAst(
   schema: SchemaObject | ReferenceObject,
