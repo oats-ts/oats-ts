@@ -1,6 +1,6 @@
 import { GeneratorContextImpl } from '@oats-ts/model-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OpenAPIValidatorContext } from './typings'

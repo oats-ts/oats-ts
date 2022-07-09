@@ -32,12 +32,10 @@
   "dependencies": {
     "lodash": "4.17.21",
     "@oats-ts/json-schema-model": "0.0.25",
-    "@oats-ts/generator": "0.0.25",
     "@oats-ts/openapi-model": "0.0.25",
-    "typescript": "4.3.5",
+    "typescript": "4.7.4",
     "@oats-ts/oats-ts": "0.0.25",
     "@oats-ts/try": "0.0.25",
-    "@oats-ts/events": "0.0.25",
     "@oats-ts/validators": "0.0.25",
     "@oats-ts/openapi-reader": "0.0.25",
     "@oats-ts/openapi-common": "0.0.25",

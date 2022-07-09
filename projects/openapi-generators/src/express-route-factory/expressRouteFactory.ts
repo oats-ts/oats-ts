@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { ExpressRoutesGeneratorConfig } from '../express-route/typings'
 import { OpenAPIGenerator } from '../types'
 import { ExpressRouteFactoryGenerator } from './ExpressRouteFactoryGenerator'

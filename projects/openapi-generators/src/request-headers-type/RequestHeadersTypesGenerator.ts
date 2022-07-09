@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { InputParameterTypesGenerator } from '../utils/parameters/InputParameterTypesGenerator'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 

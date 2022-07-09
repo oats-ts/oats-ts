@@ -4,7 +4,7 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from './typings'
 import { URIManipulator } from './utils/URIManipulator'
 import { fluent, isFailure, isSuccess, success, Try } from '@oats-ts/try'
-import { ReaderEventEmitter } from '@oats-ts/events'
+import { ReaderEventEmitter } from '@oats-ts/oats-ts'
 import { ReadRefResolver, VerifyRefResolver } from './referenceResolvers'
 import { tick } from './utils/tick'
 

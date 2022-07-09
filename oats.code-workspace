@@ -5,24 +5,12 @@
       "path": "."
     },
     {
-      "name": "events",
-      "path": "projects/events"
-    },
-    {
-      "name": "generator",
-      "path": "projects/generator"
-    },
-    {
       "name": "json-schema-generators",
       "path": "projects/json-schema-generators"
     },
     {
       "name": "json-schema-model",
       "path": "projects/json-schema-model"
-    },
-    {
-      "name": "log",
-      "path": "projects/log"
     },
     {
       "name": "model-common",
@@ -59,6 +47,10 @@
     {
       "name": "openapi-http",
       "path": "projects/openapi-http"
+    },
+    {
+      "name": "openapi-logger",
+      "path": "projects/openapi-logger"
     },
     {
       "name": "openapi-model",

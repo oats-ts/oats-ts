@@ -2,7 +2,6 @@ import fetch from 'node-fetch'
 import { promises as fs } from 'fs'
 import { join, parse } from 'path'
 import { generate } from '@oats-ts/oats-ts'
-import { logger } from '@oats-ts/log'
 import {
   formatters,
   validator,
@@ -12,6 +11,7 @@ import {
   nameProviders,
   pathProviders,
   generator,
+  loggers,
 } from '@oats-ts/openapi'
 
 const REPO = 'oats-ts/oats-schemas'
@@ -59,7 +59,7 @@ function getCodePath(path: string): string {
 export async function generateCode(url: string, codePath: string) {
   try {
     await generate({
-      logger: logger(),
+      logger: loggers.verbose(),
       validator: validator(),
       reader: readers.https.json(url),
       generator: generator({
@@ -107,6 +107,7 @@ async function generateAll() {
   for (const path of files) {
     console.log(path)
     await generateCode(getSchemaUrl(path), getCodePath(path))
+    console.log()
   }
 
   for (const { fileName, url } of externals) {

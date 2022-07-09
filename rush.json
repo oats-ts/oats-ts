@@ -19,18 +19,6 @@
   "telemetryEnabled": false,
   "projects": [
     {
-      "packageName": "@oats-ts/events",
-      "projectFolder": "projects/events",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/generator",
-      "projectFolder": "projects/generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/json-schema-generators",
       "projectFolder": "projects/json-schema-generators",
       "versionPolicyName": "oats",
@@ -39,12 +27,6 @@
     {
       "packageName": "@oats-ts/json-schema-model",
       "projectFolder": "projects/json-schema-model",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/log",
-      "projectFolder": "projects/log",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },
@@ -98,6 +80,12 @@
     {
       "packageName": "@oats-ts/openapi-http",
       "projectFolder": "projects/openapi-http",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-logger",
+      "projectFolder": "projects/openapi-logger",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

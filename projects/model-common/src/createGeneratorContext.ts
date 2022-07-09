@@ -1,4 +1,4 @@
-import { CodeGenerator, GeneratorConfig } from '@oats-ts/generator'
+import { CodeGenerator, GeneratorConfig } from '@oats-ts/oats-ts'
 import { GeneratorContextImpl } from './GeneratorContextImpl'
 import { GeneratorContext, ReadOutput } from './types'
 

@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGenerator } from '../types'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { SdkTypeGenerator } from './SdkTypeGenerator'

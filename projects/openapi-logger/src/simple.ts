@@ -1,38 +1,14 @@
-import { OatsEventEmitter } from '@oats-ts/events'
-import { Logger } from '@oats-ts/oats-ts'
+import { Logger, OatsEventEmitter } from '@oats-ts/oats-ts'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isSuccess } from '@oats-ts/try'
-import { isOk, Issue, Severity } from '@oats-ts/validators'
-import { red, green, blue, yellow } from 'chalk'
+import { isOk } from '@oats-ts/validators'
+import { SourceFile } from 'typescript'
+import { issueToString, statusText } from './utils'
 
-const x = red('✕')
-const s = green('✔')
-const w = yellow('!')
-const i = blue('i')
-
-function severityIcon(severity: Severity): string {
-  switch (severity) {
-    case 'warning':
-      return w
-    case 'info':
-      return i
-    case 'error':
-      return x
-    default:
-      return '?'
-  }
-}
-
-function issueToString(issue: Issue): string {
-  return `    ${severityIcon(issue.severity)} ${issue.message} at "${issue.path}"`
-}
-
-function statusText(step: string, status: 'completed' | 'failed', name: string): string {
-  return `${status === 'completed' ? s : x} ${step} step ${status} using "${blue(name)}"`
-}
-
-export const logger =
+export const simple =
   (): Logger =>
-  (emitter: OatsEventEmitter): void => {
+  (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile>): void => {
     emitter.addListener('read-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('reader', 'completed', e.name))

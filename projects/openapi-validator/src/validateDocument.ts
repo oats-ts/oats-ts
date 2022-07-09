@@ -1,4 +1,4 @@
-import { ValidatorEventEmitter } from '@oats-ts/events'
+import { ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { failure, success, Try } from '@oats-ts/try'
 import { severityComparator } from './severityComparator'

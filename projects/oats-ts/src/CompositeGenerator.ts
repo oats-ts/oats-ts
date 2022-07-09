@@ -1,13 +1,11 @@
 import { flatMap } from 'lodash'
-import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
-import { Try, fromArray, fluent, isFailure, success, isSuccess, failure } from '@oats-ts/try'
+import { CodeGenerator, GeneratorConfig, StructuredGeneratorResult } from './typings'
+import { Try, isFailure, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
+import { flattenStructuredGeneratorResult } from './flattenStructuredGeneratorResult'
 
-export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
-  public name(): string {
-    return this._name
-  }
+export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
   private readonly _name: string
 
   public children: ReadonlyArray<CodeGenerator<R, G>>
@@ -20,6 +18,10 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     super(globalConfigOverride)
     this._name = name
     this.children = children
+  }
+
+  public name(): string {
+    return this._name
   }
 
   public produces(): string[] {
@@ -77,7 +79,7 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     return success(Object.values(mapping) as CodeGenerator<R, G>[])
   }
 
-  protected async generateChild(child: CodeGenerator<R, G>, childResults: Try<G[]>[]) {
+  protected async generateChild(child: CodeGenerator<R, G>, results: StructuredGeneratorResult<G>) {
     const deps = this.getChildDependencies(child)
 
     if (isFailure(deps)) {
@@ -86,6 +88,7 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
         id: child.id,
         name: child.name(),
         data: deps,
+        structured: { [this.name()]: deps },
         issues: [],
       })
       return this.tick()
@@ -101,12 +104,12 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
 
     const childResult = await child.generate()
 
-    childResults.push(childResult)
+    results[child.name()] = childResult
 
     await this.tick()
   }
 
-  async generate(): Promise<Try<G[]>> {
+  async generate(): Promise<StructuredGeneratorResult<G>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,
@@ -115,29 +118,23 @@ export abstract class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
 
     await this.tick()
 
-    const childResults: Try<G[]>[] = []
+    const childResults: StructuredGeneratorResult<G> = {}
 
     if (!this.globalConfig.noEmit) {
       await Promise.all(this.children.map((child) => this.generateChild(child, childResults)))
     }
 
-    const output = fluent(fromArray(childResults))
-      .map((result) => flatMap(result, (items) => items))
-      .map((result) => this.flatten(result))
-      .toTry()
-
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',
       id: this.id,
       name: this.name(),
-      data: output,
+      data: flattenStructuredGeneratorResult(childResults),
+      structured: childResults,
       issues: [],
     })
 
     await this.tick()
 
-    return output
+    return childResults
   }
-
-  protected abstract flatten(output: G[]): G[]
 }

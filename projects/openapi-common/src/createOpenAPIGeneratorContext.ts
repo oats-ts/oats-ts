@@ -1,5 +1,5 @@
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { CodeGenerator, GeneratorConfig } from '@oats-ts/generator'
+import { CodeGenerator, GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGeneratorContext } from './typings'
 import { createGeneratorContext } from '@oats-ts/model-common'
 import { SourceFile } from 'typescript'

@@ -4,6 +4,6 @@
     "policyName": "oats",
     "version": "0.0.25",
     "nextBump": "patch",
-    "mainProject": "@oats-ts/generator"
+    "mainProject": "@oats-ts/oats-ts"
   }
 ]

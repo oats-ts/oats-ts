@@ -1,4 +1,4 @@
-import { CodeGenerator, GeneratorConfig } from '@oats-ts/generator'
+import { CodeGenerator, GeneratorConfig } from '@oats-ts/oats-ts'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'

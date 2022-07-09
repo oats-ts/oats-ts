@@ -1,7 +1,7 @@
 import { OperationsGeneratorConfig } from './typings'
 import { OperationsGenerator } from './OperationsGenerator'
 import { OpenAPIGenerator } from '../types'
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 
 function defaultConfig({
   documentation,

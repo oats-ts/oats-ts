@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { JsonSchemaReadOutput } from '../types'
 import { JsonSchemaTypeGuardsGenerator } from './JsonSchemaTypeGuardsGenerator'
 import { TypeGuardGeneratorConfig } from './typings'
