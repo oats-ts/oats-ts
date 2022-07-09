@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-reader",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -35,14 +35,14 @@
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.25",
-    "@oats-ts/openapi-model": "0.0.25",
-    "@oats-ts/model-common": "0.0.25",
-    "@oats-ts/try": "0.0.25",
+    "@oats-ts/json-schema-model": "0.0.26",
+    "@oats-ts/openapi-model": "0.0.26",
+    "@oats-ts/model-common": "0.0.26",
+    "@oats-ts/try": "0.0.26",
     "urijs": "1.19.11",
     "valid-url": "1.0.9",
     "yamljs": "0.3.0",
-    "@oats-ts/validators": "0.0.25",
-    "@oats-ts/oats-ts": "0.0.25"
+    "@oats-ts/validators": "0.0.26",
+    "@oats-ts/oats-ts": "0.0.26"
   }
 }

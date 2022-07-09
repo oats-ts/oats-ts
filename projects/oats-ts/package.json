@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/oats-ts",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -31,8 +31,8 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/try": "0.0.25",
-    "@oats-ts/validators": "0.0.25",
+    "@oats-ts/try": "0.0.26",
+    "@oats-ts/validators": "0.0.26",
     "eventemitter3": "4.0.7",
     "nanoid": "3.3.4",
     "lodash": "4.17.21"
