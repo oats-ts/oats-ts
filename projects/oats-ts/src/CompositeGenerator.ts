@@ -6,9 +6,6 @@ import { IssueTypes } from '@oats-ts/validators'
 import { flattenStructuredGeneratorResult } from './flattenStructuredGeneratorResult'
 
 export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
-  public name(): string {
-    return this._name
-  }
   private readonly _name: string
 
   public children: ReadonlyArray<CodeGenerator<R, G>>
@@ -21,6 +18,10 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     super(globalConfigOverride)
     this._name = name
     this.children = children
+  }
+
+  public name(): string {
+    return this._name
   }
 
   public produces(): string[] {

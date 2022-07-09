@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGenerator } from '../types'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { PathTypesGenerator } from './PathTypesGenerator'

@@ -1,6 +1,6 @@
 import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorNameProvider, NameProvider } from '@oats-ts/generator'
+import { GeneratorNameProvider, NameProvider } from '@oats-ts/oats-ts'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { GeneratorContext } from '@oats-ts/model-common'
 

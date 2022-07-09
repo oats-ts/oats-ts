@@ -1,7 +1,6 @@
 import { nanoid } from 'nanoid'
-import { Try } from '@oats-ts/try'
 import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
-import { GeneratorEventEmitter } from '@oats-ts/events'
+import { GeneratorEventEmitter } from './events'
 
 const emptyConfig: Partial<GeneratorConfig> = {
   noEmit: false,

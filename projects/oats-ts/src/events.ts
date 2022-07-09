@@ -1,8 +1,6 @@
 import type { Try } from '@oats-ts/try'
 import type { Issue } from '@oats-ts/validators'
-
-// TODO remove type duplication (this + generator package)
-export type StructuredGeneratorResult<G> = { [key: string]: Try<G[]> | StructuredGeneratorResult<G> }
+import type { StructuredGeneratorResult } from './typings'
 
 export type EventMap = Record<string, any>
 export type EventKey<T extends EventMap> = string & keyof T

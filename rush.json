@@ -19,18 +19,6 @@
   "telemetryEnabled": false,
   "projects": [
     {
-      "packageName": "@oats-ts/events",
-      "projectFolder": "projects/events",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/generator",
-      "projectFolder": "projects/generator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/json-schema-generators",
       "projectFolder": "projects/json-schema-generators",
       "versionPolicyName": "oats",

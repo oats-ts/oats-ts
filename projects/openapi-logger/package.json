@@ -37,7 +37,6 @@
     "@oats-ts/openapi-reader": "0.0.25",
     "@oats-ts/openapi-model": "0.0.25",
     "@oats-ts/validators": "0.0.25",
-    "@oats-ts/events": "0.0.25",
     "@oats-ts/try": "0.0.25"
   }
 }

@@ -1,4 +1,4 @@
-import { GeneratorPathProvider, NameProvider } from '@oats-ts/generator'
+import { GeneratorPathProvider, NameProvider } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
 import { join, resolve } from 'path'
 import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, PathDelegate } from './typings'

@@ -1,7 +1,7 @@
 import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { isNil } from 'lodash'
-import { GeneratorNameProvider } from '@oats-ts/generator'
+import { GeneratorNameProvider } from '@oats-ts/oats-ts'
 import { DelegatingNameProviderInput, OpenAPIGeneratorTarget } from './typings'
 
 const nonNull =

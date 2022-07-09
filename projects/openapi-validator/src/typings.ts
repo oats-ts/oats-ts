@@ -13,7 +13,7 @@ import {
   ContentObject,
 } from '@oats-ts/openapi-model'
 import { GeneratorContextImpl } from '@oats-ts/model-common'
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 
 export type OpenAPIValidatorFn<T> = (

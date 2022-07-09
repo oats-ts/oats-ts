@@ -7,7 +7,7 @@ import {
   OpenAPIGeneratorTarget,
   EnhancedOperation,
 } from '@oats-ts/openapi-common'
-import { BaseCodeGenerator } from '@oats-ts/generator'
+import { BaseCodeGenerator } from '@oats-ts/oats-ts'
 import { SourceFile } from 'typescript'
 import { OperationObject } from '@oats-ts/openapi-model'
 

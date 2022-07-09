@@ -5,7 +5,7 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 
 export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{}> {
   constructor(globalConfig: Partial<GeneratorConfig>) {

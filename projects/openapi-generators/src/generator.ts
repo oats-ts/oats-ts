@@ -1,8 +1,11 @@
-import { ContentGenerator } from '@oats-ts/oats-ts'
-import { CompositeGenerator, flattenStructuredGeneratorResult } from '@oats-ts/generator'
+import {
+  ContentGenerator,
+  CompositeGenerator,
+  flattenStructuredGeneratorResult,
+  GeneratorEventEmitter,
+} from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
-import { GeneratorEventEmitter } from '@oats-ts/events'
 import { RootGeneratorConfig } from './types'
 import { fluent, Try } from '@oats-ts/try'
 import { mergeSourceFiles } from '@oats-ts/typescript-common'

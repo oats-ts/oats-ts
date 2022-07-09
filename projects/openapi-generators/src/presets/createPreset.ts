@@ -4,7 +4,7 @@ import { factories } from '../factories'
 import { entries, isNil, keys } from 'lodash'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 import { PresetConfiguration, PresetGeneratorConfiguration } from './types'
-import { CompositeGenerator } from '@oats-ts/generator'
+import { CompositeGenerator } from '@oats-ts/oats-ts'
 
 const factoryMap: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPIGenerator> = {
   'openapi/api-type': factories.apiType,

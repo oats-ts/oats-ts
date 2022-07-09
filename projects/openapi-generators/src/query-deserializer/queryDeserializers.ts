@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/generator'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGenerator } from '../types'
 import { QueryDeserializersGenerator } from './QueryDeserializersGenerator'
 

@@ -1,5 +1,4 @@
-import { OatsEventEmitter } from '@oats-ts/events'
-import { Logger } from '@oats-ts/oats-ts'
+import { Logger, OatsEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isSuccess } from '@oats-ts/try'

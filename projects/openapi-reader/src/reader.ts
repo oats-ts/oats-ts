@@ -1,10 +1,9 @@
-import { ContentReader } from '@oats-ts/oats-ts'
+import { ContentReader, ReaderEventEmitter } from '@oats-ts/oats-ts'
 import { ReadCache } from './internalTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
 import { fluent, Try } from '@oats-ts/try'
 import { createResolver } from './utils/createResolver'
-import { ReaderEventEmitter } from '@oats-ts/events'
 import { resolveDocument } from './resolveDocument'
 import { tick } from './utils/tick'
 
