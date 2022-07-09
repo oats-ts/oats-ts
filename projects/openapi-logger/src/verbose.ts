@@ -1,12 +1,43 @@
-import { Logger, OatsEventEmitter } from '@oats-ts/oats-ts'
+import { flattenStructuredGeneratorResult, Logger, OatsEventEmitter, StructuredGeneratorResult } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { isSuccess } from '@oats-ts/try'
+import { isFailure, isSuccess, isTry, Try } from '@oats-ts/try'
 import { isOk } from '@oats-ts/validators'
-import { head, isNil } from 'lodash'
+import { entries, head, isNil } from 'lodash'
 import { SourceFile } from 'typescript'
 import { blue } from 'chalk'
 import { Icons, issueToString, severityComparator, severityIcon, statusText, Tab } from './utils'
+
+function printStructuredGeneratorResultLeaf(
+  name: string,
+  leaf: Try<SourceFile[]>,
+  printIssues: boolean,
+  indentation: number,
+): void {
+  const ok = isSuccess(leaf)
+  const icon = ok ? Icons.s : Icons.x
+  const length = isSuccess(leaf) ? leaf.data.length : -1
+  console.log(
+    `${Tab.repeat(indentation)}${icon} generator "${blue(name)}" ${ok ? 'completed' : 'failed'}${
+      ok ? ` (${blue(length)} output(s))` : ''
+    }`,
+  )
+  if (isFailure(leaf) && printIssues) {
+    leaf.issues.forEach((issue) => console.log(issueToString(issue), indentation + 1))
+  }
+}
+
+function printStructuredGeneratorResult(structured: StructuredGeneratorResult<SourceFile>, indentation: number): void {
+  const data = entries(structured)
+  for (const [name, tryOrTree] of data) {
+    if (isTry(tryOrTree)) {
+      printStructuredGeneratorResultLeaf(name, tryOrTree, true, indentation)
+    } else {
+      printStructuredGeneratorResultLeaf(name, flattenStructuredGeneratorResult(tryOrTree), false, indentation)
+      printStructuredGeneratorResult(tryOrTree, indentation + 1)
+    }
+  }
+}
 
 export const verbose =
   (): Logger =>
@@ -37,16 +68,19 @@ export const verbose =
     emitter.addListener('generator-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('generator', 'completed', e.name))
-        e.issues.forEach((issue) => console.log(issueToString(issue)))
+        printStructuredGeneratorResult(e.structured, 1)
       } else {
         console.log(statusText('generator', 'failed', e.name))
-        e.data.issues.forEach((issue) => console.log(issueToString(issue)))
+        printStructuredGeneratorResult(e.structured, 1)
       }
     })
 
     emitter.addListener('writer-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('writer', 'completed', e.name))
+        e.data.data.forEach((file) => {
+          console.log(`${Tab} ${Icons.s} writing "${blue(file.fileName)}" completed`)
+        })
         e.issues.forEach((issue) => console.log(issueToString(issue)))
       } else {
         console.log(statusText('writer', 'failed', e.name))

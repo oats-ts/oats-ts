@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid'
 import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
 import { GeneratorEventEmitter } from './events'
+import { Try } from '@oats-ts/try'
 
 const emptyConfig: Partial<GeneratorConfig> = {
   noEmit: false,
@@ -53,7 +54,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
     return undefined
   }
 
-  public abstract generate(): Promise<StructuredGeneratorResult<G>>
+  public abstract generate(): Promise<StructuredGeneratorResult<G> | Try<G[]>>
   public abstract referenceOf<Model = any, Code = any>(input: Model): Code
   public abstract dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[]
   public abstract name(): string

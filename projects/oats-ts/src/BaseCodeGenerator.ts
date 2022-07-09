@@ -44,7 +44,7 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     }
   }
 
-  async generate(): Promise<StructuredGeneratorResult<G>> {
+  async generate(): Promise<Try<G[]>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,
@@ -74,7 +74,7 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
     await this.tick()
 
-    return structured
+    return result
   }
 
   protected async generateItemInternal(model: M): Promise<Try<G>> {

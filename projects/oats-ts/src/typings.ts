@@ -39,7 +39,7 @@ export type CodeGenerator<R, G> = {
   runtimeDependencies(): string[]
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined
-  generate(): Promise<StructuredGeneratorResult<G>>
+  generate(): Promise<StructuredGeneratorResult<G> | Try<G[]>>
   referenceOf(input: any): any
   dependenciesOf(fromPath: string, input: any): any[]
 }
