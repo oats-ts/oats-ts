@@ -27,13 +27,13 @@
     "@types/lodash": "4.14.172",
     "jest": "27.0.4",
     "ts-jest": "27.0.2",
-    "typescript": "4.7.4",
     "rimraf": "3.0.2"
   },
   "dependencies": {
     "@types/urijs": "1.19.19",
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
+    "typescript": "4.7.4",
     "lodash": "4.17.21",
     "@oats-ts/json-schema-model": "0.0.26",
     "@oats-ts/openapi-model": "0.0.26",
