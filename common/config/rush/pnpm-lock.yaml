@@ -41,14 +41,14 @@ specifiers:
   http-terminator: 3.0.4
   jest: 27.0.4
   lodash: 4.17.21
-  nanoid: 4.0.0
+  nanoid: 3.3.4
   node-fetch: 2.6.7
   pascalcase: 1.0.0
   path-to-regexp: 6.2.1
   prettier: 2.6.1
   rimraf: 3.0.2
   ts-jest: 27.0.2
-  ts-node: 10.0.0
+  ts-node: 10.8.2
   typescript: 4.7.4
   urijs: 1.19.11
   valid-url: 1.0.9
@@ -56,26 +56,26 @@ specifiers:
   yamljs: 0.3.0
 
 dependencies:
-  '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.0.0
+  '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.8.2
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/model-common': file:projects/model-common.tgz
-  '@rush-temp/oats-ts': file:projects/oats-ts.tgz_ts-node@10.0.0
-  '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.0.0+typescript@4.7.4
-  '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.0.0
+  '@rush-temp/oats-ts': file:projects/oats-ts.tgz_ts-node@10.8.2
+  '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.8.2+typescript@4.7.4
+  '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.8.2
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
-  '@rush-temp/openapi-express-server-adapter': file:projects/openapi-express-server-adapter.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-fetch-client-adapter': file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-generators': file:projects/openapi-generators.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-http': file:projects/openapi-http.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-logger': file:projects/openapi-logger.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-express-server-adapter': file:projects/openapi-express-server-adapter.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-fetch-client-adapter': file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-generators': file:projects/openapi-generators.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-http': file:projects/openapi-http.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-logger': file:projects/openapi-logger.tgz_ts-node@10.8.2
   '@rush-temp/openapi-model': file:projects/openapi-model.tgz
-  '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.0.0
-  '@rush-temp/openapi-validator': file:projects/openapi-validator.tgz_ts-node@10.0.0
-  '@rush-temp/try': file:projects/try.tgz_ts-node@10.0.0
-  '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.0.0
-  '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.0.0
-  '@rush-temp/validators': file:projects/validators.tgz_ts-node@10.0.0
+  '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-validator': file:projects/openapi-validator.tgz_ts-node@10.8.2
+  '@rush-temp/try': file:projects/try.tgz_ts-node@10.8.2
+  '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.8.2
+  '@rush-temp/typescript-writer': file:projects/typescript-writer.tgz_ts-node@10.8.2
+  '@rush-temp/validators': file:projects/validators.tgz_ts-node@10.8.2
   '@types/express': 4.17.13
   '@types/jest': 26.0.23
   '@types/lodash': 4.14.172
@@ -94,16 +94,16 @@ dependencies:
   eventemitter3: 4.0.7
   express: 4.18.1
   http-terminator: 3.0.4
-  jest: 27.0.4_ts-node@10.0.0
+  jest: 27.0.4_ts-node@10.8.2
   lodash: 4.17.21
-  nanoid: 4.0.0
+  nanoid: 3.3.4
   node-fetch: 2.6.7
   pascalcase: 1.0.0
   path-to-regexp: 6.2.1
   prettier: 2.6.1
   rimraf: 3.0.2
   ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
-  ts-node: 10.0.0_0018477a4694b7a37c2edad1864b86f1
+  ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
   typescript: 4.7.4
   urijs: 1.19.11
   valid-url: 1.0.9
@@ -433,6 +433,13 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: false
 
+  /@cspotcode/source-map-support/0.8.1:
+    resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.9
+    dev: false
+
   /@istanbuljs/load-nyc-config/1.1.0:
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
     engines: {node: '>=8'}
@@ -461,7 +468,7 @@ packages:
       slash: 3.0.0
     dev: false
 
-  /@jest/core/27.5.1_ts-node@10.0.0:
+  /@jest/core/27.5.1_ts-node@10.8.2:
     resolution: {integrity: sha512-AK6/UTrvQD0Cd24NSqmIA6rKsu0tKIxfiCducZvqxYdmMisOYAsdItspT+fQDQYARPf8XgjAFZi0ogW2agH5nQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     peerDependencies:
@@ -482,7 +489,7 @@ packages:
       exit: 0.1.2
       graceful-fs: 4.2.10
       jest-changed-files: 27.5.1
-      jest-config: 27.5.1_ts-node@10.0.0
+      jest-config: 27.5.1_ts-node@10.8.2
       jest-haste-map: 27.5.1
       jest-message-util: 27.5.1
       jest-regex-util: 27.5.1
@@ -684,6 +691,13 @@ packages:
 
   /@jridgewell/trace-mapping/0.3.14:
     resolution: {integrity: sha512-bJWEfQ9lPTvm3SneWwRFVLzrh6nhjwqw7TUFFBEMzwvg7t7PCDenf2lDwqo4NQXzdpgBXyFgDWnQA+2vkruksQ==}
+    dependencies:
+      '@jridgewell/resolve-uri': 3.1.0
+      '@jridgewell/sourcemap-codec': 1.4.14
+    dev: false
+
+  /@jridgewell/trace-mapping/0.3.9:
+    resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
@@ -909,6 +923,11 @@ packages:
 
   /acorn-walk/7.2.0:
     resolution: {integrity: sha512-OPdCF6GsMIP+Az+aWfAAOEt2/+iVDKE7oy6lJ098aoe59oAmK76qV6Gw60SbZ8jHuG2wH058GF4pLFbYamYrVA==}
+    engines: {node: '>=0.4.0'}
+    dev: false
+
+  /acorn-walk/8.2.0:
+    resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
     engines: {node: '>=0.4.0'}
     dev: false
 
@@ -1979,7 +1998,7 @@ packages:
       - supports-color
     dev: false
 
-  /jest-cli/27.5.1_ts-node@10.0.0:
+  /jest-cli/27.5.1_ts-node@10.8.2:
     resolution: {integrity: sha512-Hc6HOOwYq4/74/c62dEE3r5elx8wjYqxY0r0G/nFrLDPMFRu6RA/u8qINOIkvhxG7mMQ5EJsOGfRpI8L6eFUVw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -1989,14 +2008,14 @@ packages:
       node-notifier:
         optional: true
     dependencies:
-      '@jest/core': 27.5.1_ts-node@10.0.0
+      '@jest/core': 27.5.1_ts-node@10.8.2
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
       chalk: 4.1.1
       exit: 0.1.2
       graceful-fs: 4.2.10
       import-local: 3.1.0
-      jest-config: 27.5.1_ts-node@10.0.0
+      jest-config: 27.5.1_ts-node@10.8.2
       jest-util: 27.5.1
       jest-validate: 27.5.1
       prompts: 2.4.2
@@ -2009,7 +2028,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  /jest-config/27.5.1_ts-node@10.0.0:
+  /jest-config/27.5.1_ts-node@10.8.2:
     resolution: {integrity: sha512-5sAsjm6tGdsVbW9ahcChPAFCk4IlkQUknH5AvKjuLTSlcO/wCZKyFdn7Rg0EkC+OGgWODEy2hDpWB1PgzH0JNA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     peerDependencies:
@@ -2042,7 +2061,7 @@ packages:
       pretty-format: 27.5.1
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.0.0_0018477a4694b7a37c2edad1864b86f1
+      ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2404,7 +2423,7 @@ packages:
       supports-color: 8.1.1
     dev: false
 
-  /jest/27.0.4_ts-node@10.0.0:
+  /jest/27.0.4_ts-node@10.8.2:
     resolution: {integrity: sha512-Px1iKFooXgGSkk1H8dJxxBIrM3tsc5SIuI4kfKYK2J+4rvCvPGr/cXktxh0e9zIPQ5g09kOMNfHQEmusBUf/ZA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -2414,9 +2433,9 @@ packages:
       node-notifier:
         optional: true
     dependencies:
-      '@jest/core': 27.5.1_ts-node@10.0.0
+      '@jest/core': 27.5.1_ts-node@10.8.2
       import-local: 3.1.0
-      jest-cli: 27.5.1_ts-node@10.0.0
+      jest-cli: 27.5.1_ts-node@10.8.2
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -2629,9 +2648,9 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: false
 
-  /nanoid/4.0.0:
-    resolution: {integrity: sha512-IgBP8piMxe/gf73RTQx7hmnhwz0aaEXYakvqZyE302IXW3HyVNhdNGC+O2MwMAVhLEnvXlvKtGbtJf6wvHihCg==}
-    engines: {node: ^14 || ^16 || >=18}
+  /nanoid/3.3.4:
+    resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
     dev: false
 
@@ -3255,7 +3274,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.2
       fast-json-stable-stringify: 2.1.0
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       jest-util: 27.5.1
       json5: 2.2.1
       lodash: 4.17.21
@@ -3266,13 +3285,12 @@ packages:
       yargs-parser: 20.2.9
     dev: false
 
-  /ts-node/10.0.0_0018477a4694b7a37c2edad1864b86f1:
-    resolution: {integrity: sha512-ROWeOIUvfFbPZkoDis0L/55Fk+6gFQNZwwKPLinacRl6tsxstTF1DbAcLKkovwnpKMVvOMHP1TIbnwXwtLg1gg==}
-    engines: {node: '>=12.0.0'}
+  /ts-node/10.8.2_0018477a4694b7a37c2edad1864b86f1:
+    resolution: {integrity: sha512-LYdGnoGddf1D6v8REPtIH+5iq/gTDuZqv2/UJUU7tKjuEU8xVZorBM+buCGNjj+pGEud+sOoM4CX3/YzINpENA==}
     hasBin: true
     peerDependencies:
-      '@swc/core': '>=1.2.45'
-      '@swc/wasm': '>=1.2.45'
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
       '@types/node': '*'
       typescript: '>=2.7'
     peerDependenciesMeta:
@@ -3281,17 +3299,20 @@ packages:
       '@swc/wasm':
         optional: true
     dependencies:
+      '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.9
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 16.7.1
+      acorn: 8.7.1
+      acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      source-map-support: 0.5.21
       typescript: 4.7.4
+      v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: false
 
@@ -3371,6 +3392,10 @@ packages:
   /utils-merge/1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
+    dev: false
+
+  /v8-compile-cache-lib/3.0.1:
+    resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
     dev: false
 
   /v8-to-istanbul/8.1.1:
@@ -3546,7 +3571,7 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  file:projects/json-schema-generators.tgz_ts-node@10.0.0:
+  file:projects/json-schema-generators.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-vp39SHb90t5QwyI4xnriA1QuWqGxmMdN6tkl9vuNiJ/q3xZwQMy7jRow21ZY8ZBKqe+Xi5tfzRa1eJ6ALuvfOg==, tarball: file:projects/json-schema-generators.tgz}
     id: file:projects/json-schema-generators.tgz
     name: '@rush-temp/json-schema-generators'
@@ -3555,7 +3580,7 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3588,8 +3613,8 @@ packages:
       typescript: 4.7.4
     dev: false
 
-  file:projects/oats-ts.tgz_ts-node@10.0.0:
-    resolution: {integrity: sha512-H2oOkkYGpjLV8QoiQLbcg8rPV2U32onqZE1RMQbyDQOKd33G6x0f/rmzx2bY7WtlsQSm5NBewp0gOU5HqCr6sw==, tarball: file:projects/oats-ts.tgz}
+  file:projects/oats-ts.tgz_ts-node@10.8.2:
+    resolution: {integrity: sha512-QB4y2gds4FqzCB+xrxCP7QzcYrZaxfEvTHge9O+T4Nd7AcDHYsFJrrfbLRsbklf+HuPalj8t/FJJpZC3i6Upyg==, tarball: file:projects/oats-ts.tgz}
     id: file:projects/oats-ts.tgz
     name: '@rush-temp/oats-ts'
     version: 0.0.0
@@ -3598,9 +3623,9 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       eventemitter3: 4.0.7
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
-      nanoid: 4.0.0
+      nanoid: 3.3.4
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
@@ -3613,7 +3638,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-common.tgz_ts-node@10.0.0:
+  file:projects/openapi-common.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-oF2J2SXwjzHK+axJwmPaqY3cC0e8vCeD2davD8h07Oyy6TZKnSaPqgFW9BKyzHfGZzh8HETJT2iKQ3EERZZn0Q==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
     name: '@rush-temp/openapi-common'
@@ -3624,7 +3649,7 @@ packages:
       '@types/node': 16.7.1
       '@types/pascalcase': 1.0.1
       camelcase: 6.2.0
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       pascalcase: 1.0.0
       rimraf: 3.0.2
@@ -3640,7 +3665,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-JwKuI9y75wGW5JN7ZySYeWJHbk9gk0UndCn6jCn+qNzrgEvk4J5yG6LUgpXnvd3q5Rjt6YljzhPxE68FQ+A45A==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-qgjNSsVgniC0FLS/BpvRnw/u/hH2LB22VJ80sxFCjdj0IxDFQk3t43Fri86rqQUT9z+saQwODN3gOgauvqFfLA==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -3657,12 +3682,12 @@ packages:
       cross-env: 7.0.3
       express: 4.18.1
       http-terminator: 3.0.4
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       node-fetch: 2.6.7
       pascalcase: 1.0.0
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
-      ts-node: 10.0.0_0018477a4694b7a37c2edad1864b86f1
+      ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
       typescript: 4.7.4
       urijs: 1.19.11
       yamljs: 0.3.0
@@ -3677,7 +3702,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-express-server-adapter.tgz_ts-node@10.0.0:
+  file:projects/openapi-express-server-adapter.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-wQ4kUCdJdVCF+zVvkBcpcpOW4SvoBr6pj+YX5qsroGcCJk8rlj9DdWIN6mthPOu+fR5sGWydN5LMADWu/bnkLg==, tarball: file:projects/openapi-express-server-adapter.tgz}
     id: file:projects/openapi-express-server-adapter.tgz
     name: '@rush-temp/openapi-express-server-adapter'
@@ -3690,7 +3715,7 @@ packages:
       '@types/whatwg-mimetype': 2.1.1
       express: 4.18.1
       http-terminator: 3.0.4
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       node-fetch: 2.6.7
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3706,7 +3731,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.0.0:
+  file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-EMaAmsFotjXxxT50T9Q8DO4sKmsjhnlHNbzlI4b7Po1jrRkQCcvh7ioroUjgV1a4TGsWhX9xmOvoSv2o7AIS2g==, tarball: file:projects/openapi-fetch-client-adapter.tgz}
     id: file:projects/openapi-fetch-client-adapter.tgz
     name: '@rush-temp/openapi-fetch-client-adapter'
@@ -3716,7 +3741,7 @@ packages:
       '@types/node': 16.7.1
       '@types/whatwg-mimetype': 2.1.1
       cross-fetch: 3.1.5
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
@@ -3731,7 +3756,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-generators.tgz_ts-node@10.0.0:
+  file:projects/openapi-generators.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-EXFK9wV8Y9wK3ePb6i2Y2mqx2UZZjNGmxdzdQuiVwb3GgAKKGeAKSyxfXEWbmMeH06z+/PN4QQhNiutQhSdn3w==, tarball: file:projects/openapi-generators.tgz}
     id: file:projects/openapi-generators.tgz
     name: '@rush-temp/openapi-generators'
@@ -3741,7 +3766,7 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       chalk: 4.1.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3755,7 +3780,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-http.tgz_ts-node@10.0.0:
+  file:projects/openapi-http.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-UVLCinPUrqg/1VAvVy6kNDjm6hSPstJnaf91sKY1UQHPKsNNjksxiANgfE/zvao1NV0dNzj1hrmo4b5mbZ+Kww==, tarball: file:projects/openapi-http.tgz}
     id: file:projects/openapi-http.tgz
     name: '@rush-temp/openapi-http'
@@ -3763,7 +3788,7 @@ packages:
     dependencies:
       '@types/jest': 26.0.23
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
@@ -3776,7 +3801,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-logger.tgz_ts-node@10.0.0:
+  file:projects/openapi-logger.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-qc01d+HdIEWVxSvG2KSTxw5vMElfYRTEuFIdHJfz0O7dw0bovkXXrnm4MVN31ohYCfmFQurYcJe14jVsm+7rMA==, tarball: file:projects/openapi-logger.tgz}
     id: file:projects/openapi-logger.tgz
     name: '@rush-temp/openapi-logger'
@@ -3786,7 +3811,7 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       chalk: 4.1.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3806,7 +3831,7 @@ packages:
     version: 0.0.0
     dev: false
 
-  file:projects/openapi-parameter-serialization.tgz_ts-node@10.0.0:
+  file:projects/openapi-parameter-serialization.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-p2jvrNAZqDLpEUKrkZtxatzmDfca9VBA5UQSBvxTryQIutUwdExAAxQ0eFUtzB9MPmcbyagt+8Rn6HVz94mbAQ==, tarball: file:projects/openapi-parameter-serialization.tgz}
     id: file:projects/openapi-parameter-serialization.tgz
     name: '@rush-temp/openapi-parameter-serialization'
@@ -3814,7 +3839,7 @@ packages:
     dependencies:
       '@types/jest': 26.0.23
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       path-to-regexp: 6.2.1
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3828,7 +3853,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-reader.tgz_ts-node@10.0.0:
+  file:projects/openapi-reader.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-zcVSw2mfKGXZnxWyjI/zbg7R/JvdIDbVeEIvoAYIa79FNKadNBu1VtLm+ZKq8nSNyZKHs8VLA5ac8EBAwCxZVg==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
@@ -3840,7 +3865,7 @@ packages:
       '@types/urijs': 1.19.19
       '@types/valid-url': 1.0.3
       '@types/yamljs': 0.2.31
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3857,7 +3882,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-validator.tgz_ts-node@10.0.0:
+  file:projects/openapi-validator.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-PXZTSTp4ovyKZB6N7d/hefAdLJTGSy3QqxmrMNpm+m7Fjkd13Z1SCyrzdq0GtH0lWrx4upWmbTdnSAEzEPJmPg==, tarball: file:projects/openapi-validator.tgz}
     id: file:projects/openapi-validator.tgz
     name: '@rush-temp/openapi-validator'
@@ -3866,7 +3891,7 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3880,7 +3905,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi.tgz_ts-node@10.0.0+typescript@4.7.4:
+  file:projects/openapi.tgz_ts-node@10.8.2+typescript@4.7.4:
     resolution: {integrity: sha512-3pf/+coK+Wye8oZ/KEw3gDdgLO2hqSL49D0pvwTLDGK00IEbYy4P3FN92h6LNhjdNHgth2QuOOCW53mDEOSFew==, tarball: file:projects/openapi.tgz}
     id: file:projects/openapi.tgz
     name: '@rush-temp/openapi'
@@ -3891,7 +3916,7 @@ packages:
       '@types/node': 16.7.1
       '@types/pascalcase': 1.0.1
       '@types/prettier': 2.4.4
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       prettier: 2.6.1
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
@@ -3905,7 +3930,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/try.tgz_ts-node@10.0.0:
+  file:projects/try.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-x2kC9b3f2nzqhhuZO/TFhr0lcqdGz/vlqL6VH4F6WS+TyoOvfA3qZkmD9Fu/hVmLIwOEg92qPZZHxuAsTrmWaA==, tarball: file:projects/try.tgz}
     id: file:projects/try.tgz
     name: '@rush-temp/try'
@@ -3913,7 +3938,7 @@ packages:
     dependencies:
       '@types/jest': 26.0.23
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
@@ -3926,7 +3951,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/typescript-common.tgz_ts-node@10.0.0:
+  file:projects/typescript-common.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-VNUjMJp8yMivjS/YHY0FO4DyG8DaHfuH+pm1Vb7oNIOxZi0Aw+/eBBWWNjQMeEGZJMamsvmCL5OmPCHfvV3o1Q==, tarball: file:projects/typescript-common.tgz}
     id: file:projects/typescript-common.tgz
     name: '@rush-temp/typescript-common'
@@ -3935,7 +3960,7 @@ packages:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
@@ -3948,7 +3973,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/typescript-writer.tgz_ts-node@10.0.0:
+  file:projects/typescript-writer.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-J1EjSvZ9XnCf93k3JyqWFEn63Vs8cym1dMOOITtJ2veSqFWo0qrKXp7PswGUaCTLddnqsgphLJrur60sknCRhg==, tarball: file:projects/typescript-writer.tgz}
     id: file:projects/typescript-writer.tgz
     name: '@rush-temp/typescript-writer'
@@ -3958,7 +3983,7 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       '@types/prettier': 2.4.4
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       prettier: 2.6.1
       rimraf: 3.0.2
@@ -3973,7 +3998,7 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/validators.tgz_ts-node@10.0.0:
+  file:projects/validators.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-dDGS/01WIvH0PGBQpFuJG0vUOGAb5ZAwGChrSXm6Pud2Z+v9uICSxxU2rL5d0yYrnJkHrrYl1xVybGqBhp6QIQ==, tarball: file:projects/validators.tgz}
     id: file:projects/validators.tgz
     name: '@rush-temp/validators'
@@ -3981,7 +4006,7 @@ packages:
     dependencies:
       '@types/jest': 26.0.23
       '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.0.0
+      jest: 27.0.4_ts-node@10.8.2
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4

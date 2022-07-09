@@ -34,7 +34,7 @@
     "@oats-ts/try": "0.0.25",
     "@oats-ts/validators": "0.0.25",
     "eventemitter3": "4.0.7",
-    "nanoid": "4.0.0",
+    "nanoid": "3.3.4",
     "lodash": "4.17.21"
   }
 }
