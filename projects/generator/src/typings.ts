@@ -9,6 +9,9 @@ export type GeneratorInit<R, G> = {
   dependencies: CodeGenerator<R, G>[]
 }
 
+// TODO remove type duplication (this + events package)
+export type StructuredGeneratorResult<G> = { [key: string]: Try<G[]> | StructuredGeneratorResult<G> }
+
 export type CodeGenerator<R, G> = {
   readonly id: string
   name(): string
@@ -17,7 +20,7 @@ export type CodeGenerator<R, G> = {
   runtimeDependencies(): string[]
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined
-  generate(): Promise<Try<G[]>>
+  generate(): Promise<StructuredGeneratorResult<G>>
   referenceOf(input: any): any
   dependenciesOf(fromPath: string, input: any): any[]
 }

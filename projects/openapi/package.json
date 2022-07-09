@@ -33,6 +33,7 @@
   "dependencies": {
     "@oats-ts/oats-ts": "0.0.25",
     "@oats-ts/openapi-model": "0.0.25",
+    "@oats-ts/openapi-logger": "0.0.25",
     "@oats-ts/openapi-common": "0.0.25",
     "@oats-ts/openapi-reader": "0.0.25",
     "@oats-ts/openapi-validator": "0.0.25",

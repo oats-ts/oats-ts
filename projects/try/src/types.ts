@@ -1,10 +1,11 @@
 import { Issue } from '@oats-ts/validators'
 import { FluentFailure } from './FluentFailure'
 import { FluentSuccess } from './FluentSuccess'
+import { FAILURE_SYMBOL, SUCCESS_SYMBOL } from './symbols'
 
-export type Success<T> = { readonly data: T }
+export type Success<T> = { readonly data: T; [SUCCESS_SYMBOL]: true }
 
-export type Failure = { readonly issues: Issue[] }
+export type Failure = { readonly issues: Issue[]; [FAILURE_SYMBOL]: true }
 
 export type Try<T> = Success<T> | Failure
 

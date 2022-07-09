@@ -43,12 +43,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@oats-ts/log",
-      "projectFolder": "projects/log",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
       "packageName": "@oats-ts/model-common",
       "projectFolder": "projects/model-common",
       "versionPolicyName": "oats",
@@ -98,6 +92,12 @@
     {
       "packageName": "@oats-ts/openapi-http",
       "projectFolder": "projects/openapi-http",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@oats-ts/openapi-logger",
+      "projectFolder": "projects/openapi-logger",
       "versionPolicyName": "oats",
       "shouldPublish": true
     },

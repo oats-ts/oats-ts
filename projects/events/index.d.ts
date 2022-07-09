@@ -1,5 +1,8 @@
-import { Try } from '@oats-ts/try'
-import { Issue } from '@oats-ts/validators'
+import type { Try } from '@oats-ts/try'
+import type { Issue } from '@oats-ts/validators'
+
+// TODO remove type duplication (this + generator package)
+export type StructuredGeneratorResult<G> = { [key: string]: Try<G[]> | StructuredGeneratorResult<G> }
 
 export type EventMap = Record<string, any>
 export type EventKey<T extends EventMap> = string & keyof T
@@ -107,12 +110,14 @@ export type GeneratorCompleted<G> = {
   id: string
   name: string
   data: Try<G[]>
+  structured: StructuredGeneratorResult<G>
   issues: Issue[]
 }
 
 export type GeneratorStepCompleted<G> = {
   type: 'generator-step-completed'
   data: Try<G[]>
+  structured: StructuredGeneratorResult<G>
   name: string
   issues: Issue[]
 }

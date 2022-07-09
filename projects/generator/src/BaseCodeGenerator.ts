@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { failure, fromArray, success, Try } from '@oats-ts/try'
-import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
 
@@ -44,7 +44,7 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     }
   }
 
-  async generate(): Promise<Try<G[]>> {
+  async generate(): Promise<StructuredGeneratorResult<G>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,
@@ -61,18 +61,20 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     await this.tick()
 
     const result = noEmit ? success([]) : await this.generateWithCatch()
+    const structured: StructuredGeneratorResult<G> = { [this.name()]: result }
 
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',
       id: this.id,
       name: this.name(),
+      structured,
       data: result,
       issues: [],
     })
 
     await this.tick()
 
-    return result
+    return structured
   }
 
   protected async generateItemInternal(model: M): Promise<Try<G>> {
