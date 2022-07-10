@@ -3,8 +3,9 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isSuccess } from '@oats-ts/try'
 import { isOk } from '@oats-ts/validators'
+import { blue } from 'chalk'
 import { SourceFile } from 'typescript'
-import { issueToString, statusText } from './utils'
+import { Icons, issueToString, statusText } from './utils'
 
 export const simple =
   (): Logger =>
@@ -28,6 +29,12 @@ export const simple =
       if (isSuccess(e.data)) {
         console.log(statusText('generator', 'completed', e.name))
         e.issues.forEach((issue) => console.log(issueToString(issue)))
+        if (e.dependencies.length > 0) {
+          const deps = Array.from(e.dependencies)
+            .sort((a, b) => a.localeCompare(b))
+            .join(' ')
+          console.log(`${Icons.i} npm i ${blue(deps)}`)
+        }
       } else {
         console.log(statusText('generator', 'failed', e.name))
         e.data.issues.forEach((issue) => console.log(issueToString(issue)))

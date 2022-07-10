@@ -108,15 +108,17 @@ export type GeneratorCompleted<G> = {
   id: string
   name: string
   data: Try<G[]>
-  structured: StructuredGeneratorResult<G>
+  structure: StructuredGeneratorResult<G>
+  dependencies: string[]
   issues: Issue[]
 }
 
 export type GeneratorStepCompleted<G> = {
   type: 'generator-step-completed'
   data: Try<G[]>
-  structured: StructuredGeneratorResult<G>
+  structure: StructuredGeneratorResult<G>
   name: string
+  dependencies: string[]
   issues: Issue[]
 }
 

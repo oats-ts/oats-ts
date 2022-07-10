@@ -31,16 +31,17 @@ export const generator =
       parent: undefined,
     })
 
-    const structured = await generator.generate()
+    const structure = await generator.generate()
 
-    const result = fluent(flattenStructuredGeneratorResult<SourceFile>(structured))
+    const result = fluent(flattenStructuredGeneratorResult<SourceFile>(structure))
       .map((files) => mergeSourceFiles(files))
       .toTry()
 
     emitter.emit('generator-step-completed', {
       type: 'generator-step-completed',
       data: result,
-      structured,
+      structure,
+      dependencies: generator.runtimeDependencies(),
       name,
       issues: [],
     })

@@ -1,4 +1,4 @@
-import { flatMap } from 'lodash'
+import { flatMap, uniq } from 'lodash'
 import { CodeGenerator, GeneratorConfig, StructuredGeneratorResult } from './typings'
 import { Try, isFailure, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
@@ -33,15 +33,15 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
   }
 
   public runtimeDependencies(): string[] {
-    return flatMap(this.children, (child) => child.runtimeDependencies())
+    return uniq(flatMap(this.children, (child) => child.runtimeDependencies()))
   }
 
-  public referenceOf(input: any): any {
-    return undefined
+  public referenceOf(input: any): never {
+    throw new Error(`Can't call referenceOf on this generator`)
   }
 
-  public dependenciesOf(fromPath: string, input: any): any {
-    return undefined
+  public dependenciesOf(fromPath: string, input: any): never {
+    throw new Error(`Can't call dependenciesOf on this generator`)
   }
 
   public resolve(name: string): CodeGenerator<R, G> | undefined {
@@ -88,7 +88,8 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
         id: child.id,
         name: child.name(),
         data: deps,
-        structured: { [this.name()]: deps },
+        dependencies: this.runtimeDependencies(),
+        structure: { [this.name()]: deps },
         issues: [],
       })
       return this.tick()
@@ -129,7 +130,8 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
       id: this.id,
       name: this.name(),
       data: flattenStructuredGeneratorResult(childResults),
-      structured: childResults,
+      structure: childResults,
+      dependencies: this.runtimeDependencies(),
       issues: [],
     })
 
