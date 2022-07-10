@@ -3,6 +3,7 @@ import { failure, fromArray, success, Try } from '@oats-ts/try'
 import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
+import { uniq } from 'lodash'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
@@ -61,13 +62,13 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     await this.tick()
 
     const result = noEmit ? success([]) : await this.generateWithCatch()
-    const structured: StructuredGeneratorResult<G> = { [this.name()]: result }
 
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',
       id: this.id,
       name: this.name(),
-      structured,
+      dependencies: this.runtimeDependencies(),
+      structure: { [this.name()]: result },
       data: result,
       issues: [],
     })

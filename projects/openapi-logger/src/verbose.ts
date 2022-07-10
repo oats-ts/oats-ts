@@ -3,10 +3,17 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isFailure, isSuccess, isTry, Try } from '@oats-ts/try'
 import { isOk } from '@oats-ts/validators'
-import { entries, head, isNil } from 'lodash'
+import { entries } from 'lodash'
 import { SourceFile } from 'typescript'
 import { blue } from 'chalk'
-import { Icons, issueToString, severityComparator, severityIcon, statusText, Tab } from './utils'
+import { Icons, issueToString, statusText, Tab } from './utils'
+
+function printReadOutput(documents: Map<string, OpenAPIObject>): void {
+  const data = Array.from(documents.entries())
+  for (const [path] of data) {
+    console.log(`${Tab}${Icons.s} file "${blue(path)}" read`)
+  }
+}
 
 function printStructuredGeneratorResultLeaf(
   name: string,
@@ -39,21 +46,24 @@ function printStructuredGeneratorResult(structured: StructuredGeneratorResult<So
   }
 }
 
+function printRuntimeDependencies(deps: string[]): void {
+  if (deps.length === 0) {
+    return
+  }
+  console.log(`${Tab}${Icons.i} some outputs have runtime dependencies:`)
+  console.log(`${Tab}  npm i \\`)
+  const sortedDeps = Array.from(deps).sort((a, b) => a.localeCompare(b))
+  const depsText = sortedDeps.map((dep) => `${Tab}${Tab}${Tab}${blue(dep)}`).join(' \\\n')
+  console.log(depsText)
+}
+
 export const verbose =
   (): Logger =>
   (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile>): void => {
     emitter.addListener('read-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('reader', 'completed', e.name))
-        const data = Array.from(e.data.data.documents.entries())
-        for (const [path] of data) {
-          const issues = e.issues.filter((issue) => issue.path.startsWith(path)).sort(severityComparator)
-          const maxSevIssue = head(issues)
-          const icon = isNil(maxSevIssue) ? Icons.s : severityIcon(maxSevIssue.severity)
-          const issuesText = issues.length === 0 ? '' : ` with ${blue(issues.length)} issues`
-          console.log(`${Tab.repeat(1)}${icon} file "${blue(path)}" read${issuesText}`)
-          issues.forEach((issue) => console.log(issueToString(issue)))
-        }
+        printReadOutput(e.data.data.documents)
       } else {
         console.log(statusText('reader', 'failed', e.name))
         e.data.issues.forEach((issue) => console.log(issueToString(issue)))
@@ -68,10 +78,11 @@ export const verbose =
     emitter.addListener('generator-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('generator', 'completed', e.name))
-        printStructuredGeneratorResult(e.structured, 1)
+        printStructuredGeneratorResult(e.structure, 1)
+        printRuntimeDependencies(e.dependencies)
       } else {
         console.log(statusText('generator', 'failed', e.name))
-        printStructuredGeneratorResult(e.structured, 1)
+        printStructuredGeneratorResult(e.structure, 1)
       }
     })
 
