@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/typescript-writer",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -30,10 +30,10 @@
     "rimraf": "3.0.2"
   },
   "dependencies": {
-    "@oats-ts/json-schema-model": "0.0.27",
-    "@oats-ts/oats-ts": "0.0.27",
-    "@oats-ts/typescript-common": "0.0.27",
-    "@oats-ts/try": "0.0.27",
+    "@oats-ts/json-schema-model": "0.0.28",
+    "@oats-ts/oats-ts": "0.0.28",
+    "@oats-ts/typescript-common": "0.0.28",
+    "@oats-ts/try": "0.0.28",
     "@types/prettier": "2.4.4",
     "lodash": "4.17.21",
     "prettier": "2.6.1",
