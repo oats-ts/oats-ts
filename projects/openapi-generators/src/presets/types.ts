@@ -11,8 +11,7 @@ import { OperationsGeneratorConfig } from '../operations'
 import { SdkImplGeneratorConfig } from '../sdk-impl'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
-
-export type Config<T = {}> = boolean | (Partial<GeneratorConfig> & Partial<T>)
+import { Config } from '../types'
 
 type GeneratorConfigs = {
   'openapi/api-type': ApiTypeGeneratorConfig
