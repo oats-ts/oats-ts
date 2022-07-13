@@ -24,8 +24,12 @@ import { responseHeadersTypes } from './response-headers-type'
 import { responseTypes } from './response-type'
 import { sdkImpl } from './sdk-impl'
 import { sdkType } from './sdk-type'
+import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 
 export const factories = {
+  typeGuards,
+  types,
+  typeValidators,
   apiType,
   expressCorsMiddleware,
   expressRoutes,

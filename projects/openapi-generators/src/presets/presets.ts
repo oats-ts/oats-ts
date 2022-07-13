@@ -1,7 +1,7 @@
 import { createPreset } from './createPreset'
 import { PresetGeneratorConfiguration } from './types'
 
-const commonConfig: PresetGeneratorConfiguration = {
+export const commonConfig: PresetGeneratorConfiguration = {
   'json-schema/type': true,
   'json-schema/type-validator': true,
   'json-schema/type-guard': true,
@@ -12,7 +12,7 @@ const commonConfig: PresetGeneratorConfiguration = {
   'openapi/response-type': true,
 }
 
-const serverOnlyConfig: PresetGeneratorConfiguration = {
+export const serverOnlyConfig: PresetGeneratorConfiguration = {
   'openapi/request-server-type': true,
   'openapi/request-body-validator': true,
   'openapi/response-headers-serializer': true,
@@ -26,7 +26,7 @@ const serverOnlyConfig: PresetGeneratorConfiguration = {
   'openapi/express-cors-middleware': true,
 }
 
-const clientOnlyConfig: PresetGeneratorConfiguration = {
+export const clientOnlyConfig: PresetGeneratorConfiguration = {
   'openapi/request-type': true,
   'openapi/response-body-validator': true,
   'openapi/response-headers-deserializer': true,

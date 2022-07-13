@@ -1,38 +1,9 @@
-import { ContentReader } from '@oats-ts/oats-ts'
-import { OpenAPIObject } from '@oats-ts/openapi-model'
-import {
-  reader,
-  fileRead,
-  fileUriSanitizer,
-  httpRead,
-  httpsRead,
-  httpsUriSanitizer,
-  httpUriSanitizer,
-  mixedUriSanitizer,
-  jsonParse,
-  mixedParse,
-  mixedRead,
-  yamlParse,
-  OpenAPIReadOutput,
-} from '@oats-ts/openapi-reader'
+import { reader } from './reader'
+import { jsonParse, mixedParse, yamlParse } from './utils/parsers'
+import { fileRead, httpRead, httpsRead, mixedRead } from './utils/readers'
+import { fileUriSanitizer, httpsUriSanitizer, httpUriSanitizer, mixedUriSanitizer } from './utils/sanitizers'
 
-type SimplifiedReader = (path: string) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
-
-type SimplifiedReadersForProtocol = {
-  readonly json: SimplifiedReader
-  readonly yaml: SimplifiedReader
-  readonly mixed: SimplifiedReader
-}
-
-type SimplfiedReaders = {
-  readonly custom: typeof reader
-  readonly http: SimplifiedReadersForProtocol
-  readonly https: SimplifiedReadersForProtocol
-  readonly file: SimplifiedReadersForProtocol
-  readonly mixed: SimplifiedReadersForProtocol
-}
-
-export const readers: SimplfiedReaders = {
+export const readers = {
   custom: reader,
   http: {
     json: (path: string) => reader({ path, parse: jsonParse, read: httpRead, sanitize: httpUriSanitizer }),
