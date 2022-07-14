@@ -1,7 +1,7 @@
 const { readdir, readFile } = require('fs/promises')
 const { join, resolve } = require('path')
 
-const IGNORED_EXTENSIONS = ['.test.ts']
+const IGNORED_EXTENSIONS = ['.test.ts', '.node.ts']
 const IGNORED_FOLDERS = ['openapi-e2e-test']
 
 /**

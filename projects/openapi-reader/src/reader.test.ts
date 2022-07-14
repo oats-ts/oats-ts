@@ -1,9 +1,9 @@
 import { isFailure, isSuccess } from '@oats-ts/try'
 import EventEmitter from 'events'
 import { reader } from './reader'
-import { jsonParse } from './utils/parsers'
-import { httpsRead } from './utils/reads'
-import { httpsUriSanitizer } from './utils/sanitizers'
+import { jsonParse } from './utils/parsers/jsonParse'
+import { httpsRead } from './utils/reads/httpsRead'
+import { httpsUriSanitizer } from './utils/sanitizers/httpsUriSanitizer'
 
 describe('reader', () => {
   describe('should read remote doc without refs', () => {

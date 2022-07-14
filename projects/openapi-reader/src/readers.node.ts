@@ -4,7 +4,7 @@ import { Readers, TestReaderConfig } from './typings'
 import { jsonParse } from './utils/parsers/jsonParse'
 import { mixedParse } from './utils/parsers/mixedParse'
 import { yamlParse } from './utils/parsers/yamlParse'
-import { fileRead } from './utils/reads/fileRead'
+import { fileRead } from './utils/reads/fileRead.node'
 import { httpRead } from './utils/reads/httpRead'
 import { httpsRead } from './utils/reads/httpsRead'
 import { mixedRead } from './utils/reads/mixedRead'
@@ -12,7 +12,7 @@ import { fileUriSanitizer } from './utils/sanitizers/fileUriSanitizer'
 import { httpsUriSanitizer } from './utils/sanitizers/httpsUriSanitizer'
 import { httpUriSanitizer } from './utils/sanitizers/httpUriSanitizer'
 import { mixedUriSanitizer } from './utils/sanitizers/mixedUriSanitizer'
-import { sanitizePath } from './utils/sanitizers/sanitizePath'
+import { sanitizePath } from './utils/sanitizers/sanitizePath.node'
 
 export const readers: Readers = {
   custom: reader,

@@ -7,7 +7,7 @@ import { ContentWriter, WriterEventEmitter } from '@oats-ts/oats-ts'
 
 const name = '@oats-ts/typescript-writer'
 
-async function writeSourceFile<O>(file: SourceFile, config: TypeScriptWriterConfig<O>): Promise<O> {
+async function writeSourceFile<O>(file: SourceFile, config: TypeScriptWriterConfig<O>): Promise<Try<O>> {
   const source = await stringify(file, config.comments)
   const formattedSource = isNil(config.format) ? source : config.format(source)
   return config.write(file.fileName, formattedSource, file)
@@ -23,7 +23,7 @@ async function writeSourceFileWithEvents<O>(
     data: file,
   })
 
-  const outputTry = await fromPromise(writeSourceFile(file, config))
+  const outputTry = fluent(await fromPromise(writeSourceFile<O>(file, config))).flatMap((nested) => nested)
 
   emitter.emit('write-file-completed', {
     type: 'write-file-completed',

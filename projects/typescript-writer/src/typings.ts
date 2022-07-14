@@ -1,3 +1,5 @@
+import { ContentWriter } from '@oats-ts/oats-ts'
+import { Try } from '@oats-ts/try'
 import { SourceFile } from 'typescript'
 
 export type CommentType = 'jsdoc' | 'block' | 'line'
@@ -25,7 +27,7 @@ export type TypeScriptWriterConfig<O = any> = BaseTypescriptWriterConfig & {
    * @param path The path to write the file to.
    * @param content The contents of the file.
    */
-  write(path: string, content: string, file: SourceFile): Promise<O>
+  write(path: string, content: string, file: SourceFile): Promise<Try<O>>
 }
 
 export type BaseTypescriptWriterConfig = {
@@ -41,4 +43,12 @@ export type BaseTypescriptWriterConfig = {
 export type GeneratedFile = {
   path: string
   content: string
+}
+
+export type Writers = {
+  typescript: {
+    custom: <O>(config: TypeScriptWriterConfig) => ContentWriter<SourceFile, O>
+    file: (config: BaseTypescriptWriterConfig) => ContentWriter<SourceFile, GeneratedFile>
+    memory: (config: BaseTypescriptWriterConfig) => ContentWriter<SourceFile, GeneratedFile>
+  }
 }

@@ -3639,7 +3639,7 @@ packages:
     dev: false
 
   file:projects/openapi-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-KJaqbRxPNYSQbAWcsT0lw8j5NJLSBMSXUCainK4wlHcolfi8Nbk8v4ztxQ/D26w2B1V2naz0fcXX4+AcogReJA==, tarball: file:projects/openapi-common.tgz}
+    resolution: {integrity: sha512-ec7QHDhrr9IZPvQLy+isTHUKMMetRl5EV3dJu/P6nXdZNP7hHuESAOWmv3dO+JMb6Ug9BoecFuwfkP1fJ46BxQ==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
     name: '@rush-temp/openapi-common'
     version: 0.0.0
@@ -3648,6 +3648,7 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       '@types/pascalcase': 1.0.1
+      '@types/urijs': 1.19.19
       camelcase: 6.2.0
       jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
@@ -3655,6 +3656,7 @@ packages:
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
+      urijs: 1.19.11
     transitivePeerDependencies:
       - bufferutil
       - canvas

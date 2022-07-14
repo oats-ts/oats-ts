@@ -1,5 +1,5 @@
 import { BaseTypescriptWriterConfig, GeneratedFile, Writers } from './typings'
-import { fileWrite } from './utils/fileWrite'
+import { fileWrite } from './utils/fileWrite.node'
 import { memoryWrite } from './utils/memoryWrite'
 import { writer } from './writer'
 

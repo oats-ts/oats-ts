@@ -6,7 +6,8 @@
   "homepage": "https://github.com/bali182/oats#readme",
   "license": "ISC",
   "typings": "lib/index.d.ts",
-  "main": "lib/index.js",
+  "browser": "lib/index.js",
+  "main": "lib/index.node.js",
   "directories": {},
   "files": ["lib"],
   "repository": {

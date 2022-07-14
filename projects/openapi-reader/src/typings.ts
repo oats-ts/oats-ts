@@ -1,3 +1,4 @@
+import { ContentReader } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
 
@@ -76,4 +77,22 @@ export type TestReaderConfig = {
   httpRefs?: boolean
   httpsRefs?: boolean
   fileRefs?: boolean
+}
+
+export type ReaderFactory = (path: string) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+export type TestReaderFactory = (config: TestReaderConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+
+export type ReaderFactoriesByFormat<T> = {
+  json: T
+  yaml: T
+  mixed: T
+}
+
+export type Readers = {
+  custom: (config: OpenAPIReadConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+  test: ReaderFactoriesByFormat<TestReaderFactory>
+  http: ReaderFactoriesByFormat<ReaderFactory>
+  https: ReaderFactoriesByFormat<ReaderFactory>
+  file: ReaderFactoriesByFormat<ReaderFactory>
+  mixed: ReaderFactoriesByFormat<ReaderFactory>
 }

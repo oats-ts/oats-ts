@@ -1,6 +1,8 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Failure, isFailure, isSuccess, Success, Try } from '@oats-ts/try'
-import { jsonParse, mixedParse, yamlParse } from './parsers'
+import { jsonParse } from './jsonParse'
+import { mixedParse } from './mixedParse'
+import { yamlParse } from './yamlParse'
 
 describe('parsers', () => {
   const jsonTests = (parser: (uri: string, input: string) => Promise<Try<OpenAPIObject>>) => {
