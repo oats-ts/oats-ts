@@ -3954,7 +3954,7 @@ packages:
     dev: false
 
   file:projects/typescript-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-UKENFLGFOhWfRjH0YbW7yjC5NkCaGzmV1AF2KWde3FjJ5/yXdlbTRwdbz4O7xqdIWDPJY7ITY8DSsrPfDVWGfw==, tarball: file:projects/typescript-common.tgz}
+    resolution: {integrity: sha512-lYpb4ee54T2AAktHn+KHEMXXhyDo6AXxwD1cEzdYyQ96FLWyui12PSbTAB+SHxCGmd5JQlz/l2jMntJe9zLstw==, tarball: file:projects/typescript-common.tgz}
     id: file:projects/typescript-common.tgz
     name: '@rush-temp/typescript-common'
     version: 0.0.0
@@ -3963,6 +3963,7 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       jest: 27.0.4_ts-node@10.8.2
+      lodash: 4.17.21
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
       typescript: 4.7.4
