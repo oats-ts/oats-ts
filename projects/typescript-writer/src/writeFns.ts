@@ -1,9 +1,9 @@
 import { resolve, dirname } from 'path'
 import { promises } from 'fs'
 import { SourceFile } from 'typescript'
-import { OutputFile } from './typings'
+import { GeneratedFile } from './typings'
 
-export async function memoryWrite(path: string, content: string, _file: SourceFile): Promise<OutputFile> {
+export async function memoryWrite(path: string, content: string, _file: SourceFile): Promise<GeneratedFile> {
   return { path, content }
 }
 
@@ -16,7 +16,7 @@ async function exists(dir: string): Promise<boolean> {
   }
 }
 
-export async function fileWrite(path: string, content: string, _file: SourceFile): Promise<OutputFile> {
+export async function fileWrite(path: string, content: string, _file: SourceFile): Promise<GeneratedFile> {
   const _path = resolve(path)
   const dir = dirname(_path)
   const dirExists = await exists(dir)

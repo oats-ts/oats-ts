@@ -1,4 +1,3 @@
-import { ContentWriter } from '@oats-ts/oats-ts'
 import { SourceFile } from 'typescript'
 
 export type CommentType = 'jsdoc' | 'block' | 'line'
@@ -39,7 +38,7 @@ export type BaseTypescriptWriterConfig = {
   format?: (code: string) => string
 }
 
-export type OutputFile = {
+export type GeneratedFile = {
   path: string
   content: string
 }
