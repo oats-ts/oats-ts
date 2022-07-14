@@ -1,5 +1,11 @@
 import { resolve, dirname } from 'path'
 import { promises } from 'fs'
+import { SourceFile } from 'typescript'
+import { OutputFile } from './typings'
+
+export async function memoryWrite(path: string, content: string, _file: SourceFile): Promise<OutputFile> {
+  return { path, content }
+}
 
 async function exists(dir: string): Promise<boolean> {
   try {
@@ -10,7 +16,7 @@ async function exists(dir: string): Promise<boolean> {
   }
 }
 
-export async function defaultWrite(path: string, content: string): Promise<void> {
+export async function fileWrite(path: string, content: string, _file: SourceFile): Promise<OutputFile> {
   const _path = resolve(path)
   const dir = dirname(_path)
   const dirExists = await exists(dir)
@@ -18,4 +24,5 @@ export async function defaultWrite(path: string, content: string): Promise<void>
     await promises.mkdir(dir, { recursive: true })
   }
   await promises.writeFile(_path, content, { encoding: 'utf-8' })
+  return { path, content }
 }

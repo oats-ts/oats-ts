@@ -7,13 +7,13 @@ function file(nodes: Statement[]): SourceFile {
   return factory.createSourceFile([...nodes], factory.createToken(SyntaxKind.EndOfFileToken), NodeFlags.None)
 }
 
-export const stringify = async (data: SourceFile, comments: CommentsConfig): Promise<string> => {
+export const stringify = async (data: SourceFile, comments: CommentsConfig = {}): Promise<string> => {
   const printer = createPrinter({
     newLine: NewLineKind.LineFeed,
     removeComments: false,
   })
 
-  const { leadingComments = [], trailingComments = [], lineSeparator = '\n' } = comments
+  const { leadingComments = [], trailingComments = [], lineSeparator = '\n' } = comments ?? {}
   const createComment = createCommentFactory(lineSeparator)
   const imports = getImportDeclarations(data)
 

@@ -139,20 +139,20 @@ export type WriteFileStarted<G> = {
   data: G
 }
 
-export type WriteFileCompleted<G> = {
+export type WriteFileCompleted<O> = {
   type: 'write-file-completed'
-  data: Try<G>
+  data: Try<O>
   issues: Issue[]
 }
 
-export type WriterStepCompleted<G> = {
+export type WriterStepCompleted<O> = {
   type: 'writer-step-completed'
-  data: Try<G[]>
+  data: Try<O[]>
   name: string
   issues: Issue[]
 }
 
-export type WriterEvent<G> = WriterStepStarted | WriteFileStarted<G> | WriteFileCompleted<G> | WriterStepCompleted<G>
+export type WriterEvent<G, O> = WriterStepStarted | WriteFileStarted<G> | WriteFileCompleted<O> | WriterStepCompleted<O>
 
 export type ReadEventMap<P, R> = {
   'read-step-started': ReadStepStarted
@@ -177,17 +177,20 @@ export type GeneratorEventMap<G> = {
   'generator-step-completed': GeneratorStepCompleted<G>
 }
 
-export type WriterEventMap<G> = {
+export type WriterEventMap<G, O> = {
   'writer-step-started': WriterStepStarted
   'write-file-started': WriteFileStarted<G>
-  'write-file-completed': WriteFileCompleted<G>
-  'writer-step-completed': WriterStepCompleted<G>
+  'write-file-completed': WriteFileCompleted<O>
+  'writer-step-completed': WriterStepCompleted<O>
 }
 
-export type OatsEventMap<P, R, G> = ReadEventMap<P, R> & ValidatorEventMap<P> & GeneratorEventMap<G> & WriterEventMap<G>
+export type OatsEventMap<P, R, G, O> = ReadEventMap<P, R> &
+  ValidatorEventMap<P> &
+  GeneratorEventMap<G> &
+  WriterEventMap<G, O>
 
 export type ReaderEventEmitter<P, R> = EventEmitter<ReadEventMap<P, R>>
 export type ValidatorEventEmitter<P> = EventEmitter<ValidatorEventMap<P>>
 export type GeneratorEventEmitter<G> = EventEmitter<GeneratorEventMap<G>>
-export type WriterEventEmitter<G> = EventEmitter<WriterEventMap<G>>
-export type OatsEventEmitter<P = any, R = any, G = any> = EventEmitter<OatsEventMap<P, R, G>>
+export type WriterEventEmitter<G, O> = EventEmitter<WriterEventMap<G, O>>
+export type OatsEventEmitter<P = any, R = any, G = any, O = any> = EventEmitter<OatsEventMap<P, R, G, O>>
