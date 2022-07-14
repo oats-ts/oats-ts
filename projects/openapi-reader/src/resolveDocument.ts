@@ -8,12 +8,16 @@ import { ReaderEventEmitter } from '@oats-ts/oats-ts'
 import { ReadRefResolver, VerifyRefResolver } from './referenceResolvers'
 import { tick } from './utils/tick'
 
+async function defaultSanitizer(uri: string): Promise<Try<string>> {
+  return success(uri)
+}
+
 export async function resolveDocument(
   path: string,
   cache: ReadCache,
   emitter: ReaderEventEmitter<OpenAPIObject, OpenAPIReadOutput>,
   resolve: (uri: string) => Promise<Try<OpenAPIObject>>,
-  sanitize: (uri: string) => Try<string> = (uri) => success(uri),
+  sanitize: (uri: string) => Promise<Try<string>> = defaultSanitizer,
 ): Promise<Try<ReadInput<OpenAPIObject>>> {
   // Emit that we started work on the document
   emitter.emit('read-file-started', {
@@ -24,7 +28,7 @@ export async function resolveDocument(
   await tick()
 
   // Sanitize URI, this is important for user-input
-  const sanitizedUri = sanitize(path)
+  const sanitizedUri = await sanitize(path)
 
   // Stop the process if sanitization failed
   if (isFailure(sanitizedUri)) {

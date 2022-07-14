@@ -4,11 +4,11 @@ import URI from 'urijs'
 import { SchemeConfig } from '../../typings'
 import { DefaultMixedSchemeConfig } from '../defaultMixedSchemeConfig'
 import { unexpectedSchemeIssue } from '../unexpectedSchemeIssue'
+import { fileRead } from './fileRead'
 import { httpRead } from './httpRead'
 import { httpsRead } from './httpsRead'
 
 export const mixedRead =
-  (fileRead: (uri: string) => Promise<Try<string>>) =>
   (config: SchemeConfig = DefaultMixedSchemeConfig) =>
   async (uri: string): Promise<Try<string>> => {
     try {

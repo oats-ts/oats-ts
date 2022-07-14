@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "module": "commonjs",
+    "moduleResolution": "Node16",
     "declaration": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
@@ -9,7 +10,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "strict": true,
-    "lib": ["ES2020"]
+    "lib": ["ES2020", "DOM"]
   },
   "include": ["./src"],
   "exclude": ["node_modules", "lib"]

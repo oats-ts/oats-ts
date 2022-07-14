@@ -12,17 +12,13 @@ import { fileUriSanitizer } from './utils/sanitizers/fileUriSanitizer'
 import { httpsUriSanitizer } from './utils/sanitizers/httpsUriSanitizer'
 import { httpUriSanitizer } from './utils/sanitizers/httpUriSanitizer'
 import { mixedUriSanitizer } from './utils/sanitizers/mixedUriSanitizer'
-import { sanitizePath } from './utils/sanitizers/sanitizePath'
 
 export const readers: Readers = {
   custom: reader,
   test: {
-    json: (config: TestReaderConfig) =>
-      testReader(config, mixedUriSanitizer(sanitizePath), mixedRead(fileRead), jsonParse),
-    yaml: (config: TestReaderConfig) =>
-      testReader(config, mixedUriSanitizer(sanitizePath), mixedRead(fileRead), yamlParse),
-    mixed: (config: TestReaderConfig) =>
-      testReader(config, mixedUriSanitizer(sanitizePath), mixedRead(fileRead), mixedParse),
+    json: (config: TestReaderConfig) => testReader(config, jsonParse),
+    yaml: (config: TestReaderConfig) => testReader(config, yamlParse),
+    mixed: (config: TestReaderConfig) => testReader(config, mixedParse),
   },
   http: {
     json: (path: string) => reader({ path, parse: jsonParse, read: httpRead, sanitize: httpUriSanitizer }),
@@ -35,19 +31,13 @@ export const readers: Readers = {
     mixed: (path: string) => reader({ path, parse: mixedParse, read: httpsRead, sanitize: httpsUriSanitizer }),
   },
   file: {
-    json: (path: string) =>
-      reader({ path, parse: jsonParse, read: fileRead, sanitize: fileUriSanitizer(sanitizePath) }),
-    yaml: (path: string) =>
-      reader({ path, parse: yamlParse, read: fileRead, sanitize: fileUriSanitizer(sanitizePath) }),
-    mixed: (path: string) =>
-      reader({ path, parse: mixedParse, read: fileRead, sanitize: fileUriSanitizer(sanitizePath) }),
+    json: (path: string) => reader({ path, parse: jsonParse, read: fileRead, sanitize: fileUriSanitizer }),
+    yaml: (path: string) => reader({ path, parse: yamlParse, read: fileRead, sanitize: fileUriSanitizer }),
+    mixed: (path: string) => reader({ path, parse: mixedParse, read: fileRead, sanitize: fileUriSanitizer }),
   },
   mixed: {
-    json: (path: string) =>
-      reader({ path, parse: jsonParse, read: mixedRead(fileRead)(), sanitize: mixedUriSanitizer(sanitizePath)() }),
-    yaml: (path: string) =>
-      reader({ path, parse: yamlParse, read: mixedRead(fileRead)(), sanitize: mixedUriSanitizer(sanitizePath)() }),
-    mixed: (path: string) =>
-      reader({ path, parse: mixedParse, read: mixedRead(fileRead)(), sanitize: mixedUriSanitizer(sanitizePath)() }),
+    json: (path: string) => reader({ path, parse: jsonParse, read: mixedRead(), sanitize: mixedUriSanitizer() }),
+    yaml: (path: string) => reader({ path, parse: yamlParse, read: mixedRead(), sanitize: mixedUriSanitizer() }),
+    mixed: (path: string) => reader({ path, parse: mixedParse, read: mixedRead(), sanitize: mixedUriSanitizer() }),
   },
 }

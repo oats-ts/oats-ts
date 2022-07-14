@@ -4,7 +4,7 @@ import { IssueTypes } from '@oats-ts/validators'
 
 export const createUriSanitizer =
   (expectedScheme: string) =>
-  (path: string): Try<string> => {
+  async (path: string): Promise<Try<string>> => {
     try {
       const uri = new URI(path)
       const scheme = uri.scheme()

@@ -10,7 +10,7 @@ export type OpenAPIReadConfig = {
    * @param path The input path
    * @returns A sanitized, fully qualified URI
    */
-  sanitize(path: string): Try<string>
+  sanitize(path: string): Promise<Try<string>>
   /**
    * @param uri The full URI of the document.
    * @returns The contents of the document at the URI as string.

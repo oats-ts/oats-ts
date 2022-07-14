@@ -5,11 +5,11 @@ import { IssueTypes } from '@oats-ts/validators'
 import { DefaultMixedSchemeConfig } from '../defaultMixedSchemeConfig'
 import { SchemeConfig } from '../../typings'
 import { unexpectedSchemeIssue } from '../unexpectedSchemeIssue'
+import { sanitizeNonUriPath } from './sanitizeNonUriPath'
 
 export const mixedUriSanitizer =
-  (sanitizeNonUri: (path: string) => Try<string>) =>
   (config: SchemeConfig = DefaultMixedSchemeConfig, uriOnly: boolean = false) =>
-  (path: string): Try<string> => {
+  async (path: string): Promise<Try<string>> => {
     try {
       if (isUri(path)) {
         const uri = new URI(path)
@@ -33,7 +33,8 @@ export const mixedUriSanitizer =
           },
         ])
       }
-      return sanitizeNonUri(path)
+      const nonUriResult = await sanitizeNonUriPath(path)
+      return nonUriResult
     } catch (e) {
       return failure([
         {
