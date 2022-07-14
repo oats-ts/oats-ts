@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { promises as fs } from 'fs'
+import { rm } from 'fs/promises'
 import { join, parse } from 'path'
 import { generate } from '@oats-ts/oats-ts'
 import {
@@ -102,7 +102,7 @@ export async function generateCode(url: string, codePath: string) {
 }
 
 async function generateAll() {
-  await fs.rm(PATH, { force: true, recursive: true })
+  await rm(PATH, { force: true, recursive: true })
   const files = await getFiles(['schemas', 'generated-schemas'])
   for (const path of files) {
     console.log(path)

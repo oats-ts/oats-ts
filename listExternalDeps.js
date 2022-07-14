@@ -1,6 +1,9 @@
 const { readdir, readFile } = require('fs/promises')
 const { join, resolve } = require('path')
 
+const IGNORED_EXTENSIONS = ['.test.ts']
+const IGNORED_FOLDERS = ['openapi-e2e-test']
+
 /**
  * @typedef {import('fs').Dirent} Dirent
  */
@@ -9,7 +12,7 @@ const { join, resolve } = require('path')
  * @param {string} path
  * @param {string} source
  * @param {string[]} inPkgJson
- * @param {Set<string>} externals
+ * @param {Map<string, string[]>} externals
  * @returns {void}
  */
 function collectExternalPackages(path, source, inPkgJson, externals) {
@@ -19,14 +22,19 @@ function collectExternalPackages(path, source, inPkgJson, externals) {
     .map((line) => line.split(' from ')[1].trim().replaceAll('"', '').replaceAll("'", ''))
     .filter((pkg) => !pkg.startsWith('.'))
     .filter((pkg) => !inPkgJson.includes(pkg))
-    .forEach((pkg) => externals.push(`${path.replaceAll('\\', '/')}    ${pkg}`))
+    .forEach((pkg) => {
+      if (!externals.has(pkg)) {
+        externals.set(pkg, [])
+      }
+      externals.get(pkg).push(path)
+    })
 }
 
 /**
  * @param {string} parent
  * @param {Dirent} item
  * @param {string[]} inPkgJson
- * @param {string[]} externals
+ * @param {Map<string, string[]>} externals
  * @returns {Promise<void>}
  */
 async function processItem(parent, item, inPkgJson, externals) {
@@ -37,7 +45,7 @@ async function processItem(parent, item, inPkgJson, externals) {
   } else if (item.isDirectory()) {
     const dirPath = join(parent, item.name)
     const items = await readdir(dirPath, { withFileTypes: true })
-    const filteredItems = items.filter((item) => !item.name.endsWith('.test.ts'))
+    const filteredItems = items.filter((item) => IGNORED_EXTENSIONS.every((ext) => !item.name.endsWith(ext)))
     return Promise.all(filteredItems.map((child) => processItem(dirPath, child, inPkgJson, externals)))
   } else {
     throw new TypeError(`Unexpected input ${item}`)
@@ -64,10 +72,11 @@ async function readInPkgJson(folder) {
 
 async function listExternalDeps() {
   const root = resolve('projects')
-  const rootFolders = (await readdir(root, { withFileTypes: true })).filter((item) => item.name !== 'openapi-e2e-test')
-  const externals = []
+  const rootFolders = await readdir(root, { withFileTypes: true })
+  const withoutIgnored = rootFolders.filter((item) => IGNORED_FOLDERS.every((folder) => item.name !== folder))
+  const externals = new Map()
 
-  for (const folder of rootFolders) {
+  for (const folder of withoutIgnored) {
     const parent = join(root, folder.name)
     const itemsInFolder = await readdir(parent, { withFileTypes: true })
     const src = itemsInFolder.find((item) => item.name === 'src')
@@ -77,7 +86,11 @@ async function listExternalDeps() {
     }
   }
 
-  console.log(Array.from(externals))
+  for (const [package, files] of externals.entries()) {
+    console.log(`Package "${package}" in:`)
+    files.forEach((file) => console.log(`  ${file}`))
+    console.log()
+  }
 }
 
 listExternalDeps()
