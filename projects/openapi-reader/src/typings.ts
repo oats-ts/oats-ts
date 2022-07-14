@@ -63,3 +63,17 @@ export type OpenAPIReadOutput = {
   /** An object -> name mapping for entites that don't encapsulate their names, eg.: schemas. */
   objectToName: Map<any, string>
 }
+
+export type SchemeConfig = {
+  http: boolean
+  https: boolean
+  file: boolean
+}
+
+export type TestReaderConfig = {
+  path: string
+  content: Map<string, string>
+  httpRefs?: boolean
+  httpsRefs?: boolean
+  fileRefs?: boolean
+}

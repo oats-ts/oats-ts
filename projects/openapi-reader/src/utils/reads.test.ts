@@ -1,8 +1,8 @@
 import { isSuccess, Success } from '@oats-ts/try'
-import { fileRead, httpsRead } from './readers'
+import { fileRead, httpsRead } from './reads'
 import { fileUriSanitizer } from './sanitizers'
 
-describe('readers', () => {
+describe('reads', () => {
   describe('File', () => {
     it('should read a local file', async () => {
       const pathTry = fileUriSanitizer('package.json')

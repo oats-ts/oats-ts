@@ -2,7 +2,7 @@ import { isFailure, isSuccess } from '@oats-ts/try'
 import EventEmitter from 'events'
 import { reader } from './reader'
 import { jsonParse } from './utils/parsers'
-import { httpsRead } from './utils/readers'
+import { httpsRead } from './utils/reads'
 import { httpsUriSanitizer } from './utils/sanitizers'
 
 describe('reader', () => {

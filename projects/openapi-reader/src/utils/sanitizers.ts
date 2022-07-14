@@ -4,8 +4,9 @@ import { isUri } from 'valid-url'
 import URI from 'urijs'
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-
-const AcceptedSchemes = ['file', 'http', 'https']
+import { SchemeConfig } from '../typings'
+import { DefaultMixedSchemeConfig } from './defaultMixedSchemeConfig'
+import { unexpectedSchemeIssue } from './unexpectedSchemeIssue'
 
 const createUriSanitizer =
   (expectedScheme: string) =>
@@ -69,33 +70,41 @@ export const fileUriSanitizer = (path: string): Try<string> => {
   }
 }
 
-export const mixedUriSanitizer = (path: string): Try<string> => {
-  try {
-    if (isUri(path)) {
-      const uri = new URI(path)
-      const scheme = uri.scheme()
-      if (AcceptedSchemes.indexOf(scheme) < 0) {
-        const schemesMsg = AcceptedSchemes.map((s) => `"${s}"`).join(', ')
+export const mixedUriSanitizer =
+  (config: SchemeConfig = DefaultMixedSchemeConfig, uriOnly: boolean = false) =>
+  (path: string): Try<string> => {
+    try {
+      if (isUri(path)) {
+        const uri = new URI(path)
+        const scheme = uri.scheme()
+        if (scheme === 'http' && config.http) {
+          return success(path)
+        } else if (scheme === 'https' && config.https) {
+          return success(path)
+        } else if (scheme === 'file' && config.file) {
+          return success(path)
+        }
+        return failure([unexpectedSchemeIssue('path', scheme, config)])
+      }
+      if (uriOnly) {
         return failure([
           {
             path: 'path',
             severity: 'error',
             type: IssueTypes.other,
-            message: `unexpected URI scheme: "${scheme}", should be one of ${schemesMsg}`,
+            message: `"${path}" should be a valid URI`,
           },
         ])
       }
-      return success(path)
+      return success(pathToFileURL(resolve(path)).toString())
+    } catch (e) {
+      return failure([
+        {
+          path: 'path',
+          severity: 'error',
+          type: IssueTypes.other,
+          message: `${e}`,
+        },
+      ])
     }
-    return success(pathToFileURL(resolve(path)).toString())
-  } catch (e) {
-    return failure([
-      {
-        path: 'path',
-        severity: 'error',
-        type: IssueTypes.other,
-        message: `${e}`,
-      },
-    ])
   }
-}
