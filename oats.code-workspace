@@ -5,10 +5,6 @@
       "path": "."
     },
     {
-      "name": "gh-docs",
-      "path": "projects/gh-docs"
-    },
-    {
       "name": "json-schema-generators",
       "path": "projects/json-schema-generators"
     },

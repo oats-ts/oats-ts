@@ -1,6 +1,7 @@
 import { flattenStructuredGeneratorResult, Logger, OatsEventEmitter, StructuredGeneratorResult } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { GeneratedFile } from '@oats-ts/typescript-writer'
 import { isFailure, isSuccess, isTry, Try } from '@oats-ts/try'
 import { isOk } from '@oats-ts/validators'
 import { entries } from 'lodash'
@@ -59,7 +60,7 @@ function printRuntimeDependencies(deps: string[]): void {
 
 export const verbose =
   (): Logger =>
-  (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile>): void => {
+  (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile, GeneratedFile>): void => {
     emitter.addListener('read-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('reader', 'completed', e.name))
@@ -90,7 +91,7 @@ export const verbose =
       if (isSuccess(e.data)) {
         console.log(statusText('writer', 'completed', e.name))
         e.data.data.forEach((file) => {
-          console.log(`${Tab} ${Icons.s} writing "${blue(file.fileName)}" completed`)
+          console.log(`${Tab} ${Icons.s} writing "${blue(file.path)}" completed`)
         })
         e.issues.forEach((issue) => console.log(issueToString(issue)))
       } else {

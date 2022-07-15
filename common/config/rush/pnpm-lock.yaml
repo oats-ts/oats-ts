@@ -1,7 +1,6 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@rush-temp/gh-docs': file:./projects/gh-docs.tgz
   '@rush-temp/json-schema-generators': file:./projects/json-schema-generators.tgz
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
   '@rush-temp/model-common': file:./projects/model-common.tgz
@@ -40,32 +39,24 @@ specifiers:
   cross-fetch: 3.1.5
   eventemitter3: 4.0.7
   express: 4.x.x
-  html-webpack-plugin: 5.5.0
   http-terminator: 3.0.4
   jest: 27.0.4
   lodash: 4.17.21
   nanoid: 3.3.4
   node-fetch: 2.6.7
   pascalcase: 1.0.0
-  path-browserify: 1.0.1
   path-to-regexp: 6.2.1
   prettier: 2.6.1
-  process: 0.11.10
   rimraf: 3.0.2
   ts-jest: 27.0.2
-  ts-loader: 9.3.1
   ts-node: 10.8.2
   typescript: 4.7.4
   urijs: 1.19.11
   valid-url: 1.0.9
-  webpack: 5.73.0
-  webpack-cli: 4.10.0
-  webpack-dev-server: 4.9.3
   whatwg-mimetype: 2.3.0
   yamljs: 0.3.0
 
 dependencies:
-  '@rush-temp/gh-docs': file:projects/gh-docs.tgz_typescript@4.7.4
   '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.8.2
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/model-common': file:projects/model-common.tgz
@@ -104,27 +95,20 @@ dependencies:
   cross-fetch: 3.1.5
   eventemitter3: 4.0.7
   express: 4.18.1
-  html-webpack-plugin: 5.5.0_webpack@5.73.0
   http-terminator: 3.0.4
   jest: 27.0.4_ts-node@10.8.2
   lodash: 4.17.21
   nanoid: 3.3.4
   node-fetch: 2.6.7
   pascalcase: 1.0.0
-  path-browserify: 1.0.1
   path-to-regexp: 6.2.1
   prettier: 2.6.1
-  process: 0.11.10
   rimraf: 3.0.2
   ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
-  ts-loader: 9.3.1_typescript@4.7.4+webpack@5.73.0
   ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
   typescript: 4.7.4
   urijs: 1.19.11
   valid-url: 1.0.9
-  webpack: 5.73.0_webpack-cli@4.10.0
-  webpack-cli: 4.10.0_f445dff6f76f0ed3133a4ab59560a372
-  webpack-dev-server: 4.9.3_ffd7cf999054608223b9fc836cf5004f
   whatwg-mimetype: 2.3.0
   yamljs: 0.3.0
 
@@ -4912,36 +4896,6 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  file:projects/gh-docs.tgz_typescript@4.7.4:
-    resolution: {integrity: sha512-1qZb2zS/aZFwhp9+ubk0XyyLWVkysM9CCp76vTmjxekOUneb89hM2TuwqZ+6lcYb6XlbXDllkf7nN3FT6oDeLQ==, tarball: file:projects/gh-docs.tgz}
-    id: file:projects/gh-docs.tgz
-    name: '@rush-temp/gh-docs'
-    version: 0.0.0
-    dependencies:
-      '@types/node': 16.7.1
-      '@types/prettier': 2.4.4
-      html-webpack-plugin: 5.5.0_webpack@5.73.0
-      path-browserify: 1.0.1
-      prettier: 2.6.1
-      process: 0.11.10
-      ts-loader: 9.3.1_typescript@4.7.4+webpack@5.73.0
-      webpack: 5.73.0_webpack-cli@4.10.0
-      webpack-cli: 4.10.0_f445dff6f76f0ed3133a4ab59560a372
-      webpack-dev-server: 4.9.3_ffd7cf999054608223b9fc836cf5004f
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@webpack-cli/generators'
-      - '@webpack-cli/migrate'
-      - bufferutil
-      - debug
-      - esbuild
-      - supports-color
-      - typescript
-      - uglify-js
-      - utf-8-validate
-      - webpack-bundle-analyzer
-    dev: false
-
   file:projects/json-schema-generators.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-oDlehQcwhScX22lYGeHAVZuG4yGnRXTjN9+20IG1FRR0CxKw1PyUX9pmA7BiluKZc5PkOJnqr7htEde40o/QUg==, tarball: file:projects/json-schema-generators.tgz}
     id: file:projects/json-schema-generators.tgz
@@ -5038,7 +4992,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-d1ZUJrjjaLIyuWLf1XcEqeOpupZoXeXK0MWkjh7oSyJxss/Q00urUt5hY7mopb0ttZkKKPdRdANC7Ya1ci6C6w==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-TKIH7rcl9EG7713aMT6rzEyVfjLxOPdnl8X3EZTlQRM3WX9irfBOGVR8z0INMbZwK7CL43pqSyREocDghSIBFA==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -5076,18 +5030,12 @@ packages:
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
-      - '@webpack-cli/generators'
-      - '@webpack-cli/migrate'
       - bufferutil
       - canvas
-      - debug
       - encoding
-      - esbuild
       - node-notifier
       - supports-color
-      - uglify-js
       - utf-8-validate
-      - webpack-bundle-analyzer
     dev: false
 
   file:projects/openapi-express-server-adapter.tgz_ts-node@10.8.2:
