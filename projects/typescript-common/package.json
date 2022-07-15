@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/typescript-common",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://github.com/bali182/oats#readme",
@@ -32,6 +32,6 @@
   },
   "dependencies": {
     "typescript": "4.7.4",
-    "@oats-ts/json-schema-model": "0.0.28"
+    "@oats-ts/json-schema-model": "0.0.29"
   }
 }
