@@ -23,26 +23,28 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
+    "@types/lodash": "4.14.182",
     "@types/node": "16.7.1",
-    "@types/lodash": "4.14.172",
     "jest": "27.0.4",
-    "ts-jest": "27.0.2",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "ts-jest": "27.0.2"
   },
   "dependencies": {
+    "@oats-ts/json-schema-model": "0.0.28",
+    "@oats-ts/model-common": "0.0.28",
+    "@oats-ts/oats-ts": "0.0.28",
+    "@oats-ts/openapi-model": "0.0.28",
+    "@oats-ts/try": "0.0.28",
+    "@oats-ts/validators": "0.0.28",
     "@types/urijs": "1.19.19",
     "@types/valid-url": "1.0.3",
     "@types/yamljs": "0.2.31",
-    "typescript": "4.7.4",
+    "browser-or-node": "2.0.0",
+    "cross-fetch": "3.1.5",
     "lodash": "4.17.21",
-    "@oats-ts/json-schema-model": "0.0.28",
-    "@oats-ts/openapi-model": "0.0.28",
-    "@oats-ts/model-common": "0.0.28",
-    "@oats-ts/try": "0.0.28",
+    "typescript": "4.7.4",
     "urijs": "1.19.11",
     "valid-url": "1.0.9",
-    "yamljs": "0.3.0",
-    "@oats-ts/validators": "0.0.28",
-    "@oats-ts/oats-ts": "0.0.28"
+    "yamljs": "0.3.0"
   }
 }

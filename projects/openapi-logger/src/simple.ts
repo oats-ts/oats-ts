@@ -2,6 +2,7 @@ import { Logger, OatsEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isSuccess } from '@oats-ts/try'
+import { GeneratedFile } from '@oats-ts/typescript-writer'
 import { isOk } from '@oats-ts/validators'
 import { blue } from 'chalk'
 import { SourceFile } from 'typescript'
@@ -9,7 +10,7 @@ import { Icons, issueToString, statusText } from './utils'
 
 export const simple =
   (): Logger =>
-  (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile>): void => {
+  (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile, GeneratedFile>): void => {
     emitter.addListener('read-step-completed', (e) => {
       if (isSuccess(e.data)) {
         console.log(statusText('reader', 'completed', e.name))

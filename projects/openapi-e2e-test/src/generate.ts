@@ -76,7 +76,7 @@ export async function generateCode(url: string, codePath: string) {
           },
         }),
       }),
-      writer: writers.typescript({
+      writer: writers.typescript.file({
         format: formatters.prettier({
           parser: 'typescript',
           arrowParens: 'always',

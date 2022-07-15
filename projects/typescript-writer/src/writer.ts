@@ -1,53 +1,49 @@
 import { stringify } from './stringify'
-import { defaultTypeScriptWriterConfig } from './defaults/defaultTypeScriptWriterConfig'
 import { TypeScriptWriterConfig } from './typings'
 import { isNil } from 'lodash'
 import { SourceFile } from 'typescript'
-import { fluent, fromArray, fromPromise, fromPromiseSettledResult, isFailure, success, Try } from '@oats-ts/try'
+import { fluent, fromArray, fromPromise, fromPromiseSettledResult, Try } from '@oats-ts/try'
 import { ContentWriter, WriterEventEmitter } from '@oats-ts/oats-ts'
 
 const name = '@oats-ts/typescript-writer'
 
-async function writeSourceFile(file: SourceFile, config: TypeScriptWriterConfig): Promise<SourceFile> {
+async function writeSourceFile<O>(file: SourceFile, config: TypeScriptWriterConfig<O>): Promise<Try<O>> {
   const source = await stringify(file, config.comments)
   const formattedSource = isNil(config.format) ? source : config.format(source)
-  await config.write(file.fileName, formattedSource)
-  return file
+  return config.write(file.fileName, formattedSource, file)
 }
 
-async function writeSourceFileWithEvents(
+async function writeSourceFileWithEvents<O>(
   file: SourceFile,
   config: TypeScriptWriterConfig,
-  emitter: WriterEventEmitter<SourceFile>,
-): Promise<Try<SourceFile>> {
+  emitter: WriterEventEmitter<SourceFile, O>,
+): Promise<Try<O>> {
   emitter.emit('write-file-started', {
     type: 'write-file-started',
     data: file,
   })
 
-  const fileTry = await fromPromise(writeSourceFile(file, config))
+  const outputTry = fluent(await fromPromise(writeSourceFile<O>(file, config))).flatMap((nested) => nested)
 
   emitter.emit('write-file-completed', {
     type: 'write-file-completed',
-    data: fileTry,
+    data: outputTry,
     issues: [],
   })
 
-  return fileTry
+  return outputTry
 }
 
 export const writer =
-  (config: Partial<TypeScriptWriterConfig>): ContentWriter<SourceFile> =>
-  async (files: SourceFile[], emitter: WriterEventEmitter<SourceFile>): Promise<Try<SourceFile[]>> => {
+  <O>(config: TypeScriptWriterConfig): ContentWriter<SourceFile, O> =>
+  async (files: SourceFile[], emitter: WriterEventEmitter<SourceFile, O>): Promise<Try<O[]>> => {
     emitter.emit('writer-step-started', {
       type: 'writer-step-started',
       name,
     })
 
-    const cfg = defaultTypeScriptWriterConfig(config)
-
     const output = fromArray(
-      (await Promise.allSettled(files.map((file) => writeSourceFileWithEvents(file, cfg, emitter))))
+      (await Promise.allSettled(files.map((file) => writeSourceFileWithEvents<O>(file, config, emitter))))
         .map(fromPromiseSettledResult)
         .map((wrapped) => fluent(wrapped).flatMap((t) => t)),
     )

@@ -1,9 +1,8 @@
 import { nanoid } from 'nanoid'
 import { failure, fromArray, success, Try } from '@oats-ts/try'
-import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
-import { uniq } from 'lodash'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)

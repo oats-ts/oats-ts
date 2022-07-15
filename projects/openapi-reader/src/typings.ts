@@ -1,3 +1,4 @@
+import { ContentReader } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
 
@@ -9,7 +10,7 @@ export type OpenAPIReadConfig = {
    * @param path The input path
    * @returns A sanitized, fully qualified URI
    */
-  sanitize(path: string): Try<string>
+  sanitize(path: string): Promise<Try<string>>
   /**
    * @param uri The full URI of the document.
    * @returns The contents of the document at the URI as string.
@@ -62,4 +63,36 @@ export type OpenAPIReadOutput = {
   uriToObject: Map<string, any>
   /** An object -> name mapping for entites that don't encapsulate their names, eg.: schemas. */
   objectToName: Map<any, string>
+}
+
+export type SchemeConfig = {
+  http: boolean
+  https: boolean
+  file: boolean
+}
+
+export type TestReaderConfig = {
+  path: string
+  content: Map<string, string>
+  httpRefs?: boolean
+  httpsRefs?: boolean
+  fileRefs?: boolean
+}
+
+export type ReaderFactory = (path: string) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+export type TestReaderFactory = (config: TestReaderConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+
+export type ReaderFactoriesByFormat<T> = {
+  json: T
+  yaml: T
+  mixed: T
+}
+
+export type Readers = {
+  custom: (config: OpenAPIReadConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+  test: ReaderFactoriesByFormat<TestReaderFactory>
+  http: ReaderFactoriesByFormat<ReaderFactory>
+  https: ReaderFactoriesByFormat<ReaderFactory>
+  file: ReaderFactoriesByFormat<ReaderFactory>
+  mixed: ReaderFactoriesByFormat<ReaderFactory>
 }
