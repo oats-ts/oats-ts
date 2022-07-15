@@ -1,4 +1,4 @@
-import { relative, dirname, sep, parse, join } from 'path'
+import { relative, dirname, sep, parse, join } from '@oats-ts/isomorphic-path'
 
 function removeExtension(path: string): string {
   const { root, dir, name } = parse(path)

@@ -1,6 +1,6 @@
 import { GeneratorPathProvider, NameProvider } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
-import { join, resolve } from 'path'
+import { join, resolve } from '@oats-ts/isomorphic-path'
 import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, PathDelegate } from './typings'
 
 const fileNameByTarget: NameByTarget = {

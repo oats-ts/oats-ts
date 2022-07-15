@@ -19,6 +19,12 @@
   "telemetryEnabled": false,
   "projects": [
     {
+      "packageName": "@oats-ts/isomorphic-path",
+      "projectFolder": "projects/isomorphic-path",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/json-schema-generators",
       "projectFolder": "projects/json-schema-generators",
       "versionPolicyName": "oats",

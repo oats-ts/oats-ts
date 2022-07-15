@@ -5,6 +5,10 @@
       "path": "."
     },
     {
+      "name": "isomorphic-path",
+      "path": "projects/isomorphic-path"
+    },
+    {
       "name": "json-schema-generators",
       "path": "projects/json-schema-generators"
     },
