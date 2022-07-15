@@ -1,0 +1,39 @@
+{
+  "name": "@oats-ts/gh-docs",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "https://github.com/bali182/oats#readme",
+  "bugs": {
+    "url": "https://github.com/bali182/oats/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bali182/oats.git"
+  },
+  "license": "ISC",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "scripts": {
+    "test": "echo 'TODO'",
+    "typecheck": "tsc --noEmit",
+    "build": "webpack -c webpack.config.js --mode=production",
+    "start": "webpack-dev-server -c webpack.config.js --mode=development"
+  },
+  "devDependencies": {
+    "@types/node": "16.7.1",
+    "@types/prettier": "2.4.4",
+    "ts-loader": "9.3.1",
+    "webpack": "5.73.0",
+    "webpack-dev-server": "4.9.3",
+    "webpack-cli": "4.10.0",
+    "html-webpack-plugin": "5.5.0",
+    "path-browserify": "1.0.1",
+    "process": "0.11.10"
+  },
+  "dependencies": {
+    "@oats-ts/oats-ts": "0.0.28",
+    "@oats-ts/openapi": "0.0.28",
+    "@oats-ts/validators": "0.0.28",
+    "@oats-ts/try": "0.0.28",
+    "prettier": "2.6.1"
+  }
+}

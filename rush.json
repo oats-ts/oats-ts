@@ -19,6 +19,11 @@
   "telemetryEnabled": false,
   "projects": [
     {
+      "packageName": "@oats-ts/gh-docs",
+      "projectFolder": "projects/gh-docs",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@oats-ts/json-schema-generators",
       "projectFolder": "projects/json-schema-generators",
       "versionPolicyName": "oats",

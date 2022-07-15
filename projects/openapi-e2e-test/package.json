@@ -18,8 +18,7 @@
     "build": "echo 'Nothing to build'",
     "g": "ts-node src/generate.ts",
     "test": "cross-env jest --runInBand",
-    "typecheck": "tsc --noEmit",
-    "web-start": "webpack-dev-server -c webpack.config.js"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@oats-ts/oats-ts": "0.0.28",
@@ -52,14 +51,6 @@
     "ts-node": "10.8.2",
     "typescript": "4.7.4",
     "urijs": "1.19.11",
-    "yamljs": "0.3.0",
-    "ts-loader": "9.3.1",
-    "webpack": "5.73.0",
-    "webpack-dev-server": "4.9.3",
-    "webpack-cli": "4.10.0",
-    "html-webpack-plugin": "5.5.0",
-    "path-browserify": "1.0.1",
-    "process": "0.11.10",
-    "prettier": "2.6.1"
+    "yamljs": "0.3.0"
   }
 }

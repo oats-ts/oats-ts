@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@rush-temp/gh-docs': file:./projects/gh-docs.tgz
   '@rush-temp/json-schema-generators': file:./projects/json-schema-generators.tgz
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
   '@rush-temp/model-common': file:./projects/model-common.tgz
@@ -64,6 +65,7 @@ specifiers:
   yamljs: 0.3.0
 
 dependencies:
+  '@rush-temp/gh-docs': file:projects/gh-docs.tgz_typescript@4.7.4
   '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.8.2
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/model-common': file:projects/model-common.tgz
@@ -4908,6 +4910,36 @@ packages:
   /yn/3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
+    dev: false
+
+  file:projects/gh-docs.tgz_typescript@4.7.4:
+    resolution: {integrity: sha512-1qZb2zS/aZFwhp9+ubk0XyyLWVkysM9CCp76vTmjxekOUneb89hM2TuwqZ+6lcYb6XlbXDllkf7nN3FT6oDeLQ==, tarball: file:projects/gh-docs.tgz}
+    id: file:projects/gh-docs.tgz
+    name: '@rush-temp/gh-docs'
+    version: 0.0.0
+    dependencies:
+      '@types/node': 16.7.1
+      '@types/prettier': 2.4.4
+      html-webpack-plugin: 5.5.0_webpack@5.73.0
+      path-browserify: 1.0.1
+      prettier: 2.6.1
+      process: 0.11.10
+      ts-loader: 9.3.1_typescript@4.7.4+webpack@5.73.0
+      webpack: 5.73.0_webpack-cli@4.10.0
+      webpack-cli: 4.10.0_f445dff6f76f0ed3133a4ab59560a372
+      webpack-dev-server: 4.9.3_ffd7cf999054608223b9fc836cf5004f
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@webpack-cli/generators'
+      - '@webpack-cli/migrate'
+      - bufferutil
+      - debug
+      - esbuild
+      - supports-color
+      - typescript
+      - uglify-js
+      - utf-8-validate
+      - webpack-bundle-analyzer
     dev: false
 
   file:projects/json-schema-generators.tgz_ts-node@10.8.2:
