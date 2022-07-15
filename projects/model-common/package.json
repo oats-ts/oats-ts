@@ -24,7 +24,7 @@
     "url": "https://github.com/bali182/oats/issues"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.172",
+    "@types/lodash": "4.14.182",
     "rimraf": "3.0.2"
   },
   "dependencies": {

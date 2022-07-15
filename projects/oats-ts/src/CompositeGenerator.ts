@@ -1,4 +1,4 @@
-import { flatMap, uniq } from 'lodash'
+import { uniq, flatMap } from 'lodash'
 import { CodeGenerator, GeneratorConfig, StructuredGeneratorResult } from './typings'
 import { Try, isFailure, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'

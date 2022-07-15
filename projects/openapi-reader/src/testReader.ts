@@ -7,8 +7,8 @@ import { OpenAPIReadOutput, TestReaderConfig } from './typings'
 import { mixedRead } from './utils/reads/mixedRead'
 import { mixedUriSanitizer } from './utils/sanitizers/mixedUriSanitizer'
 
-function testSanitizer(config: TestReaderConfig) {
-  return mixedUriSanitizer(
+function testSanitizer(config: TestReaderConfig): (path: string) => Promise<Try<string>> {
+  const delegate = mixedUriSanitizer(
     {
       file: Boolean(config.fileRefs),
       http: Boolean(config.httpRefs),
@@ -16,9 +16,15 @@ function testSanitizer(config: TestReaderConfig) {
     },
     true,
   )
+  return async (path: string): Promise<Try<string>> => {
+    if (config.content.has(path) && !isNil(config.content.get(path))) {
+      return success(path)
+    }
+    return delegate(path)
+  }
 }
 
-const testRead = (config: TestReaderConfig) => {
+function testRead(config: TestReaderConfig): (path: string) => Promise<Try<string>> {
   const delegate = mixedRead({
     file: Boolean(config.fileRefs),
     http: Boolean(config.httpRefs),

@@ -1,4 +1,5 @@
 import { generate } from '@oats-ts/oats-ts'
+import typescriptParser from 'prettier/parser-typescript'
 import {
   formatters,
   validator,
@@ -37,7 +38,7 @@ const content = `{
 }`
 
 async function browserGenerate() {
-  await generate({
+  const output = await generate({
     logger: loggers.verbose(),
     validator: validator(),
     reader: readers.test.json({
@@ -58,7 +59,7 @@ async function browserGenerate() {
         },
       }),
     }),
-    writer: writers.typescript.file({
+    writer: writers.typescript.memory({
       format: formatters.prettier({
         parser: 'typescript',
         arrowParens: 'always',
@@ -66,6 +67,7 @@ async function browserGenerate() {
         semi: false,
         singleQuote: true,
         trailingComma: 'all',
+        plugins: [typescriptParser],
       }),
       comments: {
         leadingComments: [
@@ -77,6 +79,7 @@ async function browserGenerate() {
       },
     }),
   })
+  console.log(output)
 }
 
 browserGenerate()
