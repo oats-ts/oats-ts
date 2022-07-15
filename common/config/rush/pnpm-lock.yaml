@@ -1,7 +1,6 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@rush-temp/isomorphic-path': file:./projects/isomorphic-path.tgz
   '@rush-temp/json-schema-generators': file:./projects/json-schema-generators.tgz
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
   '@rush-temp/model-common': file:./projects/model-common.tgz
@@ -28,12 +27,12 @@ specifiers:
   '@types/node': 16.7.1
   '@types/node-fetch': 2.6.1
   '@types/pascalcase': 1.0.1
-  '@types/path-browserify': 1.0.0
   '@types/prettier': 2.4.4
   '@types/urijs': 1.19.19
   '@types/valid-url': 1.0.3
   '@types/whatwg-mimetype': 2.1.1
   '@types/yamljs': 0.2.31
+  browser-or-node: 2.0.0
   camelcase: 6.2.0
   chalk: 4.1.1
   cross-env: 7.0.3
@@ -47,7 +46,6 @@ specifiers:
   nanoid: 3.3.4
   node-fetch: 2.6.7
   pascalcase: 1.0.0
-  path-browserify: 1.0.1
   path-to-regexp: 6.2.1
   prettier: 2.6.1
   rimraf: 3.0.2
@@ -64,7 +62,6 @@ specifiers:
   yamljs: 0.3.0
 
 dependencies:
-  '@rush-temp/isomorphic-path': file:projects/isomorphic-path.tgz
   '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.8.2
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/model-common': file:projects/model-common.tgz
@@ -91,12 +88,12 @@ dependencies:
   '@types/node': 16.7.1
   '@types/node-fetch': 2.6.1
   '@types/pascalcase': 1.0.1
-  '@types/path-browserify': 1.0.0
   '@types/prettier': 2.4.4
   '@types/urijs': 1.19.19
   '@types/valid-url': 1.0.3
   '@types/whatwg-mimetype': 2.1.1
   '@types/yamljs': 0.2.31
+  browser-or-node: 2.0.0
   camelcase: 6.2.0
   chalk: 4.1.1
   cross-env: 7.0.3
@@ -110,7 +107,6 @@ dependencies:
   nanoid: 3.3.4
   node-fetch: 2.6.7
   pascalcase: 1.0.0
-  path-browserify: 1.0.1
   path-to-regexp: 6.2.1
   prettier: 2.6.1
   rimraf: 3.0.2
@@ -924,10 +920,6 @@ packages:
     resolution: {integrity: sha512-JYPox1hbKw66Sv9HtvTp0r5jJkaz6k+V8XjEnZUb7B+4ffIoS+3sjiAtwkX6IMO68UQtQWe9QcAjugn9VR4GJg==}
     dev: false
 
-  /@types/path-browserify/1.0.0:
-    resolution: {integrity: sha512-XMCcyhSvxcch8b7rZAtFAaierBYdeHXVvg2iYnxOV0MCQHmPuRRmGZPFDRzPayxcGiiSL1Te9UIO+f3cuj0tfw==}
-    dev: false
-
   /@types/prettier/2.4.4:
     resolution: {integrity: sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==}
     dev: false
@@ -1453,6 +1445,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
+    dev: false
+
+  /browser-or-node/2.0.0:
+    resolution: {integrity: sha512-3Lrks/Okgof+/cRguUNG+qRXSeq79SO3hY4QrXJayJofwJwHiGC0qi99uDjsfTwULUFSr1OGVsBkdIkygKjTUA==}
     dev: false
 
   /browser-process-hrtime/1.0.0:
@@ -3666,10 +3662,6 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
-  /path-browserify/1.0.1:
-    resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
-    dev: false
-
   /path-exists/4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
     engines: {node: '>=8'}
@@ -4905,18 +4897,6 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  file:projects/isomorphic-path.tgz:
-    resolution: {integrity: sha512-nSCpnJN4E5V9moPATw8Dv4aSysCu/x7evgx1sH62CjsWCAR9wN3yQIJjfFkG4TrP01dGG9XqkouEiY3vhNVoLw==, tarball: file:projects/isomorphic-path.tgz}
-    name: '@rush-temp/isomorphic-path'
-    version: 0.0.0
-    dependencies:
-      '@types/node': 16.7.1
-      '@types/path-browserify': 1.0.0
-      path-browserify: 1.0.1
-      rimraf: 3.0.2
-      typescript: 4.7.4
-    dev: false
-
   file:projects/json-schema-generators.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-tQtSdNeb6mY/3mqoc8d6+lORcABXtgJ95UPa9tfLeMMczIxBgYapX6ysyfFnnIlItO9ksBYwHGB7VpYL68ZFFA==, tarball: file:projects/json-schema-generators.tgz}
     id: file:projects/json-schema-generators.tgz
@@ -4985,7 +4965,7 @@ packages:
     dev: false
 
   file:projects/openapi-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-XEL0Eh0cpafPriL9y8PsAJ2DXj653hRPQFyVmmjz+34D1vNofrkjfHbidiSRKJ22VN2znvb9BEcBYOlqmSL14w==, tarball: file:projects/openapi-common.tgz}
+    resolution: {integrity: sha512-KJaqbRxPNYSQbAWcsT0lw8j5NJLSBMSXUCainK4wlHcolfi8Nbk8v4ztxQ/D26w2B1V2naz0fcXX4+AcogReJA==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
     name: '@rush-temp/openapi-common'
     version: 0.0.0
@@ -5213,7 +5193,7 @@ packages:
     dev: false
 
   file:projects/openapi-reader.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-7ZXvBE6yn7tSytKkBcKYYZxHW1+yAzw/cYqtsfLnreW5dPWhnQ7Vf1je9cj1EJ95KSIsrBVfGJJz4n8x6Nj6sg==, tarball: file:projects/openapi-reader.tgz}
+    resolution: {integrity: sha512-cVSq5uOG2m/F0mcgQfxPfeBUp6KR7jvOUfyPbBbapDnOW/xucVbKiJkwasKqLo/XgivKvAtc63mGY3qNwm3tdA==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
     version: 0.0.0
@@ -5224,6 +5204,7 @@ packages:
       '@types/urijs': 1.19.19
       '@types/valid-url': 1.0.3
       '@types/yamljs': 0.2.31
+      browser-or-node: 2.0.0
       cross-fetch: 3.1.5
       jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
@@ -5313,7 +5294,7 @@ packages:
     dev: false
 
   file:projects/typescript-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-0nxJg+cKazZlA9xTQ9CDEILm0EngOIyM0plH7WvE4+TirnEWHUj/TJQ0sGR/Ala0S6DJ+TYkGKDZoG3ZGv1eOg==, tarball: file:projects/typescript-common.tgz}
+    resolution: {integrity: sha512-lYpb4ee54T2AAktHn+KHEMXXhyDo6AXxwD1cEzdYyQ96FLWyui12PSbTAB+SHxCGmd5JQlz/l2jMntJe9zLstw==, tarball: file:projects/typescript-common.tgz}
     id: file:projects/typescript-common.tgz
     name: '@rush-temp/typescript-common'
     version: 0.0.0
@@ -5336,7 +5317,7 @@ packages:
     dev: false
 
   file:projects/typescript-writer.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-Idb4WwcK7BUvOL/4zJ2XmPrSMtdq09/IYAPqG3m4U96t8zBaeM9aXlaOFTbbs7K0Q70pdtIXw+Yc//iuTjKzwA==, tarball: file:projects/typescript-writer.tgz}
+    resolution: {integrity: sha512-3QjxpTHtJl2FWuJjoEe0aGKa8lnLJDr7AlEE5vwlYlBSmYVMbkFy39HEX4eOeOL9XJthW1sdbSC5iGdtbnwzHQ==, tarball: file:projects/typescript-writer.tgz}
     id: file:projects/typescript-writer.tgz
     name: '@rush-temp/typescript-writer'
     version: 0.0.0
@@ -5345,6 +5326,7 @@ packages:
       '@types/lodash': 4.14.172
       '@types/node': 16.7.1
       '@types/prettier': 2.4.4
+      browser-or-node: 2.0.0
       jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       prettier: 2.6.1

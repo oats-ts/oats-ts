@@ -43,7 +43,6 @@
     "@oats-ts/oats-ts": "0.0.28",
     "@oats-ts/openapi-http": "0.0.28",
     "@oats-ts/model-common": "0.0.28",
-    "@oats-ts/isomorphic-path": "0.0.28",
     "pascalcase": "1.0.0",
     "camelcase": "6.2.0"
   }

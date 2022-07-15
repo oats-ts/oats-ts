@@ -2,18 +2,13 @@ import { SourceFile } from 'typescript'
 import { GeneratedFile } from '../typings'
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { isNil } from 'lodash'
-
-const fsPromise = typeof window === 'undefined' ? import('fs/promises') : undefined
-const pathPromise = typeof window === 'undefined' ? import('path') : undefined
+import { promises } from 'fs'
+import { resolve, dirname } from 'path'
+import { isNode } from 'browser-or-node'
 
 async function exists(dir: string): Promise<boolean> {
-  if (isNil(fsPromise)) {
-    return false
-  }
-  const { lstat } = await fsPromise
   try {
-    const stats = await lstat(dir)
+    const stats = await promises.lstat(dir)
     return stats.isDirectory()
   } catch (e) {
     return false
@@ -21,7 +16,7 @@ async function exists(dir: string): Promise<boolean> {
 }
 
 export async function fileWrite(path: string, content: string, _file: SourceFile): Promise<Try<GeneratedFile>> {
-  if (isNil(pathPromise) || isNil(fsPromise)) {
+  if (!isNode) {
     return failure([
       {
         message: `Can only write files in a node.js environment.`,
@@ -31,17 +26,14 @@ export async function fileWrite(path: string, content: string, _file: SourceFile
       },
     ])
   }
-  const { mkdir, writeFile } = await fsPromise
-  const { resolve, dirname } = await pathPromise
-
   const _path = resolve(path)
   const dir = dirname(_path)
   const dirExists = await exists(dir)
   if (!dirExists) {
-    await mkdir(dir, { recursive: true })
+    await promises.mkdir(dir, { recursive: true })
   }
   try {
-    await writeFile(_path, content, { encoding: 'utf-8' })
+    await promises.writeFile(_path, content, { encoding: 'utf-8' })
     return success({ path, content })
   } catch (e) {
     return failure([

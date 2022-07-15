@@ -1,12 +1,11 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { isNil } from 'lodash'
 import { IssueTypes } from '@oats-ts/validators'
-
-const urlPromise = typeof window === undefined ? import('url') : undefined
-const pathPromise = typeof window === undefined ? import('path') : undefined
+import { pathToFileURL } from 'url'
+import { resolve } from 'path'
+import { isNode } from 'browser-or-node'
 
 export async function sanitizeNonUriPath(path: string): Promise<Try<string>> {
-  if (isNil(urlPromise) || isNil(pathPromise)) {
+  if (!isNode) {
     return failure([
       {
         message: `Can only sanitize non-URI paths in a node.js environment.`,
@@ -16,8 +15,5 @@ export async function sanitizeNonUriPath(path: string): Promise<Try<string>> {
       },
     ])
   }
-  const { pathToFileURL } = await urlPromise
-  const { resolve } = await pathPromise
-
   return success(pathToFileURL(resolve(path)).toString())
 }

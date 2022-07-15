@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "typescript": "4.7.4",
-    "@oats-ts/json-schema-model": "0.0.28",
-    "@oats-ts/isomorphic-path": "0.0.28"
+    "@oats-ts/json-schema-model": "0.0.28"
   }
 }

@@ -1,13 +1,12 @@
 import { failure, success, Try } from '@oats-ts/try'
 import { IssueTypes } from '@oats-ts/validators'
-import { isNil } from 'lodash'
-
-const urlPromise = typeof window === undefined ? import('url') : undefined
-const fsPromise = typeof window === undefined ? import('fs/promises') : undefined
-const pathPromise = typeof window === undefined ? import('path') : undefined
+import { fileURLToPath } from 'url'
+import { promises as fs } from 'fs'
+import { resolve } from 'path'
+import { isNode } from 'browser-or-node'
 
 export async function fileRead(uri: string): Promise<Try<string>> {
-  if (isNil(urlPromise) || isNil(fsPromise) || isNil(pathPromise)) {
+  if (!isNode) {
     return failure([
       {
         message: `Can only read files from the file system in a node.js environment.`,
@@ -18,13 +17,9 @@ export async function fileRead(uri: string): Promise<Try<string>> {
     ])
   }
 
-  const { fileURLToPath } = await urlPromise
-  const { readFile } = await fsPromise
-  const { resolve } = await pathPromise
-
   try {
     const path = resolve(fileURLToPath(uri))
-    const content = await readFile(path, { encoding: 'utf-8' })
+    const content = await fs.readFile(path, { encoding: 'utf-8' })
     return success(content)
   } catch (error) {
     return failure([
