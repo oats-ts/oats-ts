@@ -31,7 +31,7 @@ function printStructuredGeneratorResultLeaf(
     }`,
   )
   if (isFailure(leaf) && printIssues) {
-    leaf.issues.forEach((issue) => console.log(issueToString(issue), indentation + 1))
+    leaf.issues.forEach((issue) => console.log(issueToString(issue, indentation + 1)))
   }
 }
 

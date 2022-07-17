@@ -1,4 +1,4 @@
-import { uniq, flatMap } from 'lodash'
+import { uniq, flatMap, result } from 'lodash'
 import { CodeGenerator, GeneratorConfig, StructuredGeneratorResult } from './typings'
 import { Try, isFailure, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
@@ -69,7 +69,7 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
       const unresolvedNames = unresolved.map((name) => `"${name}"`).join(', ')
       return failure([
         {
-          message: `Failed to resolved dependencies, missing: ${unresolvedNames}`,
+          message: `missing dependencies: ${unresolvedNames}`,
           path: child.name(),
           severity: 'error',
           type: IssueTypes.other,
@@ -79,26 +79,13 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     return success(Object.values(mapping) as CodeGenerator<R, G>[])
   }
 
-  protected async generateChild(child: CodeGenerator<R, G>, results: StructuredGeneratorResult<G>) {
-    const deps = this.getChildDependencies(child)
-
-    if (isFailure(deps)) {
-      this.emitter.emit('generator-completed', {
-        type: 'generator-completed',
-        id: child.id,
-        name: child.name(),
-        data: deps,
-        dependencies: this.runtimeDependencies(),
-        structure: { [this.name()]: deps },
-        issues: [],
-      })
-      return this.tick()
-    }
+  protected async generateChild(child: CodeGenerator<R, G>, results: StructuredGeneratorResult<G>): Promise<void> {
+    const dependencies = this.getChildDependencies(child)
 
     child.initialize({
       parent: this,
       globalConfig: this.globalConfig,
-      dependencies: deps.data,
+      dependencies: dependencies,
       emitter: this.emitter,
       input: this.input,
     })
@@ -107,7 +94,7 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
 
     results[child.name()] = childResult
 
-    await this.tick()
+    return this.tick()
   }
 
   async generate(): Promise<StructuredGeneratorResult<G>> {

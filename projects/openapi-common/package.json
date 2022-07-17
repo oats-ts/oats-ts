@@ -40,6 +40,7 @@
     "@oats-ts/openapi-http": "0.0.29",
     "@oats-ts/openapi-model": "0.0.29",
     "@oats-ts/openapi-reader": "0.0.29",
+    "@oats-ts/try": "0.0.29",
     "@oats-ts/typescript-writer": "0.0.29",
     "@oats-ts/validators": "0.0.29",
     "camelcase": "6.2.0",
