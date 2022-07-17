@@ -1,4 +1,5 @@
 import { CodeGenerator, GeneratorConfig } from '@oats-ts/oats-ts'
+import { isSuccess, Try } from '@oats-ts/try'
 import { GeneratorContextImpl } from './GeneratorContextImpl'
 import { GeneratorContext, ReadOutput } from './types'
 
@@ -6,7 +7,7 @@ export function createGeneratorContext<R, T extends string, C extends GeneratorC
   owner: CodeGenerator<any, any>,
   data: ReadOutput<R>,
   config: C,
-  generators: CodeGenerator<any, any>[],
+  generators: Try<CodeGenerator<any, any>[]>,
 ): GeneratorContext<R, T> {
-  return new GeneratorContextImpl(owner, data, config, generators)
+  return new GeneratorContextImpl(owner, data, config, isSuccess(generators) ? generators.data : [])
 }

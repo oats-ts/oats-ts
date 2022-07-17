@@ -28,7 +28,7 @@ export type GeneratorInit<R, G> = {
   input: R
   globalConfig: GeneratorConfig
   emitter: GeneratorEventEmitter<G>
-  dependencies: CodeGenerator<R, G>[]
+  dependencies: Try<CodeGenerator<R, G>[]>
 }
 
 export type CodeGenerator<R, G> = {

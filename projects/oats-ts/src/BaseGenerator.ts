@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid'
 import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
 import { GeneratorEventEmitter } from './events'
-import { Try } from '@oats-ts/try'
+import { isSuccess, Try } from '@oats-ts/try'
 
 const emptyConfig: Partial<GeneratorConfig> = {
   noEmit: false,
@@ -16,7 +16,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
   protected input!: R
   protected globalConfig!: GeneratorConfig
   protected emitter!: GeneratorEventEmitter<G>
-  protected dependencies: CodeGenerator<R, G>[] = []
+  protected dependencies!: Try<CodeGenerator<R, G>[]>
   protected readonly config: C
   private readonly globalConfigOverride: Partial<GeneratorConfig>
 
@@ -34,7 +34,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
     this.input = input
     this.globalConfig = { ...globalConfig, ...this.globalConfigOverride }
     this.emitter = emitter
-    this.dependencies = dependencies ?? []
+    this.dependencies = dependencies
   }
 
   protected tick() {
@@ -45,10 +45,12 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
     if (name === this.name()) {
       return this
     }
-    for (const dep of this.dependencies) {
-      const resolved = dep.resolve(name)
-      if (resolved) {
-        return dep
+    if (isSuccess(this.dependencies)) {
+      for (const dep of this.dependencies.data) {
+        const resolved = dep.resolve(name)
+        if (resolved) {
+          return dep
+        }
       }
     }
     return undefined

@@ -7,7 +7,7 @@ import {
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
 import { RootGeneratorConfig } from './types'
-import { fluent, Try } from '@oats-ts/try'
+import { fluent, success, Try } from '@oats-ts/try'
 import { mergeSourceFiles } from '@oats-ts/typescript-common'
 
 const name = '@oats-ts/openapi-generators'
@@ -27,7 +27,7 @@ export const generator =
       globalConfig,
       emitter,
       input,
-      dependencies: [],
+      dependencies: success([]),
       parent: undefined,
     })
 

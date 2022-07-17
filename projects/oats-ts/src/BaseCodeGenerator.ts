@@ -1,15 +1,12 @@
 import { nanoid } from 'nanoid'
-import { failure, fromArray, success, Try } from '@oats-ts/try'
-import { CodeGenerator, GeneratorConfig, GeneratorInit } from './typings'
+import { failure, fromArray, isFailure, success, Try } from '@oats-ts/try'
+import { GeneratorInit } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 import { IssueTypes } from '@oats-ts/validators'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
 
-  protected input!: R
-  protected globalConfig!: GeneratorConfig
-  protected dependencies!: CodeGenerator<R, G>[]
   protected context!: Ctx
   protected items!: M[]
 
@@ -26,6 +23,9 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
   }
 
   private async generateWithCatch(): Promise<Try<G[]>> {
+    if (isFailure(this.dependencies)) {
+      return this.dependencies
+    }
     try {
       return fromArray(
         await Promise.all(
