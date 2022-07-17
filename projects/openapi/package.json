@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://oats-ts.github.io/docs",
@@ -34,16 +34,16 @@
     "ts-jest": "27.0.2"
   },
   "dependencies": {
-    "@oats-ts/oats-ts": "0.0.29",
-    "@oats-ts/openapi-common": "0.0.29",
-    "@oats-ts/openapi-generators": "0.0.29",
-    "@oats-ts/openapi-logger": "0.0.29",
-    "@oats-ts/openapi-model": "0.0.29",
-    "@oats-ts/openapi-parameter-serialization": "0.0.29",
-    "@oats-ts/openapi-reader": "0.0.29",
-    "@oats-ts/openapi-validator": "0.0.29",
-    "@oats-ts/typescript-writer": "0.0.29",
-    "@oats-ts/validators": "0.0.29",
+    "@oats-ts/oats-ts": "0.0.30",
+    "@oats-ts/openapi-common": "0.0.30",
+    "@oats-ts/openapi-generators": "0.0.30",
+    "@oats-ts/openapi-logger": "0.0.30",
+    "@oats-ts/openapi-model": "0.0.30",
+    "@oats-ts/openapi-parameter-serialization": "0.0.30",
+    "@oats-ts/openapi-reader": "0.0.30",
+    "@oats-ts/openapi-validator": "0.0.30",
+    "@oats-ts/typescript-writer": "0.0.30",
+    "@oats-ts/validators": "0.0.30",
     "@types/prettier": "2.4.4",
     "prettier": "2.6.1"
   }
