@@ -3,46 +3,49 @@
   "version": "0.0.29",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
-  "homepage": "https://github.com/bali182/oats#readme",
-  "license": "ISC",
+  "homepage": "https://oats-ts.github.io/docs",
+  "license": "MIT",
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": ["lib"],
+  "files": [
+    "lib",
+    "LICENSE.txt"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bali182/oats.git"
+    "url": "git+https://github.com/oats-ts/oats-ts.git"
   },
   "scripts": {
-    "test": "echo 'TODO'",
     "build": "rimraf lib && tsc",
+    "test": "echo 'TODO'",
     "typecheck": "tsc --noEmit"
   },
   "bugs": {
-    "url": "https://github.com/bali182/oats/issues"
+    "url": "https://github.com/oats-ts/oats-ts/issues"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
     "@types/lodash": "4.14.182",
     "@types/node": "16.7.1",
     "jest": "27.0.4",
-    "ts-jest": "27.0.2",
-    "rimraf": "3.0.2"
+    "rimraf": "3.0.2",
+    "ts-jest": "27.0.2"
   },
   "dependencies": {
-    "chalk": "4.1.1",
-    "lodash": "4.17.21",
-    "typescript": "4.7.4",
-    "@oats-ts/try": "0.0.29",
-    "@oats-ts/validators": "0.0.29",
+    "@oats-ts/json-schema-generators": "0.0.29",
     "@oats-ts/json-schema-model": "0.0.29",
-    "@oats-ts/openapi-reader": "0.0.29",
-    "@oats-ts/typescript-common": "0.0.29",
+    "@oats-ts/model-common": "0.0.29",
+    "@oats-ts/oats-ts": "0.0.29",
     "@oats-ts/openapi-common": "0.0.29",
     "@oats-ts/openapi-model": "0.0.29",
     "@oats-ts/openapi-parameter-serialization": "0.0.29",
-    "@oats-ts/json-schema-generators": "0.0.29",
-    "@oats-ts/model-common": "0.0.29",
-    "@oats-ts/oats-ts": "0.0.29"
+    "@oats-ts/openapi-reader": "0.0.29",
+    "@oats-ts/try": "0.0.29",
+    "@oats-ts/typescript-common": "0.0.29",
+    "@oats-ts/validators": "0.0.29",
+    "chalk": "4.1.1",
+    "lodash": "4.17.21",
+    "typescript": "4.7.4"
   }
 }
