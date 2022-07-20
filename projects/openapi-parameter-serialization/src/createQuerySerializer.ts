@@ -20,5 +20,6 @@ export function createQuerySerializer<T extends ParameterType>(dsl: QueryDslRoot
     return fluent(serializedParts)
       .map((parts: string[][]): string[] => parts.reduce((flat, arr) => [...flat, ...arr], []))
       .map((parts) => (parts.length === 0 ? undefined : `?${parts.join('&')}`))
+      .toTry()
   }
 }

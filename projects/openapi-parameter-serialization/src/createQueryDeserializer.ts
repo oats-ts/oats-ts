@@ -19,6 +19,6 @@ export function createQueryDeserializer<T extends ParameterType>(dsl: QueryDslRo
       }, {})
       return fromRecord(parsed)
     })
-    return deserialized as Try<T>
+    return deserialized.toTry() as Try<T>
   }
 }
