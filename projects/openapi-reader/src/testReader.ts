@@ -1,7 +1,7 @@
 import { ContentReader } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
-import { isNil } from 'lodash'
+import { isNil, has } from 'lodash'
 import { reader } from './reader'
 import { OpenAPIReadOutput, TestReaderConfig } from './typings'
 import { mixedRead } from './utils/reads/mixedRead'
@@ -17,7 +17,7 @@ function testSanitizer(config: TestReaderConfig): (path: string) => Promise<Try<
     true,
   )
   return async (path: string): Promise<Try<string>> => {
-    if (config.content.has(path) && !isNil(config.content.get(path))) {
+    if (has(config.content, path) && !isNil(config.content[path])) {
       return success(path)
     }
     return delegate(path)
@@ -31,8 +31,8 @@ function testRead(config: TestReaderConfig): (path: string) => Promise<Try<strin
     https: Boolean(config.httpsRefs),
   })
   return async (uri: string): Promise<Try<string>> => {
-    if (config.content.has(uri) && !isNil(config.content.get(uri))) {
-      return success(config.content.get(uri)!)
+    if (has(config.content, uri) && !isNil(config.content[uri])) {
+      return success(config.content[uri]!)
     }
     return delegate(uri)
   }
