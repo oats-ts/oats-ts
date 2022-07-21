@@ -39,10 +39,28 @@ const personValidator = configure(
 When validating simply call this function. It will return a list of `Issue`s, reporting everything that's wrong with the input:
 
 ```ts
-const issues = personValidator({
+const validPerson = {
   name: 'Test',
-  email: 1,
-})
+  email: 'test',
+  occupation: 'other',
+  married: false,
+  friends: [],
+  address: {
+    country: 'Test',
+    zip: 1243,
+    city: 'Test',
+    street: 'Test',
+  },
+}
 
-const isOk = issues.length === 0
+const invalidPerson = {
+  name: false,
+  email: 1,
+  fr_iends: [{ hi: true }],
+}
+
+// Returns an empty array
+expect(personValidator(validPerson).length).toBe(0)
+// Returns an array with all the issues
+expect(personValidator(invalidPerson).length).toBeGreaterThan(0)
 ```

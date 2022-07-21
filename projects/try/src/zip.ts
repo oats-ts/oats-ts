@@ -1,9 +1,4 @@
-import { Issue } from '@oats-ts/validators'
-import { failure } from './failure'
-import { getData } from './getData'
-import { getIssues } from './getIssues'
-import { isFailure } from './isFailure'
-import { success } from './success'
+import { fromArray } from './fromArray'
 import { Try } from './types'
 
 export function zip<A>(a: Try<A>): Try<[A]>
@@ -72,17 +67,5 @@ export function zip<A, B, C, D, E, F, G, H, I, J>(
 ): Try<[A, B, C, D, E, F, G, H, I, J]>
 
 export function zip(...input: Try<unknown>[]): Try<unknown[]> {
-  const issues: Issue[] = []
-  const data: unknown[] = []
-  let hadFailure = false
-  for (let i = 0; i < input.length; i += 1) {
-    const t = input[i]
-    if (isFailure(t)) {
-      hadFailure = true
-      issues.push(...getIssues(t))
-    } else {
-      data.push(getData(t))
-    }
-  }
-  return hadFailure ? failure(issues) : success(data)
+  return fromArray(input)
 }

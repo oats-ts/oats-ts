@@ -2,7 +2,7 @@
 
 This package implements all possible options for parameter serialization/deserialization described by the [OpenAPI spec](https://swagger.io/docs/specification/serialization)
 
-The package's main goal is to support [oats](https://oats-ts.github.io), but it can be used on it's own, if you have an OpenAPI related project, that needs parameter serialization/deserialization.
+The package's main goal is to support [oats](https://oats-ts.github.io/docs), but it can be used on it's own, if you have an OpenAPI related project, that needs parameter serialization/deserialization.
 
 ## Model
 

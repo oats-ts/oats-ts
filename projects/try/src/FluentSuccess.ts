@@ -16,14 +16,6 @@ export class FluentSuccess<T> implements Success<T>, Fluent<T> {
     return mapSuccess(this.data)
   }
 
-  public isSuccess(): boolean {
-    return true
-  }
-
-  public isFailure(): boolean {
-    return false
-  }
-
   public map<R>(transform: (input: T) => R): FluentSuccess<R> {
     return new FluentSuccess(transform(this.data))
   }
