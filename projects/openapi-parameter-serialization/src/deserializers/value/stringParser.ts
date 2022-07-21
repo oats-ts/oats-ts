@@ -12,13 +12,11 @@ export const stringParser: StringParserFn =
   <T extends Primitive>(parser: ValueDeserializer<string, any> = identityParser): ValueDeserializer<string, T> =>
   (value: string | undefined, name: string, path: string, config: ValidatorConfig): Try<T> => {
     if (typeof value !== 'string') {
-      return failure([
-        {
-          message: `should be a string.`,
-          path,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `should be a string.`,
+        path,
+        severity: 'error',
+      })
     }
     return parser(value, name, path, config)
   }

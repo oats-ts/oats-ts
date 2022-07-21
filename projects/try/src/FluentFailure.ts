@@ -29,6 +29,6 @@ export class FluentFailure implements Failure, Fluent<any> {
   }
 
   public toTry(): Failure {
-    return failure(this.issues)
+    return failure(...this.issues)
   }
 }

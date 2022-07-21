@@ -8,22 +8,18 @@ export const createUriSanitizer =
       const uri = new URI(path)
       const scheme = uri.scheme()
       if (expectedScheme !== scheme) {
-        return failure([
-          {
-            path: 'path',
-            severity: 'error',
-            message: `unexpected URI scheme: "${scheme}", should be "${expectedScheme}"`,
-          },
-        ])
+        return failure({
+          path: 'path',
+          severity: 'error',
+          message: `unexpected URI scheme: "${scheme}", should be "${expectedScheme}"`,
+        })
       }
       return success(path)
     } catch (e) {
-      return failure([
-        {
-          path: 'path',
-          severity: 'error',
-          message: `${e}`,
-        },
-      ])
+      return failure({
+        path: 'path',
+        severity: 'error',
+        message: `${e}`,
+      })
     }
   }

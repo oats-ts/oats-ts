@@ -13,13 +13,11 @@ export function parseRawPath(
 
   const values = regex.exec(pathValue)
   if (isNil(values) || values.length !== parameterNames.length + 1) {
-    return failure([
-      {
-        message: `should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`,
-        path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`,
+      path,
+      severity: 'error',
+    })
   }
 
   const result: RawPathParams = {}

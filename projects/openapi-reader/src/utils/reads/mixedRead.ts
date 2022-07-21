@@ -19,14 +19,12 @@ export const mixedRead =
       } else if (scheme === 'file' && config.file) {
         return fileRead(uri)
       }
-      return failure([unexpectedSchemeIssue(uri, scheme, config)])
+      return failure(unexpectedSchemeIssue(uri, scheme, config))
     } catch (error) {
-      return failure([
-        {
-          message: `${error}`,
-          path: uri,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `${error}`,
+        path: uri,
+        severity: 'error',
+      })
     }
   }

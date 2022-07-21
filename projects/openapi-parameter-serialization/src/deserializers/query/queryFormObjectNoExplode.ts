@@ -17,34 +17,28 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
   // Early returns for obvious cases
   if (values.length === 0) {
     return options.required
-      ? failure([
-          {
-            message: `should be present`,
-            path,
-            severity: 'error',
-          },
-        ])
+      ? failure({
+          message: `should be present`,
+          path,
+          severity: 'error',
+        })
       : success(undefined!)
   } else if (values.length !== 1) {
-    return failure([
-      {
-        message: `should have a single value (found ${values.length})`,
-        path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `should have a single value (found ${values.length})`,
+      path,
+      severity: 'error',
+    })
   }
 
   const [value] = values
   const parts = value.split(',')
   if (parts.length % 2 !== 0) {
-    return failure([
-      {
-        message: `malformed parameter value "${value}"`,
-        path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `malformed parameter value "${value}"`,
+      path,
+      severity: 'error',
+    })
   }
   const collectedIssues: Issue[] = []
   for (let i = 0; i < parts.length; i += 2) {
@@ -66,5 +60,5 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
       }
     }
   }
-  return collectedIssues.length === 0 ? success(output as T) : failure(collectedIssues)
+  return collectedIssues.length === 0 ? success(output as T) : failure(...collectedIssues)
 }

@@ -18,23 +18,19 @@ function pathMatrixArrayExplode<T extends Primitive>(
         const parts = kvPair.split('=')
         const itemPath = config.append(path, index)
         if (parts.length !== 2) {
-          return failure([
-            {
-              message: `malformed parameter value "${rawString}"`,
-              path: itemPath,
-              severity: 'error',
-            },
-          ])
+          return failure({
+            message: `malformed parameter value "${rawString}"`,
+            path: itemPath,
+            severity: 'error',
+          })
         }
         const [key, value] = parts.map(decode)
         if (key !== name) {
-          return failure([
-            {
-              message: `malformed parameter value "${rawString}"`,
-              path: itemPath,
-              severity: 'error',
-            },
-          ])
+          return failure({
+            message: `malformed parameter value "${rawString}"`,
+            path: itemPath,
+            severity: 'error',
+          })
         }
         return parse(value, name, itemPath, config)
       })

@@ -16,13 +16,11 @@ async function exists(dir: string): Promise<boolean> {
 
 export async function fileWrite(path: string, content: string, _file: SourceFile): Promise<Try<GeneratedFile>> {
   if (!isNode) {
-    return failure([
-      {
-        message: `Can only write files in a node.js environment.`,
-        path: path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `Can only write files in a node.js environment.`,
+      path: path,
+      severity: 'error',
+    })
   }
   const _path = resolve(path)
   const dir = dirname(_path)
@@ -34,12 +32,10 @@ export async function fileWrite(path: string, content: string, _file: SourceFile
     await promises.writeFile(_path, content, { encoding: 'utf-8' })
     return success({ path, content })
   } catch (e) {
-    return failure([
-      {
-        message: `${e}`,
-        path: _path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `${e}`,
+      path: _path,
+      severity: 'error',
+    })
   }
 }

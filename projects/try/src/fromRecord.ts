@@ -17,5 +17,5 @@ export function fromRecord<K extends string | number | symbol, V>(input: Record<
       output[key] = value.data
     }
   }
-  return allIssues.length === 0 ? success(output) : failure(allIssues)
+  return allIssues.length === 0 ? success(output) : failure(...allIssues)
 }

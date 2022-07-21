@@ -5,24 +5,20 @@ import { isNil } from '../../utils'
 export function validatePathArray<T extends Primitive>(path: string, input: ReadonlyArray<T>): Try<ReadonlyArray<T>> {
   switch (input.length) {
     case 0: {
-      return failure([
-        {
-          message: `should not be empty`,
-          path,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `should not be empty`,
+        path,
+        severity: 'error',
+      })
     }
     case 1: {
       const [head] = input
       if (`${head}`.length === 0) {
-        return failure([
-          {
-            message: `should not have a single 0 length item`,
-            path,
-            severity: 'error',
-          },
-        ])
+        return failure({
+          message: `should not have a single 0 length item`,
+          path,
+          severity: 'error',
+        })
       }
       return success(input)
     }
@@ -35,13 +31,11 @@ export function validatePathObject<T extends PrimitiveRecord>(path: string, inpu
   const keys = Object.keys(input || {})
   switch (keys.length) {
     case 0: {
-      return failure([
-        {
-          message: `should not be empty`,
-          path,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `should not be empty`,
+        path,
+        severity: 'error',
+      })
     }
     default:
       return success(input)
@@ -50,13 +44,11 @@ export function validatePathObject<T extends PrimitiveRecord>(path: string, inpu
 export function validatePathPrimitive<T extends Primitive>(path: string, input: T): Try<T> {
   switch (`${input}`.length) {
     case 0: {
-      return failure([
-        {
-          message: 'should not be empty (attempting to serialize to 0 length string)',
-          path,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: 'should not be empty (attempting to serialize to 0 length string)',
+        path,
+        severity: 'error',
+      })
     }
     default:
       return success(input)
@@ -67,13 +59,11 @@ export function getPathValue<T extends ParameterValue>(path: string, value: T): 
   if (!isNil(value)) {
     return success(value)
   }
-  return failure([
-    {
-      message: `should not be ${value}`,
-      path,
-      severity: 'error',
-    },
-  ])
+  return failure({
+    message: `should not be ${value}`,
+    path,
+    severity: 'error',
+  })
 }
 
 export function validatePathSerializers(segments: PathSegment[], serializers: PathSerializers<any>): void {

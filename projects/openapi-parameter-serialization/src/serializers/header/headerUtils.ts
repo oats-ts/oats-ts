@@ -13,11 +13,9 @@ export function getHeaderValue<T extends ParameterValue>(
   if (!options.required) {
     return success(undefined)
   }
-  return failure([
-    {
-      message: `should not be ${value}`,
-      path,
-      severity: 'error',
-    },
-  ])
+  return failure({
+    message: `should not be ${value}`,
+    path,
+    severity: 'error',
+  })
 }

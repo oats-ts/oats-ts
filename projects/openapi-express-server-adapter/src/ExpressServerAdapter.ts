@@ -44,27 +44,25 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       if (!required) {
         return success(undefined as unknown as B)
       }
-      const issue: Issue = {
+      return failure({
         message: `missing "content-type" header`,
         severity: 'error',
         path: 'headers',
-      }
-      return failure([issue])
+      })
     }
     if (validators[mimeType] === null || validators[mimeType] === undefined) {
       const contentTypes = Object.keys(validators)
       const expectedContentTypes =
         contentTypes.length === 1 ? `"${contentTypes[0]}"` : `one of ${contentTypes.map((ct) => `"${ct}"`).join(', ')}`
-      const issue: Issue = {
+      return failure({
         message: `"content-type" should be ${expectedContentTypes}`,
         severity: 'error',
         path: 'headers',
-      }
-      return failure([issue])
+      })
     }
     const validator = configure(validators[mimeType], 'requestBody')
     const issues = validator(toolkit.request.body)
-    return issues.length > 0 ? failure(issues) : success(toolkit.request.body as B)
+    return issues.length > 0 ? failure(...issues) : success(toolkit.request.body as B)
   }
 
   async getStatusCode(input: ExpressToolkit, response: HttpResponse): Promise<number> {

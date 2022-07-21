@@ -10,13 +10,11 @@ export const queryDeepObjectObject =
     return fluent(getQueryValue(path, data, options))
       .flatMap((value) => {
         if (!options.explode) {
-          return failure([
-            {
-              message: `can only be serialized with explode=true`,
-              path,
-              severity: 'error',
-            },
-          ])
+          return failure({
+            message: `can only be serialized with explode=true`,
+            path,
+            severity: 'error',
+          })
         }
 
         if (isNil(value)) {

@@ -20,26 +20,22 @@ export const mixedUriSanitizer =
         } else if (scheme === 'file' && config.file) {
           return success(path)
         }
-        return failure([unexpectedSchemeIssue('path', scheme, config)])
+        return failure(unexpectedSchemeIssue('path', scheme, config))
       }
       if (uriOnly) {
-        return failure([
-          {
-            path: 'path',
-            severity: 'error',
-            message: `"${path}" should be a valid URI`,
-          },
-        ])
+        return failure({
+          path: 'path',
+          severity: 'error',
+          message: `"${path}" should be a valid URI`,
+        })
       }
       const nonUriResult = await sanitizeNonUriPath(path)
       return nonUriResult
     } catch (e) {
-      return failure([
-        {
-          path: 'path',
-          severity: 'error',
-          message: `${e}`,
-        },
-      ])
+      return failure({
+        path: 'path',
+        severity: 'error',
+        message: `${e}`,
+      })
     }
   }

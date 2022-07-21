@@ -1,5 +1,5 @@
 import { failure, fluent, success, zip } from '@oats-ts/try'
-import { Issue, IssueTypes, stringify } from '@oats-ts/validators'
+import { Issue, stringify } from '@oats-ts/validators'
 import {
   BookStoreApi,
   GetBookResponse,
@@ -75,14 +75,11 @@ export class BookStoreApiImpl implements BookStoreApi {
       .flatMap(({ bookId }) => {
         const book = this.books.find(({ id }) => id === bookId)
         return book === undefined
-          ? failure([
-              {
-                message: `No book with id ${bookId}`,
-                severity: 'error',
-                path: 'path.bookId',
-                type: IssueTypes.value,
-              },
-            ])
+          ? failure({
+              message: `No book with id ${bookId}`,
+              severity: 'error',
+              path: 'path.bookId',
+            })
           : success(book)
       })
       .get(

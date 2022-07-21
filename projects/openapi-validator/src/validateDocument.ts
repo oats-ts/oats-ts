@@ -22,7 +22,7 @@ export async function validateDocument(
 
   const issues = config.openApiObject(document, context, config).sort(severityComparator)
   const hasNoCriticalIssue = isOk(issues, ['error'])
-  const result = hasNoCriticalIssue ? success(document) : failure(issues)
+  const result = hasNoCriticalIssue ? success(document) : failure(...issues)
 
   await tick()
 

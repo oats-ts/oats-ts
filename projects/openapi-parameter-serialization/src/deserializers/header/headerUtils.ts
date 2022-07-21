@@ -7,13 +7,11 @@ import { mapRecord } from '../utils'
 export function getHeaderValue(name: string, path: string, raw: RawHeaders, required?: boolean): Try<string> {
   const value = raw[name] ?? raw[name.toLowerCase()]
   if (isNil(value) && required) {
-    return failure([
-      {
-        message: `should not be ${value}`,
-        path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `should not be ${value}`,
+      path,
+      severity: 'error',
+    })
   }
   return success(value)
 }

@@ -7,13 +7,11 @@ export const enumerationParser =
   (value: T | undefined, name: string, path: string, config: ValidatorConfig): Try<E> => {
     if (values.indexOf(value as E) < 0) {
       const valuesLiteral = values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
-      return failure([
-        {
-          message: `should be one of ${valuesLiteral}.`,
-          path,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `should be one of ${valuesLiteral}.`,
+        path,
+        severity: 'error',
+      })
     }
     return success(value as E)
   }

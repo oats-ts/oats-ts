@@ -24,12 +24,10 @@ export function parseRawQuery(query: string, path: string): Try<RawQueryParams> 
 
     return success(data)
   } catch (e) {
-    return failure([
-      {
-        message: (e as Error)?.message,
-        path,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: (e as Error)?.message,
+      path,
+      severity: 'error',
+    })
   }
 }

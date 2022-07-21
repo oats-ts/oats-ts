@@ -43,6 +43,6 @@ export function validator(
       issues: allIssues,
     })
 
-    return hasNoCriticalIssues ? success(data) : failure(allIssues)
+    return hasNoCriticalIssues ? success(data) : failure(...allIssues)
   }
 }

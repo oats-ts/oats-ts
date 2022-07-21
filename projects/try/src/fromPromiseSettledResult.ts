@@ -6,12 +6,10 @@ export function fromPromiseSettledResult<T>(input: PromiseSettledResult<T>): Try
   if (input.status === 'fulfilled') {
     return success(input.value)
   } else {
-    return failure([
-      {
-        message: `${input.reason}`,
-        path: '',
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `${input.reason}`,
+      path: '',
+      severity: 'error',
+    })
   }
 }

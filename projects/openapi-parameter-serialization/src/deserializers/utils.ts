@@ -33,7 +33,7 @@ export function mapRecord<I, V, K extends string>(
       output[key as K] = result.data
     }
   }
-  return allIssues.length === 0 ? success(output) : failure(allIssues)
+  return allIssues.length === 0 ? success(output) : failure(...allIssues)
 }
 
 export const createDelimitedRecordParser =
@@ -54,7 +54,7 @@ export const createDelimitedRecordParser =
       const value = parts[i + 1]
       record[key] = value
     }
-    return issues.length === 0 ? success(record) : failure(issues)
+    return issues.length === 0 ? success(record) : failure(...issues)
   }
 
 export const createKeyValuePairRecordParser =
@@ -76,7 +76,7 @@ export const createKeyValuePairRecordParser =
       const [rawKey, rawValue] = pair
       record[rawKey] = rawValue
     }
-    return issues.length === 0 ? success(record) : failure(issues)
+    return issues.length === 0 ? success(record) : failure(...issues)
   }
 
 export const createArrayParser =

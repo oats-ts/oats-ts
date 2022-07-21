@@ -7,13 +7,11 @@ export function yamlParse(uri: string, input: string): Promise<Try<OpenAPIObject
     return Promise.resolve(success(YAML.parse(input)))
   } catch (error) {
     return Promise.resolve(
-      failure([
-        {
-          path: uri,
-          message: `failed to parse as YAML (${error})`,
-          severity: 'error',
-        },
-      ]),
+      failure({
+        path: uri,
+        message: `failed to parse as YAML (${error})`,
+        severity: 'error',
+      }),
     )
   }
 }

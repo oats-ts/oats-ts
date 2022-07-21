@@ -6,13 +6,11 @@ export function jsonParse(uri: string, input: string): Promise<Try<OpenAPIObject
     return Promise.resolve(success(JSON.parse(input)))
   } catch (error) {
     return Promise.resolve(
-      failure([
-        {
-          path: uri,
-          message: `failed to parse as JSON (${error})`,
-          severity: 'error',
-        },
-      ]),
+      failure({
+        path: uri,
+        message: `failed to parse as JSON (${error})`,
+        severity: 'error',
+      }),
     )
   }
 }

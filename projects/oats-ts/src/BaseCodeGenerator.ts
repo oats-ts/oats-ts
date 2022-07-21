@@ -32,13 +32,11 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
         ),
       )
     } catch (e) {
-      return failure([
-        {
-          message: `${e}`,
-          path: this.name(),
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `${e}`,
+        path: this.name(),
+        severity: 'error',
+      })
     }
   }
 

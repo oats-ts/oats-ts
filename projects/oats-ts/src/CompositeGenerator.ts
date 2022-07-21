@@ -66,13 +66,11 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     const unresolved = depNames.filter((depName) => mapping[depName] === undefined)
     if (unresolved.length > 0) {
       const unresolvedNames = unresolved.map((name) => `"${name}"`).join(', ')
-      return failure([
-        {
-          message: `missing dependencies: ${unresolvedNames}`,
-          path: child.name(),
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `missing dependencies: ${unresolvedNames}`,
+        path: child.name(),
+        severity: 'error',
+      })
     }
     return success(Object.values(mapping) as CodeGenerator<R, G>[])
   }

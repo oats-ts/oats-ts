@@ -10,7 +10,7 @@ export function mixedParse(uri: string, input: string): Promise<Try<OpenAPIObjec
       return Promise.resolve(success(YAML.parse(input)))
     } catch (yamlError) {
       return Promise.resolve(
-        failure([
+        failure(
           {
             path: uri,
             message: `failed to parse as JSON (${jsonError})`,
@@ -18,10 +18,10 @@ export function mixedParse(uri: string, input: string): Promise<Try<OpenAPIObjec
           },
           {
             path: uri,
-            message: `failed to parse as JSON (${yamlError})`,
+            message: `failed to parse as YAML (${yamlError})`,
             severity: 'error',
           },
-        ]),
+        ),
       )
     }
   }

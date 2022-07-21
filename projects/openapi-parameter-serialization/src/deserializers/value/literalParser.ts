@@ -7,13 +7,11 @@ export const literalParser =
   (value: T | undefined, name: string, path: string, config: ValidatorConfig): Try<L> => {
     if (value !== literal) {
       const strLiteral = typeof literal === 'string' ? `"${literal}"` : literal
-      return failure([
-        {
-          message: `should be ${strLiteral}.`,
-          path,
-          severity: 'error',
-        },
-      ])
+      return failure({
+        message: `should be ${strLiteral}.`,
+        path,
+        severity: 'error',
+      })
     }
     return success(value as L)
   }

@@ -54,24 +54,20 @@ export class ReadRefResolver extends AbstractRefResolver {
 
 export class VerifyRefResolver extends AbstractRefResolver {
   private noDocumentFailure(specUri: string): Failure {
-    return failure([
-      {
-        message: `document is not resolved`,
-        path: specUri,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `document is not resolved`,
+      path: specUri,
+      severity: 'error',
+    })
   }
 
   protected unresolveableRefFailure(uri: string, specUri: string, context: ReadContext): Failure {
     const fragment = `#${context.uri.fragments(uri).join('/')}`
-    return failure([
-      {
-        message: `can't resolve reference "${fragment}"`,
-        path: specUri,
-        severity: 'error',
-      },
-    ])
+    return failure({
+      message: `can't resolve reference "${fragment}"`,
+      path: specUri,
+      severity: 'error',
+    })
   }
 
   resolveReferenceUri({ uri }: ReadInput<string>, context: ReadContext): Try<string> {

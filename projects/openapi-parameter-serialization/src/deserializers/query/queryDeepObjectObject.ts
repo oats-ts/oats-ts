@@ -26,13 +26,11 @@ export const queryDeepObjectObject =
       const queryKey = `${encode(name)}[${encode(key)}]`
       const values = data[queryKey] || []
       if (values.length > 1) {
-        acc[key] = failure([
-          {
-            message: `should have a single value (found ${values.length})`,
-            path,
-            severity: 'error',
-          },
-        ])
+        acc[key] = failure({
+          message: `should have a single value (found ${values.length})`,
+          path,
+          severity: 'error',
+        })
       } else {
         const [rawValue] = values
         if (!isNil(rawValue)) {
