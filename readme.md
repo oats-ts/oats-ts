@@ -17,4 +17,4 @@ The main goals/differences are:
 
 ## docs & demo
 
-https://oats-ts.github.io/docs
+https://oats-ts.github.io/docs/#/demo
