@@ -1,7 +1,6 @@
 import { isUri } from 'valid-url'
 import URI from 'urijs'
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { sanitizeNonUriPath } from './sanitizeNonUriPath'
 
 export async function fileUriSanitizer(path: string): Promise<Try<string>> {
@@ -13,7 +12,6 @@ export async function fileUriSanitizer(path: string): Promise<Try<string>> {
           {
             path: 'path',
             severity: 'error',
-            type: IssueTypes.other,
             message: `unexpected URI scheme: "${uri.scheme()}", should be "file"`,
           },
         ])
@@ -26,7 +24,6 @@ export async function fileUriSanitizer(path: string): Promise<Try<string>> {
       {
         path: 'path',
         severity: 'error',
-        type: IssueTypes.other,
         message: `${e}`,
       },
     ])

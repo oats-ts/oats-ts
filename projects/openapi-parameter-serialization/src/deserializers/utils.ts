@@ -1,5 +1,5 @@
 import { Try, success, failure, isFailure, fromArray } from '@oats-ts/try'
-import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { Issue, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueDeserializer } from '../types'
 import { decode, isNil } from '../utils'
 
@@ -46,7 +46,6 @@ export const createDelimitedRecordParser =
         message: `malformed parameter value "${value}"`,
         path,
         severity: 'error',
-        type: IssueTypes.value,
       })
     }
     const record: Record<string, string> = {}
@@ -72,7 +71,6 @@ export const createKeyValuePairRecordParser =
           message: `unexpected content "${value}"`,
           path,
           severity: 'error',
-          type: IssueTypes.value,
         })
       }
       const [rawKey, rawValue] = pair

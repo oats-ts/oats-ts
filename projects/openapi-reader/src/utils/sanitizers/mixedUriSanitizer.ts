@@ -1,7 +1,6 @@
 import { isUri } from 'valid-url'
 import URI from 'urijs'
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { DefaultMixedSchemeConfig } from '../defaultMixedSchemeConfig'
 import { SchemeConfig } from '../../typings'
 import { unexpectedSchemeIssue } from '../unexpectedSchemeIssue'
@@ -28,7 +27,6 @@ export const mixedUriSanitizer =
           {
             path: 'path',
             severity: 'error',
-            type: IssueTypes.other,
             message: `"${path}" should be a valid URI`,
           },
         ])
@@ -40,7 +38,6 @@ export const mixedUriSanitizer =
         {
           path: 'path',
           severity: 'error',
-          type: IssueTypes.other,
           message: `${e}`,
         },
       ])

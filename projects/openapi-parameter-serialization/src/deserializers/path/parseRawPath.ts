@@ -1,5 +1,4 @@
 import { Try, failure, success } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { RawPathParams } from '../../types'
 import { isNil } from '../../utils'
 
@@ -19,7 +18,6 @@ export function parseRawPath(
         message: `should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`,
         path,
         severity: 'error',
-        type: IssueTypes.value,
       },
     ])
   }

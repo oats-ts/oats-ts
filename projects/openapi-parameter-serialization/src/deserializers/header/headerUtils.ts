@@ -1,5 +1,5 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { FieldValueDeserializers, ParameterValue, PrimitiveRecord, RawHeaders } from '../../types'
 import { decode, isNil } from '../../utils'
 import { mapRecord } from '../utils'
@@ -12,7 +12,6 @@ export function getHeaderValue(name: string, path: string, raw: RawHeaders, requ
         message: `should not be ${value}`,
         path,
         severity: 'error',
-        type: IssueTypes.value,
       },
     ])
   }

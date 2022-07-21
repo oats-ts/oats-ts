@@ -1,5 +1,4 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { ParameterSegment, ParameterValue, PathSegment, PathSerializers, Primitive, PrimitiveRecord } from '../../types'
 import { isNil } from '../../utils'
 
@@ -11,7 +10,6 @@ export function validatePathArray<T extends Primitive>(path: string, input: Read
           message: `should not be empty`,
           path,
           severity: 'error',
-          type: IssueTypes.length,
         },
       ])
     }
@@ -23,7 +21,6 @@ export function validatePathArray<T extends Primitive>(path: string, input: Read
             message: `should not have a single 0 length item`,
             path,
             severity: 'error',
-            type: IssueTypes.length,
           },
         ])
       }
@@ -43,7 +40,6 @@ export function validatePathObject<T extends PrimitiveRecord>(path: string, inpu
           message: `should not be empty`,
           path,
           severity: 'error',
-          type: IssueTypes.shape,
         },
       ])
     }
@@ -59,7 +55,6 @@ export function validatePathPrimitive<T extends Primitive>(path: string, input: 
           message: 'should not be empty (attempting to serialize to 0 length string)',
           path,
           severity: 'error',
-          type: IssueTypes.value,
         },
       ])
     }
@@ -77,7 +72,6 @@ export function getPathValue<T extends ParameterValue>(path: string, value: T): 
       message: `should not be ${value}`,
       path,
       severity: 'error',
-      type: IssueTypes.value,
     },
   ])
 }

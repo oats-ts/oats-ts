@@ -1,4 +1,3 @@
-import { IssueTypes } from '@oats-ts/validators'
 import { failure } from './failure'
 import { success } from './success'
 import { Try } from './types'
@@ -12,7 +11,6 @@ export function fromPromiseSettledResult<T>(input: PromiseSettledResult<T>): Try
         message: `${input.reason}`,
         path: '',
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }

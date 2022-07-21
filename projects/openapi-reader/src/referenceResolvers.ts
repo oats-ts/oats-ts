@@ -5,7 +5,6 @@ import { isNil } from 'lodash'
 import { Failure, failure, isSuccess, Success, success, Try } from '@oats-ts/try'
 import { isReferenceObject } from '@oats-ts/model-common'
 import { findByFragments } from './findByFragments'
-import { IssueTypes } from '@oats-ts/validators'
 
 abstract class AbstractRefResolver implements ReferenceResolver {
   abstract resolveReferenceUri(input: ReadInput<string>, context: ReadContext): Try<string>
@@ -60,7 +59,6 @@ export class VerifyRefResolver extends AbstractRefResolver {
         message: `document is not resolved`,
         path: specUri,
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }
@@ -72,7 +70,6 @@ export class VerifyRefResolver extends AbstractRefResolver {
         message: `can't resolve reference "${fragment}"`,
         path: specUri,
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }

@@ -1,7 +1,9 @@
+import { typed } from '../typed'
 import { Validator, ValidatorConfig } from '../typings'
 
-export const lazy =
-  <T>(producer: () => Validator<T>): Validator<T> =>
-  (input: T, path: string, config: ValidatorConfig) => {
+const Type = 'lazy' as const
+
+export const lazy = <T>(producer: () => Validator<T>) =>
+  typed((input: T, path: string, config: ValidatorConfig) => {
     return producer()(input, path, config)
-  }
+  }, Type)

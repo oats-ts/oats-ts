@@ -1,6 +1,5 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 
 export function jsonParse(uri: string, input: string): Promise<Try<OpenAPIObject>> {
   try {
@@ -12,7 +11,6 @@ export function jsonParse(uri: string, input: string): Promise<Try<OpenAPIObject
           path: uri,
           message: `failed to parse as JSON (${error})`,
           severity: 'error',
-          type: IssueTypes.other,
         },
       ]),
     )

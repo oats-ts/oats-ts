@@ -7,7 +7,7 @@ import {
   ServerAdapter,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
-import { configure, Issue, IssueTypes, stringify } from '@oats-ts/validators'
+import { configure, Issue, stringify } from '@oats-ts/validators'
 import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
 
@@ -48,7 +48,6 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
         message: `missing "content-type" header`,
         severity: 'error',
         path: 'headers',
-        type: IssueTypes.other,
       }
       return failure([issue])
     }
@@ -60,7 +59,6 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
         message: `"content-type" should be ${expectedContentTypes}`,
         severity: 'error',
         path: 'headers',
-        type: IssueTypes.other,
       }
       return failure([issue])
     }

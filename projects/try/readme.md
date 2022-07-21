@@ -18,6 +18,7 @@ function divide(a: number, b: number): Try<number> {
         message: 'cannot be 0',
         severity: 'error',
         path: 'b',
+        type: 'division-by-zero',
       },
     ])
   }
@@ -81,7 +82,7 @@ Wrapper on top of `fromArray`, but works with statically typed tuples
 import { zip } from '@oats-ts/try'
 
 const divisionResult = divide(5, 3)
-const stringResult = success("")
+const stringResult = success('')
 
 // result is of type Try<[number, string]>
 const result = zip(divisionResult, stringResult)

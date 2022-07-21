@@ -1,5 +1,4 @@
 import { failure, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import URI from 'urijs'
 import { SchemeConfig } from '../../typings'
 import { DefaultMixedSchemeConfig } from '../defaultMixedSchemeConfig'
@@ -27,7 +26,6 @@ export const mixedRead =
           message: `${error}`,
           path: uri,
           severity: 'error',
-          type: IssueTypes.other,
         },
       ])
     }

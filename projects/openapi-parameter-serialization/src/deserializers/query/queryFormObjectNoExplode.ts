@@ -1,5 +1,5 @@
 import { Try, failure, success, isSuccess } from '@oats-ts/try'
-import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { Issue, ValidatorConfig } from '@oats-ts/validators'
 import { DslConfig, FieldValueDeserializers, Primitive, PrimitiveRecord, RawQueryParams } from '../../types'
 import { decode, isNil } from '../../utils'
 
@@ -22,7 +22,6 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
             message: `should be present`,
             path,
             severity: 'error',
-            type: IssueTypes.value,
           },
         ])
       : success(undefined!)
@@ -32,7 +31,6 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
         message: `should have a single value (found ${values.length})`,
         path,
         severity: 'error',
-        type: IssueTypes.shape,
       },
     ])
   }
@@ -45,7 +43,6 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
         message: `malformed parameter value "${value}"`,
         path,
         severity: 'error',
-        type: IssueTypes.value,
       },
     ])
   }
@@ -59,7 +56,6 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
         message: `should not have "${key}"`,
         path,
         severity: 'error',
-        type: IssueTypes.shape,
       })
     } else {
       const parsed = parser(rawValue, name, config.append(path, key), config)

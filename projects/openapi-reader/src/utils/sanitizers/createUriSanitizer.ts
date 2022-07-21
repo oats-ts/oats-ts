@@ -1,6 +1,5 @@
 import URI from 'urijs'
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 
 export const createUriSanitizer =
   (expectedScheme: string) =>
@@ -13,7 +12,6 @@ export const createUriSanitizer =
           {
             path: 'path',
             severity: 'error',
-            type: IssueTypes.other,
             message: `unexpected URI scheme: "${scheme}", should be "${expectedScheme}"`,
           },
         ])
@@ -24,7 +22,6 @@ export const createUriSanitizer =
         {
           path: 'path',
           severity: 'error',
-          type: IssueTypes.other,
           message: `${e}`,
         },
       ])

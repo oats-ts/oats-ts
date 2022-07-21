@@ -1,5 +1,4 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { DslConfig, ParameterValue } from '../../types'
 import { isNil } from '../../utils'
 
@@ -19,7 +18,6 @@ export function getQueryValue<T extends ParameterValue>(
       message: `should not be ${value}`,
       path,
       severity: 'error',
-      type: IssueTypes.value,
     },
   ])
 }

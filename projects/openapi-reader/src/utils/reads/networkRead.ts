@@ -1,5 +1,4 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import URI from 'urijs'
 import { fetch } from 'cross-fetch'
 
@@ -14,7 +13,6 @@ export const networkRead =
           message: `expected "http" protocol`,
           path: uri,
           severity: 'error',
-          type: IssueTypes.other,
         },
       ])
     }
@@ -29,7 +27,6 @@ export const networkRead =
           message: `${error}`,
           path: uri,
           severity: 'error',
-          type: IssueTypes.other,
         },
       ])
     }

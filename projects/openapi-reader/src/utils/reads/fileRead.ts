@@ -1,5 +1,4 @@
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { fileURLToPath } from 'url'
 import { promises as fs } from 'fs'
 import { resolve } from 'path'
@@ -12,7 +11,6 @@ export async function fileRead(uri: string): Promise<Try<string>> {
         message: `Can only read files from the file system in a node.js environment.`,
         path: uri,
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }
@@ -27,7 +25,6 @@ export async function fileRead(uri: string): Promise<Try<string>> {
         message: `${error}`,
         path: uri,
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }

@@ -1,17 +1,15 @@
-import { IssueTypes } from '../issueTypes'
+import { typed } from '../typed'
 import { Issue, Validator, ValidatorConfig } from '../typings'
 import { isNil } from '../utils'
+
+const Type = 'shape' as const
 
 export type ShapeInput<T> = {
   [P in keyof T]?: Validator<any>
 }
 
-export const shape =
-  <T extends Record<string, any>>(
-    validators: ShapeInput<T>,
-    allowExtraFields = false,
-  ): Validator<Record<string, any>> =>
-  (input: object, path: string, config: ValidatorConfig) => {
+export const shape = <T extends Record<string, any>>(validators: ShapeInput<T>, allowExtraFields = false) =>
+  typed(function (input: object, path: string, config: ValidatorConfig) {
     const keys = Object.keys(input)
     const expectedKeys = Object.keys(validators)
     const extraKeys: string[] = keys.filter((key) => expectedKeys.indexOf(key) < 0)
@@ -24,13 +22,11 @@ export const shape =
       const newIssues = validator(value, config.append(path, key), config)
       issues.push(...newIssues)
     }
-    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.shape)
-
-    if (extraKeys.length > 0 && !isNil(severity) && !allowExtraFields) {
+    const severity = config.severity(Type)!
+    if (extraKeys.length > 0 && !allowExtraFields) {
       issues.push(
         ...extraKeys.map(
           (key): Issue => ({
-            type: IssueTypes.shape,
             message: `should not have key "${key}"`,
             path: config.append(path, key),
             severity,
@@ -40,4 +36,4 @@ export const shape =
     }
 
     return issues
-  }
+  }, Type)

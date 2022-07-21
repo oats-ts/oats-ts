@@ -1,5 +1,5 @@
 import { Try, failure } from '@oats-ts/try'
-import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueDeserializer } from '../../types'
 import { identityParser } from './identityParser'
 
@@ -17,7 +17,6 @@ export const stringParser: StringParserFn =
           message: `should be a string.`,
           path,
           severity: 'error',
-          type: IssueTypes.type,
         },
       ])
     }

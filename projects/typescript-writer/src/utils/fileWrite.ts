@@ -1,7 +1,6 @@
 import { SourceFile } from 'typescript'
 import { GeneratedFile } from '../typings'
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { promises } from 'fs'
 import { resolve, dirname } from 'path'
 import { isNode } from 'browser-or-node'
@@ -22,7 +21,6 @@ export async function fileWrite(path: string, content: string, _file: SourceFile
         message: `Can only write files in a node.js environment.`,
         path: path,
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }
@@ -41,7 +39,6 @@ export async function fileWrite(path: string, content: string, _file: SourceFile
         message: `${e}`,
         path: _path,
         severity: 'error',
-        type: IssueTypes.other,
       },
     ])
   }

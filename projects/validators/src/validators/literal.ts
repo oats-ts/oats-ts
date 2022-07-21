@@ -1,15 +1,14 @@
-import { IssueTypes } from '../issueTypes'
-import { Validator, ValidatorConfig } from '../typings'
-import { isNil } from '../utils'
+import { typed } from '../typed'
+import { ValidatorConfig } from '../typings'
 
-export const literal =
-  (value: string | number | boolean | null): Validator<any> =>
-  (input: any, path: string, config: ValidatorConfig) => {
-    const severity = isNil(config.severity) ? 'error' : config.severity(IssueTypes.value)
-    if (!isNil(severity) && value !== input) {
+const Type = 'literal' as const
+
+export const literal = (value: string | number | boolean | null) =>
+  typed((input: any, path: string, config: ValidatorConfig) => {
+    const severity = config.severity(Type)!
+    if (value !== input) {
       return [
         {
-          type: IssueTypes.value,
           message: `should be ${typeof value === 'string' ? `"${value}"` : value}`,
           path,
           severity,
@@ -17,4 +16,4 @@ export const literal =
       ]
     }
     return []
-  }
+  }, Type)
