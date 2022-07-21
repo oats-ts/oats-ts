@@ -8,8 +8,8 @@
   "typings": "index.d.ts",
   "directories": {},
   "files": [
-    "index.d.ts",
-    "LICENSE.txt"
+    "LICENSE.txt",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",

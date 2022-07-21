@@ -9,9 +9,8 @@
   "main": "lib/index.js",
   "directories": {},
   "files": [
-    "lib",
-    "src",
-    "LICENSE.txt"
+    "LICENSE.txt",
+    "lib"
   ],
   "repository": {
     "type": "git",

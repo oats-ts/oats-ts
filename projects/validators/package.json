@@ -9,9 +9,9 @@
   "main": "lib/index.js",
   "directories": {},
   "files": [
+    "LICENSE.txt",
     "lib",
-    "src",
-    "LICENSE.txt"
+    "readme.md"
   ],
   "repository": {
     "type": "git",

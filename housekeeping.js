@@ -1,10 +1,11 @@
-const { readdir, readFile, writeFile, unlink, stat } = require('fs/promises')
+const { readdir, readFile, writeFile, unlink, stat, access } = require('fs/promises')
 const { join, resolve } = require('path')
 
 const HOMEPAGE = 'https://oats-ts.github.io/docs'
 const REPO_URL = 'https://github.com/oats-ts/oats-ts'
 const LICENSE_NAME = 'MIT'
 const LICENSE_FILE_NAME = 'LICENSE.txt'
+const README_FILE_NAME = 'readme.md'
 const LOG_IGNORE_FOLDERS = ['node_modules', '.git']
 const LOG_ENDINGS = ['.build.log', '.pnpm-debug.log']
 
@@ -16,6 +17,19 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 `
+
+/**
+ * @param {string} path
+ * @returns {Promise<boolean>}
+ */
+async function exists(path) {
+  try {
+    await access(path)
+    return true
+  } catch {
+    return false
+  }
+}
 
 /**
  * @param {string?} key
@@ -36,6 +50,20 @@ function sortReplacer(key, value) {
       return sorted
     }, {})
 }
+/**
+ * @param {string[]} files
+ * @param {boolean} readmeExists
+ * @return {string[]}
+ */
+function updateFiles(files, readmeExists) {
+  if (!files.includes(LICENSE_FILE_NAME)) {
+    files.push(LICENSE_FILE_NAME)
+  }
+  if (readmeExists && !files.includes(README_FILE_NAME)) {
+    files.push(README_FILE_NAME)
+  }
+  return files.sort().filter((f) => f !== 'src')
+}
 
 /**
  * @param {string} folder
@@ -46,8 +74,13 @@ async function updatePackageJson(folder) {
   const content = JSON.parse(await readFile(path, 'utf-8'))
   content.license = LICENSE_NAME
   content.homepage = HOMEPAGE
-  if (content.files && !content.files.includes(LICENSE_FILE_NAME)) {
-    content.files.push(LICENSE_FILE_NAME)
+
+  const readmeExists = await exists(join(folder, README_FILE_NAME))
+  const files = updateFiles(Array.from(content.files ?? []), readmeExists)
+  const hasFiles = Array.isArray(content.files)
+
+  if (hasFiles) {
+    content.files = files
   }
   if (content.bugs) {
     content.bugs.url = `${REPO_URL}/issues`
