@@ -1,66 +1,66 @@
 # @oats-ts/validators
 
-Standalone lightweight runtime validator utility functions used both by `@oats-ts/openapi-reader` for sanitizing input, and `@oats-ts/openapi-validators` for generating schema validation at runtime.
+Standalone lightweight runtime validator utility functions used extensively in oats libraries.
 
 - Created by function composition.
-- **NEVER** throws, if it does it's a bug.
-- Returns a list of `Issue`s that can be formatted, and presented to the user.
-- For a throwing wrapper see `validate` function.
+- Validators **NEVER** throw, if they do, please [report](https://github.com/oats-ts/oats-ts/issues) it.
+- Validators returns a list of `Issue`s that can be formatted, and presented to the user.
 
-A validator function has the following type:
+And an example validator:
 
 ```ts
-export type Validator<T> = (input: T, config?: Partial<ValidatorConfig>) => Issue[];
+import { object, shape, string, number, array, items, boolean, union, lazy } from '@oats-ts/validators'
+
+const personValidator = configure(
+  object(
+    shape({
+      name: string(),
+      email: optional(string()),
+      occupation: union({
+        programmer: literal('programmer'),
+        musician: literal('musician'),
+        other: literal('other'),
+      }),
+      married: boolean(),
+      friends: array(items(lazy(() => personValidator))),
+      address: object(
+        shape({
+          country: string(),
+          zip: number(),
+          city: string(),
+          street: string(),
+        }),
+      ),
+    }),
+  ),
+)
 ```
 
-And an example validator looks like this:
+When validating simply call this function. It will return a list of `Issue`s, reporting everything that's wrong with the input:
 
 ```ts
-import { 
-  object, 
-  shape, 
-  string, 
-  number, 
-  boolean, 
-  enumeration 
-} from '@oats-ts/validators' 
+const validPerson = {
+  name: 'Test',
+  email: 'test',
+  occupation: 'other',
+  married: false,
+  friends: [],
+  address: {
+    country: 'Test',
+    zip: 1243,
+    city: 'Test',
+    street: 'Test',
+  },
+}
 
-const personValidator = object(
-  shape({
-    name: string(),
-    email: optional(string()),
-    occupation: enumeration(['programmer', 'musician', 'other']),
-    married: boolean(),
-    friends: array(items(/* ... */))
-    address: object(
-      shape({
-        country: string(),
-        zip: number(),
-        city: string(),
-        street: string(),
-        // etc...
-      })
-    ),
-  }),
-);
-```
+const invalidPerson = {
+  name: false,
+  email: 1,
+  fr_iends: [{ hi: true }],
+}
 
-When validating simply call this function:
-
-```ts
-const issues = personValidator({
-  name: "Test",
-  email: 1, // Issue about wrong type,
-  // Issues about all the missing fields
-})
-```
-
-If you want to throw an error in case of an invalid input:
-
-```ts
-import { validate } from '@oats-ts/validators' 
-
-// This will throw an error descibing the issues in a singe message.
-validate({ name: "Test" }, personValidator)
-
+// Returns an empty array
+expect(personValidator(validPerson).length).toBe(0)
+// Returns an array with all the issues
+expect(personValidator(invalidPerson).length).toBeGreaterThan(0)
 ```

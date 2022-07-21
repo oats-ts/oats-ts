@@ -1,5 +1,4 @@
 import { Try, failure, success } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { RawPathParams } from '../../types'
 import { isNil } from '../../utils'
 
@@ -14,14 +13,11 @@ export function parseRawPath(
 
   const values = regex.exec(pathValue)
   if (isNil(values) || values.length !== parameterNames.length + 1) {
-    return failure([
-      {
-        message: `should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`,
-        path,
-        severity: 'error',
-        type: IssueTypes.value,
-      },
-    ])
+    return failure({
+      message: `should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`,
+      path,
+      severity: 'error',
+    })
   }
 
   const result: RawPathParams = {}

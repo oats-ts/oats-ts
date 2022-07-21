@@ -1,8 +1,8 @@
+import { typed } from '../typed'
 import { Issue, Validator, ValidatorConfig } from '../typings'
 
-export const tuple =
-  (...validators: Validator<any>[]): Validator<any> =>
-  (input: any[], path: string, config: ValidatorConfig) => {
+export const tuple = (...validators: Validator<any>[]): Validator<any> =>
+  typed((input: any[], path: string, config: ValidatorConfig) => {
     const issues: Issue[] = []
     for (let i = 0; i < validators.length; i += 1) {
       const validator = validators[i]
@@ -10,4 +10,4 @@ export const tuple =
       issues.push(...newIssues)
     }
     return issues
-  }
+  }, 'tuple')

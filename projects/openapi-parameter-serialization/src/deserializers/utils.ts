@@ -1,5 +1,5 @@
 import { Try, success, failure, isFailure, fromArray } from '@oats-ts/try'
-import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { Issue, ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueDeserializer } from '../types'
 import { decode, isNil } from '../utils'
 
@@ -33,7 +33,7 @@ export function mapRecord<I, V, K extends string>(
       output[key as K] = result.data
     }
   }
-  return allIssues.length === 0 ? success(output) : failure(allIssues)
+  return allIssues.length === 0 ? success(output) : failure(...allIssues)
 }
 
 export const createDelimitedRecordParser =
@@ -46,7 +46,6 @@ export const createDelimitedRecordParser =
         message: `malformed parameter value "${value}"`,
         path,
         severity: 'error',
-        type: IssueTypes.value,
       })
     }
     const record: Record<string, string> = {}
@@ -55,7 +54,7 @@ export const createDelimitedRecordParser =
       const value = parts[i + 1]
       record[key] = value
     }
-    return issues.length === 0 ? success(record) : failure(issues)
+    return issues.length === 0 ? success(record) : failure(...issues)
   }
 
 export const createKeyValuePairRecordParser =
@@ -72,13 +71,12 @@ export const createKeyValuePairRecordParser =
           message: `unexpected content "${value}"`,
           path,
           severity: 'error',
-          type: IssueTypes.value,
         })
       }
       const [rawKey, rawValue] = pair
       record[rawKey] = rawValue
     }
-    return issues.length === 0 ? success(record) : failure(issues)
+    return issues.length === 0 ? success(record) : failure(...issues)
   }
 
 export const createArrayParser =

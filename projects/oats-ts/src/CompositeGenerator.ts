@@ -1,8 +1,7 @@
-import { uniq, flatMap, result } from 'lodash'
+import { uniq, flatMap } from 'lodash'
 import { CodeGenerator, GeneratorConfig, StructuredGeneratorResult } from './typings'
-import { Try, isFailure, success, failure } from '@oats-ts/try'
+import { Try, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
-import { IssueTypes } from '@oats-ts/validators'
 import { flattenStructuredGeneratorResult } from './flattenStructuredGeneratorResult'
 
 export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
@@ -67,14 +66,11 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     const unresolved = depNames.filter((depName) => mapping[depName] === undefined)
     if (unresolved.length > 0) {
       const unresolvedNames = unresolved.map((name) => `"${name}"`).join(', ')
-      return failure([
-        {
-          message: `missing dependencies: ${unresolvedNames}`,
-          path: child.name(),
-          severity: 'error',
-          type: IssueTypes.other,
-        },
-      ])
+      return failure({
+        message: `missing dependencies: ${unresolvedNames}`,
+        path: child.name(),
+        severity: 'error',
+      })
     }
     return success(Object.values(mapping) as CodeGenerator<R, G>[])
   }

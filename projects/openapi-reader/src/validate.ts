@@ -8,5 +8,5 @@ export function validate<T>(input: ReadInput<T>, context: ReadContext, validator
     return success(undefined)
   }
   const issues = validator(data, uri, { ...DefaultConfig, append: context.uri.append })
-  return issues.length === 0 ? success(undefined) : failure(issues)
+  return issues.length === 0 ? success(undefined) : failure(...issues)
 }

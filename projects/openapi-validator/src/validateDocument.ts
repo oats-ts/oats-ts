@@ -1,6 +1,7 @@
 import { ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { failure, success, Try } from '@oats-ts/try'
+import { failure, success } from '@oats-ts/try'
+import { isOk, Issue } from '@oats-ts/validators'
 import { severityComparator } from './severityComparator'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from './typings'
 import { tick } from './utils/tick'
@@ -10,7 +11,7 @@ export async function validateDocument(
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,
   emitter: ValidatorEventEmitter<OpenAPIObject>,
-): Promise<Try<OpenAPIObject>> {
+): Promise<Issue[]> {
   emitter.emit('validate-file-started', {
     type: 'validate-file-started',
     path: context.uriOf(document),
@@ -20,7 +21,8 @@ export async function validateDocument(
   await tick()
 
   const issues = config.openApiObject(document, context, config).sort(severityComparator)
-  const result = issues.every((issue) => issue.severity !== 'error') ? success(document) : failure(issues)
+  const hasNoCriticalIssue = isOk(issues, ['error'])
+  const result = hasNoCriticalIssue ? success(document) : failure(...issues)
 
   await tick()
 
@@ -33,5 +35,5 @@ export async function validateDocument(
 
   await tick()
 
-  return result
+  return issues
 }

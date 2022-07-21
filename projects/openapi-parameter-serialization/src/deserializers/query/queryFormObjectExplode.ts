@@ -1,5 +1,5 @@
 import { Try, failure, success, fromArray, fluent } from '@oats-ts/try'
-import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { DslConfig, FieldValueDeserializers, Primitive, PrimitiveRecord, RawQueryParams } from '../../types'
 import { decode, isNil } from '../../utils'
 
@@ -18,14 +18,11 @@ export function queryFormObjectExplode<T extends PrimitiveRecord>(
       const parser = parsers[key as keyof T]
       const values = data[key] || []
       if (values.length > 1) {
-        return failure([
-          {
-            message: `should have a single value (found ${values.length})`,
-            path: config.append(path, key),
-            severity: 'error',
-            type: IssueTypes.shape,
-          },
-        ])
+        return failure({
+          message: `should have a single value (found ${values.length})`,
+          path: config.append(path, key),
+          severity: 'error',
+        })
       }
       const [value] = values
       if (!isNil(value)) {

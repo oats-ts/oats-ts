@@ -1,4 +1,4 @@
-import { Issue, IssueTypes } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
 import { SchemeConfig } from '../typings'
 
 export function unexpectedSchemeIssue(path: string, scheme: string, config: SchemeConfig): Issue {
@@ -12,6 +12,5 @@ export function unexpectedSchemeIssue(path: string, scheme: string, config: Sche
     message: `unexpected URI scheme: "${scheme}" (expected one of ${joinedSchemes})`,
     path,
     severity: 'error',
-    type: IssueTypes.other,
   }
 }

@@ -1,5 +1,4 @@
 import { failure, fluent, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { DslConfig, PrimitiveRecord, QueryParameterSerializer } from '../../types'
 import { encode, entries, isNil } from '../../utils'
 import { getQueryValue } from './queryUtils'
@@ -11,14 +10,11 @@ export const queryDeepObjectObject =
     return fluent(getQueryValue(path, data, options))
       .flatMap((value) => {
         if (!options.explode) {
-          return failure([
-            {
-              message: `can only be serialized with explode=true`,
-              path,
-              severity: 'error',
-              type: IssueTypes.other,
-            },
-          ])
+          return failure({
+            message: `can only be serialized with explode=true`,
+            path,
+            severity: 'error',
+          })
         }
 
         if (isNil(value)) {

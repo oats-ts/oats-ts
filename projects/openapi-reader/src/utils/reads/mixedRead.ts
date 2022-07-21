@@ -1,5 +1,4 @@
 import { failure, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import URI from 'urijs'
 import { SchemeConfig } from '../../typings'
 import { DefaultMixedSchemeConfig } from '../defaultMixedSchemeConfig'
@@ -20,15 +19,12 @@ export const mixedRead =
       } else if (scheme === 'file' && config.file) {
         return fileRead(uri)
       }
-      return failure([unexpectedSchemeIssue(uri, scheme, config)])
+      return failure(unexpectedSchemeIssue(uri, scheme, config))
     } catch (error) {
-      return failure([
-        {
-          message: `${error}`,
-          path: uri,
-          severity: 'error',
-          type: IssueTypes.other,
-        },
-      ])
+      return failure({
+        message: `${error}`,
+        path: uri,
+        severity: 'error',
+      })
     }
   }

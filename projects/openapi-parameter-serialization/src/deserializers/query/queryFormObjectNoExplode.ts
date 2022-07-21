@@ -1,5 +1,5 @@
 import { Try, failure, success, isSuccess } from '@oats-ts/try'
-import { Issue, IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { Issue, ValidatorConfig } from '@oats-ts/validators'
 import { DslConfig, FieldValueDeserializers, Primitive, PrimitiveRecord, RawQueryParams } from '../../types'
 import { decode, isNil } from '../../utils'
 
@@ -17,37 +17,28 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
   // Early returns for obvious cases
   if (values.length === 0) {
     return options.required
-      ? failure([
-          {
-            message: `should be present`,
-            path,
-            severity: 'error',
-            type: IssueTypes.value,
-          },
-        ])
+      ? failure({
+          message: `should be present`,
+          path,
+          severity: 'error',
+        })
       : success(undefined!)
   } else if (values.length !== 1) {
-    return failure([
-      {
-        message: `should have a single value (found ${values.length})`,
-        path,
-        severity: 'error',
-        type: IssueTypes.shape,
-      },
-    ])
+    return failure({
+      message: `should have a single value (found ${values.length})`,
+      path,
+      severity: 'error',
+    })
   }
 
   const [value] = values
   const parts = value.split(',')
   if (parts.length % 2 !== 0) {
-    return failure([
-      {
-        message: `malformed parameter value "${value}"`,
-        path,
-        severity: 'error',
-        type: IssueTypes.value,
-      },
-    ])
+    return failure({
+      message: `malformed parameter value "${value}"`,
+      path,
+      severity: 'error',
+    })
   }
   const collectedIssues: Issue[] = []
   for (let i = 0; i < parts.length; i += 2) {
@@ -59,7 +50,6 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
         message: `should not have "${key}"`,
         path,
         severity: 'error',
-        type: IssueTypes.shape,
       })
     } else {
       const parsed = parser(rawValue, name, config.append(path, key), config)
@@ -70,5 +60,5 @@ export function queryFormObjectNoExplode<T extends PrimitiveRecord>(
       }
     }
   }
-  return collectedIssues.length === 0 ? success(output as T) : failure(collectedIssues)
+  return collectedIssues.length === 0 ? success(output as T) : failure(...collectedIssues)
 }

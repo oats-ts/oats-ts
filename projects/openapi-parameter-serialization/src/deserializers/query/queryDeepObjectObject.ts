@@ -1,5 +1,5 @@
 import { Try, failure, success, fromRecord } from '@oats-ts/try'
-import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { ValidatorConfig } from '@oats-ts/validators'
 import {
   DslConfig,
   FieldValueDeserializers,
@@ -26,14 +26,11 @@ export const queryDeepObjectObject =
       const queryKey = `${encode(name)}[${encode(key)}]`
       const values = data[queryKey] || []
       if (values.length > 1) {
-        acc[key] = failure([
-          {
-            message: `should have a single value (found ${values.length})`,
-            path,
-            severity: 'error',
-            type: IssueTypes.shape,
-          },
-        ])
+        acc[key] = failure({
+          message: `should have a single value (found ${values.length})`,
+          path,
+          severity: 'error',
+        })
       } else {
         const [rawValue] = values
         if (!isNil(rawValue)) {

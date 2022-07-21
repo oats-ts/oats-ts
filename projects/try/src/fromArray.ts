@@ -15,5 +15,5 @@ export function fromArray<T>(input: Try<T>[]): Try<T[]> {
       output[i] = item.data
     }
   }
-  return allIssues.length === 0 ? success(output) : failure(allIssues)
+  return allIssues.length === 0 ? success(output) : failure(...allIssues)
 }

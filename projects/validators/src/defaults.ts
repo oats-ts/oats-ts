@@ -1,8 +1,8 @@
-import { jsonPathAppender } from './jsonPathAppender'
+import { append } from './append'
 import { ValidatorConfig } from './typings'
 
 export const DefaultConfig: ValidatorConfig = {
-  append: jsonPathAppender,
+  append: append,
   severity: () => 'error',
 }
 

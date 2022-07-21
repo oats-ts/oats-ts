@@ -15,7 +15,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "build": "echo 'Nothing to build'",
+    "build": "tsc --noEmit",
     "g": "ts-node src/generate.ts",
     "test": "cross-env jest --runInBand",
     "typecheck": "tsc --noEmit"

@@ -1,5 +1,4 @@
 import { Try, failure, success } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import { DslConfig, RawQueryParams } from '../../types'
 
 export function getQueryValue(
@@ -12,14 +11,11 @@ export function getQueryValue(
   switch (values.length) {
     case 0: {
       if (options.required) {
-        return failure([
-          {
-            message: 'should occur once (found 0 times in query string)',
-            path,
-            severity: 'error',
-            type: IssueTypes.value,
-          },
-        ])
+        return failure({
+          message: 'should occur once (found 0 times in query string)',
+          path,
+          severity: 'error',
+        })
       }
       return success(undefined)
     }
@@ -27,13 +23,10 @@ export function getQueryValue(
       return success(values[0])
     }
     default:
-      return failure([
-        {
-          message: `should occur once (found ${values.length} times in query string)`,
-          path,
-          severity: 'error',
-          type: IssueTypes.value,
-        },
-      ])
+      return failure({
+        message: `should occur once (found ${values.length} times in query string)`,
+        path,
+        severity: 'error',
+      })
   }
 }

@@ -23,17 +23,19 @@ export function createPathSerializer<T extends ParameterType>(root: PathDslRoot<
       }, {}),
     )
 
-    return fluent(serializedParts).map((serialized) => {
-      return segments
-        .map((segment) => {
-          switch (segment.type) {
-            case 'parameter':
-              return serialized[segment.name]
-            case 'text':
-              return segment.value
-          }
-        })
-        .join('')
-    })
+    return fluent(serializedParts)
+      .map((serialized) => {
+        return segments
+          .map((segment) => {
+            switch (segment.type) {
+              case 'parameter':
+                return serialized[segment.name]
+              case 'text':
+                return segment.value
+            }
+          })
+          .join('')
+      })
+      .toTry()
   }
 }

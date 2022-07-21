@@ -1,8 +1,10 @@
+import { typed } from '../typed'
 import { Issue, Validator, ValidatorConfig } from '../typings'
 
-export const record =
-  (keys: Validator<string>, values: Validator<any>): Validator<object> =>
-  (input: object, path: string, config: ValidatorConfig) => {
+const Type = 'record' as const
+
+export const record = (keys: Validator<string>, values: Validator<any>) =>
+  typed((input: object, path: string, config: ValidatorConfig) => {
     const issues: Issue[] = []
     const objKeys = Object.keys(input)
     for (let i = 0; i < objKeys.length; i += 1) {
@@ -14,4 +16,4 @@ export const record =
       issues.push(...keyIssues, ...valueIssues)
     }
     return issues
-  }
+  }, Type)

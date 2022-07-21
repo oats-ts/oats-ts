@@ -73,7 +73,7 @@ export type SchemeConfig = {
 
 export type TestReaderConfig = {
   path: string
-  content: Map<string, string>
+  content: { [uri: string]: string }
   httpRefs?: boolean
   httpsRefs?: boolean
   fileRefs?: boolean

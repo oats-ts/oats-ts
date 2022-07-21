@@ -1,5 +1,5 @@
 import { Try, failure, success } from '@oats-ts/try'
-import { IssueTypes, ValidatorConfig } from '@oats-ts/validators'
+import { ValidatorConfig } from '@oats-ts/validators'
 import { Primitive, ValueDeserializer } from '../../types'
 
 export const enumerationParser =
@@ -7,14 +7,11 @@ export const enumerationParser =
   (value: T | undefined, name: string, path: string, config: ValidatorConfig): Try<E> => {
     if (values.indexOf(value as E) < 0) {
       const valuesLiteral = values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
-      return failure([
-        {
-          message: `should be one of ${valuesLiteral}.`,
-          path,
-          severity: 'error',
-          type: IssueTypes.value,
-        },
-      ])
+      return failure({
+        message: `should be one of ${valuesLiteral}.`,
+        path,
+        severity: 'error',
+      })
     }
     return success(value as E)
   }

@@ -67,6 +67,6 @@ function transformSegment(segment: string | number): string {
   return `["${segment}"]`
 }
 
-export function jsonPathAppender(path: string, ...segments: (string | number)[]): string {
-  return [path, ...segments.map(transformSegment)].join('')
+export function append(...segments: (string | number)[]): string {
+  return segments.map(transformSegment).join('')
 }

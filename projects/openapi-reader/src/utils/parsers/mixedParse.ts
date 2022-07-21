@@ -1,6 +1,5 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { failure, success, Try } from '@oats-ts/try'
-import { IssueTypes } from '@oats-ts/validators'
 import YAML from 'yamljs'
 
 export function mixedParse(uri: string, input: string): Promise<Try<OpenAPIObject>> {
@@ -11,20 +10,18 @@ export function mixedParse(uri: string, input: string): Promise<Try<OpenAPIObjec
       return Promise.resolve(success(YAML.parse(input)))
     } catch (yamlError) {
       return Promise.resolve(
-        failure([
+        failure(
           {
             path: uri,
             message: `failed to parse as JSON (${jsonError})`,
             severity: 'error',
-            type: IssueTypes.other,
           },
           {
             path: uri,
-            message: `failed to parse as JSON (${yamlError})`,
+            message: `failed to parse as YAML (${yamlError})`,
             severity: 'error',
-            type: IssueTypes.other,
           },
-        ]),
+        ),
       )
     }
   }

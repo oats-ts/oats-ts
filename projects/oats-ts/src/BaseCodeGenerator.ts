@@ -2,7 +2,6 @@ import { nanoid } from 'nanoid'
 import { failure, fromArray, isFailure, success, Try } from '@oats-ts/try'
 import { GeneratorInit } from './typings'
 import { BaseGenerator } from './BaseGenerator'
-import { IssueTypes } from '@oats-ts/validators'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
@@ -33,14 +32,11 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
         ),
       )
     } catch (e) {
-      return failure([
-        {
-          message: `${e}`,
-          path: this.name(),
-          severity: 'error',
-          type: IssueTypes.other,
-        },
-      ])
+      return failure({
+        message: `${e}`,
+        path: this.name(),
+        severity: 'error',
+      })
     }
   }
 
