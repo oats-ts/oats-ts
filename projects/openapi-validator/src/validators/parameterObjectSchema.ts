@@ -29,7 +29,6 @@ export function parameterObjectSchema(
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,
 ): Issue[] {
-  const { uriOf } = context
   const type = getInferredType(input)
   switch (type) {
     case 'object':
@@ -49,7 +48,7 @@ export function parameterObjectSchema(
         {
           message:
             'should be either a primitive schema ("string", "number" or "boolean") or array/object of primitives',
-          path: uriOf(input),
+          path: context.uriOf(input),
           severity: 'error',
           type: 'other',
         },

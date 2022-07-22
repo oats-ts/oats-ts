@@ -17,10 +17,8 @@ export function responsesObject(
   return ifNotValidated(
     context,
     data,
-  )(() => {
-    const { responseObject } = config
-    const { uriOf } = context
-    return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
+  )(() =>
+    ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
       flatMap(entries(data), ([statusCode, response]): Issue[] => {
         const issues: Issue[] = []
         if (
@@ -30,14 +28,14 @@ export function responsesObject(
         ) {
           issues.push({
             message: `should be "default" or integer`,
-            path: uriOf(response),
+            path: context.uriOf(response),
             severity: 'error',
             type: 'other',
           })
         }
-        issues.push(...referenceable(responseObject)(response, context, config))
+        issues.push(...referenceable(config.responseObject)(response, context, config))
         return issues
       }),
-    )
-  })
+    ),
+  )
 }

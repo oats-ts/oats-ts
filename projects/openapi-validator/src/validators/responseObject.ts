@@ -1,23 +1,16 @@
 import { ResponseObject } from '@oats-ts/openapi-model'
-import { Issue, object, shape, combine, record, string, optional } from '@oats-ts/validators'
+import { Issue, object, shape, combine, record, string, optional, ShapeInput, restrictKeys } from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
-import { ignore } from '../utils/ignore'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
-const validator = object(
-  combine(
-    shape<ResponseObject>(
-      {
-        content: object(record(string(), object())),
-        headers: optional(object(record(string(), object()))),
-      },
-      true,
-    ),
-    ignore(['links']),
-  ),
-)
+const responseShape: ShapeInput<ResponseObject> = {
+  content: object(record(string(), object())),
+  headers: optional(object(record(string(), object()))),
+  description: optional(string()),
+}
+const validator = object(combine(shape<ResponseObject>(responseShape), restrictKeys(Object.keys(responseShape))))
 
 export function responseObject(
   data: ResponseObject,
@@ -27,11 +20,9 @@ export function responseObject(
   return ifNotValidated(
     context,
     data,
-  )(() => {
-    const { uriOf } = context
-    const { contentObject } = config
-    return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
-      contentObject(data.content, context, config),
-    )
-  })
+  )(() =>
+    ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
+      config.contentObject(data.content, context, config),
+    ),
+  )
 }

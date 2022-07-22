@@ -1,22 +1,24 @@
-import { typed } from '../typed'
-import { ValidatorConfig } from '../typings'
-
-const Type = 'enumeration' as const
+import { TypedValidatorConfig, Validator } from '../typings'
+import { isNil } from '../utils'
 
 /**
  * @deprecated Use union instead
  */
-export const enumeration = <T>(values: T[]) =>
-  typed((input: T, path: string, config: ValidatorConfig) => {
-    const severity = config.severity(Type)!
+export const enumeration =
+  <T extends string | number | boolean>(values: T[]): Validator<T> =>
+  (input: T, path: string, config: TypedValidatorConfig) => {
+    const severity = config.severity('enumeration', path)!
+    if (isNil(severity)) {
+      return []
+    }
     if (values.indexOf(input) < 0) {
       return [
         {
-          message: `should be one of ${values}`,
+          message: config.message('enumeration', path, { expected: values }),
           path,
           severity,
         },
       ]
     }
     return []
-  }, Type)
+  }

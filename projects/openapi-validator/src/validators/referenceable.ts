@@ -3,6 +3,7 @@ import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/model-common'
 import { Issue, isOk } from '@oats-ts/validators'
 import { isNil } from 'lodash'
+import { referenceObject } from './referenceObject'
 
 export function referenceable<T>(
   validator: OpenAPIValidatorFn<T>,
@@ -14,11 +15,11 @@ export function referenceable<T>(
     config: OpenAPIValidatorConfig,
   ): Issue[] {
     if (!isNil(input) && isReferenceObject(input)) {
-      const { referenceObject } = config
-      const refIssues = referenceObject(input, context, config)
+      const refIssues = config.referenceObject(input, context, config)
       if (forceValidation) {
-        const { dereference } = context
-        return isOk(refIssues) ? [...refIssues, ...validator(dereference<T>(input), context, config)] : refIssues
+        return isOk(refIssues)
+          ? [...refIssues, ...validator(context.dereference<T>(input), context, config)]
+          : refIssues
       }
       return refIssues
     }

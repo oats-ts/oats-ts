@@ -1,27 +1,33 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
 import { values, flatMap } from 'lodash'
-import { Issue, object, optional, shape, combine, array, items, string, literal } from '@oats-ts/validators'
+import {
+  Issue,
+  object,
+  optional,
+  shape,
+  combine,
+  array,
+  items,
+  string,
+  literal,
+  ShapeInput,
+  restrictKeys,
+} from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
-import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext, OpenAPIValidatorFn } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
-const validator = object(
-  combine(
-    shape<SchemaObject>(
-      {
-        type: optional(literal('object')),
-        required: optional(array(items(string()))),
-        properties: object(),
-      },
-      true,
-    ),
-    ignore(['discriminator', 'allOf', 'oneOf', 'anyOf', 'not', 'items', 'additionalProperties', 'enum']),
-  ),
-)
+const objectSchemaShape: ShapeInput<SchemaObject> = {
+  type: optional(literal('object')),
+  required: optional(array(items(string()))),
+  properties: object(),
+  description: optional(string()),
+}
+
+const validator = object(combine(shape<SchemaObject>(objectSchemaShape), restrictKeys(Object.keys(objectSchemaShape))))
 
 export const objectSchemaObject =
   (properties: OpenAPIValidatorFn<SchemaObject> = schemaObject): OpenAPIValidatorFn<SchemaObject> =>
@@ -29,10 +35,9 @@ export const objectSchemaObject =
     return ifNotValidated(
       context,
       data,
-    )(() => {
-      const { uriOf } = context
-      return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
+    )(() =>
+      ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
         flatMap(values(data.properties), (schema) => referenceable(properties)(schema, context, config)),
-      )
-    })
+      ),
+    )
   }

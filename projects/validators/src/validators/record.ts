@@ -1,10 +1,12 @@
-import { typed } from '../typed'
-import { Issue, Validator, ValidatorConfig } from '../typings'
+import { Issue, TypedValidatorConfig, Validator } from '../typings'
+import { isNil } from '../utils'
 
-const Type = 'record' as const
-
-export const record = (keys: Validator<string>, values: Validator<any>) =>
-  typed((input: object, path: string, config: ValidatorConfig) => {
+export const record =
+  (keys: Validator<string>, values: Validator<any>): Validator<object> =>
+  (input: object, path: string, config: TypedValidatorConfig) => {
+    if (isNil(config.severity('record', path))) {
+      return []
+    }
     const issues: Issue[] = []
     const objKeys = Object.keys(input)
     for (let i = 0; i < objKeys.length; i += 1) {
@@ -16,4 +18,4 @@ export const record = (keys: Validator<string>, values: Validator<any>) =>
       issues.push(...keyIssues, ...valueIssues)
     }
     return issues
-  }, Type)
+  }

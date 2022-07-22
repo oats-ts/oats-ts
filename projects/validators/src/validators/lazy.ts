@@ -1,9 +1,11 @@
-import { typed } from '../typed'
-import { Validator, ValidatorConfig } from '../typings'
+import { TypedValidatorConfig, Validator } from '../typings'
+import { isNil } from '../utils'
 
-const Type = 'lazy' as const
-
-export const lazy = <T>(producer: () => Validator<T>) =>
-  typed((input: T, path: string, config: ValidatorConfig) => {
+export const lazy =
+  <T>(producer: () => Validator<T>): Validator<T> =>
+  (input: T, path: string, config: TypedValidatorConfig) => {
+    if (isNil(config.severity('lazy', path))) {
+      return []
+    }
     return producer()(input, path, config)
-  }, Type)
+  }
