@@ -14,7 +14,7 @@ export const validatorConfig: ValidatorConfig = {
   },
   message: (type: ValidatorType, path: string, data?: any) => {
     if (type === 'restrictKeys') {
-      return 'property will be ignored by oats'
+      return 'unexpected key'
     }
     return DefaultConfig.message(type, path, data)
   },
