@@ -20,7 +20,7 @@ const messageProducers: Partial<Record<ValidatorType, (data?: any) => string>> =
   literal: ({ expected }: LiteralMessageData) =>
     `should be ${typeof expected === 'string' ? `"${expected}"` : expected}`,
   minLength: ({ expected }: MinLengthMessageData) => `length should be at least ${expected}`,
-  restrictKeys: ({ key }: RestrictKeysData) => `should not have key "${key}"`,
+  restrictKeys: () => `should not have key`,
   union: ({ expected }: UnionMessageData) => `should be one of ${expected.join(', ')}`,
 }
 
