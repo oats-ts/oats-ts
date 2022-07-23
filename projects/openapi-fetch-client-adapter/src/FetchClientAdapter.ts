@@ -9,7 +9,7 @@ import {
   ClientAdapter,
 } from '@oats-ts/openapi-http'
 import { isFailure, Try } from '@oats-ts/try'
-import { configure, stringify } from '@oats-ts/validators'
+import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
 
 export type FetchClientAdapterConfig = {
   url?: string
@@ -54,6 +54,10 @@ export class FetchClientAdapter implements ClientAdapter {
       return response.text()
     }
     return response.blob()
+  }
+
+  protected configureResponseBodyValidator(validator: Validator<any>): ConfiguredValidator<any> {
+    return configure(validator, 'responseBody', DefaultConfig)
   }
 
   async getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string> {
@@ -173,7 +177,7 @@ export class FetchClientAdapter implements ClientAdapter {
         throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint}`)
       }
 
-      const validator = configure(validatorsForStatus[mimeType], 'responseBody')
+      const validator = this.configureResponseBodyValidator(validatorsForStatus[mimeType])
       const issues = validator(response.body)
       if (issues.length !== 0) {
         throw new Error(issues.map(stringify).join('\n'))

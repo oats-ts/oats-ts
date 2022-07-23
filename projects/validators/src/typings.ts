@@ -68,4 +68,4 @@ export type Validator<T> = {
   (input: T, path: string, config: ValidatorConfig): Issue[]
 }
 
-export type ConfiguredValidator<T> = (input: T) => Issue[]
+export type ConfiguredValidator<T> = (input: T, path?: string, config?: ValidatorConfig) => Issue[]
