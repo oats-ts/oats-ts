@@ -1,28 +1,35 @@
 import { OperationObject } from '@oats-ts/openapi-model'
 import { isNil, flatMap } from 'lodash'
-import { Issue, object, optional, shape, combine, record, string, minLength, array } from '@oats-ts/validators'
+import {
+  Issue,
+  object,
+  optional,
+  shape,
+  combine,
+  record,
+  string,
+  minLength,
+  array,
+  ShapeInput,
+  restrictKeys,
+} from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
-import { ignore } from '../utils/ignore'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { parametersOf } from '../utils/modelUtils'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
-const validator = object(
-  combine(
-    shape<OperationObject>(
-      {
-        operationId: string(minLength(1)),
-        parameters: optional(array()),
-        requestBody: optional(object()),
-        responses: object(record(string(), object())),
-      },
-      true,
-    ),
-    ignore(['security', 'servers', 'callbacks']),
-  ),
-)
+const operationShape: ShapeInput<OperationObject> = {
+  description: optional(string()),
+  summary: optional(string()),
+  operationId: string(minLength(1)),
+  parameters: optional(array()),
+  requestBody: optional(object()),
+  responses: object(record(string(), object())),
+}
+
+const validator = object(combine(shape<OperationObject>(operationShape), restrictKeys(Object.keys(operationShape))))
 
 export function operationObject(
   data: OperationObject,
@@ -32,13 +39,12 @@ export function operationObject(
   return ifNotValidated(
     context,
     data,
-  )(() => {
-    const { uriOf } = context
-    const { parameterObject, requestBodyObject, responsesObject } = config
-    return ordered(() => validator(data, uriOf(data), validatorConfig))(
-      () => flatMap(parametersOf(data, context), (p) => referenceable(parameterObject, true)(p, context, config)),
-      () => (isNil(data.requestBody) ? [] : referenceable(requestBodyObject)(data.requestBody, context, config)),
-      () => responsesObject(data.responses, context, config),
-    )
-  })
+  )(() =>
+    ordered(() => validator(data, context.uriOf(data), validatorConfig))(
+      () =>
+        flatMap(parametersOf(data, context), (p) => referenceable(config.parameterObject, true)(p, context, config)),
+      () => (isNil(data.requestBody) ? [] : referenceable(config.requestBodyObject)(data.requestBody, context, config)),
+      () => config.responsesObject(data.responses, context, config),
+    ),
+  )
 }

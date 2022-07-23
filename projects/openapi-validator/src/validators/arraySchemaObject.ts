@@ -1,34 +1,20 @@
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { Issue, object, optional, shape, combine, literal } from '@oats-ts/validators'
+import { Issue, object, optional, shape, combine, literal, restrictKeys, ShapeInput, string } from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
 import { schemaObject } from './schemaObject'
 import { ordered } from '../utils/ordered'
-import { ignore } from '../utils/ignore'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext, OpenAPIValidatorFn } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
 
+const arraySchemaObjectShape: ShapeInput<SchemaObject> = {
+  description: optional(string()),
+  type: optional(literal('array')),
+  items: object(),
+}
+
 const validator = object(
-  combine(
-    shape<SchemaObject>(
-      {
-        type: optional(literal('array')),
-        items: object(),
-      },
-      true,
-    ),
-    ignore([
-      'discriminator',
-      'allOf',
-      'oneOf',
-      'anyOf',
-      'not',
-      'properties',
-      'additionalProperties',
-      'required',
-      'enum',
-    ]),
-  ),
+  combine(shape<SchemaObject>(arraySchemaObjectShape), restrictKeys(Object.keys(arraySchemaObjectShape))),
 )
 
 export const arraySchemaObject =
@@ -37,10 +23,9 @@ export const arraySchemaObject =
     return ifNotValidated(
       context,
       data,
-    )(() => {
-      const { uriOf } = context
-      return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
-        typeof data.items === 'boolean' ? [] : referenceable(items)(data.items, context, config),
-      )
-    })
+    )(() =>
+      ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
+        typeof data.items === 'boolean' ? [] : referenceable(items)(data.items!, context, config),
+      ),
+    )
   }

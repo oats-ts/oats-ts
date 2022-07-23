@@ -15,7 +15,6 @@ import { schemaObject } from './validators/schemaObject'
 
 export function createOpenAPIValidatorConfig(input: Partial<OpenAPIValidatorConfig>): OpenAPIValidatorConfig {
   const {
-    headerObject: _headerObject,
     openApiObject: _openApiObject,
     operationObject: _operationObject,
     parameterObject: _parameterObject,
@@ -31,7 +30,6 @@ export function createOpenAPIValidatorConfig(input: Partial<OpenAPIValidatorConf
   } = input
 
   return {
-    headerObject: isNil(_headerObject) ? null : _headerObject,
     openApiObject: isNil(_openApiObject) ? openApiObject : _openApiObject,
     operationObject: isNil(_operationObject) ? operationObject : _operationObject,
     parameterObject: isNil(_parameterObject) ? parameterObject : _parameterObject,

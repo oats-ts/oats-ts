@@ -1,15 +1,24 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
-    "strict": true,
-    "module": "commonjs",
     "declaration": true,
-    "noImplicitAny": true,
-    "target": "ES2020",
-    "sourceMap": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"]
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2020"
   },
-  "include": ["./src"],
-  "exclude": ["node_modules", "lib"]
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
 }

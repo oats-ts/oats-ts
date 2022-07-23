@@ -8,13 +8,11 @@ export function cookieParameterObject(
   context: OpenAPIValidatorContext,
   config: OpenAPIValidatorConfig,
 ): Issue[] {
-  const { uriOf } = context
   return [
     {
       message: '"cookie" parameters are ignored',
-      path: validatorConfig.append(uriOf(input), 'in'),
+      path: validatorConfig.append(context.uriOf(input), 'in'),
       severity: 'warning',
-      type: 'other',
     },
   ]
 }

@@ -1,20 +1,21 @@
-import { typed } from '../typed'
-import { ValidatorConfig } from '../typings'
+import { TypedValidatorConfig, Validator } from '../typings'
 import { isNil } from '../utils'
 
-const Type = 'minLength' as const
-
-export const minLength = (length: number) =>
-  typed((input: { length: number }, path: string, config: ValidatorConfig) => {
-    const severity = config.severity(Type)!
+export const minLength =
+  (length: number): Validator<{ length: number }> =>
+  (input: { length: number }, path: string, config: TypedValidatorConfig) => {
+    const severity = config.severity('minLength', path)
+    if (isNil(severity)) {
+      return []
+    }
     if (input.length < length) {
       return [
         {
-          message: `length should be at least ${length}`,
+          message: config.message('minLength', path, { expected: length }),
           path,
           severity,
         },
       ]
     }
     return []
-  }, Type)
+  }

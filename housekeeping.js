@@ -4,10 +4,12 @@ const { join, resolve } = require('path')
 const HOMEPAGE = 'https://oats-ts.github.io/docs'
 const REPO_URL = 'https://github.com/oats-ts/oats-ts'
 const LICENSE_NAME = 'MIT'
+const TSCONFIG_FILE_NAME = 'tsconfig.json'
 const LICENSE_FILE_NAME = 'LICENSE.txt'
 const README_FILE_NAME = 'readme.md'
+const PACKAGE_JSON_FILE_NAME = 'package.json'
 const LOG_IGNORE_FOLDERS = ['node_modules', '.git']
-const LOG_ENDINGS = ['.build.log', '.pnpm-debug.log']
+const LOG_ENDINGS = ['.build.log', '.build.error.log', '.pnpm-debug.log']
 
 const LICENSE_TEXT = `Copyright ${new Date().getFullYear()} Balázs Édes
 
@@ -17,6 +19,12 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 `
+
+const COMPILER_OPTIONS = {
+  strict: true,
+  noImplicitAny: true,
+  noUnusedLocals: true,
+}
 
 /**
  * @param {string} path
@@ -70,7 +78,7 @@ function updateFiles(files, readmeExists) {
  * @returns {Promise<void>}
  */
 async function updatePackageJson(folder) {
-  const path = join(folder, 'package.json')
+  const path = join(folder, PACKAGE_JSON_FILE_NAME)
   const content = JSON.parse(await readFile(path, 'utf-8'))
   content.license = LICENSE_NAME
   content.homepage = HOMEPAGE
@@ -89,6 +97,19 @@ async function updatePackageJson(folder) {
     content.repository.url = `git+${REPO_URL}.git`
   }
   return writeFile(path, `${JSON.stringify(content, sortReplacer, 2)}\n`, 'utf8')
+}
+
+/**
+ * @param {string} folder
+ */
+async function updateTsConfig(folder) {
+  const path = join(folder, TSCONFIG_FILE_NAME)
+  if (!(await exists(path))) {
+    return
+  }
+  const tsconfig = JSON.parse(await readFile(path, 'utf-8'))
+  tsconfig.compilerOptions = { ...tsconfig.compilerOptions, ...COMPILER_OPTIONS }
+  return writeFile(path, JSON.stringify(tsconfig, sortReplacer, 2), 'utf-8')
 }
 
 /**
@@ -132,6 +153,7 @@ async function run() {
 
   for (const folder of rootFolders) {
     const folderPath = join(projects, folder)
+    await updateTsConfig(folderPath)
     await updatePackageJson(folderPath)
     await updateLicenseTxt(folderPath)
   }

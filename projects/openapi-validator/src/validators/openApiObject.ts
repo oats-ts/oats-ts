@@ -7,13 +7,10 @@ import { isNil } from 'lodash'
 import { ifNotValidated } from '../utils/ifNotValidated'
 
 const validator = object(
-  shape<OpenAPIObject>(
-    {
-      paths: optional(object()),
-      components: optional(object()),
-    },
-    true,
-  ),
+  shape<OpenAPIObject>({
+    paths: optional(object()),
+    components: optional(object()),
+  }),
 )
 
 export function openApiObject(
@@ -24,12 +21,10 @@ export function openApiObject(
   return ifNotValidated(
     context,
     data,
-  )(() => {
-    const { componentsObject, pathsObject } = config
-    const { uriOf } = context
-    return ordered(() => validator(data, uriOf(data), validatorConfig))(
-      () => (isNil(data.components) ? [] : componentsObject(data.components, context, config)),
-      () => (isNil(data.paths) ? [] : pathsObject(data.paths, context, config)),
-    )
-  })
+  )(() =>
+    ordered(() => validator(data, context.uriOf(data), validatorConfig))(
+      () => (isNil(data.components) ? [] : config.componentsObject(data.components, context, config)),
+      () => (isNil(data.paths) ? [] : config.pathsObject(data.paths, context, config)),
+    ),
+  )
 }

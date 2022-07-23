@@ -1,5 +1,5 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { factory, CallExpression, Identifier, Expression } from 'typescript'
+import { factory, CallExpression, Identifier } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'

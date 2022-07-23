@@ -24,7 +24,7 @@ export function pathItemObjectUrl(
   } catch (e) {
     return [
       {
-        message: `invalid path: "${url}" (${e.message})`,
+        message: `invalid path: "${url}" (${e})`,
         path: uriOf(data),
         severity: 'error',
         type: 'other',
@@ -32,10 +32,10 @@ export function pathItemObjectUrl(
     ]
   }
   const pathSegments = segments.filter(({ type }) => type === 'parameter') as ParameterSegment[]
-  const commonPathParams = getPathParams(data.parameters, context)
+  const commonPathParams = getPathParams(data.parameters ?? [], context)
   const operations = operationsOf(data)
   return flatMap(operations, (operation): Issue[] => {
-    const params = commonPathParams.concat(getPathParams(operation.parameters, context))
+    const params = commonPathParams.concat(getPathParams(operation.parameters ?? [], context))
     const missing = pathSegments
       .filter((segment) => !params.some((param) => param.name === segment.name))
       .map(

@@ -1,11 +1,12 @@
-import { typed } from '../typed'
-import { Validator, ValidatorConfig } from '../typings'
+import { TypedValidatorConfig, Validator } from '../typings'
 import { isNil } from '../utils'
 
-const Type = 'optional' as const
-
-export const optional = (validator?: Validator<any>) =>
-  typed((input: any, path: string, config: ValidatorConfig) => {
+export const optional =
+  (validator?: Validator<any>): Validator<any> =>
+  (input: any, path: string, config: TypedValidatorConfig) => {
+    if (isNil(config.severity('optional', path))) {
+      return []
+    }
     if (isNil(input)) {
       return []
     }
@@ -13,4 +14,4 @@ export const optional = (validator?: Validator<any>) =>
       return []
     }
     return validator(input, path, config)
-  }, Type)
+  }

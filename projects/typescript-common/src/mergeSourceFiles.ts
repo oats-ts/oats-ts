@@ -1,4 +1,4 @@
-import { ImportSpecifier, SourceFile } from 'typescript'
+import { SourceFile } from 'typescript'
 import {
   factory,
   ImportClause,
