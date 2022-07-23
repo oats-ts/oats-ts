@@ -35,7 +35,7 @@ export function contentObject(
             type: 'other',
           })
         }
-        issues.push(...referenceable(config.schemaObject)(mediaType.schema, context, config))
+        issues.push(...referenceable(config.schemaObject)(mediaType.schema!, context, config))
         return issues
       }),
     ),

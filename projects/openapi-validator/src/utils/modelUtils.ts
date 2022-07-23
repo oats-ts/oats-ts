@@ -7,12 +7,14 @@ import {
   RequestBodyObject,
 } from '@oats-ts/openapi-model'
 import { SchemaObject } from '@oats-ts/json-schema-model'
-import { isNil, negate, values } from 'lodash'
+import { isNil, values } from 'lodash'
 import { OpenAPIValidatorContext } from '../typings'
 
 export function operationsOf(data: PathItemObject): OperationObject[] {
   const { get, put, post, delete: _delete, options, head, patch } = data
-  return [get, put, post, _delete, options, head, patch].filter(negate(isNil))
+  return [get, put, post, _delete, options, head, patch].filter(
+    (operation): operation is OperationObject => !isNil(operation),
+  )
 }
 
 export function parametersOf(

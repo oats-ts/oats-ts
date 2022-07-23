@@ -9,7 +9,7 @@ const LICENSE_FILE_NAME = 'LICENSE.txt'
 const README_FILE_NAME = 'readme.md'
 const PACKAGE_JSON_FILE_NAME = 'package.json'
 const LOG_IGNORE_FOLDERS = ['node_modules', '.git']
-const LOG_ENDINGS = ['.build.log', '.pnpm-debug.log']
+const LOG_ENDINGS = ['.build.log', '.build.error.log', '.pnpm-debug.log']
 
 const LICENSE_TEXT = `Copyright ${new Date().getFullYear()} Balázs Édes
 

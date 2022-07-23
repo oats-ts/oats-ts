@@ -33,7 +33,7 @@ export function responsesObject(
             type: 'other',
           })
         }
-        issues.push(...referenceable(config.responseObject)(response, context, config))
+        issues.push(...referenceable(config.responseObject)(response!, context, config))
         return issues
       }),
     ),

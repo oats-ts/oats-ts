@@ -15,7 +15,7 @@ function traverseReferences(
   input: ReferenceObject,
   context: OpenAPIValidatorContext,
   visited: Set<ReferenceObject>,
-): Set<ReferenceObject> {
+): Set<ReferenceObject> | undefined {
   if (visited.has(input)) {
     return visited
   }

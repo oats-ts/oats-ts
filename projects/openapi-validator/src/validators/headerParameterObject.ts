@@ -35,6 +35,6 @@ export function headerParameterObject(
   config: OpenAPIValidatorConfig,
 ): Issue[] {
   return ordered(() => validator(input, context.uriOf(input), validatorConfig))(() =>
-    referenceable(parameterObjectSchema)(input.schema, context, config),
+    referenceable(parameterObjectSchema)(input.schema!, context, config),
   )
 }

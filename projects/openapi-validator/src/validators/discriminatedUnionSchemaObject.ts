@@ -69,7 +69,7 @@ export function discriminatedUnionSchemaObject(
     }
 
     const { discriminator, oneOf } = data
-    const discriminatorValues = entries(discriminator.mapping || {})
+    const discriminatorValues = entries(discriminator?.mapping ?? {})
     const oneOfRefs = (oneOf || []) as ReferenceObject[]
 
     return ordered(() => validator(data, context.uriOf(data), validatorConfig))(

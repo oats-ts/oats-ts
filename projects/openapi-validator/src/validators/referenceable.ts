@@ -3,7 +3,6 @@ import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/model-common'
 import { Issue, isOk } from '@oats-ts/validators'
 import { isNil } from 'lodash'
-import { referenceObject } from './referenceObject'
 
 export function referenceable<T>(
   validator: OpenAPIValidatorFn<T>,

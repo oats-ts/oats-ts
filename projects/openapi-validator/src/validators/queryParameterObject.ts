@@ -39,24 +39,24 @@ export function queryParameterObject(
   return ordered(() => validator(input, uri, validatorConfig))(() => {
     switch (input.style) {
       case 'form': {
-        return referenceable(parameterObjectSchema)(input.schema, context, config)
+        return referenceable(parameterObjectSchema)(input.schema!, context, config)
       }
       case 'spaceDelimited': {
         return [
           ...literal(true)(input.explode, validatorConfig.append(uri, 'explode'), validatorConfig),
-          ...referenceable(paramterObjectArraySchema)(input.schema, context, config),
+          ...referenceable(paramterObjectArraySchema)(input.schema!, context, config),
         ]
       }
       case 'pipeDelimited': {
         return [
           ...literal(true)(input.explode, validatorConfig.append(uri, 'explode'), validatorConfig),
-          ...referenceable(paramterObjectArraySchema)(input.schema, context, config),
+          ...referenceable(paramterObjectArraySchema)(input.schema!, context, config),
         ]
       }
       case 'deepObject': {
         return [
           ...literal(true)(input.explode, validatorConfig.append(uri, 'explode'), validatorConfig),
-          ...referenceable(parameterObjectObjectSchema)(input.schema, context, config),
+          ...referenceable(parameterObjectObjectSchema)(input.schema!, context, config),
         ]
       }
     }

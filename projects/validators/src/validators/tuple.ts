@@ -1,4 +1,4 @@
-import { Issue, TypedValidatorConfig, Validator, ValidatorConfig } from '../typings'
+import { Issue, TypedValidatorConfig, Validator } from '../typings'
 import { isNil } from '../utils'
 
 export const tuple =

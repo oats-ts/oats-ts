@@ -15,7 +15,6 @@ import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
-import { contentObject } from './contentObject'
 
 const requestBodyShape: ShapeInput<RequestBodyObject> = {
   description: optional(string()),
@@ -36,7 +35,7 @@ export function requestBodyObject(
     data,
   )(() =>
     ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
-      config.contentObject(data.content, context, config),
+      config.contentObject(data.content ?? {}, context, config),
     ),
   )
 }

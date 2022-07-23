@@ -25,7 +25,7 @@ export const arraySchemaObject =
       data,
     )(() =>
       ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
-        typeof data.items === 'boolean' ? [] : referenceable(items)(data.items, context, config),
+        typeof data.items === 'boolean' ? [] : referenceable(items)(data.items!, context, config),
       ),
     )
   }

@@ -22,7 +22,7 @@ export function responseObject(
     data,
   )(() =>
     ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
-      config.contentObject(data.content, context, config),
+      config.contentObject(data.content ?? {}, context, config),
     ),
   )
 }

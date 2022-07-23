@@ -37,6 +37,6 @@ export function pathParameterObject(
 ): Issue[] {
   const { uriOf } = context
   return ordered(() => validator(data, uriOf(data), validatorConfig))(() =>
-    referenceable(parameterObjectSchema)(data.schema, context, config),
+    referenceable(parameterObjectSchema)(data.schema!, context, config),
   )
 }

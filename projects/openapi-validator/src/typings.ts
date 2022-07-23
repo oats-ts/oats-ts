@@ -31,7 +31,6 @@ export type OpenAPIValidatorConfig = {
   requestBodyObject: OpenAPIValidatorFn<RequestBodyObject>
   responseObject: OpenAPIValidatorFn<ResponseObject>
   schemaObject: OpenAPIValidatorFn<SchemaObject>
-  headerObject: OpenAPIValidatorFn<HeaderObject>
   componentsObject: OpenAPIValidatorFn<HeaderObject>
   responsesObject: OpenAPIValidatorFn<ResponsesObject>
   contentObject: OpenAPIValidatorFn<ContentObject>
