@@ -11,7 +11,7 @@ export function getContentTypeBasedValidatorsAst(
 ): PropertyAssignment[] {
   const { referenceOf } = context
   return entries(content || {}).map(([contentType, mediaTypeObj]) => {
-    const expression: Expression = referenceOf(mediaTypeObj.schema, 'json-schema/type-validator')
+    const expression: Expression = referenceOf(mediaTypeObj.schema, 'oats/type-validator')
     const validatorExpr = required
       ? expression
       : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [expression])

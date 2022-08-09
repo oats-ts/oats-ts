@@ -10,9 +10,9 @@ export function getApiTypeImports(
   params: boolean,
 ): ImportDeclaration[] {
   const { dependenciesOf, pathOf } = context
-  const apiPath = pathOf(doc, 'openapi/api-type')
+  const apiPath = pathOf(doc, 'oats/api-type')
   return flatMap(operations, (data) => [
-    ...(params ? dependenciesOf(apiPath, data.operation, 'openapi/request-server-type') : []),
-    ...dependenciesOf(apiPath, data.operation, 'openapi/response-type'),
+    ...(params ? dependenciesOf(apiPath, data.operation, 'oats/request-server-type') : []),
+    ...dependenciesOf(apiPath, data.operation, 'oats/response-type'),
   ])
 }

@@ -1,6 +1,6 @@
 import { GeneratorContext, ReadOutput, HasSchemas } from '@oats-ts/model-common'
 
-export type JsonSchemaGeneratorTarget = 'json-schema/type' | 'json-schema/type-guard' | 'json-schema/type-validator'
+export type JsonSchemaGeneratorTarget = 'oats/type' | 'oats/type-guard' | 'oats/type-validator'
 
 export type JsonSchemaGeneratorContext = GeneratorContext<HasSchemas, JsonSchemaGeneratorTarget>
 

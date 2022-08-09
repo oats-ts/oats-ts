@@ -14,7 +14,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   TypesGeneratorConfig
 > {
   public name(): JsonSchemaGeneratorTarget {
-    return 'json-schema/type'
+    return 'oats/type'
   }
 
   public consumes(): JsonSchemaGeneratorTarget[] {
@@ -34,7 +34,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(schema, 'json-schema/type')
+    const path = this.context.pathOf(schema, 'oats/type')
     return success(
       createSourceFile(path, getTypeImports(path, schema, this.context, false), [
         getNamedTypeAst(schema, this.context, this.config),

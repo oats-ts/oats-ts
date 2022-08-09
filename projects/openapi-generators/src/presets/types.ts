@@ -14,18 +14,18 @@ import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
 
 type GeneratorConfigs = {
-  'openapi/api-type': ApiTypeGeneratorConfig
-  'openapi/express-route': ExpressRoutesGeneratorConfig
-  'openapi/operation': OperationsGeneratorConfig
-  'openapi/path-type': ParameterTypesGeneratorConfig
-  'openapi/query-type': ParameterTypesGeneratorConfig
-  'openapi/request-headers-type': ParameterTypesGeneratorConfig
-  'openapi/sdk-type': SdkGeneratorConfig
-  'openapi/sdk-impl': SdkImplGeneratorConfig
-  'json-schema/type': TypesGeneratorConfig
-  'json-schema/type-guard': TypeGuardGeneratorConfig
-  'json-schema/type-validator': ValidatorsGeneratorConfig
-  'openapi/response-headers-type': ParameterTypesGeneratorConfig
+  'oats/api-type': ApiTypeGeneratorConfig
+  'oats/express-route': ExpressRoutesGeneratorConfig
+  'oats/operation': OperationsGeneratorConfig
+  'oats/path-type': ParameterTypesGeneratorConfig
+  'oats/query-type': ParameterTypesGeneratorConfig
+  'oats/request-headers-type': ParameterTypesGeneratorConfig
+  'oats/sdk-type': SdkGeneratorConfig
+  'oats/sdk-impl': SdkImplGeneratorConfig
+  'oats/type': TypesGeneratorConfig
+  'oats/type-guard': TypeGuardGeneratorConfig
+  'oats/type-validator': ValidatorsGeneratorConfig
+  'oats/response-headers-type': ParameterTypesGeneratorConfig
 }
 
 export type PresetGeneratorConfiguration = {

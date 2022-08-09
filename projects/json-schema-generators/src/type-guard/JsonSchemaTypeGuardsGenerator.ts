@@ -15,11 +15,11 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
   TypeGuardGeneratorConfig
 > {
   public name(): JsonSchemaGeneratorTarget {
-    return 'json-schema/type-guard'
+    return 'oats/type-guard'
   }
 
   public consumes(): JsonSchemaGeneratorTarget[] {
-    return ['json-schema/type']
+    return ['oats/type']
   }
 
   public runtimeDependencies(): string[] {
@@ -34,8 +34,8 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(schema, 'json-schema/type-guard')
-    const typeImports = this.context.dependenciesOf(path, schema, 'json-schema/type')
+    const path = this.context.pathOf(schema, 'oats/type-guard')
+    const typeImports = this.context.dependenciesOf(path, schema, 'oats/type')
     return success(
       createSourceFile(
         path,

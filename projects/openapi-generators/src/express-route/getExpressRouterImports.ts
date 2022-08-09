@@ -13,10 +13,10 @@ export function getExpressRouterImports(
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
   const { pathOf, dependenciesOf, document } = context
-  const path = pathOf(operation.operation, 'openapi/express-route')
+  const path = pathOf(operation.operation, 'oats/express-route')
   const bodyTypesImports = flatMap(
     values(getRequestBodyContent(operation, context)).filter((mediaType) => !isNil(mediaType?.schema)),
-    (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'json-schema/type'),
+    (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'oats/type'),
   )
   return [
     getNamedImports(RuntimePackages.Http.name, [
@@ -30,13 +30,13 @@ export function getExpressRouterImports(
       RuntimePackages.Express.Response,
       RuntimePackages.Express.NextFunction,
     ]),
-    ...dependenciesOf(path, document, 'openapi/api-type'),
-    ...dependenciesOf(path, operation.operation, 'openapi/path-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'openapi/query-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'openapi/request-headers-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'openapi/request-body-validator'),
-    ...dependenciesOf(path, operation.operation, 'openapi/request-server-type'),
-    ...dependenciesOf(path, operation.operation, 'openapi/response-headers-serializer'),
+    ...dependenciesOf(path, document, 'oats/api-type'),
+    ...dependenciesOf(path, operation.operation, 'oats/path-deserializer'),
+    ...dependenciesOf(path, operation.operation, 'oats/query-deserializer'),
+    ...dependenciesOf(path, operation.operation, 'oats/request-headers-deserializer'),
+    ...dependenciesOf(path, operation.operation, 'oats/request-body-validator'),
+    ...dependenciesOf(path, operation.operation, 'oats/request-server-type'),
+    ...dependenciesOf(path, operation.operation, 'oats/response-headers-serializer'),
     ...bodyTypesImports,
   ]
 }

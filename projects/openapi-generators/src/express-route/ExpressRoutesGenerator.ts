@@ -10,20 +10,20 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class ExpressRoutesGenerator extends OperationBasedCodeGenerator<ExpressRoutesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/express-route'
+    return 'oats/express-route'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return [
-      'json-schema/type',
-      'openapi/request-server-type',
-      'openapi/response-type',
-      'openapi/api-type',
-      'openapi/path-deserializer',
-      'openapi/query-deserializer',
-      'openapi/request-headers-deserializer',
-      'openapi/response-headers-serializer',
-      'openapi/request-body-validator',
+      'oats/type',
+      'oats/request-server-type',
+      'oats/response-type',
+      'oats/api-type',
+      'oats/path-deserializer',
+      'oats/query-deserializer',
+      'oats/request-headers-deserializer',
+      'oats/response-headers-serializer',
+      'oats/request-body-validator',
     ]
   }
 

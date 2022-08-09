@@ -26,7 +26,7 @@ export function getExpressRouteAst(
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          nameOf(operation, 'openapi/express-route'),
+          nameOf(operation, 'oats/express-route'),
           undefined,
           factory.createTypeReferenceNode(RuntimePackages.Express.Router),
           routeAst,

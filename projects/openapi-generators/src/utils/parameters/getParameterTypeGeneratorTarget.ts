@@ -4,11 +4,11 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 export function getParameterTypeGeneratorTarget(location: ParameterLocation): OpenAPIGeneratorTarget {
   switch (location) {
     case 'header':
-      return 'openapi/request-headers-type'
+      return 'oats/request-headers-type'
     case 'path':
-      return 'openapi/path-type'
+      return 'oats/path-type'
     case 'query':
-      return 'openapi/query-type'
+      return 'oats/query-type'
     case 'cookie':
       throw new TypeError(`cookie parameters are not supported`)
   }

@@ -13,7 +13,7 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{
   }
 
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/express-cors-middleware'
+    return 'oats/express-cors-middleware'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {

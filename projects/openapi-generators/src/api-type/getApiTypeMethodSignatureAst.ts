@@ -18,18 +18,18 @@ export function getApiTypeMethodSignatureAst(
           undefined,
           'request',
           undefined,
-          referenceOf(data.operation, 'openapi/request-server-type'),
+          referenceOf(data.operation, 'oats/request-server-type'),
         ),
       ]
     : []
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
+    factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-type')),
   ])
 
   const node = factory.createMethodSignature(
     [],
-    nameOf(data.operation, 'openapi/operation'),
+    nameOf(data.operation, 'oats/operation'),
     undefined,
     [],
     parameters,

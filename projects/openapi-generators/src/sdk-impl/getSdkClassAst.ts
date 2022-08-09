@@ -49,11 +49,11 @@ export function getSdkClassAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'openapi/sdk-impl'),
+    nameOf(document, 'oats/sdk-impl'),
     [],
     [
       factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-        factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'openapi/sdk-type')), []),
+        factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'oats/sdk-type')), []),
       ]),
     ],
     [configField, constructor, ...operations.map((operation) => getSdkClassMethodAst(operation, context))],

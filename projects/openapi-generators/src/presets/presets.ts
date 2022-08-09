@@ -2,40 +2,40 @@ import { createPreset } from './createPreset'
 import { PresetGeneratorConfiguration } from './types'
 
 export const commonConfig: PresetGeneratorConfiguration = {
-  'json-schema/type': true,
-  'json-schema/type-validator': true,
-  'json-schema/type-guard': true,
-  'openapi/query-type': true,
-  'openapi/path-type': true,
-  'openapi/request-headers-type': true,
-  'openapi/response-headers-type': true,
-  'openapi/response-type': true,
+  'oats/type': true,
+  'oats/type-validator': true,
+  'oats/type-guard': true,
+  'oats/query-type': true,
+  'oats/path-type': true,
+  'oats/request-headers-type': true,
+  'oats/response-headers-type': true,
+  'oats/response-type': true,
 }
 
 export const serverOnlyConfig: PresetGeneratorConfiguration = {
-  'openapi/request-server-type': true,
-  'openapi/request-body-validator': true,
-  'openapi/response-headers-serializer': true,
-  'openapi/path-deserializer': true,
-  'openapi/query-deserializer': true,
-  'openapi/request-headers-deserializer': true,
-  'openapi/api-type': true,
-  'openapi/express-route': true,
-  'openapi/express-routes-type': true,
-  'openapi/express-route-factory': true,
-  'openapi/express-cors-middleware': true,
+  'oats/request-server-type': true,
+  'oats/request-body-validator': true,
+  'oats/response-headers-serializer': true,
+  'oats/path-deserializer': true,
+  'oats/query-deserializer': true,
+  'oats/request-headers-deserializer': true,
+  'oats/api-type': true,
+  'oats/express-route': true,
+  'oats/express-routes-type': true,
+  'oats/express-route-factory': true,
+  'oats/express-cors-middleware': true,
 }
 
 export const clientOnlyConfig: PresetGeneratorConfiguration = {
-  'openapi/request-type': true,
-  'openapi/response-body-validator': true,
-  'openapi/response-headers-deserializer': true,
-  'openapi/path-serializer': true,
-  'openapi/query-serializer': true,
-  'openapi/request-headers-serializer': true,
-  'openapi/operation': true,
-  'openapi/sdk-type': true,
-  'openapi/sdk-impl': true,
+  'oats/request-type': true,
+  'oats/response-body-validator': true,
+  'oats/response-headers-deserializer': true,
+  'oats/path-serializer': true,
+  'oats/query-serializer': true,
+  'oats/request-headers-serializer': true,
+  'oats/operation': true,
+  'oats/sdk-type': true,
+  'oats/sdk-impl': true,
 }
 
 const server = createPreset('server', {

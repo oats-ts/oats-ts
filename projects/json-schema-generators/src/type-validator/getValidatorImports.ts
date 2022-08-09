@@ -40,7 +40,7 @@ export function collectReferenceImports(
 ): void {
   const { nameOf, dereference } = context
   const schema = dereference(data)
-  if (!isNil(nameOf(schema, 'json-schema/type-validator'))) {
+  if (!isNil(nameOf(schema, 'oats/type-validator'))) {
     names.add(RuntimePackages.Validators.lazy)
     refs.add(data.$ref)
   } else {
@@ -241,7 +241,7 @@ export function getValidatorImports(
         ]),
     ...getModelImports<JsonSchemaGeneratorTarget>(
       fromPath,
-      'json-schema/type-validator',
+      'oats/type-validator',
       refs.map((ref) => dereference<SchemaObject>(ref)),
       context,
     ),

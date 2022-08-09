@@ -16,11 +16,11 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/request-body-validator'
+    return 'oats/request-body-validator'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type', 'json-schema/type-validator']
+    return ['oats/type', 'oats/type-validator']
   }
 
   public runtimeDependencies(): string[] {
@@ -39,7 +39,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     const body = this.context.dereference(data.operation.requestBody)
     const needsOptional = !Boolean(body?.required)
     const dependencies = [
-      ...flatMap(content, ([, schema]) => this.context.dependenciesOf(path, schema, 'json-schema/type-validator')),
+      ...flatMap(content, ([, schema]) => this.context.dependenciesOf(path, schema, 'oats/type-validator')),
       ...(needsOptional
         ? [getNamedImports(RuntimePackages.Validators.name, [RuntimePackages.Validators.optional])]
         : []),

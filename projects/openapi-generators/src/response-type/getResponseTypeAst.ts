@@ -45,14 +45,14 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
     const knownStatusCodes = responses.map(({ statusCode }) => statusCode).filter((s) => s !== 'default')
     const responseTypes = responses.map(({ mediaType, schema, statusCode, headers }) => {
       const hasResponseHeaders = keys(headers || {}).length > 0
-      const bodyType = referenceOf<TypeNode>(schema, 'json-schema/type')
+      const bodyType = referenceOf<TypeNode>(schema, 'oats/type')
       const statusCodeType =
         statusCode === 'default'
           ? createDefaultStatusCodeType(knownStatusCodes)
           : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
       const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
       const headersType = hasResponseHeaders
-        ? factory.createTypeReferenceNode(context.nameOf([data.operation, statusCode], 'openapi/response-headers-type'))
+        ? factory.createTypeReferenceNode(context.nameOf([data.operation, statusCode], 'oats/response-headers-type'))
         : undefined
 
       return createResponseTypeLiteral(mediaTypeType, statusCodeType, bodyType, headersType)
@@ -64,7 +64,7 @@ export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGenera
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    factory.createIdentifier(context.nameOf(data.operation, 'openapi/response-type')),
+    factory.createIdentifier(context.nameOf(data.operation, 'oats/response-type')),
     undefined,
     types.length === 1 ? head(types)! : factory.createUnionTypeNode(types),
   )

@@ -10,11 +10,11 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/request-type'
+    return 'oats/request-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type', 'openapi/request-headers-type', 'openapi/query-type', 'openapi/path-type']
+    return ['oats/type', 'oats/request-headers-type', 'oats/query-type', 'oats/path-type']
   }
 
   public runtimeDependencies(): string[] {
@@ -26,9 +26,9 @@ export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(data.operation, 'openapi/request-type')
+    const path = this.context.pathOf(data.operation, 'oats/request-type')
     const ast = getRequestTypeAst(
-      this.context.nameOf(data.operation, 'openapi/request-type'),
+      this.context.nameOf(data.operation, 'oats/request-type'),
       data,
       this.context,
       requestPropertyFactory,

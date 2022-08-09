@@ -14,7 +14,7 @@ export function getSdkTypeAst(
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'openapi/sdk-type'),
+    nameOf(document, 'oats/sdk-type'),
     [],
     factory.createTypeLiteralNode(
       operations.map((operation) => getSdkTypeMethodSignatureAst(operation, context, config)),

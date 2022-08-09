@@ -16,11 +16,11 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   ValidatorsGeneratorConfig
 > {
   public name(): JsonSchemaGeneratorTarget {
-    return 'json-schema/type-validator'
+    return 'oats/type-validator'
   }
 
   public consumes(): JsonSchemaGeneratorTarget[] {
-    return ['json-schema/type']
+    return ['oats/type']
   }
 
   public runtimeDependencies(): string[] {
@@ -39,7 +39,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     const name = this.context.nameOf(schema)
     return isNil(name)
       ? getRightHandSideValidatorAst(input, this.context, this.config)
-      : factory.createIdentifier(this.context.nameOf(schema, 'json-schema/type-validator'))
+      : factory.createIdentifier(this.context.nameOf(schema, 'oats/type-validator'))
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
@@ -47,7 +47,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(schema, 'json-schema/type-validator')
+    const path = this.context.pathOf(schema, 'oats/type-validator')
     return success(
       createSourceFile(path, getValidatorImports(path, schema, this.context, this.config), [
         getValidatorAst(schema, this.context, this.config),

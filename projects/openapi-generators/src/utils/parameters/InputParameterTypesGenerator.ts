@@ -35,7 +35,7 @@ export class InputParameterTypesGenerator extends OperationBasedCodeGenerator<Pa
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type']
+    return ['oats/type']
   }
 
   public runtimeDependencies(): string[] {

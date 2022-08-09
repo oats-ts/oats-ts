@@ -13,7 +13,7 @@ export function getMainRouteFactoryAst(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    factory.createIdentifier(nameOf(document, 'openapi/express-route-factory')),
+    factory.createIdentifier(nameOf(document, 'oats/express-route-factory')),
     undefined,
     [
       factory.createParameterDeclaration(
@@ -22,7 +22,7 @@ export function getMainRouteFactoryAst(
         undefined,
         factory.createIdentifier(RouterNames.api),
         undefined,
-        factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type')),
+        factory.createTypeReferenceNode(referenceOf(document, 'oats/api-type')),
         undefined,
       ),
       factory.createParameterDeclaration(
@@ -46,7 +46,7 @@ export function getMainRouteFactoryAst(
         factory.createIdentifier(RouterNames.routes),
         undefined,
         factory.createTypeReferenceNode(factory.createIdentifier('Partial'), [
-          referenceOf(document, 'openapi/express-routes-type'),
+          referenceOf(document, 'oats/express-routes-type'),
         ]),
         factory.createObjectLiteralExpression([], false),
       ),
@@ -135,10 +135,10 @@ export function getMainRouteFactoryAst(
                 return factory.createBinaryExpression(
                   factory.createPropertyAccessExpression(
                     factory.createIdentifier(RouterNames.routes),
-                    referenceOf(operation, 'openapi/express-route'),
+                    referenceOf(operation, 'oats/express-route'),
                   ),
                   factory.createToken(SyntaxKind.QuestionQuestionToken),
-                  referenceOf(operation, 'openapi/express-route'),
+                  referenceOf(operation, 'oats/express-route'),
                 )
               }),
             ],

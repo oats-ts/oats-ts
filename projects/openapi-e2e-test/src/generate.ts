@@ -67,10 +67,10 @@ export async function generateCode(url: string, codePath: string) {
         pathProvider: pathProviders.singleFile(codePath),
         children: presets.fullStack({
           overrides: {
-            'json-schema/type-guard': {
+            'oats/type-guard': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
             },
-            'json-schema/type-validator': {
+            'oats/type-validator': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
             },
           },

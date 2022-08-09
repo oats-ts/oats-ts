@@ -9,11 +9,11 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/response-type'
+    return 'oats/response-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type', 'openapi/response-headers-type']
+    return ['oats/type', 'oats/response-headers-type']
   }
 
   public runtimeDependencies(): string[] {
@@ -32,8 +32,8 @@ export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
         path,
         [
           ...flatMap(responses, ({ schema, statusCode }) => [
-            ...this.context.dependenciesOf(path, schema, 'json-schema/type'),
-            ...this.context.dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),
+            ...this.context.dependenciesOf(path, schema, 'oats/type'),
+            ...this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
           ]),
         ],
         [getReturnTypeAst(data, this.context)],

@@ -9,10 +9,10 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class RequestHeadersSerializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/request-headers-serializer'
+    return 'oats/request-headers-serializer'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/request-headers-type']
+    return ['oats/request-headers-type']
   }
   public runtimeDependencies(): string[] {
     return [RuntimePackages.ParameterSerialization.name]
@@ -30,7 +30,7 @@ export class RequestHeadersSerializersGenerator extends OperationBasedCodeGenera
             RuntimePackages.ParameterSerialization.dsl,
             RuntimePackages.ParameterSerialization.createHeaderSerializer,
           ]),
-          ...this.context.dependenciesOf(path, data.operation, 'openapi/request-headers-type'),
+          ...this.context.dependenciesOf(path, data.operation, 'oats/request-headers-type'),
         ],
         [
           factory.createVariableStatement(
@@ -43,7 +43,7 @@ export class RequestHeadersSerializersGenerator extends OperationBasedCodeGenera
                   undefined,
                   factory.createCallExpression(
                     factory.createIdentifier(RuntimePackages.ParameterSerialization.createHeaderSerializer),
-                    [this.context.referenceOf(data.operation, 'openapi/request-headers-type')],
+                    [this.context.referenceOf(data.operation, 'oats/request-headers-type')],
                     [getDslObjectAst(data.header, this.context)],
                   ),
                 ),

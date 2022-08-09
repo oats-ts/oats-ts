@@ -13,7 +13,7 @@ export function getResponseHeadersSerializerAst(data: EnhancedOperation, context
         status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
         factory.createCallExpression(
           factory.createIdentifier(RuntimePackages.ParameterSerialization.createHeaderSerializer),
-          [context.referenceOf([data.operation, status], 'openapi/response-headers-type')],
+          [context.referenceOf([data.operation, status], 'oats/response-headers-type')],
           [getDslObjectAst(values(headers), context)],
         ),
       )
@@ -24,7 +24,7 @@ export function getResponseHeadersSerializerAst(data: EnhancedOperation, context
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          context.nameOf(data.operation, 'openapi/response-headers-serializer'),
+          context.nameOf(data.operation, 'oats/response-headers-serializer'),
           undefined,
           undefined,
           factory.createAsExpression(

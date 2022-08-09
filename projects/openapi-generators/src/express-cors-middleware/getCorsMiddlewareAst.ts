@@ -130,7 +130,7 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          factory.createIdentifier(nameOf(document, 'openapi/express-cors-middleware')),
+          factory.createIdentifier(nameOf(document, 'oats/express-cors-middleware')),
           undefined,
           undefined,
           factory.createArrowFunction(

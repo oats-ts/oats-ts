@@ -1,7 +1,7 @@
 import { configure } from '../configure'
 import { string, number, boolean, object, array } from './type'
 
-describe('json-schema/type', () => {
+describe('type', () => {
   it('string', () => {
     const v = configure(string())
     expect(v('cat')).toHaveLength(0)

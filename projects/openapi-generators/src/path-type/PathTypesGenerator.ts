@@ -4,6 +4,6 @@ import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 
 export class PathTypesGenerator extends InputParameterTypesGenerator {
   constructor(config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>) {
-    super(config, 'openapi/path-type', 'path')
+    super(config, 'oats/path-type', 'path')
   }
 }

@@ -10,10 +10,10 @@ export function getSdkTypeImports(
   params: boolean,
 ): ImportDeclaration[] {
   const { dependenciesOf, pathOf } = context
-  const apiPath = pathOf(doc, 'openapi/sdk-type')
+  const apiPath = pathOf(doc, 'oats/sdk-type')
   const imports = flatMap(operations, (data) => [
-    ...(params ? dependenciesOf(apiPath, data.operation, 'openapi/request-type') : []),
-    ...dependenciesOf(apiPath, data.operation, 'openapi/response-type'),
+    ...(params ? dependenciesOf(apiPath, data.operation, 'oats/request-type') : []),
+    ...dependenciesOf(apiPath, data.operation, 'oats/response-type'),
   ])
   return operations.length > 0 ? [...imports] : imports
 }
