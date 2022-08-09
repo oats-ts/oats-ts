@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/oats-ts",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://oats-ts.github.io/docs",
@@ -34,8 +34,8 @@
     "ts-jest": "27.0.2"
   },
   "dependencies": {
-    "@oats-ts/try": "0.0.32",
-    "@oats-ts/validators": "0.0.32",
+    "@oats-ts/try": "0.0.33",
+    "@oats-ts/validators": "0.0.33",
     "eventemitter3": "4.0.7",
     "lodash": "4.17.21",
     "nanoid": "3.3.4",
