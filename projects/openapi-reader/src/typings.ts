@@ -2,26 +2,36 @@ import { ContentReader } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
 
+/**
+ * @param path The input path
+ * @returns A sanitized, fully qualified URI
+ */
+export type SanitizeFn = (path: string) => Promise<Try<string>>
+/**
+ * @param uri The full URI of the document.
+ * @returns The contents of the document at the URI as string.
+ */
+export type ReadFn = (uri: string) => Promise<Try<string>>
+/**
+ * @param uri The full URI of the document parsed.
+ * @param input The string contents of an OpenAPI document
+ * @returns The parsed openapi document
+ */
+export type ParseFn = (uri: string, input: string) => Promise<Try<OpenAPIObject>>
+
+/** In memory URI => string content mapping */
+export type MemoryReadContent = { [uri: string]: string }
+
 /** Configuration object for reading OpenAPI documents. */
 export type OpenAPIReadConfig = {
   /** The path of the documents. Either a full URI or local file path. */
   path: string
-  /**
-   * @param path The input path
-   * @returns A sanitized, fully qualified URI
-   */
-  sanitize(path: string): Promise<Try<string>>
-  /**
-   * @param uri The full URI of the document.
-   * @returns The contents of the document at the URI as string.
-   */
-  read(uri: string): Promise<Try<string>>
-  /**
-   * @param uri The full URI of the document parsed.
-   * @param input The string contents of an OpenAPI document
-   * @returns The parsed openapi document
-   */
-  parse(uri: string, input: string): Promise<Try<OpenAPIObject>>
+  /** Sanitizes the given URI or path, and turns it into a fully qualified URI */
+  sanitize: SanitizeFn
+  /** Reads the content of a fully qualified URI, and returns it as string */
+  read: ReadFn
+  /** Parses the given string content into an in memory object tree. */
+  parse: ParseFn
 }
 
 /** Globaly used utility to work with URIs found in OpenAPI refs and discriminators. */
@@ -71,16 +81,11 @@ export type SchemeConfig = {
   file: boolean
 }
 
-export type TestReaderConfig = {
-  path: string
-  content: { [uri: string]: string }
-  httpRefs?: boolean
-  httpsRefs?: boolean
-  fileRefs?: boolean
-}
-
 export type ReaderFactory = (path: string) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
-export type TestReaderFactory = (config: TestReaderConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+export type MemoryReaderFactory = (
+  path: string,
+  content: MemoryReadContent,
+) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
 
 export type ReaderFactoriesByFormat<T> = {
   json: T
@@ -88,11 +93,21 @@ export type ReaderFactoriesByFormat<T> = {
   mixed: T
 }
 
-export type Readers = {
-  custom: (config: OpenAPIReadConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
-  test: ReaderFactoriesByFormat<TestReaderFactory>
+export type MemoryReaders = {
+  http: ReaderFactoriesByFormat<MemoryReaderFactory>
+  https: ReaderFactoriesByFormat<MemoryReaderFactory>
+  file: ReaderFactoriesByFormat<MemoryReaderFactory>
+  mixed: ReaderFactoriesByFormat<MemoryReaderFactory>
+}
+
+export type DefaultReaders = {
   http: ReaderFactoriesByFormat<ReaderFactory>
   https: ReaderFactoriesByFormat<ReaderFactory>
   file: ReaderFactoriesByFormat<ReaderFactory>
   mixed: ReaderFactoriesByFormat<ReaderFactory>
+}
+
+export type Readers = DefaultReaders & {
+  custom: (config: OpenAPIReadConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
+  memory: MemoryReaders
 }
