@@ -1,6 +1,6 @@
 import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorNameProvider, NameProvider } from '@oats-ts/oats-ts'
+import { NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { GeneratorContext } from '@oats-ts/model-common'
 
@@ -13,10 +13,10 @@ export type PathProvider = (input: any, target: string) => string
 
 export type NameByTarget = Record<OpenAPIGeneratorTarget, string>
 
-export type PathDelegate = (basePath: string, input: any, name: NameProvider, target: string) => string
+export type PathDelegate = (basePath: string, input: any, target: string, helper: PathProviderHelper) => string
 
 export type DelegatingPathProviderInput = Record<OpenAPIGeneratorTarget, PathDelegate>
-export type DelegatingNameProviderInput = Record<OpenAPIGeneratorTarget, GeneratorNameProvider>
+export type DelegatingNameProviderInput = Record<OpenAPIGeneratorTarget, NameProvider>
 
 export type OpenAPIGeneratorTarget =
   // Common

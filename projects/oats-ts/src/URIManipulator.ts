@@ -1,10 +1,10 @@
-import { URIManipulatorType } from '../typings'
+import { URIManipulatorType } from './typings'
 import URI, { encode, decode } from 'urijs'
 import { drop, isEmpty } from 'lodash'
 
 /** Default implementation of URIManipulator. Extensible class. */
 export class URIManipulator implements URIManipulatorType {
-  protected setFragments = (uri: string, fragments: string[]): string => {
+  setFragments = (uri: string, fragments: string[]): string => {
     const fragment = fragments.length > 0 ? `/${fragments.map(encode).join('/')}` : null
     return new URI(uri).fragment(fragment!).valueOf()
   }

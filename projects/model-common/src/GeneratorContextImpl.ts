@@ -1,15 +1,19 @@
-import { CodeGenerator, GeneratorConfig } from '@oats-ts/oats-ts'
+import { CodeGenerator, GeneratorConfig, NameProviderHelper, PathProviderHelper } from '@oats-ts/oats-ts'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'
 import { isReferenceObject } from './isReferenceObject'
 import { GeneratorContext, ReadOutput } from './types'
+import { NameProviderHelperImpl } from './NameProviderHelperImpl'
+import { PathProviderHelperImpl } from './PathProviderHelperImpl'
 
 export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
   implements GeneratorContext<Doc, Target>
 {
   public readonly document: Doc
   public readonly documents: Doc[]
+  private nameProviderHelper: NameProviderHelper
+  private pathProviderHelper: PathProviderHelper
 
   constructor(
     private owner: CodeGenerator<any, any>,
@@ -19,6 +23,8 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
   ) {
     this.document = data.document
     this.documents = Array.from(data.documents.values())
+    this.nameProviderHelper = new NameProviderHelperImpl(data)
+    this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
   }
   dereference = <T>(input: string | ReferenceObject | T, deep?: boolean): T => {
     if (typeof input === 'string') {
@@ -33,7 +39,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     if (isNil(target)) {
       return originalName!
     }
-    const name = this.config.nameProvider(input, originalName, target)
+    const name = this.config.nameProvider(input, target, this.nameProviderHelper)
     if (isNil(name)) {
       try {
         throw new TypeError(`Name provider returned ${name} for "${target}" with input ${JSON.stringify(input)}`)
@@ -44,8 +50,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return name
   }
   pathOf = (input: any, target: Target): string => {
-    const nameProvider = (input: any, target: string) => this.nameOf(input, target as Target)
-    const path = this.config.pathProvider(input, nameProvider, target)
+    const path = this.config.pathProvider(input, target, this.pathProviderHelper)
     if (isNil(path)) {
       throw new TypeError(`Path provider returned ${path} for "${target}" with input ${JSON.stringify(input)}`)
     }

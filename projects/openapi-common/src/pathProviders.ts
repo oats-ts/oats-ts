@@ -1,4 +1,4 @@
-import { GeneratorPathProvider, NameProvider } from '@oats-ts/oats-ts'
+import { PathProvider, PathProviderHelper } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
 import { join, resolve } from 'path'
 import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, PathDelegate } from './typings'
@@ -36,8 +36,8 @@ const fileNameByTarget: NameByTarget = {
 
 const delegate =
   (folder: string): PathDelegate =>
-  (path: string, input: any, name: NameProvider, target: string) =>
-    resolve(join(...[path, ...(isNil(folder) ? [] : [folder]), `${name(input, target)}.ts`]))
+  (basePath: string, input: any, target: string, helper: PathProviderHelper) =>
+    resolve(join(...[basePath, ...(isNil(folder) ? [] : [folder]), `${helper.nameOf(input, target)}.ts`]))
 
 const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProviderInput => {
   const api = delegate('api')
@@ -100,7 +100,7 @@ export const pathProviders = {
    * @param fileName The name of the file.
    * @returns The path provider
    */
-  singleFile(fileName: string): GeneratorPathProvider {
+  singleFile(fileName: string): PathProvider {
     return () => resolve(fileName)
   },
 
@@ -110,9 +110,9 @@ export const pathProviders = {
    * @param fileNames (optional) An object, mapping from generator target => file name. You can overwrite default file names with this parameter.
    * @returns The path provider
    */
-  byTarget(folder: string, fileNames: Partial<NameByTarget> = {}): GeneratorPathProvider {
+  byTarget(folder: string, fileNames: Partial<NameByTarget> = {}): PathProvider {
     const mergedFileNames: NameByTarget = { ...fileNameByTarget, ...fileNames }
-    return (input: any, name: NameProvider, target: string) =>
+    return (input: any, target: string, helper: PathProviderHelper) =>
       resolve(join(folder, mergedFileNames[target as OpenAPIGeneratorTarget]))
   },
   /**
@@ -120,15 +120,16 @@ export const pathProviders = {
    * @param folder The root folder.
    * @returns The path provider
    */
-  byName(folder: string): GeneratorPathProvider {
-    return (input: any, name: NameProvider, target: string) => resolve(join(folder, `${name(input, target)}.ts`))
+  byName(folder: string): PathProvider {
+    return (input: any, target: string, helper: PathProviderHelper) =>
+      resolve(join(folder, `${helper.nameOf(input, target)}.ts`))
   },
   /**
    * Creates a default, recommended path provider. Splits files into topical hierarchy.
    * @param folder The root folder.
    * @returns The path provider
    */
-  default(folder: string): GeneratorPathProvider {
+  default(folder: string): PathProvider {
     return pathProviders.delegating(folder, fullStackDelegate)
   },
   /**
@@ -137,13 +138,13 @@ export const pathProviders = {
    * @param delegates The object mapping from generator target => delegate function
    * @returns The path provider.
    */
-  delegating(folder: string, delegates: DelegatingPathProviderInput): GeneratorPathProvider {
-    return (input: any, name: NameProvider, target: string): string => {
+  delegating(folder: string, delegates: DelegatingPathProviderInput): PathProvider {
+    return (input: any, target: string, helper: PathProviderHelper): string => {
       const delegate = delegates[target as OpenAPIGeneratorTarget]
       if (isNil(delegate)) {
         throw new TypeError(`No delegate for target "${target}".`)
       }
-      const path = delegate(folder, input, name, target)
+      const path = delegate(folder, input, target, helper)
       if (isNil(path)) {
         throw new TypeError(`Path provider delegate for "${target}" returned ${path} for ${JSON.stringify(input)}.`)
       }

@@ -1,4 +1,4 @@
-import { URIManipulator } from '@oats-ts/openapi-reader'
+import { URIManipulator } from '@oats-ts/oats-ts'
 import { DefaultConfig, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
 
 const { append } = new URIManipulator()

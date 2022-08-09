@@ -34,32 +34,6 @@ export type OpenAPIReadConfig = {
   parse: ParseFn
 }
 
-/** Globaly used utility to work with URIs found in OpenAPI refs and discriminators. */
-export type URIManipulatorType = {
-  /**
-   * @param path A URI fragment.
-   * @param segments Possibly other URI fragment pieces.
-   * @returns A URI fragment composed from the pieces
-   */
-  append(path: string, ...segments: (string | number)[]): string
-  /**
-   * @param ref A partial or full URI (possibly just a fragment).
-   * @param parent A full URI.
-   * @returns A resolved full URI.
-   */
-  resolve(ref: string, parent: string): string
-  /**
-   * @param path A full URI.
-   * @returns The URI without any fragments.
-   */
-  document(path: string): string
-  /**
-   * @param uri A full or partial URI.
-   * @returns It's fragments split by "/"
-   */
-  fragments(uri: string): string[]
-}
-
 export type OpenAPIReadOutput = {
   /** The full URI of the root document */
   documentUri: string
