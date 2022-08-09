@@ -14,11 +14,11 @@ export function getTypeImports(
   const { nameOf } = context
   const name = nameOf(schema)
   if (referenceOnly && !isNil(name)) {
-    return getModelImports<JsonSchemaGeneratorTarget>(fromPath, 'json-schema/type', [schema], context)
+    return getModelImports<JsonSchemaGeneratorTarget>(fromPath, 'oats/type', [schema], context)
   }
   return getModelImports<JsonSchemaGeneratorTarget>(
     fromPath,
-    'json-schema/type',
+    'oats/type',
     getReferencedNamedSchemas(schema, context),
     context,
   )

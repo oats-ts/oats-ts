@@ -39,7 +39,7 @@ export function getOperationBodyAst(
                         factory.createIdentifier(OperationNames.request),
                         factory.createIdentifier(OperationNames.path),
                       ),
-                      referenceOf(data.operation, 'openapi/path-serializer'),
+                      referenceOf(data.operation, 'oats/path-serializer'),
                     ],
                   ),
                 ),
@@ -71,7 +71,7 @@ export function getOperationBodyAst(
                         factory.createIdentifier(OperationNames.request),
                         factory.createIdentifier(OperationNames.query),
                       ),
-                      referenceOf(data.operation, 'openapi/query-serializer'),
+                      referenceOf(data.operation, 'oats/query-serializer'),
                     ],
                   ),
                 ),
@@ -136,7 +136,7 @@ export function getOperationBodyAst(
                     )
                   : factory.createIdentifier('undefined'),
                 data.header.length > 0
-                  ? referenceOf(data.operation, 'openapi/request-headers-serializer')
+                  ? referenceOf(data.operation, 'oats/request-headers-serializer')
                   : factory.createIdentifier('undefined'),
               ],
             ),
@@ -306,7 +306,7 @@ export function getOperationBodyAst(
                 factory.createIdentifier(OperationNames.rawResponse),
                 factory.createIdentifier(OperationNames.statusCode),
                 hasResponseHeaders(data.operation, context)
-                  ? referenceOf(data.operation, 'openapi/response-headers-deserializer')
+                  ? referenceOf(data.operation, 'oats/response-headers-deserializer')
                   : factory.createIdentifier('undefined'),
               ],
             ),
@@ -337,7 +337,7 @@ export function getOperationBodyAst(
                 factory.createIdentifier(OperationNames.statusCode),
                 factory.createIdentifier(OperationNames.mimeType),
                 config.validate && hasResponses(data.operation, context)
-                  ? referenceOf(data.operation, 'openapi/response-body-validator')
+                  ? referenceOf(data.operation, 'oats/response-body-validator')
                   : factory.createIdentifier('undefined'),
               ],
             ),
@@ -369,7 +369,7 @@ export function getOperationBodyAst(
         ],
         true,
       ),
-      factory.createTypeReferenceNode(referenceOf(data.operation, 'openapi/response-type'), undefined),
+      factory.createTypeReferenceNode(referenceOf(data.operation, 'oats/response-type'), undefined),
     ),
   )
 

@@ -11,11 +11,11 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class RequestServerTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/request-server-type'
+    return 'oats/request-server-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type', 'openapi/request-headers-type', 'openapi/query-type', 'openapi/path-type']
+    return ['oats/type', 'oats/request-headers-type', 'oats/query-type', 'oats/path-type']
   }
 
   public runtimeDependencies(): string[] {

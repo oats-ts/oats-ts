@@ -5,9 +5,9 @@ import { RouterNames } from '../utils/RouterNames'
 import { isNil } from 'lodash'
 
 const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget | undefined> = {
-  query: 'openapi/query-deserializer',
-  header: 'openapi/request-headers-deserializer',
-  path: 'openapi/path-deserializer',
+  query: 'oats/query-deserializer',
+  header: 'oats/request-headers-deserializer',
+  path: 'oats/path-deserializer',
   cookie: undefined,
 }
 

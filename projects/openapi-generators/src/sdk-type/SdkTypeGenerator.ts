@@ -10,11 +10,11 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
 export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/sdk-type'
+    return 'oats/sdk-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/operation', 'openapi/request-type', 'openapi/response-type']
+    return ['oats/operation', 'oats/request-type', 'oats/response-type']
   }
 
   public runtimeDependencies(): string[] {

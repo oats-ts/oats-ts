@@ -2,7 +2,6 @@ import {
   EnumerationMessageData,
   LiteralMessageData,
   MinLengthMessageData,
-  RestrictKeysData,
   UnionMessageData,
   ValidatorType,
 } from '../typings'

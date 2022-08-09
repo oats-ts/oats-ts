@@ -8,7 +8,7 @@ export function getRequestBodyValidatorAst(data: EnhancedOperation, context: Ope
   const { operation } = data
   const body = dereference(data.operation.requestBody)
 
-  const varName = nameOf(operation, 'openapi/request-body-validator')
+  const varName = nameOf(operation, 'oats/request-body-validator')
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

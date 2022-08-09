@@ -12,9 +12,9 @@ export function getCommonImports(path: string, data: EnhancedOperation, context:
   const { operation } = data
 
   return [
-    ...flatMap(bodies, (schema) => dependenciesOf(path, schema, 'json-schema/type')),
-    ...dependenciesOf(path, operation, 'openapi/path-type'),
-    ...dependenciesOf(path, operation, 'openapi/query-type'),
-    ...dependenciesOf(path, operation, 'openapi/request-headers-type'),
+    ...flatMap(bodies, (schema) => dependenciesOf(path, schema, 'oats/type')),
+    ...dependenciesOf(path, operation, 'oats/path-type'),
+    ...dependenciesOf(path, operation, 'oats/query-type'),
+    ...dependenciesOf(path, operation, 'oats/request-headers-type'),
   ]
 }

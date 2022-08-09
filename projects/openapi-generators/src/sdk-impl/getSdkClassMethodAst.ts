@@ -9,7 +9,7 @@ export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
 
   const returnStatement = factory.createReturnStatement(
     factory.createCallExpression(
-      factory.createIdentifier(nameOf(data.operation, 'openapi/operation')),
+      factory.createIdentifier(nameOf(data.operation, 'oats/operation')),
       [],
       [
         ...(hasInput(data, context) ? [factory.createIdentifier('request')] : []),
@@ -22,12 +22,12 @@ export function getSdkClassMethodAst(data: EnhancedOperation, context: OpenAPIGe
     [],
     [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    nameOf(data.operation, 'openapi/operation'),
+    nameOf(data.operation, 'oats/operation'),
     undefined,
     [],
     getSdkMethodParameterAsts(data, context, false),
     factory.createTypeReferenceNode('Promise', [
-      factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
+      factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-type')),
     ]),
     factory.createBlock([returnStatement]),
   )

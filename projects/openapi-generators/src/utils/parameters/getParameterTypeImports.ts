@@ -16,5 +16,5 @@ export function getParameterTypeImports(
   const { operation } = data
   const path = pathOf(operation, getParameterTypeGeneratorTarget(location))
   const referencedSchemas = getReferencedNamedSchemas(getParameterSchemaObject(parameters, context), context)
-  return flatMap(referencedSchemas, (schema) => dependenciesOf(path, schema, 'json-schema/type'))
+  return flatMap(referencedSchemas, (schema) => dependenciesOf(path, schema, 'oats/type'))
 }

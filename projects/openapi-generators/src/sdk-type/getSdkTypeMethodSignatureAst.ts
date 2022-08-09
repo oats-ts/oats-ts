@@ -18,18 +18,18 @@ export function getSdkTypeMethodSignatureAst(
           undefined,
           'request',
           undefined,
-          factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/request-type')),
+          factory.createTypeReferenceNode(nameOf(data.operation, 'oats/request-type')),
         ),
       ]
     : []
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(nameOf(data.operation, 'openapi/response-type')),
+    factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-type')),
   ])
 
   const node = factory.createMethodSignature(
     [],
-    nameOf(data.operation, 'openapi/operation'),
+    nameOf(data.operation, 'oats/operation'),
     undefined,
     [],
     parameters,

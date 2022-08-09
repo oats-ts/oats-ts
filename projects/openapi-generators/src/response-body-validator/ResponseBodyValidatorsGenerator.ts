@@ -10,11 +10,11 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/response-body-validator'
+    return 'oats/response-body-validator'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type', 'json-schema/type-validator']
+    return ['oats/type', 'oats/type-validator']
   }
 
   public runtimeDependencies(): string[] {
@@ -22,10 +22,10 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(data.operation, 'openapi/response-body-validator')
+    const path = this.context.pathOf(data.operation, 'oats/response-body-validator')
     const responses = getEnhancedResponses(data.operation, this.context)
     const dependencies = [
-      ...flatMap(responses, ({ schema }) => this.context.dependenciesOf(path, schema, 'json-schema/type-validator')),
+      ...flatMap(responses, ({ schema }) => this.context.dependenciesOf(path, schema, 'oats/type-validator')),
     ]
     return success(createSourceFile(path, dependencies, [getResponseBodyValidatorAst(data, this.context)]))
   }

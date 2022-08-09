@@ -29,11 +29,11 @@ export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
   OpenAPIGeneratorContext
 > {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/response-headers-type'
+    return 'oats/response-headers-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type']
+    return ['oats/type']
   }
 
   public runtimeDependencies(): string[] {
@@ -67,7 +67,7 @@ export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
     return success(
       createSourceFile(
         fromPath,
-        [...flatMap(types, (type) => this.context.dependenciesOf(fromPath, type, 'json-schema/type'))],
+        [...flatMap(types, (type) => this.context.dependenciesOf(fromPath, type, 'oats/type'))],
         [
           factory.createTypeAliasDeclaration(
             [],

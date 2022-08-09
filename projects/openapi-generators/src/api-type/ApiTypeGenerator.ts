@@ -10,11 +10,11 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
 export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/api-type'
+    return 'oats/api-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/request-server-type', 'openapi/response-type']
+    return ['oats/request-server-type', 'oats/response-type']
   }
 
   public runtimeDependencies(): string[] {

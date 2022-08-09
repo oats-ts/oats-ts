@@ -4,6 +4,6 @@ import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 
 export class RequestHeadersTypesGenerator extends InputParameterTypesGenerator {
   constructor(config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>) {
-    super(config, 'openapi/request-headers-type', 'header')
+    super(config, 'oats/request-headers-type', 'header')
   }
 }

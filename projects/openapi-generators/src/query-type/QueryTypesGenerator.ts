@@ -4,6 +4,6 @@ import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 
 export class QueryTypesGenerator extends InputParameterTypesGenerator {
   constructor(config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>) {
-    super(config, 'openapi/query-type', 'query')
+    super(config, 'oats/query-type', 'query')
   }
 }

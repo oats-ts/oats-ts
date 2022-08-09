@@ -8,11 +8,11 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
 export class ExpressRoutesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/express-routes-type'
+    return 'oats/express-routes-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/express-route']
+    return ['oats/express-route']
   }
 
   public runtimeDependencies(): string[] {

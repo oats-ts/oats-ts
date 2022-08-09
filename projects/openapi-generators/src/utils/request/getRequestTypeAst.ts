@@ -21,7 +21,7 @@ function getBodyTypeProperties(
       body?.required ? undefined : factory.createToken(SyntaxKind.QuestionToken),
       factory.createLiteralTypeNode(factory.createStringLiteral(mimeType)),
     ),
-    createProperty('body', referenceOf(schema, 'json-schema/type'), operation, context),
+    createProperty('body', referenceOf(schema, 'oats/type'), operation, context),
   ]
 }
 

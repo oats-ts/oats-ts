@@ -16,18 +16,18 @@ import { ParameterTypesGeneratorConfig } from './utils/parameters/typings'
 import { SdkGeneratorConfig } from './utils/sdk/typings'
 import { group } from './group'
 
-function create(name: 'json-schema/type', config?: Config<TypesGeneratorConfig>): OpenAPIGenerator
-function create(name: 'json-schema/type-guard', config?: Config<TypeGuardGeneratorConfig>): OpenAPIGenerator
-function create(name: 'json-schema/type-validator', config?: Config<ValidatorsGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/api-type', config?: Config<ApiTypeGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/sdk-type', config?: Config<SdkGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/sdk-impl', config?: Config<SdkImplGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/express-route', config?: Config<ExpressRoutesGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/operation', config?: Config<OperationsGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/path-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/query-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/request-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
-function create(name: 'openapi/response-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/type', config?: Config<TypesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/type-guard', config?: Config<TypeGuardGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/type-validator', config?: Config<ValidatorsGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/api-type', config?: Config<ApiTypeGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/sdk-type', config?: Config<SdkGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/sdk-impl', config?: Config<SdkImplGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/express-route', config?: Config<ExpressRoutesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/operation', config?: Config<OperationsGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/path-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/query-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/request-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/response-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: OpenAPIGeneratorTarget, config?: Config): OpenAPIGenerator
 
 function create(name: OpenAPIGeneratorTarget, config?: Config): OpenAPIGenerator {

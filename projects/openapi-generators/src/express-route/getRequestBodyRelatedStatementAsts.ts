@@ -14,7 +14,7 @@ export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIG
     values(getRequestBodyContent(data, context))
       .map((mediaType) => mediaType.schema)
       .filter((schema) => !isNil(schema))
-      .map((schema) => referenceOf<TypeNode>(schema, 'json-schema/type')),
+      .map((schema) => referenceOf<TypeNode>(schema, 'oats/type')),
     isEqual,
   )
   switch (bodyTypes.length) {
@@ -95,7 +95,7 @@ export function getRequestBodyRelatedStatementAsts(
                 factory.createIdentifier(RouterNames.toolkit),
                 reqBody?.required ? factory.createTrue() : factory.createFalse(),
                 factory.createIdentifier(RouterNames.mimeType),
-                referenceOf(data.operation, 'openapi/request-body-validator'),
+                referenceOf(data.operation, 'oats/request-body-validator'),
               ],
             ),
           ),

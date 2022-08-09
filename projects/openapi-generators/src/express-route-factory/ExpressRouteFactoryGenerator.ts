@@ -9,10 +9,10 @@ import { ExpressRoutesGeneratorConfig } from '../express-route/typings'
 
 export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator<ExpressRoutesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/express-route-factory'
+    return 'oats/express-route-factory'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/express-route', 'openapi/express-routes-type', 'openapi/api-type']
+    return ['oats/express-route', 'oats/express-routes-type', 'oats/api-type']
   }
   public runtimeDependencies(): string[] {
     return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
@@ -27,16 +27,16 @@ export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator<Exp
           getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router]),
           getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ServerAdapter]),
           getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
-          ...getModelImports<OpenAPIGeneratorTarget>(path, 'openapi/api-type', [this.input.document], this.context),
+          ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context),
           ...getModelImports<OpenAPIGeneratorTarget>(
             path,
-            'openapi/express-routes-type',
+            'oats/express-routes-type',
             [this.input.document],
             this.context,
           ),
           ...getModelImports<OpenAPIGeneratorTarget>(
             path,
-            'openapi/express-route',
+            'oats/express-route',
             operations.map(({ operation }) => operation),
             this.context,
           ),

@@ -9,22 +9,22 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
   name(): OpenAPIGeneratorTarget {
-    return 'openapi/operation'
+    return 'oats/operation'
   }
 
   consumes(): OpenAPIGeneratorTarget[] {
-    const validatorDep: OpenAPIGeneratorTarget[] = ['openapi/response-body-validator']
+    const validatorDep: OpenAPIGeneratorTarget[] = ['oats/response-body-validator']
     return [
-      'json-schema/type',
-      'openapi/request-headers-type',
-      'openapi/query-type',
-      'openapi/path-type',
-      'openapi/response-type',
-      'openapi/request-type',
-      'openapi/request-headers-serializer',
-      'openapi/path-serializer',
-      'openapi/query-serializer',
-      'openapi/response-headers-deserializer',
+      'oats/type',
+      'oats/request-headers-type',
+      'oats/query-type',
+      'oats/path-type',
+      'oats/response-type',
+      'oats/request-type',
+      'oats/request-headers-serializer',
+      'oats/path-serializer',
+      'oats/query-serializer',
+      'oats/response-headers-deserializer',
       ...(this.config.validate ? validatorDep : []),
     ]
   }
@@ -38,7 +38,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(item.operation, 'openapi/operation')
+    const path = this.context.pathOf(item.operation, 'oats/operation')
     return success(
       createSourceFile(
         path,
@@ -47,14 +47,14 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
             RuntimePackages.Http.RawHttpRequest,
             RuntimePackages.Http.ClientAdapter,
           ]),
-          ...this.context.dependenciesOf(path, item.operation, 'openapi/request-type'),
-          ...this.context.dependenciesOf(path, item.operation, 'openapi/response-type'),
-          ...this.context.dependenciesOf(path, item.operation, 'openapi/path-serializer'),
-          ...this.context.dependenciesOf(path, item.operation, 'openapi/query-serializer'),
-          ...this.context.dependenciesOf(path, item.operation, 'openapi/request-headers-serializer'),
-          ...this.context.dependenciesOf(path, item.operation, 'openapi/response-headers-deserializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'oats/request-type'),
+          ...this.context.dependenciesOf(path, item.operation, 'oats/response-type'),
+          ...this.context.dependenciesOf(path, item.operation, 'oats/path-serializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'oats/query-serializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'oats/request-headers-serializer'),
+          ...this.context.dependenciesOf(path, item.operation, 'oats/response-headers-deserializer'),
           ...(this.config.validate
-            ? this.context.dependenciesOf(path, item.operation, 'openapi/response-body-validator')
+            ? this.context.dependenciesOf(path, item.operation, 'oats/response-body-validator')
             : []),
         ],
         [getOperationFunctionAst(item, this.context, this.config)],

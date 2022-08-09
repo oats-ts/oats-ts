@@ -15,11 +15,11 @@ import { getResponseHeadersDeserializerAst } from './getResponseHeadersDeseriali
 
 export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/response-headers-deserializer'
+    return 'oats/response-headers-deserializer'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['json-schema/type', 'openapi/response-headers-type']
+    return ['oats/type', 'oats/response-headers-type']
   }
 
   public runtimeDependencies(): string[] {
@@ -42,7 +42,7 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
             RuntimePackages.ParameterSerialization.createHeaderDeserializer,
           ]),
           ...flatMap(entries(headersByStatus), ([statusCode]) =>
-            this.context.dependenciesOf(path, [data.operation, statusCode], 'openapi/response-headers-type'),
+            this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
           ),
         ],
         [getResponseHeadersDeserializerAst(data, this.context)],

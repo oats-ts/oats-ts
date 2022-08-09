@@ -44,13 +44,6 @@ export type CodeGenerator<R, G> = {
   dependenciesOf(fromPath: string, input: any): any[]
 }
 
-/**
- * @param input The named object (schema, operation, parameter, etc).
- * @param target The generator target (type definition, operation, etc).
- * @returns The desired name for the object based on target
- */
-export type NameProvider = (input: any, target: string) => string | undefined
-
 /** Configuration object for generating code from OpenAPI documents. */
 export type GeneratorConfig = {
   /**
@@ -60,19 +53,65 @@ export type GeneratorConfig = {
    * @param target The generator target (type definition, operation, etc).
    * @returns The desired name based on the parameters.
    */
-  nameProvider: GeneratorNameProvider
+  nameProvider: NameProvider
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param name A simplified name provider.
    * @param target The generator target (type definition, operation, etc).
    * @returns The operating system dependent path for the desired generator target.
    */
-  pathProvider: GeneratorPathProvider
+  pathProvider: PathProvider
   /**
    * When true, generators with this configuration should emit no outputs from the generate method
    */
   noEmit?: boolean
 }
 
-export type GeneratorPathProvider = (input: any, name: NameProvider, target: string) => string
-export type GeneratorNameProvider = (input: any, originalName: string | undefined, target: string) => string
+export type NameProviderHelper = {
+  uriOf<T>(input: T): string | undefined
+  parent<T, P>(input: T): P | undefined
+  nameOf<T>(input: T): string | undefined
+}
+
+export type PathProviderHelper = {
+  uriOf<T>(input: T): string | undefined
+  parent<T, P>(input: T): P | undefined
+  nameOf<T>(input: T, target: string): string
+}
+
+export type NameProvider = (input: any, target: string, helper: NameProviderHelper) => string
+
+export type PathProvider = (input: any, target: string, helper: PathProviderHelper) => string
+
+/** Globaly used utility to work with URIs found in OpenAPI refs and discriminators. */
+export type URIManipulatorType = {
+  /**
+   * @param path A URI fragment.
+   * @param segments Possibly other URI fragment pieces.
+   * @returns A URI fragment composed from the pieces
+   */
+  append(path: string, ...segments: (string | number)[]): string
+  /**
+   * @param ref A partial or full URI (possibly just a fragment).
+   * @param parent A full URI.
+   * @returns A resolved full URI.
+   */
+  resolve(ref: string, parent: string): string
+  /**
+   * @param path A full URI.
+   * @returns The URI without any fragments.
+   */
+  document(path: string): string
+  /**
+   * @param uri A full or partial URI.
+   * @returns It's fragments split by "/"
+   */
+  fragments(uri: string): string[]
+
+  /**
+   * Sets the given fragments as the fragment part of the URI.
+   * @param uri
+   * @param fragments
+   */
+  setFragments(uri: string, fragments: string[]): string
+}

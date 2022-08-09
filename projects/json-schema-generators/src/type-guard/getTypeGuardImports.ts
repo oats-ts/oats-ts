@@ -19,7 +19,7 @@ function getImportedRefs(
   }
   if (isReferenceObject(data)) {
     const refTarget = dereference(data)
-    const name = nameOf(refTarget, 'json-schema/type-guard')
+    const name = nameOf(refTarget, 'oats/type-guard')
     if (isNil(name)) {
       getImportedRefs(refTarget, context, config, refs, level)
     } else {
@@ -73,8 +73,8 @@ export function getTypeGuardImports(
 
   const importedSchemas = sortBy(
     Array.from(refs).map((ref) => dereference<SchemaObject>(ref)),
-    (schema) => nameOf(schema, 'json-schema/type-guard'),
+    (schema) => nameOf(schema, 'oats/type-guard'),
   )
-  const path = pathOf(data, 'json-schema/type-guard')
-  return isNil(path) ? [] : getModelImports(path, 'json-schema/type-guard', importedSchemas, context)
+  const path = pathOf(data, 'oats/type-guard')
+  return isNil(path) ? [] : getModelImports(path, 'oats/type-guard', importedSchemas, context)
 }

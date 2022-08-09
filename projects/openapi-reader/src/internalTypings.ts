@@ -1,5 +1,5 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { URIManipulatorType } from './typings'
+import { URIManipulatorType } from '@oats-ts/oats-ts'
 import { Try } from '@oats-ts/try'
 import { Referenceable } from '@oats-ts/json-schema-model'
 

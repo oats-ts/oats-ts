@@ -1,95 +1,75 @@
 import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { isNil } from 'lodash'
-import { GeneratorNameProvider } from '@oats-ts/oats-ts'
+import { NameProvider, NameProviderHelper } from '@oats-ts/oats-ts'
 import { DelegatingNameProviderInput, OpenAPIGeneratorTarget } from './typings'
+import { OpenAPIObject, OperationObject } from '@oats-ts/openapi-model'
 
-const nonNull =
-  (producer?: GeneratorNameProvider) =>
-  (delegate: GeneratorNameProvider) =>
-  (input: any, name: string | undefined, target: string): string => {
-    const generatedName = isNil(producer) ? name : producer(input, name, target)
-    // Cheating but necessary to avoid huge refactors
-    return isNil(generatedName) ? undefined! : delegate(input, generatedName, target)
+type NameProviderDelegate = (name: string, input: any, target: string, helper: NameProviderHelper) => string
+
+const _delegating =
+  (provider: NameProvider, ...delegates: NameProviderDelegate[]): NameProvider =>
+  (input, target, helper) =>
+    delegates.reduce((name, delegate) => delegate(name, input, target, helper), provider(input, target, helper))
+
+const key: NameProvider = (input, target, helper) => {
+  const name = helper.nameOf(input)
+  if (isNil(name)) {
+    throw new Error(`input has no name: ${JSON.stringify(input)}`)
   }
-
-const type = nonNull()((input: any, name?: string) => pascalCase(name!))
-const typeValidator = nonNull()((input: any, name?: string) => `${camelCase(name!)}TypeValidator`)
-const typeGuard = nonNull()((input: any, name?: string) => camelCase(`is-${name}`))
-const operation: GeneratorNameProvider = (op: any, name?: string) => camelCase(op.operationId!)
-
-const queryType = nonNull(operation)((input: any, name?: string) => pascalCase(`${name}QueryParameters`))
-const pathType = nonNull(operation)((input: any, name?: string) => pascalCase(`${name}PathParameters`))
-const requestHeadersType = nonNull(operation)((input: any, name?: string) =>
-  pascalCase(`${name}RequestHeaderParameters`),
-)
-const responseHeadersType = (input: any, name?: string) => {
-  const [op, status] = input
-  const operationName = operation(op, name, 'openapi/operation')
-  return pascalCase(`${operationName}${pascalCase(status)}ResponseHeaderParameters`)
+  return name
 }
-const responseType = nonNull(operation)((input: any, name?: string) => pascalCase(`${name}Response`))
-const requestType = nonNull(operation)((input: any, name?: string) => pascalCase(`${name}Request`))
-const serverRequest = nonNull(operation)((input: any, name?: string) => pascalCase(`${name}ServerRequest`))
 
-const pathSerializer = nonNull(operation)((input: any, name?: string) => camelCase(`${name}PathSerializer`))
-const querySerializer = nonNull(operation)((input: any, name?: string) => camelCase(`${name}QuerySerializer`))
-const reqHeadersSerializer = nonNull(operation)((input: any, name?: string) =>
-  camelCase(`${name}RequestHeadersSerializer`),
-)
-const resHeadersSerializer = nonNull(operation)((input: any, name?: string) =>
-  camelCase(`${name}ResponseHeadersSerializer`),
-)
+const operationId: NameProvider = (operation: OperationObject) => operation.operationId!
 
-const pathDeserializer = nonNull(operation)((input: any, name?: string) => camelCase(`${name}PathDeserializer`))
-const queryDeserializer = nonNull(operation)((input: any, name?: string) => camelCase(`${name}QueryDeserializer`))
-const reqHeadersDeserializer = nonNull(operation)((input: any, name?: string) =>
-  camelCase(`${name}RequestHeadersDeserializer`),
-)
-const resHeadersDeserializer = nonNull(operation)((input: any, name?: string) =>
-  camelCase(`${name}ResponseHeadersDeserializer`),
-)
+const documentTitle: NameProvider = (doc: OpenAPIObject) => pascalCase(doc.info?.title || '')
 
-const reqBodyValidator = nonNull(operation)((input: any, name?: string) => camelCase(`${name}RequestBodyValidator`))
-const resBodyValidator = nonNull(operation)((input: any, name?: string) => camelCase(`${name}ResponseBodyValidator`))
-const expressRouter = nonNull(operation)((input: any, name?: string) => camelCase(`${name}Router`))
-const documentTitle = (doc: any) => pascalCase(doc.info?.title || '')
-const sdk: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Sdk`
-const sdkImpl: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}SdkImpl`
-const api: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Api`
-const routerFactory: GeneratorNameProvider = (doc: any) => `create${documentTitle(doc)}Router`
-const routersType: GeneratorNameProvider = (doc: any) => `${documentTitle(doc)}Routers`
-const corsMiddleware: GeneratorNameProvider = (doc: any) => `${camelCase(documentTitle(doc))}CorsMiddleware`
+const toPascalCase: NameProviderDelegate = (name: string) => pascalCase(name)
+
+const toCamelCase: NameProviderDelegate = (name: string) => camelCase(name)
+
+const append =
+  (suffix: string): NameProviderDelegate =>
+  (name: string) =>
+    `${name}${suffix}`
+
+const prepend =
+  (prefix: string): NameProviderDelegate =>
+  (name: string) =>
+    `${prefix}${name}`
 
 const defaultDelegates: DelegatingNameProviderInput = {
-  'json-schema/type': type,
-  'json-schema/type-guard': typeGuard,
-  'openapi/operation': operation,
-  'openapi/query-type': queryType,
-  'openapi/path-type': pathType,
-  'openapi/request-headers-type': requestHeadersType,
-  'openapi/response-headers-type': responseHeadersType,
-  'openapi/response-type': responseType,
-  'openapi/request-type': requestType,
-  'openapi/request-server-type': serverRequest,
-  'openapi/path-serializer': pathSerializer,
-  'openapi/path-deserializer': pathDeserializer,
-  'openapi/query-serializer': querySerializer,
-  'openapi/query-deserializer': queryDeserializer,
-  'openapi/request-headers-serializer': reqHeadersSerializer,
-  'openapi/request-headers-deserializer': reqHeadersDeserializer,
-  'openapi/response-headers-serializer': resHeadersSerializer,
-  'openapi/response-headers-deserializer': resHeadersDeserializer,
-  'json-schema/type-validator': typeValidator,
-  'openapi/request-body-validator': reqBodyValidator,
-  'openapi/response-body-validator': resBodyValidator,
-  'openapi/express-route': expressRouter,
-  'openapi/sdk-type': sdk,
-  'openapi/sdk-impl': sdkImpl,
-  'openapi/api-type': api,
-  'openapi/express-route-factory': routerFactory,
-  'openapi/express-routes-type': routersType,
-  'openapi/express-cors-middleware': corsMiddleware,
+  'oats/type': _delegating(key, toPascalCase),
+  'oats/type-guard': _delegating(key, prepend('is-'), toCamelCase),
+  'oats/type-validator': _delegating(key, toCamelCase, append('TypeValidator')),
+  'oats/operation': _delegating(operationId, toCamelCase),
+  'oats/query-type': _delegating(operationId, toPascalCase, append('QueryParameters')),
+  'oats/path-type': _delegating(operationId, toPascalCase, append('PathParameters')),
+  'oats/request-headers-type': _delegating(operationId, toPascalCase, append('RequestHeaderParameters')),
+  'oats/response-headers-type': (input: [OperationObject, string]) => {
+    const [operation, status] = input
+    return pascalCase(`${operation.operationId}${pascalCase(status)}ResponseHeaderParameters`)
+  },
+  'oats/response-type': _delegating(operationId, toPascalCase, append('Response')),
+  'oats/request-type': _delegating(operationId, toPascalCase, append('Request')),
+  'oats/request-server-type': _delegating(operationId, toPascalCase, append('ServerRequest')),
+  'oats/path-serializer': _delegating(operationId, toCamelCase, append('PathSerializer')),
+  'oats/path-deserializer': _delegating(operationId, toCamelCase, append('PathDeserializer')),
+  'oats/query-serializer': _delegating(operationId, toCamelCase, append('QuerySerializer')),
+  'oats/query-deserializer': _delegating(operationId, toCamelCase, append('QueryDeserializer')),
+  'oats/request-headers-serializer': _delegating(operationId, toCamelCase, append('RequestHeadersSerializer')),
+  'oats/request-headers-deserializer': _delegating(operationId, toCamelCase, append('RequestHeadersDeserializer')),
+  'oats/response-headers-serializer': _delegating(operationId, toCamelCase, append('ResponseHeadersSerializer')),
+  'oats/response-headers-deserializer': _delegating(operationId, toCamelCase, append('ResponseHeadersDeserializer')),
+  'oats/request-body-validator': _delegating(operationId, toCamelCase, append('RequestBodyValidator')),
+  'oats/response-body-validator': _delegating(operationId, toCamelCase, append('ResponseBodyValidator')),
+  'oats/express-route': _delegating(operationId, toCamelCase, append('Router')),
+  'oats/sdk-type': _delegating(documentTitle, toPascalCase, append('Sdk')),
+  'oats/sdk-impl': _delegating(documentTitle, toPascalCase, append('SdkImpl')),
+  'oats/api-type': _delegating(documentTitle, toPascalCase, append('Api')),
+  'oats/express-route-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('Router')),
+  'oats/express-routes-type': _delegating(documentTitle, toPascalCase, append('Routers')),
+  'oats/express-cors-middleware': _delegating(documentTitle, toCamelCase, append('CorsMiddleware')),
 }
 
 export const nameProviders = {
@@ -98,7 +78,7 @@ export const nameProviders = {
    * @param delegates (optional) A generator target => delegate function mapping, use this for alternative naming
    * @returns The name provider
    */
-  default(delegates: Partial<DelegatingNameProviderInput> = {}): GeneratorNameProvider {
+  default(delegates: Partial<DelegatingNameProviderInput> = {}): NameProvider {
     return nameProviders.delegating({ ...defaultDelegates, ...delegates })
   },
   /**
@@ -106,13 +86,13 @@ export const nameProviders = {
    * @param delegates The delegates, which is a generator target => delegate function mapping
    * @returns The name provider
    */
-  delegating(delegates: DelegatingNameProviderInput): GeneratorNameProvider {
-    return (input: any, name: string | undefined, target: string): string => {
+  delegating(delegates: DelegatingNameProviderInput): NameProvider {
+    return (input: any, target: string, helper: NameProviderHelper): string => {
       const delegate = delegates[target as OpenAPIGeneratorTarget]
       if (isNil(delegate)) {
         throw new Error(`No name provider delegate found for "${target}}"`)
       }
-      return delegate(input, name, target)
+      return delegate(input, target, helper)
     }
   },
 }

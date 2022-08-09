@@ -11,11 +11,11 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 
 export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/sdk-impl'
+    return 'oats/sdk-impl'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/operation', 'openapi/request-type', 'openapi/response-type', 'openapi/sdk-type']
+    return ['oats/operation', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
   }
 
   public runtimeDependencies(): string[] {
@@ -30,8 +30,8 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
         [
           getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientAdapter]),
           ...getSdkTypeImports(this.input.document, operations, this.context, true),
-          ...this.context.dependenciesOf(path, this.input.document, 'openapi/sdk-type'),
-          ...flatMap(operations, ({ operation }) => this.context.dependenciesOf(path, operation, 'openapi/operation')),
+          ...this.context.dependenciesOf(path, this.input.document, 'oats/sdk-type'),
+          ...flatMap(operations, ({ operation }) => this.context.dependenciesOf(path, operation, 'oats/operation')),
         ],
         [getSdkClassAst(this.input.document, operations, this.context, this.config)],
       ),

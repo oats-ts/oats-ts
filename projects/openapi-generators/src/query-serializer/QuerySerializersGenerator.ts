@@ -9,10 +9,10 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 
 export class QuerySerializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/query-serializer'
+    return 'oats/query-serializer'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/query-type']
+    return ['oats/query-type']
   }
   public runtimeDependencies(): string[] {
     return [RuntimePackages.ParameterSerialization.name]
@@ -30,7 +30,7 @@ export class QuerySerializersGenerator extends OperationBasedCodeGenerator<{}> {
             RuntimePackages.ParameterSerialization.dsl,
             RuntimePackages.ParameterSerialization.createQuerySerializer,
           ]),
-          ...this.context.dependenciesOf(path, data.operation, 'openapi/query-type'),
+          ...this.context.dependenciesOf(path, data.operation, 'oats/query-type'),
         ],
         [
           factory.createVariableStatement(
@@ -43,7 +43,7 @@ export class QuerySerializersGenerator extends OperationBasedCodeGenerator<{}> {
                   undefined,
                   factory.createCallExpression(
                     factory.createIdentifier(RuntimePackages.ParameterSerialization.createQuerySerializer),
-                    [this.context.referenceOf(data.operation, 'openapi/query-type')],
+                    [this.context.referenceOf(data.operation, 'oats/query-type')],
                     [getDslObjectAst(data.query, this.context)],
                   ),
                 ),

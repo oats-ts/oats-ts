@@ -24,7 +24,7 @@ export function getOperationFunctionAst(
             undefined,
             OperationNames.request,
             undefined,
-            factory.createTypeReferenceNode(nameOf(operation, 'openapi/request-type')),
+            factory.createTypeReferenceNode(nameOf(operation, 'oats/request-type')),
           ),
         ]
       : []),
@@ -42,10 +42,10 @@ export function getOperationFunctionAst(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    nameOf(operation, 'openapi/operation'),
+    nameOf(operation, 'oats/operation'),
     [],
     params,
-    factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'openapi/response-type')]),
+    factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'oats/response-type')]),
     getOperationBodyAst(data, context, config),
   )
   return config.documentation ? documentNode(node, operation) : node

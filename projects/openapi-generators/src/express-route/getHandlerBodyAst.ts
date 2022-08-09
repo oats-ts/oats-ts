@@ -77,7 +77,7 @@ export function getHandlerBodyAst(
         factory.createVariableDeclaration(
           factory.createIdentifier(RouterNames.api),
           undefined,
-          factory.createTypeReferenceNode(referenceOf(document, 'openapi/api-type')),
+          factory.createTypeReferenceNode(referenceOf(document, 'oats/api-type')),
           factory.createElementAccessExpression(
             factory.createPropertyAccessExpression(
               factory.createIdentifier(RouterNames.response),
@@ -108,7 +108,7 @@ export function getHandlerBodyAst(
               factory.createVariableDeclaration(
                 factory.createIdentifier(RouterNames.typedRequest),
                 undefined,
-                factory.createTypeReferenceNode(referenceOf(data.operation, 'openapi/request-server-type'), undefined),
+                factory.createTypeReferenceNode(referenceOf(data.operation, 'oats/request-server-type'), undefined),
                 factory.createObjectLiteralExpression(
                   [
                     ...(hasPath
@@ -170,7 +170,7 @@ export function getHandlerBodyAst(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
                 factory.createIdentifier(RouterNames.api),
-                nameOf(data.operation, 'openapi/operation'),
+                nameOf(data.operation, 'oats/operation'),
               ),
               undefined,
               hasInputParams ? [factory.createIdentifier(RouterNames.typedRequest)] : [],
@@ -203,7 +203,7 @@ export function getHandlerBodyAst(
                     [
                       factory.createIdentifier(RouterNames.toolkit),
                       factory.createIdentifier(RouterNames.typedResponse),
-                      referenceOf(data.operation, 'openapi/response-headers-serializer') ||
+                      referenceOf(data.operation, 'oats/response-headers-serializer') ||
                         factory.createIdentifier('undefined'),
                     ],
                   ),

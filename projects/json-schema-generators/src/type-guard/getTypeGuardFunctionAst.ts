@@ -13,7 +13,7 @@ export function getTypeGuardFunctionAst(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    nameOf(schema, 'json-schema/type-guard'),
+    nameOf(schema, 'oats/type-guard'),
     [],
     [
       factory.createParameterDeclaration(
@@ -25,7 +25,7 @@ export function getTypeGuardFunctionAst(
         factory.createTypeReferenceNode('any'),
       ),
     ],
-    factory.createTypePredicateNode(undefined, paramName, referenceOf(schema, 'json-schema/type')),
+    factory.createTypePredicateNode(undefined, paramName, referenceOf(schema, 'oats/type')),
     factory.createBlock([factory.createReturnStatement(assertion)]),
   )
 }

@@ -7,7 +7,7 @@ export function getResponseBodyValidatorAst(data: EnhancedOperation, context: Op
   const { nameOf } = context
   const { operation } = data
 
-  const varName = nameOf(operation, 'openapi/response-body-validator')
+  const varName = nameOf(operation, 'oats/response-body-validator')
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

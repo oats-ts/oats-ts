@@ -15,7 +15,7 @@ function getSchemaKey(data: Referenceable<SchemaObject>, index: number, context:
     case 'boolean':
       return type
     case 'ref':
-      return nameOf(dereference(data), 'json-schema/type')
+      return nameOf(dereference(data), 'oats/type')
     default:
       return `${type}${index}`
   }

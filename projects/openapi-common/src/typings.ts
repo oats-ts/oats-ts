@@ -1,6 +1,6 @@
 import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorNameProvider, NameProvider } from '@oats-ts/oats-ts'
+import { NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { GeneratorContext } from '@oats-ts/model-common'
 
@@ -13,43 +13,43 @@ export type PathProvider = (input: any, target: string) => string
 
 export type NameByTarget = Record<OpenAPIGeneratorTarget, string>
 
-export type PathDelegate = (basePath: string, input: any, name: NameProvider, target: string) => string
+export type PathDelegate = (basePath: string, input: any, target: string, helper: PathProviderHelper) => string
 
 export type DelegatingPathProviderInput = Record<OpenAPIGeneratorTarget, PathDelegate>
-export type DelegatingNameProviderInput = Record<OpenAPIGeneratorTarget, GeneratorNameProvider>
+export type DelegatingNameProviderInput = Record<OpenAPIGeneratorTarget, NameProvider>
 
 export type OpenAPIGeneratorTarget =
   // Common
-  | 'json-schema/type'
-  | 'json-schema/type-guard'
-  | 'json-schema/type-validator'
-  | 'openapi/request-body-validator'
-  | 'openapi/response-body-validator'
-  | 'openapi/query-type'
-  | 'openapi/path-type'
-  | 'openapi/request-headers-type'
-  | 'openapi/response-type'
-  | 'openapi/request-type'
-  | 'openapi/request-server-type'
-  | 'openapi/response-headers-type'
-  | 'openapi/request-headers-serializer'
-  | 'openapi/response-headers-serializer'
-  | 'openapi/query-serializer'
-  | 'openapi/path-serializer'
-  | 'openapi/request-headers-deserializer'
-  | 'openapi/response-headers-deserializer'
-  | 'openapi/query-deserializer'
-  | 'openapi/path-deserializer'
+  | 'oats/type'
+  | 'oats/type-guard'
+  | 'oats/type-validator'
+  | 'oats/request-body-validator'
+  | 'oats/response-body-validator'
+  | 'oats/query-type'
+  | 'oats/path-type'
+  | 'oats/request-headers-type'
+  | 'oats/response-type'
+  | 'oats/request-type'
+  | 'oats/request-server-type'
+  | 'oats/response-headers-type'
+  | 'oats/request-headers-serializer'
+  | 'oats/response-headers-serializer'
+  | 'oats/query-serializer'
+  | 'oats/path-serializer'
+  | 'oats/request-headers-deserializer'
+  | 'oats/response-headers-deserializer'
+  | 'oats/query-deserializer'
+  | 'oats/path-deserializer'
   // Client
-  | 'openapi/operation'
-  | 'openapi/sdk-type'
-  | 'openapi/sdk-impl'
+  | 'oats/operation'
+  | 'oats/sdk-type'
+  | 'oats/sdk-impl'
   // Server
-  | 'openapi/api-type'
-  | 'openapi/express-route'
-  | 'openapi/express-routes-type'
-  | 'openapi/express-route-factory'
-  | 'openapi/express-cors-middleware'
+  | 'oats/api-type'
+  | 'oats/express-route'
+  | 'oats/express-routes-type'
+  | 'oats/express-route-factory'
+  | 'oats/express-cors-middleware'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 

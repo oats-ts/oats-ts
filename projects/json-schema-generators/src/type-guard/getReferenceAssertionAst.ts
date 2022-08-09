@@ -14,7 +14,7 @@ export function getReferenceAssertionAst(
 ): Expression {
   const { nameOf, dereference } = context
   const refTarget = dereference(data)
-  const name = nameOf(refTarget, 'json-schema/type-guard')
+  const name = nameOf(refTarget, 'oats/type-guard')
   if (isNil(name)) {
     // Not increasing level here so named refs can be validated.
     return getTypeAssertionAst(refTarget, context, variable, config, level)

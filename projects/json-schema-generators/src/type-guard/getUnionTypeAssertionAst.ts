@@ -26,7 +26,7 @@ export function getUnionTypeAssertionAst(
     (data.oneOf ?? []).map((refOrSchema) => {
       const schema = dereference<SchemaObject>(refOrSchema)
       return factory.createCallExpression(
-        factory.createIdentifier(nameOf(schema, 'json-schema/type-guard')),
+        factory.createIdentifier(nameOf(schema, 'oats/type-guard')),
         [],
         [variable],
       )

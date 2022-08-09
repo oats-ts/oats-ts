@@ -11,10 +11,10 @@ import { createPathRegExp } from '@oats-ts/openapi-parameter-serialization'
 
 export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'openapi/path-deserializer'
+    return 'oats/path-deserializer'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['openapi/path-type']
+    return ['oats/path-type']
   }
   public runtimeDependencies(): string[] {
     return [RuntimePackages.ParameterSerialization.name]
@@ -32,7 +32,7 @@ export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> 
             RuntimePackages.ParameterSerialization.dsl,
             RuntimePackages.ParameterSerialization.createPathDeserializer,
           ]),
-          ...this.context.dependenciesOf(path, data.operation, 'openapi/path-type'),
+          ...this.context.dependenciesOf(path, data.operation, 'oats/path-type'),
         ],
         [
           factory.createVariableStatement(
@@ -45,7 +45,7 @@ export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> 
                   undefined,
                   factory.createCallExpression(
                     factory.createIdentifier(RuntimePackages.ParameterSerialization.createPathDeserializer),
-                    [this.context.referenceOf(data.operation, 'openapi/path-type')],
+                    [this.context.referenceOf(data.operation, 'oats/path-type')],
                     [
                       getDslObjectAst(data.path, this.context),
                       factory.createArrayLiteralExpression(
