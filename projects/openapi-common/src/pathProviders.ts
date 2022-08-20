@@ -25,9 +25,9 @@ const fileNameByTarget: NameByTarget = {
   'oats/type-validator': 'typeValidators.ts',
   'oats/request-body-validator': 'requestBodyValidators.ts',
   'oats/response-body-validator': 'responseBodyValidators.ts',
-  'oats/express-route': 'expressRoutes.ts',
-  'oats/express-routes-type': 'expressRoutesType.ts',
-  'oats/express-route-factory': 'expressRouteFactory.ts',
+  'oats/express-router': 'expressRoutes.ts',
+  'oats/express-routers-type': 'expressRoutesType.ts',
+  'oats/express-router-factory': 'expressRouteFactory.ts',
   'oats/express-cors-middleware': 'expressCorsMiddleware.ts',
   'oats/api-type': 'apiType.ts',
   'oats/sdk-impl': 'sdkImpl.ts',
@@ -84,9 +84,9 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
 
     'oats/operation': operations,
 
-    'oats/express-route': routers,
-    'oats/express-route-factory': routers,
-    'oats/express-routes-type': routers,
+    'oats/express-router': routers,
+    'oats/express-router-factory': routers,
+    'oats/express-routers-type': routers,
     'oats/express-cors-middleware': routers,
 
     'oats/sdk-type': sdk,

@@ -1,8 +1,8 @@
 import { apiType } from './api-type'
 import { expressCorsMiddleware } from './express-cors-middleware'
-import { expressRoutes } from './express-route'
-import { expressRouteFactory } from './express-route-factory'
-import { expressRoutesType } from './express-routes-type'
+import { expressRouters } from './express-router'
+import { expressRouterFactory } from './express-router-factory'
+import { expressRoutersType } from './express-routers-type'
 import { group } from './group'
 import { operations } from './operations'
 import { pathDeserializers } from './path-deserializer'
@@ -32,9 +32,9 @@ export const factories = {
   typeValidators,
   apiType,
   expressCorsMiddleware,
-  expressRoutes,
-  expressRouteFactory,
-  expressRoutesType,
+  expressRouters,
+  expressRouterFactory,
+  expressRoutersType,
   group,
   operations,
   pathDeserializers,

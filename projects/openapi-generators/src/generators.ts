@@ -1,5 +1,5 @@
 import { ApiTypeGeneratorConfig } from './api-type'
-import { ExpressRoutesGeneratorConfig } from './express-route'
+import { ExpressRoutesGeneratorConfig } from './express-router'
 
 import { OperationsGeneratorConfig } from './operations'
 import { SdkImplGeneratorConfig } from './sdk-impl'
@@ -22,7 +22,7 @@ function create(name: 'oats/type-validator', config?: Config<ValidatorsGenerator
 function create(name: 'oats/api-type', config?: Config<ApiTypeGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/sdk-type', config?: Config<SdkGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/sdk-impl', config?: Config<SdkImplGeneratorConfig>): OpenAPIGenerator
-function create(name: 'oats/express-route', config?: Config<ExpressRoutesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/express-router', config?: Config<ExpressRoutesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/operation', config?: Config<OperationsGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/path-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/query-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator

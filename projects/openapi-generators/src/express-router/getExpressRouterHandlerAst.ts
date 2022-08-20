@@ -1,13 +1,13 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, SyntaxKind } from 'typescript'
-import { ExpressRoutesGeneratorConfig } from './typings'
+import { ExpressRoutersGeneratorConfig } from './typings'
 import { getHandlerBodyAst } from './getHandlerBodyAst'
 import { RouterNames } from '../utils/RouterNames'
 
-export function getExpressRouteHandlerAst(
+export function getExpressRouterHandlerAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  config: ExpressRoutesGeneratorConfig,
+  config: ExpressRoutersGeneratorConfig,
 ) {
   return factory.createArrowFunction(
     [factory.createModifier(SyntaxKind.AsyncKeyword)],
