@@ -4,7 +4,7 @@ import { EnhancedOperation, hasResponses, OpenAPIGeneratorTarget, getEnhancedRes
 import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { getReturnTypeAst } from './getResponseTypeAst'
+import { getResponseTypeAst } from './getResponseTypeAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
 export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
@@ -36,7 +36,7 @@ export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
             ...this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
           ]),
         ],
-        [getReturnTypeAst(data, this.context)],
+        [getResponseTypeAst(data, this.context)],
       ),
     )
   }
