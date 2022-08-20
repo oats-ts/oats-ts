@@ -50,7 +50,6 @@ export function parameterObjectSchema(
             'should be either a primitive schema ("string", "number" or "boolean") or array/object of primitives',
           path: context.uriOf(input),
           severity: 'error',
-          type: 'other',
         },
       ]
   }

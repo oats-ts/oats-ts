@@ -1,7 +1,7 @@
-import { Issue, Severity } from './typings'
+import { Issue } from './typings'
 
-const defaultNotOk: Severity[] = ['error']
+const defaultMatcher = (input: Issue) => input.severity !== 'error'
 
-export function isOk(issues: Issue[], notOk: Severity[] = defaultNotOk): boolean {
-  return issues.every((issue) => notOk.indexOf(issue.severity) < 0)
+export function isOk(issues: Issue[], matcher: (input: Issue) => boolean = defaultMatcher): boolean {
+  return issues.every((issue) => matcher(issue))
 }

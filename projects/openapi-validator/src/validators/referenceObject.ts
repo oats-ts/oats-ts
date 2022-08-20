@@ -47,7 +47,6 @@ export function referenceObject(
               message: `${input.$ref} is an invalid reference`,
               path: context.uriOf(input),
               severity: 'error',
-              type: 'other',
             },
           ]
         }
@@ -62,7 +61,6 @@ export function referenceObject(
             message: `circular $ref detected`,
             path: context.uriOf(input),
             severity: 'error',
-            type: 'other',
           },
         ]
       }),

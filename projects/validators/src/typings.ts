@@ -20,7 +20,6 @@ export type ValidatorType =
 
 export type Issue = {
   severity: Severity
-  type?: string
   path: string
   message: string
 }

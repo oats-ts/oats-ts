@@ -36,7 +36,7 @@ export function validator(
       flatMap(data).sort(severityComparator),
     )
     const allIssues = Array.from(isSuccess(results) ? results.data : results.issues).sort(severityComparator)
-    const hasNoCriticalIssues = isOk(allIssues, ['error'])
+    const hasNoCriticalIssues = isOk(allIssues)
     emitter.emit('validator-step-completed', {
       type: 'validate-step-completed',
       name,
