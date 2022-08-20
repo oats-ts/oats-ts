@@ -90,6 +90,7 @@ export const bodiesCorsMiddleware =
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
       response.setHeader('Access-Control-Allow-Methods', 'POST')
       response.setHeader('Access-Control-Allow-Headers', 'content-type')
+      response.setHeader('Access-Control-Expose-Headers', 'content-type')
     }
     next()
   }

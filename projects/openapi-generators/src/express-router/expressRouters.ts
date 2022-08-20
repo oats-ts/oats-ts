@@ -6,11 +6,13 @@ import { ExpressRoutersGeneratorConfig as ExpressRoutersGeneratorConfig } from '
 function defaultConfig({
   apiKey,
   adapterKey,
+  cors,
   ...rest
 }: Partial<ExpressRoutersGeneratorConfig & GeneratorConfig>): ExpressRoutersGeneratorConfig & Partial<GeneratorConfig> {
   return {
     apiKey: apiKey ?? '__oats_api',
     adapterKey: adapterKey ?? '__oats_adapter',
+    cors: cors ?? false,
     ...rest,
   }
 }

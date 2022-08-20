@@ -1,20 +1,20 @@
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { factory, SyntaxKind } from 'typescript'
-import { ExpressRoutersGeneratorConfig } from './typings'
-import { getHandlerBodyAst } from './getHandlerBodyAst'
+import { getExpressRouterCorsHandlerBodyAst } from './getExpressRouterCorsHandlerBodyAst'
 import { getExpressRouterHandlerParameters } from './getExpressRouterHandlerParameters'
+import { ExpressRoutersGeneratorConfig } from './typings'
 
-export function getExpressRouterHandlerAst(
+export function getExpressRouterCorsHandlerAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ExpressRoutersGeneratorConfig,
 ) {
   return factory.createArrowFunction(
-    [factory.createModifier(SyntaxKind.AsyncKeyword)],
-    [],
+    undefined,
+    undefined,
     getExpressRouterHandlerParameters(),
-    factory.createTypeReferenceNode('Promise', [factory.createKeywordTypeNode(SyntaxKind.VoidKeyword)]),
+    undefined,
     factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-    getHandlerBodyAst(data, context, config),
+    getExpressRouterCorsHandlerBodyAst(data, context, config),
   )
 }

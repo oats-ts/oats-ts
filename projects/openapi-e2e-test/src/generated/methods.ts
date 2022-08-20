@@ -221,7 +221,7 @@ export const httpMethodsCorsMiddleware =
     if (isAccepted(request)) {
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
       response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
+      response.setHeader('Access-Control-Expose-Headers', 'content-type')
     }
     next()
   }

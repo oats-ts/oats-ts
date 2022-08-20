@@ -44,7 +44,7 @@ export async function getFiles(folders: string[]): Promise<string[]> {
   return tree
     .filter((file) => file.type !== 'tree')
     .filter((file) => folders.some((folder) => file.path.startsWith(`${folder}/`)))
-    .filter((file) => file.path.endsWith('.json'))
+    .filter((file) => file.path.endsWith('.json') || file.path.endsWith('.yaml'))
     .map((file) => file.path)
 }
 
@@ -56,17 +56,30 @@ function getCodePath(path: string): string {
   return join(PATH, `${parse(path).name}.ts`)
 }
 
+function getCorsConfig(url: string) {
+  if (url.includes('pet-store-json')) {
+    return true
+  }
+  if (url.includes('pet-store-yaml')) {
+    return ['https://foo.com']
+  }
+  return false
+}
+
 export async function generateCode(url: string, codePath: string) {
   try {
     await generate({
       logger: loggers.verbose(),
       validator: validator(),
-      reader: readers.https.json(url),
+      reader: readers.https.mixed(url),
       generator: generator({
         nameProvider: nameProviders.default(),
         pathProvider: pathProviders.singleFile(codePath),
         children: presets.fullStack({
           overrides: {
+            'oats/express-router': {
+              cors: getCorsConfig(url),
+            },
             'oats/type-guard': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
             },

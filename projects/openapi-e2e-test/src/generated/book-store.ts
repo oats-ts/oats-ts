@@ -300,7 +300,8 @@ export const bookStoreCorsMiddleware =
     if (isAccepted(request)) {
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
       response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-      response.setHeader('Access-Control-Allow-Headers', 'x-length, content-type')
+      response.setHeader('Access-Control-Allow-Headers', 'x-limit, content-type')
+      response.setHeader('Access-Control-Expose-Headers', 'x-length, content-type')
     }
     next()
   }

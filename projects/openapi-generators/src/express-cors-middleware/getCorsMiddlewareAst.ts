@@ -1,29 +1,20 @@
-import {
-  EnhancedOperation,
-  getResponseHeaders,
-  hasResponses,
-  OpenAPIGeneratorContext,
-  RuntimePackages,
-} from '@oats-ts/openapi-common'
-import { flatMap, isNil, keys, values } from 'lodash'
+import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
+import { flatMap, isNil } from 'lodash'
 import { ExpressionStatement, factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
+import { getExpressRouterHandlerParameters } from '../express-router/getExpressRouterHandlerParameters'
+import { AccessControlHeaders } from '../utils/AccessControlHeaders'
+import { getAllRequestHeaders } from '../utils/getAllRequestHeaders'
+import { getAllResponseHeaders } from '../utils/getAllResponseHeaders'
+import { getSetHeaderAst } from '../utils/getSetHeaderAst'
+import { RouterNames } from '../utils/RouterNames'
 
 export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: OpenAPIGeneratorContext): Statement {
   const { nameOf, document } = context
-  const hasAnyResponses = operations.some(({ operation }) => hasResponses(operation, context))
   const methods = Array.from(new Set(operations.map(({ method }) => method.toUpperCase())))
+  const requestHeaders = Array.from(new Set(flatMap(operations, ({ parent }) => getAllRequestHeaders(parent, context))))
   const responseHeaders = Array.from(
-    new Set([
-      ...flatMap(operations, ({ operation }) =>
-        flatMap(values(getResponseHeaders(operation, context)), (headers) =>
-          keys(headers).map((header) => header.toLowerCase()),
-        ),
-      ),
-      ...(hasAnyResponses ? ['content-type'] : []),
-    ]),
+    new Set(flatMap(operations, ({ parent }) => getAllResponseHeaders(parent, context))),
   )
-  const hasCookies = operations.some(({ cookie }) => cookie.length > 0)
-
   const matcherFnName = factory.createIdentifier('isAccepted')
 
   const matcherFnParam = factory.createParameterDeclaration(
@@ -39,9 +30,9 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
           undefined,
           undefined,
           undefined,
-          factory.createIdentifier('request'),
+          factory.createIdentifier(RouterNames.request),
           undefined,
-          factory.createTypeReferenceNode(factory.createIdentifier('Request'), undefined),
+          factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Request), undefined),
           undefined,
         ),
       ],
@@ -50,78 +41,36 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
     undefined,
   )
 
-  const corsOrigin = factory.createExpressionStatement(
-    factory.createCallExpression(
+  const originAst = factory.createBinaryExpression(
+    factory.createPropertyAccessExpression(
       factory.createPropertyAccessExpression(
-        factory.createIdentifier('response'),
-        factory.createIdentifier('setHeader'),
+        factory.createIdentifier(RouterNames.request),
+        factory.createIdentifier(RouterNames.headers),
       ),
-      undefined,
-      [
-        factory.createStringLiteral('Access-Control-Allow-Origin'),
-        factory.createBinaryExpression(
-          factory.createPropertyAccessExpression(
-            factory.createPropertyAccessExpression(
-              factory.createIdentifier('request'),
-              factory.createIdentifier('headers'),
-            ),
-            factory.createIdentifier('origin'),
-          ),
-          factory.createToken(SyntaxKind.QuestionQuestionToken),
-          factory.createStringLiteral('*'),
-        ),
-      ],
+      factory.createIdentifier(RouterNames.origin),
     ),
+    factory.createToken(SyntaxKind.QuestionQuestionToken),
+    factory.createStringLiteral('*'),
   )
+
+  const corsOrigin = getSetHeaderAst(AccessControlHeaders.AllowOrigin, originAst)
 
   const corsMethods =
     methods.length > 0
-      ? factory.createExpressionStatement(
-          factory.createCallExpression(
-            factory.createPropertyAccessExpression(
-              factory.createIdentifier('response'),
-              factory.createIdentifier('setHeader'),
-            ),
-            undefined,
-            [
-              factory.createStringLiteral('Access-Control-Allow-Methods'),
-              factory.createStringLiteral(methods.join(', ')),
-            ],
-          ),
-        )
+      ? getSetHeaderAst(AccessControlHeaders.AllowMethods, factory.createStringLiteral(methods.join(', ')))
+      : undefined
+
+  const corsExposeHeaders =
+    responseHeaders.length > 0
+      ? getSetHeaderAst(AccessControlHeaders.ExposeHeaders, factory.createStringLiteral(responseHeaders.join(', ')))
       : undefined
 
   const corsAllowedHeaders =
-    responseHeaders.length > 0
-      ? factory.createExpressionStatement(
-          factory.createCallExpression(
-            factory.createPropertyAccessExpression(
-              factory.createIdentifier('response'),
-              factory.createIdentifier('setHeader'),
-            ),
-            undefined,
-            [
-              factory.createStringLiteral('Access-Control-Allow-Headers'),
-              factory.createStringLiteral(responseHeaders.join(', ')),
-            ],
-          ),
-        )
+    requestHeaders.length > 0
+      ? getSetHeaderAst(AccessControlHeaders.AllowHeaders, factory.createStringLiteral(requestHeaders.join(', ')))
       : undefined
 
-  const corsCreds = hasCookies
-    ? factory.createExpressionStatement(
-        factory.createCallExpression(
-          factory.createPropertyAccessExpression(
-            factory.createIdentifier('response'),
-            factory.createIdentifier('setHeader'),
-          ),
-          undefined,
-          [factory.createStringLiteral('Access-Control-Allow-Credentials'), factory.createStringLiteral('true')],
-        ),
-      )
-    : undefined
-
-  const corsHeaderStatements = [corsOrigin, corsMethods, corsAllowedHeaders, corsCreds].filter(
+  const corsHeaderStatements = [corsOrigin, corsMethods, corsAllowedHeaders, corsExposeHeaders].filter(
     (statement): statement is ExpressionStatement => !isNil(statement),
   )
 
@@ -145,52 +94,20 @@ export function getCorsMiddlewareAst(operations: EnhancedOperation[], context: O
             factory.createArrowFunction(
               undefined,
               undefined,
-              [
-                factory.createParameterDeclaration(
-                  undefined,
-                  undefined,
-                  undefined,
-                  factory.createIdentifier('request'),
-                  undefined,
-                  factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Request), undefined),
-                  undefined,
-                ),
-                factory.createParameterDeclaration(
-                  undefined,
-                  undefined,
-                  undefined,
-                  factory.createIdentifier('response'),
-                  undefined,
-                  factory.createTypeReferenceNode(
-                    factory.createIdentifier(RuntimePackages.Express.Response),
-                    undefined,
-                  ),
-                  undefined,
-                ),
-                factory.createParameterDeclaration(
-                  undefined,
-                  undefined,
-                  undefined,
-                  factory.createIdentifier('next'),
-                  undefined,
-                  factory.createTypeReferenceNode(
-                    factory.createIdentifier(RuntimePackages.Express.NextFunction),
-                    undefined,
-                  ),
-                  undefined,
-                ),
-              ],
+              getExpressRouterHandlerParameters(),
               undefined,
               factory.createToken(SyntaxKind.EqualsGreaterThanToken),
               factory.createBlock(
                 [
                   factory.createIfStatement(
-                    factory.createCallExpression(matcherFnName, undefined, [factory.createIdentifier('request')]),
+                    factory.createCallExpression(matcherFnName, undefined, [
+                      factory.createIdentifier(RouterNames.request),
+                    ]),
                     factory.createBlock(corsHeaderStatements, true),
                     undefined,
                   ),
                   factory.createExpressionStatement(
-                    factory.createCallExpression(factory.createIdentifier('next'), undefined, []),
+                    factory.createCallExpression(factory.createIdentifier(RouterNames.next), undefined, []),
                   ),
                 ],
                 true,

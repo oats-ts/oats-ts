@@ -652,6 +652,7 @@ export const eventsApiCorsMiddleware =
       response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
       response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
       response.setHeader('Access-Control-Allow-Headers', 'content-type')
+      response.setHeader('Access-Control-Expose-Headers', 'content-type')
     }
     next()
   }
