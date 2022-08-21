@@ -6,7 +6,7 @@ import {
   RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { factory, NodeFlags } from 'typescript'
-import { ExpressRoutesGeneratorConfig } from './typings'
+import { ExpressRoutersGeneratorConfig } from './typings'
 import { getParametersStatementAst } from './getParametersStatementAst'
 import { getRequestBodyRelatedStatementAsts } from './getRequestBodyRelatedStatementAsts'
 import { RouterNames } from '../utils/RouterNames'
@@ -14,7 +14,7 @@ import { RouterNames } from '../utils/RouterNames'
 export function getHandlerBodyAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  config: ExpressRoutesGeneratorConfig,
+  config: ExpressRoutersGeneratorConfig,
 ) {
   const { referenceOf, nameOf, document } = context
   const { ExpressToolkit: ExpressParameters } = RuntimePackages.HttpServerExpress

@@ -5,13 +5,10 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorConfig } from '@oats-ts/oats-ts'
+import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
-export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{}> {
-  constructor(globalConfig: Partial<GeneratorConfig>) {
-    super(globalConfig)
-  }
-
+export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<ExpressCorsMiddlewareGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-cors-middleware'
   }
@@ -20,8 +17,8 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{
     return []
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Express.name, version: '^4.18.1' }]
   }
 
   public referenceOf(input: OpenAPIObject): TypeReferenceNode | undefined {
@@ -47,7 +44,7 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{
             RuntimePackages.Express.NextFunction,
           ]),
         ],
-        [getCorsMiddlewareAst(operations, this.context)],
+        [getCorsMiddlewareAst(operations, this.context, this.config)],
       ),
     )
   }

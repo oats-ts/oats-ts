@@ -56,13 +56,13 @@ const KEYWORDS: Record<string, boolean> = {
   instanceof: true,
 }
 
-function transformSegment(segment: string | number): string {
+function transformSegment(segment: string | number, index: number): string {
   if (typeof segment === 'number') {
     return `[${segment}]`
   }
   REGEX.lastIndex = 0
   if (typeof segment === 'string' && !KEYWORDS[segment] && REGEX.test(segment)) {
-    return `.${segment}`
+    return index === 0 ? segment : `.${segment}`
   }
   return `["${segment}"]`
 }

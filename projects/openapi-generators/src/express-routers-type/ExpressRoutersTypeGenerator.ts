@@ -3,20 +3,21 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { getRoutesTypeAst } from './getRoutesTypeAst'
+import { getRoutersTypeAst } from './getRoutesTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
-export class ExpressRoutesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
+export class ExpressRoutersTypeGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'oats/express-routes-type'
+    return 'oats/express-routers-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/express-route']
+    return ['oats/express-router']
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Express.name, version: '^4.18.1' }]
   }
 
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
@@ -24,7 +25,7 @@ export class ExpressRoutesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
       createSourceFile(
         this.context.pathOf(this.input.document, this.name()),
         [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router])],
-        [getRoutesTypeAst(operations, this.context)],
+        [getRoutersTypeAst(operations, this.context)],
       ),
     )
   }

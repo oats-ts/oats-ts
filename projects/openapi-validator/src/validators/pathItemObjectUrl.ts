@@ -27,7 +27,6 @@ export function pathItemObjectUrl(
         message: `invalid path: "${url}" (${e})`,
         path: uriOf(data),
         severity: 'error',
-        type: 'other',
       },
     ]
   }
@@ -43,7 +42,6 @@ export function pathItemObjectUrl(
           message: `parameter "${segment.name}" is missing`,
           path: uriOf(operation),
           severity: 'error',
-          type: 'other',
         }),
       )
     const extra = params
@@ -53,7 +51,6 @@ export function pathItemObjectUrl(
           message: `parameter "${param.name}" is not defined in "${url}"`,
           path: uriOf(operation),
           severity: 'error',
-          type: 'other',
         }),
       )
     return [...missing, ...extra]

@@ -1,16 +1,17 @@
 import { OpenAPIGeneratorTarget, RuntimePackages, EnhancedOperation } from '@oats-ts/openapi-common'
-import { ExpressRoutesGeneratorConfig } from './typings'
+import { ExpressRoutersGeneratorConfig } from './typings'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { getExpressRouterImports } from './getExpressRouterImports'
-import { getExpressRouteAst } from './getExpressRouteAst'
+import { getExpressRouterAst } from './getExpressRouterAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
-export class ExpressRoutesGenerator extends OperationBasedCodeGenerator<ExpressRoutesGeneratorConfig> {
+export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<ExpressRoutersGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'oats/express-route'
+    return 'oats/express-router'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
@@ -27,14 +28,18 @@ export class ExpressRoutesGenerator extends OperationBasedCodeGenerator<ExpressR
     ]
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [
+      { name: RuntimePackages.Http.name, version: version },
+      { name: RuntimePackages.HttpServerExpress.name, version: version },
+      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+    ]
   }
 
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(this.context.pathOf(item.operation, this.name()), getExpressRouterImports(item, this.context), [
-        getExpressRouteAst(item, this.context, this.config),
+        getExpressRouterAst(item, this.context, this.config),
       ]),
     )
   }

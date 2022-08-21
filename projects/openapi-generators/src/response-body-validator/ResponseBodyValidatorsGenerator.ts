@@ -7,6 +7,7 @@ import { RuntimePackages } from '@oats-ts/model-common'
 import { success, Try } from '@oats-ts/try'
 import { getResponseBodyValidatorAst } from './getResponseBodyValidatorAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -17,8 +18,8 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
     return ['oats/type', 'oats/type-validator']
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Validators.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Validators.name, version }]
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {

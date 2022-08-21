@@ -8,6 +8,7 @@ import { getPathParameterNames } from './pathUtils'
 import { getDslObjectAst } from '../utils/dsl/getDslObjectAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { createPathRegExp } from '@oats-ts/openapi-parameter-serialization'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -16,8 +17,8 @@ export class PathDeserializersGenerator extends OperationBasedCodeGenerator<{}> 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/path-type']
   }
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.ParameterSerialization.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.ParameterSerialization.name, version }]
   }
   protected shouldGenerate(item: EnhancedOperation): boolean {
     return item.path.length > 0

@@ -62,7 +62,6 @@ export function discriminatedUnionSchemaObject(
         {
           message: `only named schemas can have the "discriminator" field`,
           path: context.uriOf(data),
-          type: 'other',
           severity: 'error',
         },
       ]
@@ -81,7 +80,6 @@ export function discriminatedUnionSchemaObject(
               message: `"discriminator" is missing "${ref.$ref}"`,
               path: context.uriOf(discriminator),
               severity: 'error',
-              type: 'other',
             }),
           ),
       () =>
@@ -92,7 +90,6 @@ export function discriminatedUnionSchemaObject(
               message: `"${prop}" referencing "${ref}" in "discriminator" has no counterpart in "oneOf"`,
               path: context.uriOf(discriminator),
               severity: 'error',
-              type: 'other',
             }),
           ),
       () =>
@@ -110,7 +107,6 @@ export function discriminatedUnionSchemaObject(
                   message: `should reference either an "object" schema or another schema with "discriminator"`,
                   path: context.uriOf(ref),
                   severity: 'error',
-                  type: 'other',
                 },
               ]
           }

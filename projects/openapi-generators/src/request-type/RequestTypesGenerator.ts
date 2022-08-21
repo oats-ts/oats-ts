@@ -7,6 +7,7 @@ import { getRequestTypeAst } from '../utils/request/getRequestTypeAst'
 import { requestPropertyFactory } from './requestPropertyFactory'
 import { getCommonImports } from '../utils/request/getCommonImports'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
 export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -17,7 +18,7 @@ export class RequestTypesGenerator extends OperationBasedCodeGenerator<{}> {
     return ['oats/type', 'oats/request-headers-type', 'oats/query-type', 'oats/path-type']
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

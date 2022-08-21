@@ -9,7 +9,7 @@ import {
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import { ParameterTypesGeneratorConfig, ResponseParameterInput } from '../utils/parameters/typings'
-import { BaseCodeGenerator } from '@oats-ts/oats-ts'
+import { BaseCodeGenerator, RuntimeDependency } from '@oats-ts/oats-ts'
 import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { getResponseHeaders } from '@oats-ts/openapi-common'
@@ -36,7 +36,7 @@ export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
     return ['oats/type']
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

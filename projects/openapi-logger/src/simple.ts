@@ -32,7 +32,8 @@ export const simple =
         e.issues.forEach((issue) => console.log(issueToString(issue)))
         if (e.dependencies.length > 0) {
           const deps = Array.from(e.dependencies)
-            .sort((a, b) => a.localeCompare(b))
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(({ name, version }) => `${name}@${version}`)
             .join(' ')
           console.log(`${Icons.i} npm i ${blue(deps)}`)
         }

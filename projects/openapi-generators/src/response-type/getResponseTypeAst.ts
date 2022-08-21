@@ -28,7 +28,7 @@ function createResponseTypeLiteral(
   ])
 }
 
-export function getReturnTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
+export function getResponseTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
   const { referenceOf } = context
   const responses = getEnhancedResponses(data.operation, context)
   const types: TypeNode[] = []

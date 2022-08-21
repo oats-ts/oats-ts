@@ -32,7 +32,6 @@ export function contentObject(
             message: `MIME type "${contentType}" might not be compatible with JSON schema`,
             path: context.uriOf(mediaType),
             severity: 'warning',
-            type: 'other',
           })
         }
         issues.push(...referenceable(config.schemaObject)(mediaType.schema!, context, config))

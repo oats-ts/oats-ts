@@ -1,4 +1,4 @@
-import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
+import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
 import { HttpMethod } from '@oats-ts/openapi-http'
@@ -46,9 +46,9 @@ export type OpenAPIGeneratorTarget =
   | 'oats/sdk-impl'
   // Server
   | 'oats/api-type'
-  | 'oats/express-route'
-  | 'oats/express-routes-type'
-  | 'oats/express-route-factory'
+  | 'oats/express-router'
+  | 'oats/express-routers-type'
+  | 'oats/express-router-factory'
   | 'oats/express-cors-middleware'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
@@ -61,6 +61,7 @@ export type EnhancedOperation = {
   url: string
   method: HttpMethod
   operation: OperationObject
+  parent: PathItemObject
   query: ParameterObject[]
   path: ParameterObject[]
   cookie: ParameterObject[]

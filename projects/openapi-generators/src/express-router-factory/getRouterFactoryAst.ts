@@ -3,7 +3,7 @@ import { factory, SyntaxKind } from 'typescript'
 import { RouterNames } from '../utils/RouterNames'
 import { ExpressRouterFactoryGeneratorConfig } from './typings'
 
-export function getMainRouteFactoryAst(
+export function getRouterFactoryAst(
   operations: EnhancedOperation[],
   context: OpenAPIGeneratorContext,
   config: ExpressRouterFactoryGeneratorConfig,
@@ -13,7 +13,7 @@ export function getMainRouteFactoryAst(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    factory.createIdentifier(nameOf(document, 'oats/express-route-factory')),
+    factory.createIdentifier(nameOf(document, 'oats/express-router-factory')),
     undefined,
     [
       factory.createParameterDeclaration(
@@ -46,7 +46,7 @@ export function getMainRouteFactoryAst(
         factory.createIdentifier(RouterNames.routes),
         undefined,
         factory.createTypeReferenceNode(factory.createIdentifier('Partial'), [
-          referenceOf(document, 'oats/express-routes-type'),
+          referenceOf(document, 'oats/express-routers-type'),
         ]),
         factory.createObjectLiteralExpression([], false),
       ),
@@ -135,10 +135,10 @@ export function getMainRouteFactoryAst(
                 return factory.createBinaryExpression(
                   factory.createPropertyAccessExpression(
                     factory.createIdentifier(RouterNames.routes),
-                    referenceOf(operation, 'oats/express-route'),
+                    referenceOf(operation, 'oats/express-router'),
                   ),
                   factory.createToken(SyntaxKind.QuestionQuestionToken),
-                  referenceOf(operation, 'oats/express-route'),
+                  referenceOf(operation, 'oats/express-router'),
                 )
               }),
             ],

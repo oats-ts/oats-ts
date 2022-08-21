@@ -1,3 +1,4 @@
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import {
   EnhancedOperation,
   getResponseHeaders,
@@ -22,8 +23,8 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
     return ['oats/type', 'oats/response-headers-type']
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.ParameterSerialization.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.ParameterSerialization.name, version }]
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {

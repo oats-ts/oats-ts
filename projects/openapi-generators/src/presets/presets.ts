@@ -20,9 +20,9 @@ export const serverOnlyConfig: PresetGeneratorConfiguration = {
   'oats/query-deserializer': true,
   'oats/request-headers-deserializer': true,
   'oats/api-type': true,
-  'oats/express-route': true,
-  'oats/express-routes-type': true,
-  'oats/express-route-factory': true,
+  'oats/express-router': true,
+  'oats/express-routers-type': true,
+  'oats/express-router-factory': true,
   'oats/express-cors-middleware': true,
 }
 

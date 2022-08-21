@@ -30,7 +30,6 @@ export function responsesObject(
             message: `should be "default" or integer`,
             path: context.uriOf(response),
             severity: 'error',
-            type: 'other',
           })
         }
         issues.push(...referenceable(config.responseObject)(response!, context, config))

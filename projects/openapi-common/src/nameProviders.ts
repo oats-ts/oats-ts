@@ -63,12 +63,12 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/response-headers-deserializer': _delegating(operationId, toCamelCase, append('ResponseHeadersDeserializer')),
   'oats/request-body-validator': _delegating(operationId, toCamelCase, append('RequestBodyValidator')),
   'oats/response-body-validator': _delegating(operationId, toCamelCase, append('ResponseBodyValidator')),
-  'oats/express-route': _delegating(operationId, toCamelCase, append('Router')),
+  'oats/express-router': _delegating(operationId, toCamelCase, append('Router')),
   'oats/sdk-type': _delegating(documentTitle, toPascalCase, append('Sdk')),
   'oats/sdk-impl': _delegating(documentTitle, toPascalCase, append('SdkImpl')),
   'oats/api-type': _delegating(documentTitle, toPascalCase, append('Api')),
-  'oats/express-route-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('Router')),
-  'oats/express-routes-type': _delegating(documentTitle, toPascalCase, append('Routers')),
+  'oats/express-router-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('Router')),
+  'oats/express-routers-type': _delegating(documentTitle, toPascalCase, append('Routers')),
   'oats/express-cors-middleware': _delegating(documentTitle, toCamelCase, append('CorsMiddleware')),
 }
 

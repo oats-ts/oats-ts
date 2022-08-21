@@ -6,6 +6,7 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { getOperationFunctionAst } from './getOperationFunctionAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
   name(): OpenAPIGeneratorTarget {
@@ -29,11 +30,11 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     ]
   }
 
-  runtimeDependencies(): string[] {
+  runtimeDependencies(): RuntimeDependency[] {
     return [
-      RuntimePackages.Http.name,
+      { name: RuntimePackages.Http.name, version },
       /* Adding this as runtime package as otherwise it's undiscoverable */
-      '@oats-ts/openapi-fetch-client-adapter',
+      { name: '@oats-ts/openapi-fetch-client-adapter', version },
     ]
   }
 

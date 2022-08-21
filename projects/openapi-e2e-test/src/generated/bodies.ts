@@ -967,16 +967,13 @@ export function createBodiesRouter(
   )
 }
 
-export const bodiesCorsMiddleware =
-  (isAccepted: (request: Request) => boolean): RequestHandler =>
-  (request: Request, response: Response, next: NextFunction) => {
-    if (isAccepted(request)) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'POST')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
-    }
-    next()
-  }
+export const bodiesCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'POST')
+  response.setHeader('Access-Control-Allow-Headers', 'content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
+}
 
 export type ArrObjRequest =
   | {

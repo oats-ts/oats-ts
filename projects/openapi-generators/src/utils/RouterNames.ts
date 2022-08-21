@@ -20,6 +20,10 @@ export const RouterNames = {
   headerIssues: 'headerIssues',
   error: 'error',
 
+  header: 'header',
+  origin: 'origin',
+  setHeader: 'setHeader',
+
   typedRequest: 'typedRequest',
   typedResponse: 'typedResponse',
   rawResponse: 'rawResponse',

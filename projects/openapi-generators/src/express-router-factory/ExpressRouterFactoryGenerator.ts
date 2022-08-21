@@ -3,19 +3,24 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { getMainRouteFactoryAst } from './getRouteFactoryAst'
+import { getRouterFactoryAst } from './getRouterFactoryAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { ExpressRoutesGeneratorConfig } from '../express-route/typings'
+import { ExpressRouterFactoryGeneratorConfig } from './typings'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
-export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator<ExpressRoutesGeneratorConfig> {
+export class ExpressRouterFactoryGenerator extends DocumentBasedCodeGenerator<ExpressRouterFactoryGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
-    return 'oats/express-route-factory'
+    return 'oats/express-router-factory'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/express-route', 'oats/express-routes-type', 'oats/api-type']
+    return ['oats/express-router', 'oats/express-routers-type', 'oats/api-type']
   }
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [
+      { name: RuntimePackages.Http.name, version },
+      { name: RuntimePackages.HttpServerExpress.name, version },
+      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+    ]
   }
 
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
@@ -30,18 +35,18 @@ export class ExpressRouteFactoryGenerator extends DocumentBasedCodeGenerator<Exp
           ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context),
           ...getModelImports<OpenAPIGeneratorTarget>(
             path,
-            'oats/express-routes-type',
+            'oats/express-routers-type',
             [this.input.document],
             this.context,
           ),
           ...getModelImports<OpenAPIGeneratorTarget>(
             path,
-            'oats/express-route',
+            'oats/express-router',
             operations.map(({ operation }) => operation),
             this.context,
           ),
         ],
-        [getMainRouteFactoryAst(operations, this.context, this.config)],
+        [getRouterFactoryAst(operations, this.context, this.config)],
       ),
     )
   }

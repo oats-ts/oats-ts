@@ -1,4 +1,4 @@
-import { GeneratorConfig } from '@oats-ts/oats-ts'
+import { GeneratorConfig, RuntimeDependency } from '@oats-ts/oats-ts'
 import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
 import { isEmpty } from 'lodash'
 import { EnhancedOperation, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
@@ -38,7 +38,7 @@ export class InputParameterTypesGenerator extends OperationBasedCodeGenerator<Pa
     return ['oats/type']
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

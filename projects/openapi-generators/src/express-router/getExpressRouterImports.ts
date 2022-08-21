@@ -13,7 +13,7 @@ export function getExpressRouterImports(
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
   const { pathOf, dependenciesOf, document } = context
-  const path = pathOf(operation.operation, 'oats/express-route')
+  const path = pathOf(operation.operation, 'oats/express-router')
   const bodyTypesImports = flatMap(
     values(getRequestBodyContent(operation, context)).filter((mediaType) => !isNil(mediaType?.schema)),
     (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'oats/type'),

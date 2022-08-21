@@ -60,7 +60,7 @@ dependencies:
   '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.8.2
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
   '@rush-temp/model-common': file:projects/model-common.tgz
-  '@rush-temp/oats-ts': file:projects/oats-ts.tgz_ts-node@10.8.2
+  '@rush-temp/oats-ts': file:projects/oats-ts.tgz
   '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.8.2+typescript@4.7.4
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.8.2
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
@@ -4897,7 +4897,7 @@ packages:
     dev: false
 
   file:projects/json-schema-generators.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-fbMQVJbvx63//45fOsev5Mfkd4w0jKvaIUx2BCFRhC2B/tEd9HLmmcEnDVbENAtUWJB/5XASV8vOf7/O+/olTw==, tarball: file:projects/json-schema-generators.tgz}
+    resolution: {integrity: sha512-YG1QcywjOMr5mVO7zcxXN4HgoDU9ZQji9F2H+QRNZgKkxh0paLLl8OqU+02YLSSr9QBXVruJr9411ZDXJB/0+g==, tarball: file:projects/json-schema-generators.tgz}
     id: file:projects/json-schema-generators.tgz
     name: '@rush-temp/json-schema-generators'
     version: 0.0.0
@@ -4928,7 +4928,7 @@ packages:
     dev: false
 
   file:projects/model-common.tgz:
-    resolution: {integrity: sha512-DiaHap7RuIUsa/Cxo4xzdsr/yaFweZhh0PDa5ShFYBf4aA8fxCjxN6Gll1wl5ArFp84N5dYRdvwzkSeNGyB1+w==, tarball: file:projects/model-common.tgz}
+    resolution: {integrity: sha512-0ZMGES2leUybHg83SutHPv7MfSOEyJyAw6tt1WJ9BfZ9pMvgv6/GFdI49gZ/FNqCWtYWs2aZpDChFi8zATA9jg==, tarball: file:projects/model-common.tgz}
     name: '@rush-temp/model-common'
     version: 0.0.0
     dependencies:
@@ -4938,35 +4938,38 @@ packages:
       typescript: 4.7.4
     dev: false
 
-  file:projects/oats-ts.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-Vn7z0l5rkU++xVIBXM+FtmlacaYy0B+EbxgxRWH4GcRVank1nlPZRor3i9QVRIX6o2Wey+5D4hebp0UKHIeZaA==, tarball: file:projects/oats-ts.tgz}
-    id: file:projects/oats-ts.tgz
+  file:projects/oats-ts.tgz:
+    resolution: {integrity: sha512-/tRSPLxLdbhvxdxBWVRHyays+VT9hUPQpcyltDFisnj5geyV3c4BExnvq5qZRHPmPgRydj7cl0VsDsOe5dqujw==, tarball: file:projects/oats-ts.tgz}
     name: '@rush-temp/oats-ts'
     version: 0.0.0
     dependencies:
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.182
       '@types/node': 16.7.1
+      '@types/prettier': 2.4.4
       '@types/urijs': 1.19.19
       eventemitter3: 4.0.7
       jest: 27.0.4_ts-node@10.8.2
       lodash: 4.17.21
       nanoid: 3.3.4
+      prettier: 2.6.1
       rimraf: 3.0.2
       ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
+      ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
       typescript: 4.7.4
       urijs: 1.19.11
     transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
       - bufferutil
       - canvas
       - node-notifier
       - supports-color
-      - ts-node
       - utf-8-validate
     dev: false
 
   file:projects/openapi-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-Qgn2RDuG4xbePJWPWeH2eXI4wPzXPpiAjn7O+I/07rEw/Tvna47OvJVq4y5fcEO90UMNJaJD36hM7NRBNjleKw==, tarball: file:projects/openapi-common.tgz}
+    resolution: {integrity: sha512-nsW4ib6rYNJyv/H4uPVLW9BwKwwfPBFcopMp9/J8odTgb7gT3guvzkon3BeSY3PiACcNk1SI72IsYiROivrKGA==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
     name: '@rush-temp/openapi-common'
     version: 0.0.0
@@ -4994,7 +4997,7 @@ packages:
     dev: false
 
   file:projects/openapi-e2e-test.tgz:
-    resolution: {integrity: sha512-Ur1imfEI5edkKS23e2aVuwzR0Fu/rovNFqey1zclkWL/y4biYFTTZ66YLj8/RqiELNWKBoWZ5Ygis90rXxPz/g==, tarball: file:projects/openapi-e2e-test.tgz}
+    resolution: {integrity: sha512-rMQvY5ZKTQ4TbhcBlLpMhAUHCWarERy6zp8jeDFSXVGHG5XgQexhPqfrwUDgNC899zuSZ822mj2zEFJ09u8KQQ==, tarball: file:projects/openapi-e2e-test.tgz}
     name: '@rush-temp/openapi-e2e-test'
     version: 0.0.0
     dependencies:
@@ -5041,7 +5044,7 @@ packages:
     dev: false
 
   file:projects/openapi-express-server-adapter.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-FIoYm35JkBuo5CrhRut9y5QHCZu7i1/UAoOKM6jT9WmzobL4VkPIBlqifMgQkfTqJVTwwv9rgZAgtTpYZpp8gw==, tarball: file:projects/openapi-express-server-adapter.tgz}
+    resolution: {integrity: sha512-u+N6V/RTivbrNPITq0s/vU+Ogvr1RIeIx9QTvp4kUJntXa2gjgdMtJuTXigD2T5cpMHE835kES26oyJFd35B1w==, tarball: file:projects/openapi-express-server-adapter.tgz}
     id: file:projects/openapi-express-server-adapter.tgz
     name: '@rush-temp/openapi-express-server-adapter'
     version: 0.0.0
@@ -5070,7 +5073,7 @@ packages:
     dev: false
 
   file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-25VkslYR9KF7ifAhjt3QMfooImd6xlo+yAGAwXs1Vzda4rBNeokfzsR1oCpxozZlr2o3niIwyg1SOTnkEaYQBw==, tarball: file:projects/openapi-fetch-client-adapter.tgz}
+    resolution: {integrity: sha512-RMXbyDAhluRJuf2su0W0OdtJ2AsQR1tLerPU5iym97lTAFmTEwNHITSSzEhd5VOifEdh5CfqqPrtC1l+z3ilbA==, tarball: file:projects/openapi-fetch-client-adapter.tgz}
     id: file:projects/openapi-fetch-client-adapter.tgz
     name: '@rush-temp/openapi-fetch-client-adapter'
     version: 0.0.0
@@ -5095,7 +5098,7 @@ packages:
     dev: false
 
   file:projects/openapi-generators.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-DNeUtMj1zjZX0pa16+dIlfWTLfFrGQagauouhgCv4q9kuvjvesnMIN46v4wudGWyIgs4GOcy31fILjWvzOqIXw==, tarball: file:projects/openapi-generators.tgz}
+    resolution: {integrity: sha512-jWfSrfK4RWecl03DZVyg5mFoAZQRMIEB5LFnBGoX3wO8D2yYjjip7EKg0qDCAGYfMHGOZ32MzFiRt1YJiiyUcA==, tarball: file:projects/openapi-generators.tgz}
     id: file:projects/openapi-generators.tgz
     name: '@rush-temp/openapi-generators'
     version: 0.0.0
@@ -5119,7 +5122,7 @@ packages:
     dev: false
 
   file:projects/openapi-http.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-k8a9UCJLQX/tFbryVYm55J9VfhdSoKzVpgWiiD1Rw0asUmy44gstt9A0qAy8yBZXvFy9Xjynhs6++1uGSUT7Gw==, tarball: file:projects/openapi-http.tgz}
+    resolution: {integrity: sha512-PCaEKYfndex/bBoyGSFRjuoSZIW3caHK+6V2Mfl8YH04TfwIXIO6KFIeHspVLQVZLw4AzLF1cS64dkxTXd3Hzg==, tarball: file:projects/openapi-http.tgz}
     id: file:projects/openapi-http.tgz
     name: '@rush-temp/openapi-http'
     version: 0.0.0
@@ -5140,7 +5143,7 @@ packages:
     dev: false
 
   file:projects/openapi-logger.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-eec+KaMN0p5gX9zjHUEuVGOCck10hLvgA+ywsad/mT9RVJNI2/oEsmWNJejEhWSoC+56KTCDI75E3LsuA521EQ==, tarball: file:projects/openapi-logger.tgz}
+    resolution: {integrity: sha512-8xjKEuV4o2pGPCawBLoGQkNtqXUGuYTBrqs40sdWuhq3J753GV5oAQHBpRsJYYOHSFiuTfqr6X6DSxX+UPxvfQ==, tarball: file:projects/openapi-logger.tgz}
     id: file:projects/openapi-logger.tgz
     name: '@rush-temp/openapi-logger'
     version: 0.0.0
@@ -5164,13 +5167,13 @@ packages:
     dev: false
 
   file:projects/openapi-model.tgz:
-    resolution: {integrity: sha512-EhvxIrsQ0/4Dg28bS0jh+6KSTJY098qjbKb2jiQc4aFYvfKulPbcKlYjyEQjLs+MrPlxhiwK2hkQuB1pUmHhJA==, tarball: file:projects/openapi-model.tgz}
+    resolution: {integrity: sha512-UnwSIXKkqnuaVfKA4wSjomVlxdx7kreQbS+r8vgTFYvS/ULkVInUhU5Dd7tbm1mHayym5gimoyjNTR9pSDDOkA==, tarball: file:projects/openapi-model.tgz}
     name: '@rush-temp/openapi-model'
     version: 0.0.0
     dev: false
 
   file:projects/openapi-parameter-serialization.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-pUcgFjlBktcVWEXubemBCmfJ4ny7pDaguFWG0Cb34d7ThlSAf8ts/7l+KgcvN284m0atXdP8zFcPe8FtjJDGMQ==, tarball: file:projects/openapi-parameter-serialization.tgz}
+    resolution: {integrity: sha512-MP0yxytmZ8Rbhah8MQwes5lbMydtXKAkumswgR05iYAVo6VBO1w8ohPQsHPXJfbE33M8ZJyxxaL1aKRg1CTISQ==, tarball: file:projects/openapi-parameter-serialization.tgz}
     id: file:projects/openapi-parameter-serialization.tgz
     name: '@rush-temp/openapi-parameter-serialization'
     version: 0.0.0
@@ -5192,7 +5195,7 @@ packages:
     dev: false
 
   file:projects/openapi-reader.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-4LEl5ncW9VgrekanIZmVP3rEghz2t6p4jJoOLiS2MlTDzX90njxUtD0Xx+VzqUldI4fnh6UpZklnGd7ftxqMzA==, tarball: file:projects/openapi-reader.tgz}
+    resolution: {integrity: sha512-sXiMricJZAU2OwbpwVX8MKv/+TYOvLc1bH5+Q66JklOue1jLEJQF6FMYsOSM2pYHQE3TzQ94BG/I4uFR7/acvw==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
     version: 0.0.0
@@ -5224,7 +5227,7 @@ packages:
     dev: false
 
   file:projects/openapi-validator.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-1ZoC2RYc52gGmjWnGdSOq2cxpOnKWgymBph6bGrQoz2woylRd/LXx+sbHwaLDTePKmQBxSPb67SIbUPKnk7A0w==, tarball: file:projects/openapi-validator.tgz}
+    resolution: {integrity: sha512-1zQ4JW2j/9gmut7NzeGfpJGmGXVSFwvDsc6azPVrnoBavWDjpCWaDsH0JJobdZnfZa9279y3ixCNqDe3HSKKig==, tarball: file:projects/openapi-validator.tgz}
     id: file:projects/openapi-validator.tgz
     name: '@rush-temp/openapi-validator'
     version: 0.0.0
@@ -5247,7 +5250,7 @@ packages:
     dev: false
 
   file:projects/openapi.tgz_ts-node@10.8.2+typescript@4.7.4:
-    resolution: {integrity: sha512-JB05ErvH7E2HJVrf/7KiYWqpNOOdKphOJSdQINxzAQWLoTNMBNVNTc1m90Fbj0aDiCwLT0+xmBiRdSSGrbUJ5A==, tarball: file:projects/openapi.tgz}
+    resolution: {integrity: sha512-W+oKORUtIOWnvtT7h+O1Pkg5cWX+6oqrFPlTaq8whqAoFvb2coXS+SXUyeSM2reTlmCiLWWPx7GXjeF3N35wFw==, tarball: file:projects/openapi.tgz}
     id: file:projects/openapi.tgz
     name: '@rush-temp/openapi'
     version: 0.0.0
@@ -5272,7 +5275,7 @@ packages:
     dev: false
 
   file:projects/try.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-lp4ZEc/UCoKP5llEhd6F9LklGTvOzg46Y4+ax5pJprXX8nkoVcThhQZ1iJN+uEXycQSS7bGXviszFvR7e5dyzA==, tarball: file:projects/try.tgz}
+    resolution: {integrity: sha512-OGZgAP6/fs60s4Vv9qneep+Y7iIoL2HhSfzRqb+GOnuuVDUTYLQZhtveqK2LHzdTTyw7FztVRYcjJRSot8nXvg==, tarball: file:projects/try.tgz}
     id: file:projects/try.tgz
     name: '@rush-temp/try'
     version: 0.0.0
@@ -5293,7 +5296,7 @@ packages:
     dev: false
 
   file:projects/typescript-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-sYN4kja8biKSntMWnJ+ly6crdG0xAX6vSnnTINOBk4cAAS3dwJtl/3ulP7jN7dKJ2cfQF6SSTL1LSnNeR2otuQ==, tarball: file:projects/typescript-common.tgz}
+    resolution: {integrity: sha512-RPTdDUZ4j6BsL/pdHl1xT0ijOhYIcYB4gC4L9maZsxUNMU5h1Dh9G9ZRekKk5cXOwXZQT7LzxAY+utvBDo711Q==, tarball: file:projects/typescript-common.tgz}
     id: file:projects/typescript-common.tgz
     name: '@rush-temp/typescript-common'
     version: 0.0.0
@@ -5316,7 +5319,7 @@ packages:
     dev: false
 
   file:projects/typescript-writer.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-TOb5pWjOl+a7OYTXJ0irQm1IxFmHKecH7t1+UsVGYCnnSPWpI92pcS677IHbzhewG5LtWEHRTRiEHusqvqV/Lw==, tarball: file:projects/typescript-writer.tgz}
+    resolution: {integrity: sha512-RJIMJPr87la42moRljFN0FWgZUH5dUKqsNlCjGSD46RpY4B7p111Dlub0n+2INBDZwjEwxeUQFLD/vFrkf+ILg==, tarball: file:projects/typescript-writer.tgz}
     id: file:projects/typescript-writer.tgz
     name: '@rush-temp/typescript-writer'
     version: 0.0.0
