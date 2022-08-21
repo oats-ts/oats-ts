@@ -1,6 +1,6 @@
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, ParameterDeclaration } from 'typescript'
-import { RouterNames } from '../utils/RouterNames'
+import { RouterNames } from './RouterNames'
 
 export function getExpressRouterHandlerParameters(): ParameterDeclaration[] {
   return [

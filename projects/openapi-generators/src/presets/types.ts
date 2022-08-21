@@ -13,6 +13,7 @@ import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
 import { ExpressRouterFactoryGeneratorConfig } from '../express-router-factory'
+import { ExpressCorsMiddlewareGeneratorConfig } from '../express-cors-middleware/typings'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
@@ -28,6 +29,7 @@ type GeneratorConfigs = {
   'oats/type-guard': TypeGuardGeneratorConfig
   'oats/type-validator': ValidatorsGeneratorConfig
   'oats/response-headers-type': ParameterTypesGeneratorConfig
+  'oats/express-cors-middleware': ExpressCorsMiddlewareGeneratorConfig
 }
 
 export type PresetGeneratorConfiguration = {

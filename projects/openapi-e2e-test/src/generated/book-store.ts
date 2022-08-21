@@ -294,17 +294,13 @@ export function createBookStoreRouter(
   )
 }
 
-export const bookStoreCorsMiddleware =
-  (isAccepted: (request: Request) => boolean): RequestHandler =>
-  (request: Request, response: Response, next: NextFunction) => {
-    if (isAccepted(request)) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-      response.setHeader('Access-Control-Allow-Headers', 'x-limit, content-type')
-      response.setHeader('Access-Control-Expose-Headers', 'x-length, content-type')
-    }
-    next()
-  }
+export const bookStoreCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  response.setHeader('Access-Control-Allow-Headers', 'x-limit, content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'x-length, content-type')
+  next()
+}
 
 export type AddBookRequest = {
   mimeType: 'application/json'

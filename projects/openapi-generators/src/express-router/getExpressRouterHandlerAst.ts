@@ -2,7 +2,7 @@ import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-com
 import { factory, SyntaxKind } from 'typescript'
 import { ExpressRoutersGeneratorConfig } from './typings'
 import { getHandlerBodyAst } from './getHandlerBodyAst'
-import { getExpressRouterHandlerParameters } from './getExpressRouterHandlerParameters'
+import { getExpressRouterHandlerParameters } from '../utils/getExpressRouterHandlerParameters'
 
 export function getExpressRouterHandlerAst(
   data: EnhancedOperation,

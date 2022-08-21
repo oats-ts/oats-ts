@@ -5,13 +5,9 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorConfig } from '@oats-ts/oats-ts'
+import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
 
-export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{}> {
-  constructor(globalConfig: Partial<GeneratorConfig>) {
-    super(globalConfig)
-  }
-
+export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<ExpressCorsMiddlewareGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-cors-middleware'
   }
@@ -47,7 +43,7 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<{
             RuntimePackages.Express.NextFunction,
           ]),
         ],
-        [getCorsMiddlewareAst(operations, this.context)],
+        [getCorsMiddlewareAst(operations, this.context, this.config)],
       ),
     )
   }

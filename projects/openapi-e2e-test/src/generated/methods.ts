@@ -215,16 +215,12 @@ export function createHttpMethodsRouter(
   )
 }
 
-export const httpMethodsCorsMiddleware =
-  (isAccepted: (request: Request) => boolean): RequestHandler =>
-  (request: Request, response: Response, next: NextFunction) => {
-    if (isAccepted(request)) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
-      response.setHeader('Access-Control-Expose-Headers', 'content-type')
-    }
-    next()
-  }
+export const httpMethodsCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
+}
 
 export const deleteMethodResponseBodyValidator = {
   200: { 'application/json': object(shape({ methodUsed: string() })) },

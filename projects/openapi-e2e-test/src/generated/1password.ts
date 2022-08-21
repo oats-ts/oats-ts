@@ -645,17 +645,13 @@ export function createEventsAPIRouter(
   )
 }
 
-export const eventsApiCorsMiddleware =
-  (isAccepted: (request: Request) => boolean): RequestHandler =>
-  (request: Request, response: Response, next: NextFunction) => {
-    if (isAccepted(request)) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
-      response.setHeader('Access-Control-Expose-Headers', 'content-type')
-    }
-    next()
-  }
+export const eventsApiCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  response.setHeader('Access-Control-Allow-Headers', 'content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
+}
 
 export const getAuthIntrospectResponseBodyValidator = {
   200: { 'application/json': introspectionTypeValidator },

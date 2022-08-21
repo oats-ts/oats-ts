@@ -175,7 +175,7 @@ export type SwaggerPetstoreApi = {
 
 export const createPetsRouter: Router = Router()
   .options('/pets', (request: Request, response: Response, next: NextFunction) => {
-    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '')
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
     response.setHeader('Access-Control-Allow-Headers', 'content-type')
     response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
@@ -211,7 +211,7 @@ export const createPetsRouter: Router = Router()
 
 export const listPetsRouter: Router = Router()
   .options('/pets', (request: Request, response: Response, next: NextFunction) => {
-    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '')
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
     response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
     response.setHeader('Access-Control-Allow-Headers', 'content-type')
     response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
@@ -240,7 +240,7 @@ export const listPetsRouter: Router = Router()
 
 export const showPetByIdRouter: Router = Router()
   .options('/pets/:petId', (request: Request, response: Response, next: NextFunction) => {
-    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '')
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
     response.setHeader('Access-Control-Allow-Methods', 'GET')
     response.setHeader('Access-Control-Expose-Headers', 'content-type')
     next()
@@ -289,17 +289,17 @@ export function createSwaggerPetstoreRouter(
   )
 }
 
-export const swaggerPetstoreCorsMiddleware =
-  (isAccepted: (request: Request) => boolean): RequestHandler =>
-  (request: Request, response: Response, next: NextFunction) => {
-    if (isAccepted(request)) {
-      response.setHeader('Access-Control-Allow-Origin', request.headers.origin ?? '*')
-      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
-      response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
-    }
-    next()
-  }
+export const swaggerPetstoreCorsMiddleware: RequestHandler = (
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  response.setHeader('Access-Control-Allow-Headers', 'content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
+  next()
+}
 
 export type CreatePetsRequest = {
   mimeType: 'application/json'
