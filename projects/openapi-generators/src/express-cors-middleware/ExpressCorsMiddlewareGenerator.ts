@@ -6,6 +6,7 @@ import { success, Try } from '@oats-ts/try'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
 export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<ExpressCorsMiddlewareGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -16,8 +17,8 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<E
     return []
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Express.name, version: '^4.18.1' }]
   }
 
   public referenceOf(input: OpenAPIObject): TypeReferenceNode | undefined {

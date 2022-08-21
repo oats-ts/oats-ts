@@ -9,6 +9,7 @@ import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
 import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
 export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,
@@ -22,7 +23,7 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     return ['oats/type']
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { failure, fromArray, isFailure, success, Try } from '@oats-ts/try'
-import { GeneratorInit } from './typings'
+import { GeneratorInit, RuntimeDependency } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
@@ -98,5 +98,5 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
   public abstract dependenciesOf(fromPath: string, input: any): any[]
   public abstract name(): string
   public abstract consumes(): string[]
-  public abstract runtimeDependencies(): string[]
+  public abstract runtimeDependencies(): RuntimeDependency[]
 }

@@ -8,6 +8,7 @@ import { Try, success } from '@oats-ts/try'
 import { getSdkTypeImports } from '../utils/sdk/getSdkTypeImports'
 import { getSdkClassAst } from './getSdkClassAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -18,8 +19,8 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     return ['oats/operation', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Http.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Http.name, version }]
   }
 
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {

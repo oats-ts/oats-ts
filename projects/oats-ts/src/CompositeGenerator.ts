@@ -1,5 +1,5 @@
-import { uniq, flatMap } from 'lodash'
-import { CodeGenerator, GeneratorConfig, StructuredGeneratorResult } from './typings'
+import { flatMap, uniqBy } from 'lodash'
+import { CodeGenerator, GeneratorConfig, RuntimeDependency, StructuredGeneratorResult } from './typings'
 import { Try, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
 import { flattenStructuredGeneratorResult } from './flattenStructuredGeneratorResult'
@@ -31,8 +31,11 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     return flatMap(this.children, (child) => child.consumes())
   }
 
-  public runtimeDependencies(): string[] {
-    return uniq(flatMap(this.children, (child) => child.runtimeDependencies()))
+  public runtimeDependencies(): RuntimeDependency[] {
+    return uniqBy(
+      flatMap(this.children, (child) => child.runtimeDependencies()),
+      ({ name, version }) => `${name}@${version}`,
+    )
   }
 
   public referenceOf(input: any): never {

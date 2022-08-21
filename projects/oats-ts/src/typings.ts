@@ -31,12 +31,17 @@ export type GeneratorInit<R, G> = {
   dependencies: Try<CodeGenerator<R, G>[]>
 }
 
+export type RuntimeDependency = {
+  name: string
+  version: string
+}
+
 export type CodeGenerator<R, G> = {
   readonly id: string
   name(): string
   produces(): string[]
   consumes(): string[]
-  runtimeDependencies(): string[]
+  runtimeDependencies(): RuntimeDependency[]
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined
   generate(): Promise<StructuredGeneratorResult<G> | Try<G[]>>

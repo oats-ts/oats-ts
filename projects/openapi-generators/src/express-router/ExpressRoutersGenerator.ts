@@ -7,6 +7,7 @@ import { success, Try } from '@oats-ts/try'
 import { getExpressRouterImports } from './getExpressRouterImports'
 import { getExpressRouterAst } from './getExpressRouterAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<ExpressRoutersGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -27,8 +28,12 @@ export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<Express
     ]
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [
+      { name: RuntimePackages.Http.name, version: version },
+      { name: RuntimePackages.HttpServerExpress.name, version: version },
+      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+    ]
   }
 
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {

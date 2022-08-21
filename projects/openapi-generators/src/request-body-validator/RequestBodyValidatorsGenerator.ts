@@ -13,6 +13,7 @@ import { success, Try } from '@oats-ts/try'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { getRequestBodyValidatorAst } from './getRequestBodyValidatorAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -23,8 +24,8 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     return ['oats/type', 'oats/type-validator']
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Validators.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Validators.name, version }]
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {

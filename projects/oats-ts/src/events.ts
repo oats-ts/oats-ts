@@ -1,6 +1,6 @@
 import type { Try } from '@oats-ts/try'
 import type { Issue } from '@oats-ts/validators'
-import type { StructuredGeneratorResult } from './typings'
+import type { RuntimeDependency, StructuredGeneratorResult } from './typings'
 
 export type EventMap = Record<string, any>
 export type EventKey<T extends EventMap> = string & keyof T
@@ -109,7 +109,7 @@ export type GeneratorCompleted<G> = {
   name: string
   data: Try<G[]>
   structure: StructuredGeneratorResult<G>
-  dependencies: string[]
+  dependencies: RuntimeDependency[]
   issues: Issue[]
 }
 
@@ -118,7 +118,7 @@ export type GeneratorStepCompleted<G> = {
   data: Try<G[]>
   structure: StructuredGeneratorResult<G>
   name: string
-  dependencies: string[]
+  dependencies: RuntimeDependency[]
   issues: Issue[]
 }
 

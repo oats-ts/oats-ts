@@ -6,6 +6,7 @@ import { success, Try } from '@oats-ts/try'
 import { getRouterFactoryAst } from './getRouterFactoryAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { ExpressRouterFactoryGeneratorConfig } from './typings'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class ExpressRouterFactoryGenerator extends DocumentBasedCodeGenerator<ExpressRouterFactoryGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -14,8 +15,12 @@ export class ExpressRouterFactoryGenerator extends DocumentBasedCodeGenerator<Ex
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/express-router', 'oats/express-routers-type', 'oats/api-type']
   }
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Http.name, RuntimePackages.HttpServerExpress.name, RuntimePackages.Express.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [
+      { name: RuntimePackages.Http.name, version },
+      { name: RuntimePackages.HttpServerExpress.name, version },
+      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+    ]
   }
 
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {

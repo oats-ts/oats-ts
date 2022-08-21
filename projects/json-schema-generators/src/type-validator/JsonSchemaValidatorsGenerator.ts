@@ -10,6 +10,7 @@ import { createSourceFile } from '@oats-ts/typescript-common'
 import { getValidatorAst } from './getValidatorAst'
 import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,
@@ -23,8 +24,8 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     return ['oats/type']
   }
 
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.Validators.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.Validators.name, version }]
   }
 
   protected shouldGenerate(schema: Referenceable<SchemaObject>): boolean {

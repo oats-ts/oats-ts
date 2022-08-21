@@ -1,3 +1,4 @@
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OpenAPIGeneratorTarget, EnhancedOperation, RuntimePackages } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
@@ -14,8 +15,8 @@ export class RequestHeadersSerializersGenerator extends OperationBasedCodeGenera
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/request-headers-type']
   }
-  public runtimeDependencies(): string[] {
-    return [RuntimePackages.ParameterSerialization.name]
+  public runtimeDependencies(): RuntimeDependency[] {
+    return [{ name: RuntimePackages.ParameterSerialization.name, version }]
   }
   protected shouldGenerate(item: EnhancedOperation): boolean {
     return item.header.length > 0

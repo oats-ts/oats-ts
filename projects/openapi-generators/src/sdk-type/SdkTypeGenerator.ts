@@ -7,6 +7,7 @@ import { success, Try } from '@oats-ts/try'
 import { getSdkTypeImports } from '../utils/sdk/getSdkTypeImports'
 import { getSdkTypeAst } from './getSdkTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
 export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -17,7 +18,7 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
     return ['oats/operation', 'oats/request-type', 'oats/response-type']
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

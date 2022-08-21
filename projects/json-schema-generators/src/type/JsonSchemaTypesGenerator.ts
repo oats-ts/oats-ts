@@ -8,6 +8,7 @@ import { createSourceFile } from '@oats-ts/typescript-common'
 import { getNamedTypeAst } from './getNamedTypeAst'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
 import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
 export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,
@@ -21,7 +22,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
     return []
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

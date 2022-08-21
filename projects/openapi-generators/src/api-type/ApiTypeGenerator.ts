@@ -7,6 +7,7 @@ import { ApiTypeGeneratorConfig } from './typings'
 import { getApiTypeImports } from './getApiTypeImports'
 import { getApiTypeAst } from './getApiTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 
 export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -17,7 +18,7 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
     return ['oats/request-server-type', 'oats/response-type']
   }
 
-  public runtimeDependencies(): string[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 

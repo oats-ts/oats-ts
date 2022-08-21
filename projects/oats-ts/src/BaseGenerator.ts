@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { CodeGenerator, GeneratorConfig, GeneratorInit, StructuredGeneratorResult } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorInit, RuntimeDependency, StructuredGeneratorResult } from './typings'
 import { GeneratorEventEmitter } from './events'
 import { isSuccess, Try } from '@oats-ts/try'
 
@@ -62,5 +62,5 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
   public abstract name(): string
   public abstract produces(): string[]
   public abstract consumes(): string[]
-  public abstract runtimeDependencies(): string[]
+  public abstract runtimeDependencies(): RuntimeDependency[]
 }
