@@ -14,7 +14,11 @@ export const enumeration =
     if (values.indexOf(input) < 0) {
       return [
         {
-          message: config.message('enumeration', path, { expected: values }),
+          message: config.message('enumeration', path, {
+            type: 'enumeration',
+            input,
+            hint: values,
+          }),
           path,
           severity,
         },

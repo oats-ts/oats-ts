@@ -11,7 +11,11 @@ export const literal =
     if (value !== input) {
       return [
         {
-          message: config.message('literal', path, { expected: value }),
+          message: config.message('literal', path, {
+            type: 'literal',
+            input,
+            hint: value,
+          }),
           path,
           severity,
         },

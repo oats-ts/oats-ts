@@ -4,7 +4,7 @@ import { isNil } from '../utils'
 export const restrictKeys =
   <T extends Record<string, any>>(expectedKeys: (keyof T)[]): Validator<object> =>
   (input: object, path: string, config: TypedValidatorConfig) => {
-    const severity = config.severity('restrictKeys', path)
+    const severity = config.severity('restrictKey', path)
     if (isNil(severity)) {
       return []
     }
@@ -13,8 +13,12 @@ export const restrictKeys =
     if (extraKeys.length > 0) {
       return extraKeys.map(
         (key): Issue => ({
-          message: config.message('restrictKeys', path, { key }),
-          path: config.append(path, key),
+          message: config.message('restrictKey', path, {
+            type: 'restrictKey',
+            hint: key,
+            input,
+          }),
+          path,
           severity,
         }),
       )

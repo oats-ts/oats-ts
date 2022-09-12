@@ -23,7 +23,11 @@ export const union =
 
     return [
       {
-        message: config.message('union', path, { expected }), //`should be one of [${keys.join(', ')}]`,
+        message: config.message('union', path, {
+          type: 'union',
+          hint: expected,
+          input,
+        }),
         path: path,
         severity,
       },

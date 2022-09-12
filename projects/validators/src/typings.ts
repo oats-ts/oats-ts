@@ -1,6 +1,6 @@
 export type Severity = 'error' | 'warning' | 'info'
 
-export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'object' | 'string'
+export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'integer' | 'object' | 'string'
 
 export type ValidatorType =
   | ValueType
@@ -8,7 +8,6 @@ export type ValidatorType =
   | 'tuple'
   | 'record'
   | 'optional'
-  | 'minLength'
   | 'literal'
   | 'lazy'
   | 'items'
@@ -16,7 +15,15 @@ export type ValidatorType =
   | 'combine'
   | 'any'
   | 'shape'
-  | 'restrictKeys'
+  | 'restrictKey'
+  | 'minLength'
+  | 'maxLength'
+  | 'maximum'
+  | 'minimum'
+  | 'exclusiveMinimum'
+  | 'exclusiveMaximum'
+  | 'multipleOf'
+  | 'pattern'
 
 export type Issue = {
   severity: Severity
@@ -34,32 +41,38 @@ export type ValidatorConfig<T extends string = any, D = any> = {
   append: (path: string, ...segments: (string | number)[]) => string
 }
 
-export type UnionMessageData = {
-  expected: string[]
+export type GenericValidatorData<Type extends string, Value, Hint> = {
+  type: Type
+  hint: Hint
+  input: Value
 }
 
-export type EnumerationMessageData = {
-  expected: (string | number | boolean)[]
-}
-
-export type LiteralMessageData = {
-  expected: string | number | boolean | null | undefined
-}
-
-export type MinLengthMessageData = {
-  expected: number
-}
-
-export type RestrictKeysData = {
-  key: string
-}
+export type PatternMessageData = GenericValidatorData<'pattern', string, RegExp>
+export type UnionMessageData = GenericValidatorData<'union', any, string[]>
+export type EnumerationMessageData = GenericValidatorData<'enumeration', any, (string | number | boolean)[]>
+export type LiteralMessageData = GenericValidatorData<'literal', any, string | number | boolean | null | undefined>
+export type MinLengthMessageData = GenericValidatorData<'minLength', { length: number }, number>
+export type MaxLengthMessageData = GenericValidatorData<'maxLength', { length: number }, number>
+export type MinimumMessageData = GenericValidatorData<'minimum', number, number>
+export type MaximumMessageData = GenericValidatorData<'maximum', number, number>
+export type ExclusiveMinimumMessageData = GenericValidatorData<'exclusiveMinimum', number, number>
+export type ExclusiveMaximumMessageData = GenericValidatorData<'exclusiveMaximum', number, number>
+export type MultipleOfMessageData = GenericValidatorData<'multipleOf', number, number>
+export type RestrictKeyData = GenericValidatorData<'restrictKey', Record<string, any>, string>
 
 export type ValidatorData =
   | UnionMessageData
   | EnumerationMessageData
   | LiteralMessageData
+  | RestrictKeyData
   | MinLengthMessageData
-  | RestrictKeysData
+  | MaxLengthMessageData
+  | PatternMessageData
+  | MinimumMessageData
+  | MaximumMessageData
+  | ExclusiveMaximumMessageData
+  | ExclusiveMinimumMessageData
+  | MultipleOfMessageData
 
 export type TypedValidatorConfig = ValidatorConfig<ValidatorType, ValidatorData>
 

@@ -14,13 +14,12 @@ const messageProducers: Partial<Record<ValidatorType, (data?: any) => string>> =
   number: () => 'should be a number',
   object: () => 'should be an object',
   string: () => 'should be a string',
-  enumeration: ({ expected }: EnumerationMessageData) =>
-    `should be one of ${expected.map((value) => (typeof value === 'string' ? `"${value}"` : value)).join(',')}`,
-  literal: ({ expected }: LiteralMessageData) =>
-    `should be ${typeof expected === 'string' ? `"${expected}"` : expected}`,
-  minLength: ({ expected }: MinLengthMessageData) => `length should be at least ${expected}`,
-  restrictKeys: () => `should not have key`,
-  union: ({ expected }: UnionMessageData) => `should be one of ${expected.join(', ')}`,
+  enumeration: ({ hint }: EnumerationMessageData) =>
+    `should be one of ${hint.map((value) => (typeof value === 'string' ? `"${value}"` : value)).join(',')}`,
+  literal: ({ hint }: LiteralMessageData) => `should be ${typeof hint === 'string' ? `"${hint}"` : hint}`,
+  minLength: ({ hint }: MinLengthMessageData) => `length should be at least ${hint}`,
+  restrictKey: ({ hint }) => `should not have key "${hint}"`,
+  union: ({ hint }: UnionMessageData) => `should be one of ${hint.join(', ')}`,
 }
 
 export function message(type: string, path: string, data?: any): string {

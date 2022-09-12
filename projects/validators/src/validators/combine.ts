@@ -9,10 +9,7 @@ export const combine =
     }
     const issues: Issue[] = []
     for (let i = 0; i < validators.length; i += 1) {
-      const partialIssues = validators[i](input, path, config)
-      if (partialIssues.length > 0) {
-        issues.push(...partialIssues)
-      }
+      issues.push(...validators[i](input, path, config))
     }
     return issues
   }
