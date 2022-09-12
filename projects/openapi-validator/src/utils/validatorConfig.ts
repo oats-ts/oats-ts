@@ -7,13 +7,13 @@ export const validatorConfig: ValidatorConfig = {
   ...DefaultConfig,
   append,
   severity: (type: ValidatorType) => {
-    if (type === 'restrictKeys') {
+    if (type === 'restrictKey') {
       return 'info'
     }
     return 'error'
   },
   message: (type: ValidatorType, path: string, data?: any) => {
-    if (type === 'restrictKeys') {
+    if (type === 'restrictKey') {
       return 'unexpected key'
     }
     return DefaultConfig.message(type, path, data)
