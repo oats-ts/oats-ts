@@ -13,6 +13,7 @@ const Http = {
   RawHttpResponse: 'RawHttpResponse',
   ResponseExpectation: 'ResponseExpectation',
   ResponseExpectations: 'ResponseExpectations',
+  CookieValue: 'CookieValue',
   ClientAdapter: 'ClientAdapter',
   ServerAdapter: 'ServerAdapter',
 } as const

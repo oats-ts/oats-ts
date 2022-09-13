@@ -11,6 +11,7 @@ import { pathTypes } from './path-type'
 import { queryDeserializers } from './query-deserializer'
 import { querySerializers } from './query-serializer'
 import { queryTypes } from './query-type'
+import { cookiesTypes } from './cookies-type'
 import { requestBodyValidators } from './request-body-validator'
 import { requestHeadersDeserializers } from './request-headers-deserializer'
 import { requestHeadersSerializers } from './request-headers-serializer'
@@ -40,6 +41,7 @@ export const factories = {
   pathDeserializers,
   pathSerializers,
   pathTypes,
+  cookiesTypes,
   queryDeserializers,
   querySerializers,
   queryTypes,

@@ -10,6 +10,7 @@ export const commonConfig: PresetGeneratorConfiguration = {
   'oats/request-headers-type': true,
   'oats/response-headers-type': true,
   'oats/response-type': true,
+  'oats/cookies-type': true,
 }
 
 export const serverOnlyConfig: PresetGeneratorConfiguration = {
