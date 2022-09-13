@@ -15,6 +15,7 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/path-deserializer': factories.pathDeserializers,
   'oats/path-serializer': factories.pathSerializers,
   'oats/path-type': factories.pathTypes,
+  'oats/cookies-type': undefined!,
   'oats/query-deserializer': factories.queryDeserializers,
   'oats/query-serializer': factories.querySerializers,
   'oats/query-type': factories.queryTypes,

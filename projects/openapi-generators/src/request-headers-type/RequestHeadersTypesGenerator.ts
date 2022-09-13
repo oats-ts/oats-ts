@@ -1,9 +1,13 @@
-import { GeneratorConfig } from '@oats-ts/oats-ts'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { ParameterObject } from '@oats-ts/openapi-model'
 import { InputParameterTypesGenerator } from '../utils/parameters/InputParameterTypesGenerator'
-import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 
 export class RequestHeadersTypesGenerator extends InputParameterTypesGenerator {
-  constructor(config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>) {
-    super(config, 'oats/request-headers-type', 'header')
+  public name(): OpenAPIGeneratorTarget {
+    return 'oats/request-headers-type'
+  }
+
+  protected getParameterObjects(data: EnhancedOperation): ParameterObject[] {
+    return data.header
   }
 }

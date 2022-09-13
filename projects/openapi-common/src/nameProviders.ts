@@ -45,6 +45,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/operation': _delegating(operationId, toCamelCase),
   'oats/query-type': _delegating(operationId, toPascalCase, append('QueryParameters')),
   'oats/path-type': _delegating(operationId, toPascalCase, append('PathParameters')),
+  'oats/cookies-type': _delegating(operationId, toPascalCase, append('CookieParameters')),
   'oats/request-headers-type': _delegating(operationId, toPascalCase, append('RequestHeaderParameters')),
   'oats/response-headers-type': (input: [OperationObject, string]) => {
     const [operation, status] = input

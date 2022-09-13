@@ -27,6 +27,7 @@ export type OpenAPIGeneratorTarget =
   | 'oats/response-body-validator'
   | 'oats/query-type'
   | 'oats/path-type'
+  | 'oats/cookies-type'
   | 'oats/request-headers-type'
   | 'oats/response-type'
   | 'oats/request-type'

@@ -1,9 +1,12 @@
-import { GeneratorConfig } from '@oats-ts/oats-ts'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { ParameterObject } from '@oats-ts/openapi-model'
 import { InputParameterTypesGenerator } from '../utils/parameters/InputParameterTypesGenerator'
-import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 
 export class QueryTypesGenerator extends InputParameterTypesGenerator {
-  constructor(config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>) {
-    super(config, 'oats/query-type', 'query')
+  public name(): OpenAPIGeneratorTarget {
+    return 'oats/query-type'
+  }
+  protected getParameterObjects(data: EnhancedOperation): ParameterObject[] {
+    return data.query
   }
 }

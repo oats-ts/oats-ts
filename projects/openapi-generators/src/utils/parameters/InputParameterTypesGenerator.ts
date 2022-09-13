@@ -1,62 +1,28 @@
-import { GeneratorConfig, RuntimeDependency } from '@oats-ts/oats-ts'
-import { OperationObject, ParameterLocation } from '@oats-ts/openapi-model'
-import { isEmpty } from 'lodash'
-import { EnhancedOperation, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
-import { ParameterTypesGeneratorConfig } from './typings'
-import { generateOperationParameterType } from './generateOperationParameterType'
-import { success, Try } from '@oats-ts/try'
+import { OperationObject } from '@oats-ts/openapi-model'
+import { isEmpty, sortBy } from 'lodash'
+import { EnhancedOperation, getEnhancedOperations } from '@oats-ts/openapi-common'
+import { TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
-import { OperationBasedCodeGenerator } from '../OperationBasedCodeGenerator'
+import { ParameterTypesGenerator } from './ParameterTypesGenerator'
 
-export class InputParameterTypesGenerator extends OperationBasedCodeGenerator<ParameterTypesGeneratorConfig> {
-  private readonly _name: OpenAPIGeneratorTarget
-  private readonly _location: ParameterLocation
-  private readonly _generate: (
-    data: EnhancedOperation,
-    context: OpenAPIGeneratorContext,
-    config: ParameterTypesGeneratorConfig,
-  ) => SourceFile
-
-  public constructor(
-    config: ParameterTypesGeneratorConfig & Partial<GeneratorConfig>,
-    name: OpenAPIGeneratorTarget,
-    location: ParameterLocation,
-  ) {
-    super(config)
-    this._name = name
-    this._location = location
-
-    this._generate = generateOperationParameterType(location)
+export abstract class InputParameterTypesGenerator extends ParameterTypesGenerator<EnhancedOperation> {
+  protected getEnhancedOperation(data: EnhancedOperation): EnhancedOperation {
+    return data
   }
 
-  public name(): OpenAPIGeneratorTarget {
-    return this._name
-  }
-
-  public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/type']
-  }
-
-  public runtimeDependencies(): RuntimeDependency[] {
-    return []
-  }
-
-  protected shouldGenerate(data: EnhancedOperation): boolean {
-    return data[this._location].length > 0
-  }
-
-  protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    return success(this._generate(data, this.context, this.config))
+  protected getItems(): EnhancedOperation[] {
+    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
+      this.context.nameOf(operation, this.name()),
+    )
   }
 
   public referenceOf(input: OperationObject): TypeNode | undefined {
-    const params = this.enhanced(input)[this._location]
+    const params = this.getParameterObjects(this.enhanced(input))
     return isEmpty(params) ? undefined : factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    const params = this.enhanced(input)[this._location]
+    const params = this.getParameterObjects(this.enhanced(input))
     return isEmpty(params) ? [] : getModelImports(fromPath, this.name(), [input], this.context)
   }
 }

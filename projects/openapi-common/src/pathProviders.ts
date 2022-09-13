@@ -8,6 +8,7 @@ const fileNameByTarget: NameByTarget = {
   'oats/type-guard': 'typeGuards.ts',
   'oats/operation': 'operations.ts',
   'oats/query-type': 'queryTypes.ts',
+  'oats/cookies-type': 'cookieTypes.ts',
   'oats/request-headers-type': 'requestHeaderTypes.ts',
   'oats/path-type': 'pathTypes.ts',
   'oats/response-headers-type': 'responseHeaderTypes.ts',
@@ -71,6 +72,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/response-headers-type': parameters,
     'oats/path-type': parameters,
     'oats/query-type': parameters,
+    'oats/cookies-type': parameters,
 
     'oats/request-headers-serializer': serializers,
     'oats/query-serializer': serializers,

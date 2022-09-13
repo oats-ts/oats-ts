@@ -100,6 +100,44 @@ export type HttpResponse<B = any, S = any, M = any, H = any> = {
   headers?: H
 }
 
+/**
+ * Wraps a cookie value with all possible configuration.
+ * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
+ */
+export type CookieValue<T> = {
+  value: T
+  /**
+   * The expiration date of the cookie in UTC date format.
+   * Use Date#toUTCString() or Date#toGMTString() to serialize a Date object to this format.
+   */
+  expires?: string
+  /**
+   * Maximum age (number of seconds) of the cookie.
+   * If both maxAge and expires is present, maxAge has precedence.
+   */
+  maxAge?: number
+  /**
+   * Defines the host to which the cookie will be sent.
+   */
+  domain?: string
+  /**
+   * Indicates the path that must exist in the requested URL for the browser to send the Cookie header.
+   */
+  path?: string
+  /**
+   * Indicates that the cookie is sent to the server only when a request is made with the https scheme (except on localhost)
+   */
+  secure?: boolean
+  /**
+   * Forbids JavaScript from accessing the cookie
+   */
+  httpOnly?: boolean
+  /**
+   * Controls whether or not a cookie is sent with cross-site requests
+   */
+  sameSite?: 'Strict' | 'Lax' | 'None'
+}
+
 /** Http headers where key is the header name, value is the serialized header value. */
 export type RawHttpHeaders = Record<string, string>
 

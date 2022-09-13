@@ -3,7 +3,6 @@ import { OpenAPIGeneratorContext, RuntimePackages, OpenAPIGeneratorTarget } from
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, SourceFile, SyntaxKind, VariableStatement } from 'typescript'
 import { createSourceFile, getNamedImports } from '@oats-ts/typescript-common'
-import { getParameterTypeGeneratorTarget } from '../parameters/getParameterTypeGeneratorTarget'
 import { getDslObjectAst } from './getDslObjectAst'
 
 const DslTypeMap: Record<ParameterLocation, string> = {
@@ -11,6 +10,13 @@ const DslTypeMap: Record<ParameterLocation, string> = {
   header: RuntimePackages.ParameterSerialization.HeaderDsl,
   path: RuntimePackages.ParameterSerialization.PathDsl,
   query: RuntimePackages.ParameterSerialization.QueryDsl,
+}
+
+const DslTargetMap: Record<ParameterLocation, OpenAPIGeneratorTarget> = {
+  header: 'oats/request-headers-type',
+  path: 'oats/path-type',
+  query: 'oats/query-type',
+  cookie: 'oats/cookies-type',
 }
 
 function createDeserializerConstant(
@@ -27,7 +33,7 @@ function createDeserializerConstant(
           context.nameOf(data.operation, target),
           undefined,
           factory.createTypeReferenceNode(DslTypeMap[location], [
-            context.referenceOf(data.operation, getParameterTypeGeneratorTarget(location)),
+            context.referenceOf(data.operation, DslTargetMap[location]),
           ]),
           getDslObjectAst(data[location], context),
         ),
