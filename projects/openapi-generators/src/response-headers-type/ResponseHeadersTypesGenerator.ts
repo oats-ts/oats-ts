@@ -54,6 +54,10 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
     return operation
   }
 
+  protected getNameable([{ operation }, statusCode]: ResponseParameterInputInternal) {
+    return [operation, statusCode]
+  }
+
   protected getParameterObjects([data, status]: ResponseParameterInputInternal): HeaderObject[] {
     return values(getResponseHeaders(data.operation, this.context)[status]).map((header) =>
       this.context.dereference(header, true),

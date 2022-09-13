@@ -25,6 +25,7 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
   public abstract name(): OpenAPIGeneratorTarget
   protected abstract getParameterObjects(data: T): (ParameterObject | HeaderObject)[]
   protected abstract getEnhancedOperation(data: T): EnhancedOperation
+  protected abstract getNameable(data: T): any
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/type']
@@ -52,7 +53,7 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
     const ast = factory.createTypeAliasDeclaration(
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      this.context.nameOf(operation, this.name()),
+      this.context.nameOf(this.getNameable(data), this.name()),
       undefined,
       this.getTypeLiteral(parameters),
     )

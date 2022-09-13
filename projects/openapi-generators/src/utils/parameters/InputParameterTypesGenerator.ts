@@ -10,6 +10,10 @@ export abstract class InputParameterTypesGenerator extends ParameterTypesGenerat
     return data
   }
 
+  protected getNameable(data: EnhancedOperation) {
+    return data.operation
+  }
+
   protected getItems(): EnhancedOperation[] {
     return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
       this.context.nameOf(operation, this.name()),
