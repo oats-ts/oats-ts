@@ -5,7 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter, CookieValue, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
   createHeaderDeserializer,
   createHeaderSerializer,
@@ -80,6 +80,45 @@ export type CommonOptObjectTypeExpl = {
 export type DeepObjectQueryParameters = {
   objExpl: CommonObjectTypeExpl
   optObjExpl?: CommonOptObjectTypeExpl
+}
+
+export type FormCookieParameters = {
+  bool: boolean
+  boolArr: boolean[]
+  boolArrExpl: boolean[]
+  boolExpl: boolean
+  enm: CommonEnumType
+  enmArr: CommonEnumType[]
+  enmArrExpl: CommonEnumType[]
+  enmExpl: CommonEnumType
+  num: number
+  numArr: number[]
+  numArrExpl: number[]
+  numExpl: number
+  obj: CommonObjectType
+  objExpl: CommonObjectTypeExpl
+  optBool?: boolean
+  optBoolArr?: boolean[]
+  optBoolArrExpl?: boolean[]
+  optBoolExpl?: boolean
+  optEnm?: CommonEnumType
+  optEnmArr?: CommonEnumType[]
+  optEnmArrExpl?: CommonEnumType[]
+  optEnmExpl?: CommonEnumType
+  optNum?: number
+  optNumArr?: number[]
+  optNumArrExpl?: number[]
+  optNumExpl?: number
+  optObj?: CommonOptObjectType
+  optObjExpl?: CommonOptObjectTypeExpl
+  optStr?: string
+  optStrArr?: string[]
+  optStrArrExpl?: string[]
+  optStrExpl?: string
+  str: string
+  strArr: string[]
+  strArrExpl: string[]
+  strExpl: string
 }
 
 export type FormQueryParameters = {
@@ -350,6 +389,47 @@ export const deepObjectQueryParametersTypeValidator = object(
   shape({
     objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     optObjExpl: optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
+  }),
+)
+
+export const formCookieParametersTypeValidator = object(
+  shape({
+    bool: boolean(),
+    boolArr: array(items(boolean())),
+    boolArrExpl: array(items(boolean())),
+    boolExpl: boolean(),
+    enm: lazy(() => commonEnumTypeTypeValidator),
+    enmArr: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
+    enmExpl: lazy(() => commonEnumTypeTypeValidator),
+    num: number(),
+    numArr: array(items(number())),
+    numArrExpl: array(items(number())),
+    numExpl: number(),
+    obj: lazy(() => commonObjectTypeTypeValidator),
+    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
+    optBool: optional(boolean()),
+    optBoolArr: optional(array(items(boolean()))),
+    optBoolArrExpl: optional(array(items(boolean()))),
+    optBoolExpl: optional(boolean()),
+    optEnm: optional(lazy(() => commonEnumTypeTypeValidator)),
+    optEnmArr: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    optEnmArrExpl: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
+    optEnmExpl: optional(lazy(() => commonEnumTypeTypeValidator)),
+    optNum: optional(number()),
+    optNumArr: optional(array(items(number()))),
+    optNumArrExpl: optional(array(items(number()))),
+    optNumExpl: optional(number()),
+    optObj: optional(lazy(() => commonOptObjectTypeTypeValidator)),
+    optObjExpl: optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
+    optStr: optional(string()),
+    optStrArr: optional(array(items(string()))),
+    optStrArrExpl: optional(array(items(string()))),
+    optStrExpl: optional(string()),
+    str: string(),
+    strArr: array(items(string())),
+    strArrExpl: array(items(string())),
+    strExpl: string(),
   }),
 )
 
@@ -673,6 +753,76 @@ export function isDeepObjectQueryParameters(input: any): input is DeepObjectQuer
     (input.optObjExpl === null ||
       input.optObjExpl === undefined ||
       (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean))
+  )
+}
+
+export function isFormCookieParameters(input: any): input is FormCookieParameters {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    typeof input.bool === 'boolean' &&
+    Array.isArray(input.boolArr) &&
+    input.boolArr.every((item: any) => typeof item === 'boolean') &&
+    Array.isArray(input.boolArrExpl) &&
+    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
+    typeof input.boolExpl === 'boolean' &&
+    (isCommonEnumType(input.enm) as boolean) &&
+    Array.isArray(input.enmArr) &&
+    input.enmArr.every((item: any) => isCommonEnumType(item) as boolean) &&
+    Array.isArray(input.enmArrExpl) &&
+    input.enmArrExpl.every((item: any) => isCommonEnumType(item) as boolean) &&
+    (isCommonEnumType(input.enmExpl) as boolean) &&
+    typeof input.num === 'number' &&
+    Array.isArray(input.numArr) &&
+    input.numArr.every((item: any) => typeof item === 'number') &&
+    Array.isArray(input.numArrExpl) &&
+    input.numArrExpl.every((item: any) => typeof item === 'number') &&
+    typeof input.numExpl === 'number' &&
+    (isCommonObjectType(input.obj) as boolean) &&
+    (isCommonObjectTypeExpl(input.objExpl) as boolean) &&
+    (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
+    (input.optBoolArr === null ||
+      input.optBoolArr === undefined ||
+      (Array.isArray(input.optBoolArr) && input.optBoolArr.every((item: any) => typeof item === 'boolean'))) &&
+    (input.optBoolArrExpl === null ||
+      input.optBoolArrExpl === undefined ||
+      (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
+    (input.optBoolExpl === null || input.optBoolExpl === undefined || typeof input.optBoolExpl === 'boolean') &&
+    (input.optEnm === null || input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
+    (input.optEnmArr === null ||
+      input.optEnmArr === undefined ||
+      (Array.isArray(input.optEnmArr) && input.optEnmArr.every((item: any) => isCommonEnumType(item) as boolean))) &&
+    (input.optEnmArrExpl === null ||
+      input.optEnmArrExpl === undefined ||
+      (Array.isArray(input.optEnmArrExpl) &&
+        input.optEnmArrExpl.every((item: any) => isCommonEnumType(item) as boolean))) &&
+    (input.optEnmExpl === null || input.optEnmExpl === undefined || (isCommonEnumType(input.optEnmExpl) as boolean)) &&
+    (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
+    (input.optNumArr === null ||
+      input.optNumArr === undefined ||
+      (Array.isArray(input.optNumArr) && input.optNumArr.every((item: any) => typeof item === 'number'))) &&
+    (input.optNumArrExpl === null ||
+      input.optNumArrExpl === undefined ||
+      (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
+    (input.optNumExpl === null || input.optNumExpl === undefined || typeof input.optNumExpl === 'number') &&
+    (input.optObj === null || input.optObj === undefined || (isCommonOptObjectType(input.optObj) as boolean)) &&
+    (input.optObjExpl === null ||
+      input.optObjExpl === undefined ||
+      (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean)) &&
+    (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
+    (input.optStrArr === null ||
+      input.optStrArr === undefined ||
+      (Array.isArray(input.optStrArr) && input.optStrArr.every((item: any) => typeof item === 'string'))) &&
+    (input.optStrArrExpl === null ||
+      input.optStrArrExpl === undefined ||
+      (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
+    (input.optStrExpl === null || input.optStrExpl === undefined || typeof input.optStrExpl === 'string') &&
+    typeof input.str === 'string' &&
+    Array.isArray(input.strArr) &&
+    input.strArr.every((item: any) => typeof item === 'string') &&
+    Array.isArray(input.strArrExpl) &&
+    input.strArrExpl.every((item: any) => typeof item === 'string') &&
+    typeof input.strExpl === 'string'
   )
 }
 
@@ -1314,6 +1464,18 @@ export type DeepObjectQueryParametersResponse =
       body: ParameterIssue[]
     }
 
+export type FormCookieParametersResponse =
+  | {
+      mimeType: 'application/json'
+      statusCode: 200
+      body: FormCookieParameters
+    }
+  | {
+      mimeType: 'application/json'
+      statusCode: 400
+      body: ParameterIssue[]
+    }
+
 export type FormQueryParametersResponse =
   | {
       mimeType: 'application/json'
@@ -1412,6 +1574,45 @@ export type SpaceDelimitedQueryParametersResponse =
       statusCode: 400
       body: ParameterIssue[]
     }
+
+export type FormCookieParametersCookieParameters = {
+  strExpl: CookieValue<string>
+  optStrExpl?: CookieValue<string>
+  str: CookieValue<string>
+  optStr?: CookieValue<string>
+  numExpl: CookieValue<number>
+  optNumExpl?: CookieValue<number>
+  num: CookieValue<number>
+  optNum?: CookieValue<number>
+  boolExpl: CookieValue<boolean>
+  optBoolExpl?: CookieValue<boolean>
+  bool: CookieValue<boolean>
+  optBool?: CookieValue<boolean>
+  enmExpl: CookieValue<CommonEnumType>
+  optEnmExpl?: CookieValue<CommonEnumType>
+  enm: CookieValue<CommonEnumType>
+  optEnm?: CookieValue<CommonEnumType>
+  strArrExpl: CookieValue<string[]>
+  optStrArrExpl?: CookieValue<string[]>
+  strArr: CookieValue<string[]>
+  optStrArr?: CookieValue<string[]>
+  numArrExpl: CookieValue<number[]>
+  optNumArrExpl?: CookieValue<number[]>
+  numArr: CookieValue<number[]>
+  optNumArr?: CookieValue<number[]>
+  boolArrExpl: CookieValue<boolean[]>
+  optBoolArrExpl?: CookieValue<boolean[]>
+  boolArr: CookieValue<boolean[]>
+  optBoolArr?: CookieValue<boolean[]>
+  enmArrExpl: CookieValue<CommonEnumType[]>
+  optEnmArrExpl?: CookieValue<CommonEnumType[]>
+  enmArr: CookieValue<CommonEnumType[]>
+  optEnmArr?: CookieValue<CommonEnumType[]>
+  objExpl: CookieValue<CommonObjectTypeExpl>
+  optObjExpl?: CookieValue<CommonOptObjectTypeExpl>
+  obj: CookieValue<CommonObjectType>
+  optObj?: CookieValue<CommonOptObjectType>
+}
 
 export type DeepObjectQueryParametersServerRequest = {
   query: Try<DeepObjectQueryParametersQueryParameters>
@@ -2092,6 +2293,10 @@ export type ParametersApi = {
    */
   simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersResponse>
   /**
+   * Endpoint for testing cookie parameters with form serialization
+   */
+  formCookieParameters(): Promise<FormCookieParametersResponse>
+  /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
@@ -2111,6 +2316,26 @@ export const deepObjectQueryParametersRouter: Router = Router().get(
         query,
       }
       const typedResponse = await api.deepObjectQueryParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const formCookieParametersRouter: Router = Router().get(
+  '/form-cookie-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.formCookieParameters()
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -2335,6 +2560,7 @@ export type ParametersRouters = {
   pipeDelimitedQueryParametersRouter: Router
   deepObjectQueryParametersRouter: Router
   simpleHeaderParametersRouter: Router
+  formCookieParametersRouter: Router
   simpleResponseHeaderParametersRouter: Router
 }
 
@@ -2357,6 +2583,7 @@ export function createParametersRouter(
     routes.pipeDelimitedQueryParametersRouter ?? pipeDelimitedQueryParametersRouter,
     routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
     routes.simpleHeaderParametersRouter ?? simpleHeaderParametersRouter,
+    routes.formCookieParametersRouter ?? formCookieParametersRouter,
     routes.simpleResponseHeaderParametersRouter ?? simpleResponseHeaderParametersRouter,
   )
 }
@@ -2414,6 +2641,11 @@ export type SpaceDelimitedQueryParametersRequest = {
 
 export const deepObjectQueryParametersResponseBodyValidator = {
   200: { 'application/json': deepObjectQueryParametersTypeValidator },
+  400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
+} as const
+
+export const formCookieParametersResponseBodyValidator = {
+  200: { 'application/json': formCookieParametersTypeValidator },
   400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
 
@@ -3030,6 +3262,33 @@ export async function deepObjectQueryParameters(
 }
 
 /**
+ * Endpoint for testing cookie parameters with form serialization
+ */
+export async function formCookieParameters(adapter: ClientAdapter): Promise<FormCookieParametersResponse> {
+  const requestUrl = await adapter.getUrl('/form-cookie-parameters', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    formCookieParametersResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as FormCookieParametersResponse
+}
+
+/**
  * Endpoint for testing query parameters with form serialization
  */
 export async function formQueryParameters(
@@ -3325,6 +3584,10 @@ export type ParametersSdk = {
    */
   simpleHeaderParameters(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse>
   /**
+   * Endpoint for testing cookie parameters with form serialization
+   */
+  formCookieParameters(): Promise<FormCookieParametersResponse>
+  /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
@@ -3366,6 +3629,9 @@ export class ParametersSdkImpl implements ParametersSdk {
   }
   public async simpleHeaderParameters(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
     return simpleHeaderParameters(request, this.adapter)
+  }
+  public async formCookieParameters(): Promise<FormCookieParametersResponse> {
+    return formCookieParameters(this.adapter)
   }
   public async simpleResponseHeaderParameters(
     request: SimpleResponseHeaderParametersRequest,
