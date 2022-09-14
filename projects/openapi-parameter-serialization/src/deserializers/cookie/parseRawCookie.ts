@@ -1,18 +1,19 @@
-import { Try, success, failure } from '@oats-ts/try'
-import { RawQueryParams } from '../../types'
+import { failure, success, Try } from '@oats-ts/try'
+import { RawCookieParams } from '../../types'
 import { decode, has, isNil } from '../../utils'
 
-export function parseRawQuery(query: string, path: string): Try<RawQueryParams> {
-  if (isNil(query) || query.length === 0) {
+export function parseRawCookie(cookie: string, path: string): Try<RawCookieParams> {
+  if (isNil(cookie) || cookie.length === 0) {
     return success({})
   }
+
   try {
-    const sliced = query
-      .slice(1) // Remove initial "?"
-      .split('&') // Split key=value&key2=value2 string on "&"
+    const sliced = cookie
+      .trim() // Remove any possible excess whitespace from beginning and end
+      .split('; ') // Split on semicolon
       .map((tuple) => tuple.split('=')) // Split key=value tuples on "="
 
-    const data = sliced.reduce((record: RawQueryParams, [rawKey, rawValue]) => {
+    const data = sliced.reduce((record: RawCookieParams, [rawKey, rawValue]) => {
       const key = decode(rawKey)
       if (!has(record, key)) {
         record[key] = []

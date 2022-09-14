@@ -1,7 +1,7 @@
 import { Try, failure, success } from '@oats-ts/try'
 import { DslConfig, RawQueryParams } from '../../types'
 
-export function getQueryValue(
+export function getCookieValue(
   name: string,
   path: string,
   params: RawQueryParams,
@@ -24,7 +24,7 @@ export function getQueryValue(
     }
     default:
       return failure({
-        message: `should occur once (found ${values.length} times)`,
+        message: `should occur once (found ${values.length} times in query string)`,
         path,
         severity: 'error',
       })

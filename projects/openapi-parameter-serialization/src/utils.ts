@@ -16,7 +16,7 @@ export function encode(value?: string): string {
   return isNil(value)
     ? ''
     : encodeURIComponent(`${value}`).replace(
-        /[\.!'()*]/g,
+        /[\.,;=!'()*]/g,
         (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
       )
 }

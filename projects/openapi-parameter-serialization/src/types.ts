@@ -1,3 +1,4 @@
+import { Cookies, CookieValue } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
 
@@ -92,6 +93,8 @@ export type DslConfig = {
 export type RawHeaders = Record<string, string>
 export type RawPathParams = Record<string, string>
 export type RawQueryParams = Record<string, string[]>
+export type RawCookieParams = Record<string, string[]>
+export type RawSetCookieParams = Record<string, CookieValue<string>[]>
 
 export type Transform<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
 
@@ -105,6 +108,7 @@ export type FieldValueDeserializers<T extends PrimitiveRecord> = {
 export type Deserializer<I, O extends ParameterType> = (input: I, path?: string, config?: ValidatorConfig) => Try<O>
 export type Serializer<I extends ParameterType, O> = (input: I, path?: string, config?: ValidatorConfig) => Try<O>
 
+// Query typings
 export type QuerySerializer<T extends ParameterType> = Serializer<T, string | undefined>
 export type QueryDeserializer<T extends ParameterType> = Deserializer<string, T>
 export type QueryParameterSerializer<T extends ParameterValue> = Transform<T, string[]>
@@ -116,6 +120,7 @@ export type QueryDeserializers<T extends ParameterType> = {
   [P in keyof T]: QueryParameterDeserializer<T[P]>
 }
 
+// Path typings
 export type PathSerializer<T extends ParameterType> = Serializer<T, string>
 export type PathDeserializer<T extends ParameterType> = Deserializer<string, T>
 export type PathParameterSerializer<T extends ParameterValue> = Transform<T, string>
@@ -126,6 +131,8 @@ export type PathSerializers<T extends ParameterType> = {
 export type PathDeserializers<T extends ParameterType> = {
   [P in keyof T]: PathParameterDeserializer<T[P]>
 }
+
+// Header typings
 export type HeaderSerializer<T extends ParameterType> = Serializer<T, RawHeaders>
 export type HeaderDeserializer<T extends ParameterType> = Deserializer<RawHeaders, T>
 export type HeaderParameterSerializer<T extends ParameterValue> = Transform<T, string | undefined>
@@ -135,6 +142,40 @@ export type HeaderSerializers<T extends ParameterType> = {
 }
 export type HeaderDeserializers<T extends ParameterType> = {
   [P in keyof T]: HeaderParameterDeserializer<T[P]>
+}
+
+// Cookie typings
+export type SetCookieDeserializer<O extends ParameterType> = (
+  input: string,
+  path?: string,
+  config?: ValidatorConfig,
+) => Try<O>
+
+export type SetCookieSerializer<I extends ParameterType> = (
+  input: Cookies<I>,
+  path?: string,
+  config?: ValidatorConfig,
+) => Try<string[]>
+
+export type CookieDeserializer<O extends ParameterType> = (
+  input: string,
+  path?: string,
+  config?: ValidatorConfig,
+) => Try<O>
+
+export type CookieSerializer<I extends ParameterType> = (
+  input: I,
+  path?: string,
+  config?: ValidatorConfig,
+) => Try<string>
+
+export type CookieParameterSerializer<T extends ParameterValue> = Transform<T, string | undefined>
+export type CookieParameterDeserializer<T extends ParameterValue> = Transform<string, T>
+export type CookieSerializers<T extends ParameterType> = {
+  [P in keyof T]: CookieParameterSerializer<T[P]>
+}
+export type CookieDeserializers<T extends ParameterType> = {
+  [P in keyof T]: CookieParameterDeserializer<T[P]>
 }
 
 export type ParameterSegment = {
