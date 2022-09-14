@@ -138,6 +138,10 @@ export type CookieValue<T> = {
   sameSite?: 'Strict' | 'Lax' | 'None'
 }
 
+export type Cookies<T extends Record<string, unknown>> = {
+  [K in keyof T]: CookieValue<T[K]>
+}
+
 /** Http headers where key is the header name, value is the serialized header value. */
 export type RawHttpHeaders = Record<string, string>
 
