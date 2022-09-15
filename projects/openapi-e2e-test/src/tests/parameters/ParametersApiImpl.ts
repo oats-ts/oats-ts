@@ -1,6 +1,7 @@
 import {
   DeepObjectQueryParametersResponse,
   DeepObjectQueryParametersServerRequest,
+  FormCookieParametersResponse,
   FormQueryParametersResponse,
   FormQueryParametersServerRequest,
   LabelPathParametersResponse,
@@ -88,5 +89,8 @@ export class ParametersApiImpl implements ParametersApi {
     input: SpaceDelimitedQueryParametersServerRequest,
   ): Promise<SpaceDelimitedQueryParametersResponse> {
     return this.respond(input.query)
+  }
+  async formCookieParameters(): Promise<FormCookieParametersResponse> {
+    throw new Error('Method not implemented.')
   }
 }

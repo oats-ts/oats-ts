@@ -1,42 +1,18 @@
-import { CookieDslRoot, ParameterValue, SetCookieSerializer, ParameterType } from './types'
+import { CookieDslRoot, ParameterValue, SetCookieSerializer, CookieParameterType } from './types'
 
 import { createCookieSerializers } from './createCookieSerializers'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { fluent, fromArray, Try } from '@oats-ts/try'
 import { Cookies, CookieValue } from '@oats-ts/openapi-http'
-import { encode, isNil } from './utils'
+import { serializeCookieValue } from './serializers/cookie/serializeCookieValue'
 
-function cookieToString(cookie: CookieValue<any>, name: string, value: string): string {
-  const parts: string[] = [`${encode(name)}=${encode(value)}`]
-  if (!isNil(cookie.expires)) {
-    parts.push(`Expires=${cookie.expires}`)
-  }
-  if (!isNil(cookie.maxAge)) {
-    parts.push(`Max-Age=${cookie.maxAge}`)
-  }
-  if (!isNil(cookie.domain)) {
-    parts.push(`Domain=${cookie.domain}`)
-  }
-  if (!isNil(cookie.path)) {
-    parts.push(`Path=${cookie.path}`)
-  }
-  if (!isNil(cookie.secure)) {
-    parts.push(`Secure`)
-  }
-  if (!isNil(cookie.httpOnly)) {
-    parts.push(`HttpOnly`)
-  }
-  if (!isNil(cookie.sameSite)) {
-    parts.push(`SameSite=${cookie.sameSite}`)
-  }
-  return parts.join('; ')
-}
-
-export function createSetCookieSerializer<T extends ParameterType>(dsl: CookieDslRoot<T>): SetCookieSerializer<T> {
+export function createSetCookieSerializer<T extends CookieParameterType>(
+  dsl: CookieDslRoot<T>,
+): SetCookieSerializer<T> {
   const serializers = createCookieSerializers(dsl)
   return function headerSerializer(
     input: Cookies<T>,
-    path: string = 'cookie',
+    path: string = 'cookies',
     config: ValidatorConfig = DefaultConfig,
   ): Try<string[]> {
     const serializedParts = Object.keys(serializers).map(
@@ -50,7 +26,7 @@ export function createSetCookieSerializer<T extends ParameterType>(dsl: CookieDs
     return fluent(fromArray(serializedParts)).map((cookies) =>
       cookies
         .filter(([, , value]) => value !== undefined)
-        .map(([cookie, name, value]) => cookieToString(cookie, name, value!)),
+        .map(([cookie, name, value]) => serializeCookieValue(cookie, name, value!)),
     )
   }
 }

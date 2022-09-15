@@ -1,15 +1,15 @@
-import { CookieDslRoot, CookieSerializer, ParameterType } from './types'
+import { CookieDslRoot, CookieParameterType, CookieSerializer } from './types'
 
 import { createCookieSerializers } from './createCookieSerializers'
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { fluent, fromArray, Try } from '@oats-ts/try'
 import { encode } from './utils'
 
-export function createCookieSerializer<T extends ParameterType>(dsl: CookieDslRoot<T>): CookieSerializer<T> {
+export function createCookieSerializer<T extends CookieParameterType>(dsl: CookieDslRoot<T>): CookieSerializer<T> {
   const serializers = createCookieSerializers(dsl)
   return function cookieSerializer(
     input: T,
-    path: string = 'cookie',
+    path: string = 'cookies',
     config: ValidatorConfig = DefaultConfig,
   ): Try<string> {
     const serializedParts = Object.keys(serializers).map((key: string): Try<[string, string | undefined]> => {
@@ -20,7 +20,7 @@ export function createCookieSerializer<T extends ParameterType>(dsl: CookieDslRo
     })
     return fluent(fromArray(serializedParts))
       .map((cookies) =>
-        cookies.filter(([, value]) => value !== undefined).map(([name, value]) => `${encode(name)}=${encode(value)}`),
+        cookies.filter(([, value]) => value !== undefined).map(([name, value]) => `${encode(name)}=${value}`),
       )
       .map((values) => values.join('; '))
   }

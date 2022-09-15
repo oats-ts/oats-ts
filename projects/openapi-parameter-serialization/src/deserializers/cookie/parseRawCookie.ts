@@ -2,7 +2,7 @@ import { failure, success, Try } from '@oats-ts/try'
 import { RawCookieParams } from '../../types'
 import { decode, has, isNil } from '../../utils'
 
-export function parseRawCookie(cookie: string, path: string): Try<RawCookieParams> {
+export function parseRawCookie(cookie: string | undefined, path: string): Try<RawCookieParams> {
   if (isNil(cookie) || cookie.length === 0) {
     return success({})
   }

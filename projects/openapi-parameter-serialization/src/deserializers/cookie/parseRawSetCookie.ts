@@ -47,7 +47,7 @@ function parseRawCookieValue(cookieValue: string): [string, CookieValue<string>]
   return [name, data]
 }
 
-export function parseRawSetCookie(cookie: string, path: string): Try<RawSetCookieParams> {
+export function parseRawSetCookie(cookie: string | undefined, path: string): Try<RawSetCookieParams> {
   if (isNil(cookie) || cookie.length === 0) {
     return success({})
   }

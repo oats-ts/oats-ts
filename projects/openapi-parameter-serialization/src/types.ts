@@ -7,6 +7,7 @@ export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
 export type PrimitiveRecord = Record<string, Primitive> | undefined
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 export type ParameterType = Record<string, ParameterValue>
+export type CookieParameterType = Record<string, Primitive>
 
 export type DslType = 'primitive' | 'array' | 'object'
 export type DslLocation = 'query' | 'header' | 'path' | 'cookie'
@@ -145,25 +146,25 @@ export type HeaderDeserializers<T extends ParameterType> = {
 }
 
 // Cookie typings
-export type SetCookieDeserializer<O extends ParameterType> = (
-  input: string,
+export type SetCookieDeserializer<O extends CookieParameterType> = (
+  input: string | undefined,
   path?: string,
   config?: ValidatorConfig,
-) => Try<O>
+) => Try<Cookies<O>>
 
-export type SetCookieSerializer<I extends ParameterType> = (
+export type SetCookieSerializer<I extends CookieParameterType> = (
   input: Cookies<I>,
   path?: string,
   config?: ValidatorConfig,
 ) => Try<string[]>
 
-export type CookieDeserializer<O extends ParameterType> = (
-  input: string,
+export type CookieDeserializer<O extends CookieParameterType> = (
+  input: string | undefined,
   path?: string,
   config?: ValidatorConfig,
 ) => Try<O>
 
-export type CookieSerializer<I extends ParameterType> = (
+export type CookieSerializer<I extends CookieParameterType> = (
   input: I,
   path?: string,
   config?: ValidatorConfig,
