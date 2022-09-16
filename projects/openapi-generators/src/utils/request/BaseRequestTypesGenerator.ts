@@ -41,13 +41,13 @@ export abstract class BaseRequestTypesGenerator<T = {}> extends OperationBasedCo
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasInput(this.enhanced(input), this.context)
+    return this.shouldGenerate(this.enhanced(input))
       ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasInput(this.enhanced(input), this.context)
+    return this.shouldGenerate(this.enhanced(input))
       ? getModelImports(fromPath, this.name(), [input], this.context)
       : []
   }

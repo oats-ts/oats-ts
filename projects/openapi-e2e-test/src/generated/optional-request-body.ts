@@ -10,14 +10,6 @@ import { Try } from '@oats-ts/try'
 import { object, optional, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
-export type OptionalRequestBodyResponse = {
-  mimeType: 'application/json'
-  statusCode: 200
-  body: {
-    foo?: string
-  }
-}
-
 export type OptionalRequestBodyServerRequest = {
   mimeType?: 'application/json'
   body: Try<
@@ -26,6 +18,14 @@ export type OptionalRequestBodyServerRequest = {
       }
     | undefined
   >
+}
+
+export type OptionalRequestBodyServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    foo?: string
+  }
 }
 
 export const optionalRequestBodyRequestBodyValidator = {
@@ -94,6 +94,14 @@ export const bodiesCorsMiddleware: RequestHandler = (request: Request, response:
 export type OptionalRequestBodyRequest = {
   mimeType?: 'application/json'
   body?: {
+    foo?: string
+  }
+}
+
+export type OptionalRequestBodyResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
     foo?: string
   }
 }

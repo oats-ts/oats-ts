@@ -9,49 +9,49 @@ import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@
 import { object, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
-export type DeleteMethodResponse = {
-  mimeType: 'application/json'
+export type DeleteMethodServerResponse = {
   statusCode: 200
+  mimeType: 'application/json'
   body: {
     methodUsed: string
   }
 }
 
-export type GetMethodResponse = {
-  mimeType: 'application/json'
+export type GetMethodServerResponse = {
   statusCode: 200
+  mimeType: 'application/json'
   body: {
     methodUsed: string
   }
 }
 
-export type OptionsMethodResponse = {
-  mimeType: 'application/json'
+export type OptionsMethodServerResponse = {
   statusCode: 200
+  mimeType: 'application/json'
   body: {
     methodUsed: string
   }
 }
 
-export type PatchMethodResponse = {
-  mimeType: 'application/json'
+export type PatchMethodServerResponse = {
   statusCode: 200
+  mimeType: 'application/json'
   body: {
     methodUsed: string
   }
 }
 
-export type PostMethodResponse = {
-  mimeType: 'application/json'
+export type PostMethodServerResponse = {
   statusCode: 200
+  mimeType: 'application/json'
   body: {
     methodUsed: string
   }
 }
 
-export type PutMethodResponse = {
-  mimeType: 'application/json'
+export type PutMethodServerResponse = {
   statusCode: 200
+  mimeType: 'application/json'
   body: {
     methodUsed: string
   }
@@ -220,6 +220,54 @@ export const httpMethodsCorsMiddleware: RequestHandler = (request: Request, resp
   response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
   response.setHeader('Access-Control-Expose-Headers', 'content-type')
   next()
+}
+
+export type DeleteMethodResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type GetMethodResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type OptionsMethodResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type PatchMethodResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type PostMethodResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type PutMethodResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
 }
 
 export const deleteMethodResponseBodyValidator = {

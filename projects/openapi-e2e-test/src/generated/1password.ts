@@ -492,54 +492,54 @@ export function isUuid(input: any): input is UUID {
   return typeof input === 'string'
 }
 
-export type GetAuthIntrospectResponse =
+export type GetAuthIntrospectServerResponse =
   | {
-      mimeType: 'application/json'
       statusCode: 200
+      mimeType: 'application/json'
       body: Introspection
     }
   | {
-      mimeType: 'application/json'
       statusCode: 401
+      mimeType: 'application/json'
       body: Error
     }
   | {
-      mimeType: 'application/json'
       statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
       body: Error
     }
 
-export type GetItemUsagesResponse =
+export type GetItemUsagesServerResponse =
   | {
-      mimeType: 'application/json'
       statusCode: 200
+      mimeType: 'application/json'
       body: ItemUsageItems
     }
   | {
-      mimeType: 'application/json'
       statusCode: 401
+      mimeType: 'application/json'
       body: Error
     }
   | {
-      mimeType: 'application/json'
       statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
       body: Error
     }
 
-export type GetSignInAttemptsResponse =
+export type GetSignInAttemptsServerResponse =
   | {
-      mimeType: 'application/json'
       statusCode: 200
+      mimeType: 'application/json'
       body: SignInAttemptItems
     }
   | {
-      mimeType: 'application/json'
       statusCode: 401
+      mimeType: 'application/json'
       body: Error
     }
   | {
-      mimeType: 'application/json'
       statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
       body: Error
     }
 
@@ -652,6 +652,57 @@ export const eventsApiCorsMiddleware: RequestHandler = (request: Request, respon
   response.setHeader('Access-Control-Expose-Headers', 'content-type')
   next()
 }
+
+export type GetAuthIntrospectResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Introspection
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetItemUsagesResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ItemUsageItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetSignInAttemptsResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SignInAttemptItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
 
 export const getAuthIntrospectResponseBodyValidator = {
   200: { 'application/json': introspectionTypeValidator },

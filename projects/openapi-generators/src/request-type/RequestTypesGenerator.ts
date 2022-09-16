@@ -10,7 +10,17 @@ export class RequestTypesGenerator extends BaseRequestTypesGenerator<RequestType
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/type', 'oats/request-headers-type', 'oats/query-type', 'oats/path-type']
+    return [
+      'oats/type',
+      'oats/request-headers-type',
+      'oats/query-type',
+      'oats/path-type',
+      ...(this.config.cookies ? (['oats/cookies-type'] as OpenAPIGeneratorTarget[]) : []),
+    ]
+  }
+
+  protected shouldGenerate(operation: EnhancedOperation): boolean {
+    return super.shouldGenerate(operation) || (this.config.cookies && operation.cookie.length > 0)
   }
 
   protected createRequestProperty(

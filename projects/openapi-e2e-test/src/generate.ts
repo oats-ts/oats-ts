@@ -69,7 +69,7 @@ function getCorsConfig(url: string) {
 export async function generateCode(url: string, codePath: string) {
   try {
     await generate({
-      logger: loggers.verbose(),
+      logger: loggers.simple(),
       validator: validator(),
       reader: readers.https.mixed(url),
       generator: generator({

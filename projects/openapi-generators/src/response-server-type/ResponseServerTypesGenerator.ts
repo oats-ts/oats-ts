@@ -9,7 +9,6 @@ import {
 import { TypeNode, ImportDeclaration, factory, PropertySignature, SyntaxKind } from 'typescript'
 import { getNamedImports, safeName } from '@oats-ts/typescript-common'
 import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/response/BaseResponseTypeGenerator'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
   public name(): OpenAPIGeneratorTarget {
@@ -17,19 +16,18 @@ export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/type', 'oats/response-headers-type']
+    return ['oats/type', 'oats/response-headers-type', 'oats/cookies-type']
   }
 
-  public runtimeDependencies(): RuntimeDependency[] {
-    return [...super.runtimeDependencies(), { name: RuntimePackages.Try.name, version }]
+  protected shouldGenerate(data: EnhancedOperation): boolean {
+    return super.shouldGenerate(data) || data.cookie.length > 0
   }
 
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
     return [
       ...super.getImports(path, operation, responses),
-      getNamedImports(RuntimePackages.Try.name, [RuntimePackages.Try.Try]),
       ...(operation.cookie.length > 0
-        ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.CookieValue])]
+        ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.Cookies])]
         : []),
     ]
   }

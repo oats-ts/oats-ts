@@ -10,7 +10,11 @@ export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseT
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/type', 'oats/response-headers-type']
+    return [
+      'oats/type',
+      'oats/response-headers-type',
+      ...(this.config.cookies ? (['oats/cookies-type'] as OpenAPIGeneratorTarget[]) : []),
+    ]
   }
 
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {

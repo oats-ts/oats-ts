@@ -130,7 +130,7 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
     return factory.createTypeAliasDeclaration(
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      factory.createIdentifier(context.nameOf(data.operation, 'oats/response-type')),
+      factory.createIdentifier(context.nameOf(data.operation, this.name())),
       undefined,
       responseTypes.length === 1 ? head(responseTypes)! : factory.createUnionTypeNode(responseTypes),
     )

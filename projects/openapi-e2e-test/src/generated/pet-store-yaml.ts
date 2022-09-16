@@ -90,43 +90,6 @@ export type ListPets200ResponseHeaderParameters = {
   'x-next'?: string
 }
 
-export type CreatePetsResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 201
-      body: Pet
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: Exclude<number, 201>
-      body: Error
-    }
-
-export type ListPetsResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: Pets
-      headers: ListPets200ResponseHeaderParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: Exclude<number, 200>
-      body: Error
-    }
-
-export type ShowPetByIdResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: Pet
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: Exclude<number, 200>
-      body: Error
-    }
-
 export type CreatePetsServerRequest = {
   mimeType: 'application/json'
   body: Try<Pet>
@@ -139,6 +102,43 @@ export type ListPetsServerRequest = {
 export type ShowPetByIdServerRequest = {
   path: Try<ShowPetByIdPathParameters>
 }
+
+export type CreatePetsServerResponse =
+  | {
+      statusCode: 201
+      mimeType: 'application/json'
+      body: Pet
+    }
+  | {
+      statusCode: Exclude<number, 201>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type ListPetsServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Pets
+      headers?: ListPets200ResponseHeaderParameters
+    }
+  | {
+      statusCode: Exclude<number, 200>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type ShowPetByIdServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Pet
+    }
+  | {
+      statusCode: Exclude<number, 200>
+      mimeType: 'application/json'
+      body: Error
+    }
 
 export const createPetsRequestBodyValidator = { 'application/json': petTypeValidator } as const
 
@@ -313,12 +313,49 @@ export type CreatePetsRequest = {
 }
 
 export type ListPetsRequest = {
-  query: ListPetsQueryParameters
+  query?: ListPetsQueryParameters
 }
 
 export type ShowPetByIdRequest = {
   path: ShowPetByIdPathParameters
 }
+
+export type CreatePetsResponse =
+  | {
+      statusCode: 201
+      mimeType: 'application/json'
+      body: Pet
+    }
+  | {
+      statusCode: Exclude<number, 201>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type ListPetsResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Pets
+      headers: ListPets200ResponseHeaderParameters
+    }
+  | {
+      statusCode: Exclude<number, 200>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type ShowPetByIdResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Pet
+    }
+  | {
+      statusCode: Exclude<number, 200>
+      mimeType: 'application/json'
+      body: Error
+    }
 
 export const createPetsResponseBodyValidator = {
   201: { 'application/json': petTypeValidator },

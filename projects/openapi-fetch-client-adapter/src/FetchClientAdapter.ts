@@ -67,7 +67,10 @@ export class FetchClientAdapter implements ClientAdapter {
     }
     return path.data
   }
-  async getQuery<Q>(input: Q, serializer: (input: Q) => Try<string>): Promise<string | undefined> {
+  async getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): Promise<string | undefined> {
+    if (input === undefined || input === null || serializer === undefined || serializer === null) {
+      return undefined
+    }
     const query = serializer(input)
     if (isFailure(query)) {
       throw new Error(`Failed to serialize query:\n${query.issues.map(stringify).join('\n')}`)

@@ -5,7 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ClientAdapter, CookieValue, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter, Cookies, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
   createHeaderDeserializer,
   createHeaderSerializer,
@@ -84,41 +84,13 @@ export type DeepObjectQueryParameters = {
 
 export type FormCookieParameters = {
   bool: boolean
-  boolArr: boolean[]
-  boolArrExpl: boolean[]
-  boolExpl: boolean
   enm: CommonEnumType
-  enmArr: CommonEnumType[]
-  enmArrExpl: CommonEnumType[]
-  enmExpl: CommonEnumType
   num: number
-  numArr: number[]
-  numArrExpl: number[]
-  numExpl: number
-  obj: CommonObjectType
-  objExpl: CommonObjectTypeExpl
   optBool?: boolean
-  optBoolArr?: boolean[]
-  optBoolArrExpl?: boolean[]
-  optBoolExpl?: boolean
   optEnm?: CommonEnumType
-  optEnmArr?: CommonEnumType[]
-  optEnmArrExpl?: CommonEnumType[]
-  optEnmExpl?: CommonEnumType
   optNum?: number
-  optNumArr?: number[]
-  optNumArrExpl?: number[]
-  optNumExpl?: number
-  optObj?: CommonOptObjectType
-  optObjExpl?: CommonOptObjectTypeExpl
   optStr?: string
-  optStrArr?: string[]
-  optStrArrExpl?: string[]
-  optStrExpl?: string
   str: string
-  strArr: string[]
-  strArrExpl: string[]
-  strExpl: string
 }
 
 export type FormQueryParameters = {
@@ -395,41 +367,13 @@ export const deepObjectQueryParametersTypeValidator = object(
 export const formCookieParametersTypeValidator = object(
   shape({
     bool: boolean(),
-    boolArr: array(items(boolean())),
-    boolArrExpl: array(items(boolean())),
-    boolExpl: boolean(),
     enm: lazy(() => commonEnumTypeTypeValidator),
-    enmArr: array(items(lazy(() => commonEnumTypeTypeValidator))),
-    enmArrExpl: array(items(lazy(() => commonEnumTypeTypeValidator))),
-    enmExpl: lazy(() => commonEnumTypeTypeValidator),
     num: number(),
-    numArr: array(items(number())),
-    numArrExpl: array(items(number())),
-    numExpl: number(),
-    obj: lazy(() => commonObjectTypeTypeValidator),
-    objExpl: lazy(() => commonObjectTypeExplTypeValidator),
     optBool: optional(boolean()),
-    optBoolArr: optional(array(items(boolean()))),
-    optBoolArrExpl: optional(array(items(boolean()))),
-    optBoolExpl: optional(boolean()),
     optEnm: optional(lazy(() => commonEnumTypeTypeValidator)),
-    optEnmArr: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
-    optEnmArrExpl: optional(array(items(lazy(() => commonEnumTypeTypeValidator)))),
-    optEnmExpl: optional(lazy(() => commonEnumTypeTypeValidator)),
     optNum: optional(number()),
-    optNumArr: optional(array(items(number()))),
-    optNumArrExpl: optional(array(items(number()))),
-    optNumExpl: optional(number()),
-    optObj: optional(lazy(() => commonOptObjectTypeTypeValidator)),
-    optObjExpl: optional(lazy(() => commonOptObjectTypeExplTypeValidator)),
     optStr: optional(string()),
-    optStrArr: optional(array(items(string()))),
-    optStrArrExpl: optional(array(items(string()))),
-    optStrExpl: optional(string()),
     str: string(),
-    strArr: array(items(string())),
-    strArrExpl: array(items(string())),
-    strExpl: string(),
   }),
 )
 
@@ -761,68 +705,13 @@ export function isFormCookieParameters(input: any): input is FormCookieParameter
     input !== null &&
     typeof input === 'object' &&
     typeof input.bool === 'boolean' &&
-    Array.isArray(input.boolArr) &&
-    input.boolArr.every((item: any) => typeof item === 'boolean') &&
-    Array.isArray(input.boolArrExpl) &&
-    input.boolArrExpl.every((item: any) => typeof item === 'boolean') &&
-    typeof input.boolExpl === 'boolean' &&
     (isCommonEnumType(input.enm) as boolean) &&
-    Array.isArray(input.enmArr) &&
-    input.enmArr.every((item: any) => isCommonEnumType(item) as boolean) &&
-    Array.isArray(input.enmArrExpl) &&
-    input.enmArrExpl.every((item: any) => isCommonEnumType(item) as boolean) &&
-    (isCommonEnumType(input.enmExpl) as boolean) &&
     typeof input.num === 'number' &&
-    Array.isArray(input.numArr) &&
-    input.numArr.every((item: any) => typeof item === 'number') &&
-    Array.isArray(input.numArrExpl) &&
-    input.numArrExpl.every((item: any) => typeof item === 'number') &&
-    typeof input.numExpl === 'number' &&
-    (isCommonObjectType(input.obj) as boolean) &&
-    (isCommonObjectTypeExpl(input.objExpl) as boolean) &&
     (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
-    (input.optBoolArr === null ||
-      input.optBoolArr === undefined ||
-      (Array.isArray(input.optBoolArr) && input.optBoolArr.every((item: any) => typeof item === 'boolean'))) &&
-    (input.optBoolArrExpl === null ||
-      input.optBoolArrExpl === undefined ||
-      (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
-    (input.optBoolExpl === null || input.optBoolExpl === undefined || typeof input.optBoolExpl === 'boolean') &&
     (input.optEnm === null || input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
-    (input.optEnmArr === null ||
-      input.optEnmArr === undefined ||
-      (Array.isArray(input.optEnmArr) && input.optEnmArr.every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input.optEnmArrExpl === null ||
-      input.optEnmArrExpl === undefined ||
-      (Array.isArray(input.optEnmArrExpl) &&
-        input.optEnmArrExpl.every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input.optEnmExpl === null || input.optEnmExpl === undefined || (isCommonEnumType(input.optEnmExpl) as boolean)) &&
     (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
-    (input.optNumArr === null ||
-      input.optNumArr === undefined ||
-      (Array.isArray(input.optNumArr) && input.optNumArr.every((item: any) => typeof item === 'number'))) &&
-    (input.optNumArrExpl === null ||
-      input.optNumArrExpl === undefined ||
-      (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
-    (input.optNumExpl === null || input.optNumExpl === undefined || typeof input.optNumExpl === 'number') &&
-    (input.optObj === null || input.optObj === undefined || (isCommonOptObjectType(input.optObj) as boolean)) &&
-    (input.optObjExpl === null ||
-      input.optObjExpl === undefined ||
-      (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean)) &&
     (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
-    (input.optStrArr === null ||
-      input.optStrArr === undefined ||
-      (Array.isArray(input.optStrArr) && input.optStrArr.every((item: any) => typeof item === 'string'))) &&
-    (input.optStrArrExpl === null ||
-      input.optStrArrExpl === undefined ||
-      (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
-    (input.optStrExpl === null || input.optStrExpl === undefined || typeof input.optStrExpl === 'string') &&
-    typeof input.str === 'string' &&
-    Array.isArray(input.strArr) &&
-    input.strArr.every((item: any) => typeof item === 'string') &&
-    Array.isArray(input.strArrExpl) &&
-    input.strArrExpl.every((item: any) => typeof item === 'string') &&
-    typeof input.strExpl === 'string'
+    typeof input.str === 'string'
   )
 }
 
@@ -1452,170 +1341,23 @@ export type SimpleResponseHeaderParameters200ResponseHeaderParameters = {
   'X-OptObj-Header'?: CommonOptObjectType
 }
 
-export type DeepObjectQueryParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: DeepObjectQueryParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type FormCookieParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: FormCookieParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type FormQueryParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: FormQueryParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type LabelPathParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: LabelPathParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type MatrixPathParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: MatrixPathParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type PipeDelimitedQueryParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: PipeDelimitedQueryParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type SimpleHeaderParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: SimpleHeaderParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type SimplePathParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: SimplePathParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type SimpleResponseHeaderParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: {
-        ok: boolean
-      }
-      headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
-export type SpaceDelimitedQueryParametersResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: SpaceDelimitedQueryParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: ParameterIssue[]
-    }
-
 export type FormCookieParametersCookieParameters = {
-  strExpl: CookieValue<string>
-  optStrExpl?: CookieValue<string>
-  str: CookieValue<string>
-  optStr?: CookieValue<string>
-  numExpl: CookieValue<number>
-  optNumExpl?: CookieValue<number>
-  num: CookieValue<number>
-  optNum?: CookieValue<number>
-  boolExpl: CookieValue<boolean>
-  optBoolExpl?: CookieValue<boolean>
-  bool: CookieValue<boolean>
-  optBool?: CookieValue<boolean>
-  enmExpl: CookieValue<CommonEnumType>
-  optEnmExpl?: CookieValue<CommonEnumType>
-  enm: CookieValue<CommonEnumType>
-  optEnm?: CookieValue<CommonEnumType>
-  strArrExpl: CookieValue<string[]>
-  optStrArrExpl?: CookieValue<string[]>
-  strArr: CookieValue<string[]>
-  optStrArr?: CookieValue<string[]>
-  numArrExpl: CookieValue<number[]>
-  optNumArrExpl?: CookieValue<number[]>
-  numArr: CookieValue<number[]>
-  optNumArr?: CookieValue<number[]>
-  boolArrExpl: CookieValue<boolean[]>
-  optBoolArrExpl?: CookieValue<boolean[]>
-  boolArr: CookieValue<boolean[]>
-  optBoolArr?: CookieValue<boolean[]>
-  enmArrExpl: CookieValue<CommonEnumType[]>
-  optEnmArrExpl?: CookieValue<CommonEnumType[]>
-  enmArr: CookieValue<CommonEnumType[]>
-  optEnmArr?: CookieValue<CommonEnumType[]>
-  objExpl: CookieValue<CommonObjectTypeExpl>
-  optObjExpl?: CookieValue<CommonOptObjectTypeExpl>
-  obj: CookieValue<CommonObjectType>
-  optObj?: CookieValue<CommonOptObjectType>
+  str: string
+  optStr?: string
+  num: number
+  optNum?: number
+  bool: boolean
+  optBool?: boolean
+  enm: CommonEnumType
+  optEnm?: CommonEnumType
 }
 
 export type DeepObjectQueryParametersServerRequest = {
   query: Try<DeepObjectQueryParametersQueryParameters>
+}
+
+export type FormCookieParametersServerRequest = {
+  cookies: Try<Partial<FormCookieParametersCookieParameters>>
 }
 
 export type FormQueryParametersServerRequest = {
@@ -1650,6 +1392,131 @@ export type SimpleResponseHeaderParametersServerRequest = {
 export type SpaceDelimitedQueryParametersServerRequest = {
   query: Try<SpaceDelimitedQueryParametersQueryParameters>
 }
+
+export type DeepObjectQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: DeepObjectQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type FormCookieParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: FormCookieParameters
+      cookies: Cookies<FormCookieParametersCookieParameters>
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+      cookies: Cookies<FormCookieParametersCookieParameters>
+    }
+
+export type FormQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: FormQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type LabelPathParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: LabelPathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type MatrixPathParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: MatrixPathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type PipeDelimitedQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PipeDelimitedQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimpleHeaderParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SimpleHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimplePathParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SimplePathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimpleResponseHeaderParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: {
+        ok: boolean
+      }
+      headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SpaceDelimitedQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SpaceDelimitedQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
 
 export const simpleResponseHeaderParametersRequestBodyValidator = {
   'application/json': simpleResponseHeaderParametersTypeValidator,
@@ -2638,6 +2505,129 @@ export type SimpleResponseHeaderParametersRequest = {
 export type SpaceDelimitedQueryParametersRequest = {
   query: SpaceDelimitedQueryParametersQueryParameters
 }
+
+export type DeepObjectQueryParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: DeepObjectQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type FormCookieParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: FormCookieParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type FormQueryParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: FormQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type LabelPathParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: LabelPathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type MatrixPathParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: MatrixPathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type PipeDelimitedQueryParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PipeDelimitedQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimpleHeaderParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SimpleHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimplePathParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SimplePathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimpleResponseHeaderParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: {
+        ok: boolean
+      }
+      headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SpaceDelimitedQueryParametersResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SpaceDelimitedQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
 
 export const deepObjectQueryParametersResponseBodyValidator = {
   200: { 'application/json': deepObjectQueryParametersTypeValidator },

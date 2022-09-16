@@ -87,58 +87,6 @@ export type GetBooks200ResponseHeaderParameters = {
   'x-length': number
 }
 
-export type AddBookResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 201
-      body: Book
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: AppError[]
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 500
-      body: AppError[]
-    }
-
-export type GetBookResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: Book
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: AppError[]
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 500
-      body: AppError[]
-    }
-
-export type GetBooksResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: Book[]
-      headers: GetBooks200ResponseHeaderParameters
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 400
-      body: AppError[]
-    }
-  | {
-      mimeType: 'application/json'
-      statusCode: 500
-      body: AppError[]
-    }
-
 export type AddBookServerRequest = {
   mimeType: 'application/json'
   body: Try<Book>
@@ -152,6 +100,58 @@ export type GetBooksServerRequest = {
   headers: Try<GetBooksRequestHeaderParameters>
   query: Try<GetBooksQueryParameters>
 }
+
+export type AddBookServerResponse =
+  | {
+      statusCode: 201
+      mimeType: 'application/json'
+      body: Book
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+  | {
+      statusCode: 500
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+
+export type GetBookServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Book
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+  | {
+      statusCode: 500
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+
+export type GetBooksServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Book[]
+      headers: GetBooks200ResponseHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+  | {
+      statusCode: 500
+      mimeType: 'application/json'
+      body: AppError[]
+    }
 
 export const addBookRequestBodyValidator = { 'application/json': bookTypeValidator } as const
 
@@ -312,9 +312,61 @@ export type GetBookRequest = {
 }
 
 export type GetBooksRequest = {
-  headers: GetBooksRequestHeaderParameters
-  query: GetBooksQueryParameters
+  headers?: GetBooksRequestHeaderParameters
+  query?: GetBooksQueryParameters
 }
+
+export type AddBookResponse =
+  | {
+      statusCode: 201
+      mimeType: 'application/json'
+      body: Book
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+  | {
+      statusCode: 500
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+
+export type GetBookResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Book
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+  | {
+      statusCode: 500
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+
+export type GetBooksResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Book[]
+      headers: GetBooks200ResponseHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: AppError[]
+    }
+  | {
+      statusCode: 500
+      mimeType: 'application/json'
+      body: AppError[]
+    }
 
 export const addBookResponseBodyValidator = {
   201: { 'application/json': bookTypeValidator },

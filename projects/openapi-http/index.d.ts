@@ -3,7 +3,7 @@ import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
   getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
-  getQuery<Q>(input: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
+  getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
   getRequestHeaders<H>(
     input?: H,

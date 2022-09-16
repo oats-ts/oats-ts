@@ -163,162 +163,6 @@ export function isPrimitiveTupleType(input: any): input is PrimitiveTupleType {
   )
 }
 
-export type ArrObjResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: ObjectWithArrays
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: ObjectWithArrays
-    }
-
-export type BoolArrResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: boolean[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: boolean[]
-    }
-
-export type BoolResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: boolean
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: boolean
-    }
-
-export type EnmArrResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: EnumType[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: EnumType[]
-    }
-
-export type EnmResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: EnumType
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: EnumType
-    }
-
-export type NestedObjResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: ObjectWithNestedObjects
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: ObjectWithNestedObjects
-    }
-
-export type NumArrResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: number[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: number[]
-    }
-
-export type NumResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: number
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: number
-    }
-
-export type OptPrimTupleResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: PrimitiveOptionalTupleType
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: PrimitiveOptionalTupleType
-    }
-
-export type PrimObjResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: ObjectWithPrimitives
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: ObjectWithPrimitives
-    }
-
-export type PrimTupleResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: PrimitiveTupleType
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: PrimitiveTupleType
-    }
-
-export type StrArrResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: string[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: string[]
-    }
-
-export type StrResponse =
-  | {
-      mimeType: 'application/json'
-      statusCode: 200
-      body: string
-    }
-  | {
-      mimeType: 'application/yaml'
-      statusCode: 200
-      body: string
-    }
-
 export type ArrObjServerRequest =
   | {
       mimeType: 'application/json'
@@ -447,6 +291,162 @@ export type StrServerRequest =
   | {
       mimeType: 'application/yaml'
       body: Try<string>
+    }
+
+export type ArrObjServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithArrays
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithArrays
+    }
+
+export type BoolArrServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: boolean[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: boolean[]
+    }
+
+export type BoolServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: boolean
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: boolean
+    }
+
+export type EnmArrServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: EnumType[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: EnumType[]
+    }
+
+export type EnmServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: EnumType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: EnumType
+    }
+
+export type NestedObjServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithNestedObjects
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithNestedObjects
+    }
+
+export type NumArrServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: number[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: number[]
+    }
+
+export type NumServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: number
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: number
+    }
+
+export type OptPrimTupleServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PrimitiveOptionalTupleType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: PrimitiveOptionalTupleType
+    }
+
+export type PrimObjServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithPrimitives
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithPrimitives
+    }
+
+export type PrimTupleServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PrimitiveTupleType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: PrimitiveTupleType
+    }
+
+export type StrArrServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: string[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: string[]
+    }
+
+export type StrServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: string
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: string
     }
 
 export const arrObjRequestBodyValidator = {
@@ -1101,6 +1101,162 @@ export type StrRequest =
       body: string
     }
   | {
+      mimeType: 'application/yaml'
+      body: string
+    }
+
+export type ArrObjResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithArrays
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithArrays
+    }
+
+export type BoolArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: boolean[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: boolean[]
+    }
+
+export type BoolResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: boolean
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: boolean
+    }
+
+export type EnmArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: EnumType[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: EnumType[]
+    }
+
+export type EnmResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: EnumType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: EnumType
+    }
+
+export type NestedObjResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithNestedObjects
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithNestedObjects
+    }
+
+export type NumArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: number[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: number[]
+    }
+
+export type NumResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: number
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: number
+    }
+
+export type OptPrimTupleResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PrimitiveOptionalTupleType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: PrimitiveOptionalTupleType
+    }
+
+export type PrimObjResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithPrimitives
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithPrimitives
+    }
+
+export type PrimTupleResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PrimitiveTupleType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: PrimitiveTupleType
+    }
+
+export type StrArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: string[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: string[]
+    }
+
+export type StrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: string
+    }
+  | {
+      statusCode: 200
       mimeType: 'application/yaml'
       body: string
     }
