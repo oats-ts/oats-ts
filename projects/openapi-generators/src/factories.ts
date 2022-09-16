@@ -25,6 +25,7 @@ import { responseHeadersTypes } from './response-headers-type'
 import { responseTypes } from './response-type'
 import { sdkImpl } from './sdk-impl'
 import { sdkType } from './sdk-type'
+import { responseServerTypes } from './response-server-type'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 
 export const factories = {
@@ -56,6 +57,7 @@ export const factories = {
   responseHeadersSerializers,
   responseHeadersTypes,
   responseTypes,
+  responseServerTypes,
   sdkImpl,
   sdkType,
 } as const

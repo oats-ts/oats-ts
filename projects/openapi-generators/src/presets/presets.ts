@@ -9,12 +9,12 @@ export const commonConfig: PresetGeneratorConfiguration = {
   'oats/path-type': true,
   'oats/request-headers-type': true,
   'oats/response-headers-type': true,
-  'oats/response-type': true,
   'oats/cookies-type': true,
 }
 
 export const serverOnlyConfig: PresetGeneratorConfiguration = {
   'oats/request-server-type': true,
+  'oats/response-server-type': true,
   'oats/request-body-validator': true,
   'oats/response-headers-serializer': true,
   'oats/path-deserializer': true,
@@ -29,6 +29,7 @@ export const serverOnlyConfig: PresetGeneratorConfiguration = {
 
 export const clientOnlyConfig: PresetGeneratorConfiguration = {
   'oats/request-type': true,
+  'oats/response-type': true,
   'oats/response-body-validator': true,
   'oats/response-headers-deserializer': true,
   'oats/path-serializer': true,

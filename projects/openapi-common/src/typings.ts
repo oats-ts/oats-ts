@@ -30,6 +30,7 @@ export type OpenAPIGeneratorTarget =
   | 'oats/cookies-type'
   | 'oats/request-headers-type'
   | 'oats/response-type'
+  | 'oats/response-server-type'
   | 'oats/request-type'
   | 'oats/request-server-type'
   | 'oats/response-headers-type'
@@ -70,9 +71,9 @@ export type EnhancedOperation = {
 }
 
 export type EnhancedResponse = {
-  schema: SchemaObject | ReferenceObject
+  schema?: SchemaObject | ReferenceObject
+  mediaType?: string
   statusCode: string
-  mediaType: string
   headers: HeadersObject
 }
 

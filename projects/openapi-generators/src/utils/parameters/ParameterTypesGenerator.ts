@@ -7,7 +7,7 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind } from 'typescript'
+import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind, PropertySignature } from 'typescript'
 import { ParameterTypesGeneratorConfig } from './typings'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
@@ -72,19 +72,23 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
     return factory.createTypeLiteralNode(
       parameters.map((parameter) => {
         const name = (parameter as ParameterObject).name ?? this.context.nameOf(parameter)
-        const node = factory.createPropertySignature(
-          undefined,
-          safeName(name),
-          parameter.required ? undefined : factory.createToken(SyntaxKind.QuestionToken),
-          this.wrapType(this.context.referenceOf(parameter.schema, 'oats/type')),
+        const node = this.createProperty(
+          name,
+          Boolean(parameter.required),
+          this.context.referenceOf(parameter.schema, 'oats/type'),
         )
         return this.config.documentation ? documentNode(node, parameter) : node
       }),
     )
   }
 
-  protected wrapType(typeNode: TypeNode): TypeNode {
-    return typeNode
+  protected createProperty(name: string, required: boolean, typeNode: TypeNode): PropertySignature {
+    return factory.createPropertySignature(
+      undefined,
+      safeName(name),
+      required ? undefined : factory.createToken(SyntaxKind.QuestionToken),
+      typeNode,
+    )
   }
 
   protected enhanced(input: OperationObject): EnhancedOperation {

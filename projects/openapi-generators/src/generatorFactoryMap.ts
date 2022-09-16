@@ -30,6 +30,7 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/response-headers-serializer': factories.responseHeadersSerializers,
   'oats/response-headers-type': factories.responseHeadersTypes,
   'oats/response-type': factories.responseTypes,
+  'oats/response-server-type': factories.responseServerTypes,
   'oats/sdk-impl': factories.sdkImpl,
   'oats/sdk-type': factories.sdkType,
 }

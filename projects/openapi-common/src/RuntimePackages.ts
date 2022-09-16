@@ -14,6 +14,7 @@ const Http = {
   ResponseExpectation: 'ResponseExpectation',
   ResponseExpectations: 'ResponseExpectations',
   CookieValue: 'CookieValue',
+  Cookies: 'Cookies',
   ClientAdapter: 'ClientAdapter',
   ServerAdapter: 'ServerAdapter',
 } as const

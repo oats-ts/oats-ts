@@ -52,6 +52,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
     return pascalCase(`${operation.operationId}${pascalCase(status)}ResponseHeaderParameters`)
   },
   'oats/response-type': _delegating(operationId, toPascalCase, append('Response')),
+  'oats/response-server-type': _delegating(operationId, toPascalCase, append('ServerResponse')),
   'oats/request-type': _delegating(operationId, toPascalCase, append('Request')),
   'oats/request-server-type': _delegating(operationId, toPascalCase, append('ServerRequest')),
   'oats/path-serializer': _delegating(operationId, toCamelCase, append('PathSerializer')),

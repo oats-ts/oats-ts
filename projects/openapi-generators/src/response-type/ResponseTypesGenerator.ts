@@ -1,14 +1,10 @@
-import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap } from 'lodash'
-import { EnhancedOperation, hasResponses, OpenAPIGeneratorTarget, getEnhancedResponses } from '@oats-ts/openapi-common'
-import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
-import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
-import { success, Try } from '@oats-ts/try'
-import { getResponseTypeAst } from './getResponseTypeAst'
-import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { RuntimeDependency } from '@oats-ts/oats-ts'
+import { EnhancedOperation, EnhancedResponse, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { TypeNode, factory, PropertySignature, SyntaxKind, ImportDeclaration } from 'typescript'
+import { getNamedImports, safeName } from '@oats-ts/typescript-common'
+import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/response/BaseResponseTypeGenerator'
+import { ResponseTypesGeneratorConfig } from './typings'
 
-export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
+export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseTypesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'oats/response-type'
   }
@@ -17,38 +13,41 @@ export class ResponseTypesGenerator extends OperationBasedCodeGenerator<{}> {
     return ['oats/type', 'oats/response-headers-type']
   }
 
-  public runtimeDependencies(): RuntimeDependency[] {
-    return []
+  protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
+    return [
+      ...super.getImports(path, operation, responses),
+      ...(operation.cookie.length > 0 && this.config.cookies
+        ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.CookieValue])]
+        : []),
+    ]
   }
 
-  protected shouldGenerate({ operation }: EnhancedOperation): boolean {
-    return hasResponses(operation, this.context)
-  }
-
-  protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const responses = getEnhancedResponses(data.operation, this.context)
-    const path = this.context.pathOf(data.operation, this.name())
-    return success(
-      createSourceFile(
-        path,
-        [
-          ...flatMap(responses, ({ schema, statusCode }) => [
-            ...this.context.dependenciesOf(path, schema, 'oats/type'),
-            ...this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
-          ]),
-        ],
-        [getResponseTypeAst(data, this.context)],
-      ),
-    )
-  }
-
-  public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasResponses(input, this.context)
-      ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
-      : undefined
-  }
-
-  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
+  protected createProperty(name: ResponsePropertyName, type: TypeNode): PropertySignature | undefined {
+    const propName = safeName(name)
+    switch (name) {
+      case 'cookies': {
+        if (!this.config.cookies) {
+          return undefined
+        }
+        return factory.createPropertySignature(
+          undefined,
+          propName,
+          factory.createToken(SyntaxKind.QuestionToken),
+          factory.createTypeReferenceNode(RuntimePackages.Http.Cookies, [type]),
+        )
+      }
+      case 'body': {
+        return factory.createPropertySignature(undefined, propName, undefined, type)
+      }
+      case 'headers': {
+        return factory.createPropertySignature(undefined, propName, undefined, type)
+      }
+      case 'mimeType': {
+        return factory.createPropertySignature(undefined, propName, undefined, type)
+      }
+      case 'statusCode': {
+        return factory.createPropertySignature(undefined, propName, undefined, type)
+      }
+    }
   }
 }

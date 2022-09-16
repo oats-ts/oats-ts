@@ -13,6 +13,7 @@ const fileNameByTarget: NameByTarget = {
   'oats/path-type': 'pathTypes.ts',
   'oats/response-headers-type': 'responseHeaderTypes.ts',
   'oats/response-type': 'responseTypes.ts',
+  'oats/response-server-type': 'responseServerTypes.ts',
   'oats/request-type': 'requestTypes.ts',
   'oats/request-server-type': 'requestServerTypes.ts',
   'oats/path-serializer': 'pathSerializers.ts',
@@ -58,6 +59,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/type-guard': typeGuards,
 
     'oats/response-type': responses,
+    'oats/response-server-type': responses,
 
     'oats/request-type': requests,
     'oats/request-server-type': requests,
