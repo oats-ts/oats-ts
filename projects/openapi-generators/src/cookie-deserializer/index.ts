@@ -1,2 +1,2 @@
 export { CookieDeserializersGenerator } from './CookieDeserializersGenerator'
-export { cookieDeserializers } from './pathDeserializers'
+export { cookieDeserializers } from './cookieDeserializers'

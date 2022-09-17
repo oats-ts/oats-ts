@@ -34,7 +34,7 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/sdk-impl': factories.sdkImpl,
   'oats/sdk-type': factories.sdkType,
   'oats/cookie-serializer': factories.cookieSerializers,
-  'oats/set-cookie-serializer': undefined!,
+  'oats/set-cookie-serializer': factories.setCookieSerializers,
   'oats/cookie-deserializer': factories.cookieDeserializers,
-  'oats/set-cookie-deserializer': undefined!,
+  'oats/set-cookie-deserializer': factories.setCookieDeserializers,
 }
