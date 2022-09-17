@@ -33,4 +33,8 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/response-server-type': factories.responseServerTypes,
   'oats/sdk-impl': factories.sdkImpl,
   'oats/sdk-type': factories.sdkType,
+  'oats/cookie-serializer': undefined!,
+  'oats/set-cookie-serializer': undefined!,
+  'oats/cookie-deserializer': undefined!,
+  'oats/set-cookie-deserializer': undefined!,
 }

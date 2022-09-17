@@ -34,6 +34,10 @@ const fileNameByTarget: NameByTarget = {
   'oats/api-type': 'apiType.ts',
   'oats/sdk-impl': 'sdkImpl.ts',
   'oats/sdk-type': 'sdkType.ts',
+  'oats/cookie-serializer': 'cookieSerializers.ts',
+  'oats/set-cookie-serializer': 'setCookieSerializers.ts',
+  'oats/cookie-deserializer': 'cookieDeserializers.ts',
+  'oats/set-cookie-deserializer': 'setCookieDeserializers.ts',
 }
 
 const delegate =
@@ -80,11 +84,15 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/query-serializer': serializers,
     'oats/path-serializer': serializers,
     'oats/response-headers-serializer': serializers,
+    'oats/cookie-serializer': serializers,
+    'oats/set-cookie-serializer': serializers,
 
     'oats/response-headers-deserializer': serializers,
     'oats/request-headers-deserializer': serializers,
     'oats/query-deserializer': serializers,
     'oats/path-deserializer': serializers,
+    'oats/cookie-deserializer': serializers,
+    'oats/set-cookie-deserializer': serializers,
 
     'oats/operation': operations,
 

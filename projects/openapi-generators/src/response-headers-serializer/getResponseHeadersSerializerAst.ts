@@ -2,7 +2,7 @@ import { getResponseHeaders, OpenAPIGeneratorContext, RuntimePackages } from '@o
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { entries, values } from 'lodash'
 import { factory, NodeFlags, PropertyAssignment, SyntaxKind } from 'typescript'
-import { getDslObjectAst } from '../utils/dsl/getDslObjectAst'
+import { getDslObjectAst } from '../utils/getDslObjectAst'
 
 export function getResponseHeadersSerializerAst(data: EnhancedOperation, context: OpenAPIGeneratorContext) {
   const headers = entries(getResponseHeaders(data.operation, context))
