@@ -5,9 +5,11 @@ export type ClientAdapter = {
   getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
   getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
+  getCookie<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined>
   getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
+    cookie?: string,
     serializer?: (input: H) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders>
   getRequestBody<B>(mimeType?: string, input?: B): Promise<any>

@@ -386,7 +386,7 @@ export const listPetsQuerySerializer = createQuerySerializer<ListPetsQueryParame
  */
 export async function createPets(request: CreatePetsRequest, adapter: ClientAdapter): Promise<CreatePetsResponse> {
   const requestUrl = await adapter.getUrl('/pets', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -411,7 +411,7 @@ export async function createPets(request: CreatePetsRequest, adapter: ClientAdap
 export async function listPets(request: ListPetsRequest, adapter: ClientAdapter): Promise<ListPetsResponse> {
   const query = await adapter.getQuery(request.query, listPetsQuerySerializer)
   const requestUrl = await adapter.getUrl('/pets', query)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -436,7 +436,7 @@ export async function listPets(request: ListPetsRequest, adapter: ClientAdapter)
 export async function showPetById(request: ShowPetByIdRequest, adapter: ClientAdapter): Promise<ShowPetByIdResponse> {
   const path = await adapter.getPath(request.path, showPetByIdPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',

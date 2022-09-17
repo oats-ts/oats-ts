@@ -727,7 +727,7 @@ export const getSignInAttemptsResponseBodyValidator = {
  */
 export async function getAuthIntrospect(adapter: ClientAdapter): Promise<GetAuthIntrospectResponse> {
   const requestUrl = await adapter.getUrl('/api/auth/introspect', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -756,7 +756,7 @@ export async function getAuthIntrospect(adapter: ClientAdapter): Promise<GetAuth
  */
 export async function getItemUsages(adapter: ClientAdapter): Promise<GetItemUsagesResponse> {
   const requestUrl = await adapter.getUrl('/api/v1/itemusages', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -785,7 +785,7 @@ export async function getItemUsages(adapter: ClientAdapter): Promise<GetItemUsag
  */
 export async function getSignInAttempts(adapter: ClientAdapter): Promise<GetSignInAttemptsResponse> {
   const requestUrl = await adapter.getUrl('/api/v1/signinattempts', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',

@@ -115,7 +115,7 @@ export async function optionalRequestBody(
   adapter: ClientAdapter,
 ): Promise<OptionalRequestBodyResponse> {
   const requestUrl = await adapter.getUrl('/optional-request-body', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,

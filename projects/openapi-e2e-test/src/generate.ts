@@ -86,6 +86,9 @@ export async function generateCode(url: string, codePath: string) {
             'oats/type-validator': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
             },
+            'oats/operation': {
+              cookies: true,
+            },
           },
         }),
       }),

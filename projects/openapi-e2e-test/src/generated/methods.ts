@@ -296,7 +296,7 @@ export const putMethodResponseBodyValidator = {
 
 export async function deleteMethod(adapter: ClientAdapter): Promise<DeleteMethodResponse> {
   const requestUrl = await adapter.getUrl('/delete-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'delete',
@@ -320,7 +320,7 @@ export async function deleteMethod(adapter: ClientAdapter): Promise<DeleteMethod
 
 export async function getMethod(adapter: ClientAdapter): Promise<GetMethodResponse> {
   const requestUrl = await adapter.getUrl('/get-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -339,7 +339,7 @@ export async function getMethod(adapter: ClientAdapter): Promise<GetMethodRespon
 
 export async function optionsMethod(adapter: ClientAdapter): Promise<OptionsMethodResponse> {
   const requestUrl = await adapter.getUrl('/options-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'options',
@@ -363,7 +363,7 @@ export async function optionsMethod(adapter: ClientAdapter): Promise<OptionsMeth
 
 export async function patchMethod(adapter: ClientAdapter): Promise<PatchMethodResponse> {
   const requestUrl = await adapter.getUrl('/patch-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'patch',
@@ -387,7 +387,7 @@ export async function patchMethod(adapter: ClientAdapter): Promise<PatchMethodRe
 
 export async function postMethod(adapter: ClientAdapter): Promise<PostMethodResponse> {
   const requestUrl = await adapter.getUrl('/post-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'post',
@@ -406,7 +406,7 @@ export async function postMethod(adapter: ClientAdapter): Promise<PostMethodResp
 
 export async function putMethod(adapter: ClientAdapter): Promise<PutMethodResponse> {
   const requestUrl = await adapter.getUrl('/put-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'put',

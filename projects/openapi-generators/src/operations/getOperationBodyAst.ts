@@ -107,6 +107,38 @@ export function getOperationBodyAst(
       NodeFlags.Const,
     ),
   )
+  const cookies =
+    data.cookie.length > 0 && config.cookies
+      ? factory.createVariableStatement(
+          undefined,
+          factory.createVariableDeclarationList(
+            [
+              factory.createVariableDeclaration(
+                factory.createIdentifier(OperationNames.cookie),
+                undefined,
+                undefined,
+                factory.createAwaitExpression(
+                  factory.createCallExpression(
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(OperationNames.adapter),
+                      factory.createIdentifier(OperationNames.getCookie),
+                    ),
+                    undefined,
+                    [
+                      factory.createPropertyAccessExpression(
+                        factory.createIdentifier(OperationNames.request),
+                        factory.createIdentifier(OperationNames.cookie),
+                      ),
+                      referenceOf(data.operation, 'oats/cookie-serializer'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+            NodeFlags.Const,
+          ),
+        )
+      : undefined
   const requestHeaders = factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -134,6 +166,9 @@ export function getOperationBodyAst(
                       factory.createIdentifier(OperationNames.request),
                       factory.createIdentifier(OperationNames.mimeType),
                     )
+                  : factory.createIdentifier('undefined'),
+                !isNil(cookies) && config.cookies
+                  ? factory.createIdentifier(OperationNames.cookie)
                   : factory.createIdentifier('undefined'),
                 data.header.length > 0
                   ? referenceOf(data.operation, 'oats/request-headers-serializer')
@@ -378,6 +413,7 @@ export function getOperationBodyAst(
       ...(isNil(path) ? [] : [path]),
       ...(isNil(query) ? [] : [query]),
       requestUrl,
+      ...(isNil(cookies) ? [] : [cookies]),
       requestHeaders,
       ...(isNil(requestBody) ? [] : [requestBody]),
       rawRequest,

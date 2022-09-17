@@ -1320,7 +1320,7 @@ export const strResponseBodyValidator = { 200: { 'application/json': string(), '
 
 export async function arrObj(request: ArrObjRequest, adapter: ClientAdapter): Promise<ArrObjResponse> {
   const requestUrl = await adapter.getUrl('/arr-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1341,7 +1341,7 @@ export async function arrObj(request: ArrObjRequest, adapter: ClientAdapter): Pr
 
 export async function bool(request: BoolRequest, adapter: ClientAdapter): Promise<BoolResponse> {
   const requestUrl = await adapter.getUrl('/bool', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1362,7 +1362,7 @@ export async function bool(request: BoolRequest, adapter: ClientAdapter): Promis
 
 export async function boolArr(request: BoolArrRequest, adapter: ClientAdapter): Promise<BoolArrResponse> {
   const requestUrl = await adapter.getUrl('/bool-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1383,7 +1383,7 @@ export async function boolArr(request: BoolArrRequest, adapter: ClientAdapter): 
 
 export async function enm(request: EnmRequest, adapter: ClientAdapter): Promise<EnmResponse> {
   const requestUrl = await adapter.getUrl('/enm', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1404,7 +1404,7 @@ export async function enm(request: EnmRequest, adapter: ClientAdapter): Promise<
 
 export async function enmArr(request: EnmArrRequest, adapter: ClientAdapter): Promise<EnmArrResponse> {
   const requestUrl = await adapter.getUrl('/enm-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1425,7 +1425,7 @@ export async function enmArr(request: EnmArrRequest, adapter: ClientAdapter): Pr
 
 export async function nestedObj(request: NestedObjRequest, adapter: ClientAdapter): Promise<NestedObjResponse> {
   const requestUrl = await adapter.getUrl('/nested-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1446,7 +1446,7 @@ export async function nestedObj(request: NestedObjRequest, adapter: ClientAdapte
 
 export async function num(request: NumRequest, adapter: ClientAdapter): Promise<NumResponse> {
   const requestUrl = await adapter.getUrl('/num', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1467,7 +1467,7 @@ export async function num(request: NumRequest, adapter: ClientAdapter): Promise<
 
 export async function numArr(request: NumArrRequest, adapter: ClientAdapter): Promise<NumArrResponse> {
   const requestUrl = await adapter.getUrl('/num-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1491,7 +1491,7 @@ export async function optPrimTuple(
   adapter: ClientAdapter,
 ): Promise<OptPrimTupleResponse> {
   const requestUrl = await adapter.getUrl('/opt-prim-tuple', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1517,7 +1517,7 @@ export async function optPrimTuple(
 
 export async function primObj(request: PrimObjRequest, adapter: ClientAdapter): Promise<PrimObjResponse> {
   const requestUrl = await adapter.getUrl('/prim-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1538,7 +1538,7 @@ export async function primObj(request: PrimObjRequest, adapter: ClientAdapter): 
 
 export async function primTuple(request: PrimTupleRequest, adapter: ClientAdapter): Promise<PrimTupleResponse> {
   const requestUrl = await adapter.getUrl('/prim-tuple', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1559,7 +1559,7 @@ export async function primTuple(request: PrimTupleRequest, adapter: ClientAdapte
 
 export async function str(request: StrRequest, adapter: ClientAdapter): Promise<StrResponse> {
   const requestUrl = await adapter.getUrl('/str', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -1580,7 +1580,7 @@ export async function str(request: StrRequest, adapter: ClientAdapter): Promise<
 
 export async function strArr(request: StrArrRequest, adapter: ClientAdapter): Promise<StrArrResponse> {
   const requestUrl = await adapter.getUrl('/str-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,

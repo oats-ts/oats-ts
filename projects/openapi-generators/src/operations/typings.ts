@@ -9,4 +9,8 @@ export type OperationsGeneratorConfig = {
    * responses to be validated. This is useful, in case you are unsure the backend respects the contract.
    */
   validate: boolean
+  /**
+   * If set to true, cookies will be manually sent, otherwise they will be ignored.
+   */
+  cookies: boolean
 }

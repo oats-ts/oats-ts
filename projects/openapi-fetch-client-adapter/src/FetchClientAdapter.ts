@@ -81,9 +81,22 @@ export class FetchClientAdapter implements ClientAdapter {
     const { url } = this.config
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
+
+  async getCookie<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined> {
+    if (input === null || input === undefined || serializer === null || serializer === undefined) {
+      return undefined
+    }
+    const cookie = serializer(input)
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to serialize cookie:\n${cookie.issues.map(stringify).join('\n')}`)
+    }
+    return cookie.data
+  }
+
   async getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
+    cookie?: string,
     serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders> {
     const mimeTypeHeaders = {
@@ -99,6 +112,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return {
       ...headers.data,
       ...mimeTypeHeaders,
+      ...(cookie === null || cookie === undefined ? {} : { cookie }),
     }
   }
   async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {

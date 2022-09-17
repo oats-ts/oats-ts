@@ -26,6 +26,9 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       'oats/path-serializer',
       'oats/query-serializer',
       'oats/response-headers-deserializer',
+      'oats/cookie-serializer',
+      'oats/set-cookie-deserializer',
+      'oats/cookies-type',
       ...(this.config.validate ? validatorDep : []),
     ]
   }

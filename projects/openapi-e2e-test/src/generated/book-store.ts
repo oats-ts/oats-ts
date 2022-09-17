@@ -410,7 +410,7 @@ export const getBooksRequestHeadersSerializer = createHeaderSerializer<GetBooksR
  */
 export async function addBook(request: AddBookRequest, adapter: ClientAdapter): Promise<AddBookResponse> {
   const requestUrl = await adapter.getUrl('/books', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
@@ -435,7 +435,7 @@ export async function addBook(request: AddBookRequest, adapter: ClientAdapter): 
 export async function getBook(request: GetBookRequest, adapter: ClientAdapter): Promise<GetBookResponse> {
   const path = await adapter.getPath(request.path, getBookPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -458,7 +458,12 @@ export async function getBook(request: GetBookRequest, adapter: ClientAdapter): 
 export async function getBooks(request: GetBooksRequest, adapter: ClientAdapter): Promise<GetBooksResponse> {
   const query = await adapter.getQuery(request.query, getBooksQuerySerializer)
   const requestUrl = await adapter.getUrl('/books', query)
-  const requestHeaders = await adapter.getRequestHeaders(request.headers, undefined, getBooksRequestHeadersSerializer)
+  const requestHeaders = await adapter.getRequestHeaders(
+    request.headers,
+    undefined,
+    undefined,
+    getBooksRequestHeadersSerializer,
+  )
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
