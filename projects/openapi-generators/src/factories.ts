@@ -26,6 +26,8 @@ import { responseTypes } from './response-type'
 import { sdkImpl } from './sdk-impl'
 import { sdkType } from './sdk-type'
 import { responseServerTypes } from './response-server-type'
+import { cookieSerializers } from './cookie-serializer'
+import { cookieDeserializers } from './cookie-deserializer'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 
 export const factories = {
@@ -42,6 +44,8 @@ export const factories = {
   pathDeserializers,
   pathSerializers,
   pathTypes,
+  cookieSerializers,
+  cookieDeserializers,
   cookiesTypes,
   queryDeserializers,
   querySerializers,

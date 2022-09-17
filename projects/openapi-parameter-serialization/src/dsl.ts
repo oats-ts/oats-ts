@@ -60,7 +60,7 @@ export const dsl = {
     },
   },
   cookie: {
-    simple: {
+    form: {
       primitive: primitiveDsl('cookie', 'form', { explode: true, required: false }),
     },
   },

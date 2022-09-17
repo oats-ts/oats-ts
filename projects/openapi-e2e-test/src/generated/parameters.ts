@@ -7,6 +7,8 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ClientAdapter, Cookies, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import {
+  createCookieDeserializer,
+  createCookieSerializer,
   createHeaderDeserializer,
   createHeaderSerializer,
   createPathDeserializer,
@@ -1522,6 +1524,20 @@ export const simpleResponseHeaderParametersRequestBodyValidator = {
   'application/json': simpleResponseHeaderParametersTypeValidator,
 } as const
 
+export const formCookieParametersCookieDeserializer = createCookieDeserializer<FormCookieParametersCookieParameters>({
+  str: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: true }),
+  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
+  num: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: true }),
+  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
+  bool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
+  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
+  enm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
+  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: false,
+    required: false,
+  }),
+})
+
 export const simpleResponseHeaderParametersResponseHeadersSerializer = {
   200: createHeaderSerializer<SimpleResponseHeaderParameters200ResponseHeaderParameters>({
     'X-StrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: true }),
@@ -2678,6 +2694,20 @@ export const spaceDelimitedQueryParametersResponseBodyValidator = {
   200: { 'application/json': spaceDelimitedQueryParametersTypeValidator },
   400: { 'application/json': array(items(lazy(() => parameterIssueTypeValidator))) },
 } as const
+
+export const formCookieParametersCookieSerializer = createCookieSerializer<FormCookieParametersCookieParameters>({
+  str: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: true }),
+  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
+  num: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: true }),
+  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
+  bool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
+  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
+  enm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
+  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: false,
+    required: false,
+  }),
+})
 
 export const simpleResponseHeaderParametersResponseHeadersDeserializer = {
   200: createHeaderDeserializer<SimpleResponseHeaderParameters200ResponseHeaderParameters>({
