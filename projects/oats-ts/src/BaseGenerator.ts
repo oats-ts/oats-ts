@@ -9,7 +9,7 @@ const emptyConfig: Partial<GeneratorConfig> = {
   pathProvider: undefined,
 }
 
-export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
+export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   public readonly id = nanoid(6)
 
   protected parent?: CodeGenerator<R, G>
@@ -17,7 +17,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
   protected globalConfig!: GeneratorConfig
   protected emitter!: GeneratorEventEmitter<G>
   protected dependencies!: Try<CodeGenerator<R, G>[]>
-  protected readonly config: C
+  private readonly config: C
   private readonly globalConfigOverride: Partial<GeneratorConfig>
 
   constructor(config: C & Partial<GeneratorConfig>) {
@@ -39,6 +39,10 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
 
   protected tick() {
     return new Promise<void>((resolve) => setTimeout(resolve, 0))
+  }
+
+  public configuration(): C {
+    return this.config
   }
 
   public resolve(name: string): CodeGenerator<R, G> | undefined {

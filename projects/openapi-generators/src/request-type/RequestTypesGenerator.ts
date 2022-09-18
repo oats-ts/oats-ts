@@ -15,12 +15,12 @@ export class RequestTypesGenerator extends BaseRequestTypesGenerator<RequestType
       'oats/request-headers-type',
       'oats/query-type',
       'oats/path-type',
-      ...(this.config.cookies ? (['oats/cookies-type'] as OpenAPIGeneratorTarget[]) : []),
+      ...(this.configuration().cookies ? (['oats/cookies-type'] as OpenAPIGeneratorTarget[]) : []),
     ]
   }
 
   protected shouldGenerate(operation: EnhancedOperation): boolean {
-    return super.shouldGenerate(operation) || (this.config.cookies && operation.cookie.length > 0)
+    return super.shouldGenerate(operation) || (this.configuration().cookies && operation.cookie.length > 0)
   }
 
   protected createRequestProperty(

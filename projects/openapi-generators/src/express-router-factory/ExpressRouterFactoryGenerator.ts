@@ -46,7 +46,7 @@ export class ExpressRouterFactoryGenerator extends DocumentBasedCodeGenerator<Ex
             this.context,
           ),
         ],
-        [getRouterFactoryAst(operations, this.context, this.config)],
+        [getRouterFactoryAst(operations, this.context, this.configuration())],
       ),
     )
   }

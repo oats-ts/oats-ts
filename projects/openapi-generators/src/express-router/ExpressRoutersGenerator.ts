@@ -39,7 +39,7 @@ export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<Express
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(this.context.pathOf(item.operation, this.name()), getExpressRouterImports(item, this.context), [
-        getExpressRouterAst(item, this.context, this.config),
+        getExpressRouterAst(item, this.context, this.configuration()),
       ]),
     )
   }

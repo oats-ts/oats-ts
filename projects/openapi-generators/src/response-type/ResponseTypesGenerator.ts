@@ -13,14 +13,14 @@ export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseT
     return [
       'oats/type',
       'oats/response-headers-type',
-      ...(this.config.cookies ? (['oats/cookies-type'] as OpenAPIGeneratorTarget[]) : []),
+      ...(this.configuration().cookies ? (['oats/cookies-type'] as OpenAPIGeneratorTarget[]) : []),
     ]
   }
 
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
     return [
       ...super.getImports(path, operation, responses),
-      ...(operation.cookie.length > 0 && this.config.cookies
+      ...(operation.cookie.length > 0 && this.configuration().cookies
         ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.CookieValue])]
         : []),
     ]
@@ -30,7 +30,7 @@ export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseT
     const propName = safeName(name)
     switch (name) {
       case 'cookies': {
-        if (!this.config.cookies) {
+        if (!this.configuration().cookies) {
           return undefined
         }
         return factory.createPropertySignature(

@@ -29,7 +29,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       'oats/cookie-serializer',
       'oats/set-cookie-deserializer',
       'oats/cookies-type',
-      ...(this.config.validate ? validatorDep : []),
+      ...(this.configuration().validate ? validatorDep : []),
     ]
   }
 
@@ -57,11 +57,11 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           ...this.context.dependenciesOf(path, item.operation, 'oats/query-serializer'),
           ...this.context.dependenciesOf(path, item.operation, 'oats/request-headers-serializer'),
           ...this.context.dependenciesOf(path, item.operation, 'oats/response-headers-deserializer'),
-          ...(this.config.validate
+          ...(this.configuration().validate
             ? this.context.dependenciesOf(path, item.operation, 'oats/response-body-validator')
             : []),
         ],
-        [getOperationFunctionAst(item, this.context, this.config)],
+        [getOperationFunctionAst(item, this.context, this.configuration())],
       ),
     )
   }

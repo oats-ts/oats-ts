@@ -27,7 +27,7 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
       createSourceFile(
         this.context.pathOf(this.input.document, this.name()),
         getApiTypeImports(this.input.document, operations, this.context, true),
-        [getApiTypeAst(this.input.document, operations, this.context, this.config)],
+        [getApiTypeAst(this.input.document, operations, this.context, this.configuration())],
       ),
     )
   }

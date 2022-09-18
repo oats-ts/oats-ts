@@ -44,7 +44,7 @@ export class ExpressCorsMiddlewareGenerator extends DocumentBasedCodeGenerator<E
             RuntimePackages.Express.NextFunction,
           ]),
         ],
-        [getCorsMiddlewareAst(operations, this.context, this.config)],
+        [getCorsMiddlewareAst(operations, this.context, this.configuration())],
       ),
     )
   }

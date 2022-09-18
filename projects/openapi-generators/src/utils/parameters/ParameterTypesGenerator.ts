@@ -77,7 +77,7 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
           Boolean(parameter.required),
           this.context.referenceOf(parameter.schema, 'oats/type'),
         )
-        return this.config.documentation ? documentNode(node, parameter) : node
+        return this.configuration().documentation ? documentNode(node, parameter) : node
       }),
     )
   }
