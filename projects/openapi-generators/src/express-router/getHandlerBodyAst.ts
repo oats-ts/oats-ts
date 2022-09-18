@@ -19,10 +19,11 @@ export function getHandlerBodyAst(
   const { referenceOf, nameOf, document } = context
   const { ExpressToolkit: ExpressParameters } = RuntimePackages.HttpServerExpress
 
-  const hasInputParams = hasInput(data, context)
+  const hasInputParams = hasInput(data, context, true)
   const hasPath = data.path.length > 0
   const hasQuery = data.query.length > 0
   const hasHeaders = data.header.length > 0
+  const hasCookie = data.cookie.length > 0
   const hasBody = hasRequestBody(data, context)
 
   const expressParams = factory.createVariableStatement(
@@ -95,6 +96,7 @@ export function getHandlerBodyAst(
     ...getParametersStatementAst('path', data, context),
     ...getParametersStatementAst('query', data, context),
     ...getParametersStatementAst('header', data, context),
+    ...getParametersStatementAst('cookie', data, context),
   ]
 
   const body = getRequestBodyRelatedStatementAsts(data, context)
@@ -131,6 +133,14 @@ export function getHandlerBodyAst(
                       ? [
                           factory.createShorthandPropertyAssignment(
                             factory.createIdentifier(RouterNames.headers),
+                            undefined,
+                          ),
+                        ]
+                      : []),
+                    ...(hasCookie
+                      ? [
+                          factory.createShorthandPropertyAssignment(
+                            factory.createIdentifier(RouterNames.cookies),
                             undefined,
                           ),
                         ]
@@ -237,6 +247,24 @@ export function getHandlerBodyAst(
                     [
                       factory.createIdentifier(RouterNames.toolkit),
                       factory.createIdentifier(RouterNames.typedResponse),
+                    ],
+                  ),
+                ),
+              ),
+              factory.createPropertyAssignment(
+                factory.createIdentifier(RouterNames.cookies),
+                factory.createAwaitExpression(
+                  factory.createCallExpression(
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(RouterNames.adapter),
+                      factory.createIdentifier('getResponseCookies'),
+                    ),
+                    undefined,
+                    [
+                      factory.createIdentifier(RouterNames.toolkit),
+                      factory.createIdentifier(RouterNames.typedResponse),
+                      referenceOf(data.operation, 'oats/set-cookie-serializer') ??
+                        factory.createIdentifier('undefined'),
                     ],
                   ),
                 ),

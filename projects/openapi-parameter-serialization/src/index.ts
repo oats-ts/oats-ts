@@ -13,5 +13,6 @@ export { createSetCookieDeserializer } from './createSetCookieDeserializer'
 
 export { createPathRegExp } from './createPathRegExp'
 export { parsePathToSegments } from './parsePathToSegments'
+export { serializeCookieValue } from './serializeCookieValue'
 
 export * from './types'

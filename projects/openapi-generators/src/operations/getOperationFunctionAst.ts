@@ -16,7 +16,7 @@ export function getOperationFunctionAst(
   const { operation } = data
 
   const params: ParameterDeclaration[] = [
-    ...(hasInput(data, context) || (data.cookie.length > 0 && config.cookies)
+    ...(hasInput(data, context, config.cookies)
       ? [
           factory.createParameterDeclaration(
             [],

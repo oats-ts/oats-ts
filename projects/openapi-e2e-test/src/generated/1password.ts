@@ -547,19 +547,19 @@ export type EventsAPIApi = {
   /**
    * Performs introspection of the provided Bearer JWT token
    */
-  getAuthIntrospect(): Promise<GetAuthIntrospectResponse>
+  getAuthIntrospect(): Promise<GetAuthIntrospectServerResponse>
   /**
    * Retrieves item usages
    *
    * This endpoint requires your JSON Web Token to have the *itemusages* feature.
    */
-  getItemUsages(): Promise<GetItemUsagesResponse>
+  getItemUsages(): Promise<GetItemUsagesServerResponse>
   /**
    * Retrieves sign-in attempts
    *
    * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
    */
-  getSignInAttempts(): Promise<GetSignInAttemptsResponse>
+  getSignInAttempts(): Promise<GetSignInAttemptsServerResponse>
 }
 
 export const getAuthIntrospectRouter: Router = Router().get(
@@ -574,6 +574,7 @@ export const getAuthIntrospectRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -594,6 +595,7 @@ export const getItemUsagesRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -614,6 +616,7 @@ export const getSignInAttemptsRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {

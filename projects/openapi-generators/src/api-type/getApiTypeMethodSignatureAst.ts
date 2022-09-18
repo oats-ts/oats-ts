@@ -10,7 +10,7 @@ export function getApiTypeMethodSignatureAst(
 ): MethodSignature {
   const { nameOf, referenceOf } = context
 
-  const parameters: ParameterDeclaration[] = hasInput(data, context)
+  const parameters: ParameterDeclaration[] = hasInput(data, context, true)
     ? [
         factory.createParameterDeclaration(
           [],
@@ -24,7 +24,7 @@ export function getApiTypeMethodSignatureAst(
     : []
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-type')),
+    factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-server-type')),
   ])
 
   const node = factory.createMethodSignature(

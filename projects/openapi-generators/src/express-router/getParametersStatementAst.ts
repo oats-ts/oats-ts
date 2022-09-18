@@ -8,21 +8,21 @@ const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget | undefi
   query: 'oats/query-deserializer',
   header: 'oats/request-headers-deserializer',
   path: 'oats/path-deserializer',
-  cookie: undefined,
+  cookie: 'oats/cookie-deserializer',
 }
 
 const valueNameMap: Record<ParameterLocation, string | undefined> = {
   query: RouterNames.query,
   header: RouterNames.headers,
   path: RouterNames.path,
-  cookie: undefined,
+  cookie: RouterNames.cookies,
 }
 
 const configGetterNameMap: Record<ParameterLocation, string | undefined> = {
   query: 'getQueryParameters',
   header: 'getRequestHeaders',
   path: 'getPathParameters',
-  cookie: undefined,
+  cookie: 'getCookieParameters',
 }
 
 export function getParametersStatementAst(

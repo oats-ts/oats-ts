@@ -14,12 +14,12 @@ export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {
     return ['oats/type', 'oats/request-headers-type', 'oats/query-type', 'oats/path-type', 'oats/cookies-type']
   }
 
-  protected shouldGenerate(operation: EnhancedOperation): boolean {
-    return super.shouldGenerate(operation) || operation.cookie.length > 0
-  }
-
   public runtimeDependencies(): RuntimeDependency[] {
     return [{ name: RuntimePackages.Try.name, version }]
+  }
+
+  protected includeCookie(): boolean {
+    return true
   }
 
   protected createRequestProperty(

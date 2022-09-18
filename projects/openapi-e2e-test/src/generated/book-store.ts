@@ -179,15 +179,15 @@ export type BookStoreApi = {
   /**
    * Returns a list of books, can be paginated
    */
-  getBooks(request: GetBooksServerRequest): Promise<GetBooksResponse>
+  getBooks(request: GetBooksServerRequest): Promise<GetBooksServerResponse>
   /**
    * Creates a new book based on the request body.
    */
-  addBook(request: AddBookServerRequest): Promise<AddBookResponse>
+  addBook(request: AddBookServerRequest): Promise<AddBookServerResponse>
   /**
    * Returns the book associated with the given bookId
    */
-  getBook(request: GetBookServerRequest): Promise<GetBookResponse>
+  getBook(request: GetBookServerRequest): Promise<GetBookServerResponse>
 }
 
 export const addBookRouter: Router = Router().post(
@@ -213,6 +213,7 @@ export const addBookRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -237,6 +238,7 @@ export const getBookRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -263,6 +265,7 @@ export const getBooksRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {

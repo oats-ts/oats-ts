@@ -33,7 +33,7 @@ export const optionalRequestBodyRequestBodyValidator = {
 } as const
 
 export type BodiesApi = {
-  optionalRequestBody(request: OptionalRequestBodyServerRequest): Promise<OptionalRequestBodyResponse>
+  optionalRequestBody(request: OptionalRequestBodyServerRequest): Promise<OptionalRequestBodyServerResponse>
 }
 
 export const optionalRequestBodyRouter: Router = Router().post(
@@ -59,6 +59,7 @@ export const optionalRequestBodyRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {

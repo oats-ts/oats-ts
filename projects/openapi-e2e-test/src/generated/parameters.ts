@@ -2158,49 +2158,51 @@ export type ParametersApi = {
   /**
    * Endpoint for testing path parameters with simple serialization
    */
-  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersResponse>
+  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse>
   /**
    * Endpoint for testing path parameters with label serialization
    */
-  labelPathParameters(request: LabelPathParametersServerRequest): Promise<LabelPathParametersResponse>
+  labelPathParameters(request: LabelPathParametersServerRequest): Promise<LabelPathParametersServerResponse>
   /**
    * Endpoint for testing path parameters with matrix serialization
    */
-  matrixPathParameters(request: MatrixPathParametersServerRequest): Promise<MatrixPathParametersResponse>
+  matrixPathParameters(request: MatrixPathParametersServerRequest): Promise<MatrixPathParametersServerResponse>
   /**
    * Endpoint for testing query parameters with form serialization
    */
-  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersResponse>
+  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse>
   /**
    * Endpoint for testing query parameters with spaceDelimited serialization
    */
   spaceDelimitedQueryParameters(
     request: SpaceDelimitedQueryParametersServerRequest,
-  ): Promise<SpaceDelimitedQueryParametersResponse>
+  ): Promise<SpaceDelimitedQueryParametersServerResponse>
   /**
    * Endpoint for testing query parameters with pipeDelimited serialization
    */
   pipeDelimitedQueryParameters(
     request: PipeDelimitedQueryParametersServerRequest,
-  ): Promise<PipeDelimitedQueryParametersResponse>
+  ): Promise<PipeDelimitedQueryParametersServerResponse>
   /**
    * Endpoint for testing query parameters with deepObject serialization
    */
-  deepObjectQueryParameters(request: DeepObjectQueryParametersServerRequest): Promise<DeepObjectQueryParametersResponse>
+  deepObjectQueryParameters(
+    request: DeepObjectQueryParametersServerRequest,
+  ): Promise<DeepObjectQueryParametersServerResponse>
   /**
    * Endpoint for testing header parameters with simple serialization
    */
-  simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersResponse>
+  simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersServerResponse>
   /**
    * Endpoint for testing cookie parameters with form serialization
    */
-  formCookieParameters(): Promise<FormCookieParametersResponse>
+  formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse>
   /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
     request: SimpleResponseHeaderParametersServerRequest,
-  ): Promise<SimpleResponseHeaderParametersResponse>
+  ): Promise<SimpleResponseHeaderParametersServerResponse>
 }
 
 export const deepObjectQueryParametersRouter: Router = Router().get(
@@ -2219,6 +2221,7 @@ export const deepObjectQueryParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2234,11 +2237,16 @@ export const formCookieParametersRouter: Router = Router().get(
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi = response.locals['__oats_api']
     try {
-      const typedResponse = await api.formCookieParameters()
+      const cookies = await adapter.getCookieParameters(toolkit, formCookieParametersCookieDeserializer)
+      const typedRequest: FormCookieParametersServerRequest = {
+        cookies,
+      }
+      const typedResponse = await api.formCookieParameters(typedRequest)
       const rawResponse: RawHttpResponse = {
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, formCookieParametersSetCookieSerializer),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2263,6 +2271,7 @@ export const formQueryParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2287,6 +2296,7 @@ export const labelPathParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2311,6 +2321,7 @@ export const matrixPathParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2335,6 +2346,7 @@ export const pipeDelimitedQueryParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2359,6 +2371,7 @@ export const simpleHeaderParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2383,6 +2396,7 @@ export const simplePathParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2418,6 +2432,7 @@ export const simpleResponseHeaderParametersRouter: Router = Router().post(
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2442,6 +2457,7 @@ export const spaceDelimitedQueryParametersRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -2505,6 +2521,10 @@ export type DeepObjectQueryParametersRequest = {
   query: DeepObjectQueryParametersQueryParameters
 }
 
+export type FormCookieParametersRequest = {
+  cookies: FormCookieParametersCookieParameters
+}
+
 export type FormQueryParametersRequest = {
   query: FormQueryParametersQueryParameters
 }
@@ -2555,11 +2575,13 @@ export type FormCookieParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: FormCookieParameters
+      cookies?: Cookies<FormCookieParametersCookieParameters>
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies?: Cookies<FormCookieParametersCookieParameters>
     }
 
 export type FormQueryParametersResponse =
@@ -3323,8 +3345,8 @@ export async function formCookieParameters(
   adapter: ClientAdapter,
 ): Promise<FormCookieParametersResponse> {
   const requestUrl = await adapter.getUrl('/form-cookie-parameters', undefined)
-  const cookie = await adapter.getCookie(request.cookie, formCookieParametersCookieSerializer)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, cookie, undefined)
+  const cookies = await adapter.getCookies(request.cookies, formCookieParametersCookieSerializer)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
   const rawRequest: RawHttpRequest = {
     url: requestUrl,
     method: 'get',
@@ -3333,6 +3355,7 @@ export async function formCookieParameters(
   const rawResponse = await adapter.request(rawRequest)
   const mimeType = await adapter.getMimeType(rawResponse)
   const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseCookies = await adapter.getResponseCookies(rawResponse, formCookieParametersSetCookieDeserializer)
   const responseBody = await adapter.getResponseBody(
     rawResponse,
     statusCode,
@@ -3343,6 +3366,7 @@ export async function formCookieParameters(
     mimeType,
     statusCode,
     body: responseBody,
+    cookies: responseCookies,
   } as FormCookieParametersResponse
 }
 
@@ -3645,7 +3669,7 @@ export type ParametersSdk = {
   /**
    * Endpoint for testing cookie parameters with form serialization
    */
-  formCookieParameters(): Promise<FormCookieParametersResponse>
+  formCookieParameters(request: FormCookieParametersRequest): Promise<FormCookieParametersResponse>
   /**
    * Endpoint for testing response-header parameters with simple serialization
    */
@@ -3689,8 +3713,8 @@ export class ParametersSdkImpl implements ParametersSdk {
   public async simpleHeaderParameters(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
     return simpleHeaderParameters(request, this.adapter)
   }
-  public async formCookieParameters(): Promise<FormCookieParametersResponse> {
-    return formCookieParameters(this.adapter)
+  public async formCookieParameters(request: FormCookieParametersRequest): Promise<FormCookieParametersResponse> {
+    return formCookieParameters(request, this.adapter)
   }
   public async simpleResponseHeaderParameters(
     request: SimpleResponseHeaderParametersRequest,

@@ -5,7 +5,7 @@ export type ClientAdapter = {
   getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
   getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
-  getCookie<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined>
+  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined>
   getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
@@ -16,6 +16,10 @@ export type ClientAdapter = {
   request(request: RawHttpRequest): Promise<RawHttpResponse>
   getMimeType(response: RawHttpResponse): Promise<string | undefined>
   getStatusCode(response: RawHttpResponse): Promise<number | undefined>
+  getResponseCookies<C>(
+    response: RawHttpResponse,
+    deserializer?: (cookie?: string) => Try<Cookies<C>>,
+  ): Promise<Cookies<C> | undefined>
   getResponseHeaders(
     response: RawHttpResponse,
     statusCode?: number,
@@ -32,6 +36,7 @@ export type ClientAdapter = {
 export type ServerAdapter<T> = {
   getPathParameters<P>(toolkit: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
   getQueryParameters<Q>(toolkit: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
+  getCookieParameters<C>(toolkit: T, deserializer: (input?: string) => Try<Partial<C>>): Promise<Try<Partial<C>>>
   getRequestHeaders<H>(toolkit: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
   getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
@@ -44,6 +49,11 @@ export type ServerAdapter<T> = {
   getStatusCode(toolkit: T, resp: HttpResponse): Promise<number>
   getResponseBody(toolkit: T, resp: HttpResponse): Promise<any>
   getResponseHeaders(toolkit: T, resp: HttpResponse, serializer?: ResponseHeadersSerializer): Promise<RawHttpHeaders>
+  getResponseCookies<C>(
+    toolkit: T,
+    resp: HttpResponse<any, any, any, any, C>,
+    serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
+  ): Promise<Cookies<Record<string, string>>>
 
   respond(toolkit: T, response: RawHttpResponse): Promise<void>
   handleError(toolkit: T, error: any): Promise<void>
@@ -91,13 +101,15 @@ export type HasRequestBody<M extends string, T> = {
 export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace'
 
 /** Generic type representing a HTTP response */
-export type HttpResponse<B = any, S = any, M = any, H = any> = {
+export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
   /** The parsed response body */
   body: B
   /** The response status code */
   statusCode: S
   /** The mime type of the response */
   mimeType: M
+  /** The cookies in the response (Set-Cookie header) */
+  cookies?: Cookies<C>
   /** The response headers */
   headers?: H
 }
@@ -140,7 +152,7 @@ export type CookieValue<T> = {
   sameSite?: 'Strict' | 'Lax' | 'None'
 }
 
-export type Cookies<T extends Record<string, unknown>> = {
+export type Cookies<T> = {
   [K in keyof T]: CookieValue<T[K]>
 }
 
@@ -166,6 +178,8 @@ export type RawHttpResponse = {
   body?: any
   /** Headers, content-type will be filled by default */
   headers?: RawHttpHeaders
+  /** Cookies with optional parameters, and serialized name & value */
+  cookies?: Cookies<Record<string, string>>
 }
 
 /** Union of know status codes */

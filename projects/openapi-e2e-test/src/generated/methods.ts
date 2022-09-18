@@ -58,12 +58,12 @@ export type PutMethodServerResponse = {
 }
 
 export type HttpMethodsApi = {
-  getMethod(): Promise<GetMethodResponse>
-  postMethod(): Promise<PostMethodResponse>
-  putMethod(): Promise<PutMethodResponse>
-  patchMethod(): Promise<PatchMethodResponse>
-  optionsMethod(): Promise<OptionsMethodResponse>
-  deleteMethod(): Promise<DeleteMethodResponse>
+  getMethod(): Promise<GetMethodServerResponse>
+  postMethod(): Promise<PostMethodServerResponse>
+  putMethod(): Promise<PutMethodServerResponse>
+  patchMethod(): Promise<PatchMethodServerResponse>
+  optionsMethod(): Promise<OptionsMethodServerResponse>
+  deleteMethod(): Promise<DeleteMethodServerResponse>
 }
 
 export const deleteMethodRouter: Router = Router().delete(
@@ -78,6 +78,7 @@ export const deleteMethodRouter: Router = Router().delete(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -98,6 +99,7 @@ export const getMethodRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -118,6 +120,7 @@ export const optionsMethodRouter: Router = Router().options(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -138,6 +141,7 @@ export const patchMethodRouter: Router = Router().patch(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -158,6 +162,7 @@ export const postMethodRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -178,6 +183,7 @@ export const putMethodRouter: Router = Router().put(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {

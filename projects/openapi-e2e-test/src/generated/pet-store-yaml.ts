@@ -162,15 +162,15 @@ export type SwaggerPetstoreApi = {
   /**
    * List all pets
    */
-  listPets(request: ListPetsServerRequest): Promise<ListPetsResponse>
+  listPets(request: ListPetsServerRequest): Promise<ListPetsServerResponse>
   /**
    * Create a pet
    */
-  createPets(request: CreatePetsServerRequest): Promise<CreatePetsResponse>
+  createPets(request: CreatePetsServerRequest): Promise<CreatePetsServerResponse>
   /**
    * Info for a specific pet
    */
-  showPetById(request: ShowPetByIdServerRequest): Promise<ShowPetByIdResponse>
+  showPetById(request: ShowPetByIdServerRequest): Promise<ShowPetByIdServerResponse>
 }
 
 export const createPetsRouter: Router = Router()
@@ -204,6 +204,7 @@ export const createPetsRouter: Router = Router()
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -235,6 +236,7 @@ export const listPetsRouter: Router = Router()
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, listPetsResponseHeadersSerializer),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -265,6 +267,7 @@ export const showPetByIdRouter: Router = Router()
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {

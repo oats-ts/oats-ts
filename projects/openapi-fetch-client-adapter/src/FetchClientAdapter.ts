@@ -7,6 +7,7 @@ import {
   ResponseHeadersDeserializers,
   ResponseBodyValidators,
   ClientAdapter,
+  Cookies,
 } from '@oats-ts/openapi-http'
 import { isFailure, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
@@ -22,6 +23,37 @@ export class FetchClientAdapter implements ClientAdapter {
 
   constructor(config: FetchClientAdapterConfig = {}) {
     this.config = config
+  }
+  async getCookies<C>(
+    input?: C | undefined,
+    serializer?: ((input: C) => Try<string>) | undefined,
+  ): Promise<string | undefined> {
+    if (input === null || input === undefined || serializer === null || serializer === undefined) {
+      return undefined
+    }
+    const cookie = serializer(input)
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to serialize cookie:\n${cookie.issues.map(stringify).join('\n')}`)
+    }
+    return cookie.data
+  }
+
+  async getResponseCookies<C>(
+    response: RawHttpResponse,
+    deserializer?: (cookie?: string) => Try<Cookies<C>>,
+  ): Promise<Cookies<C> | undefined> {
+    if (deserializer === null || deserializer === undefined) {
+      return undefined
+    }
+    const header = response?.headers?.['set-cookie']
+    if (header === undefined || header === null) {
+      return undefined
+    }
+    const cookie = deserializer(header)
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to parse set-cookie:\n${cookie.issues.map(stringify).join('\n')}`)
+    }
+    return cookie.data
   }
 
   async request(request: RawHttpRequest): Promise<RawHttpResponse> {
@@ -80,17 +112,6 @@ export class FetchClientAdapter implements ClientAdapter {
   async getUrl(path: string, query?: string): Promise<string> {
     const { url } = this.config
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
-  }
-
-  async getCookie<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined> {
-    if (input === null || input === undefined || serializer === null || serializer === undefined) {
-      return undefined
-    }
-    const cookie = serializer(input)
-    if (isFailure(cookie)) {
-      throw new Error(`Failed to serialize cookie:\n${cookie.issues.map(stringify).join('\n')}`)
-    }
-    return cookie.data
   }
 
   async getRequestHeaders<H>(

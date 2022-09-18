@@ -5,9 +5,11 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
   ServerAdapter,
+  Cookies,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
+import { serializeCookieValue } from '@oats-ts/openapi-parameter-serialization'
 import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
 
@@ -20,6 +22,12 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   }
   async getQueryParameters<Q>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<Q>): Promise<Try<Q>> {
     return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
+  }
+  async getCookieParameters<C>(
+    toolkit: ExpressToolkit,
+    deserializer: (input?: string) => Try<Partial<C>>,
+  ): Promise<Try<Partial<C>>> {
+    return deserializer(toolkit.request.header('cookie'))
   }
   async getRequestHeaders<H>(
     toolkit: ExpressToolkit,
@@ -110,6 +118,21 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
+  async getResponseCookies<C>(
+    _: ExpressToolkit,
+    resp: HttpResponse<any, any, any, any, C>,
+    serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
+  ): Promise<Cookies<Record<string, string>>> {
+    if (resp.cookies === null || resp.cookies === undefined || serializer === null || serializer === undefined) {
+      return {}
+    }
+    const cookies = serializer(resp.cookies)
+    if (isFailure(cookies)) {
+      throw new Error(`Failed to serialize response cookies:\n${cookies.issues.map(stringify).join('\n')}`)
+    }
+    return cookies.data
+  }
+
   async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
     toolkit.response.status(rawResponse.statusCode)
     if (rawResponse.headers !== null && rawResponse.headers !== undefined && !toolkit.response.headersSent) {
@@ -117,7 +140,15 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       for (let i = 0; i < headerNames.length; i += 1) {
         const headerName = headerNames[i]
         const headerValue = rawResponse.headers[headerName]
-        toolkit.response.setHeader(headerName, headerValue)
+        toolkit.response.header(headerName, headerValue)
+      }
+    }
+    if (rawResponse.cookies !== null && rawResponse.cookies !== undefined && !toolkit.response.headersSent) {
+      const cookieNames = Object.keys(rawResponse.cookies)
+      for (let i = 0; i < cookieNames.length; i += 1) {
+        const cookieName = cookieNames[i]
+        const cookie = rawResponse.cookies[cookieName]
+        toolkit.response.header('set-cookie', serializeCookieValue(cookieName, cookie))
       }
     }
     if (toolkit.response.writable) {

@@ -16,71 +16,74 @@ export function getOperationBodyAst(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ) {
-  const { referenceOf } = context
-  const path =
-    data.path.length > 0
-      ? factory.createVariableStatement(
-          undefined,
-          factory.createVariableDeclarationList(
-            [
-              factory.createVariableDeclaration(
-                factory.createIdentifier(OperationNames.path),
-                undefined,
-                undefined,
-                factory.createAwaitExpression(
-                  factory.createCallExpression(
-                    factory.createPropertyAccessExpression(
-                      factory.createIdentifier(OperationNames.adapter),
-                      factory.createIdentifier(OperationNames.getPath),
-                    ),
-                    undefined,
-                    [
-                      factory.createPropertyAccessExpression(
-                        factory.createIdentifier(OperationNames.request),
-                        factory.createIdentifier(OperationNames.path),
-                      ),
-                      referenceOf(data.operation, 'oats/path-serializer'),
-                    ],
+  const hasCookies = data.cookie.length > 0 && config.cookies
+  const hasPath = data.path.length > 0
+  const hasQuery = data.query.length > 0
+  const hasReqBody = hasRequestBody(data, context)
+
+  const path = hasPath
+    ? factory.createVariableStatement(
+        undefined,
+        factory.createVariableDeclarationList(
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(OperationNames.path),
+              undefined,
+              undefined,
+              factory.createAwaitExpression(
+                factory.createCallExpression(
+                  factory.createPropertyAccessExpression(
+                    factory.createIdentifier(OperationNames.adapter),
+                    factory.createIdentifier(OperationNames.getPath),
                   ),
+                  undefined,
+                  [
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(OperationNames.request),
+                      factory.createIdentifier(OperationNames.path),
+                    ),
+                    context.referenceOf(data.operation, 'oats/path-serializer'),
+                  ],
                 ),
               ),
-            ],
-            NodeFlags.Const,
-          ),
-        )
-      : undefined
-  const query =
-    data.query.length > 0
-      ? factory.createVariableStatement(
-          undefined,
-          factory.createVariableDeclarationList(
-            [
-              factory.createVariableDeclaration(
-                factory.createIdentifier(OperationNames.query),
-                undefined,
-                undefined,
-                factory.createAwaitExpression(
-                  factory.createCallExpression(
-                    factory.createPropertyAccessExpression(
-                      factory.createIdentifier(OperationNames.adapter),
-                      factory.createIdentifier(OperationNames.getQuery),
-                    ),
-                    undefined,
-                    [
-                      factory.createPropertyAccessExpression(
-                        factory.createIdentifier(OperationNames.request),
-                        factory.createIdentifier(OperationNames.query),
-                      ),
-                      referenceOf(data.operation, 'oats/query-serializer'),
-                    ],
+            ),
+          ],
+          NodeFlags.Const,
+        ),
+      )
+    : undefined
+
+  const query = hasQuery
+    ? factory.createVariableStatement(
+        undefined,
+        factory.createVariableDeclarationList(
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(OperationNames.query),
+              undefined,
+              undefined,
+              factory.createAwaitExpression(
+                factory.createCallExpression(
+                  factory.createPropertyAccessExpression(
+                    factory.createIdentifier(OperationNames.adapter),
+                    factory.createIdentifier(OperationNames.getQuery),
                   ),
+                  undefined,
+                  [
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(OperationNames.request),
+                      factory.createIdentifier(OperationNames.query),
+                    ),
+                    context.referenceOf(data.operation, 'oats/query-serializer'),
+                  ],
                 ),
               ),
-            ],
-            NodeFlags.Const,
-          ),
-        )
-      : undefined
+            ),
+          ],
+          NodeFlags.Const,
+        ),
+      )
+    : undefined
   const requestUrl = factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -107,38 +110,37 @@ export function getOperationBodyAst(
       NodeFlags.Const,
     ),
   )
-  const cookies =
-    data.cookie.length > 0 && config.cookies
-      ? factory.createVariableStatement(
-          undefined,
-          factory.createVariableDeclarationList(
-            [
-              factory.createVariableDeclaration(
-                factory.createIdentifier(OperationNames.cookie),
-                undefined,
-                undefined,
-                factory.createAwaitExpression(
-                  factory.createCallExpression(
-                    factory.createPropertyAccessExpression(
-                      factory.createIdentifier(OperationNames.adapter),
-                      factory.createIdentifier(OperationNames.getCookie),
-                    ),
-                    undefined,
-                    [
-                      factory.createPropertyAccessExpression(
-                        factory.createIdentifier(OperationNames.request),
-                        factory.createIdentifier(OperationNames.cookie),
-                      ),
-                      referenceOf(data.operation, 'oats/cookie-serializer'),
-                    ],
+  const cookies = hasCookies
+    ? factory.createVariableStatement(
+        undefined,
+        factory.createVariableDeclarationList(
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(OperationNames.cookies),
+              undefined,
+              undefined,
+              factory.createAwaitExpression(
+                factory.createCallExpression(
+                  factory.createPropertyAccessExpression(
+                    factory.createIdentifier(OperationNames.adapter),
+                    factory.createIdentifier(OperationNames.getCookies),
                   ),
+                  undefined,
+                  [
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier(OperationNames.request),
+                      factory.createIdentifier(OperationNames.cookies),
+                    ),
+                    context.referenceOf(data.operation, 'oats/cookie-serializer'),
+                  ],
                 ),
               ),
-            ],
-            NodeFlags.Const,
-          ),
-        )
-      : undefined
+            ),
+          ],
+          NodeFlags.Const,
+        ),
+      )
+    : undefined
   const requestHeaders = factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -168,10 +170,10 @@ export function getOperationBodyAst(
                     )
                   : factory.createIdentifier('undefined'),
                 !isNil(cookies) && config.cookies
-                  ? factory.createIdentifier(OperationNames.cookie)
+                  ? factory.createIdentifier(OperationNames.cookies)
                   : factory.createIdentifier('undefined'),
                 data.header.length > 0
-                  ? referenceOf(data.operation, 'oats/request-headers-serializer')
+                  ? context.referenceOf(data.operation, 'oats/request-headers-serializer')
                   : factory.createIdentifier('undefined'),
               ],
             ),
@@ -181,7 +183,7 @@ export function getOperationBodyAst(
       NodeFlags.Const,
     ),
   )
-  const requestBody = hasRequestBody(data, context)
+  const requestBody = hasReqBody
     ? factory.createVariableStatement(
         undefined,
         factory.createVariableDeclarationList(
@@ -341,7 +343,7 @@ export function getOperationBodyAst(
                 factory.createIdentifier(OperationNames.rawResponse),
                 factory.createIdentifier(OperationNames.statusCode),
                 hasResponseHeaders(data.operation, context)
-                  ? referenceOf(data.operation, 'oats/response-headers-deserializer')
+                  ? context.referenceOf(data.operation, 'oats/response-headers-deserializer')
                   : factory.createIdentifier('undefined'),
               ],
             ),
@@ -351,6 +353,35 @@ export function getOperationBodyAst(
       NodeFlags.Const,
     ),
   )
+
+  const responseCookies = hasCookies
+    ? factory.createVariableStatement(
+        undefined,
+        factory.createVariableDeclarationList(
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(OperationNames.responseCookies),
+              undefined,
+              undefined,
+              factory.createAwaitExpression(
+                factory.createCallExpression(
+                  factory.createPropertyAccessExpression(
+                    factory.createIdentifier(OperationNames.adapter),
+                    factory.createIdentifier(OperationNames.getResponseCookies),
+                  ),
+                  undefined,
+                  [
+                    factory.createIdentifier(OperationNames.rawResponse),
+                    context.referenceOf(data.operation, 'oats/set-cookie-deserializer'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+          NodeFlags.Const,
+        ),
+      )
+    : undefined
 
   const responseBody = factory.createVariableStatement(
     undefined,
@@ -372,7 +403,7 @@ export function getOperationBodyAst(
                 factory.createIdentifier(OperationNames.statusCode),
                 factory.createIdentifier(OperationNames.mimeType),
                 config.validate && hasResponses(data.operation, context)
-                  ? referenceOf(data.operation, 'oats/response-body-validator')
+                  ? context.referenceOf(data.operation, 'oats/response-body-validator')
                   : factory.createIdentifier('undefined'),
               ],
             ),
@@ -401,10 +432,18 @@ export function getOperationBodyAst(
             factory.createIdentifier(OperationNames.body),
             factory.createIdentifier(OperationNames.responseBody),
           ),
+          ...(hasCookies
+            ? [
+                factory.createPropertyAssignment(
+                  factory.createIdentifier(OperationNames.cookies),
+                  factory.createIdentifier(OperationNames.responseCookies),
+                ),
+              ]
+            : []),
         ],
         true,
       ),
-      factory.createTypeReferenceNode(referenceOf(data.operation, 'oats/response-type'), undefined),
+      factory.createTypeReferenceNode(context.referenceOf(data.operation, 'oats/response-type'), undefined),
     ),
   )
 
@@ -421,6 +460,7 @@ export function getOperationBodyAst(
       mimeType,
       statusCode,
       ...(hasResponseHeaders(data.operation, context) ? [responseHeaders] : []),
+      ...(isNil(responseCookies) ? [] : [responseCookies]),
       responseBody,
       returnStatement,
     ],

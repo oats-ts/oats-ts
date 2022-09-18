@@ -1,6 +1,6 @@
 import { EnhancedOperation, EnhancedResponse, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
 import { TypeNode, factory, PropertySignature, SyntaxKind, ImportDeclaration } from 'typescript'
-import { getNamedImports, safeName } from '@oats-ts/typescript-common'
+import { safeName } from '@oats-ts/typescript-common'
 import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/response/BaseResponseTypeGenerator'
 import { ResponseTypesGeneratorConfig } from './typings'
 
@@ -21,7 +21,9 @@ export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseT
     return [
       ...super.getImports(path, operation, responses),
       ...(operation.cookie.length > 0 && this.configuration().cookies
-        ? [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.CookieValue])]
+        ? [
+            /* TODO */
+          ]
         : []),
     ]
   }

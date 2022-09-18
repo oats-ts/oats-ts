@@ -56,6 +56,6 @@ export function getSdkClassAst(
         factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'oats/sdk-type')), []),
       ]),
     ],
-    [configField, constructor, ...operations.map((operation) => getSdkClassMethodAst(operation, context))],
+    [configField, constructor, ...operations.map((operation) => getSdkClassMethodAst(operation, context, config))],
   )
 }

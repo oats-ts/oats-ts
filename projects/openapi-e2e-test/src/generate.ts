@@ -89,6 +89,18 @@ export async function generateCode(url: string, codePath: string) {
             'oats/operation': {
               cookies: true,
             },
+            'oats/sdk-type': {
+              cookies: true,
+            },
+            'oats/sdk-impl': {
+              cookies: true,
+            },
+            'oats/request-type': {
+              cookies: true,
+            },
+            'oats/response-type': {
+              cookies: true,
+            },
           },
         }),
       }),

@@ -13,6 +13,6 @@ export function getApiTypeImports(
   const apiPath = pathOf(doc, 'oats/api-type')
   return flatMap(operations, (data) => [
     ...(params ? dependenciesOf(apiPath, data.operation, 'oats/request-server-type') : []),
-    ...dependenciesOf(apiPath, data.operation, 'oats/response-type'),
+    ...dependenciesOf(apiPath, data.operation, 'oats/response-server-type'),
   ])
 }

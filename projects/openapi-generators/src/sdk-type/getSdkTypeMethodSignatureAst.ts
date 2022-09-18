@@ -1,35 +1,23 @@
-import { EnhancedOperation, hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
 import { documentNode } from '@oats-ts/typescript-common'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
+import { getSdkMethodParameterAsts } from '../utils/sdk/getSdkMethodParameterAsts'
 
 export function getSdkTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: SdkGeneratorConfig,
 ): MethodSignature {
-  const { nameOf } = context
-
-  const parameters: ParameterDeclaration[] = hasInput(data, context)
-    ? [
-        factory.createParameterDeclaration(
-          [],
-          [],
-          undefined,
-          'request',
-          undefined,
-          factory.createTypeReferenceNode(nameOf(data.operation, 'oats/request-type')),
-        ),
-      ]
-    : []
+  const parameters: ParameterDeclaration[] = getSdkMethodParameterAsts(data, context, config)
 
   const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-type')),
+    factory.createTypeReferenceNode(context.nameOf(data.operation, 'oats/response-type')),
   ])
 
   const node = factory.createMethodSignature(
     [],
-    nameOf(data.operation, 'oats/operation'),
+    context.nameOf(data.operation, 'oats/operation'),
     undefined,
     [],
     parameters,

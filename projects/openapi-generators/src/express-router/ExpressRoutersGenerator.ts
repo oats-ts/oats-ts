@@ -22,6 +22,8 @@ export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<Express
       'oats/api-type',
       'oats/path-deserializer',
       'oats/query-deserializer',
+      'oats/cookie-deserializer',
+      'oats/set-cookie-serializer',
       'oats/request-headers-deserializer',
       'oats/response-headers-serializer',
       'oats/request-body-validator',

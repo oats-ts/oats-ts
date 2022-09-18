@@ -27,12 +27,14 @@ export abstract class BaseRequestTypesGenerator<T = {}> extends OperationBasedCo
     operation: EnhancedOperation,
   ): PropertySignature
 
+  protected abstract includeCookie(): boolean
+
   public runtimeDependencies(): RuntimeDependency[] {
     return []
   }
 
   protected shouldGenerate(operation: EnhancedOperation): boolean {
-    return hasInput(operation, this.context)
+    return hasInput(operation, this.context, this.includeCookie())
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {

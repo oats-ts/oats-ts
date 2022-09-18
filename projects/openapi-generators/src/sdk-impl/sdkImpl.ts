@@ -5,10 +5,12 @@ import { SdkImplementationGenerator } from './SdkImplementationGenerator'
 
 function defaultConfig({
   documentation,
+  cookies,
   ...rest
 }: Partial<SdkGeneratorConfig & GeneratorConfig>): SdkGeneratorConfig & Partial<GeneratorConfig> {
   return {
     documentation: documentation ?? true,
+    cookies: cookies ?? false,
     ...rest,
   }
 }

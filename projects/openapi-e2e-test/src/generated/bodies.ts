@@ -506,19 +506,19 @@ export const strArrRequestBodyValidator = {
 export const strRequestBodyValidator = { 'application/json': string(), 'application/yaml': string() } as const
 
 export type BodiesApi = {
-  str(request: StrServerRequest): Promise<StrResponse>
-  num(request: NumServerRequest): Promise<NumResponse>
-  enm(request: EnmServerRequest): Promise<EnmResponse>
-  bool(request: BoolServerRequest): Promise<BoolResponse>
-  primTuple(request: PrimTupleServerRequest): Promise<PrimTupleResponse>
-  optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleResponse>
-  strArr(request: StrArrServerRequest): Promise<StrArrResponse>
-  numArr(request: NumArrServerRequest): Promise<NumArrResponse>
-  enmArr(request: EnmArrServerRequest): Promise<EnmArrResponse>
-  boolArr(request: BoolArrServerRequest): Promise<BoolArrResponse>
-  primObj(request: PrimObjServerRequest): Promise<PrimObjResponse>
-  arrObj(request: ArrObjServerRequest): Promise<ArrObjResponse>
-  nestedObj(request: NestedObjServerRequest): Promise<NestedObjResponse>
+  str(request: StrServerRequest): Promise<StrServerResponse>
+  num(request: NumServerRequest): Promise<NumServerResponse>
+  enm(request: EnmServerRequest): Promise<EnmServerResponse>
+  bool(request: BoolServerRequest): Promise<BoolServerResponse>
+  primTuple(request: PrimTupleServerRequest): Promise<PrimTupleServerResponse>
+  optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleServerResponse>
+  strArr(request: StrArrServerRequest): Promise<StrArrServerResponse>
+  numArr(request: NumArrServerRequest): Promise<NumArrServerResponse>
+  enmArr(request: EnmArrServerRequest): Promise<EnmArrServerResponse>
+  boolArr(request: BoolArrServerRequest): Promise<BoolArrServerResponse>
+  primObj(request: PrimObjServerRequest): Promise<PrimObjServerResponse>
+  arrObj(request: ArrObjServerRequest): Promise<ArrObjServerResponse>
+  nestedObj(request: NestedObjServerRequest): Promise<NestedObjServerResponse>
 }
 
 export const arrObjRouter: Router = Router().post(
@@ -544,6 +544,7 @@ export const arrObjRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -575,6 +576,7 @@ export const boolArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -606,6 +608,7 @@ export const boolRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -637,6 +640,7 @@ export const enmArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -668,6 +672,7 @@ export const enmRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -699,6 +704,7 @@ export const nestedObjRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -730,6 +736,7 @@ export const numArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -761,6 +768,7 @@ export const numRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -792,6 +800,7 @@ export const optPrimTupleRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -823,6 +832,7 @@ export const primObjRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -854,6 +864,7 @@ export const primTupleRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -885,6 +896,7 @@ export const strArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -916,6 +928,7 @@ export const strRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       return adapter.respond(toolkit, rawResponse)
     } catch (error) {

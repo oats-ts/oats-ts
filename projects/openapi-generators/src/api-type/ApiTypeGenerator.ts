@@ -15,7 +15,7 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/request-server-type', 'oats/response-type']
+    return ['oats/request-server-type', 'oats/response-server-type']
   }
 
   public runtimeDependencies(): RuntimeDependency[] {

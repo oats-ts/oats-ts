@@ -19,8 +19,8 @@ export class RequestTypesGenerator extends BaseRequestTypesGenerator<RequestType
     ]
   }
 
-  protected shouldGenerate(operation: EnhancedOperation): boolean {
-    return super.shouldGenerate(operation) || (this.configuration().cookies && operation.cookie.length > 0)
+  protected includeCookie(): boolean {
+    return this.configuration().cookies
   }
 
   protected createRequestProperty(

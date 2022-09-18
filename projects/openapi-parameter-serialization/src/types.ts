@@ -156,7 +156,7 @@ export type SetCookieSerializer<I extends CookieParameterType> = (
   input: Cookies<I>,
   path?: string,
   config?: ValidatorConfig,
-) => Try<string[]>
+) => Try<Cookies<Record<string, string>>>
 
 export type CookieDeserializer<O extends CookieParameterType> = (
   input: string | undefined,
