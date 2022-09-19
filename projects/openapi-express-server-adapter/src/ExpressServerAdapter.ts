@@ -144,11 +144,12 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       }
     }
     if (rawResponse.cookies !== null && rawResponse.cookies !== undefined && !toolkit.response.headersSent) {
-      const cookieNames = Object.keys(rawResponse.cookies)
-      for (let i = 0; i < cookieNames.length; i += 1) {
-        const cookieName = cookieNames[i]
-        const cookie = rawResponse.cookies[cookieName]
-        toolkit.response.header('set-cookie', serializeCookieValue(cookieName, cookie))
+      const cookies = Object.keys(rawResponse.cookies).map((cookieName) =>
+        serializeCookieValue(cookieName, rawResponse.cookies![cookieName]),
+      )
+      if (cookies.length > 0) {
+        // Possibly multiple headers, have to use array parameter to set them all as individual headers
+        toolkit.response.header('set-cookie', cookies)
       }
     }
     if (toolkit.response.writable) {

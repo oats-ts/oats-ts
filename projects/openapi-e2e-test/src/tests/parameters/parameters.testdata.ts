@@ -5,6 +5,7 @@ import {
   CommonOptObjectType,
   CommonOptObjectTypeExpl,
   DeepObjectQueryParameters,
+  FormCookieParametersCookieParameters,
   FormQueryParameters,
   LabelPathParameters,
   MatrixPathParameters,
@@ -203,5 +204,14 @@ export function randomHeaderParameters(): SimpleHeaderParameters {
     'X-ObjExpl-Header': commonExplObject(),
     'X-OptObj-Header': random.optional(optCommonObject),
     'X-OptObjExpl-Header': random.optional(optCommonExplObject),
+  }
+}
+
+export function randomCookieParameters(): FormCookieParametersCookieParameters {
+  return {
+    optStr: random.optional(() => random.string()),
+    optNum: random.optional(() => random.number()),
+    optBool: random.optional(() => random.boolean()),
+    optEnm: random.optional(() => random.arrayElement(enumValues)),
   }
 }

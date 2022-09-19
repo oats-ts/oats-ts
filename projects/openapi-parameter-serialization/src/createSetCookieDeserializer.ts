@@ -34,13 +34,15 @@ export function createSetCookieDeserializer<T extends CookieParameterType>(
                   value,
                 }),
               )
+              break
             }
             default: {
               acc[key] = failure({
-                message: `should occur max once (found ${values.length} times)`,
+                message: `should occur once or 0 times (found ${values.length} times)`,
                 path,
                 severity: 'error',
               })
+              break
             }
           }
           return acc

@@ -23,13 +23,15 @@ export function createCookieDeserializer<T extends CookieParameterType>(root: Co
           case 1: {
             const deserializer = deserializers?.[key]
             acc[key] = deserializer(values[0], key, config.append(path, key), config)
+            break
           }
           default: {
             acc[key] = failure({
-              message: `should occur max once (found ${values.length} times)`,
+              message: `should occur once or 0 times (found ${values.length} times)`,
               path: config.append(path, key),
               severity: 'error',
             })
+            break
           }
         }
         return acc

@@ -1,7 +1,6 @@
 import {
   DeepObjectQueryParametersResponse,
   DeepObjectQueryParametersServerRequest,
-  FormCookieParametersResponse,
   FormCookieParametersServerRequest,
   FormCookieParametersServerResponse,
   FormQueryParametersResponse,
@@ -93,6 +92,24 @@ export class ParametersApiImpl implements ParametersApi {
     return this.respond(input.query)
   }
   async formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse> {
-    throw new Error('TODO')
+    if (isFailure(request.cookies)) {
+      return {
+        mimeType: 'application/json',
+        statusCode: 400,
+        body: request.cookies.issues.map((issue) => ({ message: issue.message })),
+      }
+    }
+    const { data } = request.cookies
+    return {
+      body: data,
+      mimeType: 'application/json',
+      statusCode: 200,
+      cookies: {
+        optBool: { value: data.optBool },
+        optNum: { value: data.optNum, expires: new Date().toUTCString(), sameSite: 'Lax' },
+        optEnm: { value: data.optEnm, sameSite: 'Strict', path: '/foo' },
+        optStr: { value: data.optStr, maxAge: 100, domain: 'http://localhost:8000/foo', httpOnly: true },
+      },
+    }
   }
 }

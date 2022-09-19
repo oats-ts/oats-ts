@@ -87,14 +87,10 @@ export type DeepObjectQueryParameters = {
 }
 
 export type FormCookieParameters = {
-  bool: boolean
-  enm: CommonEnumType
-  num: number
   optBool?: boolean
   optEnm?: CommonEnumType
   optNum?: number
   optStr?: string
-  str: string
 }
 
 export type FormQueryParameters = {
@@ -370,14 +366,10 @@ export const deepObjectQueryParametersTypeValidator = object(
 
 export const formCookieParametersTypeValidator = object(
   shape({
-    bool: boolean(),
-    enm: lazy(() => commonEnumTypeTypeValidator),
-    num: number(),
     optBool: optional(boolean()),
     optEnm: optional(lazy(() => commonEnumTypeTypeValidator)),
     optNum: optional(number()),
     optStr: optional(string()),
-    str: string(),
   }),
 )
 
@@ -708,14 +700,10 @@ export function isFormCookieParameters(input: any): input is FormCookieParameter
   return (
     input !== null &&
     typeof input === 'object' &&
-    typeof input.bool === 'boolean' &&
-    (isCommonEnumType(input.enm) as boolean) &&
-    typeof input.num === 'number' &&
     (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
     (input.optEnm === null || input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
     (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
-    (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
-    typeof input.str === 'string'
+    (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string')
   )
 }
 
@@ -1346,13 +1334,9 @@ export type SimpleResponseHeaderParameters200ResponseHeaderParameters = {
 }
 
 export type FormCookieParametersCookieParameters = {
-  str: string
   optStr?: string
-  num: number
   optNum?: number
-  bool: boolean
   optBool?: boolean
-  enm: CommonEnumType
   optEnm?: CommonEnumType
 }
 
@@ -1414,13 +1398,13 @@ export type FormCookieParametersServerResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: FormCookieParameters
-      cookies: Cookies<FormCookieParametersCookieParameters>
+      cookies?: Cookies<FormCookieParametersCookieParameters>
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
-      cookies: Cookies<FormCookieParametersCookieParameters>
+      cookies?: Cookies<FormCookieParametersCookieParameters>
     }
 
 export type FormQueryParametersServerResponse =
@@ -1527,13 +1511,9 @@ export const simpleResponseHeaderParametersRequestBodyValidator = {
 } as const
 
 export const formCookieParametersCookieDeserializer = createCookieDeserializer<FormCookieParametersCookieParameters>({
-  str: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: true }),
   optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  num: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: true }),
   optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  bool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
   optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  enm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
   optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
     explode: false,
     required: false,
@@ -1541,13 +1521,9 @@ export const formCookieParametersCookieDeserializer = createCookieDeserializer<F
 })
 
 export const formCookieParametersSetCookieSerializer = createSetCookieSerializer<FormCookieParametersCookieParameters>({
-  str: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: true }),
   optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  num: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: true }),
   optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  bool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
   optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  enm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
   optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
     explode: false,
     required: false,
@@ -2522,7 +2498,7 @@ export type DeepObjectQueryParametersRequest = {
 }
 
 export type FormCookieParametersRequest = {
-  cookies: FormCookieParametersCookieParameters
+  cookies?: FormCookieParametersCookieParameters
 }
 
 export type FormQueryParametersRequest = {
@@ -2734,13 +2710,9 @@ export const spaceDelimitedQueryParametersResponseBodyValidator = {
 } as const
 
 export const formCookieParametersCookieSerializer = createCookieSerializer<FormCookieParametersCookieParameters>({
-  str: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: true }),
   optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  num: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: true }),
   optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  bool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
   optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  enm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
   optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
     explode: false,
     required: false,
@@ -2749,16 +2721,9 @@ export const formCookieParametersCookieSerializer = createCookieSerializer<FormC
 
 export const formCookieParametersSetCookieDeserializer =
   createSetCookieDeserializer<FormCookieParametersCookieParameters>({
-    str: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: true }),
     optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-    num: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: true }),
     optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-    bool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
     optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-    enm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: true,
-    }),
     optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
       explode: false,
       required: false,

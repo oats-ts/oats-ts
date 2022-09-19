@@ -120,11 +120,12 @@ export class FetchClientAdapter implements ClientAdapter {
     cookie?: string,
     serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders = {
+    const baseHeaders = {
       ...(typeof mimeType === 'string' ? { 'content-type': mimeType } : {}),
+      ...(cookie === null || cookie === undefined ? {} : { cookie }),
     }
     if (serializer === undefined || serializer === null || input === undefined || input === null) {
-      return mimeTypeHeaders
+      return baseHeaders
     }
     const headers = serializer(input)
     if (isFailure(headers)) {
@@ -132,8 +133,7 @@ export class FetchClientAdapter implements ClientAdapter {
     }
     return {
       ...headers.data,
-      ...mimeTypeHeaders,
-      ...(cookie === null || cookie === undefined ? {} : { cookie }),
+      ...baseHeaders,
     }
   }
   async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {
