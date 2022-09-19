@@ -54,17 +54,18 @@ export abstract class BaseRequestTypesGenerator<T = {}> extends OperationBasedCo
       : []
   }
 
-  protected getImports(path: string, data: EnhancedOperation) {
+  protected getImports(path: string, data: EnhancedOperation): ImportDeclaration[] {
     const bodies = values(getRequestBodyContent(data, this.context))
       .map(({ schema }) => schema)
       .filter(negate(isNil))
-
+    const cookies = this.includeCookie() && data.cookie.length > 0
     const { operation } = data
     return [
       ...flatMap(bodies, (schema) => this.context.dependenciesOf(path, schema, 'oats/type')),
       ...this.context.dependenciesOf(path, operation, 'oats/path-type'),
       ...this.context.dependenciesOf(path, operation, 'oats/query-type'),
       ...this.context.dependenciesOf(path, operation, 'oats/request-headers-type'),
+      ...(cookies ? this.context.dependenciesOf(path, operation, 'oats/cookies-type') : []),
     ]
   }
 

@@ -37,6 +37,8 @@ export function getExpressRouterImports(
     ...dependenciesOf(path, operation.operation, 'oats/request-body-validator'),
     ...dependenciesOf(path, operation.operation, 'oats/request-server-type'),
     ...dependenciesOf(path, operation.operation, 'oats/response-headers-serializer'),
+    ...dependenciesOf(path, operation.operation, 'oats/cookie-deserializer'),
+    ...dependenciesOf(path, operation.operation, 'oats/set-cookie-serializer'),
     ...bodyTypesImports,
   ]
 }

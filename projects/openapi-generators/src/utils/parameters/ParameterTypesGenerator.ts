@@ -44,16 +44,15 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
   }
 
   protected async generateItem(data: T): Promise<Try<SourceFile>> {
-    const ehOperation = this.getEnhancedOperation(data)
     const parameters = this.getParameterObjects(data)
-    const { operation } = ehOperation
+    const nameable = this.getNameable(data)
 
-    const path = this.context.pathOf(operation, this.name())
+    const path = this.context.pathOf(nameable, this.name())
 
     const ast = factory.createTypeAliasDeclaration(
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      this.context.nameOf(this.getNameable(data), this.name()),
+      this.context.nameOf(nameable, this.name()),
       undefined,
       this.getTypeLiteral(parameters),
     )

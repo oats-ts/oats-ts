@@ -60,6 +60,12 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           ...(this.configuration().validate
             ? this.context.dependenciesOf(path, item.operation, 'oats/response-body-validator')
             : []),
+          ...(this.configuration().cookies
+            ? [
+                ...this.context.dependenciesOf(path, item.operation, 'oats/cookie-serializer'),
+                ...this.context.dependenciesOf(path, item.operation, 'oats/set-cookie-deserializer'),
+              ]
+            : []),
         ],
         [getOperationFunctionAst(item, this.context, this.configuration())],
       ),

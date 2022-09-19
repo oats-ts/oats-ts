@@ -31,7 +31,7 @@ type ExternalFile = {
   fileName: string
 }
 
-const externals: ExternalFile[] = [
+export const externals: ExternalFile[] = [
   {
     url: 'https://api.apis.guru/v2/specs/1password.com/events/1.0.0/openapi.json',
     fileName: '1password.json',
