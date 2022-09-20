@@ -40,6 +40,11 @@ export type PresetGeneratorConfiguration = {
   [K in OpenAPIGeneratorTarget]?: K extends keyof GeneratorConfigs ? Config<GeneratorConfigs[K]> : Config
 }
 
-export type PresetConfiguration = Partial<GeneratorConfig> & {
+export type BasePresetConfiguration = Partial<GeneratorConfig> & {
   overrides?: PresetGeneratorConfiguration
 }
+
+export type ConfigProducer<T> = (
+  defaultConfig: PresetGeneratorConfiguration,
+  config?: T,
+) => PresetGeneratorConfiguration

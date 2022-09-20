@@ -1,18 +1,21 @@
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { factory, MethodSignature, ParameterDeclaration } from 'typescript'
+import { factory, MethodSignature, ParameterDeclaration, TypeReferenceNode } from 'typescript'
 import { documentNode } from '@oats-ts/typescript-common'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { getSdkMethodParameterAsts } from '../utils/sdk/getSdkMethodParameterAsts'
+import { isNil } from 'lodash'
 
 export function getSdkTypeMethodSignatureAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: SdkGeneratorConfig,
 ): MethodSignature {
-  const parameters: ParameterDeclaration[] = getSdkMethodParameterAsts(data, context, config)
+  const parameters: ParameterDeclaration[] = getSdkMethodParameterAsts(data, context)
 
-  const returnType = factory.createTypeReferenceNode('Promise', [
-    factory.createTypeReferenceNode(context.nameOf(data.operation, 'oats/response-type')),
+  const responseType = context.referenceOf<TypeReferenceNode>(data.operation, 'oats/response-type')
+
+  const returnPromiseType = factory.createTypeReferenceNode('Promise', [
+    isNil(responseType) ? factory.createTypeReferenceNode('void') : responseType,
   ])
 
   const node = factory.createMethodSignature(
@@ -21,7 +24,7 @@ export function getSdkTypeMethodSignatureAst(
     undefined,
     [],
     parameters,
-    returnType,
+    returnPromiseType,
   )
 
   return config.documentation ? documentNode(node, data.operation) : node

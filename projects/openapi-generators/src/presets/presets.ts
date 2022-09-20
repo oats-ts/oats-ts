@@ -1,5 +1,6 @@
+import { merge } from 'lodash'
 import { createPreset } from './createPreset'
-import { PresetGeneratorConfiguration } from './types'
+import { BasePresetConfiguration, PresetGeneratorConfiguration } from './types'
 
 export const commonConfig: PresetGeneratorConfiguration = {
   'oats/type': true,
@@ -44,21 +45,77 @@ export const clientOnlyConfig: PresetGeneratorConfiguration = {
   'oats/sdk-impl': true,
 }
 
-const server = createPreset('server', {
-  ...commonConfig,
-  ...serverOnlyConfig,
-})
+export type ServerPresetConfiguration = BasePresetConfiguration
 
-const client = createPreset('client', {
-  ...commonConfig,
-  ...clientOnlyConfig,
-})
+const server = createPreset<Partial<ServerPresetConfiguration>>(
+  'server',
+  {
+    ...commonConfig,
+    ...serverOnlyConfig,
+  },
+  (base, config) => merge(base, config?.overrides ?? {}),
+)
 
-const fullStack = createPreset('full-stack', {
-  ...commonConfig,
-  ...serverOnlyConfig,
-  ...clientOnlyConfig,
-})
+export type ClientPresetConfiguration = BasePresetConfiguration & {
+  sendCookieHeader?: boolean
+  parseSetCookieHeaders?: boolean
+}
+
+const client = createPreset<ClientPresetConfiguration>(
+  'client',
+  {
+    ...commonConfig,
+    ...clientOnlyConfig,
+  },
+  (base, config) =>
+    merge(
+      base,
+      {
+        'oats/operation': {
+          sendCookieHeader: config?.sendCookieHeader,
+          parseSetCookieHeaders: config?.parseSetCookieHeaders,
+        },
+        'oats/request-type': {
+          cookies: Boolean(config?.sendCookieHeader),
+        },
+        'oats/response-type': {
+          cookies: Boolean(config?.parseSetCookieHeaders),
+        },
+      },
+      config?.overrides ?? {},
+    ),
+)
+
+export type FullStackPresetConfiguration = BasePresetConfiguration & {
+  sendCookieHeader?: boolean
+  parseSetCookieHeaders?: boolean
+}
+
+const fullStack = createPreset<FullStackPresetConfiguration>(
+  'full-stack',
+  {
+    ...commonConfig,
+    ...clientOnlyConfig,
+    ...serverOnlyConfig,
+  },
+  (base, config) =>
+    merge(
+      base,
+      {
+        'oats/operation': {
+          sendCookieHeader: config?.sendCookieHeader,
+          parseSetCookieHeaders: config?.parseSetCookieHeaders,
+        },
+        'oats/request-type': {
+          cookies: Boolean(config?.sendCookieHeader),
+        },
+        'oats/response-type': {
+          cookies: Boolean(config?.parseSetCookieHeaders),
+        },
+      },
+      config?.overrides ?? {},
+    ),
+)
 
 export const presets = {
   client,

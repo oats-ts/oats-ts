@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid'
 import { CodeGenerator, GeneratorConfig, GeneratorInit, RuntimeDependency, StructuredGeneratorResult } from './typings'
 import { GeneratorEventEmitter } from './events'
 import { isSuccess, Try } from '@oats-ts/try'
+import { isNil } from 'lodash'
 
 const emptyConfig: Partial<GeneratorConfig> = {
   noEmit: false,
@@ -52,8 +53,8 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
     if (isSuccess(this.dependencies)) {
       for (const dep of this.dependencies.data) {
         const resolved = dep.resolve(name)
-        if (resolved) {
-          return dep
+        if (!isNil(resolved)) {
+          return resolved
         }
       }
     }

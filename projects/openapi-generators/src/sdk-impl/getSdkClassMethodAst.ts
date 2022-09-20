@@ -1,9 +1,10 @@
-import { factory, MethodDeclaration, SyntaxKind } from 'typescript'
-import { hasInput, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { factory, MethodDeclaration, SyntaxKind, TypeReferenceNode } from 'typescript'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getSdkMethodParameterAsts } from '../utils/sdk/getSdkMethodParameterAsts'
 import { Names } from './Names'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
+import { isNil } from 'lodash'
 
 export function getSdkClassMethodAst(
   data: EnhancedOperation,
@@ -12,12 +13,15 @@ export function getSdkClassMethodAst(
 ): MethodDeclaration {
   const { nameOf } = context
 
+  const parameters = getSdkMethodParameterAsts(data, context)
+  const responseType = context.referenceOf<TypeReferenceNode>(data.operation, 'oats/response-type')
+
   const returnStatement = factory.createReturnStatement(
     factory.createCallExpression(
       factory.createIdentifier(nameOf(data.operation, 'oats/operation')),
       [],
       [
-        ...(hasInput(data, context, config.cookies) ? [factory.createIdentifier('request')] : []),
+        ...(parameters.length === 1 ? [factory.createIdentifier('request')] : []),
         factory.createPropertyAccessExpression(factory.createIdentifier('this'), Names.adapter),
       ],
     ),
@@ -30,9 +34,9 @@ export function getSdkClassMethodAst(
     nameOf(data.operation, 'oats/operation'),
     undefined,
     [],
-    getSdkMethodParameterAsts(data, context, config),
+    parameters,
     factory.createTypeReferenceNode('Promise', [
-      factory.createTypeReferenceNode(nameOf(data.operation, 'oats/response-type')),
+      isNil(responseType) ? factory.createTypeReferenceNode('void') : responseType,
     ]),
     factory.createBlock([returnStatement]),
   )

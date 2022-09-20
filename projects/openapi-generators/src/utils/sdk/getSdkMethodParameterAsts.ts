@@ -1,26 +1,14 @@
-import { factory, ParameterDeclaration } from 'typescript'
-import { hasInput } from '@oats-ts/openapi-common'
+import { factory, ParameterDeclaration, TypeReferenceNode } from 'typescript'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { SdkGeneratorConfig } from './typings'
+import { isNil } from 'lodash'
 
 export function getSdkMethodParameterAsts(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
-  config: SdkGeneratorConfig,
 ): ParameterDeclaration[] {
-  const { nameOf } = context
-
-  return hasInput(data, context, config.cookies)
-    ? [
-        factory.createParameterDeclaration(
-          [],
-          [],
-          undefined,
-          'request',
-          undefined,
-          factory.createTypeReferenceNode(nameOf(data.operation, 'oats/request-type')),
-        ),
-      ]
-    : []
+  const requestType = context.referenceOf<TypeReferenceNode>(data.operation, 'oats/request-type')
+  return isNil(requestType)
+    ? []
+    : [factory.createParameterDeclaration([], [], undefined, 'request', undefined, requestType)]
 }

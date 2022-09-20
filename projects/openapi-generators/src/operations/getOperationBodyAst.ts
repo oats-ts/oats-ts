@@ -16,7 +16,8 @@ export function getOperationBodyAst(
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ) {
-  const hasCookies = data.cookie.length > 0 && config.cookies
+  const hasRequestCookies = data.cookie.length > 0 && config.sendCookieHeader
+  const hasResponseCookies = data.cookie.length > 0 && config.parseSetCookieHeaders
   const hasPath = data.path.length > 0
   const hasQuery = data.query.length > 0
   const hasReqBody = hasRequestBody(data, context)
@@ -110,7 +111,7 @@ export function getOperationBodyAst(
       NodeFlags.Const,
     ),
   )
-  const cookies = hasCookies
+  const cookies = hasRequestCookies
     ? factory.createVariableStatement(
         undefined,
         factory.createVariableDeclarationList(
@@ -169,7 +170,7 @@ export function getOperationBodyAst(
                       factory.createIdentifier(OperationNames.mimeType),
                     )
                   : factory.createIdentifier('undefined'),
-                !isNil(cookies) && config.cookies
+                !isNil(cookies) && config.sendCookieHeader
                   ? factory.createIdentifier(OperationNames.cookies)
                   : factory.createIdentifier('undefined'),
                 data.header.length > 0
@@ -354,7 +355,7 @@ export function getOperationBodyAst(
     ),
   )
 
-  const responseCookies = hasCookies
+  const responseCookies = hasResponseCookies
     ? factory.createVariableStatement(
         undefined,
         factory.createVariableDeclarationList(
@@ -432,7 +433,7 @@ export function getOperationBodyAst(
             factory.createIdentifier(OperationNames.body),
             factory.createIdentifier(OperationNames.responseBody),
           ),
-          ...(hasCookies
+          ...(hasResponseCookies
             ? [
                 factory.createPropertyAssignment(
                   factory.createIdentifier(OperationNames.cookies),

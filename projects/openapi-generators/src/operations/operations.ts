@@ -6,13 +6,15 @@ import { GeneratorConfig } from '@oats-ts/oats-ts'
 function defaultConfig({
   documentation,
   validate,
-  cookies,
+  sendCookieHeader,
+  parseSetCookieHeaders,
   ...rest
 }: Partial<OperationsGeneratorConfig & GeneratorConfig>): OperationsGeneratorConfig & Partial<GeneratorConfig> {
   return {
     documentation: documentation ?? true,
     validate: validate ?? true,
-    cookies: cookies ?? false,
+    sendCookieHeader: sendCookieHeader ?? false,
+    parseSetCookieHeaders: parseSetCookieHeaders ?? false,
     ...rest,
   }
 }
