@@ -49,44 +49,6 @@ export type ReferenceTarget = {
   referenceTarget?: true
 }
 
-export const objectWithNestedTypeFieldsTypeTypeValidator = object(
-  shape({
-    arrayField: array(items(string())),
-    enumField: union({
-      A: literal('A'),
-      B: literal('B'),
-      C: literal('C'),
-    }),
-    objectField: object(shape({ nestedField: optional(string()) })),
-    tupleField: array(tuple(optional(string()), optional(number()))),
-  }),
-)
-
-export const objectWithOptionalPrimitiveFieldsTypeTypeValidator = object(
-  shape({
-    booleanField: optional(boolean()),
-    numberField: optional(number()),
-    stringField: optional(string()),
-  }),
-)
-
-export const objectWithPrimitiveFieldsTypeTypeValidator = object(
-  shape({
-    booleanField: boolean(),
-    numberField: number(),
-    stringField: string(),
-  }),
-)
-
-export const objectWithReferenceFieldsTypeTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
-    referenceField: lazy(() => referenceTargetTypeValidator),
-  }),
-)
-
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
 export function isObjectWithNestedTypeFieldsType(input: any): input is ObjectWithNestedTypeFieldsType {
   return (
     input !== null &&
@@ -142,3 +104,41 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
     (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }
+
+export const objectWithNestedTypeFieldsTypeTypeValidator = object(
+  shape({
+    arrayField: array(items(string())),
+    enumField: union({
+      A: literal('A'),
+      B: literal('B'),
+      C: literal('C'),
+    }),
+    objectField: object(shape({ nestedField: optional(string()) })),
+    tupleField: array(tuple(optional(string()), optional(number()))),
+  }),
+)
+
+export const objectWithOptionalPrimitiveFieldsTypeTypeValidator = object(
+  shape({
+    booleanField: optional(boolean()),
+    numberField: optional(number()),
+    stringField: optional(string()),
+  }),
+)
+
+export const objectWithPrimitiveFieldsTypeTypeValidator = object(
+  shape({
+    booleanField: boolean(),
+    numberField: number(),
+    stringField: string(),
+  }),
+)
+
+export const objectWithReferenceFieldsTypeTypeValidator = object(
+  shape({
+    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
+    referenceField: lazy(() => referenceTargetTypeValidator),
+  }),
+)
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))

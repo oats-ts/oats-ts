@@ -39,25 +39,6 @@ export type ReferenceTarget = {
 
 export type StringRecordType = Record<string, string>
 
-export const arrayRecordTypeTypeValidator = object(record(string(), array(items(string()))))
-
-export const booleanRecordTypeTypeValidator = object(record(string(), boolean()))
-
-export const numberRecordTypeTypeValidator = object(record(string(), number()))
-
-export const objectRecordTypeTypeValidator = object(record(string(), object(shape({ foo: string() }))))
-
-export const refRecordTypeTypeValidator = object(
-  record(
-    string(),
-    lazy(() => referenceTargetTypeValidator),
-  ),
-)
-
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
-export const stringRecordTypeTypeValidator = object(record(string(), string()))
-
 export function isArrayRecordType(input: any): input is ArrayRecordType {
   return (
     input !== null &&
@@ -111,3 +92,22 @@ export function isStringRecordType(input: any): input is StringRecordType {
     input !== null && typeof input === 'object' && Object.keys(input).every((key) => typeof input[key] === 'string')
   )
 }
+
+export const arrayRecordTypeTypeValidator = object(record(string(), array(items(string()))))
+
+export const booleanRecordTypeTypeValidator = object(record(string(), boolean()))
+
+export const numberRecordTypeTypeValidator = object(record(string(), number()))
+
+export const objectRecordTypeTypeValidator = object(record(string(), object(shape({ foo: string() }))))
+
+export const refRecordTypeTypeValidator = object(
+  record(
+    string(),
+    lazy(() => referenceTargetTypeValidator),
+  ),
+)
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+
+export const stringRecordTypeTypeValidator = object(record(string(), string()))

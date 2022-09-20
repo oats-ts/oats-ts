@@ -35,6 +35,37 @@ export type PrimitiveUnionType = string | number | boolean
 
 export type TopLevelUnionType = LeafType1 | MidLevelUnionType
 
+export function isInlineObjectUnionType(input: any): input is InlineObjectUnionType {
+  return (
+    (input !== null && typeof input === 'object' && typeof input.foo === 'string') ||
+    (input !== null && typeof input === 'object' && typeof input.bar === 'number')
+  )
+}
+
+export function isLeafType1(input: any): input is LeafType1 {
+  return input !== null && typeof input === 'object' && typeof input.foo === 'string' && input.type === 'LeafType1'
+}
+
+export function isLeafType2(input: any): input is LeafType2 {
+  return input !== null && typeof input === 'object' && typeof input.bar === 'string' && input.type === 'LeafType2'
+}
+
+export function isLeafType3(input: any): input is LeafType3 {
+  return input !== null && typeof input === 'object' && typeof input.foobar === 'string' && input.type === 'LeafType3'
+}
+
+export function isMidLevelUnionType(input: any): input is MidLevelUnionType {
+  return (isLeafType2(input) as boolean) || (isLeafType3(input) as boolean)
+}
+
+export function isPrimitiveUnionType(input: any): input is PrimitiveUnionType {
+  return typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean'
+}
+
+export function isTopLevelUnionType(input: any): input is TopLevelUnionType {
+  return (isLeafType1(input) as boolean) || (isMidLevelUnionType(input) as boolean)
+}
+
 export const inlineObjectUnionTypeTypeValidator = union({
   object0: object(shape({ foo: string() })),
   object1: object(shape({ bar: number() })),
@@ -76,34 +107,3 @@ export const topLevelUnionTypeTypeValidator = union({
   LeafType1: lazy(() => leafType1TypeValidator),
   MidLevelUnionType: lazy(() => midLevelUnionTypeTypeValidator),
 })
-
-export function isInlineObjectUnionType(input: any): input is InlineObjectUnionType {
-  return (
-    (input !== null && typeof input === 'object' && typeof input.foo === 'string') ||
-    (input !== null && typeof input === 'object' && typeof input.bar === 'number')
-  )
-}
-
-export function isLeafType1(input: any): input is LeafType1 {
-  return input !== null && typeof input === 'object' && typeof input.foo === 'string' && input.type === 'LeafType1'
-}
-
-export function isLeafType2(input: any): input is LeafType2 {
-  return input !== null && typeof input === 'object' && typeof input.bar === 'string' && input.type === 'LeafType2'
-}
-
-export function isLeafType3(input: any): input is LeafType3 {
-  return input !== null && typeof input === 'object' && typeof input.foobar === 'string' && input.type === 'LeafType3'
-}
-
-export function isMidLevelUnionType(input: any): input is MidLevelUnionType {
-  return (isLeafType2(input) as boolean) || (isLeafType3(input) as boolean)
-}
-
-export function isPrimitiveUnionType(input: any): input is PrimitiveUnionType {
-  return typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean'
-}
-
-export function isTopLevelUnionType(input: any): input is TopLevelUnionType {
-  return (isLeafType1(input) as boolean) || (isMidLevelUnionType(input) as boolean)
-}

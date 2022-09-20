@@ -10,8 +10,6 @@ export type ReferenceTarget = {
   referenceTarget?: true
 }
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
 export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
@@ -19,3 +17,5 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
     (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))

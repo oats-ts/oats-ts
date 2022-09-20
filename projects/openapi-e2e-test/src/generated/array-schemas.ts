@@ -24,20 +24,6 @@ export type ReferenceTarget = {
 
 export type StringArrayType = string[]
 
-export const arrayArrayTypeTypeValidator = array(items(array(items(string()))))
-
-export const booleanArrayTypeTypeValidator = array(items(boolean()))
-
-export const numberArrayTypeTypeValidator = array(items(number()))
-
-export const objectArrayTypeTypeValidator = array(items(object(shape({ foo: string() }))))
-
-export const refArrayTypeTypeValidator = array(items(lazy(() => referenceTargetTypeValidator)))
-
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
-export const stringArrayTypeTypeValidator = array(items(string()))
-
 export function isArrayArrayType(input: any): input is ArrayArrayType {
   return (
     Array.isArray(input) &&
@@ -75,3 +61,17 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
 export function isStringArrayType(input: any): input is StringArrayType {
   return Array.isArray(input) && input.every((item: any) => typeof item === 'string')
 }
+
+export const arrayArrayTypeTypeValidator = array(items(array(items(string()))))
+
+export const booleanArrayTypeTypeValidator = array(items(boolean()))
+
+export const numberArrayTypeTypeValidator = array(items(number()))
+
+export const objectArrayTypeTypeValidator = array(items(object(shape({ foo: string() }))))
+
+export const refArrayTypeTypeValidator = array(items(lazy(() => referenceTargetTypeValidator)))
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+
+export const stringArrayTypeTypeValidator = array(items(string()))

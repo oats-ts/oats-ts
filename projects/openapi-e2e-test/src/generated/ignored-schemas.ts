@@ -11,13 +11,6 @@ export type IgnoredFieldsType = {
   type: 'discriminator-field'
 }
 
-export const ignoredFieldsTypeTypeValidator = object(
-  shape({
-    ignored: array(items(string())),
-    type: literal('discriminator-field'),
-  }),
-)
-
 export function isIgnoredFieldsType(input: any): input is IgnoredFieldsType {
   return (
     input !== null &&
@@ -27,3 +20,10 @@ export function isIgnoredFieldsType(input: any): input is IgnoredFieldsType {
     input.type === 'discriminator-field'
   )
 }
+
+export const ignoredFieldsTypeTypeValidator = object(
+  shape({
+    ignored: array(items(string())),
+    type: literal('discriminator-field'),
+  }),
+)

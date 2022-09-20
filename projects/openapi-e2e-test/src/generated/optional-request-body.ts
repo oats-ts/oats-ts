@@ -10,92 +10,16 @@ import { Try } from '@oats-ts/try'
 import { object, optional, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
-export type OptionalRequestBodyRequest = {
-  mimeType?: 'application/json'
-  body?: {
-    foo?: string
-  }
-}
-
-export type OptionalRequestBodyResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    foo?: string
-  }
-}
-
-export const optionalRequestBodyResponseBodyValidator = {
-  200: { 'application/json': object(shape({ foo: optional(string()) })) },
-} as const
-
-export async function optionalRequestBody(
-  request: OptionalRequestBodyRequest,
-  adapter: ClientAdapter,
-): Promise<OptionalRequestBodyResponse> {
-  const requestUrl = await adapter.getUrl('/optional-request-body', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    optionalRequestBodyResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as OptionalRequestBodyResponse
-}
-
-export type BodiesSdk = {
-  optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse>
-}
-
-export class BodiesSdkImpl implements BodiesSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
-    this.adapter = adapter
-  }
-  public async optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
-    return optionalRequestBody(request, this.adapter)
-  }
-}
-
-export type OptionalRequestBodyServerRequest = {
-  mimeType?: 'application/json'
-  body: Try<
-    | {
-        foo?: string
-      }
-    | undefined
-  >
-}
-
-export type OptionalRequestBodyServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    foo?: string
-  }
-}
-
-export const optionalRequestBodyRequestBodyValidator = {
-  'application/json': optional(object(shape({ foo: optional(string()) }))),
-} as const
-
 export type BodiesApi = {
   optionalRequestBody(request: OptionalRequestBodyServerRequest): Promise<OptionalRequestBodyServerResponse>
+}
+
+export const bodiesCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'POST')
+  response.setHeader('Access-Control-Allow-Headers', 'content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
 }
 
 export const optionalRequestBodyRouter: Router = Router().post(
@@ -130,10 +54,6 @@ export const optionalRequestBodyRouter: Router = Router().post(
   },
 )
 
-export type BodiesRouters = {
-  optionalRequestBodyRouter: Router
-}
-
 export function createBodiesRouter(
   api: BodiesApi,
   adapter: ServerAdapter<ExpressToolkit>,
@@ -146,10 +66,90 @@ export function createBodiesRouter(
   }, routes.optionalRequestBodyRouter ?? optionalRequestBodyRouter)
 }
 
-export const bodiesCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
-  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
-  response.setHeader('Access-Control-Allow-Methods', 'POST')
-  response.setHeader('Access-Control-Allow-Headers', 'content-type')
-  response.setHeader('Access-Control-Expose-Headers', 'content-type')
-  next()
+export type BodiesRouters = {
+  optionalRequestBodyRouter: Router
+}
+
+export async function optionalRequestBody(
+  request: OptionalRequestBodyRequest,
+  adapter: ClientAdapter,
+): Promise<OptionalRequestBodyResponse> {
+  const requestUrl = await adapter.getUrl('/optional-request-body', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    optionalRequestBodyResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as OptionalRequestBodyResponse
+}
+
+export const optionalRequestBodyRequestBodyValidator = {
+  'application/json': optional(object(shape({ foo: optional(string()) }))),
+} as const
+
+export type OptionalRequestBodyServerRequest = {
+  mimeType?: 'application/json'
+  body: Try<
+    | {
+        foo?: string
+      }
+    | undefined
+  >
+}
+
+export type OptionalRequestBodyRequest = {
+  mimeType?: 'application/json'
+  body?: {
+    foo?: string
+  }
+}
+
+export const optionalRequestBodyResponseBodyValidator = {
+  200: { 'application/json': object(shape({ foo: optional(string()) })) },
+} as const
+
+export type OptionalRequestBodyServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    foo?: string
+  }
+}
+
+export type OptionalRequestBodyResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    foo?: string
+  }
+}
+
+export class BodiesSdkImpl implements BodiesSdk {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  public async optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
+    return optionalRequestBody(request, this.adapter)
+  }
+}
+
+export type BodiesSdk = {
+  optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse>
 }

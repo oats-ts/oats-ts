@@ -25,6 +25,7 @@ export function collectExternalReferenceImports(
   const { dereference, nameOf, uriOf } = context
   const schema = dereference(data)
   if (!isNil(nameOf(schema))) {
+    names.add(RuntimePackages.Validators.lazy)
     refs.add(uriOf(schema))
   } else {
     collectImports(schema, config, context, names, refs)
@@ -224,7 +225,6 @@ export function getValidatorImports(
   config: ValidatorsGeneratorConfig,
   collector: ImportCollector = collectImports,
 ): ImportDeclaration[] {
-  const { dereference } = context
   const nameSet = new Set<string>()
   const refSet = new Set<string>()
   collector(schema, config, context, nameSet, refSet)
@@ -242,7 +242,7 @@ export function getValidatorImports(
     ...getModelImports<JsonSchemaGeneratorTarget>(
       fromPath,
       'oats/type-validator',
-      refs.map((ref) => dereference<SchemaObject>(ref)),
+      refs.map((ref) => context.dereference<SchemaObject>(ref)),
       context,
     ),
   ]

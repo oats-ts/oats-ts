@@ -19,7 +19,8 @@ export const createPreset =
     }
     const fullConfig = produceConfig(defaultConfig, config)
     const generators: OpenAPIGenerator[] = []
-    for (const [target, generatorConfig] of entries(fullConfig)) {
+    const targetsWithConfigs = entries(fullConfig).sort(([t1], [t2]) => t1.localeCompare(t2))
+    for (const [target, generatorConfig] of targetsWithConfigs) {
       if (generatorConfig !== false && !isNil(generatorConfig)) {
         const factory = generatorFactoryMap[target as OpenAPIGeneratorTarget]
         if (isNil(factory)) {

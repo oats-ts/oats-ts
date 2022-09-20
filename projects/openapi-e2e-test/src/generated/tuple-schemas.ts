@@ -37,23 +37,6 @@ export type TupleType = [
   ReferenceTarget,
 ]
 
-export const mixedTupleTypeTypeValidator = array(tuple(string(), optional(number()), optional(boolean())))
-
-export const optionalTupleTypeTypeValidator = array(tuple(optional(string()), optional(number()), optional(boolean())))
-
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
-export const tupleTypeTypeValidator = array(
-  tuple(
-    string(),
-    number(),
-    boolean(),
-    array(items(string())),
-    object(shape({ foo: optional(string()) })),
-    lazy(() => referenceTargetTypeValidator),
-  ),
-)
-
 export function isMixedTupleType(input: any): input is MixedTupleType {
   return (
     Array.isArray(input) &&
@@ -94,3 +77,20 @@ export function isTupleType(input: any): input is TupleType {
     (isReferenceTarget(input[5]) as boolean)
   )
 }
+
+export const mixedTupleTypeTypeValidator = array(tuple(string(), optional(number()), optional(boolean())))
+
+export const optionalTupleTypeTypeValidator = array(tuple(optional(string()), optional(number()), optional(boolean())))
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+
+export const tupleTypeTypeValidator = array(
+  tuple(
+    string(),
+    number(),
+    boolean(),
+    array(items(string())),
+    object(shape({ foo: optional(string()) })),
+    lazy(() => referenceTargetTypeValidator),
+  ),
+)

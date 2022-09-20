@@ -15,15 +15,6 @@ export type TypeWithRemoteRefField = {
   referenceField: ReferenceTarget
 }
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
-export const typeWithRemoteRefFieldTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
-    referenceField: lazy(() => referenceTargetTypeValidator),
-  }),
-)
-
 export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
@@ -41,3 +32,12 @@ export function isTypeWithRemoteRefField(input: any): input is TypeWithRemoteRef
     (isReferenceTarget(input.referenceField) as boolean)
   )
 }
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+
+export const typeWithRemoteRefFieldTypeValidator = object(
+  shape({
+    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
+    referenceField: lazy(() => referenceTargetTypeValidator),
+  }),
+)

@@ -49,49 +49,6 @@ export type SimpleObjectLiteralType = {
 
 export type StringLiteralType = "I'm a constant string"
 
-export const arrayLiteralTypeTypeValidator = array(
-  tuple(
-    literal('string value'),
-    literal(42),
-    literal(false),
-    literal(null),
-    object(shape({ key: literal(10) })),
-    array(tuple(literal(3), literal(false), literal('hello'))),
-  ),
-)
-
-export const booleanLiteralTypeTypeValidator = literal(true)
-
-export const nestedObjectLiteralTypeTypeValidator = object(
-  shape({
-    obj: object(
-      shape({ I: object(shape({ am: object(shape({ deeply: object(shape({ nested: literal(true) })) })) })) }),
-    ),
-  }),
-)
-
-export const nullLiteralTypeTypeValidator = literal(null)
-
-export const numberLiteralTypeTypeValidator = literal(125)
-
-export const quotedKeysObjectLiteralTypeTypeValidator = object(
-  shape({
-    'has-dashes': literal(true),
-    'has space': literal(true),
-    'has .`/!+^ chars': literal(true),
-  }),
-)
-
-export const simpleObjectLiteralTypeTypeValidator = object(
-  shape({
-    s: literal("I'm a string"),
-    n: literal(10),
-    b: literal(true),
-  }),
-)
-
-export const stringLiteralTypeTypeValidator = literal("I'm a constant string")
-
 export function isArrayLiteralType(input: any): input is ArrayLiteralType {
   return (
     Array.isArray(input) &&
@@ -160,3 +117,46 @@ export function isSimpleObjectLiteralType(input: any): input is SimpleObjectLite
 export function isStringLiteralType(input: any): input is StringLiteralType {
   return input === "I'm a constant string"
 }
+
+export const arrayLiteralTypeTypeValidator = array(
+  tuple(
+    literal('string value'),
+    literal(42),
+    literal(false),
+    literal(null),
+    object(shape({ key: literal(10) })),
+    array(tuple(literal(3), literal(false), literal('hello'))),
+  ),
+)
+
+export const booleanLiteralTypeTypeValidator = literal(true)
+
+export const nestedObjectLiteralTypeTypeValidator = object(
+  shape({
+    obj: object(
+      shape({ I: object(shape({ am: object(shape({ deeply: object(shape({ nested: literal(true) })) })) })) }),
+    ),
+  }),
+)
+
+export const nullLiteralTypeTypeValidator = literal(null)
+
+export const numberLiteralTypeTypeValidator = literal(125)
+
+export const quotedKeysObjectLiteralTypeTypeValidator = object(
+  shape({
+    'has-dashes': literal(true),
+    'has space': literal(true),
+    'has .`/!+^ chars': literal(true),
+  }),
+)
+
+export const simpleObjectLiteralTypeTypeValidator = object(
+  shape({
+    s: literal("I'm a string"),
+    n: literal(10),
+    b: literal(true),
+  }),
+)
+
+export const stringLiteralTypeTypeValidator = literal("I'm a constant string")

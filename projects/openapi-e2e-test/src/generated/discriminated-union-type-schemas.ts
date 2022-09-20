@@ -25,6 +25,26 @@ export type MidLevelUnionType = LeafType2 | LeafType3
 
 export type TopLevelUnionType = LeafType1 | MidLevelUnionType
 
+export function isLeafType1(input: any): input is LeafType1 {
+  return input !== null && typeof input === 'object' && input.type === 'LeafType1' && typeof input.foo === 'string'
+}
+
+export function isLeafType2(input: any): input is LeafType2 {
+  return input !== null && typeof input === 'object' && input.type === 'LeafType2' && typeof input.bar === 'string'
+}
+
+export function isLeafType3(input: any): input is LeafType3 {
+  return input !== null && typeof input === 'object' && input.type === 'LeafType3' && typeof input.foobar === 'string'
+}
+
+export function isMidLevelUnionType(input: any): input is MidLevelUnionType {
+  return isLeafType2(input) || isLeafType3(input)
+}
+
+export function isTopLevelUnionType(input: any): input is TopLevelUnionType {
+  return isLeafType1(input) || isMidLevelUnionType(input)
+}
+
 export const leafType1TypeValidator = object(
   shape({
     type: literal('LeafType1'),
@@ -55,23 +75,3 @@ export const topLevelUnionTypeTypeValidator = union({
   LeafType1: lazy(() => leafType1TypeValidator),
   MidLevelUnionType: lazy(() => midLevelUnionTypeTypeValidator),
 })
-
-export function isLeafType1(input: any): input is LeafType1 {
-  return input !== null && typeof input === 'object' && input.type === 'LeafType1' && typeof input.foo === 'string'
-}
-
-export function isLeafType2(input: any): input is LeafType2 {
-  return input !== null && typeof input === 'object' && input.type === 'LeafType2' && typeof input.bar === 'string'
-}
-
-export function isLeafType3(input: any): input is LeafType3 {
-  return input !== null && typeof input === 'object' && input.type === 'LeafType3' && typeof input.foobar === 'string'
-}
-
-export function isMidLevelUnionType(input: any): input is MidLevelUnionType {
-  return isLeafType2(input) || isLeafType3(input)
-}
-
-export function isTopLevelUnionType(input: any): input is TopLevelUnionType {
-  return isLeafType1(input) || isMidLevelUnionType(input)
-}

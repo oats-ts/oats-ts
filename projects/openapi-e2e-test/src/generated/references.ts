@@ -28,28 +28,6 @@ export type TypeWithRemoteRefField = {
   referenceField: ReferenceTarget
 }
 
-export const inlineRefTargetTypeValidator = object(shape({ foo: optional(string()) }))
-
-export const inlineRefTypeTypeValidator = lazy(() => inlineRefTargetTypeValidator)
-
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
-
-export const remoteRefTypeTypeValidator = lazy(() => typeWithRemoteRefFieldTypeValidator)
-
-export const typeWithRefOfRemoteRefTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => typeWithRemoteRefFieldTypeValidator))),
-    referenceField: lazy(() => typeWithRemoteRefFieldTypeValidator),
-  }),
-)
-
-export const typeWithRemoteRefFieldTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
-    referenceField: lazy(() => referenceTargetTypeValidator),
-  }),
-)
-
 export function isInlineRefTarget(input: any): input is InlineRefTarget {
   return (
     input !== null &&
@@ -93,3 +71,25 @@ export function isTypeWithRemoteRefField(input: any): input is TypeWithRemoteRef
     (isReferenceTarget(input.referenceField) as boolean)
   )
 }
+
+export const inlineRefTargetTypeValidator = object(shape({ foo: optional(string()) }))
+
+export const inlineRefTypeTypeValidator = lazy(() => inlineRefTargetTypeValidator)
+
+export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+
+export const remoteRefTypeTypeValidator = lazy(() => typeWithRemoteRefFieldTypeValidator)
+
+export const typeWithRefOfRemoteRefTypeValidator = object(
+  shape({
+    referenceArrayField: array(items(lazy(() => typeWithRemoteRefFieldTypeValidator))),
+    referenceField: lazy(() => typeWithRemoteRefFieldTypeValidator),
+  }),
+)
+
+export const typeWithRemoteRefFieldTypeValidator = object(
+  shape({
+    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
+    referenceField: lazy(() => referenceTargetTypeValidator),
+  }),
+)

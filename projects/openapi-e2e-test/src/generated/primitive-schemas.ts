@@ -15,12 +15,6 @@ export type NumberType = number
  */
 export type StringType = string
 
-export const booleanTypeTypeValidator = boolean()
-
-export const numberTypeTypeValidator = number()
-
-export const stringTypeTypeValidator = string()
-
 export function isBooleanType(input: any): input is BooleanType {
   return typeof input === 'boolean'
 }
@@ -32,3 +26,9 @@ export function isNumberType(input: any): input is NumberType {
 export function isStringType(input: any): input is StringType {
   return typeof input === 'string'
 }
+
+export const booleanTypeTypeValidator = boolean()
+
+export const numberTypeTypeValidator = number()
+
+export const stringTypeTypeValidator = string()

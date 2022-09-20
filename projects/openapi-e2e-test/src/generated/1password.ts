@@ -22,6 +22,359 @@ import {
 } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
+export type EventsAPIApi = {
+  /**
+   * Performs introspection of the provided Bearer JWT token
+   */
+  getAuthIntrospect(): Promise<GetAuthIntrospectServerResponse>
+  /**
+   * Retrieves item usages
+   *
+   * This endpoint requires your JSON Web Token to have the *itemusages* feature.
+   */
+  getItemUsages(): Promise<GetItemUsagesServerResponse>
+  /**
+   * Retrieves sign-in attempts
+   *
+   * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
+   */
+  getSignInAttempts(): Promise<GetSignInAttemptsServerResponse>
+}
+
+export const eventsApiCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  response.setHeader('Access-Control-Allow-Headers', 'content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
+}
+
+export const getAuthIntrospectRouter: Router = Router().get(
+  '/api/auth/introspect',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: EventsAPIApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getAuthIntrospect()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const getItemUsagesRouter: Router = Router().post(
+  '/api/v1/itemusages',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: EventsAPIApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getItemUsages()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const getSignInAttemptsRouter: Router = Router().post(
+  '/api/v1/signinattempts',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: EventsAPIApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getSignInAttempts()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export function createEventsAPIRouter(
+  api: EventsAPIApi,
+  adapter: ServerAdapter<ExpressToolkit>,
+  routes: Partial<EventsAPIRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_adapter'] = adapter
+      next()
+    },
+    routes.getAuthIntrospectRouter ?? getAuthIntrospectRouter,
+    routes.getItemUsagesRouter ?? getItemUsagesRouter,
+    routes.getSignInAttemptsRouter ?? getSignInAttemptsRouter,
+  )
+}
+
+export type EventsAPIRouters = {
+  getAuthIntrospectRouter: Router
+  getItemUsagesRouter: Router
+  getSignInAttemptsRouter: Router
+}
+
+/**
+ * Performs introspection of the provided Bearer JWT token
+ */
+export async function getAuthIntrospect(adapter: ClientAdapter): Promise<GetAuthIntrospectResponse> {
+  const requestUrl = await adapter.getUrl('/api/auth/introspect', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    getAuthIntrospectResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as GetAuthIntrospectResponse
+}
+
+/**
+ * Retrieves item usages
+ *
+ * This endpoint requires your JSON Web Token to have the *itemusages* feature.
+ */
+export async function getItemUsages(adapter: ClientAdapter): Promise<GetItemUsagesResponse> {
+  const requestUrl = await adapter.getUrl('/api/v1/itemusages', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    getItemUsagesResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as GetItemUsagesResponse
+}
+
+/**
+ * Retrieves sign-in attempts
+ *
+ * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
+ */
+export async function getSignInAttempts(adapter: ClientAdapter): Promise<GetSignInAttemptsResponse> {
+  const requestUrl = await adapter.getUrl('/api/v1/signinattempts', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    getSignInAttemptsResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as GetSignInAttemptsResponse
+}
+
+export const getAuthIntrospectResponseBodyValidator = {
+  200: { 'application/json': lazy(() => introspectionTypeValidator) },
+  401: { 'application/json': lazy(() => errorTypeValidator) },
+  default: { 'application/json': lazy(() => errorTypeValidator) },
+} as const
+
+export const getItemUsagesResponseBodyValidator = {
+  200: { 'application/json': lazy(() => itemUsageItemsTypeValidator) },
+  401: { 'application/json': lazy(() => errorTypeValidator) },
+  default: { 'application/json': lazy(() => errorTypeValidator) },
+} as const
+
+export const getSignInAttemptsResponseBodyValidator = {
+  200: { 'application/json': lazy(() => signInAttemptItemsTypeValidator) },
+  401: { 'application/json': lazy(() => errorTypeValidator) },
+  default: { 'application/json': lazy(() => errorTypeValidator) },
+} as const
+
+export type GetAuthIntrospectServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Introspection
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetItemUsagesServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ItemUsageItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetSignInAttemptsServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SignInAttemptItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetAuthIntrospectResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Introspection
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetItemUsagesResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ItemUsageItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetSignInAttemptsResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SignInAttemptItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export class EventsAPISdkImpl implements EventsAPISdk {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  public async getAuthIntrospect(): Promise<GetAuthIntrospectResponse> {
+    return getAuthIntrospect(this.adapter)
+  }
+  public async getItemUsages(): Promise<GetItemUsagesResponse> {
+    return getItemUsages(this.adapter)
+  }
+  public async getSignInAttempts(): Promise<GetSignInAttemptsResponse> {
+    return getSignInAttempts(this.adapter)
+  }
+}
+
+export type EventsAPISdk = {
+  /**
+   * Performs introspection of the provided Bearer JWT token
+   */
+  getAuthIntrospect(): Promise<GetAuthIntrospectResponse>
+  /**
+   * Retrieves item usages
+   *
+   * This endpoint requires your JSON Web Token to have the *itemusages* feature.
+   */
+  getItemUsages(): Promise<GetItemUsagesResponse>
+  /**
+   * Retrieves sign-in attempts
+   *
+   * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
+   */
+  getSignInAttempts(): Promise<GetSignInAttemptsResponse>
+}
+
 /**
  * Metadata gathered about the client
  */
@@ -185,132 +538,6 @@ export type User = {
   name?: string
   uuid?: UUID
 }
-
-export const clientTypeValidator = object(
-  shape({
-    app_name: optional(string()),
-    app_version: optional(string()),
-    ip_address: optional(string()),
-    os_name: optional(string()),
-    os_version: optional(string()),
-    platform_name: optional(string()),
-    platform_version: optional(string()),
-  }),
-)
-
-export const cursorCollectionTypeValidator = combine(
-  lazy(() => cursorTypeValidator),
-  object(shape({ has_more: optional(boolean()) })),
-)
-
-export const cursorTypeValidator = object(shape({ cursor: optional(string()) }))
-
-export const dateTimeRfc3339TypeValidator = string()
-
-export const detailsTypeValidator = object(shape({ value: optional(string()) }))
-
-export const errorTypeValidator = object(shape({ Error: optional(object(shape({ Message: optional(string()) }))) }))
-
-export const introspectionTypeValidator = object(
-  shape({
-    Features: optional(array(items(string()))),
-    IssuedAt: optional(lazy(() => dateTimeRfc3339TypeValidator)),
-    UUID: optional(string()),
-  }),
-)
-
-export const itemUsageItemsTypeValidator = combine(
-  object(shape({ items: optional(array(items(lazy(() => itemUsageTypeValidator)))) })),
-  lazy(() => cursorCollectionTypeValidator),
-)
-
-export const itemUsageTypeValidator = object(
-  shape({
-    client: optional(lazy(() => clientTypeValidator)),
-    item_uuid: optional(lazy(() => uuidTypeValidator)),
-    timestamp: optional(lazy(() => dateTimeRfc3339TypeValidator)),
-    used_version: optional(number()),
-    user: optional(lazy(() => userTypeValidator)),
-    uuid: optional(lazy(() => uuidTypeValidator)),
-    vault_uuid: optional(lazy(() => uuidTypeValidator)),
-  }),
-)
-
-export const resetCursorTypeValidator = object(
-  shape({
-    end_time: optional(lazy(() => dateTimeRfc3339TypeValidator)),
-    limit: optional(number()),
-    start_time: optional(lazy(() => dateTimeRfc3339TypeValidator)),
-  }),
-)
-
-export const signInAttemptItemsTypeValidator = combine(
-  object(shape({ items: optional(array(items(lazy(() => signInAttemptTypeValidator)))) })),
-  lazy(() => cursorCollectionTypeValidator),
-)
-
-export const signInAttemptTypeValidator = object(
-  shape({
-    category: optional(
-      union({
-        success: literal('success'),
-        credentials_failed: literal('credentials_failed'),
-        mfa_failed: literal('mfa_failed'),
-        modern_version_failed: literal('modern_version_failed'),
-        firewall_failed: literal('firewall_failed'),
-        firewall_reported_success: literal('firewall_reported_success'),
-      }),
-    ),
-    client: optional(lazy(() => clientTypeValidator)),
-    country: optional(string()),
-    details: optional(lazy(() => detailsTypeValidator)),
-    session_uuid: optional(lazy(() => uuidTypeValidator)),
-    target_user: optional(lazy(() => userTypeValidator)),
-    timestamp: optional(lazy(() => dateTimeRfc3339TypeValidator)),
-    type: optional(
-      union({
-        credentials_ok: literal('credentials_ok'),
-        mfa_ok: literal('mfa_ok'),
-        password_secret_bad: literal('password_secret_bad'),
-        mfa_missing: literal('mfa_missing'),
-        totp_disabled: literal('totp_disabled'),
-        totp_bad: literal('totp_bad'),
-        totp_timeout: literal('totp_timeout'),
-        u2f_disabled: literal('u2f_disabled'),
-        u2f_bad: literal('u2f_bad'),
-        u2f_timout: literal('u2f_timout'),
-        duo_disabled: literal('duo_disabled'),
-        duo_bad: literal('duo_bad'),
-        duo_timeout: literal('duo_timeout'),
-        duo_native_bad: literal('duo_native_bad'),
-        platform_secret_disabled: literal('platform_secret_disabled'),
-        platform_secret_bad: literal('platform_secret_bad'),
-        platform_secret_proxy: literal('platform_secret_proxy'),
-        code_disabled: literal('code_disabled'),
-        code_bad: literal('code_bad'),
-        code_timeout: literal('code_timeout'),
-        ip_blocked: literal('ip_blocked'),
-        continent_blocked: literal('continent_blocked'),
-        country_blocked: literal('country_blocked'),
-        anonymous_blocked: literal('anonymous_blocked'),
-        all_blocked: literal('all_blocked'),
-        modern_version_missing: literal('modern_version_missing'),
-        modern_version_old: literal('modern_version_old'),
-      }),
-    ),
-    uuid: optional(lazy(() => uuidTypeValidator)),
-  }),
-)
-
-export const userTypeValidator = object(
-  shape({
-    email: optional(string()),
-    name: optional(string()),
-    uuid: optional(lazy(() => uuidTypeValidator)),
-  }),
-)
-
-export const uuidTypeValidator = string()
 
 export function isClient(input: any): input is Client {
   return (
@@ -492,355 +719,128 @@ export function isUuid(input: any): input is UUID {
   return typeof input === 'string'
 }
 
-export type GetAuthIntrospectResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: Introspection
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type GetItemUsagesResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: ItemUsageItems
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type GetSignInAttemptsResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: SignInAttemptItems
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export const getAuthIntrospectResponseBodyValidator = {
-  200: { 'application/json': introspectionTypeValidator },
-  401: { 'application/json': errorTypeValidator },
-  default: { 'application/json': errorTypeValidator },
-} as const
-
-export const getItemUsagesResponseBodyValidator = {
-  200: { 'application/json': itemUsageItemsTypeValidator },
-  401: { 'application/json': errorTypeValidator },
-  default: { 'application/json': errorTypeValidator },
-} as const
-
-export const getSignInAttemptsResponseBodyValidator = {
-  200: { 'application/json': signInAttemptItemsTypeValidator },
-  401: { 'application/json': errorTypeValidator },
-  default: { 'application/json': errorTypeValidator },
-} as const
-
-/**
- * Performs introspection of the provided Bearer JWT token
- */
-export async function getAuthIntrospect(adapter: ClientAdapter): Promise<GetAuthIntrospectResponse> {
-  const requestUrl = await adapter.getUrl('/api/auth/introspect', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'get',
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    getAuthIntrospectResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as GetAuthIntrospectResponse
-}
-
-/**
- * Retrieves item usages
- *
- * This endpoint requires your JSON Web Token to have the *itemusages* feature.
- */
-export async function getItemUsages(adapter: ClientAdapter): Promise<GetItemUsagesResponse> {
-  const requestUrl = await adapter.getUrl('/api/v1/itemusages', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    getItemUsagesResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as GetItemUsagesResponse
-}
-
-/**
- * Retrieves sign-in attempts
- *
- * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
- */
-export async function getSignInAttempts(adapter: ClientAdapter): Promise<GetSignInAttemptsResponse> {
-  const requestUrl = await adapter.getUrl('/api/v1/signinattempts', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    getSignInAttemptsResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as GetSignInAttemptsResponse
-}
-
-export type EventsAPISdk = {
-  /**
-   * Performs introspection of the provided Bearer JWT token
-   */
-  getAuthIntrospect(): Promise<GetAuthIntrospectResponse>
-  /**
-   * Retrieves item usages
-   *
-   * This endpoint requires your JSON Web Token to have the *itemusages* feature.
-   */
-  getItemUsages(): Promise<GetItemUsagesResponse>
-  /**
-   * Retrieves sign-in attempts
-   *
-   * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
-   */
-  getSignInAttempts(): Promise<GetSignInAttemptsResponse>
-}
-
-export class EventsAPISdkImpl implements EventsAPISdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
-    this.adapter = adapter
-  }
-  public async getAuthIntrospect(): Promise<GetAuthIntrospectResponse> {
-    return getAuthIntrospect(this.adapter)
-  }
-  public async getItemUsages(): Promise<GetItemUsagesResponse> {
-    return getItemUsages(this.adapter)
-  }
-  public async getSignInAttempts(): Promise<GetSignInAttemptsResponse> {
-    return getSignInAttempts(this.adapter)
-  }
-}
-
-export type GetAuthIntrospectServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: Introspection
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type GetItemUsagesServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: ItemUsageItems
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type GetSignInAttemptsServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: SignInAttemptItems
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type EventsAPIApi = {
-  /**
-   * Performs introspection of the provided Bearer JWT token
-   */
-  getAuthIntrospect(): Promise<GetAuthIntrospectServerResponse>
-  /**
-   * Retrieves item usages
-   *
-   * This endpoint requires your JSON Web Token to have the *itemusages* feature.
-   */
-  getItemUsages(): Promise<GetItemUsagesServerResponse>
-  /**
-   * Retrieves sign-in attempts
-   *
-   * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
-   */
-  getSignInAttempts(): Promise<GetSignInAttemptsServerResponse>
-}
-
-export const getAuthIntrospectRouter: Router = Router().get(
-  '/api/auth/introspect',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: EventsAPIApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getAuthIntrospect()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
+export const clientTypeValidator = object(
+  shape({
+    app_name: optional(string()),
+    app_version: optional(string()),
+    ip_address: optional(string()),
+    os_name: optional(string()),
+    os_version: optional(string()),
+    platform_name: optional(string()),
+    platform_version: optional(string()),
+  }),
 )
 
-export const getItemUsagesRouter: Router = Router().post(
-  '/api/v1/itemusages',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: EventsAPIApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getItemUsages()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
+export const cursorCollectionTypeValidator = combine(
+  lazy(() => cursorTypeValidator),
+  object(shape({ has_more: optional(boolean()) })),
 )
 
-export const getSignInAttemptsRouter: Router = Router().post(
-  '/api/v1/signinattempts',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: EventsAPIApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getSignInAttempts()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
+export const cursorTypeValidator = object(shape({ cursor: optional(string()) }))
+
+export const dateTimeRfc3339TypeValidator = string()
+
+export const detailsTypeValidator = object(shape({ value: optional(string()) }))
+
+export const errorTypeValidator = object(shape({ Error: optional(object(shape({ Message: optional(string()) }))) }))
+
+export const introspectionTypeValidator = object(
+  shape({
+    Features: optional(array(items(string()))),
+    IssuedAt: optional(lazy(() => dateTimeRfc3339TypeValidator)),
+    UUID: optional(string()),
+  }),
 )
 
-export type EventsAPIRouters = {
-  getAuthIntrospectRouter: Router
-  getItemUsagesRouter: Router
-  getSignInAttemptsRouter: Router
-}
+export const itemUsageItemsTypeValidator = combine(
+  object(shape({ items: optional(array(items(lazy(() => itemUsageTypeValidator)))) })),
+  lazy(() => cursorCollectionTypeValidator),
+)
 
-export function createEventsAPIRouter(
-  api: EventsAPIApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<EventsAPIRouters> = {},
-): Router {
-  return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
-    routes.getAuthIntrospectRouter ?? getAuthIntrospectRouter,
-    routes.getItemUsagesRouter ?? getItemUsagesRouter,
-    routes.getSignInAttemptsRouter ?? getSignInAttemptsRouter,
-  )
-}
+export const itemUsageTypeValidator = object(
+  shape({
+    client: optional(lazy(() => clientTypeValidator)),
+    item_uuid: optional(lazy(() => uuidTypeValidator)),
+    timestamp: optional(lazy(() => dateTimeRfc3339TypeValidator)),
+    used_version: optional(number()),
+    user: optional(lazy(() => userTypeValidator)),
+    uuid: optional(lazy(() => uuidTypeValidator)),
+    vault_uuid: optional(lazy(() => uuidTypeValidator)),
+  }),
+)
 
-export const eventsApiCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
-  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
-  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-  response.setHeader('Access-Control-Allow-Headers', 'content-type')
-  response.setHeader('Access-Control-Expose-Headers', 'content-type')
-  next()
-}
+export const resetCursorTypeValidator = object(
+  shape({
+    end_time: optional(lazy(() => dateTimeRfc3339TypeValidator)),
+    limit: optional(number()),
+    start_time: optional(lazy(() => dateTimeRfc3339TypeValidator)),
+  }),
+)
+
+export const signInAttemptItemsTypeValidator = combine(
+  object(shape({ items: optional(array(items(lazy(() => signInAttemptTypeValidator)))) })),
+  lazy(() => cursorCollectionTypeValidator),
+)
+
+export const signInAttemptTypeValidator = object(
+  shape({
+    category: optional(
+      union({
+        success: literal('success'),
+        credentials_failed: literal('credentials_failed'),
+        mfa_failed: literal('mfa_failed'),
+        modern_version_failed: literal('modern_version_failed'),
+        firewall_failed: literal('firewall_failed'),
+        firewall_reported_success: literal('firewall_reported_success'),
+      }),
+    ),
+    client: optional(lazy(() => clientTypeValidator)),
+    country: optional(string()),
+    details: optional(lazy(() => detailsTypeValidator)),
+    session_uuid: optional(lazy(() => uuidTypeValidator)),
+    target_user: optional(lazy(() => userTypeValidator)),
+    timestamp: optional(lazy(() => dateTimeRfc3339TypeValidator)),
+    type: optional(
+      union({
+        credentials_ok: literal('credentials_ok'),
+        mfa_ok: literal('mfa_ok'),
+        password_secret_bad: literal('password_secret_bad'),
+        mfa_missing: literal('mfa_missing'),
+        totp_disabled: literal('totp_disabled'),
+        totp_bad: literal('totp_bad'),
+        totp_timeout: literal('totp_timeout'),
+        u2f_disabled: literal('u2f_disabled'),
+        u2f_bad: literal('u2f_bad'),
+        u2f_timout: literal('u2f_timout'),
+        duo_disabled: literal('duo_disabled'),
+        duo_bad: literal('duo_bad'),
+        duo_timeout: literal('duo_timeout'),
+        duo_native_bad: literal('duo_native_bad'),
+        platform_secret_disabled: literal('platform_secret_disabled'),
+        platform_secret_bad: literal('platform_secret_bad'),
+        platform_secret_proxy: literal('platform_secret_proxy'),
+        code_disabled: literal('code_disabled'),
+        code_bad: literal('code_bad'),
+        code_timeout: literal('code_timeout'),
+        ip_blocked: literal('ip_blocked'),
+        continent_blocked: literal('continent_blocked'),
+        country_blocked: literal('country_blocked'),
+        anonymous_blocked: literal('anonymous_blocked'),
+        all_blocked: literal('all_blocked'),
+        modern_version_missing: literal('modern_version_missing'),
+        modern_version_old: literal('modern_version_old'),
+      }),
+    ),
+    uuid: optional(lazy(() => uuidTypeValidator)),
+  }),
+)
+
+export const userTypeValidator = object(
+  shape({
+    email: optional(string()),
+    name: optional(string()),
+    uuid: optional(lazy(() => uuidTypeValidator)),
+  }),
+)
+
+export const uuidTypeValidator = string()
