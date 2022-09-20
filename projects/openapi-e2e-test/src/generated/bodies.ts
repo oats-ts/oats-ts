@@ -163,6 +163,692 @@ export function isPrimitiveTupleType(input: any): input is PrimitiveTupleType {
   )
 }
 
+export type ArrObjRequest =
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithArrays
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithArrays
+    }
+
+export type BoolArrRequest =
+  | {
+      mimeType: 'application/json'
+      body: boolean[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: boolean[]
+    }
+
+export type BoolRequest =
+  | {
+      mimeType: 'application/json'
+      body: boolean
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: boolean
+    }
+
+export type EnmArrRequest =
+  | {
+      mimeType: 'application/json'
+      body: EnumType[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: EnumType[]
+    }
+
+export type EnmRequest =
+  | {
+      mimeType: 'application/json'
+      body: EnumType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: EnumType
+    }
+
+export type NestedObjRequest =
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithNestedObjects
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithNestedObjects
+    }
+
+export type NumArrRequest =
+  | {
+      mimeType: 'application/json'
+      body: number[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: number[]
+    }
+
+export type NumRequest =
+  | {
+      mimeType: 'application/json'
+      body: number
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: number
+    }
+
+export type OptPrimTupleRequest =
+  | {
+      mimeType: 'application/json'
+      body: PrimitiveOptionalTupleType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: PrimitiveOptionalTupleType
+    }
+
+export type PrimObjRequest =
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithPrimitives
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithPrimitives
+    }
+
+export type PrimTupleRequest =
+  | {
+      mimeType: 'application/json'
+      body: PrimitiveTupleType
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: PrimitiveTupleType
+    }
+
+export type StrArrRequest =
+  | {
+      mimeType: 'application/json'
+      body: string[]
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: string[]
+    }
+
+export type StrRequest =
+  | {
+      mimeType: 'application/json'
+      body: string
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: string
+    }
+
+export type ArrObjResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithArrays
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithArrays
+    }
+
+export type BoolArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: boolean[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: boolean[]
+    }
+
+export type BoolResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: boolean
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: boolean
+    }
+
+export type EnmArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: EnumType[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: EnumType[]
+    }
+
+export type EnmResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: EnumType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: EnumType
+    }
+
+export type NestedObjResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithNestedObjects
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithNestedObjects
+    }
+
+export type NumArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: number[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: number[]
+    }
+
+export type NumResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: number
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: number
+    }
+
+export type OptPrimTupleResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PrimitiveOptionalTupleType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: PrimitiveOptionalTupleType
+    }
+
+export type PrimObjResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithPrimitives
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithPrimitives
+    }
+
+export type PrimTupleResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PrimitiveTupleType
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: PrimitiveTupleType
+    }
+
+export type StrArrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: string[]
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: string[]
+    }
+
+export type StrResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: string
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: string
+    }
+
+export const arrObjResponseBodyValidator = {
+  200: { 'application/json': objectWithArraysTypeValidator, 'application/yaml': objectWithArraysTypeValidator },
+} as const
+
+export const boolArrResponseBodyValidator = {
+  200: { 'application/json': array(items(boolean())), 'application/yaml': array(items(boolean())) },
+} as const
+
+export const boolResponseBodyValidator = {
+  200: { 'application/json': boolean(), 'application/yaml': boolean() },
+} as const
+
+export const enmArrResponseBodyValidator = {
+  200: {
+    'application/json': array(items(lazy(() => enumTypeTypeValidator))),
+    'application/yaml': array(items(lazy(() => enumTypeTypeValidator))),
+  },
+} as const
+
+export const enmResponseBodyValidator = {
+  200: { 'application/json': enumTypeTypeValidator, 'application/yaml': enumTypeTypeValidator },
+} as const
+
+export const nestedObjResponseBodyValidator = {
+  200: {
+    'application/json': objectWithNestedObjectsTypeValidator,
+    'application/yaml': objectWithNestedObjectsTypeValidator,
+  },
+} as const
+
+export const numArrResponseBodyValidator = {
+  200: { 'application/json': array(items(number())), 'application/yaml': array(items(number())) },
+} as const
+
+export const numResponseBodyValidator = { 200: { 'application/json': number(), 'application/yaml': number() } } as const
+
+export const optPrimTupleResponseBodyValidator = {
+  200: {
+    'application/json': primitiveOptionalTupleTypeTypeValidator,
+    'application/yaml': primitiveOptionalTupleTypeTypeValidator,
+  },
+} as const
+
+export const primObjResponseBodyValidator = {
+  200: { 'application/json': objectWithPrimitivesTypeValidator, 'application/yaml': objectWithPrimitivesTypeValidator },
+} as const
+
+export const primTupleResponseBodyValidator = {
+  200: { 'application/json': primitiveTupleTypeTypeValidator, 'application/yaml': primitiveTupleTypeTypeValidator },
+} as const
+
+export const strArrResponseBodyValidator = {
+  200: { 'application/json': array(items(string())), 'application/yaml': array(items(string())) },
+} as const
+
+export const strResponseBodyValidator = { 200: { 'application/json': string(), 'application/yaml': string() } } as const
+
+export async function arrObj(request: ArrObjRequest, adapter: ClientAdapter): Promise<ArrObjResponse> {
+  const requestUrl = await adapter.getUrl('/arr-obj', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, arrObjResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as ArrObjResponse
+}
+
+export async function bool(request: BoolRequest, adapter: ClientAdapter): Promise<BoolResponse> {
+  const requestUrl = await adapter.getUrl('/bool', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as BoolResponse
+}
+
+export async function boolArr(request: BoolArrRequest, adapter: ClientAdapter): Promise<BoolArrResponse> {
+  const requestUrl = await adapter.getUrl('/bool-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolArrResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as BoolArrResponse
+}
+
+export async function enm(request: EnmRequest, adapter: ClientAdapter): Promise<EnmResponse> {
+  const requestUrl = await adapter.getUrl('/enm', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as EnmResponse
+}
+
+export async function enmArr(request: EnmArrRequest, adapter: ClientAdapter): Promise<EnmArrResponse> {
+  const requestUrl = await adapter.getUrl('/enm-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmArrResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as EnmArrResponse
+}
+
+export async function nestedObj(request: NestedObjRequest, adapter: ClientAdapter): Promise<NestedObjResponse> {
+  const requestUrl = await adapter.getUrl('/nested-obj', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, nestedObjResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as NestedObjResponse
+}
+
+export async function num(request: NumRequest, adapter: ClientAdapter): Promise<NumResponse> {
+  const requestUrl = await adapter.getUrl('/num', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as NumResponse
+}
+
+export async function numArr(request: NumArrRequest, adapter: ClientAdapter): Promise<NumArrResponse> {
+  const requestUrl = await adapter.getUrl('/num-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numArrResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as NumArrResponse
+}
+
+export async function optPrimTuple(
+  request: OptPrimTupleRequest,
+  adapter: ClientAdapter,
+): Promise<OptPrimTupleResponse> {
+  const requestUrl = await adapter.getUrl('/opt-prim-tuple', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    optPrimTupleResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as OptPrimTupleResponse
+}
+
+export async function primObj(request: PrimObjRequest, adapter: ClientAdapter): Promise<PrimObjResponse> {
+  const requestUrl = await adapter.getUrl('/prim-obj', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primObjResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as PrimObjResponse
+}
+
+export async function primTuple(request: PrimTupleRequest, adapter: ClientAdapter): Promise<PrimTupleResponse> {
+  const requestUrl = await adapter.getUrl('/prim-tuple', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primTupleResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as PrimTupleResponse
+}
+
+export async function str(request: StrRequest, adapter: ClientAdapter): Promise<StrResponse> {
+  const requestUrl = await adapter.getUrl('/str', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as StrResponse
+}
+
+export async function strArr(request: StrArrRequest, adapter: ClientAdapter): Promise<StrArrResponse> {
+  const requestUrl = await adapter.getUrl('/str-arr', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strArrResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as StrArrResponse
+}
+
+export type BodiesSdk = {
+  str(request: StrRequest): Promise<StrResponse>
+  num(request: NumRequest): Promise<NumResponse>
+  enm(request: EnmRequest): Promise<EnmResponse>
+  bool(request: BoolRequest): Promise<BoolResponse>
+  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
+  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
+  strArr(request: StrArrRequest): Promise<StrArrResponse>
+  numArr(request: NumArrRequest): Promise<NumArrResponse>
+  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
+  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
+  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
+  arrObj(request: ArrObjRequest): Promise<ArrObjResponse>
+  nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
+}
+
+export class BodiesSdkImpl implements BodiesSdk {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  public async str(request: StrRequest): Promise<StrResponse> {
+    return str(request, this.adapter)
+  }
+  public async num(request: NumRequest): Promise<NumResponse> {
+    return num(request, this.adapter)
+  }
+  public async enm(request: EnmRequest): Promise<EnmResponse> {
+    return enm(request, this.adapter)
+  }
+  public async bool(request: BoolRequest): Promise<BoolResponse> {
+    return bool(request, this.adapter)
+  }
+  public async primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse> {
+    return primTuple(request, this.adapter)
+  }
+  public async optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
+    return optPrimTuple(request, this.adapter)
+  }
+  public async strArr(request: StrArrRequest): Promise<StrArrResponse> {
+    return strArr(request, this.adapter)
+  }
+  public async numArr(request: NumArrRequest): Promise<NumArrResponse> {
+    return numArr(request, this.adapter)
+  }
+  public async enmArr(request: EnmArrRequest): Promise<EnmArrResponse> {
+    return enmArr(request, this.adapter)
+  }
+  public async boolArr(request: BoolArrRequest): Promise<BoolArrResponse> {
+    return boolArr(request, this.adapter)
+  }
+  public async primObj(request: PrimObjRequest): Promise<PrimObjResponse> {
+    return primObj(request, this.adapter)
+  }
+  public async arrObj(request: ArrObjRequest): Promise<ArrObjResponse> {
+    return arrObj(request, this.adapter)
+  }
+  public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
+    return nestedObj(request, this.adapter)
+  }
+}
+
 export type ArrObjServerRequest =
   | {
       mimeType: 'application/json'
@@ -986,690 +1672,4 @@ export const bodiesCorsMiddleware: RequestHandler = (request: Request, response:
   response.setHeader('Access-Control-Allow-Headers', 'content-type')
   response.setHeader('Access-Control-Expose-Headers', 'content-type')
   next()
-}
-
-export type ArrObjRequest =
-  | {
-      mimeType: 'application/json'
-      body: ObjectWithArrays
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: ObjectWithArrays
-    }
-
-export type BoolArrRequest =
-  | {
-      mimeType: 'application/json'
-      body: boolean[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: boolean[]
-    }
-
-export type BoolRequest =
-  | {
-      mimeType: 'application/json'
-      body: boolean
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: boolean
-    }
-
-export type EnmArrRequest =
-  | {
-      mimeType: 'application/json'
-      body: EnumType[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: EnumType[]
-    }
-
-export type EnmRequest =
-  | {
-      mimeType: 'application/json'
-      body: EnumType
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: EnumType
-    }
-
-export type NestedObjRequest =
-  | {
-      mimeType: 'application/json'
-      body: ObjectWithNestedObjects
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: ObjectWithNestedObjects
-    }
-
-export type NumArrRequest =
-  | {
-      mimeType: 'application/json'
-      body: number[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: number[]
-    }
-
-export type NumRequest =
-  | {
-      mimeType: 'application/json'
-      body: number
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: number
-    }
-
-export type OptPrimTupleRequest =
-  | {
-      mimeType: 'application/json'
-      body: PrimitiveOptionalTupleType
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: PrimitiveOptionalTupleType
-    }
-
-export type PrimObjRequest =
-  | {
-      mimeType: 'application/json'
-      body: ObjectWithPrimitives
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: ObjectWithPrimitives
-    }
-
-export type PrimTupleRequest =
-  | {
-      mimeType: 'application/json'
-      body: PrimitiveTupleType
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: PrimitiveTupleType
-    }
-
-export type StrArrRequest =
-  | {
-      mimeType: 'application/json'
-      body: string[]
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: string[]
-    }
-
-export type StrRequest =
-  | {
-      mimeType: 'application/json'
-      body: string
-    }
-  | {
-      mimeType: 'application/yaml'
-      body: string
-    }
-
-export type ArrObjResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: ObjectWithArrays
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: ObjectWithArrays
-    }
-
-export type BoolArrResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: boolean[]
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: boolean[]
-    }
-
-export type BoolResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: boolean
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: boolean
-    }
-
-export type EnmArrResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: EnumType[]
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: EnumType[]
-    }
-
-export type EnmResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: EnumType
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: EnumType
-    }
-
-export type NestedObjResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: ObjectWithNestedObjects
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: ObjectWithNestedObjects
-    }
-
-export type NumArrResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: number[]
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: number[]
-    }
-
-export type NumResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: number
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: number
-    }
-
-export type OptPrimTupleResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: PrimitiveOptionalTupleType
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: PrimitiveOptionalTupleType
-    }
-
-export type PrimObjResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: ObjectWithPrimitives
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: ObjectWithPrimitives
-    }
-
-export type PrimTupleResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: PrimitiveTupleType
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: PrimitiveTupleType
-    }
-
-export type StrArrResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: string[]
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: string[]
-    }
-
-export type StrResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: string
-    }
-  | {
-      statusCode: 200
-      mimeType: 'application/yaml'
-      body: string
-    }
-
-export const arrObjResponseBodyValidator = {
-  200: { 'application/json': objectWithArraysTypeValidator, 'application/yaml': objectWithArraysTypeValidator },
-} as const
-
-export const boolArrResponseBodyValidator = {
-  200: { 'application/json': array(items(boolean())), 'application/yaml': array(items(boolean())) },
-} as const
-
-export const boolResponseBodyValidator = {
-  200: { 'application/json': boolean(), 'application/yaml': boolean() },
-} as const
-
-export const enmArrResponseBodyValidator = {
-  200: {
-    'application/json': array(items(lazy(() => enumTypeTypeValidator))),
-    'application/yaml': array(items(lazy(() => enumTypeTypeValidator))),
-  },
-} as const
-
-export const enmResponseBodyValidator = {
-  200: { 'application/json': enumTypeTypeValidator, 'application/yaml': enumTypeTypeValidator },
-} as const
-
-export const nestedObjResponseBodyValidator = {
-  200: {
-    'application/json': objectWithNestedObjectsTypeValidator,
-    'application/yaml': objectWithNestedObjectsTypeValidator,
-  },
-} as const
-
-export const numArrResponseBodyValidator = {
-  200: { 'application/json': array(items(number())), 'application/yaml': array(items(number())) },
-} as const
-
-export const numResponseBodyValidator = { 200: { 'application/json': number(), 'application/yaml': number() } } as const
-
-export const optPrimTupleResponseBodyValidator = {
-  200: {
-    'application/json': primitiveOptionalTupleTypeTypeValidator,
-    'application/yaml': primitiveOptionalTupleTypeTypeValidator,
-  },
-} as const
-
-export const primObjResponseBodyValidator = {
-  200: { 'application/json': objectWithPrimitivesTypeValidator, 'application/yaml': objectWithPrimitivesTypeValidator },
-} as const
-
-export const primTupleResponseBodyValidator = {
-  200: { 'application/json': primitiveTupleTypeTypeValidator, 'application/yaml': primitiveTupleTypeTypeValidator },
-} as const
-
-export const strArrResponseBodyValidator = {
-  200: { 'application/json': array(items(string())), 'application/yaml': array(items(string())) },
-} as const
-
-export const strResponseBodyValidator = { 200: { 'application/json': string(), 'application/yaml': string() } } as const
-
-export async function arrObj(request: ArrObjRequest, adapter: ClientAdapter): Promise<ArrObjResponse> {
-  const requestUrl = await adapter.getUrl('/arr-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, arrObjResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as ArrObjResponse
-}
-
-export async function bool(request: BoolRequest, adapter: ClientAdapter): Promise<BoolResponse> {
-  const requestUrl = await adapter.getUrl('/bool', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as BoolResponse
-}
-
-export async function boolArr(request: BoolArrRequest, adapter: ClientAdapter): Promise<BoolArrResponse> {
-  const requestUrl = await adapter.getUrl('/bool-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, boolArrResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as BoolArrResponse
-}
-
-export async function enm(request: EnmRequest, adapter: ClientAdapter): Promise<EnmResponse> {
-  const requestUrl = await adapter.getUrl('/enm', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as EnmResponse
-}
-
-export async function enmArr(request: EnmArrRequest, adapter: ClientAdapter): Promise<EnmArrResponse> {
-  const requestUrl = await adapter.getUrl('/enm-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, enmArrResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as EnmArrResponse
-}
-
-export async function nestedObj(request: NestedObjRequest, adapter: ClientAdapter): Promise<NestedObjResponse> {
-  const requestUrl = await adapter.getUrl('/nested-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, nestedObjResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as NestedObjResponse
-}
-
-export async function num(request: NumRequest, adapter: ClientAdapter): Promise<NumResponse> {
-  const requestUrl = await adapter.getUrl('/num', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as NumResponse
-}
-
-export async function numArr(request: NumArrRequest, adapter: ClientAdapter): Promise<NumArrResponse> {
-  const requestUrl = await adapter.getUrl('/num-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, numArrResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as NumArrResponse
-}
-
-export async function optPrimTuple(
-  request: OptPrimTupleRequest,
-  adapter: ClientAdapter,
-): Promise<OptPrimTupleResponse> {
-  const requestUrl = await adapter.getUrl('/opt-prim-tuple', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    optPrimTupleResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as OptPrimTupleResponse
-}
-
-export async function primObj(request: PrimObjRequest, adapter: ClientAdapter): Promise<PrimObjResponse> {
-  const requestUrl = await adapter.getUrl('/prim-obj', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primObjResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as PrimObjResponse
-}
-
-export async function primTuple(request: PrimTupleRequest, adapter: ClientAdapter): Promise<PrimTupleResponse> {
-  const requestUrl = await adapter.getUrl('/prim-tuple', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, primTupleResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as PrimTupleResponse
-}
-
-export async function str(request: StrRequest, adapter: ClientAdapter): Promise<StrResponse> {
-  const requestUrl = await adapter.getUrl('/str', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as StrResponse
-}
-
-export async function strArr(request: StrArrRequest, adapter: ClientAdapter): Promise<StrArrResponse> {
-  const requestUrl = await adapter.getUrl('/str-arr', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, strArrResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as StrArrResponse
-}
-
-export type BodiesSdk = {
-  str(request: StrRequest): Promise<StrResponse>
-  num(request: NumRequest): Promise<NumResponse>
-  enm(request: EnmRequest): Promise<EnmResponse>
-  bool(request: BoolRequest): Promise<BoolResponse>
-  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
-  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
-  strArr(request: StrArrRequest): Promise<StrArrResponse>
-  numArr(request: NumArrRequest): Promise<NumArrResponse>
-  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
-  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
-  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
-  arrObj(request: ArrObjRequest): Promise<ArrObjResponse>
-  nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
-}
-
-export class BodiesSdkImpl implements BodiesSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
-    this.adapter = adapter
-  }
-  public async str(request: StrRequest): Promise<StrResponse> {
-    return str(request, this.adapter)
-  }
-  public async num(request: NumRequest): Promise<NumResponse> {
-    return num(request, this.adapter)
-  }
-  public async enm(request: EnmRequest): Promise<EnmResponse> {
-    return enm(request, this.adapter)
-  }
-  public async bool(request: BoolRequest): Promise<BoolResponse> {
-    return bool(request, this.adapter)
-  }
-  public async primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse> {
-    return primTuple(request, this.adapter)
-  }
-  public async optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
-    return optPrimTuple(request, this.adapter)
-  }
-  public async strArr(request: StrArrRequest): Promise<StrArrResponse> {
-    return strArr(request, this.adapter)
-  }
-  public async numArr(request: NumArrRequest): Promise<NumArrResponse> {
-    return numArr(request, this.adapter)
-  }
-  public async enmArr(request: EnmArrRequest): Promise<EnmArrResponse> {
-    return enmArr(request, this.adapter)
-  }
-  public async boolArr(request: BoolArrRequest): Promise<BoolArrResponse> {
-    return boolArr(request, this.adapter)
-  }
-  public async primObj(request: PrimObjRequest): Promise<PrimObjResponse> {
-    return primObj(request, this.adapter)
-  }
-  public async arrObj(request: ArrObjRequest): Promise<ArrObjResponse> {
-    return arrObj(request, this.adapter)
-  }
-  public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
-    return nestedObj(request, this.adapter)
-  }
 }

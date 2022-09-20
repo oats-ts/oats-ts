@@ -90,6 +90,194 @@ export type ListPets200ResponseHeaderParameters = {
   'x-next'?: string
 }
 
+export type CreatePetsRequest = {
+  mimeType: 'application/json'
+  body: Pet
+}
+
+export type ListPetsRequest = {
+  query?: ListPetsQueryParameters
+}
+
+export type ShowPetByIdRequest = {
+  path: ShowPetByIdPathParameters
+}
+
+export type CreatePetsResponse =
+  | {
+      statusCode: 201
+      mimeType: 'application/json'
+      body: Pet
+    }
+  | {
+      statusCode: Exclude<number, 201>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type ListPetsResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Pets
+      headers: ListPets200ResponseHeaderParameters
+    }
+  | {
+      statusCode: Exclude<number, 200>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type ShowPetByIdResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Pet
+    }
+  | {
+      statusCode: Exclude<number, 200>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export const createPetsResponseBodyValidator = {
+  201: { 'application/json': petTypeValidator },
+  default: { 'application/json': errorTypeValidator },
+} as const
+
+export const listPetsResponseBodyValidator = {
+  200: { 'application/json': petsTypeValidator },
+  default: { 'application/json': errorTypeValidator },
+} as const
+
+export const showPetByIdResponseBodyValidator = {
+  200: { 'application/json': petTypeValidator },
+  default: { 'application/json': errorTypeValidator },
+} as const
+
+export const listPetsResponseHeadersDeserializer = {
+  200: createHeaderDeserializer<ListPets200ResponseHeaderParameters>({
+    'x-next': dsl.header.simple.primitive(dsl.value.string()),
+  }),
+} as const
+
+export const showPetByIdPathSerializer = createPathSerializer<ShowPetByIdPathParameters>(
+  { petId: dsl.path.simple.primitive(dsl.value.string()) },
+  '/pets/{petId}',
+)
+
+export const listPetsQuerySerializer = createQuerySerializer<ListPetsQueryParameters>({
+  limit: dsl.query.form.primitive(dsl.value.number(), { required: false }),
+})
+
+/**
+ * Create a pet
+ */
+export async function createPets(request: CreatePetsRequest, adapter: ClientAdapter): Promise<CreatePetsResponse> {
+  const requestUrl = await adapter.getUrl('/pets', undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'post',
+    body: requestBody,
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, createPetsResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as CreatePetsResponse
+}
+
+/**
+ * List all pets
+ */
+export async function listPets(request: ListPetsRequest, adapter: ClientAdapter): Promise<ListPetsResponse> {
+  const query = await adapter.getQuery(request.query, listPetsQuerySerializer)
+  const requestUrl = await adapter.getUrl('/pets', query)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, listPetsResponseHeadersDeserializer)
+  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, listPetsResponseBodyValidator)
+  return {
+    mimeType,
+    statusCode,
+    headers: responseHeaders,
+    body: responseBody,
+  } as ListPetsResponse
+}
+
+/**
+ * Info for a specific pet
+ */
+export async function showPetById(request: ShowPetByIdRequest, adapter: ClientAdapter): Promise<ShowPetByIdResponse> {
+  const path = await adapter.getPath(request.path, showPetByIdPathSerializer)
+  const requestUrl = await adapter.getUrl(path, undefined)
+  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const rawRequest: RawHttpRequest = {
+    url: requestUrl,
+    method: 'get',
+    headers: requestHeaders,
+  }
+  const rawResponse = await adapter.request(rawRequest)
+  const mimeType = await adapter.getMimeType(rawResponse)
+  const statusCode = await adapter.getStatusCode(rawResponse)
+  const responseBody = await adapter.getResponseBody(
+    rawResponse,
+    statusCode,
+    mimeType,
+    showPetByIdResponseBodyValidator,
+  )
+  return {
+    mimeType,
+    statusCode,
+    body: responseBody,
+  } as ShowPetByIdResponse
+}
+
+export type SwaggerPetstoreSdk = {
+  /**
+   * List all pets
+   */
+  listPets(request: ListPetsRequest): Promise<ListPetsResponse>
+  /**
+   * Create a pet
+   */
+  createPets(request: CreatePetsRequest): Promise<CreatePetsResponse>
+  /**
+   * Info for a specific pet
+   */
+  showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse>
+}
+
+export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
+    return listPets(request, this.adapter)
+  }
+  public async createPets(request: CreatePetsRequest): Promise<CreatePetsResponse> {
+    return createPets(request, this.adapter)
+  }
+  public async showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
+    return showPetById(request, this.adapter)
+  }
+}
+
 export type CreatePetsServerRequest = {
   mimeType: 'application/json'
   body: Try<Pet>
@@ -308,192 +496,4 @@ export const swaggerPetstoreCorsMiddleware: RequestHandler = (
   response.setHeader('Access-Control-Allow-Headers', 'content-type')
   response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
   next()
-}
-
-export type CreatePetsRequest = {
-  mimeType: 'application/json'
-  body: Pet
-}
-
-export type ListPetsRequest = {
-  query?: ListPetsQueryParameters
-}
-
-export type ShowPetByIdRequest = {
-  path: ShowPetByIdPathParameters
-}
-
-export type CreatePetsResponse =
-  | {
-      statusCode: 201
-      mimeType: 'application/json'
-      body: Pet
-    }
-  | {
-      statusCode: Exclude<number, 201>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type ListPetsResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: Pets
-      headers: ListPets200ResponseHeaderParameters
-    }
-  | {
-      statusCode: Exclude<number, 200>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type ShowPetByIdResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: Pet
-    }
-  | {
-      statusCode: Exclude<number, 200>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export const createPetsResponseBodyValidator = {
-  201: { 'application/json': petTypeValidator },
-  default: { 'application/json': errorTypeValidator },
-} as const
-
-export const listPetsResponseBodyValidator = {
-  200: { 'application/json': petsTypeValidator },
-  default: { 'application/json': errorTypeValidator },
-} as const
-
-export const showPetByIdResponseBodyValidator = {
-  200: { 'application/json': petTypeValidator },
-  default: { 'application/json': errorTypeValidator },
-} as const
-
-export const listPetsResponseHeadersDeserializer = {
-  200: createHeaderDeserializer<ListPets200ResponseHeaderParameters>({
-    'x-next': dsl.header.simple.primitive(dsl.value.string()),
-  }),
-} as const
-
-export const showPetByIdPathSerializer = createPathSerializer<ShowPetByIdPathParameters>(
-  { petId: dsl.path.simple.primitive(dsl.value.string()) },
-  '/pets/{petId}',
-)
-
-export const listPetsQuerySerializer = createQuerySerializer<ListPetsQueryParameters>({
-  limit: dsl.query.form.primitive(dsl.value.number(), { required: false }),
-})
-
-/**
- * Create a pet
- */
-export async function createPets(request: CreatePetsRequest, adapter: ClientAdapter): Promise<CreatePetsResponse> {
-  const requestUrl = await adapter.getUrl('/pets', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, createPetsResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as CreatePetsResponse
-}
-
-/**
- * List all pets
- */
-export async function listPets(request: ListPetsRequest, adapter: ClientAdapter): Promise<ListPetsResponse> {
-  const query = await adapter.getQuery(request.query, listPetsQuerySerializer)
-  const requestUrl = await adapter.getUrl('/pets', query)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'get',
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, listPetsResponseHeadersDeserializer)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, listPetsResponseBodyValidator)
-  return {
-    mimeType,
-    statusCode,
-    headers: responseHeaders,
-    body: responseBody,
-  } as ListPetsResponse
-}
-
-/**
- * Info for a specific pet
- */
-export async function showPetById(request: ShowPetByIdRequest, adapter: ClientAdapter): Promise<ShowPetByIdResponse> {
-  const path = await adapter.getPath(request.path, showPetByIdPathSerializer)
-  const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'get',
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    showPetByIdResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as ShowPetByIdResponse
-}
-
-export type SwaggerPetstoreSdk = {
-  /**
-   * List all pets
-   */
-  listPets(request: ListPetsRequest): Promise<ListPetsResponse>
-  /**
-   * Create a pet
-   */
-  createPets(request: CreatePetsRequest): Promise<CreatePetsResponse>
-  /**
-   * Info for a specific pet
-   */
-  showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse>
-}
-
-export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
-    this.adapter = adapter
-  }
-  public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
-    return listPets(request, this.adapter)
-  }
-  public async createPets(request: CreatePetsRequest): Promise<CreatePetsResponse> {
-    return createPets(request, this.adapter)
-  }
-  public async showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
-    return showPetById(request, this.adapter)
-  }
 }

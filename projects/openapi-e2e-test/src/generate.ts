@@ -76,6 +76,8 @@ export async function generateCode(url: string, codePath: string) {
         nameProvider: nameProviders.default(),
         pathProvider: pathProviders.singleFile(codePath),
         children: presets.fullStack({
+          sendCookieHeader: true,
+          parseSetCookieHeaders: true,
           overrides: {
             'oats/express-router': {
               cors: getCorsConfig(url),
@@ -85,21 +87,6 @@ export async function generateCode(url: string, codePath: string) {
             },
             'oats/type-validator': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-            },
-            'oats/operation': {
-              cookies: true,
-            },
-            'oats/sdk-type': {
-              cookies: true,
-            },
-            'oats/sdk-impl': {
-              cookies: true,
-            },
-            'oats/request-type': {
-              cookies: true,
-            },
-            'oats/response-type': {
-              cookies: true,
             },
           },
         }),

@@ -9,225 +9,6 @@ import { ClientAdapter, RawHttpRequest, RawHttpResponse, ServerAdapter } from '@
 import { object, shape, string } from '@oats-ts/validators'
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express'
 
-export type DeleteMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
-export type GetMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
-export type OptionsMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
-export type PatchMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
-export type PostMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
-export type PutMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
-export type HttpMethodsApi = {
-  getMethod(): Promise<GetMethodServerResponse>
-  postMethod(): Promise<PostMethodServerResponse>
-  putMethod(): Promise<PutMethodServerResponse>
-  patchMethod(): Promise<PatchMethodServerResponse>
-  optionsMethod(): Promise<OptionsMethodServerResponse>
-  deleteMethod(): Promise<DeleteMethodServerResponse>
-}
-
-export const deleteMethodRouter: Router = Router().delete(
-  '/delete-method',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.deleteMethod()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const getMethodRouter: Router = Router().get(
-  '/get-method',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getMethod()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const optionsMethodRouter: Router = Router().options(
-  '/options-method',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.optionsMethod()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const patchMethodRouter: Router = Router().patch(
-  '/patch-method',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.patchMethod()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const postMethodRouter: Router = Router().post(
-  '/post-method',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.postMethod()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const putMethodRouter: Router = Router().put(
-  '/put-method',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: HttpMethodsApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.putMethod()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export type HttpMethodsRouters = {
-  getMethodRouter: Router
-  postMethodRouter: Router
-  putMethodRouter: Router
-  patchMethodRouter: Router
-  optionsMethodRouter: Router
-  deleteMethodRouter: Router
-}
-
-export function createHttpMethodsRouter(
-  api: HttpMethodsApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<HttpMethodsRouters> = {},
-): Router {
-  return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
-    routes.getMethodRouter ?? getMethodRouter,
-    routes.postMethodRouter ?? postMethodRouter,
-    routes.putMethodRouter ?? putMethodRouter,
-    routes.patchMethodRouter ?? patchMethodRouter,
-    routes.optionsMethodRouter ?? optionsMethodRouter,
-    routes.deleteMethodRouter ?? deleteMethodRouter,
-  )
-}
-
-export const httpMethodsCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
-  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
-  response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
-  response.setHeader('Access-Control-Expose-Headers', 'content-type')
-  next()
-}
-
 export type DeleteMethodResponse = {
   statusCode: 200
   mimeType: 'application/json'
@@ -461,4 +242,223 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   public async deleteMethod(): Promise<DeleteMethodResponse> {
     return deleteMethod(this.adapter)
   }
+}
+
+export type DeleteMethodServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type GetMethodServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type OptionsMethodServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type PatchMethodServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type PostMethodServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type PutMethodServerResponse = {
+  statusCode: 200
+  mimeType: 'application/json'
+  body: {
+    methodUsed: string
+  }
+}
+
+export type HttpMethodsApi = {
+  getMethod(): Promise<GetMethodServerResponse>
+  postMethod(): Promise<PostMethodServerResponse>
+  putMethod(): Promise<PutMethodServerResponse>
+  patchMethod(): Promise<PatchMethodServerResponse>
+  optionsMethod(): Promise<OptionsMethodServerResponse>
+  deleteMethod(): Promise<DeleteMethodServerResponse>
+}
+
+export const deleteMethodRouter: Router = Router().delete(
+  '/delete-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: HttpMethodsApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.deleteMethod()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const getMethodRouter: Router = Router().get(
+  '/get-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: HttpMethodsApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getMethod()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const optionsMethodRouter: Router = Router().options(
+  '/options-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: HttpMethodsApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.optionsMethod()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const patchMethodRouter: Router = Router().patch(
+  '/patch-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: HttpMethodsApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.patchMethod()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const postMethodRouter: Router = Router().post(
+  '/post-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: HttpMethodsApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.postMethod()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const putMethodRouter: Router = Router().put(
+  '/put-method',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: HttpMethodsApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.putMethod()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export type HttpMethodsRouters = {
+  getMethodRouter: Router
+  postMethodRouter: Router
+  putMethodRouter: Router
+  patchMethodRouter: Router
+  optionsMethodRouter: Router
+  deleteMethodRouter: Router
+}
+
+export function createHttpMethodsRouter(
+  api: HttpMethodsApi,
+  adapter: ServerAdapter<ExpressToolkit>,
+  routes: Partial<HttpMethodsRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_adapter'] = adapter
+      next()
+    },
+    routes.getMethodRouter ?? getMethodRouter,
+    routes.postMethodRouter ?? postMethodRouter,
+    routes.putMethodRouter ?? putMethodRouter,
+    routes.patchMethodRouter ?? patchMethodRouter,
+    routes.optionsMethodRouter ?? optionsMethodRouter,
+    routes.deleteMethodRouter ?? deleteMethodRouter,
+  )
+}
+
+export const httpMethodsCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
 }

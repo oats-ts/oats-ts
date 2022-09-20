@@ -1340,1159 +1340,6 @@ export type FormCookieParametersCookieParameters = {
   optEnm?: CommonEnumType
 }
 
-export type DeepObjectQueryParametersServerRequest = {
-  query: Try<DeepObjectQueryParametersQueryParameters>
-}
-
-export type FormCookieParametersServerRequest = {
-  cookies: Try<Partial<FormCookieParametersCookieParameters>>
-}
-
-export type FormQueryParametersServerRequest = {
-  query: Try<FormQueryParametersQueryParameters>
-}
-
-export type LabelPathParametersServerRequest = {
-  path: Try<LabelPathParametersPathParameters>
-}
-
-export type MatrixPathParametersServerRequest = {
-  path: Try<MatrixPathParametersPathParameters>
-}
-
-export type PipeDelimitedQueryParametersServerRequest = {
-  query: Try<PipeDelimitedQueryParametersQueryParameters>
-}
-
-export type SimpleHeaderParametersServerRequest = {
-  headers: Try<SimpleHeaderParametersRequestHeaderParameters>
-}
-
-export type SimplePathParametersServerRequest = {
-  path: Try<SimplePathParametersPathParameters>
-}
-
-export type SimpleResponseHeaderParametersServerRequest = {
-  mimeType: 'application/json'
-  body: Try<SimpleResponseHeaderParameters>
-}
-
-export type SpaceDelimitedQueryParametersServerRequest = {
-  query: Try<SpaceDelimitedQueryParametersQueryParameters>
-}
-
-export type DeepObjectQueryParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: DeepObjectQueryParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type FormCookieParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: FormCookieParameters
-      cookies?: Cookies<FormCookieParametersCookieParameters>
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-      cookies?: Cookies<FormCookieParametersCookieParameters>
-    }
-
-export type FormQueryParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: FormQueryParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type LabelPathParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: LabelPathParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type MatrixPathParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: MatrixPathParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type PipeDelimitedQueryParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: PipeDelimitedQueryParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type SimpleHeaderParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: SimpleHeaderParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type SimplePathParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: SimplePathParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type SimpleResponseHeaderParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: {
-        ok: boolean
-      }
-      headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export type SpaceDelimitedQueryParametersServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: SpaceDelimitedQueryParameters
-    }
-  | {
-      statusCode: 400
-      mimeType: 'application/json'
-      body: ParameterIssue[]
-    }
-
-export const simpleResponseHeaderParametersRequestBodyValidator = {
-  'application/json': simpleResponseHeaderParametersTypeValidator,
-} as const
-
-export const formCookieParametersCookieDeserializer = createCookieDeserializer<FormCookieParametersCookieParameters>({
-  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-})
-
-export const formCookieParametersSetCookieSerializer = createSetCookieSerializer<FormCookieParametersCookieParameters>({
-  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-})
-
-export const simpleResponseHeaderParametersResponseHeadersSerializer = {
-  200: createHeaderSerializer<SimpleResponseHeaderParameters200ResponseHeaderParameters>({
-    'X-StrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: true }),
-    'X-OptStrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: false }),
-    'X-Str-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: true }),
-    'X-OptStr-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: false }),
-    'X-NumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: true }),
-    'X-OptNumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: false }),
-    'X-Num-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: true }),
-    'X-OptNum-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: false }),
-    'X-BoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: true }),
-    'X-OptBoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: false }),
-    'X-Bool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: true }),
-    'X-OptBool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: false }),
-    'X-EnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: true,
-    }),
-    'X-OptEnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: false,
-    }),
-    'X-Enm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: true,
-    }),
-    'X-OptEnm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: false,
-    }),
-    'X-StrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: true }),
-    'X-OptStrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: false }),
-    'X-StrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: true }),
-    'X-OptStrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: false }),
-    'X-NumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: true }),
-    'X-OptNumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: false }),
-    'X-NumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: true }),
-    'X-OptNumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: false }),
-    'X-BoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: true }),
-    'X-OptBoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: false }),
-    'X-BoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: true }),
-    'X-OptBoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: false }),
-    'X-EnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: true,
-    }),
-    'X-OptEnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: false,
-    }),
-    'X-EnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: true,
-    }),
-    'X-OptEnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: false,
-    }),
-    'X-ObjExpl-Header': dsl.header.simple.object(
-      {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true, required: true },
-    ),
-    'X-OptObjExpl-Header': dsl.header.simple.object(
-      {
-        optObjExplStrField: dsl.value.string(),
-        optObjExplNumField: dsl.value.number(),
-        optObjExplBoolField: dsl.value.boolean(),
-        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
-        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
-        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true, required: false },
-    ),
-    'X-Obj-Header': dsl.header.simple.object(
-      {
-        objStrField: dsl.value.string(),
-        objNumField: dsl.value.number(),
-        objBoolField: dsl.value.boolean(),
-        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objOptStrField: dsl.value.optional(dsl.value.string()),
-        objOptNumField: dsl.value.optional(dsl.value.number()),
-        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false, required: true },
-    ),
-    'X-OptObj-Header': dsl.header.simple.object(
-      {
-        optObjStrField: dsl.value.string(),
-        optObjNumField: dsl.value.number(),
-        optObjBoolField: dsl.value.boolean(),
-        optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        optObjOptStrField: dsl.value.optional(dsl.value.string()),
-        optObjOptNumField: dsl.value.optional(dsl.value.number()),
-        optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false, required: false },
-    ),
-  }),
-} as const
-
-export const labelPathParametersPathDeserializer = createPathDeserializer<LabelPathParametersPathParameters>(
-  {
-    strExpl: dsl.path.label.primitive(dsl.value.string(), { explode: true }),
-    str: dsl.path.label.primitive(dsl.value.string(), { explode: false }),
-    numExpl: dsl.path.label.primitive(dsl.value.number(), { explode: true }),
-    num: dsl.path.label.primitive(dsl.value.number(), { explode: false }),
-    boolExpl: dsl.path.label.primitive(dsl.value.boolean(), { explode: true }),
-    bool: dsl.path.label.primitive(dsl.value.boolean(), { explode: false }),
-    enmExpl: dsl.path.label.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
-    enm: dsl.path.label.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
-    strArrExpl: dsl.path.label.array(dsl.value.string(), { explode: true }),
-    strArr: dsl.path.label.array(dsl.value.string(), { explode: false }),
-    numArrExpl: dsl.path.label.array(dsl.value.number(), { explode: true }),
-    numArr: dsl.path.label.array(dsl.value.number(), { explode: false }),
-    boolArrExpl: dsl.path.label.array(dsl.value.boolean(), { explode: true }),
-    boolArr: dsl.path.label.array(dsl.value.boolean(), { explode: false }),
-    enmArrExpl: dsl.path.label.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
-    enmArr: dsl.path.label.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
-    objExpl: dsl.path.label.object(
-      {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true },
-    ),
-    obj: dsl.path.label.object(
-      {
-        objStrField: dsl.value.string(),
-        objNumField: dsl.value.number(),
-        objBoolField: dsl.value.boolean(),
-        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objOptStrField: dsl.value.optional(dsl.value.string()),
-        objOptNumField: dsl.value.optional(dsl.value.number()),
-        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false },
-    ),
-  },
-  [
-    'strExpl',
-    'str',
-    'numExpl',
-    'num',
-    'boolExpl',
-    'bool',
-    'enmExpl',
-    'enm',
-    'strArrExpl',
-    'strArr',
-    'numArrExpl',
-    'numArr',
-    'boolArrExpl',
-    'boolArr',
-    'enmArrExpl',
-    'enmArr',
-    'objExpl',
-    'obj',
-  ],
-  /^\/label-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
-)
-
-export const matrixPathParametersPathDeserializer = createPathDeserializer<MatrixPathParametersPathParameters>(
-  {
-    strExpl: dsl.path.matrix.primitive(dsl.value.string(), { explode: true }),
-    str: dsl.path.matrix.primitive(dsl.value.string(), { explode: false }),
-    numExpl: dsl.path.matrix.primitive(dsl.value.number(), { explode: true }),
-    num: dsl.path.matrix.primitive(dsl.value.number(), { explode: false }),
-    boolExpl: dsl.path.matrix.primitive(dsl.value.boolean(), { explode: true }),
-    bool: dsl.path.matrix.primitive(dsl.value.boolean(), { explode: false }),
-    enmExpl: dsl.path.matrix.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
-    enm: dsl.path.matrix.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
-    strArrExpl: dsl.path.matrix.array(dsl.value.string(), { explode: true }),
-    strArr: dsl.path.matrix.array(dsl.value.string(), { explode: false }),
-    numArrExpl: dsl.path.matrix.array(dsl.value.number(), { explode: true }),
-    numArr: dsl.path.matrix.array(dsl.value.number(), { explode: false }),
-    boolArrExpl: dsl.path.matrix.array(dsl.value.boolean(), { explode: true }),
-    boolArr: dsl.path.matrix.array(dsl.value.boolean(), { explode: false }),
-    enmArrExpl: dsl.path.matrix.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
-    enmArr: dsl.path.matrix.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
-    objExpl: dsl.path.matrix.object(
-      {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true },
-    ),
-    obj: dsl.path.matrix.object(
-      {
-        objStrField: dsl.value.string(),
-        objNumField: dsl.value.number(),
-        objBoolField: dsl.value.boolean(),
-        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objOptStrField: dsl.value.optional(dsl.value.string()),
-        objOptNumField: dsl.value.optional(dsl.value.number()),
-        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false },
-    ),
-  },
-  [
-    'strExpl',
-    'str',
-    'numExpl',
-    'num',
-    'boolExpl',
-    'bool',
-    'enmExpl',
-    'enm',
-    'strArrExpl',
-    'strArr',
-    'numArrExpl',
-    'numArr',
-    'boolArrExpl',
-    'boolArr',
-    'enmArrExpl',
-    'enmArr',
-    'objExpl',
-    'obj',
-  ],
-  /^\/matrix-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
-)
-
-export const simplePathParametersPathDeserializer = createPathDeserializer<SimplePathParametersPathParameters>(
-  {
-    strExpl: dsl.path.simple.primitive(dsl.value.string(), { explode: true }),
-    str: dsl.path.simple.primitive(dsl.value.string(), { explode: false }),
-    numExpl: dsl.path.simple.primitive(dsl.value.number(), { explode: true }),
-    num: dsl.path.simple.primitive(dsl.value.number(), { explode: false }),
-    boolExpl: dsl.path.simple.primitive(dsl.value.boolean(), { explode: true }),
-    bool: dsl.path.simple.primitive(dsl.value.boolean(), { explode: false }),
-    enmExpl: dsl.path.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
-    enm: dsl.path.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
-    strArrExpl: dsl.path.simple.array(dsl.value.string(), { explode: true }),
-    strArr: dsl.path.simple.array(dsl.value.string(), { explode: false }),
-    numArrExpl: dsl.path.simple.array(dsl.value.number(), { explode: true }),
-    numArr: dsl.path.simple.array(dsl.value.number(), { explode: false }),
-    boolArrExpl: dsl.path.simple.array(dsl.value.boolean(), { explode: true }),
-    boolArr: dsl.path.simple.array(dsl.value.boolean(), { explode: false }),
-    enmArrExpl: dsl.path.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
-    enmArr: dsl.path.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
-    objExpl: dsl.path.simple.object(
-      {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true },
-    ),
-    obj: dsl.path.simple.object(
-      {
-        objStrField: dsl.value.string(),
-        objNumField: dsl.value.number(),
-        objBoolField: dsl.value.boolean(),
-        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objOptStrField: dsl.value.optional(dsl.value.string()),
-        objOptNumField: dsl.value.optional(dsl.value.number()),
-        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false },
-    ),
-  },
-  [
-    'strExpl',
-    'str',
-    'numExpl',
-    'num',
-    'boolExpl',
-    'bool',
-    'enmExpl',
-    'enm',
-    'strArrExpl',
-    'strArr',
-    'numArrExpl',
-    'numArr',
-    'boolArrExpl',
-    'boolArr',
-    'enmArrExpl',
-    'enmArr',
-    'objExpl',
-    'obj',
-  ],
-  /^\/simple-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
-)
-
-export const deepObjectQueryParametersQueryDeserializer =
-  createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
-    objExpl: dsl.query.deepObject.object(
-      {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true, required: true },
-    ),
-    optObjExpl: dsl.query.deepObject.object(
-      {
-        optObjExplStrField: dsl.value.string(),
-        optObjExplNumField: dsl.value.number(),
-        optObjExplBoolField: dsl.value.boolean(),
-        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
-        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
-        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true, required: false },
-    ),
-  })
-
-export const formQueryParametersQueryDeserializer = createQueryDeserializer<FormQueryParametersQueryParameters>({
-  strExpl: dsl.query.form.primitive(dsl.value.string(), { explode: true, required: true }),
-  optStrExpl: dsl.query.form.primitive(dsl.value.string(), { explode: true, required: false }),
-  str: dsl.query.form.primitive(dsl.value.string(), { explode: false, required: true }),
-  optStr: dsl.query.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  numExpl: dsl.query.form.primitive(dsl.value.number(), { explode: true, required: true }),
-  optNumExpl: dsl.query.form.primitive(dsl.value.number(), { explode: true, required: false }),
-  num: dsl.query.form.primitive(dsl.value.number(), { explode: false, required: true }),
-  optNum: dsl.query.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  boolExpl: dsl.query.form.primitive(dsl.value.boolean(), { explode: true, required: true }),
-  optBoolExpl: dsl.query.form.primitive(dsl.value.boolean(), { explode: true, required: false }),
-  bool: dsl.query.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
-  optBool: dsl.query.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  enmExpl: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: true,
-  }),
-  optEnmExpl: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: false,
-  }),
-  enm: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
-  optEnm: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-  strArrExpl: dsl.query.form.array(dsl.value.string(), { explode: true, required: true }),
-  optStrArrExpl: dsl.query.form.array(dsl.value.string(), { explode: true, required: false }),
-  strArr: dsl.query.form.array(dsl.value.string(), { explode: false, required: true }),
-  optStrArr: dsl.query.form.array(dsl.value.string(), { explode: false, required: false }),
-  numArrExpl: dsl.query.form.array(dsl.value.number(), { explode: true, required: true }),
-  optNumArrExpl: dsl.query.form.array(dsl.value.number(), { explode: true, required: false }),
-  numArr: dsl.query.form.array(dsl.value.number(), { explode: false, required: true }),
-  optNumArr: dsl.query.form.array(dsl.value.number(), { explode: false, required: false }),
-  boolArrExpl: dsl.query.form.array(dsl.value.boolean(), { explode: true, required: true }),
-  optBoolArrExpl: dsl.query.form.array(dsl.value.boolean(), { explode: true, required: false }),
-  boolArr: dsl.query.form.array(dsl.value.boolean(), { explode: false, required: true }),
-  optBoolArr: dsl.query.form.array(dsl.value.boolean(), { explode: false, required: false }),
-  enmArrExpl: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: true,
-  }),
-  optEnmArrExpl: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: false,
-  }),
-  enmArr: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
-  optEnmArr: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-  objExpl: dsl.query.form.object(
-    {
-      objExplStrField: dsl.value.string(),
-      objExplNumField: dsl.value.number(),
-      objExplBoolField: dsl.value.boolean(),
-      objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      objExplOptStrField: dsl.value.optional(dsl.value.string()),
-      objExplOptNumField: dsl.value.optional(dsl.value.number()),
-      objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: true, required: true },
-  ),
-  optObjExpl: dsl.query.form.object(
-    {
-      optObjExplStrField: dsl.value.string(),
-      optObjExplNumField: dsl.value.number(),
-      optObjExplBoolField: dsl.value.boolean(),
-      optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
-      optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
-      optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: true, required: false },
-  ),
-  obj: dsl.query.form.object(
-    {
-      objStrField: dsl.value.string(),
-      objNumField: dsl.value.number(),
-      objBoolField: dsl.value.boolean(),
-      objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      objOptStrField: dsl.value.optional(dsl.value.string()),
-      objOptNumField: dsl.value.optional(dsl.value.number()),
-      objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: false, required: true },
-  ),
-  optObj: dsl.query.form.object(
-    {
-      optObjStrField: dsl.value.string(),
-      optObjNumField: dsl.value.number(),
-      optObjBoolField: dsl.value.boolean(),
-      optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      optObjOptStrField: dsl.value.optional(dsl.value.string()),
-      optObjOptNumField: dsl.value.optional(dsl.value.number()),
-      optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: false, required: false },
-  ),
-})
-
-export const pipeDelimitedQueryParametersQueryDeserializer =
-  createQueryDeserializer<PipeDelimitedQueryParametersQueryParameters>({
-    strArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(), { explode: true, required: true }),
-    optStrArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(), { explode: true, required: false }),
-    numArrExpl: dsl.query.pipeDelimited.array(dsl.value.number(), { explode: true, required: true }),
-    optNumArrExpl: dsl.query.pipeDelimited.array(dsl.value.number(), { explode: true, required: false }),
-    boolArrExpl: dsl.query.pipeDelimited.array(dsl.value.boolean(), { explode: true, required: true }),
-    optBoolArrExpl: dsl.query.pipeDelimited.array(dsl.value.boolean(), { explode: true, required: false }),
-    enmArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: true,
-    }),
-    optEnmArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: false,
-    }),
-  })
-
-export const spaceDelimitedQueryParametersQueryDeserializer =
-  createQueryDeserializer<SpaceDelimitedQueryParametersQueryParameters>({
-    strArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(), { explode: true, required: true }),
-    optStrArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(), { explode: true, required: false }),
-    numArrExpl: dsl.query.spaceDelimited.array(dsl.value.number(), { explode: true, required: true }),
-    optNumArrExpl: dsl.query.spaceDelimited.array(dsl.value.number(), { explode: true, required: false }),
-    boolArrExpl: dsl.query.spaceDelimited.array(dsl.value.boolean(), { explode: true, required: true }),
-    optBoolArrExpl: dsl.query.spaceDelimited.array(dsl.value.boolean(), { explode: true, required: false }),
-    enmArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: true,
-    }),
-    optEnmArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: false,
-    }),
-  })
-
-export const simpleHeaderParametersRequestHeadersDeserializer =
-  createHeaderDeserializer<SimpleHeaderParametersRequestHeaderParameters>({
-    'X-StrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: true }),
-    'X-OptStrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: false }),
-    'X-Str-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: true }),
-    'X-OptStr-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: false }),
-    'X-NumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: true }),
-    'X-OptNumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: false }),
-    'X-Num-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: true }),
-    'X-OptNum-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: false }),
-    'X-BoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: true }),
-    'X-OptBoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: false }),
-    'X-Bool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: true }),
-    'X-OptBool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: false }),
-    'X-EnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: true,
-    }),
-    'X-OptEnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: false,
-    }),
-    'X-Enm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: true,
-    }),
-    'X-OptEnm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: false,
-    }),
-    'X-StrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: true }),
-    'X-OptStrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: false }),
-    'X-StrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: true }),
-    'X-OptStrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: false }),
-    'X-NumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: true }),
-    'X-OptNumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: false }),
-    'X-NumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: true }),
-    'X-OptNumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: false }),
-    'X-BoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: true }),
-    'X-OptBoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: false }),
-    'X-BoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: true }),
-    'X-OptBoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: false }),
-    'X-EnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: true,
-    }),
-    'X-OptEnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: true,
-      required: false,
-    }),
-    'X-EnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: true,
-    }),
-    'X-OptEnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-      explode: false,
-      required: false,
-    }),
-    'X-ObjExpl-Header': dsl.header.simple.object(
-      {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true, required: true },
-    ),
-    'X-OptObjExpl-Header': dsl.header.simple.object(
-      {
-        optObjExplStrField: dsl.value.string(),
-        optObjExplNumField: dsl.value.number(),
-        optObjExplBoolField: dsl.value.boolean(),
-        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
-        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
-        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: true, required: false },
-    ),
-    'X-Obj-Header': dsl.header.simple.object(
-      {
-        objStrField: dsl.value.string(),
-        objNumField: dsl.value.number(),
-        objBoolField: dsl.value.boolean(),
-        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objOptStrField: dsl.value.optional(dsl.value.string()),
-        objOptNumField: dsl.value.optional(dsl.value.number()),
-        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false, required: true },
-    ),
-    'X-OptObj-Header': dsl.header.simple.object(
-      {
-        optObjStrField: dsl.value.string(),
-        optObjNumField: dsl.value.number(),
-        optObjBoolField: dsl.value.boolean(),
-        optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        optObjOptStrField: dsl.value.optional(dsl.value.string()),
-        optObjOptNumField: dsl.value.optional(dsl.value.number()),
-        optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-      },
-      { explode: false, required: false },
-    ),
-  })
-
-export type ParametersApi = {
-  /**
-   * Endpoint for testing path parameters with simple serialization
-   */
-  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse>
-  /**
-   * Endpoint for testing path parameters with label serialization
-   */
-  labelPathParameters(request: LabelPathParametersServerRequest): Promise<LabelPathParametersServerResponse>
-  /**
-   * Endpoint for testing path parameters with matrix serialization
-   */
-  matrixPathParameters(request: MatrixPathParametersServerRequest): Promise<MatrixPathParametersServerResponse>
-  /**
-   * Endpoint for testing query parameters with form serialization
-   */
-  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse>
-  /**
-   * Endpoint for testing query parameters with spaceDelimited serialization
-   */
-  spaceDelimitedQueryParameters(
-    request: SpaceDelimitedQueryParametersServerRequest,
-  ): Promise<SpaceDelimitedQueryParametersServerResponse>
-  /**
-   * Endpoint for testing query parameters with pipeDelimited serialization
-   */
-  pipeDelimitedQueryParameters(
-    request: PipeDelimitedQueryParametersServerRequest,
-  ): Promise<PipeDelimitedQueryParametersServerResponse>
-  /**
-   * Endpoint for testing query parameters with deepObject serialization
-   */
-  deepObjectQueryParameters(
-    request: DeepObjectQueryParametersServerRequest,
-  ): Promise<DeepObjectQueryParametersServerResponse>
-  /**
-   * Endpoint for testing header parameters with simple serialization
-   */
-  simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersServerResponse>
-  /**
-   * Endpoint for testing cookie parameters with form serialization
-   */
-  formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse>
-  /**
-   * Endpoint for testing response-header parameters with simple serialization
-   */
-  simpleResponseHeaderParameters(
-    request: SimpleResponseHeaderParametersServerRequest,
-  ): Promise<SimpleResponseHeaderParametersServerResponse>
-}
-
-export const deepObjectQueryParametersRouter: Router = Router().get(
-  '/deepObject-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
-      const typedRequest: DeepObjectQueryParametersServerRequest = {
-        query,
-      }
-      const typedResponse = await api.deepObjectQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const formCookieParametersRouter: Router = Router().get(
-  '/form-cookie-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const cookies = await adapter.getCookieParameters(toolkit, formCookieParametersCookieDeserializer)
-      const typedRequest: FormCookieParametersServerRequest = {
-        cookies,
-      }
-      const typedResponse = await api.formCookieParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, formCookieParametersSetCookieSerializer),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const formQueryParametersRouter: Router = Router().get(
-  '/form-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
-      const typedRequest: FormQueryParametersServerRequest = {
-        query,
-      }
-      const typedResponse = await api.formQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const labelPathParametersRouter: Router = Router().get(
-  '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
-      const typedRequest: LabelPathParametersServerRequest = {
-        path,
-      }
-      const typedResponse = await api.labelPathParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const matrixPathParametersRouter: Router = Router().get(
-  '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
-      const typedRequest: MatrixPathParametersServerRequest = {
-        path,
-      }
-      const typedResponse = await api.matrixPathParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const pipeDelimitedQueryParametersRouter: Router = Router().get(
-  '/pipeDelimited-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
-      const typedRequest: PipeDelimitedQueryParametersServerRequest = {
-        query,
-      }
-      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const simpleHeaderParametersRouter: Router = Router().get(
-  '/simple-header-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
-      const typedRequest: SimpleHeaderParametersServerRequest = {
-        headers,
-      }
-      const typedResponse = await api.simpleHeaderParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const simplePathParametersRouter: Router = Router().get(
-  '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
-      const typedRequest: SimplePathParametersServerRequest = {
-        path,
-      }
-      const typedResponse = await api.simplePathParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const simpleResponseHeaderParametersRouter: Router = Router().post(
-  '/simple-response-header-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
-        toolkit,
-        true,
-        mimeType,
-        simpleResponseHeaderParametersRequestBodyValidator,
-      )
-      const typedRequest: SimpleResponseHeaderParametersServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          simpleResponseHeaderParametersResponseHeadersSerializer,
-        ),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const spaceDelimitedQueryParametersRouter: Router = Router().get(
-  '/spaceDelimited-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
-      const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
-        query,
-      }
-      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export type ParametersRouters = {
-  simplePathParametersRouter: Router
-  labelPathParametersRouter: Router
-  matrixPathParametersRouter: Router
-  formQueryParametersRouter: Router
-  spaceDelimitedQueryParametersRouter: Router
-  pipeDelimitedQueryParametersRouter: Router
-  deepObjectQueryParametersRouter: Router
-  simpleHeaderParametersRouter: Router
-  formCookieParametersRouter: Router
-  simpleResponseHeaderParametersRouter: Router
-}
-
-export function createParametersRouter(
-  api: ParametersApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<ParametersRouters> = {},
-): Router {
-  return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
-    routes.simplePathParametersRouter ?? simplePathParametersRouter,
-    routes.labelPathParametersRouter ?? labelPathParametersRouter,
-    routes.matrixPathParametersRouter ?? matrixPathParametersRouter,
-    routes.formQueryParametersRouter ?? formQueryParametersRouter,
-    routes.spaceDelimitedQueryParametersRouter ?? spaceDelimitedQueryParametersRouter,
-    routes.pipeDelimitedQueryParametersRouter ?? pipeDelimitedQueryParametersRouter,
-    routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
-    routes.simpleHeaderParametersRouter ?? simpleHeaderParametersRouter,
-    routes.formCookieParametersRouter ?? formCookieParametersRouter,
-    routes.simpleResponseHeaderParametersRouter ?? simpleResponseHeaderParametersRouter,
-  )
-}
-
-export const parametersCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
-  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
-  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-  response.setHeader(
-    'Access-Control-Allow-Headers',
-    'x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header, content-type',
-  )
-  response.setHeader(
-    'Access-Control-Expose-Headers',
-    'content-type, x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header',
-  )
-  next()
-}
-
 export type DeepObjectQueryParametersRequest = {
   query: DeepObjectQueryParametersQueryParameters
 }
@@ -3686,4 +2533,1157 @@ export class ParametersSdkImpl implements ParametersSdk {
   ): Promise<SimpleResponseHeaderParametersResponse> {
     return simpleResponseHeaderParameters(request, this.adapter)
   }
+}
+
+export type DeepObjectQueryParametersServerRequest = {
+  query: Try<DeepObjectQueryParametersQueryParameters>
+}
+
+export type FormCookieParametersServerRequest = {
+  cookies: Try<Partial<FormCookieParametersCookieParameters>>
+}
+
+export type FormQueryParametersServerRequest = {
+  query: Try<FormQueryParametersQueryParameters>
+}
+
+export type LabelPathParametersServerRequest = {
+  path: Try<LabelPathParametersPathParameters>
+}
+
+export type MatrixPathParametersServerRequest = {
+  path: Try<MatrixPathParametersPathParameters>
+}
+
+export type PipeDelimitedQueryParametersServerRequest = {
+  query: Try<PipeDelimitedQueryParametersQueryParameters>
+}
+
+export type SimpleHeaderParametersServerRequest = {
+  headers: Try<SimpleHeaderParametersRequestHeaderParameters>
+}
+
+export type SimplePathParametersServerRequest = {
+  path: Try<SimplePathParametersPathParameters>
+}
+
+export type SimpleResponseHeaderParametersServerRequest = {
+  mimeType: 'application/json'
+  body: Try<SimpleResponseHeaderParameters>
+}
+
+export type SpaceDelimitedQueryParametersServerRequest = {
+  query: Try<SpaceDelimitedQueryParametersQueryParameters>
+}
+
+export type DeepObjectQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: DeepObjectQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type FormCookieParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: FormCookieParameters
+      cookies?: Cookies<FormCookieParametersCookieParameters>
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+      cookies?: Cookies<FormCookieParametersCookieParameters>
+    }
+
+export type FormQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: FormQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type LabelPathParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: LabelPathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type MatrixPathParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: MatrixPathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type PipeDelimitedQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: PipeDelimitedQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimpleHeaderParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SimpleHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimplePathParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SimplePathParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SimpleResponseHeaderParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: {
+        ok: boolean
+      }
+      headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export type SpaceDelimitedQueryParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SpaceDelimitedQueryParameters
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ParameterIssue[]
+    }
+
+export const simpleResponseHeaderParametersRequestBodyValidator = {
+  'application/json': simpleResponseHeaderParametersTypeValidator,
+} as const
+
+export const formCookieParametersCookieDeserializer = createCookieDeserializer<FormCookieParametersCookieParameters>({
+  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
+  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
+  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
+  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: false,
+    required: false,
+  }),
+})
+
+export const formCookieParametersSetCookieSerializer = createSetCookieSerializer<FormCookieParametersCookieParameters>({
+  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
+  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
+  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
+  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: false,
+    required: false,
+  }),
+})
+
+export const simpleResponseHeaderParametersResponseHeadersSerializer = {
+  200: createHeaderSerializer<SimpleResponseHeaderParameters200ResponseHeaderParameters>({
+    'X-StrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: true }),
+    'X-OptStrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: false }),
+    'X-Str-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: true }),
+    'X-OptStr-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: false }),
+    'X-NumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: true }),
+    'X-OptNumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: false }),
+    'X-Num-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: true }),
+    'X-OptNum-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: false }),
+    'X-BoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: true }),
+    'X-OptBoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: false }),
+    'X-Bool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: true }),
+    'X-OptBool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: false }),
+    'X-EnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptEnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+    'X-Enm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptEnm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+    'X-StrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: true }),
+    'X-OptStrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: false }),
+    'X-StrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: true }),
+    'X-OptStrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: false }),
+    'X-NumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: true }),
+    'X-OptNumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: false }),
+    'X-NumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: true }),
+    'X-OptNumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: false }),
+    'X-BoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: true }),
+    'X-OptBoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: false }),
+    'X-BoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: true }),
+    'X-OptBoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: false }),
+    'X-EnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptEnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+    'X-EnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptEnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+    'X-ObjExpl-Header': dsl.header.simple.object(
+      {
+        objExplStrField: dsl.value.string(),
+        objExplNumField: dsl.value.number(),
+        objExplBoolField: dsl.value.boolean(),
+        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: dsl.value.optional(dsl.value.string()),
+        objExplOptNumField: dsl.value.optional(dsl.value.number()),
+        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: true },
+    ),
+    'X-OptObjExpl-Header': dsl.header.simple.object(
+      {
+        optObjExplStrField: dsl.value.string(),
+        optObjExplNumField: dsl.value.number(),
+        optObjExplBoolField: dsl.value.boolean(),
+        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
+        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
+        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: false },
+    ),
+    'X-Obj-Header': dsl.header.simple.object(
+      {
+        objStrField: dsl.value.string(),
+        objNumField: dsl.value.number(),
+        objBoolField: dsl.value.boolean(),
+        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objOptStrField: dsl.value.optional(dsl.value.string()),
+        objOptNumField: dsl.value.optional(dsl.value.number()),
+        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false, required: true },
+    ),
+    'X-OptObj-Header': dsl.header.simple.object(
+      {
+        optObjStrField: dsl.value.string(),
+        optObjNumField: dsl.value.number(),
+        optObjBoolField: dsl.value.boolean(),
+        optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        optObjOptStrField: dsl.value.optional(dsl.value.string()),
+        optObjOptNumField: dsl.value.optional(dsl.value.number()),
+        optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false, required: false },
+    ),
+  }),
+} as const
+
+export const labelPathParametersPathDeserializer = createPathDeserializer<LabelPathParametersPathParameters>(
+  {
+    strExpl: dsl.path.label.primitive(dsl.value.string(), { explode: true }),
+    str: dsl.path.label.primitive(dsl.value.string(), { explode: false }),
+    numExpl: dsl.path.label.primitive(dsl.value.number(), { explode: true }),
+    num: dsl.path.label.primitive(dsl.value.number(), { explode: false }),
+    boolExpl: dsl.path.label.primitive(dsl.value.boolean(), { explode: true }),
+    bool: dsl.path.label.primitive(dsl.value.boolean(), { explode: false }),
+    enmExpl: dsl.path.label.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+    enm: dsl.path.label.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+    strArrExpl: dsl.path.label.array(dsl.value.string(), { explode: true }),
+    strArr: dsl.path.label.array(dsl.value.string(), { explode: false }),
+    numArrExpl: dsl.path.label.array(dsl.value.number(), { explode: true }),
+    numArr: dsl.path.label.array(dsl.value.number(), { explode: false }),
+    boolArrExpl: dsl.path.label.array(dsl.value.boolean(), { explode: true }),
+    boolArr: dsl.path.label.array(dsl.value.boolean(), { explode: false }),
+    enmArrExpl: dsl.path.label.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+    enmArr: dsl.path.label.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+    objExpl: dsl.path.label.object(
+      {
+        objExplStrField: dsl.value.string(),
+        objExplNumField: dsl.value.number(),
+        objExplBoolField: dsl.value.boolean(),
+        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: dsl.value.optional(dsl.value.string()),
+        objExplOptNumField: dsl.value.optional(dsl.value.number()),
+        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true },
+    ),
+    obj: dsl.path.label.object(
+      {
+        objStrField: dsl.value.string(),
+        objNumField: dsl.value.number(),
+        objBoolField: dsl.value.boolean(),
+        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objOptStrField: dsl.value.optional(dsl.value.string()),
+        objOptNumField: dsl.value.optional(dsl.value.number()),
+        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false },
+    ),
+  },
+  [
+    'strExpl',
+    'str',
+    'numExpl',
+    'num',
+    'boolExpl',
+    'bool',
+    'enmExpl',
+    'enm',
+    'strArrExpl',
+    'strArr',
+    'numArrExpl',
+    'numArr',
+    'boolArrExpl',
+    'boolArr',
+    'enmArrExpl',
+    'enmArr',
+    'objExpl',
+    'obj',
+  ],
+  /^\/label-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+)
+
+export const matrixPathParametersPathDeserializer = createPathDeserializer<MatrixPathParametersPathParameters>(
+  {
+    strExpl: dsl.path.matrix.primitive(dsl.value.string(), { explode: true }),
+    str: dsl.path.matrix.primitive(dsl.value.string(), { explode: false }),
+    numExpl: dsl.path.matrix.primitive(dsl.value.number(), { explode: true }),
+    num: dsl.path.matrix.primitive(dsl.value.number(), { explode: false }),
+    boolExpl: dsl.path.matrix.primitive(dsl.value.boolean(), { explode: true }),
+    bool: dsl.path.matrix.primitive(dsl.value.boolean(), { explode: false }),
+    enmExpl: dsl.path.matrix.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+    enm: dsl.path.matrix.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+    strArrExpl: dsl.path.matrix.array(dsl.value.string(), { explode: true }),
+    strArr: dsl.path.matrix.array(dsl.value.string(), { explode: false }),
+    numArrExpl: dsl.path.matrix.array(dsl.value.number(), { explode: true }),
+    numArr: dsl.path.matrix.array(dsl.value.number(), { explode: false }),
+    boolArrExpl: dsl.path.matrix.array(dsl.value.boolean(), { explode: true }),
+    boolArr: dsl.path.matrix.array(dsl.value.boolean(), { explode: false }),
+    enmArrExpl: dsl.path.matrix.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+    enmArr: dsl.path.matrix.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+    objExpl: dsl.path.matrix.object(
+      {
+        objExplStrField: dsl.value.string(),
+        objExplNumField: dsl.value.number(),
+        objExplBoolField: dsl.value.boolean(),
+        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: dsl.value.optional(dsl.value.string()),
+        objExplOptNumField: dsl.value.optional(dsl.value.number()),
+        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true },
+    ),
+    obj: dsl.path.matrix.object(
+      {
+        objStrField: dsl.value.string(),
+        objNumField: dsl.value.number(),
+        objBoolField: dsl.value.boolean(),
+        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objOptStrField: dsl.value.optional(dsl.value.string()),
+        objOptNumField: dsl.value.optional(dsl.value.number()),
+        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false },
+    ),
+  },
+  [
+    'strExpl',
+    'str',
+    'numExpl',
+    'num',
+    'boolExpl',
+    'bool',
+    'enmExpl',
+    'enm',
+    'strArrExpl',
+    'strArr',
+    'numArrExpl',
+    'numArr',
+    'boolArrExpl',
+    'boolArr',
+    'enmArrExpl',
+    'enmArr',
+    'objExpl',
+    'obj',
+  ],
+  /^\/matrix-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+)
+
+export const simplePathParametersPathDeserializer = createPathDeserializer<SimplePathParametersPathParameters>(
+  {
+    strExpl: dsl.path.simple.primitive(dsl.value.string(), { explode: true }),
+    str: dsl.path.simple.primitive(dsl.value.string(), { explode: false }),
+    numExpl: dsl.path.simple.primitive(dsl.value.number(), { explode: true }),
+    num: dsl.path.simple.primitive(dsl.value.number(), { explode: false }),
+    boolExpl: dsl.path.simple.primitive(dsl.value.boolean(), { explode: true }),
+    bool: dsl.path.simple.primitive(dsl.value.boolean(), { explode: false }),
+    enmExpl: dsl.path.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+    enm: dsl.path.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+    strArrExpl: dsl.path.simple.array(dsl.value.string(), { explode: true }),
+    strArr: dsl.path.simple.array(dsl.value.string(), { explode: false }),
+    numArrExpl: dsl.path.simple.array(dsl.value.number(), { explode: true }),
+    numArr: dsl.path.simple.array(dsl.value.number(), { explode: false }),
+    boolArrExpl: dsl.path.simple.array(dsl.value.boolean(), { explode: true }),
+    boolArr: dsl.path.simple.array(dsl.value.boolean(), { explode: false }),
+    enmArrExpl: dsl.path.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: true }),
+    enmArr: dsl.path.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false }),
+    objExpl: dsl.path.simple.object(
+      {
+        objExplStrField: dsl.value.string(),
+        objExplNumField: dsl.value.number(),
+        objExplBoolField: dsl.value.boolean(),
+        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: dsl.value.optional(dsl.value.string()),
+        objExplOptNumField: dsl.value.optional(dsl.value.number()),
+        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true },
+    ),
+    obj: dsl.path.simple.object(
+      {
+        objStrField: dsl.value.string(),
+        objNumField: dsl.value.number(),
+        objBoolField: dsl.value.boolean(),
+        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objOptStrField: dsl.value.optional(dsl.value.string()),
+        objOptNumField: dsl.value.optional(dsl.value.number()),
+        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false },
+    ),
+  },
+  [
+    'strExpl',
+    'str',
+    'numExpl',
+    'num',
+    'boolExpl',
+    'bool',
+    'enmExpl',
+    'enm',
+    'strArrExpl',
+    'strArr',
+    'numArrExpl',
+    'numArr',
+    'boolArrExpl',
+    'boolArr',
+    'enmArrExpl',
+    'enmArr',
+    'objExpl',
+    'obj',
+  ],
+  /^\/simple-path-parameters(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))(?:\/([^\/#\?]+?))[\/#\?]?$/i,
+)
+
+export const deepObjectQueryParametersQueryDeserializer =
+  createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
+    objExpl: dsl.query.deepObject.object(
+      {
+        objExplStrField: dsl.value.string(),
+        objExplNumField: dsl.value.number(),
+        objExplBoolField: dsl.value.boolean(),
+        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: dsl.value.optional(dsl.value.string()),
+        objExplOptNumField: dsl.value.optional(dsl.value.number()),
+        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: true },
+    ),
+    optObjExpl: dsl.query.deepObject.object(
+      {
+        optObjExplStrField: dsl.value.string(),
+        optObjExplNumField: dsl.value.number(),
+        optObjExplBoolField: dsl.value.boolean(),
+        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
+        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
+        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: false },
+    ),
+  })
+
+export const formQueryParametersQueryDeserializer = createQueryDeserializer<FormQueryParametersQueryParameters>({
+  strExpl: dsl.query.form.primitive(dsl.value.string(), { explode: true, required: true }),
+  optStrExpl: dsl.query.form.primitive(dsl.value.string(), { explode: true, required: false }),
+  str: dsl.query.form.primitive(dsl.value.string(), { explode: false, required: true }),
+  optStr: dsl.query.form.primitive(dsl.value.string(), { explode: false, required: false }),
+  numExpl: dsl.query.form.primitive(dsl.value.number(), { explode: true, required: true }),
+  optNumExpl: dsl.query.form.primitive(dsl.value.number(), { explode: true, required: false }),
+  num: dsl.query.form.primitive(dsl.value.number(), { explode: false, required: true }),
+  optNum: dsl.query.form.primitive(dsl.value.number(), { explode: false, required: false }),
+  boolExpl: dsl.query.form.primitive(dsl.value.boolean(), { explode: true, required: true }),
+  optBoolExpl: dsl.query.form.primitive(dsl.value.boolean(), { explode: true, required: false }),
+  bool: dsl.query.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
+  optBool: dsl.query.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
+  enmExpl: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: true,
+    required: true,
+  }),
+  optEnmExpl: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: true,
+    required: false,
+  }),
+  enm: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
+  optEnm: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: false,
+    required: false,
+  }),
+  strArrExpl: dsl.query.form.array(dsl.value.string(), { explode: true, required: true }),
+  optStrArrExpl: dsl.query.form.array(dsl.value.string(), { explode: true, required: false }),
+  strArr: dsl.query.form.array(dsl.value.string(), { explode: false, required: true }),
+  optStrArr: dsl.query.form.array(dsl.value.string(), { explode: false, required: false }),
+  numArrExpl: dsl.query.form.array(dsl.value.number(), { explode: true, required: true }),
+  optNumArrExpl: dsl.query.form.array(dsl.value.number(), { explode: true, required: false }),
+  numArr: dsl.query.form.array(dsl.value.number(), { explode: false, required: true }),
+  optNumArr: dsl.query.form.array(dsl.value.number(), { explode: false, required: false }),
+  boolArrExpl: dsl.query.form.array(dsl.value.boolean(), { explode: true, required: true }),
+  optBoolArrExpl: dsl.query.form.array(dsl.value.boolean(), { explode: true, required: false }),
+  boolArr: dsl.query.form.array(dsl.value.boolean(), { explode: false, required: true }),
+  optBoolArr: dsl.query.form.array(dsl.value.boolean(), { explode: false, required: false }),
+  enmArrExpl: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: true,
+    required: true,
+  }),
+  optEnmArrExpl: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: true,
+    required: false,
+  }),
+  enmArr: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
+  optEnmArr: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    explode: false,
+    required: false,
+  }),
+  objExpl: dsl.query.form.object(
+    {
+      objExplStrField: dsl.value.string(),
+      objExplNumField: dsl.value.number(),
+      objExplBoolField: dsl.value.boolean(),
+      objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objExplOptStrField: dsl.value.optional(dsl.value.string()),
+      objExplOptNumField: dsl.value.optional(dsl.value.number()),
+      objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: true, required: true },
+  ),
+  optObjExpl: dsl.query.form.object(
+    {
+      optObjExplStrField: dsl.value.string(),
+      optObjExplNumField: dsl.value.number(),
+      optObjExplBoolField: dsl.value.boolean(),
+      optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
+      optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
+      optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: true, required: false },
+  ),
+  obj: dsl.query.form.object(
+    {
+      objStrField: dsl.value.string(),
+      objNumField: dsl.value.number(),
+      objBoolField: dsl.value.boolean(),
+      objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      objOptStrField: dsl.value.optional(dsl.value.string()),
+      objOptNumField: dsl.value.optional(dsl.value.number()),
+      objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: false, required: true },
+  ),
+  optObj: dsl.query.form.object(
+    {
+      optObjStrField: dsl.value.string(),
+      optObjNumField: dsl.value.number(),
+      optObjBoolField: dsl.value.boolean(),
+      optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+      optObjOptStrField: dsl.value.optional(dsl.value.string()),
+      optObjOptNumField: dsl.value.optional(dsl.value.number()),
+      optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
+      optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+    },
+    { explode: false, required: false },
+  ),
+})
+
+export const pipeDelimitedQueryParametersQueryDeserializer =
+  createQueryDeserializer<PipeDelimitedQueryParametersQueryParameters>({
+    strArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(), { explode: true, required: true }),
+    optStrArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(), { explode: true, required: false }),
+    numArrExpl: dsl.query.pipeDelimited.array(dsl.value.number(), { explode: true, required: true }),
+    optNumArrExpl: dsl.query.pipeDelimited.array(dsl.value.number(), { explode: true, required: false }),
+    boolArrExpl: dsl.query.pipeDelimited.array(dsl.value.boolean(), { explode: true, required: true }),
+    optBoolArrExpl: dsl.query.pipeDelimited.array(dsl.value.boolean(), { explode: true, required: false }),
+    enmArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    optEnmArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+  })
+
+export const spaceDelimitedQueryParametersQueryDeserializer =
+  createQueryDeserializer<SpaceDelimitedQueryParametersQueryParameters>({
+    strArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(), { explode: true, required: true }),
+    optStrArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(), { explode: true, required: false }),
+    numArrExpl: dsl.query.spaceDelimited.array(dsl.value.number(), { explode: true, required: true }),
+    optNumArrExpl: dsl.query.spaceDelimited.array(dsl.value.number(), { explode: true, required: false }),
+    boolArrExpl: dsl.query.spaceDelimited.array(dsl.value.boolean(), { explode: true, required: true }),
+    optBoolArrExpl: dsl.query.spaceDelimited.array(dsl.value.boolean(), { explode: true, required: false }),
+    enmArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    optEnmArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+  })
+
+export const simpleHeaderParametersRequestHeadersDeserializer =
+  createHeaderDeserializer<SimpleHeaderParametersRequestHeaderParameters>({
+    'X-StrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: true }),
+    'X-OptStrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: false }),
+    'X-Str-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: true }),
+    'X-OptStr-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: false }),
+    'X-NumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: true }),
+    'X-OptNumExpl-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: true, required: false }),
+    'X-Num-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: true }),
+    'X-OptNum-Header': dsl.header.simple.primitive(dsl.value.number(), { explode: false, required: false }),
+    'X-BoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: true }),
+    'X-OptBoolExpl-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: true, required: false }),
+    'X-Bool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: true }),
+    'X-OptBool-Header': dsl.header.simple.primitive(dsl.value.boolean(), { explode: false, required: false }),
+    'X-EnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptEnmExpl-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+    'X-Enm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptEnm-Header': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+    'X-StrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: true }),
+    'X-OptStrArrExpl-Header': dsl.header.simple.array(dsl.value.string(), { explode: true, required: false }),
+    'X-StrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: true }),
+    'X-OptStrArr-Header': dsl.header.simple.array(dsl.value.string(), { explode: false, required: false }),
+    'X-NumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: true }),
+    'X-OptNumArrExpl-Header': dsl.header.simple.array(dsl.value.number(), { explode: true, required: false }),
+    'X-NumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: true }),
+    'X-OptNumArr-Header': dsl.header.simple.array(dsl.value.number(), { explode: false, required: false }),
+    'X-BoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: true }),
+    'X-OptBoolArrExpl-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: true, required: false }),
+    'X-BoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: true }),
+    'X-OptBoolArr-Header': dsl.header.simple.array(dsl.value.boolean(), { explode: false, required: false }),
+    'X-EnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    'X-OptEnmArrExpl-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+    'X-EnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: true,
+    }),
+    'X-OptEnmArr-Header': dsl.header.simple.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+    'X-ObjExpl-Header': dsl.header.simple.object(
+      {
+        objExplStrField: dsl.value.string(),
+        objExplNumField: dsl.value.number(),
+        objExplBoolField: dsl.value.boolean(),
+        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: dsl.value.optional(dsl.value.string()),
+        objExplOptNumField: dsl.value.optional(dsl.value.number()),
+        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: true },
+    ),
+    'X-OptObjExpl-Header': dsl.header.simple.object(
+      {
+        optObjExplStrField: dsl.value.string(),
+        optObjExplNumField: dsl.value.number(),
+        optObjExplBoolField: dsl.value.boolean(),
+        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
+        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
+        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: false },
+    ),
+    'X-Obj-Header': dsl.header.simple.object(
+      {
+        objStrField: dsl.value.string(),
+        objNumField: dsl.value.number(),
+        objBoolField: dsl.value.boolean(),
+        objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        objOptStrField: dsl.value.optional(dsl.value.string()),
+        objOptNumField: dsl.value.optional(dsl.value.number()),
+        objOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false, required: true },
+    ),
+    'X-OptObj-Header': dsl.header.simple.object(
+      {
+        optObjStrField: dsl.value.string(),
+        optObjNumField: dsl.value.number(),
+        optObjBoolField: dsl.value.boolean(),
+        optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
+        optObjOptStrField: dsl.value.optional(dsl.value.string()),
+        optObjOptNumField: dsl.value.optional(dsl.value.number()),
+        optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
+        optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false, required: false },
+    ),
+  })
+
+export type ParametersApi = {
+  /**
+   * Endpoint for testing path parameters with simple serialization
+   */
+  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse>
+  /**
+   * Endpoint for testing path parameters with label serialization
+   */
+  labelPathParameters(request: LabelPathParametersServerRequest): Promise<LabelPathParametersServerResponse>
+  /**
+   * Endpoint for testing path parameters with matrix serialization
+   */
+  matrixPathParameters(request: MatrixPathParametersServerRequest): Promise<MatrixPathParametersServerResponse>
+  /**
+   * Endpoint for testing query parameters with form serialization
+   */
+  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse>
+  /**
+   * Endpoint for testing query parameters with spaceDelimited serialization
+   */
+  spaceDelimitedQueryParameters(
+    request: SpaceDelimitedQueryParametersServerRequest,
+  ): Promise<SpaceDelimitedQueryParametersServerResponse>
+  /**
+   * Endpoint for testing query parameters with pipeDelimited serialization
+   */
+  pipeDelimitedQueryParameters(
+    request: PipeDelimitedQueryParametersServerRequest,
+  ): Promise<PipeDelimitedQueryParametersServerResponse>
+  /**
+   * Endpoint for testing query parameters with deepObject serialization
+   */
+  deepObjectQueryParameters(
+    request: DeepObjectQueryParametersServerRequest,
+  ): Promise<DeepObjectQueryParametersServerResponse>
+  /**
+   * Endpoint for testing header parameters with simple serialization
+   */
+  simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersServerResponse>
+  /**
+   * Endpoint for testing cookie parameters with form serialization
+   */
+  formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse>
+  /**
+   * Endpoint for testing response-header parameters with simple serialization
+   */
+  simpleResponseHeaderParameters(
+    request: SimpleResponseHeaderParametersServerRequest,
+  ): Promise<SimpleResponseHeaderParametersServerResponse>
+}
+
+export const deepObjectQueryParametersRouter: Router = Router().get(
+  '/deepObject-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
+      const typedRequest: DeepObjectQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.deepObjectQueryParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const formCookieParametersRouter: Router = Router().get(
+  '/form-cookie-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const cookies = await adapter.getCookieParameters(toolkit, formCookieParametersCookieDeserializer)
+      const typedRequest: FormCookieParametersServerRequest = {
+        cookies,
+      }
+      const typedResponse = await api.formCookieParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, formCookieParametersSetCookieSerializer),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const formQueryParametersRouter: Router = Router().get(
+  '/form-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
+      const typedRequest: FormQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.formQueryParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const labelPathParametersRouter: Router = Router().get(
+  '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
+      const typedRequest: LabelPathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.labelPathParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const matrixPathParametersRouter: Router = Router().get(
+  '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
+      const typedRequest: MatrixPathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.matrixPathParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const pipeDelimitedQueryParametersRouter: Router = Router().get(
+  '/pipeDelimited-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
+      const typedRequest: PipeDelimitedQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const simpleHeaderParametersRouter: Router = Router().get(
+  '/simple-header-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
+      const typedRequest: SimpleHeaderParametersServerRequest = {
+        headers,
+      }
+      const typedResponse = await api.simpleHeaderParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const simplePathParametersRouter: Router = Router().get(
+  '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
+      const typedRequest: SimplePathParametersServerRequest = {
+        path,
+      }
+      const typedResponse = await api.simplePathParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const simpleResponseHeaderParametersRouter: Router = Router().post(
+  '/simple-response-header-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+      const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
+        toolkit,
+        true,
+        mimeType,
+        simpleResponseHeaderParametersRequestBodyValidator,
+      )
+      const typedRequest: SimpleResponseHeaderParametersServerRequest = {
+        mimeType,
+        body,
+      }
+      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(
+          toolkit,
+          typedResponse,
+          simpleResponseHeaderParametersResponseHeadersSerializer,
+        ),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const spaceDelimitedQueryParametersRouter: Router = Router().get(
+  '/spaceDelimited-query-parameters',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: ParametersApi = response.locals['__oats_api']
+    try {
+      const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
+      const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
+        query,
+      }
+      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export type ParametersRouters = {
+  simplePathParametersRouter: Router
+  labelPathParametersRouter: Router
+  matrixPathParametersRouter: Router
+  formQueryParametersRouter: Router
+  spaceDelimitedQueryParametersRouter: Router
+  pipeDelimitedQueryParametersRouter: Router
+  deepObjectQueryParametersRouter: Router
+  simpleHeaderParametersRouter: Router
+  formCookieParametersRouter: Router
+  simpleResponseHeaderParametersRouter: Router
+}
+
+export function createParametersRouter(
+  api: ParametersApi,
+  adapter: ServerAdapter<ExpressToolkit>,
+  routes: Partial<ParametersRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_adapter'] = adapter
+      next()
+    },
+    routes.simplePathParametersRouter ?? simplePathParametersRouter,
+    routes.labelPathParametersRouter ?? labelPathParametersRouter,
+    routes.matrixPathParametersRouter ?? matrixPathParametersRouter,
+    routes.formQueryParametersRouter ?? formQueryParametersRouter,
+    routes.spaceDelimitedQueryParametersRouter ?? spaceDelimitedQueryParametersRouter,
+    routes.pipeDelimitedQueryParametersRouter ?? pipeDelimitedQueryParametersRouter,
+    routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
+    routes.simpleHeaderParametersRouter ?? simpleHeaderParametersRouter,
+    routes.formCookieParametersRouter ?? formCookieParametersRouter,
+    routes.simpleResponseHeaderParametersRouter ?? simpleResponseHeaderParametersRouter,
+  )
+}
+
+export const parametersCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  response.setHeader(
+    'Access-Control-Allow-Headers',
+    'x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header, content-type',
+  )
+  response.setHeader(
+    'Access-Control-Expose-Headers',
+    'content-type, x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header',
+  )
+  next()
 }

@@ -492,170 +492,6 @@ export function isUuid(input: any): input is UUID {
   return typeof input === 'string'
 }
 
-export type GetAuthIntrospectServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: Introspection
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type GetItemUsagesServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: ItemUsageItems
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type GetSignInAttemptsServerResponse =
-  | {
-      statusCode: 200
-      mimeType: 'application/json'
-      body: SignInAttemptItems
-    }
-  | {
-      statusCode: 401
-      mimeType: 'application/json'
-      body: Error
-    }
-  | {
-      statusCode: Exclude<number, 200 | 401>
-      mimeType: 'application/json'
-      body: Error
-    }
-
-export type EventsAPIApi = {
-  /**
-   * Performs introspection of the provided Bearer JWT token
-   */
-  getAuthIntrospect(): Promise<GetAuthIntrospectServerResponse>
-  /**
-   * Retrieves item usages
-   *
-   * This endpoint requires your JSON Web Token to have the *itemusages* feature.
-   */
-  getItemUsages(): Promise<GetItemUsagesServerResponse>
-  /**
-   * Retrieves sign-in attempts
-   *
-   * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
-   */
-  getSignInAttempts(): Promise<GetSignInAttemptsServerResponse>
-}
-
-export const getAuthIntrospectRouter: Router = Router().get(
-  '/api/auth/introspect',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: EventsAPIApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getAuthIntrospect()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const getItemUsagesRouter: Router = Router().post(
-  '/api/v1/itemusages',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: EventsAPIApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getItemUsages()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export const getSignInAttemptsRouter: Router = Router().post(
-  '/api/v1/signinattempts',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: EventsAPIApi = response.locals['__oats_api']
-    try {
-      const typedResponse = await api.getSignInAttempts()
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
-
-export type EventsAPIRouters = {
-  getAuthIntrospectRouter: Router
-  getItemUsagesRouter: Router
-  getSignInAttemptsRouter: Router
-}
-
-export function createEventsAPIRouter(
-  api: EventsAPIApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<EventsAPIRouters> = {},
-): Router {
-  return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
-    routes.getAuthIntrospectRouter ?? getAuthIntrospectRouter,
-    routes.getItemUsagesRouter ?? getItemUsagesRouter,
-    routes.getSignInAttemptsRouter ?? getSignInAttemptsRouter,
-  )
-}
-
-export const eventsApiCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
-  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
-  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-  response.setHeader('Access-Control-Allow-Headers', 'content-type')
-  response.setHeader('Access-Control-Expose-Headers', 'content-type')
-  next()
-}
-
 export type GetAuthIntrospectResponse =
   | {
       statusCode: 200
@@ -843,4 +679,168 @@ export class EventsAPISdkImpl implements EventsAPISdk {
   public async getSignInAttempts(): Promise<GetSignInAttemptsResponse> {
     return getSignInAttempts(this.adapter)
   }
+}
+
+export type GetAuthIntrospectServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: Introspection
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetItemUsagesServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ItemUsageItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type GetSignInAttemptsServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: SignInAttemptItems
+    }
+  | {
+      statusCode: 401
+      mimeType: 'application/json'
+      body: Error
+    }
+  | {
+      statusCode: Exclude<number, 200 | 401>
+      mimeType: 'application/json'
+      body: Error
+    }
+
+export type EventsAPIApi = {
+  /**
+   * Performs introspection of the provided Bearer JWT token
+   */
+  getAuthIntrospect(): Promise<GetAuthIntrospectServerResponse>
+  /**
+   * Retrieves item usages
+   *
+   * This endpoint requires your JSON Web Token to have the *itemusages* feature.
+   */
+  getItemUsages(): Promise<GetItemUsagesServerResponse>
+  /**
+   * Retrieves sign-in attempts
+   *
+   * This endpoint requires your JSON Web Token to have the *signinattempts* feature.
+   */
+  getSignInAttempts(): Promise<GetSignInAttemptsServerResponse>
+}
+
+export const getAuthIntrospectRouter: Router = Router().get(
+  '/api/auth/introspect',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: EventsAPIApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getAuthIntrospect()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const getItemUsagesRouter: Router = Router().post(
+  '/api/v1/itemusages',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: EventsAPIApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getItemUsages()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export const getSignInAttemptsRouter: Router = Router().post(
+  '/api/v1/signinattempts',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    const api: EventsAPIApi = response.locals['__oats_api']
+    try {
+      const typedResponse = await api.getSignInAttempts()
+      const rawResponse: RawHttpResponse = {
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+        body: await adapter.getResponseBody(toolkit, typedResponse),
+        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+      }
+      return adapter.respond(toolkit, rawResponse)
+    } catch (error) {
+      adapter.handleError(toolkit, error)
+    }
+  },
+)
+
+export type EventsAPIRouters = {
+  getAuthIntrospectRouter: Router
+  getItemUsagesRouter: Router
+  getSignInAttemptsRouter: Router
+}
+
+export function createEventsAPIRouter(
+  api: EventsAPIApi,
+  adapter: ServerAdapter<ExpressToolkit>,
+  routes: Partial<EventsAPIRouters> = {},
+): Router {
+  return Router().use(
+    (_, response, next) => {
+      response.locals['__oats_api'] = api
+      response.locals['__oats_adapter'] = adapter
+      next()
+    },
+    routes.getAuthIntrospectRouter ?? getAuthIntrospectRouter,
+    routes.getItemUsagesRouter ?? getItemUsagesRouter,
+    routes.getSignInAttemptsRouter ?? getSignInAttemptsRouter,
+  )
+}
+
+export const eventsApiCorsMiddleware: RequestHandler = (request: Request, response: Response, next: NextFunction) => {
+  response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+  response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  response.setHeader('Access-Control-Allow-Headers', 'content-type')
+  response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  next()
 }
