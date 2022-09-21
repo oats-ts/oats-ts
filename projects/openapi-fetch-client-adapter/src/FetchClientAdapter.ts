@@ -57,13 +57,7 @@ export class FetchClientAdapter implements ClientAdapter {
   }
 
   async request(request: RawHttpRequest): Promise<RawHttpResponse> {
-    const response = await crossFetch.fetch(request.url, {
-      ...(this.config.options ?? {}),
-      headers: request.headers,
-      method: request.method,
-      ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
-    })
-
+    const response = await crossFetch.fetch(request.url, this.getRequestInit(request))
     const rawHeaders: Record<string, string> = {}
     response.headers.forEach((value, key) => (rawHeaders[key.toLowerCase()] = value))
 
@@ -223,5 +217,14 @@ export class FetchClientAdapter implements ClientAdapter {
     }
 
     return response.body
+  }
+
+  protected getRequestInit(request: RawHttpRequest): RequestInit | undefined {
+    return {
+      ...(this.config.options ?? {}),
+      headers: request.headers,
+      method: request.method,
+      ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
+    }
   }
 }
