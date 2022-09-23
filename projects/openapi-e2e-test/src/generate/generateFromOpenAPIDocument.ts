@@ -12,7 +12,7 @@ import {
 } from '@oats-ts/openapi'
 
 function getCorsConfig(url: string) {
-  if (url.includes('pet-store-json')) {
+  if (url.includes('pet-store-json') || url.includes('parameters')) {
     return true
   }
   if (url.includes('pet-store-yaml')) {

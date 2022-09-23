@@ -38,34 +38,46 @@ import { simpleResponseHeaderParametersResponseHeadersSerializer } from './respo
 import { formCookieParametersSetCookieSerializer } from './setCookieSerializers'
 import { SimpleResponseHeaderParameters } from './types'
 
-export const deepObjectQueryParametersRouter: Router = Router().get(
-  '/deepObject-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
-      const typedRequest: DeepObjectQueryParametersServerRequest = {
-        query,
+export const deepObjectQueryParametersRouter: Router = Router()
+  .options('/deepObject-query-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'GET')
+    response.setHeader('Access-Control-Expose-Headers', 'content-type')
+    next()
+  })
+  .get(
+    '/deepObject-query-parameters',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
+        const typedRequest: DeepObjectQueryParametersServerRequest = {
+          query,
+        }
+        const typedResponse = await api.deepObjectQueryParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.deepObjectQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
 
-export const formCookieParametersRouter: Router = Router().get(
-  '/form-cookie-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const formCookieParametersRouter: Router = Router()
+  .options('/form-cookie-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'GET')
+    response.setHeader('Access-Control-Expose-Headers', 'content-type')
+    next()
+  })
+  .get('/form-cookie-parameters', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi = response.locals['__oats_api']
@@ -85,12 +97,16 @@ export const formCookieParametersRouter: Router = Router().get(
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  },
-)
+  })
 
-export const formQueryParametersRouter: Router = Router().get(
-  '/form-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const formQueryParametersRouter: Router = Router()
+  .options('/form-query-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'GET')
+    response.setHeader('Access-Control-Expose-Headers', 'content-type')
+    next()
+  })
+  .get('/form-query-parameters', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi = response.locals['__oats_api']
@@ -110,87 +126,122 @@ export const formQueryParametersRouter: Router = Router().get(
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  },
-)
+  })
 
-export const labelPathParametersRouter: Router = Router().get(
-  '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
-      const typedRequest: LabelPathParametersServerRequest = {
-        path,
+export const labelPathParametersRouter: Router = Router()
+  .options(
+    '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+    (request: Request, response: Response, next: NextFunction) => {
+      response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+      response.setHeader('Access-Control-Allow-Methods', 'GET')
+      response.setHeader('Access-Control-Expose-Headers', 'content-type')
+      next()
+    },
+  )
+  .get(
+    '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
+        const typedRequest: LabelPathParametersServerRequest = {
+          path,
+        }
+        const typedResponse = await api.labelPathParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.labelPathParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
 
-export const matrixPathParametersRouter: Router = Router().get(
-  '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
-      const typedRequest: MatrixPathParametersServerRequest = {
-        path,
+export const matrixPathParametersRouter: Router = Router()
+  .options(
+    '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+    (request: Request, response: Response, next: NextFunction) => {
+      response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+      response.setHeader('Access-Control-Allow-Methods', 'GET')
+      response.setHeader('Access-Control-Expose-Headers', 'content-type')
+      next()
+    },
+  )
+  .get(
+    '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
+        const typedRequest: MatrixPathParametersServerRequest = {
+          path,
+        }
+        const typedResponse = await api.matrixPathParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.matrixPathParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
 
-export const pipeDelimitedQueryParametersRouter: Router = Router().get(
-  '/pipeDelimited-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
-      const typedRequest: PipeDelimitedQueryParametersServerRequest = {
-        query,
+export const pipeDelimitedQueryParametersRouter: Router = Router()
+  .options('/pipeDelimited-query-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'GET')
+    response.setHeader('Access-Control-Expose-Headers', 'content-type')
+    next()
+  })
+  .get(
+    '/pipeDelimited-query-parameters',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
+        const typedRequest: PipeDelimitedQueryParametersServerRequest = {
+          query,
+        }
+        const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
 
-export const simpleHeaderParametersRouter: Router = Router().get(
-  '/simple-header-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const simpleHeaderParametersRouter: Router = Router()
+  .options('/simple-header-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'GET')
+    response.setHeader(
+      'Access-Control-Allow-Headers',
+      'x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header',
+    )
+    response.setHeader('Access-Control-Expose-Headers', 'content-type')
+    next()
+  })
+  .get('/simple-header-parameters', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: ParametersApi = response.locals['__oats_api']
@@ -210,91 +261,118 @@ export const simpleHeaderParametersRouter: Router = Router().get(
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  },
-)
+  })
 
-export const simplePathParametersRouter: Router = Router().get(
-  '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
-      const typedRequest: SimplePathParametersServerRequest = {
-        path,
+export const simplePathParametersRouter: Router = Router()
+  .options(
+    '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+    (request: Request, response: Response, next: NextFunction) => {
+      response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+      response.setHeader('Access-Control-Allow-Methods', 'GET')
+      response.setHeader('Access-Control-Expose-Headers', 'content-type')
+      next()
+    },
+  )
+  .get(
+    '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
+        const typedRequest: SimplePathParametersServerRequest = {
+          path,
+        }
+        const typedResponse = await api.simplePathParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.simplePathParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
 
-export const simpleResponseHeaderParametersRouter: Router = Router().post(
-  '/simple-response-header-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
-        toolkit,
-        true,
-        mimeType,
-        simpleResponseHeaderParametersRequestBodyValidator,
-      )
-      const typedRequest: SimpleResponseHeaderParametersServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.simpleResponseHeaderParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
+export const simpleResponseHeaderParametersRouter: Router = Router()
+  .options('/simple-response-header-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'POST')
+    response.setHeader('Access-Control-Allow-Headers', 'content-type')
+    response.setHeader(
+      'Access-Control-Expose-Headers',
+      'x-strexpl-header, x-optstrexpl-header, x-str-header, x-optstr-header, x-numexpl-header, x-optnumexpl-header, x-num-header, x-optnum-header, x-boolexpl-header, x-optboolexpl-header, x-bool-header, x-optbool-header, x-enmexpl-header, x-optenmexpl-header, x-enm-header, x-optenm-header, x-strarrexpl-header, x-optstrarrexpl-header, x-strarr-header, x-optstrarr-header, x-numarrexpl-header, x-optnumarrexpl-header, x-numarr-header, x-optnumarr-header, x-boolarrexpl-header, x-optboolarrexpl-header, x-boolarr-header, x-optboolarr-header, x-enmarrexpl-header, x-optenmarrexpl-header, x-enmarr-header, x-optenmarr-header, x-objexpl-header, x-optobjexpl-header, x-obj-header, x-optobj-header, content-type',
+    )
+    next()
+  })
+  .post(
+    '/simple-response-header-parameters',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+        const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
           toolkit,
-          typedResponse,
-          simpleResponseHeaderParametersResponseHeadersSerializer,
-        ),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+          true,
+          mimeType,
+          simpleResponseHeaderParametersRequestBodyValidator,
+        )
+        const typedRequest: SimpleResponseHeaderParametersServerRequest = {
+          mimeType,
+          body,
+        }
+        const typedResponse = await api.simpleResponseHeaderParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(
+            toolkit,
+            typedResponse,
+            simpleResponseHeaderParametersResponseHeadersSerializer,
+          ),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
 
-export const spaceDelimitedQueryParametersRouter: Router = Router().get(
-  '/spaceDelimited-query-parameters',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: ParametersApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
-      const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
-        query,
+export const spaceDelimitedQueryParametersRouter: Router = Router()
+  .options('/spaceDelimited-query-parameters', (request: Request, response: Response, next: NextFunction) => {
+    response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '*')
+    response.setHeader('Access-Control-Allow-Methods', 'GET')
+    response.setHeader('Access-Control-Expose-Headers', 'content-type')
+    next()
+  })
+  .get(
+    '/spaceDelimited-query-parameters',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: ParametersApi = response.locals['__oats_api']
+      try {
+        const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
+        const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
+          query,
+        }
+        const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
+        }
+        return adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
-      }
-      return adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )

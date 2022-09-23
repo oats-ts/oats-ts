@@ -6,6 +6,7 @@ import { createBookStoreRouter } from './generated/book-store/expressRouteFactor
 import { createHttpMethodsRouter } from './generated/methods/expressRouteFactory'
 import { createParametersRouter } from './generated/parameters/expressRouteFactory'
 import { BookStoreApiImpl } from './tests/bookStore/BookStoreApiImpl'
+import { PATH, PORT } from './tests/constants'
 import { HttpMethodsApiImpl } from './tests/methods/HttpMethodsApiImpl'
 import { ParametersApiImpl } from './tests/parameters/ParametersApiImpl'
 
@@ -30,4 +31,4 @@ const app = express()
 app.use(jsonBodyParser())
 app.use(router)
 
-app.listen(5000, () => console.log(`Server "${serverArg}" running on http://localhost:5000`))
+app.listen(PORT, () => console.log(`Server "${serverArg}" running on ${PATH}`))

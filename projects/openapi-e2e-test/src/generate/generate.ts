@@ -27,7 +27,7 @@ async function generateAll() {
       type: 'list',
       name: 'pathType',
       message: 'Select pathing mechanism:',
-      default: 'singleFile',
+      default: 'byTarget',
       choices: ['default', 'singleFile', 'byTarget', 'byName'],
     },
     {
