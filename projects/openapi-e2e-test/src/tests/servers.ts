@@ -1,11 +1,6 @@
 import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { HttpResponse } from '@oats-ts/openapi-http'
 import YAML from 'yamljs'
-import { createBodiesRouter } from '../generated/bodies'
-import { createBodiesRouter as createOptionalRequestBodyRouter } from '../generated/optional-request-body'
-import { createBookStoreRouter } from '../generated/book-store'
-import { createHttpMethodsRouter } from '../generated/methods'
-import { createParametersRouter } from '../generated/Parameters'
 import { BodiesApiImpl } from './bodies/BodiesApiImpl'
 import { OptionalBodiesImpl } from './bodies/OptionalBodiesApiImpl'
 import { BookStoreApiImpl } from './bookStore/BookStoreApiImpl'
@@ -14,6 +9,11 @@ import { PORT } from './constants'
 import { HttpMethodsApiImpl } from './methods/HttpMethodsApiImpl'
 import { ParametersApiImpl } from './parameters/ParametersApiImpl'
 import { testExpressServer } from '../testExpressServer'
+import { createBookStoreRouter } from '../generated/book-store/expressRouteFactory'
+import { createBodiesRouter as createOptionalRequestBodyRouter } from '../generated/optional-request-body/expressRouteFactory'
+import { createBodiesRouter } from '../generated/bodies/expressRouteFactory'
+import { createHttpMethodsRouter } from '../generated/methods/expressRouteFactory'
+import { createParametersRouter } from '../generated/parameters/expressRouteFactory'
 
 export function testBookStoreServer() {
   testExpressServer({

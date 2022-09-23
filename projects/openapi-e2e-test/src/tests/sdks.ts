@@ -1,11 +1,11 @@
 import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
 import YAML from 'yamljs'
-import { BodiesSdkImpl } from '../generated/bodies'
-import { BodiesSdkImpl as OptionalReqBodySdkImpl } from '../generated/optional-request-body'
-import { BookStoreSdkImpl } from '../generated/book-store'
-import { HttpMethodsSdkImpl } from '../generated/methods'
-import { ParametersSdkImpl } from '../generated/Parameters'
+import { BodiesSdkImpl as OptionalReqBodySdkImpl } from '../generated/optional-request-body/sdkImpl'
+import { BodiesSdkImpl } from '../generated/bodies/sdkImpl'
 import { PATH } from './constants'
+import { BookStoreSdkImpl } from '../generated/book-store/sdkImpl'
+import { HttpMethodsSdkImpl } from '../generated/methods/sdkImpl'
+import { ParametersSdkImpl } from '../generated/parameters/sdkImpl'
 
 class YamlFetchClientAdapter extends FetchClientAdapter {
   override async getParsedResponseBody(response: any): Promise<any> {

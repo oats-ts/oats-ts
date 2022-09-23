@@ -1,7 +1,7 @@
-import { HttpMethodsSdk } from '../../generated/methods'
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { testHttpMethodsServer } from '../servers'
 import { httpMethodsSdk } from '../sdks'
+import { HttpMethodsSdk } from '../../generated/methods/sdkType'
 
 describe('Http methods', () => {
   testHttpMethodsServer()

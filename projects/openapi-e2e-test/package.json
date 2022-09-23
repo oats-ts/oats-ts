@@ -16,7 +16,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "tsc --noEmit",
-    "g": "ts-node src/generate.ts",
+    "g": "ts-node src/generate/generate.ts",
     "test": "cross-env jest --runInBand",
     "typecheck": "tsc --noEmit",
     "browser-test": "webpack-dev-server",

@@ -1,4 +1,4 @@
-import { Book } from '../../generated/book-store'
+import { Book } from '../../generated/book-store/types'
 
 export const frogBook: Book = {
   id: 1,

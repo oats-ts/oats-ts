@@ -8,28 +8,16 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        loader: 'ts-loader',
         exclude: /node_modules/,
+        options: {
+          configFile: 'tsconfig.json',
+        },
       },
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    // fallback: {
-    //   dgram: false,
-    //   fs: false,
-    //   net: false,
-    //   tls: false,
-    //   util: false,
-    //   https: false,
-    //   crypto: false,
-    //   assert: false,
-    //   stream: false,
-    //   http: false,
-    //   zlib: false,
-    //   path: false,
-    //   process: require.resolve('process'),
-    // },
   },
   output: {
     filename: 'main.js',

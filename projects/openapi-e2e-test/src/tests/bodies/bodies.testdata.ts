@@ -5,7 +5,7 @@ import {
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
-} from '../../generated/bodies'
+} from '../../generated/bodies/types'
 import { random } from '../common/random'
 
 const enumValues: EnumType[] = ['A', 'B', 'C']

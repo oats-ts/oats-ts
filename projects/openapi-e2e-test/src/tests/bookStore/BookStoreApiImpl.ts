@@ -1,22 +1,23 @@
 import { failure, fluent, success, zip } from '@oats-ts/try'
 import { Issue, stringify } from '@oats-ts/validators'
+import { BookStoreApi } from '../../generated/book-store/apiType'
 import {
-  BookStoreApi,
-  GetBookResponse,
-  GetBookServerRequest,
-  GetBooksResponse,
-  Book,
-  AppError,
-  AddBookResponse,
-  AddBookServerRequest,
   GetBooksServerRequest,
-} from '../../generated/book-store'
+  AddBookServerRequest,
+  GetBookServerRequest,
+} from '../../generated/book-store/requestServerTypes'
+import {
+  GetBooksServerResponse,
+  AddBookServerResponse,
+  GetBookServerResponse,
+} from '../../generated/book-store/responseServerTypes'
+import { AppError, Book } from '../../generated/book-store/types'
 import { defaultBooks } from './bookStore.testdata'
 
 export class BookStoreApiImpl implements BookStoreApi {
   private books: Book[] = Array.from(defaultBooks)
 
-  async addBook(request: AddBookServerRequest): Promise<AddBookResponse> {
+  async addBook(request: AddBookServerRequest): Promise<AddBookServerResponse> {
     return fluent(request.body)
       .map((body): Book => {
         const book: Book = {
@@ -27,12 +28,12 @@ export class BookStoreApiImpl implements BookStoreApi {
         return book
       })
       .get(
-        (book): AddBookResponse => ({
+        (book): AddBookServerResponse => ({
           body: book,
           mimeType: 'application/json',
           statusCode: 201,
         }),
-        (issues: Issue[]): AddBookResponse => ({
+        (issues: Issue[]): AddBookServerResponse => ({
           body: issues.map(stringify).map((message): AppError => ({ message })),
           mimeType: 'application/json',
           statusCode: 400,
@@ -40,7 +41,7 @@ export class BookStoreApiImpl implements BookStoreApi {
       )
   }
 
-  async getBooks(request: GetBooksServerRequest): Promise<GetBooksResponse> {
+  async getBooks(request: GetBooksServerRequest): Promise<GetBooksServerResponse> {
     fluent(zip(request.headers, request.query))
       .map(([headers, query]) => {
         const start = query.offset ?? 0
@@ -48,13 +49,13 @@ export class BookStoreApiImpl implements BookStoreApi {
         return this.books.slice(start, end)
       })
       .get(
-        (books): GetBooksResponse => ({
+        (books): GetBooksServerResponse => ({
           statusCode: 200,
           mimeType: 'application/json',
           body: books,
           headers: { 'x-length': books.length },
         }),
-        (issues): GetBooksResponse => ({
+        (issues): GetBooksServerResponse => ({
           statusCode: 400,
           mimeType: 'application/json',
           body: issues.map(stringify).map((message): AppError => ({ message })),
@@ -70,7 +71,7 @@ export class BookStoreApiImpl implements BookStoreApi {
     }
   }
 
-  async getBook(input: GetBookServerRequest): Promise<GetBookResponse> {
+  async getBook(input: GetBookServerRequest): Promise<GetBookServerResponse> {
     return fluent(input.path)
       .flatMap(({ bookId }) => {
         const book = this.books.find(({ id }) => id === bookId)
@@ -83,12 +84,12 @@ export class BookStoreApiImpl implements BookStoreApi {
           : success(book)
       })
       .get(
-        (book): GetBookResponse => ({
+        (book): GetBookServerResponse => ({
           body: book,
           mimeType: 'application/json',
           statusCode: 200,
         }),
-        (issues: Issue[]): GetBookResponse => ({
+        (issues: Issue[]): GetBookServerResponse => ({
           body: issues.map(stringify).map((message): AppError => ({ message })),
           mimeType: 'application/json',
           statusCode: 400,

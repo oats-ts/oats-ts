@@ -1,3 +1,4 @@
+import { FormCookieParametersCookieParameters } from '../../generated/parameters/cookieTypes'
 import {
   CommonEnumType,
   CommonObjectType,
@@ -5,7 +6,6 @@ import {
   CommonOptObjectType,
   CommonOptObjectTypeExpl,
   DeepObjectQueryParameters,
-  FormCookieParametersCookieParameters,
   FormQueryParameters,
   LabelPathParameters,
   MatrixPathParameters,
@@ -13,7 +13,7 @@ import {
   SimpleHeaderParameters,
   SimplePathParameters,
   SpaceDelimitedQueryParameters,
-} from '../../generated/parameters'
+} from '../../generated/parameters/types'
 import { random } from '../common/random'
 
 const enumValues: CommonEnumType[] = ['A', 'B', 'C']

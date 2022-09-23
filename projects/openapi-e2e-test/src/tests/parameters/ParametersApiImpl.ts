@@ -1,29 +1,31 @@
-import {
-  DeepObjectQueryParametersResponse,
-  DeepObjectQueryParametersServerRequest,
-  FormCookieParametersServerRequest,
-  FormCookieParametersServerResponse,
-  FormQueryParametersResponse,
-  FormQueryParametersServerRequest,
-  LabelPathParametersResponse,
-  LabelPathParametersServerRequest,
-  MatrixPathParametersResponse,
-  MatrixPathParametersServerRequest,
-  ParameterIssue,
-  ParametersApi,
-  PipeDelimitedQueryParametersResponse,
-  PipeDelimitedQueryParametersServerRequest,
-  SimpleHeaderParametersResponse,
-  SimpleHeaderParametersServerRequest,
-  SimplePathParametersResponse,
-  SimplePathParametersServerRequest,
-  SimpleResponseHeaderParametersResponse,
-  SimpleResponseHeaderParametersServerRequest,
-  SpaceDelimitedQueryParametersResponse,
-  SpaceDelimitedQueryParametersServerRequest,
-} from '../../generated/parameters'
 import { isFailure, Try } from '@oats-ts/try'
 import { HttpResponse } from '@oats-ts/openapi-http'
+import { ParameterIssue } from '../../generated/parameters/types'
+import { ParametersApi } from '../../generated/parameters/apiType'
+import {
+  SimplePathParametersServerRequest,
+  LabelPathParametersServerRequest,
+  MatrixPathParametersServerRequest,
+  FormQueryParametersServerRequest,
+  SpaceDelimitedQueryParametersServerRequest,
+  PipeDelimitedQueryParametersServerRequest,
+  DeepObjectQueryParametersServerRequest,
+  SimpleHeaderParametersServerRequest,
+  FormCookieParametersServerRequest,
+  SimpleResponseHeaderParametersServerRequest,
+} from '../../generated/parameters/requestServerTypes'
+import {
+  SimplePathParametersServerResponse,
+  LabelPathParametersServerResponse,
+  MatrixPathParametersServerResponse,
+  FormQueryParametersServerResponse,
+  SpaceDelimitedQueryParametersServerResponse,
+  PipeDelimitedQueryParametersServerResponse,
+  DeepObjectQueryParametersServerResponse,
+  SimpleHeaderParametersServerResponse,
+  FormCookieParametersServerResponse,
+  SimpleResponseHeaderParametersServerResponse,
+} from '../../generated/parameters/responseServerTypes'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
@@ -46,7 +48,7 @@ export class ParametersApiImpl implements ParametersApi {
   }
   async simpleResponseHeaderParameters(
     input: SimpleResponseHeaderParametersServerRequest,
-  ): Promise<SimpleResponseHeaderParametersResponse> {
+  ): Promise<SimpleResponseHeaderParametersServerResponse> {
     if (isFailure(input.body)) {
       return {
         mimeType: 'application/json',
@@ -63,32 +65,34 @@ export class ParametersApiImpl implements ParametersApi {
   }
   async deepObjectQueryParameters(
     input: DeepObjectQueryParametersServerRequest,
-  ): Promise<DeepObjectQueryParametersResponse> {
+  ): Promise<DeepObjectQueryParametersServerResponse> {
     return this.respond(input.query)
   }
-  async formQueryParameters(input: FormQueryParametersServerRequest): Promise<FormQueryParametersResponse> {
+  async formQueryParameters(input: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse> {
     return this.respond(input.query)
   }
-  async labelPathParameters(input: LabelPathParametersServerRequest): Promise<LabelPathParametersResponse> {
+  async labelPathParameters(input: LabelPathParametersServerRequest): Promise<LabelPathParametersServerResponse> {
     return this.respond(input.path)
   }
-  async matrixPathParameters(input: MatrixPathParametersServerRequest): Promise<MatrixPathParametersResponse> {
+  async matrixPathParameters(input: MatrixPathParametersServerRequest): Promise<MatrixPathParametersServerResponse> {
     return this.respond(input.path)
   }
   async pipeDelimitedQueryParameters(
     input: PipeDelimitedQueryParametersServerRequest,
-  ): Promise<PipeDelimitedQueryParametersResponse> {
+  ): Promise<PipeDelimitedQueryParametersServerResponse> {
     return this.respond(input.query)
   }
-  async simpleHeaderParameters(input: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersResponse> {
+  async simpleHeaderParameters(
+    input: SimpleHeaderParametersServerRequest,
+  ): Promise<SimpleHeaderParametersServerResponse> {
     return this.respond(input.headers)
   }
-  async simplePathParameters(input: SimplePathParametersServerRequest): Promise<SimplePathParametersResponse> {
+  async simplePathParameters(input: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse> {
     return this.respond(input.path)
   }
   async spaceDelimitedQueryParameters(
     input: SpaceDelimitedQueryParametersServerRequest,
-  ): Promise<SpaceDelimitedQueryParametersResponse> {
+  ): Promise<SpaceDelimitedQueryParametersServerResponse> {
     return this.respond(input.query)
   }
   async formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse> {

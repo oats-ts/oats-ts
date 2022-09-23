@@ -1,3 +1,7 @@
+import { parametersSdk } from '../tests/sdks'
+
+console.log(parametersSdk)
+
 describe('Parameters', () => {
   describe('path', () => {
     describe('simple', () => {})
