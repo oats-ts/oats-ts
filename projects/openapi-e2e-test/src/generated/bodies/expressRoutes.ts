@@ -67,12 +67,12 @@ export const arrObjRouter: Router = Router().post(
       }
       const typedResponse = await api.arrObj(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -99,12 +99,12 @@ export const boolArrRouter: Router = Router().post(
       }
       const typedResponse = await api.boolArr(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -131,12 +131,12 @@ export const boolRouter: Router = Router().post(
       }
       const typedResponse = await api.bool(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -163,12 +163,12 @@ export const enmArrRouter: Router = Router().post(
       }
       const typedResponse = await api.enmArr(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -195,12 +195,12 @@ export const enmRouter: Router = Router().post(
       }
       const typedResponse = await api.enm(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -227,12 +227,12 @@ export const nestedObjRouter: Router = Router().post(
       }
       const typedResponse = await api.nestedObj(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -259,12 +259,12 @@ export const numArrRouter: Router = Router().post(
       }
       const typedResponse = await api.numArr(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -291,12 +291,12 @@ export const numRouter: Router = Router().post(
       }
       const typedResponse = await api.num(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -323,12 +323,12 @@ export const optPrimTupleRouter: Router = Router().post(
       }
       const typedResponse = await api.optPrimTuple(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -355,12 +355,12 @@ export const primObjRouter: Router = Router().post(
       }
       const typedResponse = await api.primObj(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -387,12 +387,12 @@ export const primTupleRouter: Router = Router().post(
       }
       const typedResponse = await api.primTuple(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -419,12 +419,12 @@ export const strArrRouter: Router = Router().post(
       }
       const typedResponse = await api.strArr(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -451,12 +451,12 @@ export const strRouter: Router = Router().post(
       }
       const typedResponse = await api.str(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }

@@ -15,7 +15,6 @@ import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } f
 export type FetchClientAdapterConfig = {
   url?: string
   skipResponseValidation?: boolean
-  options?: RequestInit
 }
 
 export class FetchClientAdapter implements ClientAdapter {
@@ -221,7 +220,6 @@ export class FetchClientAdapter implements ClientAdapter {
 
   protected getRequestInit(request: RawHttpRequest): RequestInit | undefined {
     return {
-      ...(this.config.options ?? {}),
       headers: request.headers,
       method: request.method,
       ...(request.body === null || request.body === undefined ? {} : { body: request.body }),

@@ -18,12 +18,12 @@ export const deleteMethodRouter: Router = Router().delete(
     try {
       const typedResponse = await api.deleteMethod()
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -39,12 +39,12 @@ export const getMethodRouter: Router = Router().get(
     try {
       const typedResponse = await api.getMethod()
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -60,12 +60,12 @@ export const optionsMethodRouter: Router = Router().options(
     try {
       const typedResponse = await api.optionsMethod()
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -81,12 +81,12 @@ export const patchMethodRouter: Router = Router().patch(
     try {
       const typedResponse = await api.patchMethod()
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -102,12 +102,12 @@ export const postMethodRouter: Router = Router().post(
     try {
       const typedResponse = await api.postMethod()
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -123,12 +123,12 @@ export const putMethodRouter: Router = Router().put(
     try {
       const typedResponse = await api.putMethod()
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }

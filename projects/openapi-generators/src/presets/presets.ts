@@ -27,7 +27,6 @@ export const serverOnlyConfig: PresetGeneratorConfiguration = {
   'oats/express-router': true,
   'oats/express-routers-type': true,
   'oats/express-router-factory': true,
-  'oats/express-cors-middleware': true,
 }
 
 export const clientOnlyConfig: PresetGeneratorConfiguration = {

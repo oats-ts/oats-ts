@@ -13,10 +13,10 @@ import {
 
 function getCorsConfig(url: string) {
   if (url.includes('pet-store-json') || url.includes('parameters')) {
-    return true
+    return { allowedOrigins: true } as const
   }
   if (url.includes('pet-store-yaml')) {
-    return ['https://foo.com']
+    return { allowedOrigins: ['https://foo.com'] }
   }
   return false
 }

@@ -48,7 +48,20 @@ export type ServerAdapter<T> = {
 
   getStatusCode(toolkit: T, resp: HttpResponse): Promise<number>
   getResponseBody(toolkit: T, resp: HttpResponse): Promise<any>
-  getResponseHeaders(toolkit: T, resp: HttpResponse, serializer?: ResponseHeadersSerializer): Promise<RawHttpHeaders>
+  getPreflightCorsHeaders(
+    toolkit: T,
+    allowedOrigins: string[] | true,
+    allowedMethods: HttpMethod[],
+    allowedRequestHeaders: Partial<Record<HttpMethod, string[]>>,
+    allowedResponseHeaders: Partial<Record<HttpMethod, string[]>>,
+  ): Promise<RawHttpHeaders>
+  getCorsHeaders(toolkit: T, allowedOrigins: string[] | true): Promise<RawHttpHeaders>
+  getResponseHeaders(
+    toolkit: T,
+    resp: HttpResponse,
+    serializer?: ResponseHeadersSerializer,
+    corsHeaders?: RawHttpHeaders,
+  ): Promise<RawHttpHeaders>
   getResponseCookies<C>(
     toolkit: T,
     resp: HttpResponse<any, any, any, any, C>,
@@ -173,7 +186,7 @@ export type RawHttpRequest = {
 /** Object describing a Http request in a neutral format. */
 export type RawHttpResponse = {
   /** The response status code */
-  statusCode: number
+  statusCode?: number
   /** Request body, should only be set for the appropriate method. */
   body?: any
   /** Headers, content-type will be filled by default */

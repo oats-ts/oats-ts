@@ -38,8 +38,3 @@ export function getSetHeaderAst(headerName: string, value: Expression) {
   )
 }
 
-export function getNextCall() {
-  return factory.createExpressionStatement(
-    factory.createCallExpression(factory.createIdentifier(RouterNames.next), [], []),
-  )
-}

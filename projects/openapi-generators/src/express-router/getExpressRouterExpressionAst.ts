@@ -3,10 +3,7 @@ import { factory } from 'typescript'
 import { ExpressRoutersGeneratorConfig } from './typings'
 import { getPathTemplate } from './getPathTemplate'
 import { getExpressRouterHandlerAst } from './getExpressRouterHandlerAst'
-import { getCorsHandlerArrowFunctionAst } from '../utils/cors/getCorsHandlerArrowFunction'
-import { getAllMethods } from '../utils/cors/getAllMethods'
-import { getAllRequestHeaders } from '../utils/cors/getAllRequestHeaders'
-import { getAllResponseHeaders } from '../utils/cors/getAllResponseHeaders'
+import { getCorsHandlerArrowFunctionAst } from './getCorsHandlerArrowFunction'
 
 export function getExpressRouterExpressionAst(
   data: EnhancedOperation,
@@ -29,15 +26,7 @@ export function getExpressRouterExpressionAst(
       factory.createCallExpression(
         factory.createPropertyAccessExpression(routerAst, factory.createIdentifier('options')),
         undefined,
-        [
-          factory.createStringLiteral(url),
-          getCorsHandlerArrowFunctionAst(
-            Array.isArray(config.cors) ? config.cors : [],
-            getAllMethods(data.parent),
-            getAllRequestHeaders(data.parent, context),
-            getAllResponseHeaders(data.parent, context),
-          ),
-        ],
+        [factory.createStringLiteral(url), getCorsHandlerArrowFunctionAst(data, context, config)],
       ),
       factory.createIdentifier(data.method.toLowerCase()),
     ),

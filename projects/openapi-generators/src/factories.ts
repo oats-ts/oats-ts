@@ -1,5 +1,4 @@
 import { apiType } from './api-type'
-import { expressCorsMiddleware } from './express-cors-middleware'
 import { expressRouters } from './express-router'
 import { expressRouterFactory } from './express-router-factory'
 import { expressRoutersType } from './express-routers-type'
@@ -37,7 +36,6 @@ export const factories = {
   types,
   typeValidators,
   apiType,
-  expressCorsMiddleware,
   expressRouters,
   expressRouterFactory,
   expressRoutersType,

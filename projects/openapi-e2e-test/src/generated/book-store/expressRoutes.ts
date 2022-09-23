@@ -36,12 +36,12 @@ export const addBookRouter: Router = Router().post(
       }
       const typedResponse = await api.addBook(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -61,12 +61,12 @@ export const getBookRouter: Router = Router().get(
       }
       const typedResponse = await api.getBook(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
@@ -88,12 +88,12 @@ export const getBooksRouter: Router = Router().get(
       }
       const typedResponse = await api.getBooks(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }

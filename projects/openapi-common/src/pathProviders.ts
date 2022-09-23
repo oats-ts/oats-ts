@@ -30,7 +30,6 @@ const fileNameByTarget: NameByTarget = {
   'oats/express-router': 'expressRoutes.ts',
   'oats/express-routers-type': 'expressRoutesType.ts',
   'oats/express-router-factory': 'expressRouteFactory.ts',
-  'oats/express-cors-middleware': 'expressCorsMiddleware.ts',
   'oats/api-type': 'apiType.ts',
   'oats/sdk-impl': 'sdkImpl.ts',
   'oats/sdk-type': 'sdkType.ts',
@@ -99,7 +98,6 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/express-router': routers,
     'oats/express-router-factory': routers,
     'oats/express-routers-type': routers,
-    'oats/express-cors-middleware': routers,
 
     'oats/sdk-type': sdk,
     'oats/sdk-impl': sdk,

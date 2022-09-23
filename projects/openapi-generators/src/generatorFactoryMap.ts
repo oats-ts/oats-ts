@@ -7,7 +7,6 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/type-validator': factories.typeValidators,
   'oats/type': factories.types,
   'oats/api-type': factories.apiType,
-  'oats/express-cors-middleware': factories.expressCorsMiddleware,
   'oats/express-router-factory': factories.expressRouterFactory,
   'oats/express-router': factories.expressRouters,
   'oats/express-routers-type': factories.expressRoutersType,

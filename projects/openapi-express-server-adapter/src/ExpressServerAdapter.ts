@@ -6,6 +6,7 @@ import {
   ResponseHeadersSerializer,
   ServerAdapter,
   Cookies,
+  HttpMethod,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
@@ -94,19 +95,97 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
+  async getPreflightCorsHeaders(
+    { request }: ExpressToolkit,
+    allowedOrigins: true | string[],
+    allowedMethods: HttpMethod[],
+    allowedRequestHeaders: Partial<Record<HttpMethod, string[]>>,
+    allowedResponseHeaders: Partial<Record<HttpMethod, string[]>>,
+  ): Promise<RawHttpHeaders> {
+    const corsHeaders: RawHttpHeaders = {}
+
+    /**
+     * Grab origin header, we need to check if it's among allowed origins
+     * (or if we don't care about origin, meaning allowedOrigins is true)
+     */
+    const origin = request.header('Origin')
+    /**
+     * Grab the header describing what request method the client tried to use,
+     * and in case the header is present, transform it to lowercase.
+     */
+    const requestedMethod = request.header('Access-Control-Request-Method')?.toLowerCase() as HttpMethod | undefined
+    /**
+     * Grab the header, describing what request header the client wants to send,
+     * and in case present, split it, and transform them to lowercase.
+     */
+    const requestedHeaders = request
+      .header('Access-Control-Request-Headers')
+      ?.split(', ')
+      ?.map((header) => header.toLowerCase())
+
+    /** In case the origin the client requested is allowed (or we don't care)*/
+    if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
+      corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
+      /** In case the client provided which header they want to request, and it's allowed */
+      if (requestedMethod !== null && requestedMethod !== undefined && allowedMethods.includes(requestedMethod)) {
+        corsHeaders['Access-Control-Allow-Methods'] = requestedMethod.toUpperCase()
+
+        /** If the client specified request headers they want to send */
+        if (Array.isArray(requestedHeaders)) {
+          /** We grab the allowed request headers for the given method */
+          const allowedRequestHeadersForMethod = allowedRequestHeaders[requestedMethod] ?? []
+          /** Filter out the ones we actually allow (don't expose ones we would allow, but the client doesn't specify) */
+          const allowedReqHeaders = requestedHeaders.filter((header) => allowedRequestHeadersForMethod.includes(header))
+          /** If there are allowed headers, we set the header */
+          if (allowedReqHeaders.length > 0) {
+            corsHeaders['Access-Control-Allow-Headers'] = allowedReqHeaders.join(', ')
+          }
+        }
+
+        /** We grab the allowed response headers based on the request method */
+        const allowedResponseHeadersForMethod = allowedResponseHeaders[requestedMethod] ?? []
+        /** If there are any, we set the appropriate header */
+        if (allowedResponseHeadersForMethod.length > 0) {
+          corsHeaders['Access-Control-Expose-Headers'] = allowedResponseHeadersForMethod.join(', ')
+        }
+      }
+    }
+
+    return corsHeaders
+  }
+
+  async getCorsHeaders({ request }: ExpressToolkit, allowedOrigins: true | string[]): Promise<RawHttpHeaders> {
+    const corsHeaders: RawHttpHeaders = {}
+    /**
+     * Grab origin header, we need to check if it's among allowed origins
+     * (or if we don't care about origin, meaning allowedOrigins is true)
+     */
+    const origin = request.header('Origin')
+    /** In case the origin the client requested is allowed (or we don't care)*/
+    if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
+      corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
+    }
+    // TODO do we need to set the rest here???
+    return corsHeaders
+  }
+
   async getResponseHeaders(
     input: ExpressToolkit,
     response: HttpResponse,
     serializers?: ResponseHeadersSerializer,
+    corsHeaders?: RawHttpHeaders,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders: RawHttpHeaders =
-      response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }
+    const baseHeaders: RawHttpHeaders = {
+      ...(corsHeaders ?? {}),
+      ...(response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }),
+    }
+
     if (serializers === null || serializers === undefined) {
-      return mimeTypeHeaders
+      return baseHeaders
     }
     const serializer = serializers[response.statusCode]
     if (serializer === null || serializer === undefined) {
-      return mimeTypeHeaders
+      return baseHeaders
     }
     const headers = serializer(response.headers)
     if (isFailure(headers)) {
@@ -114,7 +193,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
     return {
       ...headers.data,
-      ...mimeTypeHeaders,
+      ...baseHeaders,
     }
   }
 
@@ -134,7 +213,9 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   }
 
   async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
-    toolkit.response.status(rawResponse.statusCode)
+    if (typeof rawResponse.statusCode === 'number') {
+      toolkit.response.status(rawResponse.statusCode)
+    }
     if (rawResponse.headers !== null && rawResponse.headers !== undefined && !toolkit.response.headersSent) {
       const headerNames = Object.keys(rawResponse.headers)
       for (let i = 0; i < headerNames.length; i += 1) {

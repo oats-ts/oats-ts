@@ -16,14 +16,22 @@ import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Pet } from './types'
 
 export const createPetsRouter: Router = Router()
-  .options('/pets', (request: Request, response: Response, next: NextFunction) => {
-    if (request.header('origin') === 'https://foo.com') {
-      response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '')
-      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
-      response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
+  .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    try {
+      await adapter.respond(toolkit, {
+        headers: await adapter.getPreflightCorsHeaders(
+          toolkit,
+          ['https://foo.com'],
+          ['get', 'post'],
+          { get: [], post: ['content-type'] },
+          { get: ['x-next', 'content-type'], post: ['content-type'] },
+        ),
+      })
+    } catch (error) {
+      adapter.handleError(toolkit, error)
     }
-    next()
   })
   .post('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
@@ -43,26 +51,39 @@ export const createPetsRouter: Router = Router()
       }
       const typedResponse = await api.createPets(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(
+          toolkit,
+          typedResponse,
+          undefined,
+          await adapter.getCorsHeaders(toolkit, ['https://foo.com']),
+        ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
   })
 
 export const listPetsRouter: Router = Router()
-  .options('/pets', (request: Request, response: Response, next: NextFunction) => {
-    if (request.header('origin') === 'https://foo.com') {
-      response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '')
-      response.setHeader('Access-Control-Allow-Methods', 'GET, POST')
-      response.setHeader('Access-Control-Allow-Headers', 'content-type')
-      response.setHeader('Access-Control-Expose-Headers', 'x-next, content-type')
+  .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    try {
+      await adapter.respond(toolkit, {
+        headers: await adapter.getPreflightCorsHeaders(
+          toolkit,
+          ['https://foo.com'],
+          ['get', 'post'],
+          { get: [], post: ['content-type'] },
+          { get: ['x-next', 'content-type'], post: ['content-type'] },
+        ),
+      })
+    } catch (error) {
+      adapter.handleError(toolkit, error)
     }
-    next()
   })
   .get('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
@@ -75,25 +96,39 @@ export const listPetsRouter: Router = Router()
       }
       const typedResponse = await api.listPets(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, listPetsResponseHeadersSerializer),
+        headers: await adapter.getResponseHeaders(
+          toolkit,
+          typedResponse,
+          listPetsResponseHeadersSerializer,
+          await adapter.getCorsHeaders(toolkit, ['https://foo.com']),
+        ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
   })
 
 export const showPetByIdRouter: Router = Router()
-  .options('/pets/:petId', (request: Request, response: Response, next: NextFunction) => {
-    if (request.header('origin') === 'https://foo.com') {
-      response.setHeader('Access-Control-Allow-Origin', request.header('origin') ?? '')
-      response.setHeader('Access-Control-Allow-Methods', 'GET')
-      response.setHeader('Access-Control-Expose-Headers', 'content-type')
+  .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
+    const toolkit: ExpressToolkit = { request, response, next }
+    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+    try {
+      await adapter.respond(toolkit, {
+        headers: await adapter.getPreflightCorsHeaders(
+          toolkit,
+          ['https://foo.com'],
+          ['get'],
+          { get: [] },
+          { get: ['content-type'] },
+        ),
+      })
+    } catch (error) {
+      adapter.handleError(toolkit, error)
     }
-    next()
   })
   .get('/pets/:petId', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
@@ -106,12 +141,17 @@ export const showPetByIdRouter: Router = Router()
       }
       const typedResponse = await api.showPetById(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined),
+        headers: await adapter.getResponseHeaders(
+          toolkit,
+          typedResponse,
+          undefined,
+          await adapter.getCorsHeaders(toolkit, ['https://foo.com']),
+        ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
         cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
-      return adapter.respond(toolkit, rawResponse)
+      await adapter.respond(toolkit, rawResponse)
     } catch (error) {
       adapter.handleError(toolkit, error)
     }

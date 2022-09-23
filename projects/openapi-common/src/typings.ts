@@ -55,7 +55,6 @@ export type OpenAPIGeneratorTarget =
   | 'oats/express-router'
   | 'oats/express-routers-type'
   | 'oats/express-router-factory'
-  | 'oats/express-cors-middleware'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
