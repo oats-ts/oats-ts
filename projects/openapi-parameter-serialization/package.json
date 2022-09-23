@@ -26,9 +26,9 @@
     "url": "https://github.com/oats-ts/oats-ts/issues"
   },
   "dependencies": {
+    "@oats-ts/openapi-http": "0.0.34",
     "@oats-ts/try": "0.0.34",
     "@oats-ts/validators": "0.0.34",
-    "@oats-ts/openapi-http": "0.0.34",
     "path-to-regexp": "6.2.1"
   },
   "devDependencies": {

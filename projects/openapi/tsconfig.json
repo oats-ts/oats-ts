@@ -12,7 +12,7 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es6"
+    "target": "ES2018"
   },
   "include": [
     "./src"

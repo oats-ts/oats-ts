@@ -17,10 +17,10 @@
     "url": "git+https://github.com/oats-ts/oats-ts.git"
   },
   "scripts": {
-    "update-exported-version": "ts-node ./src/scripts/updateExportedVersion.ts",
     "build": "rimraf lib && npm run update-exported-version && tsc && rimraf ./lib/scripts",
     "test": "echo 'TODO'",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "update-exported-version": "ts-node ./src/scripts/updateExportedVersion.ts"
   },
   "bugs": {
     "url": "https://github.com/oats-ts/oats-ts/issues"
@@ -29,13 +29,13 @@
     "@types/jest": "26.0.23",
     "@types/lodash": "4.14.182",
     "@types/node": "16.7.1",
-    "@types/urijs": "1.19.19",
     "@types/prettier": "2.4.4",
+    "@types/urijs": "1.19.19",
     "jest": "27.0.4",
+    "prettier": "2.6.1",
     "rimraf": "3.0.2",
     "ts-jest": "27.0.2",
-    "ts-node": "10.8.2",
-    "prettier": "2.6.1"
+    "ts-node": "10.8.2"
   },
   "dependencies": {
     "@oats-ts/try": "0.0.34",
