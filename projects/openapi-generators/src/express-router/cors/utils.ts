@@ -1,0 +1,1 @@
+export const alwaysTrue = () => true

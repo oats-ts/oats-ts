@@ -3,12 +3,11 @@ import { HttpMethod } from '@oats-ts/openapi-http'
 import { isNil } from 'lodash'
 import { Expression, factory } from 'typescript'
 import { RouterNames } from '../../utils/RouterNames'
-import { getRequestHeaderNames } from '../getRequestHeaderNames'
+import { getRequestHeaderNames } from './getRequestHeaderNames'
 import { getRequestMethods } from '../getRequestMethods'
-import { getResponseHeaderNames } from '../getResponseHeaderNames'
 import { ExpressRoutersGeneratorConfig } from '../typings'
-
-const alwaysTrue = () => true
+import { alwaysTrue } from './utils'
+import { getResponseHeaderNames } from './getResponseHeaderNames'
 
 export function getPreflightCorsParameters(
   data: EnhancedOperation,

@@ -156,7 +156,7 @@ export function getHandlerBodyAst(
             factory.createIdentifier(RouterNames.getCorsHeaders),
           ),
           undefined,
-          getCorsParameters(config),
+          getCorsParameters(data, context, config),
         ),
       )
     : factory.createIdentifier('undefined')

@@ -55,7 +55,7 @@ export type ServerAdapter<T> = {
     allowedRequestHeaders: Partial<Record<HttpMethod, string[]>>,
     allowedResponseHeaders: Partial<Record<HttpMethod, string[]>>,
   ): Promise<RawHttpHeaders>
-  getCorsHeaders(toolkit: T, allowedOrigins: string[] | true): Promise<RawHttpHeaders>
+  getCorsHeaders(toolkit: T, allowedOrigins: string[] | true, allowedResponseHeaders: string[]): Promise<RawHttpHeaders>
   getResponseHeaders(
     toolkit: T,
     resp: HttpResponse,

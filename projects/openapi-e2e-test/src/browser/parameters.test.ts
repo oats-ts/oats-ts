@@ -127,7 +127,19 @@ describe('Parameters', () => {
     )
   })
   describe('response headers', () => {
-    describe('simple', () => {})
+    repeat(
+      REPEATS,
+      (i) => `simple #${i}`,
+      async () => {
+        const body = randomHeaderParameters()
+        const response = await parametersSdk.simpleResponseHeaderParameters({ body, mimeType: 'application/json' })
+        if (response.statusCode === 200) {
+          chai.expect(response.headers).to.be.deep.equal(body)
+        }
+        chai.expect(response.statusCode).to.be.equal(200)
+        chai.expect(response.body).to.be.deep.equal({ ok: true })
+      },
+    )
   })
   describe('cookies', () => {
     describe('simple', () => {})

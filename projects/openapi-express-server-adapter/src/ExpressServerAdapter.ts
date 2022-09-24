@@ -153,7 +153,11 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return corsHeaders
   }
 
-  async getCorsHeaders({ request }: ExpressToolkit, allowedOrigins: true | string[]): Promise<RawHttpHeaders> {
+  async getCorsHeaders(
+    { request }: ExpressToolkit,
+    allowedOrigins: true | string[],
+    allowedResponseHeaders: string[],
+  ): Promise<RawHttpHeaders> {
     const corsHeaders: RawHttpHeaders = {}
     /**
      * Grab origin header, we need to check if it's among allowed origins
@@ -163,6 +167,10 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     /** In case the origin the client requested is allowed (or we don't care)*/
     if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
       corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
+
+      if (allowedResponseHeaders.length > 0) {
+        corsHeaders['Access-Control-Expose-Headers'] = allowedResponseHeaders.join(', ')
+      }
     }
     return corsHeaders
   }
