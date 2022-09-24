@@ -2,24 +2,23 @@ import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-com
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { isNil } from 'lodash'
 import { Expression, factory } from 'typescript'
-import { RouterNames } from '../utils/RouterNames'
-import { getRequestHeaderNames } from './getRequestHeaderNames'
-import { getRequestMethods } from './getRequestMethods'
-import { getResponseHeaderNames } from './getResponseHeaderNames'
-import { ExpressRoutersGeneratorConfig } from './typings'
+import { RouterNames } from '../../utils/RouterNames'
+import { getRequestHeaderNames } from '../getRequestHeaderNames'
+import { getRequestMethods } from '../getRequestMethods'
+import { getResponseHeaderNames } from '../getResponseHeaderNames'
+import { ExpressRoutersGeneratorConfig } from '../typings'
 
 const alwaysTrue = () => true
 
-export function getCorsParameters(
+export function getPreflightCorsParameters(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ExpressRoutersGeneratorConfig,
-  isPreflight: boolean,
 ): Expression[] {
   if (config.cors === false || isNil(config.cors)) {
     return []
   }
-  const pathItem = data.parent
+  const { operation, parent, url } = data
   const {
     allowedOrigins,
     isMethodAllowed = alwaysTrue,
@@ -27,16 +26,16 @@ export function getCorsParameters(
     isResponseHeaderAllowed = alwaysTrue,
   } = config.cors
 
-  const methods = getRequestMethods(pathItem).filter((method) => isMethodAllowed(data.url, method))
+  const methods = getRequestMethods(parent).filter((method) => isMethodAllowed(url, method, operation))
 
   const requestHeaders = methods.map((method): [HttpMethod, string[]] => [
     method,
-    getRequestHeaderNames(pathItem[method], context).filter((header) => isRequestHeaderAllowed(data.url, header)),
+    getRequestHeaderNames(parent[method], context).filter((header) => isRequestHeaderAllowed(url, header, operation)),
   ])
 
   const responseHeaders = methods.map((method): [HttpMethod, string[]] => [
     method,
-    getResponseHeaderNames(pathItem[method], context).filter((header) => isResponseHeaderAllowed(data.url, header)),
+    getResponseHeaderNames(parent[method], context).filter((header) => isResponseHeaderAllowed(url, header, operation)),
   ])
 
   const toolkitParam = factory.createIdentifier(RouterNames.toolkit)
@@ -68,7 +67,5 @@ export function getCorsParameters(
     ),
   )
 
-  return isPreflight
-    ? [toolkitParam, originsParam, methodsParam, requestHeadersParam, responseHeadersParam]
-    : [toolkitParam, originsParam]
+  return [toolkitParam, originsParam, methodsParam, requestHeadersParam, responseHeadersParam]
 }

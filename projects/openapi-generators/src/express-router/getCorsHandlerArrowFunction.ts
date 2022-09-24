@@ -4,7 +4,7 @@ import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-com
 import { ExpressRoutersGeneratorConfig } from './typings'
 import { getAdapterStatement, getCatchBlock, getToolkitStatement } from './common'
 import { RouterNames } from '../utils/RouterNames'
-import { getCorsParameters } from './getCorsParameters'
+import { getPreflightCorsParameters } from './cors/getPreflightCorsParameters'
 
 function getFunctionBodyBlock(
   data: EnhancedOperation,
@@ -31,7 +31,7 @@ function getFunctionBodyBlock(
                     factory.createIdentifier(RouterNames.getPreflightCorsHeaders),
                   ),
                   undefined,
-                  getCorsParameters(data, context, config, true),
+                  getPreflightCorsParameters(data, context, config),
                 ),
               ),
             ),

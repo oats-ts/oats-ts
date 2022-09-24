@@ -118,20 +118,19 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
      * Grab the header, describing what request header the client wants to send,
      * and in case present, split it, and transform them to lowercase.
      */
-    const requestedHeaders = request
-      .header('Access-Control-Request-Headers')
-      ?.split(', ')
-      ?.map((header) => header.toLowerCase())
+    const requestedHeaders = (request.header('Access-Control-Request-Headers') ?? '')
+      .split(',')
+      .map((header) => header.trim().toLowerCase())
 
     /** In case the origin the client requested is allowed (or we don't care)*/
-    if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
+    if (allowedOrigins === true || (typeof origin === 'string' && allowedOrigins.includes(origin))) {
       corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
-      /** In case the client provided which header they want to request, and it's allowed */
+      /** In case the client provided which method they want, and it's allowed */
       if (requestedMethod !== null && requestedMethod !== undefined && allowedMethods.includes(requestedMethod)) {
         corsHeaders['Access-Control-Allow-Methods'] = requestedMethod.toUpperCase()
 
         /** If the client specified request headers they want to send */
-        if (Array.isArray(requestedHeaders)) {
+        if (Array.isArray(requestedHeaders) && requestedHeaders.length > 0) {
           /** We grab the allowed request headers for the given method */
           const allowedRequestHeadersForMethod = allowedRequestHeaders[requestedMethod] ?? []
           /** Filter out the ones we actually allow (don't expose ones we would allow, but the client doesn't specify) */
@@ -165,7 +164,6 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
       corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
     }
-    // TODO do we need to set the rest here???
     return corsHeaders
   }
 
@@ -236,7 +234,6 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     if (toolkit.response.writable) {
       toolkit.response.send(rawResponse.body ?? '')
     }
-    toolkit.next()
   }
 
   async handleError(toolkit: ExpressToolkit, error: any): Promise<void> {

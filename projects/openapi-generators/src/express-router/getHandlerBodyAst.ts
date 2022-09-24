@@ -11,7 +11,7 @@ import { getParametersStatementAst } from './getParametersStatementAst'
 import { getRequestBodyRelatedStatementAsts } from './getRequestBodyRelatedStatementAsts'
 import { RouterNames } from '../utils/RouterNames'
 import { getAdapterStatement, getCatchBlock, getToolkitStatement } from './common'
-import { getCorsParameters } from './getCorsParameters'
+import { getCorsParameters } from './cors/getCorsParameters'
 
 export function getHandlerBodyAst(
   data: EnhancedOperation,
@@ -156,7 +156,7 @@ export function getHandlerBodyAst(
             factory.createIdentifier(RouterNames.getCorsHeaders),
           ),
           undefined,
-          getCorsParameters(data, context, config, false),
+          getCorsParameters(config),
         ),
       )
     : factory.createIdentifier('undefined')
