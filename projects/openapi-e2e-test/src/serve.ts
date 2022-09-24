@@ -14,6 +14,21 @@ const routers: Record<string, Router> = {
   'book-store': createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerAdapter()),
   methods: createHttpMethodsRouter(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
   parameters: createParametersRouter(new ParametersApiImpl(), new ExpressServerAdapter()),
+  // cors: Router()
+  //   .options('/cors-test', (req, res) => {
+  //     const origin = req.header('origin') ?? ''
+  //     if (origin === 'http://localhost:8080') {
+  //       res
+  //         .header('Access-Control-Allow-Origin', 'http://localhost:8080')
+  //         .header('Access-Control-Allow-Methods', 'GET')
+  //         .header('Access-Control-Allow-Headers', 'x-custom-req-header')
+  //         .header('Access-Control-Expose-Headers', 'x-custom-res-header')
+  //         .end()
+  //     }
+  //   })
+  //   .get('/cors-test', (req, res) => {
+  //     res.header('x-custom-res-header', `Hi ${req.header('x-custom-req-header')}`).json({ ok: true })
+  //   }),
 }
 
 const serverArg = argv[2] as keyof typeof routers

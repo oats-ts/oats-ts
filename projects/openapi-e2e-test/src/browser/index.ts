@@ -1,10 +1,12 @@
 const mocha = require('mocha')
 
 mocha.setup({
-  retries: 3,
+  slow: 0,
   timeout: '5000',
   ui: 'bdd',
   inlineDiffs: true,
+  diff: true,
+  fullTrace: true,
 })
 
 require('./parameters.test')
