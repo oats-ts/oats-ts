@@ -70,7 +70,6 @@ export const arrObjRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -102,7 +101,6 @@ export const boolArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -134,7 +132,6 @@ export const boolRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -166,7 +163,6 @@ export const enmArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -198,7 +194,6 @@ export const enmRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -230,7 +225,6 @@ export const nestedObjRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -262,7 +256,6 @@ export const numArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -294,7 +287,6 @@ export const numRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -326,7 +318,6 @@ export const optPrimTupleRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -358,7 +349,6 @@ export const primObjRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -390,7 +380,6 @@ export const primTupleRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -422,7 +411,6 @@ export const strArrRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -454,7 +442,6 @@ export const strRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {

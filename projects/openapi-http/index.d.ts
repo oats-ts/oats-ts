@@ -48,14 +48,8 @@ export type ServerAdapter<T> = {
 
   getStatusCode(toolkit: T, resp: HttpResponse): Promise<number>
   getResponseBody(toolkit: T, resp: HttpResponse): Promise<any>
-  getPreflightCorsHeaders(
-    toolkit: T,
-    allowedOrigins: string[] | true,
-    allowedMethods: HttpMethod[],
-    allowedRequestHeaders: Partial<Record<HttpMethod, string[]>>,
-    allowedResponseHeaders: Partial<Record<HttpMethod, string[]>>,
-  ): Promise<RawHttpHeaders>
-  getCorsHeaders(toolkit: T, allowedOrigins: string[] | true, allowedResponseHeaders: string[]): Promise<RawHttpHeaders>
+  getPreflightCorsHeaders(toolkit: T, cors: PreflightCorsConfiguration): Promise<RawHttpHeaders>
+  getCorsHeaders(toolkit: T, cors: CorsConfiguration): Promise<RawHttpHeaders>
   getResponseHeaders(
     toolkit: T,
     resp: HttpResponse,
@@ -70,6 +64,21 @@ export type ServerAdapter<T> = {
 
   respond(toolkit: T, response: RawHttpResponse): Promise<void>
   handleError(toolkit: T, error: any): Promise<void>
+}
+
+export type PreflightCorsConfiguration = {
+  allowedOrigins: string[] | true
+  allowedMethods?: HttpMethod[]
+  allowedRequestHeaders?: Partial<Record<HttpMethod, string[]>>
+  allowedResponseHeaders?: Partial<Record<HttpMethod, string[]>>
+  allowCredentials?: Partial<Record<HttpMethod, boolean | undefined>>
+  maxAge?: Partial<Record<HttpMethod, number | undefined>>
+}
+
+export type CorsConfiguration = {
+  allowedOrigins: string[] | true
+  allowedResponseHeaders?: string[]
+  allowCredentials?: boolean | undefined
 }
 
 export type RequestBodyValidators<C extends string = string> = {

@@ -215,3 +215,10 @@ export function randomCookieParameters(): FormCookieParametersCookieParameters {
     optEnm: random.optional(() => random.arrayElement(enumValues)),
   }
 }
+
+export const defaultCookies: FormCookieParametersCookieParameters = {
+  optBool: true,
+  optNum: 42,
+  optEnm: 'A',
+  optStr: 'default',
+}

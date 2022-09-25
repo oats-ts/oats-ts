@@ -1,5 +1,5 @@
 import { isFailure, Try } from '@oats-ts/try'
-import { HttpResponse } from '@oats-ts/openapi-http'
+import { Cookies, HttpResponse } from '@oats-ts/openapi-http'
 import { ParameterIssue } from '../../generated/parameters/types'
 import { ParametersApi } from '../../generated/parameters/apiType'
 import {
@@ -26,6 +26,9 @@ import {
   FormCookieParametersServerResponse,
   SimpleResponseHeaderParametersServerResponse,
 } from '../../generated/parameters/responseServerTypes'
+import { defaultCookies } from './parameters.testdata'
+import { FormCookieParametersCookieParameters } from '../../generated/parameters/cookieTypes'
+import { isNil } from 'lodash'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
@@ -104,16 +107,31 @@ export class ParametersApiImpl implements ParametersApi {
       }
     }
     const { data } = request.cookies
+    // console.log(request.cookies)
+    const noClientCookies = isNil(data.optBool) && isNil(data.optNum) && isNil(data.optEnm) && isNil(data.optStr)
+    const defaultCookieCfg: Cookies<FormCookieParametersCookieParameters> = {
+      optBool: { value: defaultCookies.optBool },
+      optNum: { value: defaultCookies.optNum },
+      optEnm: { value: defaultCookies.optEnm },
+      optStr: { value: defaultCookies.optStr },
+    }
+    const clientCookieCfg: Cookies<FormCookieParametersCookieParameters> = {
+      optBool: { value: data.optBool ?? defaultCookies.optBool },
+      optNum: { value: data.optNum ?? defaultCookies.optNum, expires: new Date().toUTCString(), sameSite: 'Lax' },
+      optEnm: { value: data.optEnm ?? defaultCookies.optEnm, sameSite: 'Strict', path: '/foo' },
+      optStr: {
+        value: data.optStr ?? defaultCookies.optStr,
+        maxAge: 100,
+        domain: 'http://foo.com',
+        httpOnly: true,
+      },
+    }
+    const cookies = noClientCookies ? defaultCookieCfg : clientCookieCfg
     return {
       body: data,
       mimeType: 'application/json',
       statusCode: 200,
-      cookies: {
-        optBool: { value: data.optBool },
-        optNum: { value: data.optNum, expires: new Date().toUTCString(), sameSite: 'Lax' },
-        optEnm: { value: data.optEnm, sameSite: 'Strict', path: '/foo' },
-        optStr: { value: data.optStr, maxAge: 100, domain: 'http://localhost:8000/foo', httpOnly: true },
-      },
+      cookies,
     }
   }
 }

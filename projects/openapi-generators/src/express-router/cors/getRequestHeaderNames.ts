@@ -9,13 +9,13 @@ export function getRequestHeaderNames(
   if (isNil(operation)) {
     return []
   }
-  const headers = (operation.parameters ?? [])
-    .map((param) => context.dereference(param, true))
-    .filter((param) => param.in === 'header')
-    .map((param) => param.name?.toLowerCase())
-
+  const params = (operation.parameters ?? []).map((param) => context.dereference(param, true))
+  const headers = params.filter((param) => param.in === 'header').map((param) => param.name?.toLowerCase())
   if (!isNil(operation.requestBody)) {
     headers.push('content-type')
+  }
+  if (params.some((param) => param.in === 'cookie')) {
+    headers.push('cookie')
   }
   return headers
 }

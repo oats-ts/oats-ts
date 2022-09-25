@@ -12,8 +12,17 @@ import {
 } from '@oats-ts/openapi'
 
 function getCorsConfig(url: string) {
-  if (url.includes('pet-store-json') || url.includes('parameters')) {
+  if (url.includes('pet-store-json')) {
     return { allowedOrigins: true } as const
+  }
+  if (url.includes('parameters')) {
+    return {
+      allowedOrigins: true,
+      isResponseHeaderAllowed: () => true,
+      allowCredentials: (url: string) => {
+        return url === '/form-cookie-parameters' ? true : undefined
+      },
+    } as const
   }
   if (url.includes('pet-store-yaml')) {
     return { allowedOrigins: ['https://foo.com'] }

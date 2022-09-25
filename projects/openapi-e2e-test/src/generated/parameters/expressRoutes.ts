@@ -44,7 +44,11 @@ export const deepObjectQueryParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, true, ['get'], { get: [] }, { get: ['content-type'] }),
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['get'],
+          allowedResponseHeaders: { get: ['content-type'] },
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -67,11 +71,10 @@ export const deepObjectQueryParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             undefined,
-            await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -86,7 +89,12 @@ export const formCookieParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, true, ['get'], { get: [] }, { get: ['content-type'] }),
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['get'],
+          allowedResponseHeaders: { get: ['content-type', 'set-cookie'] },
+          allowCredentials: { get: true },
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -107,7 +115,11 @@ export const formCookieParametersRouter: Router = Router()
           toolkit,
           typedResponse,
           undefined,
-          await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+          await adapter.getCorsHeaders(toolkit, {
+            allowedOrigins: true,
+            allowedResponseHeaders: ['content-type', 'set-cookie'],
+            allowCredentials: true,
+          }),
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
@@ -125,7 +137,11 @@ export const formQueryParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, true, ['get'], { get: [] }, { get: ['content-type'] }),
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['get'],
+          allowedResponseHeaders: { get: ['content-type'] },
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -146,11 +162,10 @@ export const formQueryParametersRouter: Router = Router()
           toolkit,
           typedResponse,
           undefined,
-          await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+          await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -166,13 +181,11 @@ export const labelPathParametersRouter: Router = Router()
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
       try {
         await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(
-            toolkit,
-            true,
-            ['get'],
-            { get: [] },
-            { get: ['content-type'] },
-          ),
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: true,
+            allowedMethods: ['get'],
+            allowedResponseHeaders: { get: ['content-type'] },
+          }),
         })
       } catch (error) {
         adapter.handleError(toolkit, error)
@@ -196,11 +209,10 @@ export const labelPathParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             undefined,
-            await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -217,13 +229,11 @@ export const matrixPathParametersRouter: Router = Router()
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
       try {
         await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(
-            toolkit,
-            true,
-            ['get'],
-            { get: [] },
-            { get: ['content-type'] },
-          ),
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: true,
+            allowedMethods: ['get'],
+            allowedResponseHeaders: { get: ['content-type'] },
+          }),
         })
       } catch (error) {
         adapter.handleError(toolkit, error)
@@ -247,11 +257,10 @@ export const matrixPathParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             undefined,
-            await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -266,7 +275,11 @@ export const pipeDelimitedQueryParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, true, ['get'], { get: [] }, { get: ['content-type'] }),
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['get'],
+          allowedResponseHeaders: { get: ['content-type'] },
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -289,11 +302,10 @@ export const pipeDelimitedQueryParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             undefined,
-            await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -308,11 +320,10 @@ export const simpleHeaderParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(
-          toolkit,
-          true,
-          ['get'],
-          {
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['get'],
+          allowedRequestHeaders: {
             get: [
               'x-strexpl-header',
               'x-optstrexpl-header',
@@ -352,8 +363,8 @@ export const simpleHeaderParametersRouter: Router = Router()
               'x-optobj-header',
             ],
           },
-          { get: ['content-type'] },
-        ),
+          allowedResponseHeaders: { get: ['content-type'] },
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -374,11 +385,10 @@ export const simpleHeaderParametersRouter: Router = Router()
           toolkit,
           typedResponse,
           undefined,
-          await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+          await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -394,13 +404,11 @@ export const simplePathParametersRouter: Router = Router()
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
       try {
         await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(
-            toolkit,
-            true,
-            ['get'],
-            { get: [] },
-            { get: ['content-type'] },
-          ),
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: true,
+            allowedMethods: ['get'],
+            allowedResponseHeaders: { get: ['content-type'] },
+          }),
         })
       } catch (error) {
         adapter.handleError(toolkit, error)
@@ -424,11 +432,10 @@ export const simplePathParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             undefined,
-            await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -443,12 +450,11 @@ export const simpleResponseHeaderParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(
-          toolkit,
-          true,
-          ['post'],
-          { post: ['content-type'] },
-          {
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['post'],
+          allowedRequestHeaders: { post: ['content-type'] },
+          allowedResponseHeaders: {
             post: [
               'x-strexpl-header',
               'x-optstrexpl-header',
@@ -489,7 +495,7 @@ export const simpleResponseHeaderParametersRouter: Router = Router()
               'content-type',
             ],
           },
-        ),
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -519,49 +525,51 @@ export const simpleResponseHeaderParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             simpleResponseHeaderParametersResponseHeadersSerializer,
-            await adapter.getCorsHeaders(toolkit, true, [
-              'x-strexpl-header',
-              'x-optstrexpl-header',
-              'x-str-header',
-              'x-optstr-header',
-              'x-numexpl-header',
-              'x-optnumexpl-header',
-              'x-num-header',
-              'x-optnum-header',
-              'x-boolexpl-header',
-              'x-optboolexpl-header',
-              'x-bool-header',
-              'x-optbool-header',
-              'x-enmexpl-header',
-              'x-optenmexpl-header',
-              'x-enm-header',
-              'x-optenm-header',
-              'x-strarrexpl-header',
-              'x-optstrarrexpl-header',
-              'x-strarr-header',
-              'x-optstrarr-header',
-              'x-numarrexpl-header',
-              'x-optnumarrexpl-header',
-              'x-numarr-header',
-              'x-optnumarr-header',
-              'x-boolarrexpl-header',
-              'x-optboolarrexpl-header',
-              'x-boolarr-header',
-              'x-optboolarr-header',
-              'x-enmarrexpl-header',
-              'x-optenmarrexpl-header',
-              'x-enmarr-header',
-              'x-optenmarr-header',
-              'x-objexpl-header',
-              'x-optobjexpl-header',
-              'x-obj-header',
-              'x-optobj-header',
-              'content-type',
-            ]),
+            await adapter.getCorsHeaders(toolkit, {
+              allowedOrigins: true,
+              allowedResponseHeaders: [
+                'x-strexpl-header',
+                'x-optstrexpl-header',
+                'x-str-header',
+                'x-optstr-header',
+                'x-numexpl-header',
+                'x-optnumexpl-header',
+                'x-num-header',
+                'x-optnum-header',
+                'x-boolexpl-header',
+                'x-optboolexpl-header',
+                'x-bool-header',
+                'x-optbool-header',
+                'x-enmexpl-header',
+                'x-optenmexpl-header',
+                'x-enm-header',
+                'x-optenm-header',
+                'x-strarrexpl-header',
+                'x-optstrarrexpl-header',
+                'x-strarr-header',
+                'x-optstrarr-header',
+                'x-numarrexpl-header',
+                'x-optnumarrexpl-header',
+                'x-numarr-header',
+                'x-optnumarr-header',
+                'x-boolarrexpl-header',
+                'x-optboolarrexpl-header',
+                'x-boolarr-header',
+                'x-optboolarr-header',
+                'x-enmarrexpl-header',
+                'x-optenmarrexpl-header',
+                'x-enmarr-header',
+                'x-optenmarr-header',
+                'x-objexpl-header',
+                'x-optobjexpl-header',
+                'x-obj-header',
+                'x-optobj-header',
+                'content-type',
+              ],
+            }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -576,7 +584,11 @@ export const spaceDelimitedQueryParametersRouter: Router = Router()
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     try {
       await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, true, ['get'], { get: [] }, { get: ['content-type'] }),
+        headers: await adapter.getPreflightCorsHeaders(toolkit, {
+          allowedOrigins: true,
+          allowedMethods: ['get'],
+          allowedResponseHeaders: { get: ['content-type'] },
+        }),
       })
     } catch (error) {
       adapter.handleError(toolkit, error)
@@ -599,11 +611,10 @@ export const spaceDelimitedQueryParametersRouter: Router = Router()
             toolkit,
             typedResponse,
             undefined,
-            await adapter.getCorsHeaders(toolkit, true, ['content-type']),
+            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {

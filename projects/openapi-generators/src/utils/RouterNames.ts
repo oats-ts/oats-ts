@@ -35,4 +35,11 @@ export const RouterNames = {
   getCorsHeaders: 'getCorsHeaders',
   getResponseHeaders: 'getResponseHeaders',
   handleError: 'handleError',
+
+  allowedOrigins: 'allowedOrigins',
+  allowedMethods: 'allowedMethods',
+  allowedRequestHeaders: 'allowedRequestHeaders',
+  allowedResponseHeaders: 'allowedResponseHeaders',
+  allowCredentials: 'allowCredentials',
+  maxAge: 'maxAge',
 }

@@ -7,6 +7,8 @@ import {
   ServerAdapter,
   Cookies,
   HttpMethod,
+  PreflightCorsConfiguration,
+  CorsConfiguration,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
@@ -97,55 +99,48 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
 
   async getPreflightCorsHeaders(
     { request }: ExpressToolkit,
-    allowedOrigins: true | string[],
-    allowedMethods: HttpMethod[],
-    allowedRequestHeaders: Partial<Record<HttpMethod, string[]>>,
-    allowedResponseHeaders: Partial<Record<HttpMethod, string[]>>,
+    {
+      allowedOrigins,
+      allowedMethods,
+      allowedRequestHeaders = {},
+      allowedResponseHeaders = {},
+      allowCredentials = {},
+      maxAge = {},
+    }: PreflightCorsConfiguration,
   ): Promise<RawHttpHeaders> {
     const corsHeaders: RawHttpHeaders = {}
-
-    /**
-     * Grab origin header, we need to check if it's among allowed origins
-     * (or if we don't care about origin, meaning allowedOrigins is true)
-     */
-    const origin = request.header('Origin')
-    /**
-     * Grab the header describing what request method the client tried to use,
-     * and in case the header is present, transform it to lowercase.
-     */
-    const requestedMethod = request.header('Access-Control-Request-Method')?.toLowerCase() as HttpMethod | undefined
-    /**
-     * Grab the header, describing what request header the client wants to send,
-     * and in case present, split it, and transform them to lowercase.
-     */
-    const requestedHeaders = (request.header('Access-Control-Request-Headers') ?? '')
+    const origin = request.header('origin')
+    const method = request.header('access-control-request-method')?.toLowerCase() as HttpMethod | undefined
+    const requestedHeaders = (request.header('access-control-request-headers') ?? '')
       .split(',')
       .map((header) => header.trim().toLowerCase())
 
-    /** In case the origin the client requested is allowed (or we don't care)*/
     if (allowedOrigins === true || (typeof origin === 'string' && allowedOrigins.includes(origin))) {
-      corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
-      /** In case the client provided which method they want, and it's allowed */
-      if (requestedMethod !== null && requestedMethod !== undefined && allowedMethods.includes(requestedMethod)) {
-        corsHeaders['Access-Control-Allow-Methods'] = requestedMethod.toUpperCase()
+      corsHeaders['access-control-allow-origin'] = origin ?? '*'
+      if (method !== null && method !== undefined && allowedMethods?.includes(method)) {
+        corsHeaders['access-control-allow-methods'] = method.toUpperCase()
 
-        /** If the client specified request headers they want to send */
         if (Array.isArray(requestedHeaders) && requestedHeaders.length > 0) {
-          /** We grab the allowed request headers for the given method */
-          const allowedRequestHeadersForMethod = allowedRequestHeaders[requestedMethod] ?? []
-          /** Filter out the ones we actually allow (don't expose ones we would allow, but the client doesn't specify) */
+          const allowedRequestHeadersForMethod = allowedRequestHeaders[method] ?? []
           const allowedReqHeaders = requestedHeaders.filter((header) => allowedRequestHeadersForMethod.includes(header))
-          /** If there are allowed headers, we set the header */
           if (allowedReqHeaders.length > 0) {
-            corsHeaders['Access-Control-Allow-Headers'] = allowedReqHeaders.join(', ')
+            corsHeaders['access-control-allow-headers'] = allowedReqHeaders.join(', ')
           }
         }
 
-        /** We grab the allowed response headers based on the request method */
-        const allowedResponseHeadersForMethod = allowedResponseHeaders[requestedMethod] ?? []
-        /** If there are any, we set the appropriate header */
+        const allowedResponseHeadersForMethod = allowedResponseHeaders[method] ?? []
         if (allowedResponseHeadersForMethod.length > 0) {
-          corsHeaders['Access-Control-Expose-Headers'] = allowedResponseHeadersForMethod.join(', ')
+          corsHeaders['access-control-expose-headers'] = allowedResponseHeadersForMethod.join(', ')
+        }
+
+        const maxAgeSecs = maxAge[method]
+        if (maxAgeSecs !== undefined) {
+          corsHeaders['access-control-max-age'] = maxAgeSecs.toString(10)
+        }
+
+        const includeCreds = allowCredentials[method]
+        if (includeCreds !== undefined) {
+          corsHeaders['access-control-allow-credentials'] = includeCreds.toString()
         }
       }
     }
@@ -155,8 +150,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
 
   async getCorsHeaders(
     { request }: ExpressToolkit,
-    allowedOrigins: true | string[],
-    allowedResponseHeaders: string[],
+    { allowedOrigins, allowedResponseHeaders = [], allowCredentials }: CorsConfiguration,
   ): Promise<RawHttpHeaders> {
     const corsHeaders: RawHttpHeaders = {}
     /**
@@ -166,10 +160,14 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     const origin = request.header('Origin')
     /** In case the origin the client requested is allowed (or we don't care)*/
     if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
-      corsHeaders['Access-Control-Allow-Origin'] = origin ?? '*'
+      corsHeaders['access-control-allow-origin'] = origin ?? '*'
 
       if (allowedResponseHeaders.length > 0) {
-        corsHeaders['Access-Control-Expose-Headers'] = allowedResponseHeaders.join(', ')
+        corsHeaders['access-control-expose-headers'] = allowedResponseHeaders.join(', ')
+      }
+
+      if (allowCredentials !== undefined) {
+        corsHeaders['access-control-allow-credentials'] = allowCredentials.toString()
       }
     }
     return corsHeaders

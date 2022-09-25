@@ -6,6 +6,8 @@ export type CorsConfiguration = {
   isRequestHeaderAllowed?: (path: string, header: string, operation: OperationObject) => boolean
   isResponseHeaderAllowed?: (path: string, header: string, operation: OperationObject) => boolean
   isMethodAllowed?: (path: string, method: HttpMethod, operation: OperationObject) => boolean
+  maxAge?: (path: string, method: HttpMethod, operation: OperationObject) => number | undefined
+  allowCredentials?: (path: string, method: HttpMethod, operation: OperationObject) => boolean | undefined
 }
 
 export type ExpressRoutersGeneratorConfig = {

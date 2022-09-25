@@ -222,24 +222,28 @@ export function getHandlerBodyAst(
                   ),
                 ),
               ),
-              factory.createPropertyAssignment(
-                factory.createIdentifier(RouterNames.cookies),
-                factory.createAwaitExpression(
-                  factory.createCallExpression(
-                    factory.createPropertyAccessExpression(
-                      factory.createIdentifier(RouterNames.adapter),
-                      factory.createIdentifier('getResponseCookies'),
+              ...(hasCookie
+                ? [
+                    factory.createPropertyAssignment(
+                      factory.createIdentifier(RouterNames.cookies),
+                      factory.createAwaitExpression(
+                        factory.createCallExpression(
+                          factory.createPropertyAccessExpression(
+                            factory.createIdentifier(RouterNames.adapter),
+                            factory.createIdentifier('getResponseCookies'),
+                          ),
+                          undefined,
+                          [
+                            factory.createIdentifier(RouterNames.toolkit),
+                            factory.createIdentifier(RouterNames.typedResponse),
+                            referenceOf(data.operation, 'oats/set-cookie-serializer') ??
+                              factory.createIdentifier('undefined'),
+                          ],
+                        ),
+                      ),
                     ),
-                    undefined,
-                    [
-                      factory.createIdentifier(RouterNames.toolkit),
-                      factory.createIdentifier(RouterNames.typedResponse),
-                      referenceOf(data.operation, 'oats/set-cookie-serializer') ??
-                        factory.createIdentifier('undefined'),
-                    ],
-                  ),
-                ),
-              ),
+                  ]
+                : []),
             ],
             true,
           ),

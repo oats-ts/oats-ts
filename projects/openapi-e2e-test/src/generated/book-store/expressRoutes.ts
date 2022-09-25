@@ -39,7 +39,6 @@ export const addBookRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -64,7 +63,6 @@ export const getBookRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -91,7 +89,6 @@ export const getBooksRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {

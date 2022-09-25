@@ -21,7 +21,6 @@ export const deleteMethodRouter: Router = Router().delete(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -42,7 +41,6 @@ export const getMethodRouter: Router = Router().get(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -63,7 +61,6 @@ export const optionsMethodRouter: Router = Router().options(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -84,7 +81,6 @@ export const patchMethodRouter: Router = Router().patch(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -105,7 +101,6 @@ export const postMethodRouter: Router = Router().post(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
@@ -126,7 +121,6 @@ export const putMethodRouter: Router = Router().put(
         headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
-        cookies: await adapter.getResponseCookies(toolkit, typedResponse, undefined),
       }
       await adapter.respond(toolkit, rawResponse)
     } catch (error) {
