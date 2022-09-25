@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/try",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://oats-ts.github.io/docs",
@@ -34,6 +34,6 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
-    "@oats-ts/validators": "0.0.34"
+    "@oats-ts/validators": "0.0.35"
   }
 }
