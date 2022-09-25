@@ -4,6 +4,8 @@ import {
   randomDelimitedQueryParameters,
   randomDeepObjectQueryParameters,
   randomHeaderParameters,
+  randomCookieParameters,
+  defaultCookies,
 } from './parameters.testdata'
 import { range } from 'lodash'
 import { testParametersServer } from '../servers'
@@ -85,6 +87,22 @@ describe('Parameters', () => {
           expect(response.headers).toEqual(body)
         }
         expect(response.body).toEqual({ ok: true })
+      })
+    })
+  })
+  describe('cookies', () => {
+    describe('simple', () => {
+      it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
+        const reqCookies = randomCookieParameters()
+        const response = await parametersSdk.formCookieParameters({ cookies: reqCookies })
+        if (response.statusCode === 200) {
+          expect(response.body).toEqual(reqCookies)
+          expect(response.cookies?.optStr?.value).toBe(reqCookies.optStr ?? defaultCookies.optStr)
+          expect(response.cookies?.optBool?.value).toBe(reqCookies.optBool ?? defaultCookies.optBool)
+          expect(response.cookies?.optNum?.value).toBe(reqCookies.optNum ?? defaultCookies.optNum)
+          expect(response.cookies?.optEnm?.value).toBe(reqCookies.optEnm ?? defaultCookies.optEnm)
+        }
+        expect(response.statusCode).toBe(200)
       })
     })
   })

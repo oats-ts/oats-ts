@@ -28,10 +28,11 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected shouldGenerate(schema: Referenceable<SchemaObject>): boolean {
-    if (isNil(this.config?.ignore)) {
+    const config = this.configuration()
+    if (isNil(config?.ignore)) {
       return true
     }
-    return !this.config.ignore(schema, this.context.uriOf(schema))
+    return !config.ignore(schema, this.context.uriOf(schema))
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
@@ -40,12 +41,12 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     return success(
       createSourceFile(
         path,
-        [...typeImports, ...getTypeGuardImports(schema, this.context, this.config)],
+        [...typeImports, ...getTypeGuardImports(schema, this.context, this.configuration())],
         [
           getTypeGuardFunctionAst(
             schema,
             this.context,
-            getTypeAssertionAst(schema, this.context, factory.createIdentifier('input'), this.config, 0),
+            getTypeAssertionAst(schema, this.context, factory.createIdentifier('input'), this.configuration(), 0),
           ),
         ],
       ),

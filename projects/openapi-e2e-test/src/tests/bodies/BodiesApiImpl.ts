@@ -1,34 +1,36 @@
 import { HasRequestBody, HttpResponse } from '@oats-ts/openapi-http'
 import { isFailure, Try } from '@oats-ts/try'
+import { BodiesApi } from '../../generated/bodies/apiType'
 import {
-  ArrObjResponse,
-  ArrObjServerRequest,
-  BodiesApi,
-  BoolArrResponse,
-  BoolArrServerRequest,
-  BoolResponse,
-  BoolServerRequest,
-  EnmArrResponse,
-  EnmArrServerRequest,
-  EnmResponse,
-  EnmServerRequest,
-  NestedObjResponse,
-  NestedObjServerRequest,
-  NumArrResponse,
-  NumArrServerRequest,
-  NumResponse,
-  NumServerRequest,
-  OptPrimTupleResponse,
-  OptPrimTupleServerRequest,
-  PrimObjResponse,
-  PrimObjServerRequest,
-  PrimTupleResponse,
-  PrimTupleServerRequest,
-  StrArrResponse,
-  StrArrServerRequest,
-  StrResponse,
   StrServerRequest,
-} from '../../generated/bodies'
+  NumServerRequest,
+  EnmServerRequest,
+  BoolServerRequest,
+  PrimTupleServerRequest,
+  OptPrimTupleServerRequest,
+  StrArrServerRequest,
+  NumArrServerRequest,
+  EnmArrServerRequest,
+  BoolArrServerRequest,
+  PrimObjServerRequest,
+  ArrObjServerRequest,
+  NestedObjServerRequest,
+} from '../../generated/bodies/requestServerTypes'
+import {
+  StrServerResponse,
+  NumServerResponse,
+  EnmServerResponse,
+  BoolServerResponse,
+  PrimTupleServerResponse,
+  OptPrimTupleServerResponse,
+  StrArrServerResponse,
+  NumArrServerResponse,
+  EnmArrServerResponse,
+  BoolArrServerResponse,
+  PrimObjServerResponse,
+  ArrObjServerResponse,
+  NestedObjServerResponse,
+} from '../../generated/bodies/responseServerTypes'
 
 export class BodiesApiImpl implements BodiesApi {
   async respond(request: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
@@ -43,43 +45,43 @@ export class BodiesApiImpl implements BodiesApi {
       statusCode: 200,
     }
   }
-  async optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleResponse> {
+  async optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleServerResponse> {
     return this.respond(request)
   }
-  async primTuple(request: PrimTupleServerRequest): Promise<PrimTupleResponse> {
+  async primTuple(request: PrimTupleServerRequest): Promise<PrimTupleServerResponse> {
     return this.respond(request)
   }
-  async arrObj(request: ArrObjServerRequest): Promise<ArrObjResponse> {
+  async arrObj(request: ArrObjServerRequest): Promise<ArrObjServerResponse> {
     return this.respond(request)
   }
-  async bool(request: BoolServerRequest): Promise<BoolResponse> {
+  async bool(request: BoolServerRequest): Promise<BoolServerResponse> {
     return this.respond(request)
   }
-  async boolArr(request: BoolArrServerRequest): Promise<BoolArrResponse> {
+  async boolArr(request: BoolArrServerRequest): Promise<BoolArrServerResponse> {
     return this.respond(request)
   }
-  async enm(request: EnmServerRequest): Promise<EnmResponse> {
+  async enm(request: EnmServerRequest): Promise<EnmServerResponse> {
     return this.respond(request)
   }
-  async enmArr(request: EnmArrServerRequest): Promise<EnmArrResponse> {
+  async enmArr(request: EnmArrServerRequest): Promise<EnmArrServerResponse> {
     return this.respond(request)
   }
-  async nestedObj(request: NestedObjServerRequest): Promise<NestedObjResponse> {
+  async nestedObj(request: NestedObjServerRequest): Promise<NestedObjServerResponse> {
     return this.respond(request)
   }
-  async num(request: NumServerRequest): Promise<NumResponse> {
+  async num(request: NumServerRequest): Promise<NumServerResponse> {
     return this.respond(request)
   }
-  async numArr(request: NumArrServerRequest): Promise<NumArrResponse> {
+  async numArr(request: NumArrServerRequest): Promise<NumArrServerResponse> {
     return this.respond(request)
   }
-  async primObj(request: PrimObjServerRequest): Promise<PrimObjResponse> {
+  async primObj(request: PrimObjServerRequest): Promise<PrimObjServerResponse> {
     return this.respond(request)
   }
-  async str(request: StrServerRequest): Promise<StrResponse> {
+  async str(request: StrServerRequest): Promise<StrServerResponse> {
     return this.respond(request)
   }
-  async strArr(request: StrArrServerRequest): Promise<StrArrResponse> {
+  async strArr(request: StrArrServerRequest): Promise<StrArrServerResponse> {
     return this.respond(request)
   }
 }

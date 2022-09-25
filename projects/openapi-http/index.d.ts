@@ -3,17 +3,23 @@ import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
   getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
-  getQuery<Q>(input: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
+  getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
   getUrl(path: string, query?: string): Promise<string>
+  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined>
   getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
+    cookie?: string,
     serializer?: (input: H) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders>
   getRequestBody<B>(mimeType?: string, input?: B): Promise<any>
   request(request: RawHttpRequest): Promise<RawHttpResponse>
   getMimeType(response: RawHttpResponse): Promise<string | undefined>
   getStatusCode(response: RawHttpResponse): Promise<number | undefined>
+  getResponseCookies<C>(
+    response: RawHttpResponse,
+    deserializer?: (cookie?: string) => Try<Cookies<C>>,
+  ): Promise<Cookies<C> | undefined>
   getResponseHeaders(
     response: RawHttpResponse,
     statusCode?: number,
@@ -30,6 +36,7 @@ export type ClientAdapter = {
 export type ServerAdapter<T> = {
   getPathParameters<P>(toolkit: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
   getQueryParameters<Q>(toolkit: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
+  getCookieParameters<C>(toolkit: T, deserializer: (input?: string) => Try<Partial<C>>): Promise<Try<Partial<C>>>
   getRequestHeaders<H>(toolkit: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
   getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
@@ -41,10 +48,37 @@ export type ServerAdapter<T> = {
 
   getStatusCode(toolkit: T, resp: HttpResponse): Promise<number>
   getResponseBody(toolkit: T, resp: HttpResponse): Promise<any>
-  getResponseHeaders(toolkit: T, resp: HttpResponse, serializer?: ResponseHeadersSerializer): Promise<RawHttpHeaders>
+  getPreflightCorsHeaders(toolkit: T, cors: PreflightCorsConfiguration): Promise<RawHttpHeaders>
+  getCorsHeaders(toolkit: T, cors: CorsConfiguration): Promise<RawHttpHeaders>
+  getResponseHeaders(
+    toolkit: T,
+    resp: HttpResponse,
+    serializer?: ResponseHeadersSerializer,
+    corsHeaders?: RawHttpHeaders,
+  ): Promise<RawHttpHeaders>
+  getResponseCookies<C>(
+    toolkit: T,
+    resp: HttpResponse<any, any, any, any, C>,
+    serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
+  ): Promise<Cookies<Record<string, string>>>
 
   respond(toolkit: T, response: RawHttpResponse): Promise<void>
   handleError(toolkit: T, error: any): Promise<void>
+}
+
+export type PreflightCorsConfiguration = {
+  allowedOrigins: string[] | true
+  allowedMethods?: HttpMethod[]
+  allowedRequestHeaders?: Partial<Record<HttpMethod, string[]>>
+  allowedResponseHeaders?: Partial<Record<HttpMethod, string[]>>
+  allowCredentials?: Partial<Record<HttpMethod, boolean | undefined>>
+  maxAge?: Partial<Record<HttpMethod, number | undefined>>
+}
+
+export type CorsConfiguration = {
+  allowedOrigins: string[] | true
+  allowedResponseHeaders?: string[]
+  allowCredentials?: boolean | undefined
 }
 
 export type RequestBodyValidators<C extends string = string> = {
@@ -89,15 +123,59 @@ export type HasRequestBody<M extends string, T> = {
 export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace'
 
 /** Generic type representing a HTTP response */
-export type HttpResponse<B = any, S = any, M = any, H = any> = {
+export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
   /** The parsed response body */
   body: B
   /** The response status code */
   statusCode: S
   /** The mime type of the response */
   mimeType: M
+  /** The cookies in the response (Set-Cookie header) */
+  cookies?: Cookies<C>
   /** The response headers */
   headers?: H
+}
+
+/**
+ * Wraps a cookie value with all possible configuration.
+ * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
+ */
+export type CookieValue<T> = {
+  value: T
+  /**
+   * The expiration date of the cookie in UTC date format.
+   * Use Date#toUTCString() or Date#toGMTString() to serialize a Date object to this format.
+   */
+  expires?: string
+  /**
+   * Maximum age (number of seconds) of the cookie.
+   * If both maxAge and expires is present, maxAge has precedence.
+   */
+  maxAge?: number
+  /**
+   * Defines the host to which the cookie will be sent.
+   */
+  domain?: string
+  /**
+   * Indicates the path that must exist in the requested URL for the browser to send the Cookie header.
+   */
+  path?: string
+  /**
+   * Indicates that the cookie is sent to the server only when a request is made with the https scheme (except on localhost)
+   */
+  secure?: boolean
+  /**
+   * Forbids JavaScript from accessing the cookie
+   */
+  httpOnly?: boolean
+  /**
+   * Controls whether or not a cookie is sent with cross-site requests
+   */
+  sameSite?: 'Strict' | 'Lax' | 'None'
+}
+
+export type Cookies<T> = {
+  [K in keyof T]: CookieValue<T[K]>
 }
 
 /** Http headers where key is the header name, value is the serialized header value. */
@@ -117,11 +195,13 @@ export type RawHttpRequest = {
 /** Object describing a Http request in a neutral format. */
 export type RawHttpResponse = {
   /** The response status code */
-  statusCode: number
+  statusCode?: number
   /** Request body, should only be set for the appropriate method. */
   body?: any
   /** Headers, content-type will be filled by default */
   headers?: RawHttpHeaders
+  /** Cookies with optional parameters, and serialized name & value */
+  cookies?: Cookies<Record<string, string>>
 }
 
 /** Union of know status codes */

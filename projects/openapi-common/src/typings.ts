@@ -27,8 +27,10 @@ export type OpenAPIGeneratorTarget =
   | 'oats/response-body-validator'
   | 'oats/query-type'
   | 'oats/path-type'
+  | 'oats/cookies-type'
   | 'oats/request-headers-type'
   | 'oats/response-type'
+  | 'oats/response-server-type'
   | 'oats/request-type'
   | 'oats/request-server-type'
   | 'oats/response-headers-type'
@@ -36,10 +38,14 @@ export type OpenAPIGeneratorTarget =
   | 'oats/response-headers-serializer'
   | 'oats/query-serializer'
   | 'oats/path-serializer'
+  | 'oats/cookie-serializer'
+  | 'oats/set-cookie-serializer'
   | 'oats/request-headers-deserializer'
   | 'oats/response-headers-deserializer'
   | 'oats/query-deserializer'
   | 'oats/path-deserializer'
+  | 'oats/cookie-deserializer'
+  | 'oats/set-cookie-deserializer'
   // Client
   | 'oats/operation'
   | 'oats/sdk-type'
@@ -49,7 +55,6 @@ export type OpenAPIGeneratorTarget =
   | 'oats/express-router'
   | 'oats/express-routers-type'
   | 'oats/express-router-factory'
-  | 'oats/express-cors-middleware'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
@@ -69,9 +74,9 @@ export type EnhancedOperation = {
 }
 
 export type EnhancedResponse = {
-  schema: SchemaObject | ReferenceObject
+  schema?: SchemaObject | ReferenceObject
+  mediaType?: string
   statusCode: string
-  mediaType: string
   headers: HeadersObject
 }
 

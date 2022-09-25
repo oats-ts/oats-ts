@@ -54,3 +54,26 @@ export function parameterObjectSchema(
       ]
   }
 }
+export function parameterObjectPrimitiveSchema(
+  input: SchemaObject,
+  context: OpenAPIValidatorContext,
+  config: OpenAPIValidatorConfig,
+): Issue[] {
+  const type = getInferredType(input)
+  switch (type) {
+    case 'string':
+    case 'number':
+    case 'boolean':
+      return primitiveSchemaObject(input, context, config)
+    case 'enum':
+      return enumSchemaObject(input, context, config)
+    default:
+      return [
+        {
+          message: 'should be a primitive schema ("string", "number" or "boolean")',
+          path: context.uriOf(input),
+          severity: 'error',
+        },
+      ]
+  }
+}

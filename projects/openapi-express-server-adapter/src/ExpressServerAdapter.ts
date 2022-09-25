@@ -5,9 +5,14 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
   ServerAdapter,
+  Cookies,
+  HttpMethod,
+  PreflightCorsConfiguration,
+  CorsConfiguration,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
+import { serializeCookieValue } from '@oats-ts/openapi-parameter-serialization'
 import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
 
@@ -20,6 +25,12 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   }
   async getQueryParameters<Q>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<Q>): Promise<Try<Q>> {
     return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
+  }
+  async getCookieParameters<C>(
+    toolkit: ExpressToolkit,
+    deserializer: (input?: string) => Try<Partial<C>>,
+  ): Promise<Try<Partial<C>>> {
+    return deserializer(toolkit.request.header('cookie'))
   }
   async getRequestHeaders<H>(
     toolkit: ExpressToolkit,
@@ -86,19 +97,99 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
+  async getPreflightCorsHeaders(
+    { request }: ExpressToolkit,
+    {
+      allowedOrigins,
+      allowedMethods,
+      allowedRequestHeaders = {},
+      allowedResponseHeaders = {},
+      allowCredentials = {},
+      maxAge = {},
+    }: PreflightCorsConfiguration,
+  ): Promise<RawHttpHeaders> {
+    const corsHeaders: RawHttpHeaders = {}
+    const origin = request.header('origin')
+    const method = request.header('access-control-request-method')?.toLowerCase() as HttpMethod | undefined
+    const requestedHeaders = (request.header('access-control-request-headers') ?? '')
+      .split(',')
+      .map((header) => header.trim().toLowerCase())
+
+    if (allowedOrigins === true || (typeof origin === 'string' && allowedOrigins.includes(origin))) {
+      corsHeaders['access-control-allow-origin'] = origin ?? '*'
+      if (method !== null && method !== undefined && allowedMethods?.includes(method)) {
+        corsHeaders['access-control-allow-methods'] = method.toUpperCase()
+
+        if (Array.isArray(requestedHeaders) && requestedHeaders.length > 0) {
+          const allowedRequestHeadersForMethod = allowedRequestHeaders[method] ?? []
+          const allowedReqHeaders = requestedHeaders.filter((header) => allowedRequestHeadersForMethod.includes(header))
+          if (allowedReqHeaders.length > 0) {
+            corsHeaders['access-control-allow-headers'] = allowedReqHeaders.join(', ')
+          }
+        }
+
+        const allowedResponseHeadersForMethod = allowedResponseHeaders[method] ?? []
+        if (allowedResponseHeadersForMethod.length > 0) {
+          corsHeaders['access-control-expose-headers'] = allowedResponseHeadersForMethod.join(', ')
+        }
+
+        const maxAgeSecs = maxAge[method]
+        if (maxAgeSecs !== undefined) {
+          corsHeaders['access-control-max-age'] = maxAgeSecs.toString(10)
+        }
+
+        const includeCreds = allowCredentials[method]
+        if (includeCreds !== undefined) {
+          corsHeaders['access-control-allow-credentials'] = includeCreds.toString()
+        }
+      }
+    }
+
+    return corsHeaders
+  }
+
+  async getCorsHeaders(
+    { request }: ExpressToolkit,
+    { allowedOrigins, allowedResponseHeaders = [], allowCredentials }: CorsConfiguration,
+  ): Promise<RawHttpHeaders> {
+    const corsHeaders: RawHttpHeaders = {}
+    /**
+     * Grab origin header, we need to check if it's among allowed origins
+     * (or if we don't care about origin, meaning allowedOrigins is true)
+     */
+    const origin = request.header('Origin')
+    /** In case the origin the client requested is allowed (or we don't care)*/
+    if (allowedOrigins === true || allowedOrigins.includes(origin!)) {
+      corsHeaders['access-control-allow-origin'] = origin ?? '*'
+
+      if (allowedResponseHeaders.length > 0) {
+        corsHeaders['access-control-expose-headers'] = allowedResponseHeaders.join(', ')
+      }
+
+      if (allowCredentials !== undefined) {
+        corsHeaders['access-control-allow-credentials'] = allowCredentials.toString()
+      }
+    }
+    return corsHeaders
+  }
+
   async getResponseHeaders(
     input: ExpressToolkit,
     response: HttpResponse,
     serializers?: ResponseHeadersSerializer,
+    corsHeaders?: RawHttpHeaders,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders: RawHttpHeaders =
-      response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }
+    const baseHeaders: RawHttpHeaders = {
+      ...(corsHeaders ?? {}),
+      ...(response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }),
+    }
+
     if (serializers === null || serializers === undefined) {
-      return mimeTypeHeaders
+      return baseHeaders
     }
     const serializer = serializers[response.statusCode]
     if (serializer === null || serializer === undefined) {
-      return mimeTypeHeaders
+      return baseHeaders
     }
     const headers = serializer(response.headers)
     if (isFailure(headers)) {
@@ -106,24 +197,49 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
     return {
       ...headers.data,
-      ...mimeTypeHeaders,
+      ...baseHeaders,
     }
   }
 
+  async getResponseCookies<C>(
+    _: ExpressToolkit,
+    resp: HttpResponse<any, any, any, any, C>,
+    serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
+  ): Promise<Cookies<Record<string, string>>> {
+    if (resp.cookies === null || resp.cookies === undefined || serializer === null || serializer === undefined) {
+      return {}
+    }
+    const cookies = serializer(resp.cookies)
+    if (isFailure(cookies)) {
+      throw new Error(`Failed to serialize response cookies:\n${cookies.issues.map(stringify).join('\n')}`)
+    }
+    return cookies.data
+  }
+
   async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
-    toolkit.response.status(rawResponse.statusCode)
+    if (typeof rawResponse.statusCode === 'number') {
+      toolkit.response.status(rawResponse.statusCode)
+    }
     if (rawResponse.headers !== null && rawResponse.headers !== undefined && !toolkit.response.headersSent) {
       const headerNames = Object.keys(rawResponse.headers)
       for (let i = 0; i < headerNames.length; i += 1) {
         const headerName = headerNames[i]
         const headerValue = rawResponse.headers[headerName]
-        toolkit.response.setHeader(headerName, headerValue)
+        toolkit.response.header(headerName, headerValue)
+      }
+    }
+    if (rawResponse.cookies !== null && rawResponse.cookies !== undefined && !toolkit.response.headersSent) {
+      const cookies = Object.keys(rawResponse.cookies).map((cookieName) =>
+        serializeCookieValue(cookieName, rawResponse.cookies![cookieName]),
+      )
+      if (cookies.length > 0) {
+        // Possibly multiple headers, have to use array parameter to set them all as individual headers
+        toolkit.response.header('set-cookie', cookies)
       }
     }
     if (toolkit.response.writable) {
       toolkit.response.send(rawResponse.body ?? '')
     }
-    toolkit.next()
   }
 
   async handleError(toolkit: ExpressToolkit, error: any): Promise<void> {

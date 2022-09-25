@@ -9,15 +9,11 @@ export const RouterNames = {
   toolkit: 'toolkit',
   issues: 'issues',
   mimeType: 'mimeType',
-  mimeTypeIssues: 'mimeTypeIssues',
   body: 'body',
-  bodyIssues: 'bodyIssues',
   query: 'query',
-  queryIssues: 'queryIssues',
   path: 'path',
-  pathIssues: 'pathIssues',
+  cookies: 'cookies',
   headers: 'headers',
-  headerIssues: 'headerIssues',
   error: 'error',
 
   header: 'header',
@@ -33,4 +29,17 @@ export const RouterNames = {
   responseBody: 'responseBody',
 
   routes: 'routes',
+
+  respond: 'respond',
+  getPreflightCorsHeaders: 'getPreflightCorsHeaders',
+  getCorsHeaders: 'getCorsHeaders',
+  getResponseHeaders: 'getResponseHeaders',
+  handleError: 'handleError',
+
+  allowedOrigins: 'allowedOrigins',
+  allowedMethods: 'allowedMethods',
+  allowedRequestHeaders: 'allowedRequestHeaders',
+  allowedResponseHeaders: 'allowedResponseHeaders',
+  allowCredentials: 'allowCredentials',
+  maxAge: 'maxAge',
 }

@@ -41,11 +41,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     }
     const name = this.config.nameProvider(input, target, this.nameProviderHelper)
     if (isNil(name)) {
-      try {
-        throw new TypeError(`Name provider returned ${name} for "${target}" with input ${JSON.stringify(input)}`)
-      } catch (e) {
-        console.error(e)
-      }
+      throw new TypeError(`Name provider returned ${name} for "${target}" with input ${JSON.stringify(input)}`)
     }
     return name
   }
@@ -68,31 +64,39 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return uri
   }
   dependenciesOf = (fromPath: string, input: any, target: Target): ImportDeclaration[] => {
-    const { owner, generators } = this
-    for (const generator of generators) {
+    for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.dependenciesOf(fromPath, input) ?? []
       }
     }
-    throw new Error(
-      `Generator "${owner.name()}" requested dependencies of "${target}", but it doesn't declare this as consumed (declared [${owner
-        .consumes()
-        .map((dep) => `"${dep}"`)
-        .join(', ')}])`,
-    )
+    throw this.wrongTargetError(target, 'dependencies')
   }
   referenceOf = <T>(input: any, target: Target): T => {
-    const { owner, generators } = this
-    for (const generator of generators) {
+    for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.referenceOf(input)
       }
     }
-    throw new Error(
-      `Generator "${owner.name()}" requested reference of "${target}", but it doesn't declare this as consumed (declared [${owner
-        .consumes()
-        .map((dep) => `"${dep}"`)
-        .join(', ')}])`,
+    throw this.wrongTargetError(target, 'reference')
+  }
+
+  configurationOf<T>(target: Target): T {
+    for (const generator of this.generators) {
+      if (generator.name() === target) {
+        return generator.configuration() as T
+      }
+    }
+    throw this.wrongTargetError(target, 'configuration')
+  }
+
+  private wrongTargetError(target: Target, requested: string): Error {
+    const { owner } = this
+    const deps = owner
+      .consumes()
+      .map((dep) => `"${dep}"`)
+      .join(', ')
+    return new Error(
+      `"${owner.name()}" requested ${requested} of "${target}", but it doesn't declare this as consumed generator (declared [${deps}])`,
     )
   }
 }

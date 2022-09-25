@@ -15,6 +15,10 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
 
   consumes(): OpenAPIGeneratorTarget[] {
     const validatorDep: OpenAPIGeneratorTarget[] = ['oats/response-body-validator']
+    const cookieSerializerDep: OpenAPIGeneratorTarget[] = ['oats/cookie-serializer']
+    const cookieDeserializerDep: OpenAPIGeneratorTarget[] = ['oats/set-cookie-deserializer']
+    const cookieTypeDep: OpenAPIGeneratorTarget[] = ['oats/cookies-type']
+    const config = this.configuration()
     return [
       'oats/type',
       'oats/request-headers-type',
@@ -26,7 +30,10 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       'oats/path-serializer',
       'oats/query-serializer',
       'oats/response-headers-deserializer',
-      ...(this.config.validate ? validatorDep : []),
+      ...(config.sendCookieHeader || config.parseSetCookieHeaders ? cookieTypeDep : []),
+      ...(config.sendCookieHeader ? cookieSerializerDep : []),
+      ...(config.parseSetCookieHeaders ? cookieDeserializerDep : []),
+      ...(config.validate ? validatorDep : []),
     ]
   }
 
@@ -54,11 +61,17 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           ...this.context.dependenciesOf(path, item.operation, 'oats/query-serializer'),
           ...this.context.dependenciesOf(path, item.operation, 'oats/request-headers-serializer'),
           ...this.context.dependenciesOf(path, item.operation, 'oats/response-headers-deserializer'),
-          ...(this.config.validate
+          ...(this.configuration().validate
             ? this.context.dependenciesOf(path, item.operation, 'oats/response-body-validator')
             : []),
+          ...(this.configuration().sendCookieHeader
+            ? [...this.context.dependenciesOf(path, item.operation, 'oats/cookie-serializer')]
+            : []),
+          ...(this.configuration().parseSetCookieHeaders
+            ? [...this.context.dependenciesOf(path, item.operation, 'oats/set-cookie-deserializer')]
+            : []),
         ],
-        [getOperationFunctionAst(item, this.context, this.config)],
+        [getOperationFunctionAst(item, this.context, this.configuration())],
       ),
     )
   }

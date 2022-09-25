@@ -8,10 +8,12 @@ const fileNameByTarget: NameByTarget = {
   'oats/type-guard': 'typeGuards.ts',
   'oats/operation': 'operations.ts',
   'oats/query-type': 'queryTypes.ts',
+  'oats/cookies-type': 'cookieTypes.ts',
   'oats/request-headers-type': 'requestHeaderTypes.ts',
   'oats/path-type': 'pathTypes.ts',
   'oats/response-headers-type': 'responseHeaderTypes.ts',
   'oats/response-type': 'responseTypes.ts',
+  'oats/response-server-type': 'responseServerTypes.ts',
   'oats/request-type': 'requestTypes.ts',
   'oats/request-server-type': 'requestServerTypes.ts',
   'oats/path-serializer': 'pathSerializers.ts',
@@ -28,10 +30,13 @@ const fileNameByTarget: NameByTarget = {
   'oats/express-router': 'expressRoutes.ts',
   'oats/express-routers-type': 'expressRoutesType.ts',
   'oats/express-router-factory': 'expressRouteFactory.ts',
-  'oats/express-cors-middleware': 'expressCorsMiddleware.ts',
   'oats/api-type': 'apiType.ts',
   'oats/sdk-impl': 'sdkImpl.ts',
   'oats/sdk-type': 'sdkType.ts',
+  'oats/cookie-serializer': 'cookieSerializers.ts',
+  'oats/set-cookie-serializer': 'setCookieSerializers.ts',
+  'oats/cookie-deserializer': 'cookieDeserializers.ts',
+  'oats/set-cookie-deserializer': 'setCookieDeserializers.ts',
 }
 
 const delegate =
@@ -57,6 +62,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/type-guard': typeGuards,
 
     'oats/response-type': responses,
+    'oats/response-server-type': responses,
 
     'oats/request-type': requests,
     'oats/request-server-type': requests,
@@ -71,23 +77,27 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/response-headers-type': parameters,
     'oats/path-type': parameters,
     'oats/query-type': parameters,
+    'oats/cookies-type': parameters,
 
     'oats/request-headers-serializer': serializers,
     'oats/query-serializer': serializers,
     'oats/path-serializer': serializers,
     'oats/response-headers-serializer': serializers,
+    'oats/cookie-serializer': serializers,
+    'oats/set-cookie-serializer': serializers,
 
     'oats/response-headers-deserializer': serializers,
     'oats/request-headers-deserializer': serializers,
     'oats/query-deserializer': serializers,
     'oats/path-deserializer': serializers,
+    'oats/cookie-deserializer': serializers,
+    'oats/set-cookie-deserializer': serializers,
 
     'oats/operation': operations,
 
     'oats/express-router': routers,
     'oats/express-router-factory': routers,
     'oats/express-routers-type': routers,
-    'oats/express-cors-middleware': routers,
 
     'oats/sdk-type': sdk,
     'oats/sdk-impl': sdk,

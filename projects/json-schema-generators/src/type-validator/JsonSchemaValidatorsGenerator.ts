@@ -1,7 +1,7 @@
 import { isNil } from 'lodash'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { ValidatorsGeneratorConfig } from './typings'
-import { Expression, ImportDeclaration, factory, SourceFile } from 'typescript'
+import { Expression, ImportDeclaration, SourceFile } from 'typescript'
 import { SchemaObject, Referenceable } from '@oats-ts/json-schema-model'
 import { collectExternalReferenceImports, getValidatorImports } from './getValidatorImports'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
@@ -29,29 +29,26 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected shouldGenerate(schema: Referenceable<SchemaObject>): boolean {
-    if (isNil(this.config?.ignore)) {
+    const config = this.configuration()
+    if (isNil(config?.ignore)) {
       return true
     }
-    return !this.config.ignore(schema, this.context.uriOf(schema))
+    return !config.ignore(schema, this.context.uriOf(schema))
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): Expression {
-    const schema = this.context.dereference(input)
-    const name = this.context.nameOf(schema)
-    return isNil(name)
-      ? getRightHandSideValidatorAst(input, this.context, this.config)
-      : factory.createIdentifier(this.context.nameOf(schema, 'oats/type-validator'))
+    return getRightHandSideValidatorAst(input, this.context, this.configuration())
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
-    return getValidatorImports(fromPath, input, this.context, this.config, collectExternalReferenceImports)
+    return getValidatorImports(fromPath, input, this.context, this.configuration(), collectExternalReferenceImports)
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(schema, 'oats/type-validator')
     return success(
-      createSourceFile(path, getValidatorImports(path, schema, this.context, this.config), [
-        getValidatorAst(schema, this.context, this.config),
+      createSourceFile(path, getValidatorImports(path, schema, this.context, this.configuration()), [
+        getValidatorAst(schema, this.context, this.configuration()),
       ]),
     )
   }

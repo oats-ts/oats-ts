@@ -59,6 +59,11 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @param target The generator target, for example "type" or "validator"
    */
   dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[]
+  /**
+   * Returns the configuration for the given generator target.
+   * @param target The generator target
+   */
+  configurationOf<T>(target: Target): T
 }
 
 export type HasSchemas = {

@@ -1,3 +1,4 @@
+import { FormCookieParametersCookieParameters } from '../../generated/parameters/cookieTypes'
 import {
   CommonEnumType,
   CommonObjectType,
@@ -12,7 +13,7 @@ import {
   SimpleHeaderParameters,
   SimplePathParameters,
   SpaceDelimitedQueryParameters,
-} from '../../generated/parameters'
+} from '../../generated/parameters/types'
 import { random } from '../common/random'
 
 const enumValues: CommonEnumType[] = ['A', 'B', 'C']
@@ -204,4 +205,20 @@ export function randomHeaderParameters(): SimpleHeaderParameters {
     'X-OptObj-Header': random.optional(optCommonObject),
     'X-OptObjExpl-Header': random.optional(optCommonExplObject),
   }
+}
+
+export function randomCookieParameters(): FormCookieParametersCookieParameters {
+  return {
+    optStr: random.optional(() => random.string()),
+    optNum: random.optional(() => random.number()),
+    optBool: random.optional(() => random.boolean()),
+    optEnm: random.optional(() => random.arrayElement(enumValues)),
+  }
+}
+
+export const defaultCookies: FormCookieParametersCookieParameters = {
+  optBool: true,
+  optNum: 42,
+  optEnm: 'A',
+  optStr: 'default',
 }

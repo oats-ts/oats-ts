@@ -22,6 +22,8 @@ export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<Express
       'oats/api-type',
       'oats/path-deserializer',
       'oats/query-deserializer',
+      'oats/cookie-deserializer',
+      'oats/set-cookie-serializer',
       'oats/request-headers-deserializer',
       'oats/response-headers-serializer',
       'oats/request-body-validator',
@@ -39,7 +41,7 @@ export class ExpressRoutersGenerator extends OperationBasedCodeGenerator<Express
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(this.context.pathOf(item.operation, this.name()), getExpressRouterImports(item, this.context), [
-        getExpressRouterAst(item, this.context, this.config),
+        getExpressRouterAst(item, this.context, this.configuration()),
       ]),
     )
   }

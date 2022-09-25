@@ -13,7 +13,8 @@ import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
 import { ExpressRouterFactoryGeneratorConfig } from '../express-router-factory'
-import { ExpressCorsMiddlewareGeneratorConfig } from '../express-cors-middleware/typings'
+import { RequestTypesGeneratorConfig } from '../request-type/typings'
+import { ResponseTypesGeneratorConfig } from '../response-type'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
@@ -29,13 +30,19 @@ type GeneratorConfigs = {
   'oats/type-guard': TypeGuardGeneratorConfig
   'oats/type-validator': ValidatorsGeneratorConfig
   'oats/response-headers-type': ParameterTypesGeneratorConfig
-  'oats/express-cors-middleware': ExpressCorsMiddlewareGeneratorConfig
+  'oats/request-type': RequestTypesGeneratorConfig
+  'oats/response-type': ResponseTypesGeneratorConfig
 }
 
 export type PresetGeneratorConfiguration = {
   [K in OpenAPIGeneratorTarget]?: K extends keyof GeneratorConfigs ? Config<GeneratorConfigs[K]> : Config
 }
 
-export type PresetConfiguration = Partial<GeneratorConfig> & {
+export type BasePresetConfiguration = Partial<GeneratorConfig> & {
   overrides?: PresetGeneratorConfiguration
 }
+
+export type ConfigProducer<T> = (
+  defaultConfig: PresetGeneratorConfiguration,
+  config?: T,
+) => PresetGeneratorConfiguration

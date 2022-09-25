@@ -41,6 +41,7 @@
     "@oats-ts/openapi-model": "0.0.34",
     "@oats-ts/openapi-parameter-serialization": "0.0.34",
     "@oats-ts/openapi-reader": "0.0.34",
+    "@oats-ts/openapi-http": "0.0.34",
     "@oats-ts/try": "0.0.34",
     "@oats-ts/typescript-common": "0.0.34",
     "@oats-ts/validators": "0.0.34",

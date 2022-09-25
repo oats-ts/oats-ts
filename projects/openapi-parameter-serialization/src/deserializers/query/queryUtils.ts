@@ -12,7 +12,7 @@ export function getQueryValue(
     case 0: {
       if (options.required) {
         return failure({
-          message: 'should occur once (found 0 times in query string)',
+          message: 'should occur once (found 0 times)',
           path,
           severity: 'error',
         })
@@ -24,7 +24,7 @@ export function getQueryValue(
     }
     default:
       return failure({
-        message: `should occur once (found ${values.length} times in query string)`,
+        message: `should occur once (found ${values.length} times)`,
         path,
         severity: 'error',
       })

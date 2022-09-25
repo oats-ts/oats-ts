@@ -60,10 +60,8 @@ export const dsl = {
     },
   },
   cookie: {
-    simple: {
+    form: {
       primitive: primitiveDsl('cookie', 'form', { explode: true, required: false }),
-      array: arrayDsl('cookie', 'form', { explode: true, required: false }),
-      object: objectDsl('cookie', 'form', { explode: true, required: false }),
     },
   },
 }

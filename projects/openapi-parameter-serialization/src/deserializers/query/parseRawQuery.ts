@@ -1,6 +1,6 @@
 import { Try, success, failure } from '@oats-ts/try'
 import { RawQueryParams } from '../../types'
-import { has, isNil } from '../../utils'
+import { decode, has, isNil } from '../../utils'
 
 export function parseRawQuery(query: string, path: string): Try<RawQueryParams> {
   if (isNil(query) || query.length === 0) {
@@ -13,12 +13,11 @@ export function parseRawQuery(query: string, path: string): Try<RawQueryParams> 
       .map((tuple) => tuple.split('=')) // Split key=value tuples on "="
 
     const data = sliced.reduce((record: RawQueryParams, [rawKey, rawValue]) => {
-      const key = decodeURIComponent(rawKey)
-      if (has(record, key)) {
-        record[key].push(rawValue)
-      } else {
-        record[key] = [rawValue]
+      const key = decode(rawKey)
+      if (!has(record, key)) {
+        record[key] = []
       }
+      record[key].push(rawValue)
       return record
     }, {})
 

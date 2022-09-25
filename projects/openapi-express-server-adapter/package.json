@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@oats-ts/openapi-http": "0.0.34",
+    "@oats-ts/openapi-parameter-serialization": "0.0.34",
     "@oats-ts/try": "0.0.34",
     "@oats-ts/validators": "0.0.34",
     "@types/express": "4.x.x",

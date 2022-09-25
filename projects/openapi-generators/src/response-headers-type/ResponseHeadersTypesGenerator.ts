@@ -1,47 +1,24 @@
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { flatMap, isNil, keys, negate, sortBy, values } from 'lodash'
+import { flatMap, isNil, keys, sortBy, values } from 'lodash'
 import {
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
   EnhancedOperation,
   getEnhancedOperations,
   hasResponseHeaders,
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { ParameterTypesGeneratorConfig, ResponseParameterInput } from '../utils/parameters/typings'
-import { BaseCodeGenerator, RuntimeDependency } from '@oats-ts/oats-ts'
-import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind } from 'typescript'
-import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
+import { ResponseParameterInput } from '../utils/parameters/typings'
+import { TypeNode, ImportDeclaration, factory } from 'typescript'
+import { getModelImports } from '@oats-ts/typescript-common'
 import { getResponseHeaders } from '@oats-ts/openapi-common'
-import { success, Try } from '@oats-ts/try'
-import { ResponsesObject } from '@oats-ts/openapi-model'
-import { getParameterTypeLiteralAst } from '../utils/parameters/getParameterTypeLiteralAst'
+import { HeaderObject, ResponsesObject } from '@oats-ts/openapi-model'
+import { ParameterTypesGenerator } from '../utils/parameters/ParameterTypesGenerator'
 
 const EmptyResponsesObject: ResponsesObject = { default: undefined }
 
 type ResponseParameterInputInternal = [EnhancedOperation, string]
 
-export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  ParameterTypesGeneratorConfig,
-  ResponseParameterInputInternal,
-  OpenAPIGeneratorContext
-> {
+export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<ResponseParameterInputInternal> {
   public name(): OpenAPIGeneratorTarget {
     return 'oats/response-headers-type'
-  }
-
-  public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/type']
-  }
-
-  public runtimeDependencies(): RuntimeDependency[] {
-    return []
-  }
-
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
   }
 
   protected getItems(): ResponseParameterInputInternal[] {
@@ -57,39 +34,6 @@ export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
       )
     })
   }
-  protected async generateItem([data, status]: ResponseParameterInputInternal): Promise<Try<SourceFile>> {
-    const { operation } = data
-    const fromPath = this.context.pathOf([operation, status], this.name())
-    const headers = values(getResponseHeaders(operation, this.context)[status]).map((header) =>
-      this.context.dereference(header, true),
-    )
-    const types = headers.map((header) => header.schema).filter(negate(isNil))
-    return success(
-      createSourceFile(
-        fromPath,
-        [...flatMap(types, (type) => this.context.dependenciesOf(fromPath, type, 'oats/type'))],
-        [
-          factory.createTypeAliasDeclaration(
-            [],
-            [factory.createModifier(SyntaxKind.ExportKeyword)],
-            this.context.nameOf([operation, status], this.name()),
-            undefined,
-            getParameterTypeLiteralAst(headers, this.context, this.config),
-          ),
-        ],
-      ),
-    )
-  }
-
-  private hasResponsesHeaders([operation, status]: ResponseParameterInput) {
-    const responseOrRef = (operation.responses ?? EmptyResponsesObject)[status]
-    if (isNil(responseOrRef)) {
-      return false
-    }
-    const response = this.context.dereference(responseOrRef, true)
-    const headers = response.headers || {}
-    return values(headers).length > 0
-  }
 
   public referenceOf(input: ResponseParameterInput): TypeNode | undefined {
     if (isNil(input) || !Array.isArray(input)) {
@@ -104,5 +48,29 @@ export class ResponseHeadersTypesGenerator extends BaseCodeGenerator<
     return isNil(input) || !Array.isArray(input) || !this.hasResponsesHeaders(input)
       ? []
       : getModelImports(fromPath, this.name(), [input], this.context)
+  }
+
+  protected getEnhancedOperation([operation]: ResponseParameterInputInternal): EnhancedOperation {
+    return operation
+  }
+
+  protected getNameable([{ operation }, statusCode]: ResponseParameterInputInternal) {
+    return [operation, statusCode]
+  }
+
+  protected getParameterObjects([data, status]: ResponseParameterInputInternal): HeaderObject[] {
+    return values(getResponseHeaders(data.operation, this.context)[status]).map((header) =>
+      this.context.dereference(header, true),
+    )
+  }
+
+  private hasResponsesHeaders([operation, status]: ResponseParameterInput) {
+    const responseOrRef = (operation.responses ?? EmptyResponsesObject)[status]
+    if (isNil(responseOrRef)) {
+      return false
+    }
+    const response = this.context.dereference(responseOrRef, true)
+    const headers = response.headers || {}
+    return values(headers).length > 0
   }
 }

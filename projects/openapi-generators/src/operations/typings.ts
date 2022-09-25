@@ -9,4 +9,12 @@ export type OperationsGeneratorConfig = {
    * responses to be validated. This is useful, in case you are unsure the backend respects the contract.
    */
   validate: boolean
+  /**
+   * If set to true, the cookie header will be manually sent, otherwise it will be ignored.
+   */
+  sendCookieHeader: boolean
+  /**
+   * If set to true, the set-cookie header(s) will be parsed, otherwise they will be ignored.
+   */
+  parseSetCookieHeaders: boolean
 }

@@ -45,12 +45,14 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/operation': _delegating(operationId, toCamelCase),
   'oats/query-type': _delegating(operationId, toPascalCase, append('QueryParameters')),
   'oats/path-type': _delegating(operationId, toPascalCase, append('PathParameters')),
+  'oats/cookies-type': _delegating(operationId, toPascalCase, append('CookieParameters')),
   'oats/request-headers-type': _delegating(operationId, toPascalCase, append('RequestHeaderParameters')),
   'oats/response-headers-type': (input: [OperationObject, string]) => {
     const [operation, status] = input
     return pascalCase(`${operation.operationId}${pascalCase(status)}ResponseHeaderParameters`)
   },
   'oats/response-type': _delegating(operationId, toPascalCase, append('Response')),
+  'oats/response-server-type': _delegating(operationId, toPascalCase, append('ServerResponse')),
   'oats/request-type': _delegating(operationId, toPascalCase, append('Request')),
   'oats/request-server-type': _delegating(operationId, toPascalCase, append('ServerRequest')),
   'oats/path-serializer': _delegating(operationId, toCamelCase, append('PathSerializer')),
@@ -61,6 +63,10 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/request-headers-deserializer': _delegating(operationId, toCamelCase, append('RequestHeadersDeserializer')),
   'oats/response-headers-serializer': _delegating(operationId, toCamelCase, append('ResponseHeadersSerializer')),
   'oats/response-headers-deserializer': _delegating(operationId, toCamelCase, append('ResponseHeadersDeserializer')),
+  'oats/set-cookie-serializer': _delegating(operationId, toCamelCase, append('SetCookieSerializer')),
+  'oats/set-cookie-deserializer': _delegating(operationId, toCamelCase, append('SetCookieDeserializer')),
+  'oats/cookie-serializer': _delegating(operationId, toCamelCase, append('CookieSerializer')),
+  'oats/cookie-deserializer': _delegating(operationId, toCamelCase, append('CookieDeserializer')),
   'oats/request-body-validator': _delegating(operationId, toCamelCase, append('RequestBodyValidator')),
   'oats/response-body-validator': _delegating(operationId, toCamelCase, append('ResponseBodyValidator')),
   'oats/express-router': _delegating(operationId, toCamelCase, append('Router')),
@@ -69,7 +75,6 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/api-type': _delegating(documentTitle, toPascalCase, append('Api')),
   'oats/express-router-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('Router')),
   'oats/express-routers-type': _delegating(documentTitle, toPascalCase, append('Routers')),
-  'oats/express-cors-middleware': _delegating(documentTitle, toCamelCase, append('CorsMiddleware')),
 }
 
 export const nameProviders = {

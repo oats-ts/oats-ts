@@ -36,11 +36,12 @@ export type RuntimeDependency = {
   version: string
 }
 
-export type CodeGenerator<R, G> = {
+export type CodeGenerator<R, G, C = any> = {
   readonly id: string
   name(): string
   produces(): string[]
   consumes(): string[]
+  configuration(): C
   runtimeDependencies(): RuntimeDependency[]
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined

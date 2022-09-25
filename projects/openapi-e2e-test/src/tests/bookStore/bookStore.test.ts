@@ -1,7 +1,7 @@
-import { Book } from '../../generated/book-store'
 import { catBook, defaultBooks, frogBook } from './bookStore.testdata'
 import { testBookStoreServer } from '../servers'
 import { bookstoreSdk } from '../sdks'
+import { Book } from '../../generated/book-store/types'
 
 describe('Http methods', () => {
   testBookStoreServer()

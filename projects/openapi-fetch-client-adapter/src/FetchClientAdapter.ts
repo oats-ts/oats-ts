@@ -7,6 +7,7 @@ import {
   ResponseHeadersDeserializers,
   ResponseBodyValidators,
   ClientAdapter,
+  Cookies,
 } from '@oats-ts/openapi-http'
 import { isFailure, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
@@ -14,7 +15,6 @@ import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } f
 export type FetchClientAdapterConfig = {
   url?: string
   skipResponseValidation?: boolean
-  options?: RequestInit
 }
 
 export class FetchClientAdapter implements ClientAdapter {
@@ -23,15 +23,40 @@ export class FetchClientAdapter implements ClientAdapter {
   constructor(config: FetchClientAdapterConfig = {}) {
     this.config = config
   }
+  async getCookies<C>(
+    input?: C | undefined,
+    serializer?: ((input: C) => Try<string>) | undefined,
+  ): Promise<string | undefined> {
+    if (input === null || input === undefined || serializer === null || serializer === undefined) {
+      return undefined
+    }
+    const cookie = serializer(input)
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to serialize cookie:\n${cookie.issues.map(stringify).join('\n')}`)
+    }
+    return cookie.data
+  }
+
+  async getResponseCookies<C>(
+    response: RawHttpResponse,
+    deserializer?: (cookie?: string) => Try<Cookies<C>>,
+  ): Promise<Cookies<C> | undefined> {
+    if (deserializer === null || deserializer === undefined) {
+      return undefined
+    }
+    const header = response?.headers?.['set-cookie']
+    if (header === undefined || header === null) {
+      return undefined
+    }
+    const cookie = deserializer(header)
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to parse set-cookie:\n${cookie.issues.map(stringify).join('\n')}`)
+    }
+    return cookie.data
+  }
 
   async request(request: RawHttpRequest): Promise<RawHttpResponse> {
-    const response = await crossFetch.fetch(request.url, {
-      ...(this.config.options ?? {}),
-      headers: request.headers,
-      method: request.method,
-      ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
-    })
-
+    const response = await crossFetch.fetch(request.url, this.getRequestInit(request))
     const rawHeaders: Record<string, string> = {}
     response.headers.forEach((value, key) => (rawHeaders[key.toLowerCase()] = value))
 
@@ -67,7 +92,10 @@ export class FetchClientAdapter implements ClientAdapter {
     }
     return path.data
   }
-  async getQuery<Q>(input: Q, serializer: (input: Q) => Try<string>): Promise<string | undefined> {
+  async getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): Promise<string | undefined> {
+    if (input === undefined || input === null || serializer === undefined || serializer === null) {
+      return undefined
+    }
     const query = serializer(input)
     if (isFailure(query)) {
       throw new Error(`Failed to serialize query:\n${query.issues.map(stringify).join('\n')}`)
@@ -78,16 +106,19 @@ export class FetchClientAdapter implements ClientAdapter {
     const { url } = this.config
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
+
   async getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
+    cookie?: string,
     serializer?: (input: any) => Try<RawHttpHeaders>,
   ): Promise<RawHttpHeaders> {
-    const mimeTypeHeaders = {
+    const baseHeaders = {
       ...(typeof mimeType === 'string' ? { 'content-type': mimeType } : {}),
+      ...(cookie === null || cookie === undefined ? {} : { cookie }),
     }
     if (serializer === undefined || serializer === null || input === undefined || input === null) {
-      return mimeTypeHeaders
+      return baseHeaders
     }
     const headers = serializer(input)
     if (isFailure(headers)) {
@@ -95,7 +126,7 @@ export class FetchClientAdapter implements ClientAdapter {
     }
     return {
       ...headers.data,
-      ...mimeTypeHeaders,
+      ...baseHeaders,
     }
   }
   async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {
@@ -185,5 +216,13 @@ export class FetchClientAdapter implements ClientAdapter {
     }
 
     return response.body
+  }
+
+  protected getRequestInit(request: RawHttpRequest): RequestInit | undefined {
+    return {
+      headers: request.headers,
+      method: request.method,
+      ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
+    }
   }
 }

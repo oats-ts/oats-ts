@@ -1,5 +1,4 @@
 import { apiType } from './api-type'
-import { expressCorsMiddleware } from './express-cors-middleware'
 import { expressRouters } from './express-router'
 import { expressRouterFactory } from './express-router-factory'
 import { expressRoutersType } from './express-routers-type'
@@ -11,6 +10,7 @@ import { pathTypes } from './path-type'
 import { queryDeserializers } from './query-deserializer'
 import { querySerializers } from './query-serializer'
 import { queryTypes } from './query-type'
+import { cookiesTypes } from './cookies-type'
 import { requestBodyValidators } from './request-body-validator'
 import { requestHeadersDeserializers } from './request-headers-deserializer'
 import { requestHeadersSerializers } from './request-headers-serializer'
@@ -24,6 +24,11 @@ import { responseHeadersTypes } from './response-headers-type'
 import { responseTypes } from './response-type'
 import { sdkImpl } from './sdk-impl'
 import { sdkType } from './sdk-type'
+import { responseServerTypes } from './response-server-type'
+import { cookieSerializers } from './cookie-serializer'
+import { cookieDeserializers } from './cookie-deserializer'
+import { setCookieSerializers } from './set-cookie-serializer'
+import { setCookieDeserializers } from './set-cookie-deserializer'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 
 export const factories = {
@@ -31,7 +36,6 @@ export const factories = {
   types,
   typeValidators,
   apiType,
-  expressCorsMiddleware,
   expressRouters,
   expressRouterFactory,
   expressRoutersType,
@@ -40,6 +44,11 @@ export const factories = {
   pathDeserializers,
   pathSerializers,
   pathTypes,
+  cookieSerializers,
+  cookieDeserializers,
+  setCookieSerializers,
+  setCookieDeserializers,
+  cookiesTypes,
   queryDeserializers,
   querySerializers,
   queryTypes,
@@ -54,6 +63,7 @@ export const factories = {
   responseHeadersSerializers,
   responseHeadersTypes,
   responseTypes,
+  responseServerTypes,
   sdkImpl,
   sdkType,
 } as const

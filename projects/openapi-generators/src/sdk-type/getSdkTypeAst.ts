@@ -10,11 +10,10 @@ export function getSdkTypeAst(
   context: OpenAPIGeneratorContext,
   config: SdkGeneratorConfig,
 ): TypeAliasDeclaration {
-  const { nameOf } = context
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'oats/sdk-type'),
+    context.nameOf(document, 'oats/sdk-type'),
     [],
     factory.createTypeLiteralNode(
       operations.map((operation) => getSdkTypeMethodSignatureAst(operation, context, config)),

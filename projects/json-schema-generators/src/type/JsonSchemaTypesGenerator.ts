@@ -27,7 +27,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
-    return getExternalTypeReferenceAst(input, this.context, this.config)
+    return getExternalTypeReferenceAst(input, this.context, this.configuration())
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
@@ -38,7 +38,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
     const path = this.context.pathOf(schema, 'oats/type')
     return success(
       createSourceFile(path, getTypeImports(path, schema, this.context, false), [
-        getNamedTypeAst(schema, this.context, this.config),
+        getNamedTypeAst(schema, this.context, this.configuration()),
       ]),
     )
   }

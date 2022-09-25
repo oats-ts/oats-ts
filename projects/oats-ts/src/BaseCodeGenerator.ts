@@ -32,6 +32,7 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
         ),
       )
     } catch (e) {
+      console.error(e)
       return failure({
         message: `${e}`,
         path: this.name(),

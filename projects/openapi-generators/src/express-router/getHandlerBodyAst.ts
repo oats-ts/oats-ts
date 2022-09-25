@@ -10,6 +10,8 @@ import { ExpressRoutersGeneratorConfig } from './typings'
 import { getParametersStatementAst } from './getParametersStatementAst'
 import { getRequestBodyRelatedStatementAsts } from './getRequestBodyRelatedStatementAsts'
 import { RouterNames } from '../utils/RouterNames'
+import { getAdapterStatement, getCatchBlock, getToolkitStatement } from './common'
+import { getCorsParameters } from './cors/getCorsParameters'
 
 export function getHandlerBodyAst(
   data: EnhancedOperation,
@@ -17,58 +19,13 @@ export function getHandlerBodyAst(
   config: ExpressRoutersGeneratorConfig,
 ) {
   const { referenceOf, nameOf, document } = context
-  const { ExpressToolkit: ExpressParameters } = RuntimePackages.HttpServerExpress
 
-  const hasInputParams = hasInput(data, context)
+  const hasInputParams = hasInput(data, context, true)
   const hasPath = data.path.length > 0
   const hasQuery = data.query.length > 0
   const hasHeaders = data.header.length > 0
+  const hasCookie = data.cookie.length > 0
   const hasBody = hasRequestBody(data, context)
-
-  const expressParams = factory.createVariableStatement(
-    undefined,
-    factory.createVariableDeclarationList(
-      [
-        factory.createVariableDeclaration(
-          factory.createIdentifier(RouterNames.toolkit),
-          undefined,
-          factory.createTypeReferenceNode(factory.createIdentifier(ExpressParameters), undefined),
-          factory.createObjectLiteralExpression(
-            [
-              factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.request), undefined),
-              factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.response), undefined),
-              factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.next), undefined),
-            ],
-            false,
-          ),
-        ),
-      ],
-      NodeFlags.Const,
-    ),
-  )
-
-  const adapter = factory.createVariableStatement(
-    undefined,
-    factory.createVariableDeclarationList(
-      [
-        factory.createVariableDeclaration(
-          factory.createIdentifier(RouterNames.adapter),
-          undefined,
-          factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
-            factory.createTypeReferenceNode(factory.createIdentifier(ExpressParameters), undefined),
-          ]),
-          factory.createElementAccessExpression(
-            factory.createPropertyAccessExpression(
-              factory.createIdentifier(RouterNames.response),
-              factory.createIdentifier(RouterNames.locals),
-            ),
-            factory.createStringLiteral(config.adapterKey),
-          ),
-        ),
-      ],
-      NodeFlags.Const,
-    ),
-  )
 
   const api = factory.createVariableStatement(
     undefined,
@@ -95,6 +52,7 @@ export function getHandlerBodyAst(
     ...getParametersStatementAst('path', data, context),
     ...getParametersStatementAst('query', data, context),
     ...getParametersStatementAst('header', data, context),
+    ...getParametersStatementAst('cookie', data, context),
   ]
 
   const body = getRequestBodyRelatedStatementAsts(data, context)
@@ -131,6 +89,14 @@ export function getHandlerBodyAst(
                       ? [
                           factory.createShorthandPropertyAssignment(
                             factory.createIdentifier(RouterNames.headers),
+                            undefined,
+                          ),
+                        ]
+                      : []),
+                    ...(hasCookie
+                      ? [
+                          factory.createShorthandPropertyAssignment(
+                            factory.createIdentifier(RouterNames.cookies),
                             undefined,
                           ),
                         ]
@@ -181,6 +147,20 @@ export function getHandlerBodyAst(
       NodeFlags.Const,
     ),
   )
+
+  const corsHeaders = config.cors
+    ? factory.createAwaitExpression(
+        factory.createCallExpression(
+          factory.createPropertyAccessExpression(
+            factory.createIdentifier(RouterNames.adapter),
+            factory.createIdentifier(RouterNames.getCorsHeaders),
+          ),
+          undefined,
+          getCorsParameters(data, context, config),
+        ),
+      )
+    : factory.createIdentifier('undefined')
+
   const normalizedResponse = factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -197,14 +177,15 @@ export function getHandlerBodyAst(
                   factory.createCallExpression(
                     factory.createPropertyAccessExpression(
                       factory.createIdentifier(RouterNames.adapter),
-                      factory.createIdentifier('getResponseHeaders'),
+                      factory.createIdentifier(RouterNames.getResponseHeaders),
                     ),
                     undefined,
                     [
                       factory.createIdentifier(RouterNames.toolkit),
                       factory.createIdentifier(RouterNames.typedResponse),
-                      referenceOf(data.operation, 'oats/response-headers-serializer') ||
+                      referenceOf(data.operation, 'oats/response-headers-serializer') ??
                         factory.createIdentifier('undefined'),
+                      corsHeaders,
                     ],
                   ),
                 ),
@@ -241,6 +222,28 @@ export function getHandlerBodyAst(
                   ),
                 ),
               ),
+              ...(hasCookie
+                ? [
+                    factory.createPropertyAssignment(
+                      factory.createIdentifier(RouterNames.cookies),
+                      factory.createAwaitExpression(
+                        factory.createCallExpression(
+                          factory.createPropertyAccessExpression(
+                            factory.createIdentifier(RouterNames.adapter),
+                            factory.createIdentifier('getResponseCookies'),
+                          ),
+                          undefined,
+                          [
+                            factory.createIdentifier(RouterNames.toolkit),
+                            factory.createIdentifier(RouterNames.typedResponse),
+                            referenceOf(data.operation, 'oats/set-cookie-serializer') ??
+                              factory.createIdentifier('undefined'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]
+                : []),
             ],
             true,
           ),
@@ -249,35 +252,21 @@ export function getHandlerBodyAst(
       NodeFlags.Const,
     ),
   )
-  const returnStatement = factory.createReturnStatement(
-    factory.createCallExpression(
-      factory.createPropertyAccessExpression(
-        factory.createIdentifier(RouterNames.adapter),
-        factory.createIdentifier('respond'),
+  const respondStatement = factory.createExpressionStatement(
+    factory.createAwaitExpression(
+      factory.createCallExpression(
+        factory.createPropertyAccessExpression(
+          factory.createIdentifier(RouterNames.adapter),
+          factory.createIdentifier(RouterNames.respond),
+        ),
+        undefined,
+        [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.rawResponse)],
       ),
-      undefined,
-      [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.rawResponse)],
     ),
   )
 
   const tryBlock = factory.createBlock(
-    [...parameters, ...body, ...typedRequest, typedResponse, normalizedResponse, returnStatement],
-    true,
-  )
-
-  const catchBlock = factory.createBlock(
-    [
-      factory.createExpressionStatement(
-        factory.createCallExpression(
-          factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterNames.adapter),
-            factory.createIdentifier('handleError'),
-          ),
-          undefined,
-          [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.error)],
-        ),
-      ),
-    ],
+    [...parameters, ...body, ...typedRequest, typedResponse, normalizedResponse, respondStatement],
     true,
   )
 
@@ -285,10 +274,10 @@ export function getHandlerBodyAst(
     tryBlock,
     factory.createCatchClause(
       factory.createVariableDeclaration(factory.createIdentifier(RouterNames.error), undefined, undefined, undefined),
-      catchBlock,
+      getCatchBlock(),
     ),
     undefined,
   )
 
-  return factory.createBlock([expressParams, adapter, api, tryCatch])
+  return factory.createBlock([getToolkitStatement(), getAdapterStatement(config), api, tryCatch])
 }

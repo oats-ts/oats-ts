@@ -34,7 +34,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
           ...this.context.dependenciesOf(path, this.input.document, 'oats/sdk-type'),
           ...flatMap(operations, ({ operation }) => this.context.dependenciesOf(path, operation, 'oats/operation')),
         ],
-        [getSdkClassAst(this.input.document, operations, this.context, this.config)],
+        [getSdkClassAst(this.input.document, operations, this.context, this.configuration())],
       ),
     )
   }

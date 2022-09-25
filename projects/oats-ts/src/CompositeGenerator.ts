@@ -1,4 +1,4 @@
-import { flatMap, uniqBy } from 'lodash'
+import { flatMap, isNil, uniqBy } from 'lodash'
 import { CodeGenerator, GeneratorConfig, RuntimeDependency, StructuredGeneratorResult } from './typings'
 import { Try, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
@@ -48,12 +48,12 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
 
   public resolve(name: string): CodeGenerator<R, G> | undefined {
     const superResolved = super.resolve(name)
-    if (superResolved) {
+    if (!isNil(superResolved)) {
       return superResolved
     }
     for (const child of this.children) {
       const resolved = child.resolve(name)
-      if (resolved) {
+      if (!isNil(resolved)) {
         return resolved
       }
     }
@@ -64,7 +64,8 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     const mapping: Record<string, CodeGenerator<R, G> | undefined> = {}
     const depNames = child.consumes()
     for (const depName of depNames) {
-      mapping[depName] = this.resolve(depName)
+      const resolved = this.resolve(depName)
+      mapping[depName] = resolved
     }
     const unresolved = depNames.filter((depName) => mapping[depName] === undefined)
     if (unresolved.length > 0) {

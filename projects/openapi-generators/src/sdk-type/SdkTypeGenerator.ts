@@ -27,7 +27,7 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
       createSourceFile(
         this.context.pathOf(this.input.document, this.name()),
         getSdkTypeImports(this.input.document, operations, this.context, true),
-        [getSdkTypeAst(this.input.document, operations, this.context, this.config)],
+        [getSdkTypeAst(this.input.document, operations, this.context, this.configuration())],
       ),
     )
   }

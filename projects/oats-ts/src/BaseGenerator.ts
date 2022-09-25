@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid'
 import { CodeGenerator, GeneratorConfig, GeneratorInit, RuntimeDependency, StructuredGeneratorResult } from './typings'
 import { GeneratorEventEmitter } from './events'
 import { isSuccess, Try } from '@oats-ts/try'
+import { isNil } from 'lodash'
 
 const emptyConfig: Partial<GeneratorConfig> = {
   noEmit: false,
@@ -9,7 +10,7 @@ const emptyConfig: Partial<GeneratorConfig> = {
   pathProvider: undefined,
 }
 
-export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
+export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   public readonly id = nanoid(6)
 
   protected parent?: CodeGenerator<R, G>
@@ -17,7 +18,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
   protected globalConfig!: GeneratorConfig
   protected emitter!: GeneratorEventEmitter<G>
   protected dependencies!: Try<CodeGenerator<R, G>[]>
-  protected readonly config: C
+  private readonly config: C
   private readonly globalConfigOverride: Partial<GeneratorConfig>
 
   constructor(config: C & Partial<GeneratorConfig>) {
@@ -41,6 +42,10 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
     return new Promise<void>((resolve) => setTimeout(resolve, 0))
   }
 
+  public configuration(): C {
+    return this.config
+  }
+
   public resolve(name: string): CodeGenerator<R, G> | undefined {
     if (name === this.name()) {
       return this
@@ -48,8 +53,8 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G> {
     if (isSuccess(this.dependencies)) {
       for (const dep of this.dependencies.data) {
         const resolved = dep.resolve(name)
-        if (resolved) {
-          return dep
+        if (!isNil(resolved)) {
+          return resolved
         }
       }
     }

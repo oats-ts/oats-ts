@@ -24,6 +24,7 @@ const COMPILER_OPTIONS = {
   strict: true,
   noImplicitAny: true,
   noUnusedLocals: true,
+  target: 'ES2018',
 }
 
 /**

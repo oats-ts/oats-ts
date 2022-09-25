@@ -1,33 +1,26 @@
-import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind } from 'typescript'
+import { factory, FunctionDeclaration, ParameterDeclaration, SyntaxKind, TypeReferenceNode } from 'typescript'
 import { RuntimePackages } from '@oats-ts/openapi-common'
-import { OpenAPIGeneratorContext, hasInput } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { OperationsGeneratorConfig } from './typings'
 import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { documentNode } from '@oats-ts/typescript-common'
 import { OperationNames } from './OperationNames'
 import { getOperationBodyAst } from './getOperationBodyAst'
+import { isNil } from 'lodash'
 
 export function getOperationFunctionAst(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: OperationsGeneratorConfig,
 ): FunctionDeclaration {
-  const { nameOf, referenceOf } = context
   const { operation } = data
 
+  const responseType = context.referenceOf<TypeReferenceNode>(operation, 'oats/response-type')
+  const requestType = context.referenceOf<TypeReferenceNode>(operation, 'oats/request-type')
   const params: ParameterDeclaration[] = [
-    ...(hasInput(data, context)
-      ? [
-          factory.createParameterDeclaration(
-            [],
-            [],
-            undefined,
-            OperationNames.request,
-            undefined,
-            factory.createTypeReferenceNode(nameOf(operation, 'oats/request-type')),
-          ),
-        ]
-      : []),
+    ...(isNil(requestType)
+      ? []
+      : [factory.createParameterDeclaration([], [], undefined, OperationNames.request, undefined, requestType)]),
     factory.createParameterDeclaration(
       [],
       [],
@@ -42,10 +35,12 @@ export function getOperationFunctionAst(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    nameOf(operation, 'oats/operation'),
+    context.nameOf(operation, 'oats/operation'),
     [],
     params,
-    factory.createTypeReferenceNode('Promise', [referenceOf(operation, 'oats/response-type')]),
+    factory.createTypeReferenceNode('Promise', [
+      isNil(responseType) ? factory.createTypeReferenceNode('void') : responseType,
+    ]),
     getOperationBodyAst(data, context, config),
   )
   return config.documentation ? documentNode(node, operation) : node
