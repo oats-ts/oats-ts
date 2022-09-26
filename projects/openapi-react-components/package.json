@@ -1,0 +1,43 @@
+{
+  "name": "@oats-ts/openapi-react-components",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "https://oats-ts.github.io/docs",
+  "bugs": {
+    "url": "https://github.com/oats-ts/oats-ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oats-ts/oats-ts.git"
+  },
+  "license": "MIT",
+  "author": "Balázs Édes <edesbalazs@gmail.com>",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'TODO'"
+  },
+  "dependencies": {
+    "@types/react": "18.0.21",
+    "@types/styled-components": "5.1.26",
+    "@oats-ts/oats-ts": "0.0.35",
+    "@oats-ts/openapi-http": "0.0.35",
+    "@oats-ts/openapi-model": "0.0.35",
+    "styled-components": "5.3.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "4.7.4"
+  },
+  "devDependencies": {
+    "@types/react-dom": "18.0.6",
+    "ts-loader": "8.4.0",
+    "ts-node": "10.8.2",
+    "webpack": "4.46.0",
+    "webpack-cli": "4.10.0",
+    "webpack-dev-server": "4.11.1",
+    "html-webpack-plugin": "4.5.2"
+  }
+}

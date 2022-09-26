@@ -1,0 +1,5 @@
+{
+  "preset": "ts-jest",
+  "silent": false,
+  "rootDir": "src/tests"
+}

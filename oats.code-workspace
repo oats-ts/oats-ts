@@ -61,6 +61,10 @@
       "path": "projects/openapi-parameter-serialization"
     },
     {
+      "name": "openapi-react-components",
+      "path": "projects/openapi-react-components"
+    },
+    {
       "name": "openapi-reader",
       "path": "projects/openapi-reader"
     },

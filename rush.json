@@ -102,6 +102,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@oats-ts/openapi-react-components",
+      "projectFolder": "projects/openapi-react-components",
+      "versionPolicyName": "oats",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@oats-ts/openapi-reader",
       "projectFolder": "projects/openapi-reader",
       "versionPolicyName": "oats",
