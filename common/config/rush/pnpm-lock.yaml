@@ -66,6 +66,7 @@ specifiers:
   ts-loader: 8.4.0
   ts-node: 10.8.2
   typescript: 4.7.4
+  typescript-plugin-styled-components: 2.0.0
   urijs: 1.19.11
   util: 0.12.4
   valid-url: 1.0.9
@@ -141,6 +142,7 @@ dependencies:
   ts-loader: 8.4.0_typescript@4.7.4+webpack@4.46.0
   ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
   typescript: 4.7.4
+  typescript-plugin-styled-components: 2.0.0_typescript@4.7.4
   urijs: 1.19.11
   util: 0.12.4
   valid-url: 1.0.9
@@ -6980,6 +6982,14 @@ packages:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: false
 
+  /typescript-plugin-styled-components/2.0.0_typescript@4.7.4:
+    resolution: {integrity: sha512-Wu7F96dwuphgiACHfu63vTbRRg6tkPwLnpFJwdxM70Y0PLfeKLRnvs2Yo5MAySMwE120ODMKk9W4TtJgY1ZumA==}
+    peerDependencies:
+      typescript: ^4.0
+    dependencies:
+      typescript: 4.7.4
+    dev: false
+
   /typescript/4.7.4:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
@@ -7904,7 +7914,7 @@ packages:
     dev: false
 
   file:projects/openapi-react-components.tgz_@types+node@16.7.1:
-    resolution: {integrity: sha512-QDgP1Bnt5WiJETt7io99uYuQJ0xUZFcco2rfN2bFSATcxz/7oPU1ndTbn3imMz8U4KQvoUQSDi0i/gyhVTZndg==, tarball: file:projects/openapi-react-components.tgz}
+    resolution: {integrity: sha512-AxAsXXjClXzvyZHZCqQRgExF7JR25QBX1cJYZXxvuKTvkOz/QlWdP2YjuNwQQqr0Fg/DLJ0lDtzfX4v/3SHElQ==, tarball: file:projects/openapi-react-components.tgz}
     id: file:projects/openapi-react-components.tgz
     name: '@rush-temp/openapi-react-components'
     version: 0.0.0
@@ -7920,6 +7930,7 @@ packages:
       ts-loader: 8.4.0_typescript@4.7.4+webpack@4.46.0
       ts-node: 10.8.2_0018477a4694b7a37c2edad1864b86f1
       typescript: 4.7.4
+      typescript-plugin-styled-components: 2.0.0_typescript@4.7.4
       webpack: 4.46.0_webpack-cli@4.10.0
       webpack-cli: 4.10.0_babb4cf158edcdf133a52c935e315398
       webpack-dev-server: 4.11.1_196e681456f11e809d8928f4499c300a

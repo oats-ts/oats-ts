@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
-export const Logo = styled.h1`
+export const Title = styled.h1`
   font-family: ${(props) => props.theme.textFontFamily};
   font-size: 30px;
-  margin: 24px;
-  color: ${(props) => props.theme.nav.item.activeBackgroundColor};
+  margin: 0px;
+  color: ${(props) => props.theme.content.container.textColor};
 `
