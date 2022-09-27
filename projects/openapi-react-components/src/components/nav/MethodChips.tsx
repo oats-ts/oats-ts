@@ -1,57 +1,34 @@
 import { HttpMethod } from '@oats-ts/openapi-http'
 import styled, { css } from 'styled-components'
+import { chip } from './chip'
 
-const chipCss = (method: HttpMethod) => css`
-  padding: 1px 5px;
-  border-radius: 4px;
-  font-weight: 700;
-  grid-area: method;
-  text-transform: uppercase;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  font-family: ${(props) => props.theme.textFontFamily};
-  font-size: ${(props) => props.theme.nav.methods.fontSize};
-  color: ${(props) => props.theme.nav.methods[method].textColor};
-  background-color: ${(props) => props.theme.nav.methods[method].backgroundColor};
-  content: '${method}';
-`
+function methodChip(method: HttpMethod) {
+  return css`
+    ${({ theme }) => chip(method, theme.nav.methods[method].textColor, theme.nav.methods[method].backgroundColor)}
+  `
+}
 
 export const GetChip = styled.div`
-  &::before {
-    ${chipCss('get')};
-  }
+  ${methodChip('get')};
 `
 export const PostChip = styled.div`
-  &::before {
-    ${chipCss('post')};
-  }
+  ${methodChip('post')};
 `
 export const PutChip = styled.div`
-  &::before {
-    ${chipCss('put')};
-  }
+  ${methodChip('put')};
 `
 export const PatchChip = styled.div`
-  &::before {
-    ${chipCss('patch')};
-  }
+  ${methodChip('patch')};
 `
 export const DeleteChip = styled.div`
-  &::before {
-    ${chipCss('delete')};
-  }
+  ${methodChip('delete')};
 `
 export const HeadChip = styled.div`
-  &::before {
-    ${chipCss('head')};
-  }
+  ${methodChip('head')};
 `
 export const TraceChip = styled.div`
-  &::before {
-    ${chipCss('trace')};
-  }
+  ${methodChip('trace')};
 `
 export const OptionsChip = styled.div`
-  &::before {
-    ${chipCss('options')};
-  }
+  ${methodChip('options')};
 `

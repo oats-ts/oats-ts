@@ -1,8 +1,31 @@
 import type { HttpMethod } from '@oats-ts/openapi-http'
+import { SchemaType } from './types'
+
+type ChipStyle = {
+  textColor: string
+  backgroundColor: string
+}
 
 export type Theme = {
-  textFontFamily: string
-  codeFontFamily: string
+  fontFamily: {
+    text: string
+    code: string
+  }
+  fontSize: {
+    xs: string
+    s: string
+    m: string
+    l: string
+    xl: string
+  }
+  spacing: {
+    nil: string
+    s: string
+    xs: string
+    m: string
+    l: string
+    xl: string
+  }
   nav: {
     container: {
       backgroundColor: string
@@ -15,15 +38,14 @@ export type Theme = {
       backgroundColor: string
       activeTextColor: string
       textColor: string
-      fontSize: string
     }
-    methods: Record<HttpMethod, { textColor: string; backgroundColor: string }> & { fontSize: string }
+    methods: Record<HttpMethod, ChipStyle>
+    types: Record<SchemaType, ChipStyle>
   }
   content: {
     container: {
       textColor: string
       backgroundColor: string
-      fontSize: string
     }
   }
 }

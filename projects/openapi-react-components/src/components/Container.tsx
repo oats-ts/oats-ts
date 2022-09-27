@@ -5,5 +5,5 @@ export const Container = styled.div`
   height: 100vh;
   display: grid;
   grid-template-areas: 'nav content interactive';
-  grid-template-columns: 1fr 3fr 3fr;
+  grid-template-columns: 2fr 4fr 4fr;
 `

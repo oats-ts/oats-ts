@@ -1,8 +1,6 @@
 import { Theme } from './theme'
 
 export const defaultTheme: Theme = {
-  textFontFamily: "'Open Sans', sans-serif",
-  codeFontFamily: 'Poppins, sans-serif',
   nav: {
     container: {
       backgroundColor: '#D0DBE6',
@@ -15,10 +13,8 @@ export const defaultTheme: Theme = {
       textColor: '#022b3a',
       activeBackgroundColor: '#022b3a',
       activeTextColor: '#ffffff',
-      fontSize: '14px',
     },
     methods: {
-      fontSize: '11px',
       delete: {
         textColor: '#fff',
         backgroundColor: '#a4161a',
@@ -52,12 +48,84 @@ export const defaultTheme: Theme = {
         backgroundColor: '#4d908e',
       },
     },
+    types: {
+      array: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      boolean: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      enum: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      intersection: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      literal: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      number: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      object: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      record: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      ref: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      string: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      tuple: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      union: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+      unknown: {
+        textColor: '#fff',
+        backgroundColor: '#4d908e',
+      },
+    },
   },
   content: {
     container: {
       textColor: '#022b3a',
       backgroundColor: '#fff',
-      fontSize: '14px',
     },
+  },
+  fontFamily: {
+    text: "'Open Sans', sans-serif",
+    code: "'Source Code Pro', monospace",
+  },
+  fontSize: {
+    xs: '11px',
+    s: '14px',
+    m: '16px',
+    l: '24px',
+    xl: '32px',
+  },
+  spacing: {
+    nil: '0px',
+    xs: '4px',
+    s: '8px',
+    m: '16px',
+    l: '24px',
+    xl: '36px',
   },
 }
