@@ -103,7 +103,7 @@ export abstract class BaseRequestTypesGenerator<T = {}> extends OperationBasedCo
       const typeRef = this.context.referenceOf<TypeNode>(operation, 'oats/path-type')
       props.push(this.createRequestProperty('path', typeRef, data.path, data))
     }
-    if (cookie.length > 0) {
+    if (cookie.length > 0 && this.includeCookie()) {
       const typeRef = this.context.referenceOf<TypeNode>(operation, 'oats/cookies-type')
       props.push(this.createRequestProperty('cookies', typeRef, data.cookie, data))
     }

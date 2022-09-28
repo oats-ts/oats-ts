@@ -20,7 +20,7 @@ export class RequestTypesGenerator extends BaseRequestTypesGenerator<RequestType
   }
 
   protected includeCookie(): boolean {
-    return this.configuration().cookies
+    return Boolean(this.configuration().cookies)
   }
 
   protected createRequestProperty(

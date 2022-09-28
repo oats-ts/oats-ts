@@ -34,19 +34,15 @@ export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {
         const wrappedType = body?.required
           ? type
           : factory.createUnionTypeNode([type, factory.createTypeReferenceNode('undefined')])
-        const tryType = factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Try.Try), [
-          wrappedType,
-        ])
+        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [wrappedType])
         return factory.createPropertySignature([], name, undefined, tryType)
       }
       case 'cookies': {
-        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [
-          factory.createTypeReferenceNode('Partial', [type]),
-        ])
+        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [type])
         return factory.createPropertySignature([], name, undefined, tryType)
       }
       default: {
-        const tryType = factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Try.Try), [type])
+        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [type])
         return factory.createPropertySignature([], name, undefined, tryType)
       }
     }
