@@ -18,6 +18,7 @@ export const swaggerPetstoreCorsMiddleware: Router = Router()
           allowedOrigins: { get: true },
           allowedMethods: ['get'],
           allowedResponseHeaders: { get: ['content-type'] },
+          allowCredentials: { get: false },
         }),
       })
     } catch (error) {
@@ -34,6 +35,7 @@ export const swaggerPetstoreCorsMiddleware: Router = Router()
           allowedMethods: ['get', 'post'],
           allowedRequestHeaders: { post: ['content-type'] },
           allowedResponseHeaders: { get: ['x-next', 'content-type'], post: ['content-type'] },
+          allowCredentials: { get: false, post: false },
         }),
       })
     } catch (error) {

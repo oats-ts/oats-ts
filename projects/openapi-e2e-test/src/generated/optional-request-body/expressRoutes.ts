@@ -31,12 +31,7 @@ export const optionalRequestBodyRouter: Router = Router().post(
       }
       const typedResponse = await api.optionalRequestBody(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          undefined,
-          await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-        ),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
       }

@@ -36,12 +36,7 @@ export const addBookRouter: Router = Router().post(
       }
       const typedResponse = await api.addBook(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          undefined,
-          await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-        ),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
       }
@@ -65,12 +60,7 @@ export const getBookRouter: Router = Router().get(
       }
       const typedResponse = await api.getBook(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          undefined,
-          await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-        ),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
       }
@@ -96,15 +86,7 @@ export const getBooksRouter: Router = Router().get(
       }
       const typedResponse = await api.getBooks(typedRequest)
       const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          getBooksResponseHeadersSerializer,
-          await adapter.getCorsHeaders(toolkit, {
-            allowedOrigins: true,
-            allowedResponseHeaders: ['x-length', 'content-type'],
-          }),
-        ),
+        headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer, undefined),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
         body: await adapter.getResponseBody(toolkit, typedResponse),
       }

@@ -14,6 +14,7 @@ import { createBodiesRouter as createOptionalRequestBodyRouter } from '../genera
 import { createBodiesRouter } from '../generated/bodies/expressRouteFactory'
 import { createHttpMethodsRouter } from '../generated/methods/expressRouteFactory'
 import { createParametersRouter } from '../generated/parameters/expressRouteFactory'
+import { parametersCorsMiddleware } from '../generated/parameters/expressCorsMiddleware'
 
 export function testBookStoreServer() {
   testExpressServer({
@@ -77,6 +78,7 @@ export function testParametersServer() {
       customBodyParsers.yaml(),
       customBodyParsers.json(),
       createParametersRouter(new ParametersApiImpl(), new ExpressServerAdapter()),
+      parametersCorsMiddleware,
     ],
   })
 }

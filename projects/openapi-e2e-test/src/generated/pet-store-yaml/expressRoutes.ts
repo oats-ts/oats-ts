@@ -42,6 +42,7 @@ export const createPetsRouter: Router = Router().post(
           await adapter.getCorsHeaders(toolkit, {
             allowedOrigins: ['https://foo.com'],
             allowedResponseHeaders: ['content-type'],
+            allowCredentials: false,
           }),
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -74,6 +75,7 @@ export const listPetsRouter: Router = Router().get(
           await adapter.getCorsHeaders(toolkit, {
             allowedOrigins: ['https://foo.com'],
             allowedResponseHeaders: ['x-next', 'content-type'],
+            allowCredentials: false,
           }),
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -106,6 +108,7 @@ export const showPetByIdRouter: Router = Router().get(
           await adapter.getCorsHeaders(toolkit, {
             allowedOrigins: ['https://foo.com'],
             allowedResponseHeaders: ['content-type'],
+            allowCredentials: false,
           }),
         ),
         statusCode: await adapter.getStatusCode(toolkit, typedResponse),
