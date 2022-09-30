@@ -1,13 +1,8 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, SyntaxKind } from 'typescript'
 import { RouterNames } from '../utils/express/RouterNames'
-import { ExpressRouterFactoryGeneratorConfig } from './typings'
 
-export function getRouterFactoryAst(
-  operations: EnhancedOperation[],
-  context: OpenAPIGeneratorContext,
-  config: ExpressRouterFactoryGeneratorConfig,
-) {
+export function getRouterFactoryAst(operations: EnhancedOperation[], context: OpenAPIGeneratorContext) {
   const { nameOf, referenceOf, document } = context
   return factory.createFunctionDeclaration(
     undefined,
@@ -16,29 +11,6 @@ export function getRouterFactoryAst(
     factory.createIdentifier(nameOf(document, 'oats/express-router-factory')),
     undefined,
     [
-      factory.createParameterDeclaration(
-        undefined,
-        undefined,
-        undefined,
-        factory.createIdentifier(RouterNames.api),
-        undefined,
-        factory.createTypeReferenceNode(referenceOf(document, 'oats/api-type')),
-        undefined,
-      ),
-      factory.createParameterDeclaration(
-        undefined,
-        undefined,
-        undefined,
-        factory.createIdentifier(RouterNames.adapter),
-        undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
-          factory.createTypeReferenceNode(
-            factory.createIdentifier(RuntimePackages.HttpServerExpress.ExpressToolkit),
-            undefined,
-          ),
-        ]),
-        undefined,
-      ),
       factory.createParameterDeclaration(
         undefined,
         undefined,
@@ -62,75 +34,6 @@ export function getRouterFactoryAst(
             ),
             undefined,
             [
-              factory.createArrowFunction(
-                undefined,
-                undefined,
-                [
-                  factory.createParameterDeclaration(
-                    undefined,
-                    undefined,
-                    undefined,
-                    factory.createIdentifier('_'),
-                    undefined,
-                    undefined,
-                    undefined,
-                  ),
-                  factory.createParameterDeclaration(
-                    undefined,
-                    undefined,
-                    undefined,
-                    factory.createIdentifier(RouterNames.response),
-                    undefined,
-                    undefined,
-                    undefined,
-                  ),
-                  factory.createParameterDeclaration(
-                    undefined,
-                    undefined,
-                    undefined,
-                    factory.createIdentifier(RouterNames.next),
-                    undefined,
-                    undefined,
-                    undefined,
-                  ),
-                ],
-                undefined,
-                factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-                factory.createBlock(
-                  [
-                    factory.createExpressionStatement(
-                      factory.createBinaryExpression(
-                        factory.createElementAccessExpression(
-                          factory.createPropertyAccessExpression(
-                            factory.createIdentifier(RouterNames.response),
-                            factory.createIdentifier(RouterNames.locals),
-                          ),
-                          factory.createStringLiteral(config.apiKey),
-                        ),
-                        factory.createToken(SyntaxKind.EqualsToken),
-                        factory.createIdentifier(RouterNames.api),
-                      ),
-                    ),
-                    factory.createExpressionStatement(
-                      factory.createBinaryExpression(
-                        factory.createElementAccessExpression(
-                          factory.createPropertyAccessExpression(
-                            factory.createIdentifier(RouterNames.response),
-                            factory.createIdentifier(RouterNames.locals),
-                          ),
-                          factory.createStringLiteral(config.adapterKey),
-                        ),
-                        factory.createToken(SyntaxKind.EqualsToken),
-                        factory.createIdentifier(RouterNames.adapter),
-                      ),
-                    ),
-                    factory.createExpressionStatement(
-                      factory.createCallExpression(factory.createIdentifier(RouterNames.next), undefined, []),
-                    ),
-                  ],
-                  true,
-                ),
-              ),
               ...operations.map(({ operation }) => {
                 return factory.createBinaryExpression(
                   factory.createPropertyAccessExpression(

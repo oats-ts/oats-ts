@@ -4,10 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
 import { Router } from 'express'
-import { BodiesApi } from './apiType'
 import {
   arrObjRouter,
   boolArrRouter,
@@ -25,17 +22,8 @@ import {
 } from './expressRoutes'
 import { BodiesRouters } from './expressRoutesType'
 
-export function createBodiesRouter(
-  api: BodiesApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<BodiesRouters> = {},
-): Router {
+export function createBodiesRouter(routes: Partial<BodiesRouters> = {}): Router {
   return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
     routes.strRouter ?? strRouter,
     routes.numRouter ?? numRouter,
     routes.enmRouter ?? enmRouter,

@@ -12,7 +12,6 @@ import { SdkImplGeneratorConfig } from '../sdk-impl'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
-import { ExpressRouterFactoryGeneratorConfig } from '../express-router-factory'
 import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
 import { ExpressCorsMiddlewareGeneratorConfig } from '../express-cors-middleware'
@@ -20,7 +19,6 @@ import { ExpressCorsMiddlewareGeneratorConfig } from '../express-cors-middleware
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
   'oats/express-router': ExpressRoutesGeneratorConfig
-  'oats/express-router-factory': ExpressRouterFactoryGeneratorConfig
   'oats/operation': OperationsGeneratorConfig
   'oats/path-type': ParameterTypesGeneratorConfig
   'oats/query-type': ParameterTypesGeneratorConfig

@@ -1,5 +1,5 @@
 import { EnhancedPathItem, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
-import { Expression, factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
+import { Expression, factory, Statement, SyntaxKind } from 'typescript'
 import { getPathTemplate } from '../utils/express/getPathTemplate'
 import { getCorsHandlerArrowFunctionAst } from './getCorsHandlerArrowFunction'
 import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
@@ -29,18 +29,14 @@ export function getCorsMiddlewareAst(
   context: OpenAPIGeneratorContext,
   config: ExpressCorsMiddlewareGeneratorConfig,
 ): Statement {
-  return factory.createVariableStatement(
+  return factory.createFunctionDeclaration(
+    undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    factory.createVariableDeclarationList(
-      [
-        factory.createVariableDeclaration(
-          factory.createIdentifier(context.nameOf(context.document, 'oats/express-cors-middleware')),
-          undefined,
-          factory.createTypeReferenceNode(RuntimePackages.Express.Router),
-          getCorsRouterExpression(paths, context, config),
-        ),
-      ],
-      NodeFlags.Const,
-    ),
+    undefined,
+    factory.createIdentifier(context.nameOf(context.document, 'oats/express-cors-middleware')),
+    undefined,
+    [],
+    factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
+    factory.createBlock([factory.createReturnStatement(getCorsRouterExpression(paths, context, config))], true),
   )
 }

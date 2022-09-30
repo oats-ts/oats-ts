@@ -52,6 +52,7 @@ const Express = {
   Response: 'Response',
   NextFunction: 'NextFunction',
   RequestHandler: 'RequestHandler',
+  Handler: 'Handler',
 } as const
 
 const Try = {

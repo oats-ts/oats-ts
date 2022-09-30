@@ -4,10 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
 import { Router } from 'express'
-import { HttpMethodsApi } from './apiType'
 import {
   deleteMethodRouter,
   getMethodRouter,
@@ -18,17 +15,8 @@ import {
 } from './expressRoutes'
 import { HttpMethodsRouters } from './expressRoutesType'
 
-export function createHttpMethodsRouter(
-  api: HttpMethodsApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<HttpMethodsRouters> = {},
-): Router {
+export function createHttpMethodsRouter(routes: Partial<HttpMethodsRouters> = {}): Router {
   return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
     routes.getMethodRouter ?? getMethodRouter,
     routes.postMethodRouter ?? postMethodRouter,
     routes.putMethodRouter ?? putMethodRouter,

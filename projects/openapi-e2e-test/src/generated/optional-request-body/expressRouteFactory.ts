@@ -4,21 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
 import { Router } from 'express'
-import { BodiesApi } from './apiType'
 import { optionalRequestBodyRouter } from './expressRoutes'
 import { BodiesRouters } from './expressRoutesType'
 
-export function createBodiesRouter(
-  api: BodiesApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<BodiesRouters> = {},
-): Router {
-  return Router().use((_, response, next) => {
-    response.locals['__oats_api'] = api
-    response.locals['__oats_adapter'] = adapter
-    next()
-  }, routes.optionalRequestBodyRouter ?? optionalRequestBodyRouter)
+export function createBodiesRouter(routes: Partial<BodiesRouters> = {}): Router {
+  return Router().use(routes.optionalRequestBodyRouter ?? optionalRequestBodyRouter)
 }

@@ -7,9 +7,9 @@ import { getRouterFactoryAst } from './getRouterFactoryAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
-export class ExpressRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
+export class ExpressContextMiddlewareGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'oats/express-router-factory'
+    return 'oats/express-context-middleware'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/express-router', 'oats/express-routers-type', 'oats/api-type']
@@ -28,19 +28,15 @@ export class ExpressRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}
       createSourceFile(
         path,
         [
-          getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router]),
-          ...getModelImports<OpenAPIGeneratorTarget>(
-            path,
-            'oats/express-routers-type',
-            [this.input.document],
-            this.context,
-          ),
-          ...getModelImports<OpenAPIGeneratorTarget>(
-            path,
-            'oats/express-router',
-            operations.map(({ operation }) => operation),
-            this.context,
-          ),
+          getNamedImports(RuntimePackages.Express.name, [
+            RuntimePackages.Express.Handler,
+            RuntimePackages.Express.NextFunction,
+            RuntimePackages.Express.Request,
+            RuntimePackages.Express.Response,
+          ]),
+          getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ServerAdapter]),
+          getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
+          ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context),
         ],
         [getRouterFactoryAst(operations, this.context)],
       ),

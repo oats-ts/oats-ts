@@ -8,197 +8,136 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
 import { NextFunction, Request, Response, Router } from 'express'
 
-export const parametersCorsMiddleware: Router = Router()
-  .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { post: true },
-          allowedMethods: ['post'],
-          allowedRequestHeaders: { post: ['content-type'] },
-          allowedResponseHeaders: {
-            post: [
-              'x-strexpl-header',
-              'x-optstrexpl-header',
-              'x-str-header',
-              'x-optstr-header',
-              'x-numexpl-header',
-              'x-optnumexpl-header',
-              'x-num-header',
-              'x-optnum-header',
-              'x-boolexpl-header',
-              'x-optboolexpl-header',
-              'x-bool-header',
-              'x-optbool-header',
-              'x-enmexpl-header',
-              'x-optenmexpl-header',
-              'x-enm-header',
-              'x-optenm-header',
-              'x-strarrexpl-header',
-              'x-optstrarrexpl-header',
-              'x-strarr-header',
-              'x-optstrarr-header',
-              'x-numarrexpl-header',
-              'x-optnumarrexpl-header',
-              'x-numarr-header',
-              'x-optnumarr-header',
-              'x-boolarrexpl-header',
-              'x-optboolarrexpl-header',
-              'x-boolarr-header',
-              'x-optboolarr-header',
-              'x-enmarrexpl-header',
-              'x-optenmarrexpl-header',
-              'x-enmarr-header',
-              'x-optenmarr-header',
-              'x-objexpl-header',
-              'x-optobjexpl-header',
-              'x-obj-header',
-              'x-optobj-header',
-              'content-type',
-            ],
-          },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options('/form-cookie-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { get: true },
-          allowedMethods: ['get'],
-          allowedResponseHeaders: { get: ['content-type', 'set-cookie'] },
-          allowCredentials: { get: true },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options('/simple-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { get: true },
-          allowedMethods: ['get'],
-          allowedRequestHeaders: {
-            get: [
-              'x-strexpl-header',
-              'x-optstrexpl-header',
-              'x-str-header',
-              'x-optstr-header',
-              'x-numexpl-header',
-              'x-optnumexpl-header',
-              'x-num-header',
-              'x-optnum-header',
-              'x-boolexpl-header',
-              'x-optboolexpl-header',
-              'x-bool-header',
-              'x-optbool-header',
-              'x-enmexpl-header',
-              'x-optenmexpl-header',
-              'x-enm-header',
-              'x-optenm-header',
-              'x-strarrexpl-header',
-              'x-optstrarrexpl-header',
-              'x-strarr-header',
-              'x-optstrarr-header',
-              'x-numarrexpl-header',
-              'x-optnumarrexpl-header',
-              'x-numarr-header',
-              'x-optnumarr-header',
-              'x-boolarrexpl-header',
-              'x-optboolarrexpl-header',
-              'x-boolarr-header',
-              'x-optboolarr-header',
-              'x-enmarrexpl-header',
-              'x-optenmarrexpl-header',
-              'x-enmarr-header',
-              'x-optenmarr-header',
-              'x-objexpl-header',
-              'x-optobjexpl-header',
-              'x-obj-header',
-              'x-optobj-header',
-            ],
-          },
-          allowedResponseHeaders: { get: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options('/deepObject-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { get: true },
-          allowedMethods: ['get'],
-          allowedResponseHeaders: { get: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options('/pipeDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { get: true },
-          allowedMethods: ['get'],
-          allowedResponseHeaders: { get: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options('/spaceDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { get: true },
-          allowedMethods: ['get'],
-          allowedResponseHeaders: { get: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options('/form-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: { get: true },
-          allowedMethods: ['get'],
-          allowedResponseHeaders: { get: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .options(
-    '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-    async (request: Request, response: Response, next: NextFunction) => {
+export function createParametersCorsMiddleware(): Router {
+  return Router()
+    .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      try {
+        await adapter.respond(toolkit, {
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: { post: true },
+            allowedMethods: ['post'],
+            allowedRequestHeaders: { post: ['content-type'] },
+            allowedResponseHeaders: {
+              post: [
+                'x-strexpl-header',
+                'x-optstrexpl-header',
+                'x-str-header',
+                'x-optstr-header',
+                'x-numexpl-header',
+                'x-optnumexpl-header',
+                'x-num-header',
+                'x-optnum-header',
+                'x-boolexpl-header',
+                'x-optboolexpl-header',
+                'x-bool-header',
+                'x-optbool-header',
+                'x-enmexpl-header',
+                'x-optenmexpl-header',
+                'x-enm-header',
+                'x-optenm-header',
+                'x-strarrexpl-header',
+                'x-optstrarrexpl-header',
+                'x-strarr-header',
+                'x-optstrarr-header',
+                'x-numarrexpl-header',
+                'x-optnumarrexpl-header',
+                'x-numarr-header',
+                'x-optnumarr-header',
+                'x-boolarrexpl-header',
+                'x-optboolarrexpl-header',
+                'x-boolarr-header',
+                'x-optboolarr-header',
+                'x-enmarrexpl-header',
+                'x-optenmarrexpl-header',
+                'x-enmarr-header',
+                'x-optenmarr-header',
+                'x-objexpl-header',
+                'x-optobjexpl-header',
+                'x-obj-header',
+                'x-optobj-header',
+                'content-type',
+              ],
+            },
+          }),
+        })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/form-cookie-parameters', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      try {
+        await adapter.respond(toolkit, {
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: { get: true },
+            allowedMethods: ['get'],
+            allowedResponseHeaders: { get: ['content-type', 'set-cookie'] },
+            allowCredentials: { get: true },
+          }),
+        })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/simple-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      try {
+        await adapter.respond(toolkit, {
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: { get: true },
+            allowedMethods: ['get'],
+            allowedRequestHeaders: {
+              get: [
+                'x-strexpl-header',
+                'x-optstrexpl-header',
+                'x-str-header',
+                'x-optstr-header',
+                'x-numexpl-header',
+                'x-optnumexpl-header',
+                'x-num-header',
+                'x-optnum-header',
+                'x-boolexpl-header',
+                'x-optboolexpl-header',
+                'x-bool-header',
+                'x-optbool-header',
+                'x-enmexpl-header',
+                'x-optenmexpl-header',
+                'x-enm-header',
+                'x-optenm-header',
+                'x-strarrexpl-header',
+                'x-optstrarrexpl-header',
+                'x-strarr-header',
+                'x-optstrarr-header',
+                'x-numarrexpl-header',
+                'x-optnumarrexpl-header',
+                'x-numarr-header',
+                'x-optnumarr-header',
+                'x-boolarrexpl-header',
+                'x-optboolarrexpl-header',
+                'x-boolarr-header',
+                'x-optboolarr-header',
+                'x-enmarrexpl-header',
+                'x-optenmarrexpl-header',
+                'x-enmarr-header',
+                'x-optenmarr-header',
+                'x-objexpl-header',
+                'x-optobjexpl-header',
+                'x-obj-header',
+                'x-optobj-header',
+              ],
+            },
+            allowedResponseHeaders: { get: ['content-type'] },
+          }),
+        })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/deepObject-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
       try {
@@ -212,11 +151,8 @@ export const parametersCorsMiddleware: Router = Router()
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
-    },
-  )
-  .options(
-    '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-    async (request: Request, response: Response, next: NextFunction) => {
+    })
+    .options('/pipeDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
       try {
@@ -230,11 +166,8 @@ export const parametersCorsMiddleware: Router = Router()
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
-    },
-  )
-  .options(
-    '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
-    async (request: Request, response: Response, next: NextFunction) => {
+    })
+    .options('/spaceDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
       try {
@@ -248,5 +181,74 @@ export const parametersCorsMiddleware: Router = Router()
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
-    },
-  )
+    })
+    .options('/form-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      try {
+        await adapter.respond(toolkit, {
+          headers: await adapter.getPreflightCorsHeaders(toolkit, {
+            allowedOrigins: { get: true },
+            allowedMethods: ['get'],
+            allowedResponseHeaders: { get: ['content-type'] },
+          }),
+        })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options(
+      '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+      async (request: Request, response: Response, next: NextFunction) => {
+        const toolkit: ExpressToolkit = { request, response, next }
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        try {
+          await adapter.respond(toolkit, {
+            headers: await adapter.getPreflightCorsHeaders(toolkit, {
+              allowedOrigins: { get: true },
+              allowedMethods: ['get'],
+              allowedResponseHeaders: { get: ['content-type'] },
+            }),
+          })
+        } catch (error) {
+          adapter.handleError(toolkit, error)
+        }
+      },
+    )
+    .options(
+      '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+      async (request: Request, response: Response, next: NextFunction) => {
+        const toolkit: ExpressToolkit = { request, response, next }
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        try {
+          await adapter.respond(toolkit, {
+            headers: await adapter.getPreflightCorsHeaders(toolkit, {
+              allowedOrigins: { get: true },
+              allowedMethods: ['get'],
+              allowedResponseHeaders: { get: ['content-type'] },
+            }),
+          })
+        } catch (error) {
+          adapter.handleError(toolkit, error)
+        }
+      },
+    )
+    .options(
+      '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
+      async (request: Request, response: Response, next: NextFunction) => {
+        const toolkit: ExpressToolkit = { request, response, next }
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        try {
+          await adapter.respond(toolkit, {
+            headers: await adapter.getPreflightCorsHeaders(toolkit, {
+              allowedOrigins: { get: true },
+              allowedMethods: ['get'],
+              allowedResponseHeaders: { get: ['content-type'] },
+            }),
+          })
+        } catch (error) {
+          adapter.handleError(toolkit, error)
+        }
+      },
+    )
+}

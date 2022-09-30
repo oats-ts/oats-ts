@@ -46,16 +46,15 @@ export type OpenAPIGeneratorTarget =
   | 'oats/path-deserializer'
   | 'oats/cookie-deserializer'
   | 'oats/set-cookie-deserializer'
-  // Client
   | 'oats/operation'
   | 'oats/sdk-type'
   | 'oats/sdk-impl'
-  // Server
   | 'oats/api-type'
   | 'oats/express-router'
   | 'oats/express-routers-type'
   | 'oats/express-router-factory'
   | 'oats/express-cors-middleware'
+  | 'oats/express-context-middleware'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 

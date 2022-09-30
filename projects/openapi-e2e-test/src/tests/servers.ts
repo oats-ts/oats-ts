@@ -14,7 +14,12 @@ import { createBodiesRouter as createOptionalRequestBodyRouter } from '../genera
 import { createBodiesRouter } from '../generated/bodies/expressRouteFactory'
 import { createHttpMethodsRouter } from '../generated/methods/expressRouteFactory'
 import { createParametersRouter } from '../generated/parameters/expressRouteFactory'
-import { parametersCorsMiddleware } from '../generated/parameters/expressCorsMiddleware'
+import { createParametersCorsMiddleware } from '../generated/parameters/expressCorsMiddleware'
+import { createParametersContextMiddleware } from '../generated/parameters/expressContextMiddleware'
+import { createHttpMethodsContextMiddleware } from '../generated/methods/expressContextMiddleware'
+import { createBodiesContextMiddleware } from '../generated/bodies/expressContextMiddleware'
+import { createBodiesContextMiddleware as createOptBodiesContextMiddleware } from '../generated/optional-request-body/expressContextMiddleware'
+import { createBookStoreContextMiddleware } from '../generated/book-store/expressContextMiddleware'
 
 export function testBookStoreServer() {
   testExpressServer({
@@ -22,7 +27,8 @@ export function testBookStoreServer() {
     runBeforeAndAfter: 'each',
     handlers: () => [
       customBodyParsers.json(),
-      createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerAdapter()),
+      createBookStoreContextMiddleware(new BookStoreApiImpl(), new ExpressServerAdapter()),
+      createBookStoreRouter(),
     ],
   })
 }
@@ -33,7 +39,8 @@ export function testOptionalBodiesServer() {
     runBeforeAndAfter: 'each',
     handlers: () => [
       customBodyParsers.json(),
-      createOptionalRequestBodyRouter(new OptionalBodiesImpl(), new ExpressServerAdapter()),
+      createOptBodiesContextMiddleware(new OptionalBodiesImpl(), new ExpressServerAdapter()),
+      createOptionalRequestBodyRouter(),
     ],
   })
 }
@@ -53,7 +60,8 @@ export function testBodiesServer(mimeType: 'application/json' | 'application/yam
     handlers: () => [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createBodiesRouter(new BodiesApiImpl(), adapter),
+      createBodiesContextMiddleware(new BodiesApiImpl(), adapter),
+      createBodiesRouter(),
     ],
   })
 }
@@ -65,7 +73,8 @@ export function testHttpMethodsServer() {
     handlers: () => [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createHttpMethodsRouter(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
+      createHttpMethodsContextMiddleware(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
+      createHttpMethodsRouter(),
     ],
   })
 }
@@ -77,8 +86,9 @@ export function testParametersServer() {
     handlers: () => [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createParametersRouter(new ParametersApiImpl(), new ExpressServerAdapter()),
-      parametersCorsMiddleware,
+      createParametersContextMiddleware(new ParametersApiImpl(), new ExpressServerAdapter()),
+      createParametersRouter(),
+      createParametersCorsMiddleware(),
     ],
   })
 }

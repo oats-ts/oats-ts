@@ -4,10 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
 import { Router } from 'express'
-import { ParametersApi } from './apiType'
 import {
   deepObjectQueryParametersRouter,
   formCookieParametersRouter,
@@ -22,17 +19,8 @@ import {
 } from './expressRoutes'
 import { ParametersRouters } from './expressRoutesType'
 
-export function createParametersRouter(
-  api: ParametersApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-  routes: Partial<ParametersRouters> = {},
-): Router {
+export function createParametersRouter(routes: Partial<ParametersRouters> = {}): Router {
   return Router().use(
-    (_, response, next) => {
-      response.locals['__oats_api'] = api
-      response.locals['__oats_adapter'] = adapter
-      next()
-    },
     routes.simplePathParametersRouter ?? simplePathParametersRouter,
     routes.labelPathParametersRouter ?? labelPathParametersRouter,
     routes.matrixPathParametersRouter ?? matrixPathParametersRouter,
