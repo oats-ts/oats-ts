@@ -7,17 +7,17 @@
 import { Router } from 'express'
 
 export type BodiesRouters = {
-  strRouter: Router
-  numRouter: Router
-  enmRouter: Router
-  boolRouter: Router
-  primTupleRouter: Router
-  optPrimTupleRouter: Router
-  strArrRouter: Router
-  numArrRouter: Router
-  enmArrRouter: Router
-  boolArrRouter: Router
-  primObjRouter: Router
-  arrObjRouter: Router
-  nestedObjRouter: Router
+  str: Router
+  num: Router
+  enm: Router
+  bool: Router
+  primTuple: Router
+  optPrimTuple: Router
+  strArr: Router
+  numArr: Router
+  enmArr: Router
+  boolArr: Router
+  primObj: Router
+  arrObj: Router
+  nestedObj: Router
 }

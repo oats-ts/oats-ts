@@ -7,10 +7,10 @@
 import { Router } from 'express'
 
 export type HttpMethodsRouters = {
-  getMethodRouter: Router
-  postMethodRouter: Router
-  putMethodRouter: Router
-  patchMethodRouter: Router
-  optionsMethodRouter: Router
-  deleteMethodRouter: Router
+  getMethod: Router
+  postMethod: Router
+  putMethod: Router
+  patchMethod: Router
+  optionsMethod: Router
+  deleteMethod: Router
 }

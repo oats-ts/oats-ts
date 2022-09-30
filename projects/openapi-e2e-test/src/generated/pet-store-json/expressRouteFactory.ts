@@ -5,13 +5,13 @@
  */
 
 import { Router } from 'express'
-import { createPetsRouter, listPetsRouter, showPetByIdRouter } from './expressRoutes'
+import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter } from './expressRoutes'
 import { SwaggerPetstoreRouters } from './expressRoutesType'
 
 export function createSwaggerPetstoreRouter(routes: Partial<SwaggerPetstoreRouters> = {}): Router {
   return Router().use(
-    routes.listPetsRouter ?? listPetsRouter,
-    routes.createPetsRouter ?? createPetsRouter,
-    routes.showPetByIdRouter ?? showPetByIdRouter,
+    routes.listPets ?? createListPetsRouter(),
+    routes.createPets ?? createCreatePetsRouter(),
+    routes.showPetById ?? createShowPetByIdRouter(),
   )
 }

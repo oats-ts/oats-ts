@@ -69,7 +69,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/cookie-deserializer': _delegating(operationId, toCamelCase, append('CookieDeserializer')),
   'oats/request-body-validator': _delegating(operationId, toCamelCase, append('RequestBodyValidator')),
   'oats/response-body-validator': _delegating(operationId, toCamelCase, append('ResponseBodyValidator')),
-  'oats/express-router': _delegating(operationId, toCamelCase, append('Router')),
+  'oats/express-router': _delegating(operationId, toPascalCase, prepend('create'), append('Router')),
   'oats/sdk-type': _delegating(documentTitle, toPascalCase, append('Sdk')),
   'oats/sdk-impl': _delegating(documentTitle, toPascalCase, append('SdkImpl')),
   'oats/api-type': _delegating(documentTitle, toPascalCase, append('Api')),

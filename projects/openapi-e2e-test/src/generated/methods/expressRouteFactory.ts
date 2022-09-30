@@ -6,22 +6,22 @@
 
 import { Router } from 'express'
 import {
-  deleteMethodRouter,
-  getMethodRouter,
-  optionsMethodRouter,
-  patchMethodRouter,
-  postMethodRouter,
-  putMethodRouter,
+  createDeleteMethodRouter,
+  createGetMethodRouter,
+  createOptionsMethodRouter,
+  createPatchMethodRouter,
+  createPostMethodRouter,
+  createPutMethodRouter,
 } from './expressRoutes'
 import { HttpMethodsRouters } from './expressRoutesType'
 
 export function createHttpMethodsRouter(routes: Partial<HttpMethodsRouters> = {}): Router {
   return Router().use(
-    routes.getMethodRouter ?? getMethodRouter,
-    routes.postMethodRouter ?? postMethodRouter,
-    routes.putMethodRouter ?? putMethodRouter,
-    routes.patchMethodRouter ?? patchMethodRouter,
-    routes.optionsMethodRouter ?? optionsMethodRouter,
-    routes.deleteMethodRouter ?? deleteMethodRouter,
+    routes.getMethod ?? createGetMethodRouter(),
+    routes.postMethod ?? createPostMethodRouter(),
+    routes.putMethod ?? createPutMethodRouter(),
+    routes.patchMethod ?? createPatchMethodRouter(),
+    routes.optionsMethod ?? createOptionsMethodRouter(),
+    routes.deleteMethod ?? createDeleteMethodRouter(),
   )
 }

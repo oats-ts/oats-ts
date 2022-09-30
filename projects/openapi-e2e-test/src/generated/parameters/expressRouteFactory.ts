@@ -6,30 +6,30 @@
 
 import { Router } from 'express'
 import {
-  deepObjectQueryParametersRouter,
-  formCookieParametersRouter,
-  formQueryParametersRouter,
-  labelPathParametersRouter,
-  matrixPathParametersRouter,
-  pipeDelimitedQueryParametersRouter,
-  simpleHeaderParametersRouter,
-  simplePathParametersRouter,
-  simpleResponseHeaderParametersRouter,
-  spaceDelimitedQueryParametersRouter,
+  createDeepObjectQueryParametersRouter,
+  createFormCookieParametersRouter,
+  createFormQueryParametersRouter,
+  createLabelPathParametersRouter,
+  createMatrixPathParametersRouter,
+  createPipeDelimitedQueryParametersRouter,
+  createSimpleHeaderParametersRouter,
+  createSimplePathParametersRouter,
+  createSimpleResponseHeaderParametersRouter,
+  createSpaceDelimitedQueryParametersRouter,
 } from './expressRoutes'
 import { ParametersRouters } from './expressRoutesType'
 
 export function createParametersRouter(routes: Partial<ParametersRouters> = {}): Router {
   return Router().use(
-    routes.simplePathParametersRouter ?? simplePathParametersRouter,
-    routes.labelPathParametersRouter ?? labelPathParametersRouter,
-    routes.matrixPathParametersRouter ?? matrixPathParametersRouter,
-    routes.formQueryParametersRouter ?? formQueryParametersRouter,
-    routes.spaceDelimitedQueryParametersRouter ?? spaceDelimitedQueryParametersRouter,
-    routes.pipeDelimitedQueryParametersRouter ?? pipeDelimitedQueryParametersRouter,
-    routes.deepObjectQueryParametersRouter ?? deepObjectQueryParametersRouter,
-    routes.simpleHeaderParametersRouter ?? simpleHeaderParametersRouter,
-    routes.formCookieParametersRouter ?? formCookieParametersRouter,
-    routes.simpleResponseHeaderParametersRouter ?? simpleResponseHeaderParametersRouter,
+    routes.simplePathParameters ?? createSimplePathParametersRouter(),
+    routes.labelPathParameters ?? createLabelPathParametersRouter(),
+    routes.matrixPathParameters ?? createMatrixPathParametersRouter(),
+    routes.formQueryParameters ?? createFormQueryParametersRouter(),
+    routes.spaceDelimitedQueryParameters ?? createSpaceDelimitedQueryParametersRouter(),
+    routes.pipeDelimitedQueryParameters ?? createPipeDelimitedQueryParametersRouter(),
+    routes.deepObjectQueryParameters ?? createDeepObjectQueryParametersRouter(),
+    routes.simpleHeaderParameters ?? createSimpleHeaderParametersRouter(),
+    routes.formCookieParameters ?? createFormCookieParametersRouter(),
+    routes.simpleResponseHeaderParameters ?? createSimpleResponseHeaderParametersRouter(),
   )
 }

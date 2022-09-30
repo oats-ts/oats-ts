@@ -38,10 +38,10 @@ export function getRouterFactoryAst(operations: EnhancedOperation[], context: Op
                 return factory.createBinaryExpression(
                   factory.createPropertyAccessExpression(
                     factory.createIdentifier(RouterNames.routes),
-                    referenceOf(operation, 'oats/express-router'),
+                    context.nameOf(operation, 'oats/operation'),
                   ),
                   factory.createToken(SyntaxKind.QuestionQuestionToken),
-                  referenceOf(operation, 'oats/express-router'),
+                  factory.createCallExpression(referenceOf(operation, 'oats/express-router'), [], []),
                 )
               }),
             ],

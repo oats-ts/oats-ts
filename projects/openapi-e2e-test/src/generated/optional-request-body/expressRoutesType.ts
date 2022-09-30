@@ -7,5 +7,5 @@
 import { Router } from 'express'
 
 export type BodiesRouters = {
-  optionalRequestBodyRouter: Router
+  optionalRequestBody: Router
 }

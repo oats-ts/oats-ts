@@ -5,13 +5,13 @@
  */
 
 import { Router } from 'express'
-import { addBookRouter, getBookRouter, getBooksRouter } from './expressRoutes'
+import { createAddBookRouter, createGetBookRouter, createGetBooksRouter } from './expressRoutes'
 import { BookStoreRouters } from './expressRoutesType'
 
 export function createBookStoreRouter(routes: Partial<BookStoreRouters> = {}): Router {
   return Router().use(
-    routes.getBooksRouter ?? getBooksRouter,
-    routes.addBookRouter ?? addBookRouter,
-    routes.getBookRouter ?? getBookRouter,
+    routes.getBooks ?? createGetBooksRouter(),
+    routes.addBook ?? createAddBookRouter(),
+    routes.getBook ?? createGetBookRouter(),
   )
 }

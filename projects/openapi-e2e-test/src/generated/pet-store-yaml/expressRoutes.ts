@@ -15,9 +15,8 @@ import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerReques
 import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Pet } from './types'
 
-export const createPetsRouter: Router = Router().post(
-  '/pets',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export function createCreatePetsRouter(): Router {
+  return Router().post('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: SwaggerPetstoreApi = response.locals['__oats_api']
@@ -52,12 +51,11 @@ export const createPetsRouter: Router = Router().post(
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  },
-)
+  })
+}
 
-export const listPetsRouter: Router = Router().get(
-  '/pets',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export function createListPetsRouter(): Router {
+  return Router().get('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: SwaggerPetstoreApi = response.locals['__oats_api']
@@ -85,38 +83,40 @@ export const listPetsRouter: Router = Router().get(
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  },
-)
+  })
+}
 
-export const showPetByIdRouter: Router = Router().get(
-  '/pets/:petId',
-  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: SwaggerPetstoreApi = response.locals['__oats_api']
-    try {
-      const path = await adapter.getPathParameters(toolkit, showPetByIdPathDeserializer)
-      const typedRequest: ShowPetByIdServerRequest = {
-        path,
+export function createShowPetByIdRouter(): Router {
+  return Router().get(
+    '/pets/:petId',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      try {
+        const path = await adapter.getPathParameters(toolkit, showPetByIdPathDeserializer)
+        const typedRequest: ShowPetByIdServerRequest = {
+          path,
+        }
+        const typedResponse = await api.showPetById(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(
+            toolkit,
+            typedResponse,
+            undefined,
+            await adapter.getCorsHeaders(toolkit, {
+              allowedOrigins: ['https://foo.com'],
+              allowedResponseHeaders: ['content-type'],
+              allowCredentials: false,
+            }),
+          ),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+        }
+        await adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.showPetById(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          undefined,
-          await adapter.getCorsHeaders(toolkit, {
-            allowedOrigins: ['https://foo.com'],
-            allowedResponseHeaders: ['content-type'],
-            allowCredentials: false,
-          }),
-        ),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      await adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  },
-)
+    },
+  )
+}
