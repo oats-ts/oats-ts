@@ -1,9 +1,9 @@
 import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { isNil } from 'lodash'
 import { Expression, factory } from 'typescript'
-import { RouterNames } from '../../utils/RouterNames'
-import { ExpressRoutersGeneratorConfig } from '../typings'
-import { getResponseHeaderNames } from './getResponseHeaderNames'
+import { getResponseHeaderNames } from '../utils/express/getResponseHeaderNames'
+import { RouterNames } from '../utils/express/RouterNames'
+import { ExpressRoutersGeneratorConfig } from './typings'
 
 export function getCorsParameters(
   data: EnhancedOperation,
@@ -12,11 +12,7 @@ export function getCorsParameters(
 ): Expression[] {
   const { url, operation, method } = data
 
-  const {
-    getAllowedOrigins = () => false,
-    isResponseHeaderAllowed = (_, header) => header !== 'set-cookie',
-    isCredentialsAllowed = () => undefined,
-  } = config
+  const { getAllowedOrigins, isResponseHeaderAllowed, isCredentialsAllowed } = config
   const allowedOrigins = getAllowedOrigins(url, method, operation)
   if (allowedOrigins === false || (Array.isArray(allowedOrigins) && allowedOrigins.length === 0)) {
     return []

@@ -1,7 +1,7 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory } from 'typescript'
 import { ExpressRoutersGeneratorConfig } from './typings'
-import { getPathTemplate } from './getPathTemplate'
+import { getPathTemplate } from '../utils/express/getPathTemplate'
 import { getExpressRouterHandlerAst } from './getExpressRouterHandlerAst'
 
 export function getExpressRouterExpressionAst(

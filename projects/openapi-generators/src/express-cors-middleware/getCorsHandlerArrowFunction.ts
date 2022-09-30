@@ -1,10 +1,12 @@
 import { ArrowFunction, Block, factory, SyntaxKind } from 'typescript'
 import { getExpressRouterHandlerParameters } from '../utils/getExpressRouterHandlerParameters'
 import { EnhancedPathItem, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { getAdapterStatement, getCatchBlock, getToolkitStatement } from '../express-router/common'
-import { RouterNames } from '../utils/RouterNames'
+import { getAdapterStatement } from '../utils/express/getAdapterStatement'
+import { RouterNames } from '../utils/express/RouterNames'
 import { getPreflightCorsParameters } from './getPreflightCorsParameters'
 import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
+import { getRouterCatchBlock } from '../utils/express/getRouterCatchBlock'
+import { getToolkitStatement } from '../utils/express/getToolkitStatement'
 
 function getFunctionBodyBlock(
   data: EnhancedPathItem,
@@ -46,7 +48,7 @@ function getFunctionBodyBlock(
     tryBlock,
     factory.createCatchClause(
       factory.createVariableDeclaration(factory.createIdentifier(RouterNames.error), undefined, undefined, undefined),
-      getCatchBlock(),
+      getRouterCatchBlock(),
     ),
     undefined,
   )

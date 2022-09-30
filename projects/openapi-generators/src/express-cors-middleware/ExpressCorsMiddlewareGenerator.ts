@@ -36,13 +36,17 @@ export class ExpressCorsMiddlewareGenerator extends BaseCodeGenerator<
 
   protected getItems(): EnhancedPathItem[][] {
     const config = this.configuration()
-    const paths = getEnhancedPathItems(this.input.document, this.context).filter(({ operations }) => {
+    const paths = getEnhancedPathItems(this.input.document, this.context).filter(({ url, operations }) => {
       return operations.some(({ url, operation, method }) => {
-        const allowedOrigins = config.getAllowedOrigins(url, method, operation)
         const isMethodAllowed = config.isMethodAllowed(url, method, operation)
-        return (
-          isMethodAllowed && (allowedOrigins === true || (Array.isArray(allowedOrigins) && allowedOrigins.length > 0))
-        )
+        const allowedOrigins = config.getAllowedOrigins(url, method, operation)
+        if (!isMethodAllowed) {
+          return false
+        }
+        if (typeof allowedOrigins === 'boolean') {
+          return allowedOrigins
+        }
+        return allowedOrigins.length > 0
       })
     })
     return [paths].filter((p) => p.length > 0)

@@ -1,7 +1,7 @@
 import { ParameterLocation } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, VariableStatement } from 'typescript'
-import { RouterNames } from '../utils/RouterNames'
+import { RouterNames } from '../utils/express/RouterNames'
 import { isNil } from 'lodash'
 
 const deserializerMap: Record<ParameterLocation, OpenAPIGeneratorTarget | undefined> = {

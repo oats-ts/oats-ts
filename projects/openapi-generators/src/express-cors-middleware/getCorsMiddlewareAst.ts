@@ -1,6 +1,6 @@
 import { EnhancedPathItem, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { Expression, factory, NodeFlags, Statement, SyntaxKind } from 'typescript'
-import { getPathTemplate } from '../express-router/getPathTemplate'
+import { getPathTemplate } from '../utils/express/getPathTemplate'
 import { getCorsHandlerArrowFunctionAst } from './getCorsHandlerArrowFunction'
 import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
 

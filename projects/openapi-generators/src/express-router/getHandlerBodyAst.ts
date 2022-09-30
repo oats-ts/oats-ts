@@ -9,9 +9,11 @@ import { factory, NodeFlags } from 'typescript'
 import { ExpressRoutersGeneratorConfig } from './typings'
 import { getParametersStatementAst } from './getParametersStatementAst'
 import { getRequestBodyRelatedStatementAsts } from './getRequestBodyRelatedStatementAsts'
-import { RouterNames } from '../utils/RouterNames'
-import { getAdapterStatement, getCatchBlock, getToolkitStatement } from './common'
-import { getCorsParameters } from './cors/getCorsParameters'
+import { RouterNames } from '../utils/express/RouterNames'
+import { getAdapterStatement } from '../utils/express/getAdapterStatement'
+import { getCorsParameters } from './getCorsParameters'
+import { getRouterCatchBlock } from '../utils/express/getRouterCatchBlock'
+import { getToolkitStatement } from '../utils/express/getToolkitStatement'
 
 export function getHandlerBodyAst(
   data: EnhancedOperation,
@@ -276,7 +278,7 @@ export function getHandlerBodyAst(
     tryBlock,
     factory.createCatchClause(
       factory.createVariableDeclaration(factory.createIdentifier(RouterNames.error), undefined, undefined, undefined),
-      getCatchBlock(),
+      getRouterCatchBlock(),
     ),
     undefined,
   )

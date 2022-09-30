@@ -1,4 +1,4 @@
-import { merge } from 'lodash'
+import { merge, cloneDeep } from 'lodash'
 import { ExpressCorsMiddlewareGeneratorConfig } from '../express-cors-middleware'
 import { createPreset } from './createPreset'
 import { BasePresetConfiguration, PresetGeneratorConfiguration } from './types'
@@ -58,12 +58,12 @@ const server = createPreset<Partial<ServerPresetConfiguration>>(
   },
   (base, config) =>
     merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
-      base,
-      {
+      cloneDeep(base),
+      cloneDeep({
         'oats/express-cors-middleware': config?.cors ?? {},
         'oats/express-router': config?.cors ?? {},
-      },
-      config?.overrides ?? {},
+      }),
+      cloneDeep(config?.overrides ?? {}),
     ),
 )
 
@@ -80,8 +80,8 @@ const client = createPreset<ClientPresetConfiguration>(
   },
   (base, config) =>
     merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
-      base,
-      {
+      cloneDeep(base),
+      cloneDeep({
         'oats/operation': {
           sendCookieHeader: config?.sendCookieHeader,
           parseSetCookieHeaders: config?.parseSetCookieHeaders,
@@ -92,8 +92,8 @@ const client = createPreset<ClientPresetConfiguration>(
         'oats/response-type': {
           cookies: Boolean(config?.parseSetCookieHeaders),
         },
-      },
-      config?.overrides ?? {},
+      }),
+      cloneDeep(config?.overrides ?? {}),
     ),
 )
 
@@ -112,8 +112,8 @@ const fullStack = createPreset<FullStackPresetConfiguration>(
   },
   (base, config) =>
     merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
-      base,
-      {
+      cloneDeep(base),
+      cloneDeep({
         'oats/operation': {
           sendCookieHeader: config?.sendCookieHeader,
           parseSetCookieHeaders: config?.parseSetCookieHeaders,
@@ -126,8 +126,8 @@ const fullStack = createPreset<FullStackPresetConfiguration>(
         },
         'oats/express-cors-middleware': config?.cors ?? {},
         'oats/express-router': config?.cors ?? {},
-      },
-      config?.overrides ?? {},
+      }),
+      cloneDeep(config?.overrides ?? {}),
     ),
 )
 

@@ -6,7 +6,7 @@ import {
 } from '@oats-ts/openapi-common'
 import { isNil, keys, uniqWith, values, isEqual } from 'lodash'
 import { factory, NodeFlags, TypeNode, VariableStatement } from 'typescript'
-import { RouterNames } from '../utils/RouterNames'
+import { RouterNames } from '../utils/express/RouterNames'
 
 export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
   const { referenceOf } = context

@@ -2,9 +2,9 @@ import { EnhancedPathItem, OpenAPIGeneratorContext } from '@oats-ts/openapi-comm
 import { HttpMethod } from '@oats-ts/openapi-http'
 import { flatMap, isNil } from 'lodash'
 import { Expression, factory } from 'typescript'
-import { RouterNames } from '../utils/RouterNames'
-import { getRequestHeaderNames } from '../express-router/cors/getRequestHeaderNames'
-import { getResponseHeaderNames } from '../express-router/cors/getResponseHeaderNames'
+import { RouterNames } from '../utils/express/RouterNames'
+import { getRequestHeaderNames } from '../utils/express/getRequestHeaderNames'
+import { getResponseHeaderNames } from '../utils/express/getResponseHeaderNames'
 import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
 
 export function getPreflightCorsParameters(

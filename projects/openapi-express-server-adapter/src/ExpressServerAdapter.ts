@@ -174,7 +174,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     { request }: ExpressToolkit,
     { allowedOrigins, allowedResponseHeaders = [], allowCredentials }: CorsConfiguration,
   ): Promise<RawHttpHeaders> {
-    const origin = request.header('Origin')
+    const origin = request.header('origin')
 
     if (!this.isMatchingOrigin(allowedOrigins, origin)) {
       return {}

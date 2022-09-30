@@ -1,6 +1,6 @@
 import { EnhancedOperation, OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, SyntaxKind } from 'typescript'
-import { RouterNames } from '../utils/RouterNames'
+import { RouterNames } from '../utils/express/RouterNames'
 import { ExpressRouterFactoryGeneratorConfig } from './typings'
 
 export function getRouterFactoryAst(
