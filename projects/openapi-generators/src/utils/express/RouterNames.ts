@@ -3,6 +3,7 @@ export const RouterNames = {
   response: 'response',
   next: 'next',
   locals: 'locals',
+  router: 'router',
 
   api: 'api',
   adapter: 'adapter',

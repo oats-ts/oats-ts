@@ -15,79 +15,85 @@ import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerReques
 import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Pet } from './types'
 
-export function createCreatePetsRouter(): Router {
-  return Router().post('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: SwaggerPetstoreApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json', Pet>(
-        toolkit,
-        true,
-        mimeType,
-        createPetsRequestBodyValidator,
-      )
-      const typedRequest: CreatePetsServerRequest = {
-        mimeType,
-        body,
-      }
-      const typedResponse = await api.createPets(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
+export function createCreatePetsRouter(router?: Router): Router {
+  return (router ?? Router()).post(
+    '/pets',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      try {
+        const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+        const body = await adapter.getRequestBody<'application/json', Pet>(
           toolkit,
-          typedResponse,
-          undefined,
-          await adapter.getCorsHeaders(toolkit, {
-            allowedOrigins: ['https://foo.com'],
-            allowedResponseHeaders: ['content-type'],
-            allowCredentials: false,
-          }),
-        ),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
+          true,
+          mimeType,
+          createPetsRequestBodyValidator,
+        )
+        const typedRequest: CreatePetsServerRequest = {
+          mimeType,
+          body,
+        }
+        const typedResponse = await api.createPets(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(
+            toolkit,
+            typedResponse,
+            undefined,
+            await adapter.getCorsHeaders(toolkit, {
+              allowedOrigins: ['https://foo.com'],
+              allowedResponseHeaders: ['content-type'],
+              allowCredentials: false,
+            }),
+          ),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+        }
+        await adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      await adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
+    },
+  )
 }
 
-export function createListPetsRouter(): Router {
-  return Router().get('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: SwaggerPetstoreApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, listPetsQueryDeserializer)
-      const typedRequest: ListPetsServerRequest = {
-        query,
+export function createListPetsRouter(router?: Router): Router {
+  return (router ?? Router()).get(
+    '/pets',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      try {
+        const query = await adapter.getQueryParameters(toolkit, listPetsQueryDeserializer)
+        const typedRequest: ListPetsServerRequest = {
+          query,
+        }
+        const typedResponse = await api.listPets(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(
+            toolkit,
+            typedResponse,
+            listPetsResponseHeadersSerializer,
+            await adapter.getCorsHeaders(toolkit, {
+              allowedOrigins: ['https://foo.com'],
+              allowedResponseHeaders: ['x-next', 'content-type'],
+              allowCredentials: false,
+            }),
+          ),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+        }
+        await adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.listPets(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(
-          toolkit,
-          typedResponse,
-          listPetsResponseHeadersSerializer,
-          await adapter.getCorsHeaders(toolkit, {
-            allowedOrigins: ['https://foo.com'],
-            allowedResponseHeaders: ['x-next', 'content-type'],
-            allowCredentials: false,
-          }),
-        ),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      await adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
+    },
+  )
 }
 
-export function createShowPetByIdRouter(): Router {
-  return Router().get(
+export function createShowPetByIdRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/pets/:petId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }

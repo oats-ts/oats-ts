@@ -38,8 +38,8 @@ import { simpleResponseHeaderParametersResponseHeadersSerializer } from './respo
 import { formCookieParametersSetCookieSerializer } from './setCookieSerializers'
 import { SimpleResponseHeaderParameters } from './types'
 
-export function createDeepObjectQueryParametersRouter(): Router {
-  return Router().get(
+export function createDeepObjectQueryParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/deepObject-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -69,8 +69,8 @@ export function createDeepObjectQueryParametersRouter(): Router {
   )
 }
 
-export function createFormCookieParametersRouter(): Router {
-  return Router().get(
+export function createFormCookieParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/form-cookie-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -105,8 +105,8 @@ export function createFormCookieParametersRouter(): Router {
   )
 }
 
-export function createFormQueryParametersRouter(): Router {
-  return Router().get(
+export function createFormQueryParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/form-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -136,8 +136,8 @@ export function createFormQueryParametersRouter(): Router {
   )
 }
 
-export function createLabelPathParametersRouter(): Router {
-  return Router().get(
+export function createLabelPathParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -167,8 +167,8 @@ export function createLabelPathParametersRouter(): Router {
   )
 }
 
-export function createMatrixPathParametersRouter(): Router {
-  return Router().get(
+export function createMatrixPathParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -198,8 +198,8 @@ export function createMatrixPathParametersRouter(): Router {
   )
 }
 
-export function createPipeDelimitedQueryParametersRouter(): Router {
-  return Router().get(
+export function createPipeDelimitedQueryParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/pipeDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -229,8 +229,8 @@ export function createPipeDelimitedQueryParametersRouter(): Router {
   )
 }
 
-export function createSimpleHeaderParametersRouter(): Router {
-  return Router().get(
+export function createSimpleHeaderParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/simple-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -260,8 +260,8 @@ export function createSimpleHeaderParametersRouter(): Router {
   )
 }
 
-export function createSimplePathParametersRouter(): Router {
-  return Router().get(
+export function createSimplePathParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -291,8 +291,8 @@ export function createSimplePathParametersRouter(): Router {
   )
 }
 
-export function createSimpleResponseHeaderParametersRouter(): Router {
-  return Router().post(
+export function createSimpleResponseHeaderParametersRouter(router?: Router): Router {
+  return (router ?? Router()).post(
     '/simple-response-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -370,8 +370,8 @@ export function createSimpleResponseHeaderParametersRouter(): Router {
   )
 }
 
-export function createSpaceDelimitedQueryParametersRouter(): Router {
-  return Router().get(
+export function createSpaceDelimitedQueryParametersRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/spaceDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }

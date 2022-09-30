@@ -33,6 +33,7 @@ async function generateAll() {
     {
       type: 'confirm',
       name: 'clear',
+      default: false,
       message: 'Clear folder src/generated?',
     },
   ])

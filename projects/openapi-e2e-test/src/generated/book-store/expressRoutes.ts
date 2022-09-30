@@ -16,38 +16,41 @@ import { AddBookServerRequest, GetBookServerRequest, GetBooksServerRequest } fro
 import { getBooksResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Book } from './types'
 
-export function createAddBookRouter(): Router {
-  return Router().post('/books', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi = response.locals['__oats_api']
-    try {
-      const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
-      const body = await adapter.getRequestBody<'application/json', Book>(
-        toolkit,
-        true,
-        mimeType,
-        addBookRequestBodyValidator,
-      )
-      const typedRequest: AddBookServerRequest = {
-        mimeType,
-        body,
+export function createAddBookRouter(router?: Router): Router {
+  return (router ?? Router()).post(
+    '/books',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: BookStoreApi = response.locals['__oats_api']
+      try {
+        const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+        const body = await adapter.getRequestBody<'application/json', Book>(
+          toolkit,
+          true,
+          mimeType,
+          addBookRequestBodyValidator,
+        )
+        const typedRequest: AddBookServerRequest = {
+          mimeType,
+          body,
+        }
+        const typedResponse = await api.addBook(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+        }
+        await adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.addBook(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      await adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
+    },
+  )
 }
 
-export function createGetBookRouter(): Router {
-  return Router().get(
+export function createGetBookRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/books/:bookId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -72,27 +75,35 @@ export function createGetBookRouter(): Router {
   )
 }
 
-export function createGetBooksRouter(): Router {
-  return Router().get('/books', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    const api: BookStoreApi = response.locals['__oats_api']
-    try {
-      const query = await adapter.getQueryParameters(toolkit, getBooksQueryDeserializer)
-      const headers = await adapter.getRequestHeaders(toolkit, getBooksRequestHeadersDeserializer)
-      const typedRequest: GetBooksServerRequest = {
-        query,
-        headers,
+export function createGetBooksRouter(router?: Router): Router {
+  return (router ?? Router()).get(
+    '/books',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const api: BookStoreApi = response.locals['__oats_api']
+      try {
+        const query = await adapter.getQueryParameters(toolkit, getBooksQueryDeserializer)
+        const headers = await adapter.getRequestHeaders(toolkit, getBooksRequestHeadersDeserializer)
+        const typedRequest: GetBooksServerRequest = {
+          query,
+          headers,
+        }
+        const typedResponse = await api.getBooks(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(
+            toolkit,
+            typedResponse,
+            getBooksResponseHeadersSerializer,
+            undefined,
+          ),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+        }
+        await adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
       }
-      const typedResponse = await api.getBooks(typedRequest)
-      const rawResponse: RawHttpResponse = {
-        headers: await adapter.getResponseHeaders(toolkit, typedResponse, getBooksResponseHeadersSerializer, undefined),
-        statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-        body: await adapter.getResponseBody(toolkit, typedResponse),
-      }
-      await adapter.respond(toolkit, rawResponse)
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
+    },
+  )
 }

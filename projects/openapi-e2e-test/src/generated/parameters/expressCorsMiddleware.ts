@@ -8,8 +8,8 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
 import { NextFunction, Request, Response, Router } from 'express'
 
-export function createParametersCorsMiddleware(): Router {
-  return Router()
+export function createParametersCorsMiddleware(router?: Router): Router {
+  return (router ?? Router())
     .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']

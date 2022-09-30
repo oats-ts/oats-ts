@@ -9,8 +9,8 @@ import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { NextFunction, Request, Response, Router } from 'express'
 import { HttpMethodsApi } from './apiType'
 
-export function createDeleteMethodRouter(): Router {
-  return Router().delete(
+export function createDeleteMethodRouter(router?: Router): Router {
+  return (router ?? Router()).delete(
     '/delete-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -31,8 +31,8 @@ export function createDeleteMethodRouter(): Router {
   )
 }
 
-export function createGetMethodRouter(): Router {
-  return Router().get(
+export function createGetMethodRouter(router?: Router): Router {
+  return (router ?? Router()).get(
     '/get-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -53,8 +53,8 @@ export function createGetMethodRouter(): Router {
   )
 }
 
-export function createOptionsMethodRouter(): Router {
-  return Router().options(
+export function createOptionsMethodRouter(router?: Router): Router {
+  return (router ?? Router()).options(
     '/options-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -75,8 +75,8 @@ export function createOptionsMethodRouter(): Router {
   )
 }
 
-export function createPatchMethodRouter(): Router {
-  return Router().patch(
+export function createPatchMethodRouter(router?: Router): Router {
+  return (router ?? Router()).patch(
     '/patch-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -97,8 +97,8 @@ export function createPatchMethodRouter(): Router {
   )
 }
 
-export function createPostMethodRouter(): Router {
-  return Router().post(
+export function createPostMethodRouter(router?: Router): Router {
+  return (router ?? Router()).post(
     '/post-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
@@ -119,8 +119,8 @@ export function createPostMethodRouter(): Router {
   )
 }
 
-export function createPutMethodRouter(): Router {
-  return Router().put(
+export function createPutMethodRouter(router?: Router): Router {
+  return (router ?? Router()).put(
     '/put-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }

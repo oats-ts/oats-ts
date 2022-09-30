@@ -11,8 +11,8 @@ import { BodiesApi } from './apiType'
 import { optionalRequestBodyRequestBodyValidator } from './requestBodyValidators'
 import { OptionalRequestBodyServerRequest } from './requestServerTypes'
 
-export function createOptionalRequestBodyRouter(): Router {
-  return Router().post(
+export function createOptionalRequestBodyRouter(router?: Router): Router {
+  return (router ?? Router()).post(
     '/optional-request-body',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
