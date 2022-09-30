@@ -7,14 +7,14 @@
 import { Router } from 'express'
 
 export type ParametersRouters = {
-  simplePathParameters: Router
-  labelPathParameters: Router
-  matrixPathParameters: Router
-  formQueryParameters: Router
-  spaceDelimitedQueryParameters: Router
-  pipeDelimitedQueryParameters: Router
-  deepObjectQueryParameters: Router
-  simpleHeaderParameters: Router
-  formCookieParameters: Router
-  simpleResponseHeaderParameters: Router
+  createSimplePathParametersRouter: (router?: Router) => Router
+  createLabelPathParametersRouter: (router?: Router) => Router
+  createMatrixPathParametersRouter: (router?: Router) => Router
+  createFormQueryParametersRouter: (router?: Router) => Router
+  createSpaceDelimitedQueryParametersRouter: (router?: Router) => Router
+  createPipeDelimitedQueryParametersRouter: (router?: Router) => Router
+  createDeepObjectQueryParametersRouter: (router?: Router) => Router
+  createSimpleHeaderParametersRouter: (router?: Router) => Router
+  createFormCookieParametersRouter: (router?: Router) => Router
+  createSimpleResponseHeaderParametersRouter: (router?: Router) => Router
 }

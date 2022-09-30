@@ -8,6 +8,9 @@ import { Router } from 'express'
 import { createOptionalRequestBodyRouter } from './expressRoutes'
 import { BodiesRouters } from './expressRoutesType'
 
-export function createBodiesRouter(routes: Partial<BodiesRouters> = {}): Router {
-  return Router().use(routes.optionalRequestBody ?? createOptionalRequestBodyRouter())
+export function createBodiesRouter(router?: Router, routes: Partial<BodiesRouters> = {}): Router {
+  return [routes.createOptionalRequestBodyRouter ?? createOptionalRequestBodyRouter].reduce(
+    (r, f) => f(r),
+    router ?? Router(),
+  )
 }

@@ -7,7 +7,7 @@
 import { Router } from 'express'
 
 export type BookStoreRouters = {
-  getBooks: Router
-  addBook: Router
-  getBook: Router
+  createGetBooksRouter: (router?: Router) => Router
+  createAddBookRouter: (router?: Router) => Router
+  createGetBookRouter: (router?: Router) => Router
 }

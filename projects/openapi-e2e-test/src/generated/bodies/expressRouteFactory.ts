@@ -22,20 +22,20 @@ import {
 } from './expressRoutes'
 import { BodiesRouters } from './expressRoutesType'
 
-export function createBodiesRouter(routes: Partial<BodiesRouters> = {}): Router {
-  return Router().use(
-    routes.str ?? createStrRouter(),
-    routes.num ?? createNumRouter(),
-    routes.enm ?? createEnmRouter(),
-    routes.bool ?? createBoolRouter(),
-    routes.primTuple ?? createPrimTupleRouter(),
-    routes.optPrimTuple ?? createOptPrimTupleRouter(),
-    routes.strArr ?? createStrArrRouter(),
-    routes.numArr ?? createNumArrRouter(),
-    routes.enmArr ?? createEnmArrRouter(),
-    routes.boolArr ?? createBoolArrRouter(),
-    routes.primObj ?? createPrimObjRouter(),
-    routes.arrObj ?? createArrObjRouter(),
-    routes.nestedObj ?? createNestedObjRouter(),
-  )
+export function createBodiesRouter(router?: Router, routes: Partial<BodiesRouters> = {}): Router {
+  return [
+    routes.createStrRouter ?? createStrRouter,
+    routes.createNumRouter ?? createNumRouter,
+    routes.createEnmRouter ?? createEnmRouter,
+    routes.createBoolRouter ?? createBoolRouter,
+    routes.createPrimTupleRouter ?? createPrimTupleRouter,
+    routes.createOptPrimTupleRouter ?? createOptPrimTupleRouter,
+    routes.createStrArrRouter ?? createStrArrRouter,
+    routes.createNumArrRouter ?? createNumArrRouter,
+    routes.createEnmArrRouter ?? createEnmArrRouter,
+    routes.createBoolArrRouter ?? createBoolArrRouter,
+    routes.createPrimObjRouter ?? createPrimObjRouter,
+    routes.createArrObjRouter ?? createArrObjRouter,
+    routes.createNestedObjRouter ?? createNestedObjRouter,
+  ].reduce((r, f) => f(r), router ?? Router())
 }

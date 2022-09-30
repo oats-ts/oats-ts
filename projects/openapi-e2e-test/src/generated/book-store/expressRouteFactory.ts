@@ -8,10 +8,10 @@ import { Router } from 'express'
 import { createAddBookRouter, createGetBookRouter, createGetBooksRouter } from './expressRoutes'
 import { BookStoreRouters } from './expressRoutesType'
 
-export function createBookStoreRouter(routes: Partial<BookStoreRouters> = {}): Router {
-  return Router().use(
-    routes.getBooks ?? createGetBooksRouter(),
-    routes.addBook ?? createAddBookRouter(),
-    routes.getBook ?? createGetBookRouter(),
-  )
+export function createBookStoreRouter(router?: Router, routes: Partial<BookStoreRouters> = {}): Router {
+  return [
+    routes.createGetBooksRouter ?? createGetBooksRouter,
+    routes.createAddBookRouter ?? createAddBookRouter,
+    routes.createGetBookRouter ?? createGetBookRouter,
+  ].reduce((r, f) => f(r), router ?? Router())
 }

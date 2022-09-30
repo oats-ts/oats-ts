@@ -19,17 +19,17 @@ import {
 } from './expressRoutes'
 import { ParametersRouters } from './expressRoutesType'
 
-export function createParametersRouter(routes: Partial<ParametersRouters> = {}): Router {
-  return Router().use(
-    routes.simplePathParameters ?? createSimplePathParametersRouter(),
-    routes.labelPathParameters ?? createLabelPathParametersRouter(),
-    routes.matrixPathParameters ?? createMatrixPathParametersRouter(),
-    routes.formQueryParameters ?? createFormQueryParametersRouter(),
-    routes.spaceDelimitedQueryParameters ?? createSpaceDelimitedQueryParametersRouter(),
-    routes.pipeDelimitedQueryParameters ?? createPipeDelimitedQueryParametersRouter(),
-    routes.deepObjectQueryParameters ?? createDeepObjectQueryParametersRouter(),
-    routes.simpleHeaderParameters ?? createSimpleHeaderParametersRouter(),
-    routes.formCookieParameters ?? createFormCookieParametersRouter(),
-    routes.simpleResponseHeaderParameters ?? createSimpleResponseHeaderParametersRouter(),
-  )
+export function createParametersRouter(router?: Router, routes: Partial<ParametersRouters> = {}): Router {
+  return [
+    routes.createSimplePathParametersRouter ?? createSimplePathParametersRouter,
+    routes.createLabelPathParametersRouter ?? createLabelPathParametersRouter,
+    routes.createMatrixPathParametersRouter ?? createMatrixPathParametersRouter,
+    routes.createFormQueryParametersRouter ?? createFormQueryParametersRouter,
+    routes.createSpaceDelimitedQueryParametersRouter ?? createSpaceDelimitedQueryParametersRouter,
+    routes.createPipeDelimitedQueryParametersRouter ?? createPipeDelimitedQueryParametersRouter,
+    routes.createDeepObjectQueryParametersRouter ?? createDeepObjectQueryParametersRouter,
+    routes.createSimpleHeaderParametersRouter ?? createSimpleHeaderParametersRouter,
+    routes.createFormCookieParametersRouter ?? createFormCookieParametersRouter,
+    routes.createSimpleResponseHeaderParametersRouter ?? createSimpleResponseHeaderParametersRouter,
+  ].reduce((r, f) => f(r), router ?? Router())
 }

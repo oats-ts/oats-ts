@@ -15,13 +15,13 @@ import {
 } from './expressRoutes'
 import { HttpMethodsRouters } from './expressRoutesType'
 
-export function createHttpMethodsRouter(routes: Partial<HttpMethodsRouters> = {}): Router {
-  return Router().use(
-    routes.getMethod ?? createGetMethodRouter(),
-    routes.postMethod ?? createPostMethodRouter(),
-    routes.putMethod ?? createPutMethodRouter(),
-    routes.patchMethod ?? createPatchMethodRouter(),
-    routes.optionsMethod ?? createOptionsMethodRouter(),
-    routes.deleteMethod ?? createDeleteMethodRouter(),
-  )
+export function createHttpMethodsRouter(router?: Router, routes: Partial<HttpMethodsRouters> = {}): Router {
+  return [
+    routes.createGetMethodRouter ?? createGetMethodRouter,
+    routes.createPostMethodRouter ?? createPostMethodRouter,
+    routes.createPutMethodRouter ?? createPutMethodRouter,
+    routes.createPatchMethodRouter ?? createPatchMethodRouter,
+    routes.createOptionsMethodRouter ?? createOptionsMethodRouter,
+    routes.createDeleteMethodRouter ?? createDeleteMethodRouter,
+  ].reduce((r, f) => f(r), router ?? Router())
 }

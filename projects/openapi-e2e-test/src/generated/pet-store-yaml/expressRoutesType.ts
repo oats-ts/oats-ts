@@ -7,7 +7,7 @@
 import { Router } from 'express'
 
 export type SwaggerPetstoreRouters = {
-  listPets: Router
-  createPets: Router
-  showPetById: Router
+  createListPetsRouter: (router?: Router) => Router
+  createCreatePetsRouter: (router?: Router) => Router
+  createShowPetByIdRouter: (router?: Router) => Router
 }
