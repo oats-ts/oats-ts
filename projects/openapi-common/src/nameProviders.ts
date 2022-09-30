@@ -75,6 +75,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/api-type': _delegating(documentTitle, toPascalCase, append('Api')),
   'oats/express-router-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('Router')),
   'oats/express-routers-type': _delegating(documentTitle, toPascalCase, append('Routers')),
+  'oats/express-cors-middleware': _delegating(documentTitle, toCamelCase, append('CorsMiddleware')),
 }
 
 export const nameProviders = {

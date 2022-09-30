@@ -29,6 +29,7 @@ import { cookieSerializers } from './cookie-serializer'
 import { cookieDeserializers } from './cookie-deserializer'
 import { setCookieSerializers } from './set-cookie-serializer'
 import { setCookieDeserializers } from './set-cookie-deserializer'
+import { expressCorsMiddleware } from './express-cors-middleware'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 
 export const factories = {
@@ -66,4 +67,5 @@ export const factories = {
   responseServerTypes,
   sdkImpl,
   sdkType,
+  expressCorsMiddleware,
 } as const

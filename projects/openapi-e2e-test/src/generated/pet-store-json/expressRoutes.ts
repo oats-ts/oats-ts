@@ -15,24 +15,9 @@ import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerReques
 import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Pet } from './types'
 
-export const createPetsRouter: Router = Router()
-  .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: true,
-          allowedMethods: ['get', 'post'],
-          allowedRequestHeaders: { post: ['content-type'] },
-          allowedResponseHeaders: { get: ['x-next', 'content-type'], post: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .post('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const createPetsRouter: Router = Router().post(
+  '/pets',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: SwaggerPetstoreApi = response.locals['__oats_api']
@@ -63,26 +48,12 @@ export const createPetsRouter: Router = Router()
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  })
+  },
+)
 
-export const listPetsRouter: Router = Router()
-  .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: true,
-          allowedMethods: ['get', 'post'],
-          allowedRequestHeaders: { post: ['content-type'] },
-          allowedResponseHeaders: { get: ['x-next', 'content-type'], post: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .get('/pets', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const listPetsRouter: Router = Router().get(
+  '/pets',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: SwaggerPetstoreApi = response.locals['__oats_api']
@@ -109,25 +80,12 @@ export const listPetsRouter: Router = Router()
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  })
+  },
+)
 
-export const showPetByIdRouter: Router = Router()
-  .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
-    const toolkit: ExpressToolkit = { request, response, next }
-    const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-    try {
-      await adapter.respond(toolkit, {
-        headers: await adapter.getPreflightCorsHeaders(toolkit, {
-          allowedOrigins: true,
-          allowedMethods: ['get'],
-          allowedResponseHeaders: { get: ['content-type'] },
-        }),
-      })
-    } catch (error) {
-      adapter.handleError(toolkit, error)
-    }
-  })
-  .get('/pets/:petId', async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+export const showPetByIdRouter: Router = Router().get(
+  '/pets/:petId',
+  async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     const toolkit: ExpressToolkit = { request, response, next }
     const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
     const api: SwaggerPetstoreApi = response.locals['__oats_api']
@@ -151,4 +109,5 @@ export const showPetByIdRouter: Router = Router()
     } catch (error) {
       adapter.handleError(toolkit, error)
     }
-  })
+  },
+)

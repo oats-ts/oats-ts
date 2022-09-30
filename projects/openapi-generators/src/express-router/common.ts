@@ -1,7 +1,6 @@
 import { RuntimePackages } from '@oats-ts/openapi-common'
 import { Block, factory, NodeFlags, Statement } from 'typescript'
 import { RouterNames } from '../utils/RouterNames'
-import { ExpressRoutersGeneratorConfig } from './typings'
 
 export function getToolkitStatement(): Statement {
   return factory.createVariableStatement(
@@ -30,7 +29,7 @@ export function getToolkitStatement(): Statement {
   )
 }
 
-export function getAdapterStatement(config: ExpressRoutersGeneratorConfig): Statement {
+export function getAdapterStatement(): Statement {
   return factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -49,7 +48,7 @@ export function getAdapterStatement(config: ExpressRoutersGeneratorConfig): Stat
               factory.createIdentifier(RouterNames.response),
               factory.createIdentifier(RouterNames.locals),
             ),
-            factory.createStringLiteral(config.adapterKey),
+            factory.createStringLiteral(RouterNames.adapterKey),
           ),
         ),
       ],

@@ -37,6 +37,7 @@ const fileNameByTarget: NameByTarget = {
   'oats/set-cookie-serializer': 'setCookieSerializers.ts',
   'oats/cookie-deserializer': 'cookieDeserializers.ts',
   'oats/set-cookie-deserializer': 'setCookieDeserializers.ts',
+  'oats/express-cors-middleware': 'expressCorsMiddleware.ts',
 }
 
 const delegate =
@@ -98,6 +99,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/express-router': routers,
     'oats/express-router-factory': routers,
     'oats/express-routers-type': routers,
+    'oats/express-cors-middleware': routers,
 
     'oats/sdk-type': sdk,
     'oats/sdk-impl': sdk,

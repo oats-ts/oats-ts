@@ -1,70 +1,77 @@
-import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { EnhancedPathItem, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { HttpMethod } from '@oats-ts/openapi-http'
-import { isNil } from 'lodash'
+import { flatMap, isNil } from 'lodash'
 import { Expression, factory } from 'typescript'
-import { RouterNames } from '../../utils/RouterNames'
-import { getRequestHeaderNames } from './getRequestHeaderNames'
-import { getRequestMethods } from '../getRequestMethods'
-import { ExpressRoutersGeneratorConfig } from '../typings'
-import {
-  defaultIncludeCredentials,
-  defaultIsMethodAllowed,
-  defaultMaxAge,
-  defaultRequestHeaderFilter,
-  defaultResponseHeaderFilter,
-} from './utils'
-import { getResponseHeaderNames } from './getResponseHeaderNames'
+import { RouterNames } from '../utils/RouterNames'
+import { getRequestHeaderNames } from '../express-router/cors/getRequestHeaderNames'
+import { getResponseHeaderNames } from '../express-router/cors/getResponseHeaderNames'
+import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
 
 export function getPreflightCorsParameters(
-  data: EnhancedOperation,
+  data: EnhancedPathItem,
   context: OpenAPIGeneratorContext,
-  config: ExpressRoutersGeneratorConfig,
+  config: ExpressCorsMiddlewareGeneratorConfig,
 ): Expression[] {
-  if (config.cors === false || isNil(config.cors)) {
-    return []
-  }
-  const { operation, parent, url } = data
+  const { operations, url } = data
   const {
-    allowedOrigins,
-    isMethodAllowed = defaultIsMethodAllowed,
-    isRequestHeaderAllowed = defaultRequestHeaderFilter,
-    isResponseHeaderAllowed = defaultResponseHeaderFilter,
-    allowCredentials: getIncludeCreds = defaultIncludeCredentials,
-    maxAge: getMaxAge = defaultMaxAge,
-  } = config.cors
+    getAllowedOrigins,
+    isMethodAllowed,
+    isRequestHeaderAllowed,
+    isResponseHeaderAllowed,
+    isCredentialsAllowed,
+    getMaxAge,
+  } = config
 
-  const methods = getRequestMethods(parent).filter((method) => isMethodAllowed(url, method, operation))
+  const methods = flatMap(operations, ({ operation, method }) =>
+    isMethodAllowed(url, method, operation) ? [method] : [],
+  )
 
-  const requestHeaders = methods
-    .map((method): [HttpMethod, string[]] => [
+  const allowedOrigins = operations
+    .map(({ method, operation }): [HttpMethod, boolean | string[]] => [
       method,
-      getRequestHeaderNames(parent[method], context).filter((header) => isRequestHeaderAllowed(url, header, operation)),
+      getAllowedOrigins(url, method, operation),
+    ])
+    .filter(([, origins]) => (Array.isArray(origins) && origins.length > 0) || origins === true)
+
+  const requestHeaders = operations
+    .map(({ method, operation }): [HttpMethod, string[]] => [
+      method,
+      getRequestHeaderNames(operation, context).filter((header) => isRequestHeaderAllowed(url, header, operation)),
     ])
     .filter(([, headers]) => headers.length > 0)
 
-  const responseHeaders = methods
-    .map((method): [HttpMethod, string[]] => [
+  const responseHeaders = operations
+    .map(({ method, operation }): [HttpMethod, string[]] => [
       method,
-      getResponseHeaderNames(parent[method], context).filter((header) =>
-        isResponseHeaderAllowed(url, header, operation),
-      ),
+      getResponseHeaderNames(operation, context).filter((header) => isResponseHeaderAllowed(url, header, operation)),
     ])
     .filter(([, headers]) => headers.length > 0)
 
-  const maxAge = methods
-    .map((method): [HttpMethod, number | undefined] => [method, getMaxAge(url, method, operation)])
+  const maxAge = operations
+    .map(({ method, operation }): [HttpMethod, number | undefined] => [method, getMaxAge(url, method, operation)])
     .filter(([, age]) => !isNil(age))
 
-  const includeCreds = methods
-    .map((method): [HttpMethod, boolean | undefined] => [method, getIncludeCreds(url, method, operation)])
+  const includeCreds = operations
+    .map(({ method, operation }): [HttpMethod, boolean | undefined] => [
+      method,
+      isCredentialsAllowed(url, method, operation),
+    ])
     .filter(([, incl]) => !isNil(incl))
 
   const toolkitParam = factory.createIdentifier(RouterNames.toolkit)
 
-  const originsExpression =
-    allowedOrigins === true
-      ? factory.createTrue()
-      : factory.createArrayLiteralExpression(allowedOrigins.map((origin) => factory.createStringLiteral(origin)))
+  const originsExpression = factory.createObjectLiteralExpression(
+    allowedOrigins.map(([method, origins]) =>
+      factory.createPropertyAssignment(
+        method,
+        typeof origins === 'boolean'
+          ? origins === true
+            ? factory.createTrue()
+            : factory.createFalse()
+          : factory.createArrayLiteralExpression(origins.map((header) => factory.createStringLiteral(header))),
+      ),
+    ),
+  )
 
   const methodsExpression = factory.createArrayLiteralExpression(
     methods.map((method) => factory.createStringLiteral(method)),

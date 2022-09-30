@@ -55,6 +55,7 @@ export type OpenAPIGeneratorTarget =
   | 'oats/express-router'
   | 'oats/express-routers-type'
   | 'oats/express-router-factory'
+  | 'oats/express-cors-middleware'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
@@ -71,6 +72,12 @@ export type EnhancedOperation = {
   path: ParameterObject[]
   cookie: ParameterObject[]
   header: ParameterObject[]
+}
+
+export type EnhancedPathItem = {
+  url: string
+  pathItem: PathItemObject
+  operations: EnhancedOperation[]
 }
 
 export type EnhancedResponse = {

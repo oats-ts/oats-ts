@@ -4,28 +4,24 @@ import { Expression, factory } from 'typescript'
 import { RouterNames } from '../../utils/RouterNames'
 import { ExpressRoutersGeneratorConfig } from '../typings'
 import { getResponseHeaderNames } from './getResponseHeaderNames'
-import { defaultIncludeCredentials, defaultMaxAge, defaultResponseHeaderFilter } from './utils'
 
 export function getCorsParameters(
   data: EnhancedOperation,
   context: OpenAPIGeneratorContext,
   config: ExpressRoutersGeneratorConfig,
 ): Expression[] {
-  if (config.cors === false || isNil(config.cors)) {
-    return []
-  }
-
   const { url, operation, method } = data
 
   const {
-    allowedOrigins,
-    isResponseHeaderAllowed = defaultResponseHeaderFilter,
-    allowCredentials: getAllowCreds = defaultIncludeCredentials,
-    maxAge: getMaxAge = defaultMaxAge,
-  } = config.cors
-
-  const maxAge = getMaxAge(url, method, operation)
-  const includeCreds = getAllowCreds(url, method, operation)
+    getAllowedOrigins = () => false,
+    isResponseHeaderAllowed = (_, header) => header !== 'set-cookie',
+    isCredentialsAllowed = () => undefined,
+  } = config
+  const allowedOrigins = getAllowedOrigins(url, method, operation)
+  if (allowedOrigins === false || (Array.isArray(allowedOrigins) && allowedOrigins.length === 0)) {
+    return []
+  }
+  const includeCreds = isCredentialsAllowed(url, method, operation)
 
   const responseHeaders = getResponseHeaderNames(operation, context).filter((header) =>
     isResponseHeaderAllowed(url, header, operation),
@@ -34,8 +30,10 @@ export function getCorsParameters(
   const toolkitParam = factory.createIdentifier(RouterNames.toolkit)
 
   const originsExpression =
-    allowedOrigins === true
-      ? factory.createTrue()
+    typeof allowedOrigins === 'boolean'
+      ? allowedOrigins === true
+        ? factory.createTrue()
+        : factory.createFalse()
       : factory.createArrayLiteralExpression(allowedOrigins.map((origin) => factory.createStringLiteral(origin)))
 
   const responseHeadersExpression = factory.createArrayLiteralExpression(
@@ -54,9 +52,6 @@ export function getCorsParameters(
             includeCreds ? factory.createTrue() : factory.createFalse(),
           ),
         ]
-      : []),
-    ...(!isNil(maxAge)
-      ? [factory.createPropertyAssignment(RouterNames.maxAge, factory.createNumericLiteral(maxAge))]
       : []),
   ])
 

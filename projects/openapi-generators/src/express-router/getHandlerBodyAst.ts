@@ -40,7 +40,7 @@ export function getHandlerBodyAst(
               factory.createIdentifier(RouterNames.response),
               factory.createIdentifier(RouterNames.locals),
             ),
-            factory.createStringLiteral(config.apiKey),
+            factory.createStringLiteral(RouterNames.apiKey),
           ),
         ),
       ],
@@ -148,18 +148,20 @@ export function getHandlerBodyAst(
     ),
   )
 
-  const corsHeaders = config.cors
-    ? factory.createAwaitExpression(
-        factory.createCallExpression(
-          factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterNames.adapter),
-            factory.createIdentifier(RouterNames.getCorsHeaders),
+  const corsParams = getCorsParameters(data, context, config)
+  const corsHeaders =
+    corsParams.length > 0
+      ? factory.createAwaitExpression(
+          factory.createCallExpression(
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(RouterNames.adapter),
+              factory.createIdentifier(RouterNames.getCorsHeaders),
+            ),
+            undefined,
+            corsParams,
           ),
-          undefined,
-          getCorsParameters(data, context, config),
-        ),
-      )
-    : factory.createIdentifier('undefined')
+        )
+      : factory.createIdentifier('undefined')
 
   const normalizedResponse = factory.createVariableStatement(
     undefined,
@@ -279,5 +281,5 @@ export function getHandlerBodyAst(
     undefined,
   )
 
-  return factory.createBlock([getToolkitStatement(), getAdapterStatement(config), api, tryCatch])
+  return factory.createBlock([getToolkitStatement(), getAdapterStatement(), api, tryCatch])
 }

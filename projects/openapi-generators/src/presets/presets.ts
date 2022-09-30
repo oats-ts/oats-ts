@@ -1,4 +1,5 @@
 import { merge } from 'lodash'
+import { ExpressCorsMiddlewareGeneratorConfig } from '../express-cors-middleware'
 import { createPreset } from './createPreset'
 import { BasePresetConfiguration, PresetGeneratorConfiguration } from './types'
 
@@ -27,6 +28,7 @@ export const serverOnlyConfig: PresetGeneratorConfiguration = {
   'oats/express-router': true,
   'oats/express-routers-type': true,
   'oats/express-router-factory': true,
+  'oats/express-cors-middleware': true,
 }
 
 export const clientOnlyConfig: PresetGeneratorConfiguration = {
@@ -44,7 +46,9 @@ export const clientOnlyConfig: PresetGeneratorConfiguration = {
   'oats/sdk-impl': true,
 }
 
-export type ServerPresetConfiguration = BasePresetConfiguration
+export type ServerPresetConfiguration = BasePresetConfiguration & {
+  cors?: Partial<ExpressCorsMiddlewareGeneratorConfig>
+}
 
 const server = createPreset<Partial<ServerPresetConfiguration>>(
   'server',
@@ -52,7 +56,15 @@ const server = createPreset<Partial<ServerPresetConfiguration>>(
     ...commonConfig,
     ...serverOnlyConfig,
   },
-  (base, config) => merge(base, config?.overrides ?? {}),
+  (base, config) =>
+    merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
+      base,
+      {
+        'oats/express-cors-middleware': config?.cors ?? {},
+        'oats/express-router': config?.cors ?? {},
+      },
+      config?.overrides ?? {},
+    ),
 )
 
 export type ClientPresetConfiguration = BasePresetConfiguration & {
@@ -67,7 +79,7 @@ const client = createPreset<ClientPresetConfiguration>(
     ...clientOnlyConfig,
   },
   (base, config) =>
-    merge(
+    merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
       base,
       {
         'oats/operation': {
@@ -88,6 +100,7 @@ const client = createPreset<ClientPresetConfiguration>(
 export type FullStackPresetConfiguration = BasePresetConfiguration & {
   sendCookieHeader?: boolean
   parseSetCookieHeaders?: boolean
+  cors?: Partial<ExpressCorsMiddlewareGeneratorConfig>
 }
 
 const fullStack = createPreset<FullStackPresetConfiguration>(
@@ -98,7 +111,7 @@ const fullStack = createPreset<FullStackPresetConfiguration>(
     ...serverOnlyConfig,
   },
   (base, config) =>
-    merge(
+    merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
       base,
       {
         'oats/operation': {
@@ -111,6 +124,8 @@ const fullStack = createPreset<FullStackPresetConfiguration>(
         'oats/response-type': {
           cookies: Boolean(config?.parseSetCookieHeaders),
         },
+        'oats/express-cors-middleware': config?.cors ?? {},
+        'oats/express-router': config?.cors ?? {},
       },
       config?.overrides ?? {},
     ),

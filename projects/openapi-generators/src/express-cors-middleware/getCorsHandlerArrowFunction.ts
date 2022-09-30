@@ -1,15 +1,15 @@
 import { ArrowFunction, Block, factory, SyntaxKind } from 'typescript'
 import { getExpressRouterHandlerParameters } from '../utils/getExpressRouterHandlerParameters'
-import { EnhancedOperation, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
-import { ExpressRoutersGeneratorConfig } from './typings'
-import { getAdapterStatement, getCatchBlock, getToolkitStatement } from './common'
+import { EnhancedPathItem, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
+import { getAdapterStatement, getCatchBlock, getToolkitStatement } from '../express-router/common'
 import { RouterNames } from '../utils/RouterNames'
-import { getPreflightCorsParameters } from './cors/getPreflightCorsParameters'
+import { getPreflightCorsParameters } from './getPreflightCorsParameters'
+import { ExpressCorsMiddlewareGeneratorConfig } from './typings'
 
 function getFunctionBodyBlock(
-  data: EnhancedOperation,
+  data: EnhancedPathItem,
   context: OpenAPIGeneratorContext,
-  config: ExpressRoutersGeneratorConfig,
+  config: ExpressCorsMiddlewareGeneratorConfig,
 ): Block {
   const respondStatement = factory.createExpressionStatement(
     factory.createAwaitExpression(
@@ -50,13 +50,13 @@ function getFunctionBodyBlock(
     ),
     undefined,
   )
-  return factory.createBlock([getToolkitStatement(), getAdapterStatement(config), tryCatch], true)
+  return factory.createBlock([getToolkitStatement(), getAdapterStatement(), tryCatch], true)
 }
 
 export function getCorsHandlerArrowFunctionAst(
-  data: EnhancedOperation,
+  data: EnhancedPathItem,
   context: OpenAPIGeneratorContext,
-  config: ExpressRoutersGeneratorConfig,
+  config: ExpressCorsMiddlewareGeneratorConfig,
 ): ArrowFunction {
   return factory.createArrowFunction(
     [factory.createModifier(SyntaxKind.AsyncKeyword)],

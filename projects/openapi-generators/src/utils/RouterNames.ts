@@ -42,4 +42,7 @@ export const RouterNames = {
   allowedResponseHeaders: 'allowedResponseHeaders',
   allowCredentials: 'allowCredentials',
   maxAge: 'maxAge',
+
+  apiKey: '__oats_api',
+  adapterKey: '__oats_adapter',
 }

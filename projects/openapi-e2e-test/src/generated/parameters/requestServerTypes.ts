@@ -25,7 +25,7 @@ export type DeepObjectQueryParametersServerRequest = {
 }
 
 export type FormCookieParametersServerRequest = {
-  cookies: Try<Partial<FormCookieParametersCookieParameters>>
+  cookies: Try<FormCookieParametersCookieParameters>
 }
 
 export type FormQueryParametersServerRequest = {

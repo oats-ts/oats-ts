@@ -13,21 +13,21 @@ import {
 
 function getCorsConfig(url: string) {
   if (url.includes('pet-store-json')) {
-    return { allowedOrigins: true } as const
+    return { getAllowedOrigins: () => true }
   }
   if (url.includes('parameters')) {
     return {
-      allowedOrigins: true,
+      getAllowedOrigins: () => true,
       isResponseHeaderAllowed: () => true,
-      allowCredentials: (url: string) => {
+      isCredentialsAllowed: (url: string) => {
         return url === '/form-cookie-parameters' ? true : undefined
       },
-    } as const
+    }
   }
   if (url.includes('pet-store-yaml')) {
-    return { allowedOrigins: ['https://foo.com'] }
+    return { getAllowedOrigins: () => ['https://foo.com'] }
   }
-  return false
+  return undefined
 }
 
 export async function generateFromOpenAPIDocument(
@@ -46,10 +46,8 @@ export async function generateFromOpenAPIDocument(
         children: presets.fullStack({
           sendCookieHeader: true,
           parseSetCookieHeaders: true,
+          cors: getCorsConfig(url),
           overrides: {
-            'oats/express-router': {
-              cors: getCorsConfig(url),
-            },
             'oats/type-guard': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
             },

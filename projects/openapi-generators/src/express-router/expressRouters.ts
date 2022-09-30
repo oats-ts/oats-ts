@@ -4,15 +4,15 @@ import { ExpressRoutersGenerator } from './ExpressRoutersGenerator'
 import { ExpressRoutersGeneratorConfig as ExpressRoutersGeneratorConfig } from './typings'
 
 function defaultConfig({
-  apiKey,
-  adapterKey,
-  cors,
+  getAllowedOrigins,
+  isCredentialsAllowed,
+  isResponseHeaderAllowed,
   ...rest
 }: Partial<ExpressRoutersGeneratorConfig & GeneratorConfig>): ExpressRoutersGeneratorConfig & Partial<GeneratorConfig> {
   return {
-    apiKey: apiKey ?? '__oats_api',
-    adapterKey: adapterKey ?? '__oats_adapter',
-    cors: cors ?? false,
+    getAllowedOrigins: getAllowedOrigins ?? (() => false),
+    isCredentialsAllowed: isCredentialsAllowed ?? (() => false),
+    isResponseHeaderAllowed: isResponseHeaderAllowed ?? ((_, header) => header !== 'set-cookie'),
     ...rest,
   }
 }
