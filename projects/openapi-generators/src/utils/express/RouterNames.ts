@@ -29,8 +29,6 @@ export const RouterNames = {
   responseHeaders: 'responseHeaders',
   responseBody: 'responseBody',
 
-  routes: 'routes',
-
   respond: 'respond',
   getPreflightCorsHeaders: 'getPreflightCorsHeaders',
   getCorsHeaders: 'getCorsHeaders',

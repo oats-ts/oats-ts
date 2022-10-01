@@ -8,10 +8,16 @@ import { Router } from 'express'
 import { createAddBookRouter, createGetBookRouter, createGetBooksRouter } from './expressRoutes'
 import { BookStoreRouters } from './expressRoutesType'
 
-export function createBookStoreRouter(router?: Router, routes: Partial<BookStoreRouters> = {}): Router {
-  return [
-    routes.createGetBooksRouter ?? createGetBooksRouter,
-    routes.createAddBookRouter ?? createAddBookRouter,
-    routes.createGetBookRouter ?? createGetBookRouter,
-  ].reduce((r, f) => f(r), router ?? Router())
+export function createBookStoreRouter(router?: Router, overrides: Partial<BookStoreRouters> = {}): Router {
+  const root = router ?? Router()
+  const factories = [
+    overrides.createGetBooksRouter ?? createGetBooksRouter,
+    overrides.createAddBookRouter ?? createAddBookRouter,
+    overrides.createGetBookRouter ?? createGetBookRouter,
+  ]
+  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
+    const childRouter = factory(root)
+    return childRouter === root ? routers : [...routers, childRouter]
+  }, [])
+  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }

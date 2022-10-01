@@ -22,20 +22,26 @@ import {
 } from './expressRoutes'
 import { BodiesRouters } from './expressRoutesType'
 
-export function createBodiesRouter(router?: Router, routes: Partial<BodiesRouters> = {}): Router {
-  return [
-    routes.createStrRouter ?? createStrRouter,
-    routes.createNumRouter ?? createNumRouter,
-    routes.createEnmRouter ?? createEnmRouter,
-    routes.createBoolRouter ?? createBoolRouter,
-    routes.createPrimTupleRouter ?? createPrimTupleRouter,
-    routes.createOptPrimTupleRouter ?? createOptPrimTupleRouter,
-    routes.createStrArrRouter ?? createStrArrRouter,
-    routes.createNumArrRouter ?? createNumArrRouter,
-    routes.createEnmArrRouter ?? createEnmArrRouter,
-    routes.createBoolArrRouter ?? createBoolArrRouter,
-    routes.createPrimObjRouter ?? createPrimObjRouter,
-    routes.createArrObjRouter ?? createArrObjRouter,
-    routes.createNestedObjRouter ?? createNestedObjRouter,
-  ].reduce((r, f) => f(r), router ?? Router())
+export function createBodiesRouter(router?: Router, overrides: Partial<BodiesRouters> = {}): Router {
+  const root = router ?? Router()
+  const factories = [
+    overrides.createStrRouter ?? createStrRouter,
+    overrides.createNumRouter ?? createNumRouter,
+    overrides.createEnmRouter ?? createEnmRouter,
+    overrides.createBoolRouter ?? createBoolRouter,
+    overrides.createPrimTupleRouter ?? createPrimTupleRouter,
+    overrides.createOptPrimTupleRouter ?? createOptPrimTupleRouter,
+    overrides.createStrArrRouter ?? createStrArrRouter,
+    overrides.createNumArrRouter ?? createNumArrRouter,
+    overrides.createEnmArrRouter ?? createEnmArrRouter,
+    overrides.createBoolArrRouter ?? createBoolArrRouter,
+    overrides.createPrimObjRouter ?? createPrimObjRouter,
+    overrides.createArrObjRouter ?? createArrObjRouter,
+    overrides.createNestedObjRouter ?? createNestedObjRouter,
+  ]
+  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
+    const childRouter = factory(root)
+    return childRouter === root ? routers : [...routers, childRouter]
+  }, [])
+  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }

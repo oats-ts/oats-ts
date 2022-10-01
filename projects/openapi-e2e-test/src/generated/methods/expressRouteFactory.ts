@@ -15,13 +15,19 @@ import {
 } from './expressRoutes'
 import { HttpMethodsRouters } from './expressRoutesType'
 
-export function createHttpMethodsRouter(router?: Router, routes: Partial<HttpMethodsRouters> = {}): Router {
-  return [
-    routes.createGetMethodRouter ?? createGetMethodRouter,
-    routes.createPostMethodRouter ?? createPostMethodRouter,
-    routes.createPutMethodRouter ?? createPutMethodRouter,
-    routes.createPatchMethodRouter ?? createPatchMethodRouter,
-    routes.createOptionsMethodRouter ?? createOptionsMethodRouter,
-    routes.createDeleteMethodRouter ?? createDeleteMethodRouter,
-  ].reduce((r, f) => f(r), router ?? Router())
+export function createHttpMethodsRouter(router?: Router, overrides: Partial<HttpMethodsRouters> = {}): Router {
+  const root = router ?? Router()
+  const factories = [
+    overrides.createGetMethodRouter ?? createGetMethodRouter,
+    overrides.createPostMethodRouter ?? createPostMethodRouter,
+    overrides.createPutMethodRouter ?? createPutMethodRouter,
+    overrides.createPatchMethodRouter ?? createPatchMethodRouter,
+    overrides.createOptionsMethodRouter ?? createOptionsMethodRouter,
+    overrides.createDeleteMethodRouter ?? createDeleteMethodRouter,
+  ]
+  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
+    const childRouter = factory(root)
+    return childRouter === root ? routers : [...routers, childRouter]
+  }, [])
+  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }

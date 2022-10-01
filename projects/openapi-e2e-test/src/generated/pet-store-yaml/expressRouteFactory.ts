@@ -8,10 +8,16 @@ import { Router } from 'express'
 import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter } from './expressRoutes'
 import { SwaggerPetstoreRouters } from './expressRoutesType'
 
-export function createSwaggerPetstoreRouter(router?: Router, routes: Partial<SwaggerPetstoreRouters> = {}): Router {
-  return [
-    routes.createListPetsRouter ?? createListPetsRouter,
-    routes.createCreatePetsRouter ?? createCreatePetsRouter,
-    routes.createShowPetByIdRouter ?? createShowPetByIdRouter,
-  ].reduce((r, f) => f(r), router ?? Router())
+export function createSwaggerPetstoreRouter(router?: Router, overrides: Partial<SwaggerPetstoreRouters> = {}): Router {
+  const root = router ?? Router()
+  const factories = [
+    overrides.createListPetsRouter ?? createListPetsRouter,
+    overrides.createCreatePetsRouter ?? createCreatePetsRouter,
+    overrides.createShowPetByIdRouter ?? createShowPetByIdRouter,
+  ]
+  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
+    const childRouter = factory(root)
+    return childRouter === root ? routers : [...routers, childRouter]
+  }, [])
+  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }

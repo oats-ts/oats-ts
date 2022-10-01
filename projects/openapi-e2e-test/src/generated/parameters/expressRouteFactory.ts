@@ -19,17 +19,23 @@ import {
 } from './expressRoutes'
 import { ParametersRouters } from './expressRoutesType'
 
-export function createParametersRouter(router?: Router, routes: Partial<ParametersRouters> = {}): Router {
-  return [
-    routes.createSimplePathParametersRouter ?? createSimplePathParametersRouter,
-    routes.createLabelPathParametersRouter ?? createLabelPathParametersRouter,
-    routes.createMatrixPathParametersRouter ?? createMatrixPathParametersRouter,
-    routes.createFormQueryParametersRouter ?? createFormQueryParametersRouter,
-    routes.createSpaceDelimitedQueryParametersRouter ?? createSpaceDelimitedQueryParametersRouter,
-    routes.createPipeDelimitedQueryParametersRouter ?? createPipeDelimitedQueryParametersRouter,
-    routes.createDeepObjectQueryParametersRouter ?? createDeepObjectQueryParametersRouter,
-    routes.createSimpleHeaderParametersRouter ?? createSimpleHeaderParametersRouter,
-    routes.createFormCookieParametersRouter ?? createFormCookieParametersRouter,
-    routes.createSimpleResponseHeaderParametersRouter ?? createSimpleResponseHeaderParametersRouter,
-  ].reduce((r, f) => f(r), router ?? Router())
+export function createParametersRouter(router?: Router, overrides: Partial<ParametersRouters> = {}): Router {
+  const root = router ?? Router()
+  const factories = [
+    overrides.createSimplePathParametersRouter ?? createSimplePathParametersRouter,
+    overrides.createLabelPathParametersRouter ?? createLabelPathParametersRouter,
+    overrides.createMatrixPathParametersRouter ?? createMatrixPathParametersRouter,
+    overrides.createFormQueryParametersRouter ?? createFormQueryParametersRouter,
+    overrides.createSpaceDelimitedQueryParametersRouter ?? createSpaceDelimitedQueryParametersRouter,
+    overrides.createPipeDelimitedQueryParametersRouter ?? createPipeDelimitedQueryParametersRouter,
+    overrides.createDeepObjectQueryParametersRouter ?? createDeepObjectQueryParametersRouter,
+    overrides.createSimpleHeaderParametersRouter ?? createSimpleHeaderParametersRouter,
+    overrides.createFormCookieParametersRouter ?? createFormCookieParametersRouter,
+    overrides.createSimpleResponseHeaderParametersRouter ?? createSimpleResponseHeaderParametersRouter,
+  ]
+  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
+    const childRouter = factory(root)
+    return childRouter === root ? routers : [...routers, childRouter]
+  }, [])
+  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }
