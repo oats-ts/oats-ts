@@ -4,20 +4,20 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { Router } from 'express'
+import { IRouter } from 'express'
 
 export type BodiesRouterFactories = {
-  createStrRouter: (router?: Router) => Router
-  createNumRouter: (router?: Router) => Router
-  createEnmRouter: (router?: Router) => Router
-  createBoolRouter: (router?: Router) => Router
-  createPrimTupleRouter: (router?: Router) => Router
-  createOptPrimTupleRouter: (router?: Router) => Router
-  createStrArrRouter: (router?: Router) => Router
-  createNumArrRouter: (router?: Router) => Router
-  createEnmArrRouter: (router?: Router) => Router
-  createBoolArrRouter: (router?: Router) => Router
-  createPrimObjRouter: (router?: Router) => Router
-  createArrObjRouter: (router?: Router) => Router
-  createNestedObjRouter: (router?: Router) => Router
+  createStrRouter: (router?: IRouter) => IRouter
+  createNumRouter: (router?: IRouter) => IRouter
+  createEnmRouter: (router?: IRouter) => IRouter
+  createBoolRouter: (router?: IRouter) => IRouter
+  createPrimTupleRouter: (router?: IRouter) => IRouter
+  createOptPrimTupleRouter: (router?: IRouter) => IRouter
+  createStrArrRouter: (router?: IRouter) => IRouter
+  createNumArrRouter: (router?: IRouter) => IRouter
+  createEnmArrRouter: (router?: IRouter) => IRouter
+  createBoolArrRouter: (router?: IRouter) => IRouter
+  createPrimObjRouter: (router?: IRouter) => IRouter
+  createArrObjRouter: (router?: IRouter) => IRouter
+  createNestedObjRouter: (router?: IRouter) => IRouter
 }

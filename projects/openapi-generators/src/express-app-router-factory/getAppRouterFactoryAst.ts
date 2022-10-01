@@ -166,7 +166,7 @@ function getParametersAst(context: OpenAPIGeneratorContext) {
       undefined,
       factory.createIdentifier(RouterNames.router),
       factory.createToken(SyntaxKind.QuestionToken),
-      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
+      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
       undefined,
     ),
     factory.createParameterDeclaration(
@@ -191,7 +191,7 @@ export function getAppRouterFactoryAst(operations: EnhancedOperation[], context:
     factory.createIdentifier(context.nameOf(context.document, 'oats/express-app-router-factory')),
     undefined,
     getParametersAst(context),
-    factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
+    factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
     factory.createBlock(
       [
         getRootRouterStatement(),

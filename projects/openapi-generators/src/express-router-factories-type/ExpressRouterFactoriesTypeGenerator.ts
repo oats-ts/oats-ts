@@ -24,7 +24,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
     return success(
       createSourceFile(
         this.context.pathOf(this.input.document, this.name()),
-        [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router])],
+        [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.IRouter])],
         [getRoutersTypeAst(operations, this.context)],
       ),
     )

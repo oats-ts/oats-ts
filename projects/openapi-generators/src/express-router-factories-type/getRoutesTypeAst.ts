@@ -19,11 +19,11 @@ export function getRoutersTypeAst(operations: EnhancedOperation[], context: Open
               undefined,
               factory.createIdentifier(RouterNames.router),
               factory.createToken(SyntaxKind.QuestionToken),
-              factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
+              factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
               undefined,
             ),
           ],
-          factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
+          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
         )
 
         return factory.createPropertySignature(

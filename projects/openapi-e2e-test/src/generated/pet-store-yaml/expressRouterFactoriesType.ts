@@ -4,10 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { Router } from 'express'
+import { IRouter } from 'express'
 
 export type SwaggerPetstoreRouterFactories = {
-  createListPetsRouter: (router?: Router) => Router
-  createCreatePetsRouter: (router?: Router) => Router
-  createShowPetByIdRouter: (router?: Router) => Router
+  createListPetsRouter: (router?: IRouter) => IRouter
+  createCreatePetsRouter: (router?: IRouter) => IRouter
+  createShowPetByIdRouter: (router?: IRouter) => IRouter
 }

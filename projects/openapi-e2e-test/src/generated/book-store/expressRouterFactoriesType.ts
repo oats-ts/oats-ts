@@ -4,10 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { Router } from 'express'
+import { IRouter } from 'express'
 
 export type BookStoreRouterFactories = {
-  createGetBooksRouter: (router?: Router) => Router
-  createAddBookRouter: (router?: Router) => Router
-  createGetBookRouter: (router?: Router) => Router
+  createGetBooksRouter: (router?: IRouter) => IRouter
+  createAddBookRouter: (router?: IRouter) => IRouter
+  createGetBookRouter: (router?: IRouter) => IRouter
 }

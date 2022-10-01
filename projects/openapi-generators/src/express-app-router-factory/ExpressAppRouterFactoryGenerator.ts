@@ -28,7 +28,10 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       createSourceFile(
         path,
         [
-          getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router]),
+          getNamedImports(RuntimePackages.Express.name, [
+            RuntimePackages.Express.Router,
+            RuntimePackages.Express.IRouter,
+          ]),
           ...getModelImports<OpenAPIGeneratorTarget>(
             path,
             'oats/express-router-factories-type',

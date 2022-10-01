@@ -25,6 +25,7 @@ export function getExpressRouterImports(
     ]),
     getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
     getNamedImports(RuntimePackages.Express.name, [
+      RuntimePackages.Express.IRouter,
       RuntimePackages.Express.Router,
       RuntimePackages.Express.Request,
       RuntimePackages.Express.Response,

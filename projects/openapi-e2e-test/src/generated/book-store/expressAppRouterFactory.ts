@@ -4,11 +4,11 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { Router } from 'express'
+import { IRouter, Router } from 'express'
 import { createAddBookRouter, createGetBookRouter, createGetBooksRouter } from './expressRouterFactories'
 import { BookStoreRouterFactories } from './expressRouterFactoriesType'
 
-export function createBookStoreAppRouter(router?: Router, overrides: Partial<BookStoreRouterFactories> = {}): Router {
+export function createBookStoreAppRouter(router?: IRouter, overrides: Partial<BookStoreRouterFactories> = {}): IRouter {
   const root = router ?? Router()
   const factories = [
     overrides.createGetBooksRouter ?? createGetBooksRouter,

@@ -6,12 +6,12 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
-import { NextFunction, Request, Response, Router } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { OptionalBodiesApi } from './apiType'
 import { optionalRequestBodyRequestBodyValidator } from './requestBodyValidators'
 import { OptionalRequestBodyServerRequest } from './requestServerTypes'
 
-export function createOptionalRequestBodyRouter(router?: Router): Router {
+export function createOptionalRequestBodyRouter(router?: IRouter): IRouter {
   return (router ?? Router()).post(
     '/optional-request-body',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

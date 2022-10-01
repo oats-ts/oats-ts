@@ -22,10 +22,10 @@ export function getExpressRouterAst(
         undefined,
         RouterNames.router,
         factory.createToken(SyntaxKind.QuestionToken),
-        factory.createTypeReferenceNode(RuntimePackages.Express.Router),
+        factory.createTypeReferenceNode(RuntimePackages.Express.IRouter),
       ),
     ],
-    factory.createTypeReferenceNode(RuntimePackages.Express.Router),
+    factory.createTypeReferenceNode(RuntimePackages.Express.IRouter),
     factory.createBlock([factory.createReturnStatement(getExpressRouterExpressionAst(data, context, config))]),
   )
 }

@@ -4,14 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { Router } from 'express'
+import { IRouter, Router } from 'express'
 import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter } from './expressRouterFactories'
 import { SwaggerPetstoreRouterFactories } from './expressRouterFactoriesType'
 
 export function createSwaggerPetstoreAppRouter(
-  router?: Router,
+  router?: IRouter,
   overrides: Partial<SwaggerPetstoreRouterFactories> = {},
-): Router {
+): IRouter {
   const root = router ?? Router()
   const factories = [
     overrides.createListPetsRouter ?? createListPetsRouter,

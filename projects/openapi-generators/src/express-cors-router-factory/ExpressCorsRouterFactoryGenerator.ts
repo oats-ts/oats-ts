@@ -76,6 +76,7 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   private getImports(): ImportDeclaration[] {
     return [
       getNamedImports(RuntimePackages.Express.name, [
+        RuntimePackages.Express.IRouter,
         RuntimePackages.Express.Router,
         RuntimePackages.Express.Request,
         RuntimePackages.Express.Response,

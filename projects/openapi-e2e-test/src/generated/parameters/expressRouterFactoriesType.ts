@@ -4,17 +4,17 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { Router } from 'express'
+import { IRouter } from 'express'
 
 export type ParametersRouterFactories = {
-  createSimplePathParametersRouter: (router?: Router) => Router
-  createLabelPathParametersRouter: (router?: Router) => Router
-  createMatrixPathParametersRouter: (router?: Router) => Router
-  createFormQueryParametersRouter: (router?: Router) => Router
-  createSpaceDelimitedQueryParametersRouter: (router?: Router) => Router
-  createPipeDelimitedQueryParametersRouter: (router?: Router) => Router
-  createDeepObjectQueryParametersRouter: (router?: Router) => Router
-  createSimpleHeaderParametersRouter: (router?: Router) => Router
-  createFormCookieParametersRouter: (router?: Router) => Router
-  createSimpleResponseHeaderParametersRouter: (router?: Router) => Router
+  createSimplePathParametersRouter: (router?: IRouter) => IRouter
+  createLabelPathParametersRouter: (router?: IRouter) => IRouter
+  createMatrixPathParametersRouter: (router?: IRouter) => IRouter
+  createFormQueryParametersRouter: (router?: IRouter) => IRouter
+  createSpaceDelimitedQueryParametersRouter: (router?: IRouter) => IRouter
+  createPipeDelimitedQueryParametersRouter: (router?: IRouter) => IRouter
+  createDeepObjectQueryParametersRouter: (router?: IRouter) => IRouter
+  createSimpleHeaderParametersRouter: (router?: IRouter) => IRouter
+  createFormCookieParametersRouter: (router?: IRouter) => IRouter
+  createSimpleResponseHeaderParametersRouter: (router?: IRouter) => IRouter
 }

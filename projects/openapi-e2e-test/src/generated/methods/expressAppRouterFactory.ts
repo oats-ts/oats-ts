@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { Router } from 'express'
+import { IRouter, Router } from 'express'
 import {
   createDeleteMethodRouter,
   createGetMethodRouter,
@@ -16,9 +16,9 @@ import {
 import { HttpMethodsRouterFactories } from './expressRouterFactoriesType'
 
 export function createHttpMethodsAppRouter(
-  router?: Router,
+  router?: IRouter,
   overrides: Partial<HttpMethodsRouterFactories> = {},
-): Router {
+): IRouter {
   const root = router ?? Router()
   const factories = [
     overrides.createGetMethodRouter ?? createGetMethodRouter,

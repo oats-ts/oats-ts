@@ -6,10 +6,10 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
-import { NextFunction, Request, Response, Router } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { HttpMethodsApi } from './apiType'
 
-export function createDeleteMethodRouter(router?: Router): Router {
+export function createDeleteMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).delete(
     '/delete-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -31,7 +31,7 @@ export function createDeleteMethodRouter(router?: Router): Router {
   )
 }
 
-export function createGetMethodRouter(router?: Router): Router {
+export function createGetMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).get(
     '/get-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -53,7 +53,7 @@ export function createGetMethodRouter(router?: Router): Router {
   )
 }
 
-export function createOptionsMethodRouter(router?: Router): Router {
+export function createOptionsMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).options(
     '/options-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -75,7 +75,7 @@ export function createOptionsMethodRouter(router?: Router): Router {
   )
 }
 
-export function createPatchMethodRouter(router?: Router): Router {
+export function createPatchMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).patch(
     '/patch-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -97,7 +97,7 @@ export function createPatchMethodRouter(router?: Router): Router {
   )
 }
 
-export function createPostMethodRouter(router?: Router): Router {
+export function createPostMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).post(
     '/post-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -119,7 +119,7 @@ export function createPostMethodRouter(router?: Router): Router {
   )
 }
 
-export function createPutMethodRouter(router?: Router): Router {
+export function createPutMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).put(
     '/put-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

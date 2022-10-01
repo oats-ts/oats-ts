@@ -6,7 +6,7 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
-import { NextFunction, Request, Response, Router } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { BookStoreApi } from './apiType'
 import { getBookPathDeserializer } from './pathDeserializers'
 import { getBooksQueryDeserializer } from './queryDeserializers'
@@ -16,7 +16,7 @@ import { AddBookServerRequest, GetBookServerRequest, GetBooksServerRequest } fro
 import { getBooksResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Book } from './types'
 
-export function createAddBookRouter(router?: Router): Router {
+export function createAddBookRouter(router?: IRouter): IRouter {
   return (router ?? Router()).post(
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -49,7 +49,7 @@ export function createAddBookRouter(router?: Router): Router {
   )
 }
 
-export function createGetBookRouter(router?: Router): Router {
+export function createGetBookRouter(router?: IRouter): IRouter {
   return (router ?? Router()).get(
     '/books/:bookId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -75,7 +75,7 @@ export function createGetBookRouter(router?: Router): Router {
   )
 }
 
-export function createGetBooksRouter(router?: Router): Router {
+export function createGetBooksRouter(router?: IRouter): IRouter {
   return (router ?? Router()).get(
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

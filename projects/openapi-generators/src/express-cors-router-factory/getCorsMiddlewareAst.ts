@@ -47,10 +47,10 @@ export function getCorsMiddlewareAst(
         undefined,
         RouterNames.router,
         factory.createToken(SyntaxKind.QuestionToken),
-        factory.createTypeReferenceNode(RuntimePackages.Express.Router),
+        factory.createTypeReferenceNode(RuntimePackages.Express.IRouter),
       ),
     ],
-    factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
+    factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
     factory.createBlock([factory.createReturnStatement(getCorsRouterExpression(paths, context, config))], true),
   )
 }

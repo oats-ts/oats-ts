@@ -48,6 +48,7 @@ const ParameterSerialization = {
 const Express = {
   name: 'express',
   Router: 'Router',
+  IRouter: 'IRouter',
   Request: 'Request',
   Response: 'Response',
   NextFunction: 'NextFunction',

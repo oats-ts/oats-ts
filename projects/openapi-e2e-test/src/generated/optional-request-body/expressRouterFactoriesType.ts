@@ -4,8 +4,8 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { Router } from 'express'
+import { IRouter } from 'express'
 
 export type OptionalBodiesRouterFactories = {
-  createOptionalRequestBodyRouter: (router?: Router) => Router
+  createOptionalRequestBodyRouter: (router?: IRouter) => IRouter
 }

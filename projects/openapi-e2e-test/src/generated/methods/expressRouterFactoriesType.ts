@@ -4,13 +4,13 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { Router } from 'express'
+import { IRouter } from 'express'
 
 export type HttpMethodsRouterFactories = {
-  createGetMethodRouter: (router?: Router) => Router
-  createPostMethodRouter: (router?: Router) => Router
-  createPutMethodRouter: (router?: Router) => Router
-  createPatchMethodRouter: (router?: Router) => Router
-  createOptionsMethodRouter: (router?: Router) => Router
-  createDeleteMethodRouter: (router?: Router) => Router
+  createGetMethodRouter: (router?: IRouter) => IRouter
+  createPostMethodRouter: (router?: IRouter) => IRouter
+  createPutMethodRouter: (router?: IRouter) => IRouter
+  createPatchMethodRouter: (router?: IRouter) => IRouter
+  createOptionsMethodRouter: (router?: IRouter) => IRouter
+  createDeleteMethodRouter: (router?: IRouter) => IRouter
 }

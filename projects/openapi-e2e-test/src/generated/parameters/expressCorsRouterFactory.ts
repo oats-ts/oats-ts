@@ -6,9 +6,9 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
-import { NextFunction, Request, Response, Router } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 
-export function createParametersCorsRouter(router?: Router): Router {
+export function createParametersCorsRouter(router?: IRouter): IRouter {
   return (router ?? Router())
     .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }

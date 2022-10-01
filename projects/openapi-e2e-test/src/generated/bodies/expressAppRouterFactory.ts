@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { Router } from 'express'
+import { IRouter, Router } from 'express'
 import {
   createArrObjRouter,
   createBoolArrRouter,
@@ -22,7 +22,7 @@ import {
 } from './expressRouterFactories'
 import { BodiesRouterFactories } from './expressRouterFactoriesType'
 
-export function createBodiesAppRouter(router?: Router, overrides: Partial<BodiesRouterFactories> = {}): Router {
+export function createBodiesAppRouter(router?: IRouter, overrides: Partial<BodiesRouterFactories> = {}): IRouter {
   const root = router ?? Router()
   const factories = [
     overrides.createStrRouter ?? createStrRouter,

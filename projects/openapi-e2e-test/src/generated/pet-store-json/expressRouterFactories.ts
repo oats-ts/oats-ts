@@ -6,7 +6,7 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
-import { NextFunction, Request, Response, Router } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
 import { showPetByIdPathDeserializer } from './pathDeserializers'
 import { listPetsQueryDeserializer } from './queryDeserializers'
@@ -15,7 +15,7 @@ import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerReques
 import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Pet } from './types'
 
-export function createCreatePetsRouter(router?: Router): Router {
+export function createCreatePetsRouter(router?: IRouter): IRouter {
   return (router ?? Router()).post(
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -57,7 +57,7 @@ export function createCreatePetsRouter(router?: Router): Router {
   )
 }
 
-export function createListPetsRouter(router?: Router): Router {
+export function createListPetsRouter(router?: IRouter): IRouter {
   return (router ?? Router()).get(
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -92,7 +92,7 @@ export function createListPetsRouter(router?: Router): Router {
   )
 }
 
-export function createShowPetByIdRouter(router?: Router): Router {
+export function createShowPetByIdRouter(router?: IRouter): IRouter {
   return (router ?? Router()).get(
     '/pets/:petId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
