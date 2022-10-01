@@ -27,9 +27,9 @@ const fileNameByTarget: NameByTarget = {
   'oats/type-validator': 'typeValidators.ts',
   'oats/request-body-validator': 'requestBodyValidators.ts',
   'oats/response-body-validator': 'responseBodyValidators.ts',
-  'oats/express-router': 'expressRoutes.ts',
-  'oats/express-routers-type': 'expressRoutesType.ts',
-  'oats/express-router-factory': 'expressRouteFactory.ts',
+  'oats/express-router-factory': 'expressRouterFactories.ts',
+  'oats/express-router-factories-type': 'expressRouterFactoriesType.ts',
+  'oats/express-app-router-factory': 'expressAppRouterFactory.ts',
   'oats/api-type': 'apiType.ts',
   'oats/sdk-impl': 'sdkImpl.ts',
   'oats/sdk-type': 'sdkType.ts',
@@ -37,8 +37,8 @@ const fileNameByTarget: NameByTarget = {
   'oats/set-cookie-serializer': 'setCookieSerializers.ts',
   'oats/cookie-deserializer': 'cookieDeserializers.ts',
   'oats/set-cookie-deserializer': 'setCookieDeserializers.ts',
-  'oats/express-cors-middleware': 'expressCorsMiddleware.ts',
-  'oats/express-context-middleware': 'expressContextMiddleware.ts',
+  'oats/express-cors-router-factory': 'expressCorsRouterFactory.ts',
+  'oats/express-context-handler-factory': 'expressContextHandlerFactory.ts',
 }
 
 const delegate =
@@ -97,11 +97,11 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
 
     'oats/operation': operations,
 
-    'oats/express-router': routers,
     'oats/express-router-factory': routers,
-    'oats/express-routers-type': routers,
-    'oats/express-cors-middleware': routers,
-    'oats/express-context-middleware': routers,
+    'oats/express-app-router-factory': routers,
+    'oats/express-router-factories-type': routers,
+    'oats/express-cors-router-factory': routers,
+    'oats/express-context-handler-factory': routers,
     'oats/sdk-type': sdk,
     'oats/sdk-impl': sdk,
   }

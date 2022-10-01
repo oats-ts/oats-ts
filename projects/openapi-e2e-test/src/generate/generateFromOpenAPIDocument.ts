@@ -10,9 +10,9 @@ import {
   generator,
   loggers,
 } from '@oats-ts/openapi'
-import { ExpressCorsMiddlewareGeneratorConfig } from '@oats-ts/openapi-generators'
+import { ExpressCorsRouterFactoryGeneratorConfig } from '@oats-ts/openapi-generators'
 
-const corsConfigs: Record<string, Partial<ExpressCorsMiddlewareGeneratorConfig>> = {
+const corsConfigs: Record<string, Partial<ExpressCorsRouterFactoryGeneratorConfig>> = {
   'schemas/pet-store-yaml.yaml': { getAllowedOrigins: () => ['https://foo.com'] },
   'schemas/pet-store-json.json': { getAllowedOrigins: () => true },
   'generated-schemas/parameters.json': {

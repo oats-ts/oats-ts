@@ -50,11 +50,11 @@ export type OpenAPIGeneratorTarget =
   | 'oats/sdk-type'
   | 'oats/sdk-impl'
   | 'oats/api-type'
-  | 'oats/express-router'
-  | 'oats/express-routers-type'
   | 'oats/express-router-factory'
-  | 'oats/express-cors-middleware'
-  | 'oats/express-context-middleware'
+  | 'oats/express-router-factories-type'
+  | 'oats/express-app-router-factory'
+  | 'oats/express-cors-router-factory'
+  | 'oats/express-context-handler-factory'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 

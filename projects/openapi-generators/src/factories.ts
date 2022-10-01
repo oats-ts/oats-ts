@@ -1,7 +1,7 @@
 import { apiType } from './api-type'
-import { expressRouters } from './express-router'
-import { expressRouterFactory } from './express-router-factory'
-import { expressRoutersType } from './express-routers-type'
+import { expressRouterFactories } from './express-router-factory'
+import { expressAppRouterFactory } from './express-app-router-factory'
+import { expressRoutersFactoriesType } from './express-router-factories-type'
 import { group } from './group'
 import { operations } from './operations'
 import { pathDeserializers } from './path-deserializer'
@@ -29,18 +29,18 @@ import { cookieSerializers } from './cookie-serializer'
 import { cookieDeserializers } from './cookie-deserializer'
 import { setCookieSerializers } from './set-cookie-serializer'
 import { setCookieDeserializers } from './set-cookie-deserializer'
-import { expressCorsMiddleware } from './express-cors-middleware'
+import { expressCorsRouterFactory } from './express-cors-router-factory'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
-import { expressContextMiddleware } from './express-context-middleware'
+import { expressContextHandlerFactory } from './express-context-handler-factory'
 
 export const factories = {
   typeGuards,
   types,
   typeValidators,
   apiType,
-  expressRouters,
-  expressRouterFactory,
-  expressRoutersType,
+  expressRouterFactories,
+  expressAppRouterFactory,
+  expressRoutersFactoriesType,
   group,
   operations,
   pathDeserializers,
@@ -68,6 +68,6 @@ export const factories = {
   responseServerTypes,
   sdkImpl,
   sdkType,
-  expressCorsMiddleware,
-  expressContextMiddleware,
+  expressCorsRouterFactory,
+  expressContextHandlerFactory,
 } as const
