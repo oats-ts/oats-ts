@@ -6,6 +6,6 @@
 
 import { Router } from 'express'
 
-export type BodiesRouters = {
+export type OptionalBodiesRouterFactories = {
   createOptionalRequestBodyRouter: (router?: Router) => Router
 }

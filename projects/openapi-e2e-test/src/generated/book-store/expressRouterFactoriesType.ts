@@ -6,7 +6,7 @@
 
 import { Router } from 'express'
 
-export type BookStoreRouters = {
+export type BookStoreRouterFactories = {
   createGetBooksRouter: (router?: Router) => Router
   createAddBookRouter: (router?: Router) => Router
   createGetBookRouter: (router?: Router) => Router

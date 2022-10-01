@@ -7,7 +7,7 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { NextFunction, Request, Response, Router } from 'express'
-import { BodiesApi } from './apiType'
+import { OptionalBodiesApi } from './apiType'
 import { optionalRequestBodyRequestBodyValidator } from './requestBodyValidators'
 import { OptionalRequestBodyServerRequest } from './requestServerTypes'
 
@@ -17,7 +17,7 @@ export function createOptionalRequestBodyRouter(router?: Router): Router {
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const api: OptionalBodiesApi = response.locals['__oats_api']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<

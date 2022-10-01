@@ -19,10 +19,10 @@ import {
   createPrimTupleRouter,
   createStrArrRouter,
   createStrRouter,
-} from './expressRoutes'
-import { BodiesRouters } from './expressRoutesType'
+} from './expressRouterFactories'
+import { BodiesRouterFactories } from './expressRouterFactoriesType'
 
-export function createBodiesRouter(router?: Router, overrides: Partial<BodiesRouters> = {}): Router {
+export function createBodiesAppRouter(router?: Router, overrides: Partial<BodiesRouterFactories> = {}): Router {
   const root = router ?? Router()
   const factories = [
     overrides.createStrRouter ?? createStrRouter,

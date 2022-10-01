@@ -6,7 +6,7 @@
 
 import { Router } from 'express'
 
-export type HttpMethodsRouters = {
+export type HttpMethodsRouterFactories = {
   createGetMethodRouter: (router?: Router) => Router
   createPostMethodRouter: (router?: Router) => Router
   createPutMethodRouter: (router?: Router) => Router

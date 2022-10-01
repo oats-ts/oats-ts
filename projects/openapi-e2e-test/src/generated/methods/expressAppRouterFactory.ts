@@ -12,10 +12,13 @@ import {
   createPatchMethodRouter,
   createPostMethodRouter,
   createPutMethodRouter,
-} from './expressRoutes'
-import { HttpMethodsRouters } from './expressRoutesType'
+} from './expressRouterFactories'
+import { HttpMethodsRouterFactories } from './expressRouterFactoriesType'
 
-export function createHttpMethodsRouter(router?: Router, overrides: Partial<HttpMethodsRouters> = {}): Router {
+export function createHttpMethodsAppRouter(
+  router?: Router,
+  overrides: Partial<HttpMethodsRouterFactories> = {},
+): Router {
   const root = router ?? Router()
   const factories = [
     overrides.createGetMethodRouter ?? createGetMethodRouter,

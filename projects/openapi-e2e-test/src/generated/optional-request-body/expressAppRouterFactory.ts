@@ -5,10 +5,13 @@
  */
 
 import { Router } from 'express'
-import { createOptionalRequestBodyRouter } from './expressRoutes'
-import { BodiesRouters } from './expressRoutesType'
+import { createOptionalRequestBodyRouter } from './expressRouterFactories'
+import { OptionalBodiesRouterFactories } from './expressRouterFactoriesType'
 
-export function createBodiesRouter(router?: Router, overrides: Partial<BodiesRouters> = {}): Router {
+export function createOptionalBodiesAppRouter(
+  router?: Router,
+  overrides: Partial<OptionalBodiesRouterFactories> = {},
+): Router {
   const root = router ?? Router()
   const factories = [overrides.createOptionalRequestBodyRouter ?? createOptionalRequestBodyRouter]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)

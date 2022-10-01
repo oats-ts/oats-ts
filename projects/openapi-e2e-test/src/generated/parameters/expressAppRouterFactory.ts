@@ -16,10 +16,10 @@ import {
   createSimplePathParametersRouter,
   createSimpleResponseHeaderParametersRouter,
   createSpaceDelimitedQueryParametersRouter,
-} from './expressRoutes'
-import { ParametersRouters } from './expressRoutesType'
+} from './expressRouterFactories'
+import { ParametersRouterFactories } from './expressRouterFactoriesType'
 
-export function createParametersRouter(router?: Router, overrides: Partial<ParametersRouters> = {}): Router {
+export function createParametersAppRouter(router?: Router, overrides: Partial<ParametersRouterFactories> = {}): Router {
   const root = router ?? Router()
   const factories = [
     overrides.createSimplePathParametersRouter ?? createSimplePathParametersRouter,

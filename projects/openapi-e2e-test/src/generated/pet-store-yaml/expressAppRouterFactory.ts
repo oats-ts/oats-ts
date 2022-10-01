@@ -5,10 +5,13 @@
  */
 
 import { Router } from 'express'
-import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter } from './expressRoutes'
-import { SwaggerPetstoreRouters } from './expressRoutesType'
+import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter } from './expressRouterFactories'
+import { SwaggerPetstoreRouterFactories } from './expressRouterFactoriesType'
 
-export function createSwaggerPetstoreRouter(router?: Router, overrides: Partial<SwaggerPetstoreRouters> = {}): Router {
+export function createSwaggerPetstoreAppRouter(
+  router?: Router,
+  overrides: Partial<SwaggerPetstoreRouterFactories> = {},
+): Router {
   const root = router ?? Router()
   const factories = [
     overrides.createListPetsRouter ?? createListPetsRouter,

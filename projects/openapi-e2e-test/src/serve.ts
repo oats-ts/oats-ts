@@ -2,13 +2,13 @@ import { ExpressServerAdapter, jsonBodyParser } from '@oats-ts/openapi-express-s
 import express, { Handler, Router } from 'express'
 import { isNil } from 'lodash'
 import { argv } from 'process'
-import { createBookStoreContextMiddleware } from './generated/book-store/expressContextMiddleware'
-import { createBookStoreRouter } from './generated/book-store/expressRouteFactory'
-import { createHttpMethodsContextMiddleware } from './generated/methods/expressContextMiddleware'
-import { createHttpMethodsRouter } from './generated/methods/expressRouteFactory'
-import { createParametersContextMiddleware } from './generated/parameters/expressContextMiddleware'
-import { createParametersCorsMiddleware } from './generated/parameters/expressCorsMiddleware'
-import { createParametersRouter } from './generated/parameters/expressRouteFactory'
+import { createBookStoreContextHandler } from './generated/book-store/expressContextHandlerFactory'
+import { createBookStoreAppRouter } from './generated/book-store/expressAppRouterFactory'
+import { createHttpMethodsContextHandler } from './generated/methods/expressContextHandlerFactory'
+import { createHttpMethodsAppRouter } from './generated/methods/expressAppRouterFactory'
+import { createParametersContextHandler } from './generated/parameters/expressContextHandlerFactory'
+import { createParametersCorsRouter } from './generated/parameters/expressCorsRouterFactory'
+import { createParametersAppRouter } from './generated/parameters/expressAppRouterFactory'
 import { BookStoreApiImpl } from './tests/bookStore/BookStoreApiImpl'
 import { PATH, PORT } from './tests/constants'
 import { HttpMethodsApiImpl } from './tests/methods/HttpMethodsApiImpl'
@@ -16,17 +16,17 @@ import { ParametersApiImpl } from './tests/parameters/ParametersApiImpl'
 
 const routers: Record<string, (Router | Handler)[]> = {
   'book-store': [
-    createBookStoreContextMiddleware(new BookStoreApiImpl(), new ExpressServerAdapter()),
-    createBookStoreRouter(),
+    createBookStoreContextHandler(new BookStoreApiImpl(), new ExpressServerAdapter()),
+    createBookStoreAppRouter(),
   ],
   methods: [
-    createHttpMethodsContextMiddleware(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
-    createHttpMethodsRouter(),
+    createHttpMethodsContextHandler(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
+    createHttpMethodsAppRouter(),
   ],
   parameters: [
-    createParametersContextMiddleware(new ParametersApiImpl(), new ExpressServerAdapter()),
-    createParametersCorsMiddleware(),
-    createParametersRouter(),
+    createParametersContextHandler(new ParametersApiImpl(), new ExpressServerAdapter()),
+    createParametersCorsRouter(),
+    createParametersAppRouter(),
   ],
 }
 

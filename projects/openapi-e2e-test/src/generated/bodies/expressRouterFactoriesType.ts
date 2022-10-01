@@ -6,7 +6,7 @@
 
 import { Router } from 'express'
 
-export type BodiesRouters = {
+export type BodiesRouterFactories = {
   createStrRouter: (router?: Router) => Router
   createNumRouter: (router?: Router) => Router
   createEnmRouter: (router?: Router) => Router

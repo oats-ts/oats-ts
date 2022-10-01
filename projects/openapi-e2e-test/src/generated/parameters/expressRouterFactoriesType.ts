@@ -6,7 +6,7 @@
 
 import { Router } from 'express'
 
-export type ParametersRouters = {
+export type ParametersRouterFactories = {
   createSimplePathParametersRouter: (router?: Router) => Router
   createLabelPathParametersRouter: (router?: Router) => Router
   createMatrixPathParametersRouter: (router?: Router) => Router

@@ -8,7 +8,7 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
 import { NextFunction, Request, Response, Router } from 'express'
 
-export function createSwaggerPetstoreCorsMiddleware(router?: Router): Router {
+export function createSwaggerPetstoreCorsRouter(router?: Router): Router {
   return (router ?? Router())
     .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }

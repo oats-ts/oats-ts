@@ -7,6 +7,6 @@
 import { OptionalRequestBodyRequest } from './requestTypes'
 import { OptionalRequestBodyResponse } from './responseTypes'
 
-export type BodiesSdk = {
+export type OptionalBodiesSdk = {
   optionalRequestBody(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse>
 }
