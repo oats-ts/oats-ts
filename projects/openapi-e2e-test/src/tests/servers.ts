@@ -20,6 +20,8 @@ import { createHttpMethodsContextMiddleware } from '../generated/methods/express
 import { createBodiesContextMiddleware } from '../generated/bodies/expressContextMiddleware'
 import { createBodiesContextMiddleware as createOptBodiesContextMiddleware } from '../generated/optional-request-body/expressContextMiddleware'
 import { createBookStoreContextMiddleware } from '../generated/book-store/expressContextMiddleware'
+import { Router } from 'express'
+import { createFormQueryParametersRouter } from '../generated/parameters/expressRoutes'
 
 export function testBookStoreServer() {
   testExpressServer({
@@ -87,8 +89,9 @@ export function testParametersServer() {
       customBodyParsers.yaml(),
       customBodyParsers.json(),
       createParametersContextMiddleware(new ParametersApiImpl(), new ExpressServerAdapter()),
-      createParametersRouter(),
-      createParametersCorsMiddleware(),
+      createParametersRouter(createParametersCorsMiddleware(Router()), {
+        createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
+      }),
     ],
   })
 }

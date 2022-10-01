@@ -74,8 +74,33 @@ function getRouterCreationStatement(): Statement {
           undefined,
           factory.createCallExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier(RouterFactoryNames.factories),
-              factory.createIdentifier('reduce'),
+              factory.createCallExpression(
+                factory.createPropertyAccessExpression(
+                  factory.createIdentifier(RouterFactoryNames.factories),
+                  factory.createIdentifier('map'),
+                ),
+                undefined,
+                [
+                  factory.createArrowFunction(
+                    undefined,
+                    undefined,
+                    [
+                      factory.createParameterDeclaration(
+                        undefined,
+                        undefined,
+                        undefined,
+                        factory.createIdentifier(RouterFactoryNames.factory),
+                      ),
+                    ],
+                    undefined,
+                    factory.createToken(SyntaxKind.EqualsGreaterThanToken),
+                    factory.createCallExpression(factory.createIdentifier(RouterFactoryNames.factory), undefined, [
+                      factory.createIdentifier(RouterNames.router),
+                    ]),
+                  ),
+                ],
+              ),
+              factory.createIdentifier('filter'),
             ),
             undefined,
             [
@@ -87,94 +112,17 @@ function getRouterCreationStatement(): Statement {
                     undefined,
                     undefined,
                     undefined,
-                    factory.createIdentifier(RouterFactoryNames.routers),
-                    undefined,
-                    factory.createArrayTypeNode(
-                      factory.createTypeReferenceNode(
-                        factory.createIdentifier(RuntimePackages.Express.Router),
-                        undefined,
-                      ),
-                    ),
-                    undefined,
-                  ),
-                  factory.createParameterDeclaration(
-                    undefined,
-                    undefined,
-                    undefined,
-                    factory.createIdentifier(RouterFactoryNames.factory),
-                    undefined,
-                    factory.createFunctionTypeNode(
-                      undefined,
-                      [
-                        factory.createParameterDeclaration(
-                          undefined,
-                          undefined,
-                          undefined,
-                          factory.createIdentifier(RouterNames.router),
-                          factory.createToken(SyntaxKind.QuestionToken),
-                          factory.createTypeReferenceNode(
-                            factory.createIdentifier(RuntimePackages.Express.Router),
-                            undefined,
-                          ),
-                          undefined,
-                        ),
-                      ],
-                      factory.createTypeReferenceNode(
-                        factory.createIdentifier(RuntimePackages.Express.Router),
-                        undefined,
-                      ),
-                    ),
-                    undefined,
+                    factory.createIdentifier(RouterFactoryNames.childRouter),
                   ),
                 ],
-                factory.createArrayTypeNode(
-                  factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Router), undefined),
-                ),
+                undefined,
                 factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-                factory.createBlock(
-                  [
-                    factory.createVariableStatement(
-                      undefined,
-                      factory.createVariableDeclarationList(
-                        [
-                          factory.createVariableDeclaration(
-                            factory.createIdentifier(RouterFactoryNames.childRouter),
-                            undefined,
-                            undefined,
-                            factory.createCallExpression(
-                              factory.createIdentifier(RouterFactoryNames.factory),
-                              undefined,
-                              [factory.createIdentifier(RouterFactoryNames.root)],
-                            ),
-                          ),
-                        ],
-                        NodeFlags.Const,
-                      ),
-                    ),
-                    factory.createReturnStatement(
-                      factory.createConditionalExpression(
-                        factory.createBinaryExpression(
-                          factory.createIdentifier(RouterFactoryNames.childRouter),
-                          factory.createToken(SyntaxKind.EqualsEqualsEqualsToken),
-                          factory.createIdentifier(RouterFactoryNames.root),
-                        ),
-                        factory.createToken(SyntaxKind.QuestionToken),
-                        factory.createIdentifier(RouterFactoryNames.routers),
-                        factory.createToken(SyntaxKind.ColonToken),
-                        factory.createArrayLiteralExpression(
-                          [
-                            factory.createSpreadElement(factory.createIdentifier(RouterFactoryNames.routers)),
-                            factory.createIdentifier(RouterFactoryNames.childRouter),
-                          ],
-                          false,
-                        ),
-                      ),
-                    ),
-                  ],
-                  true,
+                factory.createBinaryExpression(
+                  factory.createIdentifier(RouterFactoryNames.childRouter),
+                  factory.createToken(SyntaxKind.ExclamationEqualsEqualsToken),
+                  factory.createIdentifier(RouterFactoryNames.root),
                 ),
               ),
-              factory.createArrayLiteralExpression([], false),
             ],
           ),
         ),

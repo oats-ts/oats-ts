@@ -25,9 +25,6 @@ export function createHttpMethodsRouter(router?: Router, overrides: Partial<Http
     overrides.createOptionsMethodRouter ?? createOptionsMethodRouter,
     overrides.createDeleteMethodRouter ?? createDeleteMethodRouter,
   ]
-  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
-    const childRouter = factory(root)
-    return childRouter === root ? routers : [...routers, childRouter]
-  }, [])
+  const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }

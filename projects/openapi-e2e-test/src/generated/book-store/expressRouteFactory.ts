@@ -15,9 +15,6 @@ export function createBookStoreRouter(router?: Router, overrides: Partial<BookSt
     overrides.createAddBookRouter ?? createAddBookRouter,
     overrides.createGetBookRouter ?? createGetBookRouter,
   ]
-  const uniqueRouters = factories.reduce((routers: Router[], factory: (router?: Router) => Router): Router[] => {
-    const childRouter = factory(root)
-    return childRouter === root ? routers : [...routers, childRouter]
-  }, [])
+  const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
 }
