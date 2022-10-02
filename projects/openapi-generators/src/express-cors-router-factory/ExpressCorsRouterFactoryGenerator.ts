@@ -14,6 +14,7 @@ import { ExpressCorsRouterFactoryGeneratorConfig } from './typings'
 import { BaseCodeGenerator, RuntimeDependency } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
+import { getCorsEnabledPaths } from './getCorsEnabledPaths'
 
 export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   OpenAPIReadOutput,
@@ -35,20 +36,9 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   }
 
   protected getItems(): EnhancedPathItem[][] {
-    const config = this.configuration()
-    const paths = getEnhancedPathItems(this.input.document, this.context).filter(({ url, operations }) => {
-      return operations.some(({ url, operation, method }) => {
-        const isMethodAllowed = config.isMethodAllowed(url, method, operation)
-        const allowedOrigins = config.getAllowedOrigins(url, method, operation)
-        if (!isMethodAllowed) {
-          return false
-        }
-        if (typeof allowedOrigins === 'boolean') {
-          return allowedOrigins
-        }
-        return allowedOrigins.length > 0
-      })
-    })
+    const paths = getEnhancedPathItems(this.input.document, this.context).filter(
+      ({ operations }) => operations.length > 0,
+    )
     return [paths].filter((p) => p.length > 0)
   }
 
@@ -74,6 +64,15 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   }
 
   private getImports(): ImportDeclaration[] {
+    const paths = this.items[0]
+    if (getCorsEnabledPaths(paths, this.configuration()).length === 0) {
+      return [
+        getNamedImports(RuntimePackages.Express.name, [
+          RuntimePackages.Express.IRouter,
+          RuntimePackages.Express.Router,
+        ]),
+      ]
+    }
     return [
       getNamedImports(RuntimePackages.Express.name, [
         RuntimePackages.Express.IRouter,
