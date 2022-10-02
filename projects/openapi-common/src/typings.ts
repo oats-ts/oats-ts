@@ -46,15 +46,15 @@ export type OpenAPIGeneratorTarget =
   | 'oats/path-deserializer'
   | 'oats/cookie-deserializer'
   | 'oats/set-cookie-deserializer'
-  // Client
   | 'oats/operation'
   | 'oats/sdk-type'
   | 'oats/sdk-impl'
-  // Server
   | 'oats/api-type'
-  | 'oats/express-router'
-  | 'oats/express-routers-type'
   | 'oats/express-router-factory'
+  | 'oats/express-router-factories-type'
+  | 'oats/express-app-router-factory'
+  | 'oats/express-cors-router-factory'
+  | 'oats/express-context-handler-factory'
 
 export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
@@ -71,6 +71,12 @@ export type EnhancedOperation = {
   path: ParameterObject[]
   cookie: ParameterObject[]
   header: ParameterObject[]
+}
+
+export type EnhancedPathItem = {
+  url: string
+  pathItem: PathItemObject
+  operations: EnhancedOperation[]
 }
 
 export type EnhancedResponse = {

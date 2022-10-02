@@ -33,6 +33,7 @@ async function generateAll() {
     {
       type: 'confirm',
       name: 'clear',
+      default: false,
       message: 'Clear folder src/generated?',
     },
   ])
@@ -46,6 +47,7 @@ async function generateAll() {
   for (const path of selectedDocuments) {
     console.log(path)
     await generateFromOpenAPIDocument(
+      path,
       getSchemaUrl(path),
       getCodePath(path, result.pathType === 'singleFile'),
       result.pathType,

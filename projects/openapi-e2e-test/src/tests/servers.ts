@@ -9,11 +9,19 @@ import { PORT } from './constants'
 import { HttpMethodsApiImpl } from './methods/HttpMethodsApiImpl'
 import { ParametersApiImpl } from './parameters/ParametersApiImpl'
 import { testExpressServer } from '../testExpressServer'
-import { createBookStoreRouter } from '../generated/book-store/expressRouteFactory'
-import { createBodiesRouter as createOptionalRequestBodyRouter } from '../generated/optional-request-body/expressRouteFactory'
-import { createBodiesRouter } from '../generated/bodies/expressRouteFactory'
-import { createHttpMethodsRouter } from '../generated/methods/expressRouteFactory'
-import { createParametersRouter } from '../generated/parameters/expressRouteFactory'
+import { createBookStoreAppRouter } from '../generated/book-store/expressAppRouterFactory'
+import { createOptionalBodiesAppRouter } from '../generated/optional-request-body/expressAppRouterFactory'
+import { createBodiesAppRouter } from '../generated/bodies/expressAppRouterFactory'
+import { createHttpMethodsAppRouter } from '../generated/methods/expressAppRouterFactory'
+import { createParametersAppRouter } from '../generated/parameters/expressAppRouterFactory'
+import { createParametersCorsRouter } from '../generated/parameters/expressCorsRouterFactory'
+import { createParametersContextHandler } from '../generated/parameters/expressContextHandlerFactory'
+import { createHttpMethodsContextHandler } from '../generated/methods/expressContextHandlerFactory'
+import { createBodiesContextHandler } from '../generated/bodies/expressContextHandlerFactory'
+import { createOptionalBodiesContextHandler } from '../generated/optional-request-body/expressContextHandlerFactory'
+import { createBookStoreContextHandler } from '../generated/book-store/expressContextHandlerFactory'
+import { Router } from 'express'
+import { createFormQueryParametersRouter } from '../generated/parameters/expressRouterFactories'
 
 export function testBookStoreServer() {
   testExpressServer({
@@ -21,7 +29,8 @@ export function testBookStoreServer() {
     runBeforeAndAfter: 'each',
     handlers: () => [
       customBodyParsers.json(),
-      createBookStoreRouter(new BookStoreApiImpl(), new ExpressServerAdapter()),
+      createBookStoreContextHandler(new BookStoreApiImpl(), new ExpressServerAdapter()),
+      createBookStoreAppRouter(),
     ],
   })
 }
@@ -32,7 +41,8 @@ export function testOptionalBodiesServer() {
     runBeforeAndAfter: 'each',
     handlers: () => [
       customBodyParsers.json(),
-      createOptionalRequestBodyRouter(new OptionalBodiesImpl(), new ExpressServerAdapter()),
+      createOptionalBodiesContextHandler(new OptionalBodiesImpl(), new ExpressServerAdapter()),
+      createOptionalBodiesAppRouter(),
     ],
   })
 }
@@ -52,7 +62,8 @@ export function testBodiesServer(mimeType: 'application/json' | 'application/yam
     handlers: () => [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createBodiesRouter(new BodiesApiImpl(), adapter),
+      createBodiesContextHandler(new BodiesApiImpl(), adapter),
+      createBodiesAppRouter(),
     ],
   })
 }
@@ -64,7 +75,8 @@ export function testHttpMethodsServer() {
     handlers: () => [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createHttpMethodsRouter(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
+      createHttpMethodsContextHandler(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
+      createHttpMethodsAppRouter(),
     ],
   })
 }
@@ -76,7 +88,10 @@ export function testParametersServer() {
     handlers: () => [
       customBodyParsers.yaml(),
       customBodyParsers.json(),
-      createParametersRouter(new ParametersApiImpl(), new ExpressServerAdapter()),
+      createParametersContextHandler(new ParametersApiImpl(), new ExpressServerAdapter()),
+      createParametersAppRouter(createParametersCorsRouter(Router()), {
+        createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
+      }),
     ],
   })
 }

@@ -6,20 +6,18 @@ import {
 } from '@oats-ts/json-schema-generators'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { ApiTypeGeneratorConfig } from '../api-type'
-import { ExpressRoutesGeneratorConfig } from '../express-router'
+import { ExpressRouterFactoriesGeneratorConfig } from '../express-router-factory'
 import { OperationsGeneratorConfig } from '../operations'
 import { SdkImplGeneratorConfig } from '../sdk-impl'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
-import { ExpressRouterFactoryGeneratorConfig } from '../express-router-factory'
 import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
+import { ExpressCorsRouterFactoryGeneratorConfig } from '../express-cors-router-factory'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
-  'oats/express-router': ExpressRoutesGeneratorConfig
-  'oats/express-router-factory': ExpressRouterFactoryGeneratorConfig
   'oats/operation': OperationsGeneratorConfig
   'oats/path-type': ParameterTypesGeneratorConfig
   'oats/query-type': ParameterTypesGeneratorConfig
@@ -32,6 +30,8 @@ type GeneratorConfigs = {
   'oats/response-headers-type': ParameterTypesGeneratorConfig
   'oats/request-type': RequestTypesGeneratorConfig
   'oats/response-type': ResponseTypesGeneratorConfig
+  'oats/express-router-factory': ExpressRouterFactoriesGeneratorConfig
+  'oats/express-cors-router-factory': ExpressCorsRouterFactoryGeneratorConfig
 }
 
 export type PresetGeneratorConfiguration = {

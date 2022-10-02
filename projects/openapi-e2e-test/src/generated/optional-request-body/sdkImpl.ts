@@ -8,9 +8,9 @@ import { ClientAdapter } from '@oats-ts/openapi-http'
 import { optionalRequestBody } from './operations'
 import { OptionalRequestBodyRequest } from './requestTypes'
 import { OptionalRequestBodyResponse } from './responseTypes'
-import { BodiesSdk } from './sdkType'
+import { OptionalBodiesSdk } from './sdkType'
 
-export class BodiesSdkImpl implements BodiesSdk {
+export class OptionalBodiesSdkImpl implements OptionalBodiesSdk {
   protected readonly adapter: ClientAdapter
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter

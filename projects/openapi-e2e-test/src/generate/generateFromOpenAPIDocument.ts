@@ -10,27 +10,22 @@ import {
   generator,
   loggers,
 } from '@oats-ts/openapi'
+import { ExpressCorsRouterFactoryGeneratorConfig } from '@oats-ts/openapi-generators'
 
-function getCorsConfig(url: string) {
-  if (url.includes('pet-store-json')) {
-    return { allowedOrigins: true } as const
-  }
-  if (url.includes('parameters')) {
-    return {
-      allowedOrigins: true,
-      isResponseHeaderAllowed: () => true,
-      allowCredentials: (url: string) => {
-        return url === '/form-cookie-parameters' ? true : undefined
-      },
-    } as const
-  }
-  if (url.includes('pet-store-yaml')) {
-    return { allowedOrigins: ['https://foo.com'] }
-  }
-  return false
+const corsConfigs: Record<string, Partial<ExpressCorsRouterFactoryGeneratorConfig>> = {
+  'schemas/pet-store-yaml.yaml': { getAllowedOrigins: () => ['https://foo.com'] },
+  'schemas/pet-store-json.json': { getAllowedOrigins: () => true },
+  'generated-schemas/parameters.json': {
+    getAllowedOrigins: () => true,
+    isResponseHeaderAllowed: () => true,
+    isCredentialsAllowed: (url: string) => {
+      return url === '/form-cookie-parameters' ? true : undefined
+    },
+  },
 }
 
 export async function generateFromOpenAPIDocument(
+  path: string,
   url: string,
   codePath: string,
   pathProviderKind: Exclude<keyof typeof pathProviders, 'delegating'>,
@@ -46,10 +41,8 @@ export async function generateFromOpenAPIDocument(
         children: presets.fullStack({
           sendCookieHeader: true,
           parseSetCookieHeaders: true,
+          cors: corsConfigs[path],
           overrides: {
-            'oats/express-router': {
-              cors: getCorsConfig(url),
-            },
             'oats/type-guard': {
               ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
             },

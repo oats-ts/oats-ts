@@ -1,6 +1,15 @@
-export type { EnhancedOperation, EnhancedResponse, OpenAPIGeneratorContext, ParameterKind } from './typings'
+export type {
+  EnhancedOperation,
+  EnhancedResponse,
+  OpenAPIGeneratorContext,
+  ParameterKind,
+  EnhancedPathItem,
+  OpenAPIGeneratorTarget,
+  PathProvider,
+} from './typings'
 
 export { getEnhancedOperations } from './getEnhancedOperations'
+export { getEnhancedPathItems } from './getEnhancedPathItems'
 export { getEnhancedResponses } from './getEnhancedResponses'
 export { getParameterKind } from './getParameterKind'
 export { getParameterStyle } from './getParameterStyle'
@@ -13,8 +22,6 @@ export { hasResponses } from './hasResponses'
 export { getRequestBodyContent } from './getRequestBodyContent'
 export { RuntimePackages } from './RuntimePackages'
 export { createOpenAPIGeneratorContext } from './createOpenAPIGeneratorContext'
-
-export type { OpenAPIGeneratorTarget, PathProvider } from './typings'
 
 export { nameProviders } from './nameProviders'
 export { pathProviders } from './pathProviders'

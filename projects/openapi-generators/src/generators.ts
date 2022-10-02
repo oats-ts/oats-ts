@@ -1,5 +1,4 @@
 import { ApiTypeGeneratorConfig } from './api-type'
-import { ExpressRoutesGeneratorConfig } from './express-router'
 
 import { OperationsGeneratorConfig } from './operations'
 import { SdkImplGeneratorConfig } from './sdk-impl'
@@ -16,6 +15,7 @@ import { ParameterTypesGeneratorConfig } from './utils/parameters/typings'
 import { SdkGeneratorConfig } from './utils/sdk/typings'
 import { group } from './group'
 import { ResponseTypesGeneratorConfig } from './response-type'
+import { ExpressRouterFactoriesGeneratorConfig } from './express-router-factory'
 
 function create(name: 'oats/type', config?: Config<TypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/type-guard', config?: Config<TypeGuardGeneratorConfig>): OpenAPIGenerator
@@ -23,7 +23,10 @@ function create(name: 'oats/type-validator', config?: Config<ValidatorsGenerator
 function create(name: 'oats/api-type', config?: Config<ApiTypeGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/sdk-type', config?: Config<SdkGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/sdk-impl', config?: Config<SdkImplGeneratorConfig>): OpenAPIGenerator
-function create(name: 'oats/express-router', config?: Config<ExpressRoutesGeneratorConfig>): OpenAPIGenerator
+function create(
+  name: 'oats/express-router-factory',
+  config?: Config<ExpressRouterFactoriesGeneratorConfig>,
+): OpenAPIGenerator
 function create(name: 'oats/operation', config?: Config<OperationsGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/path-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/cookies-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator

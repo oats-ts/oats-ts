@@ -5,7 +5,7 @@ import { HttpMethod } from '@oats-ts/openapi-http'
 import { OpenAPIGeneratorContext } from './typings'
 import { EnhancedOperation } from './typings'
 
-function getEnhancedOperation(
+export function getEnhancedOperation(
   url: string,
   method: HttpMethod,
   operation: OperationObject | undefined,

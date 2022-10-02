@@ -1,3 +1,3 @@
-export { expressRouterFactory } from './expressRouterFactory'
-export { ExpressRouterFactoryGenerator } from './ExpressRouterFactoryGenerator'
-export { ExpressRouterFactoryGeneratorConfig } from './typings'
+export type { ExpressRouterFactoriesGeneratorConfig } from './typings'
+export { ExpressRouterFactoriesGenerator } from './ExpressRouterFactoriesGenerator'
+export { expressRouterFactories } from './expressRouterFactories'

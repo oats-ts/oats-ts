@@ -67,7 +67,7 @@ export type ServerAdapter<T> = {
 }
 
 export type PreflightCorsConfiguration = {
-  allowedOrigins: string[] | true
+  allowedOrigins?: Partial<Record<HttpMethod, string[] | true>>
   allowedMethods?: HttpMethod[]
   allowedRequestHeaders?: Partial<Record<HttpMethod, string[]>>
   allowedResponseHeaders?: Partial<Record<HttpMethod, string[]>>
@@ -76,7 +76,7 @@ export type PreflightCorsConfiguration = {
 }
 
 export type CorsConfiguration = {
-  allowedOrigins: string[] | true
+  allowedOrigins?: string[] | true
   allowedResponseHeaders?: string[]
   allowCredentials?: boolean | undefined
 }

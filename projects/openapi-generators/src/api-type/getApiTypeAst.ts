@@ -10,11 +10,10 @@ export function getApiTypeAst(
   context: OpenAPIGeneratorContext,
   config: ApiTypeGeneratorConfig,
 ): TypeAliasDeclaration {
-  const { nameOf } = context
   return factory.createTypeAliasDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'oats/api-type'),
+    context.nameOf(document, 'oats/api-type'),
     [],
     factory.createTypeLiteralNode(
       operations.map((operation) => getApiTypeMethodSignatureAst(operation, context, config)),
