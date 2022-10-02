@@ -1,4 +1,4 @@
-import { fluent } from '@oats-ts/try'
+import { isSuccess } from '@oats-ts/try'
 import { stringify } from '@oats-ts/validators'
 import { isNil } from 'lodash'
 import { OptionalBodiesApi } from '../../generated/optional-request-body/apiType'
@@ -7,17 +7,17 @@ import { OptionalRequestBodyServerResponse } from '../../generated/optional-requ
 
 export class OptionalBodiesImpl implements OptionalBodiesApi {
   async optionalRequestBody(request: OptionalRequestBodyServerRequest): Promise<OptionalRequestBodyServerResponse> {
-    return fluent(request.body).get(
-      (body): OptionalRequestBodyServerResponse => ({
+    if (isSuccess(request.body)) {
+      return {
         statusCode: 200,
         mimeType: 'application/json',
-        body: isNil(body) ? {} : { foo: body.foo },
-      }),
-      (issues): OptionalRequestBodyServerResponse => ({
-        statusCode: 200,
-        mimeType: 'application/json',
-        body: { foo: issues.map(stringify).join('\n') },
-      }),
-    )
+        body: isNil(request.body.data) ? {} : { foo: request.body.data.foo },
+      }
+    }
+    return {
+      statusCode: 200,
+      mimeType: 'application/json',
+      body: { foo: request.body.issues.map(stringify).join('\n') },
+    }
   }
 }

@@ -5,15 +5,11 @@ import { SUCCESS_SYMBOL } from './symbols'
 import { Try, Success, Fluent, FluentTry } from './types'
 
 export class FluentSuccess<T> implements Success<T>, Fluent<T> {
-  public readonly data: T;
+  public readonly data: T
   [SUCCESS_SYMBOL]: true = true
 
-  public constructor(data: T) {
+  public constructor(data: T, issues: Issue[] = []) {
     this.data = data
-  }
-
-  public get<S, F>(mapSuccess: (input: T) => S, _: (issues: Issue[]) => F): S {
-    return mapSuccess(this.data)
   }
 
   public map<R>(transform: (input: T) => R): FluentSuccess<R> {
