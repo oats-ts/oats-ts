@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-parameter-serialization",
-  "version": "0.0.36",
+  "version": "0.0.37",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://oats-ts.github.io/docs",
@@ -26,9 +26,9 @@
     "url": "https://github.com/oats-ts/oats-ts/issues"
   },
   "dependencies": {
-    "@oats-ts/openapi-http": "0.0.36",
-    "@oats-ts/try": "0.0.36",
-    "@oats-ts/validators": "0.0.36",
+    "@oats-ts/openapi-http": "0.0.37",
+    "@oats-ts/try": "0.0.37",
+    "@oats-ts/validators": "0.0.37",
     "path-to-regexp": "6.2.1"
   },
   "devDependencies": {
