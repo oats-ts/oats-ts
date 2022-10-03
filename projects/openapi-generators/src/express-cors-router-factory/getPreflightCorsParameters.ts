@@ -36,14 +36,18 @@ export function getPreflightCorsParameters(
   const requestHeaders = operations
     .map(({ method, operation }): [HttpMethod, string[]] => [
       method,
-      getRequestHeaderNames(operation, context).filter((header) => isRequestHeaderAllowed(url, header, operation)),
+      getRequestHeaderNames(operation, context).filter((header) =>
+        isRequestHeaderAllowed(header, url, method, operation),
+      ),
     ])
     .filter(([, headers]) => headers.length > 0)
 
   const responseHeaders = operations
     .map(({ method, operation }): [HttpMethod, string[]] => [
       method,
-      getResponseHeaderNames(operation, context).filter((header) => isResponseHeaderAllowed(url, header, operation)),
+      getResponseHeaderNames(operation, context).filter((header) =>
+        isResponseHeaderAllowed(header, url, method, operation),
+      ),
     ])
     .filter(([, headers]) => headers.length > 0)
 

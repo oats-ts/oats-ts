@@ -20,7 +20,7 @@ export function getCorsParameters(
   const includeCreds = isCredentialsAllowed(url, method, operation)
 
   const responseHeaders = getResponseHeaderNames(operation, context).filter((header) =>
-    isResponseHeaderAllowed(url, header, operation),
+    isResponseHeaderAllowed(header, url, method, operation),
   )
 
   const toolkitParam = factory.createIdentifier(RouterNames.toolkit)

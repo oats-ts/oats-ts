@@ -8,11 +8,12 @@ function defaultConfig({
   isCredentialsAllowed,
   isResponseHeaderAllowed,
   ...rest
-}: Partial<ExpressRouterFactoriesGeneratorConfig & GeneratorConfig>): ExpressRouterFactoriesGeneratorConfig & Partial<GeneratorConfig> {
+}: Partial<ExpressRouterFactoriesGeneratorConfig & GeneratorConfig>): ExpressRouterFactoriesGeneratorConfig &
+  Partial<GeneratorConfig> {
   return {
     getAllowedOrigins: getAllowedOrigins ?? (() => false),
     isCredentialsAllowed: isCredentialsAllowed ?? (() => false),
-    isResponseHeaderAllowed: isResponseHeaderAllowed ?? ((_, header) => header !== 'set-cookie'),
+    isResponseHeaderAllowed: isResponseHeaderAllowed ?? ((header) => header !== 'set-cookie'),
     ...rest,
   }
 }
