@@ -41,7 +41,6 @@ export function getParametersStatementAst(
     return []
   }
 
-  const { referenceOf } = context
   return [
     factory.createVariableStatement(
       undefined,
@@ -58,7 +57,7 @@ export function getParametersStatementAst(
                   factory.createIdentifier(configGetterName),
                 ),
                 undefined,
-                [factory.createIdentifier(RouterNames.toolkit), referenceOf(data.operation, deserializerName)],
+                [factory.createIdentifier(RouterNames.toolkit), context.referenceOf(data.operation, deserializerName)],
               ),
             ),
           ),

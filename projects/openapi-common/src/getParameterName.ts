@@ -10,11 +10,10 @@ export function getParameterName(
   if (isNil(parameter)) {
     return undefined
   }
-  const { nameOf, dereference } = context
-  const providedName = nameOf(parameter)
+  const providedName = context.nameOf(parameter)
   if (!isNil(providedName)) {
     return providedName
   }
-  const param = dereference(parameter, true) as ParameterObject
+  const param = context.dereference(parameter, true) as ParameterObject
   return param?.name
 }

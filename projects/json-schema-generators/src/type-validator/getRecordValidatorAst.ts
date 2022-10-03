@@ -10,9 +10,8 @@ export function getRecordValidatorAst(
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
-  const { uriOf } = context
   const addPropsSchema = data.additionalProperties as Referenceable<SchemaObject>
-  const uri = uriOf(addPropsSchema)
+  const uri = context.uriOf(addPropsSchema)
   const params = factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.record),
     [],

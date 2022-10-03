@@ -22,8 +22,7 @@ export function getTypeAssertionAst(
   config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
-  const { uriOf } = context
-  if (isNil(data) || config.ignore(data, uriOf(data))) {
+  if (isNil(data) || config.ignore(data, context.uriOf(data))) {
     // If a top level schema is ignored, he type guard will always return false.
     // Otherwise the generated expression is true, meaning it's ignored.
     return level === 0 ? factory.createFalse() : factory.createTrue()

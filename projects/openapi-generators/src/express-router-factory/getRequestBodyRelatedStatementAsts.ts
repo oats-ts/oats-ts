@@ -9,12 +9,11 @@ import { factory, NodeFlags, TypeNode, VariableStatement } from 'typescript'
 import { RouterNames } from '../utils/express/RouterNames'
 
 export function getBodyTypesUnionType(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeNode {
-  const { referenceOf } = context
   const bodyTypes = uniqWith(
     values(getRequestBodyContent(data, context))
       .map((mediaType) => mediaType.schema)
       .filter((schema) => !isNil(schema))
-      .map((schema) => referenceOf<TypeNode>(schema, 'oats/type')),
+      .map((schema) => context.referenceOf<TypeNode>(schema, 'oats/type')),
     isEqual,
   )
   switch (bodyTypes.length) {
@@ -48,8 +47,7 @@ export function getRequestBodyRelatedStatementAsts(
   if (!hasRequestBody(data, context)) {
     return []
   }
-  const { referenceOf, dereference } = context
-  const reqBody = dereference(data.operation.requestBody, true)
+  const reqBody = context.dereference(data.operation.requestBody, true)
   const mediaTypeUnion = getMimeTypesUnionType(data, context)
   const bodiesUnion = getBodyTypesUnionType(data, context)
   const mimeType = factory.createVariableStatement(
@@ -95,7 +93,7 @@ export function getRequestBodyRelatedStatementAsts(
                 factory.createIdentifier(RouterNames.toolkit),
                 reqBody?.required ? factory.createTrue() : factory.createFalse(),
                 factory.createIdentifier(RouterNames.mimeType),
-                referenceOf(data.operation, 'oats/request-body-validator'),
+                context.referenceOf(data.operation, 'oats/request-body-validator'),
               ],
             ),
           ),

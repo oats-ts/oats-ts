@@ -51,9 +51,8 @@ export function getArrayTypeAssertionAst(
   config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
-  const { uriOf } = context
   const itemsSchema = data.items as Referenceable<SchemaObject>
-  const uri = uriOf(itemsSchema)
+  const uri = context.uriOf(itemsSchema)
   const expressions: Expression[] = [
     factory.createCallExpression(
       factory.createPropertyAccessExpression(factory.createIdentifier('Array'), factory.createIdentifier('isArray')),

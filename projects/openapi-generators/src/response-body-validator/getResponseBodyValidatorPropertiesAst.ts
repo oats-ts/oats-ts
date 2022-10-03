@@ -10,7 +10,6 @@ export function getResponseBodyValidatorPropertiesAst(
 ): PropertyAssignment[] {
   const { operation } = data
   const { default: defaultResponse, ...responses } = operation.responses || {}
-  const { dereference } = context
   const properties: PropertyAssignment[] = []
   properties.push(
     ...entries(responses).map(
@@ -18,7 +17,7 @@ export function getResponseBodyValidatorPropertiesAst(
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
           factory.createObjectLiteralExpression(
-            getContentTypeBasedValidatorsAst(true, dereference(response)?.content || {}, context),
+            getContentTypeBasedValidatorsAst(true, context.dereference(response)?.content || {}, context),
           ),
         ),
     ),
@@ -28,7 +27,7 @@ export function getResponseBodyValidatorPropertiesAst(
       factory.createPropertyAssignment(
         'default',
         factory.createObjectLiteralExpression(
-          getContentTypeBasedValidatorsAst(true, dereference(defaultResponse).content || {}, context),
+          getContentTypeBasedValidatorsAst(true, context.dereference(defaultResponse).content || {}, context),
         ),
       ),
     )

@@ -3,7 +3,6 @@ import { ContentObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorContext } from './typings'
 
 export function getRequestBodyContent(data: EnhancedOperation, context: OpenAPIGeneratorContext): ContentObject {
-  const { dereference } = context
   const { operation } = data
   const { requestBody: bodyOrRef } = operation
 
@@ -11,7 +10,7 @@ export function getRequestBodyContent(data: EnhancedOperation, context: OpenAPIG
     return {}
   }
 
-  const requestBody = dereference(bodyOrRef)
+  const requestBody = context.dereference(bodyOrRef)
   const { content } = requestBody
 
   if (isNil(content)) {

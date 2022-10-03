@@ -19,8 +19,7 @@ export function getRightHandSideValidatorAst(
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): Expression {
-  const { uriOf } = context
-  if (config.ignore(data, uriOf(data))) {
+  if (config.ignore(data, context.uriOf(data))) {
     return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
   }
   if (isReferenceObject(data)) {

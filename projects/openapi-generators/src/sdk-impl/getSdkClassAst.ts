@@ -11,8 +11,6 @@ export function getSdkClassAst(
   context: OpenAPIGeneratorContext,
   config: SdkGeneratorConfig,
 ): ClassDeclaration {
-  const { nameOf } = context
-
   const configField = factory.createPropertyDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
@@ -49,11 +47,14 @@ export function getSdkClassAst(
   return factory.createClassDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    nameOf(document, 'oats/sdk-impl'),
+    context.nameOf(document, 'oats/sdk-impl'),
     [],
     [
       factory.createHeritageClause(SyntaxKind.ImplementsKeyword, [
-        factory.createExpressionWithTypeArguments(factory.createIdentifier(nameOf(document, 'oats/sdk-type')), []),
+        factory.createExpressionWithTypeArguments(
+          factory.createIdentifier(context.nameOf(document, 'oats/sdk-type')),
+          [],
+        ),
       ]),
     ],
     [configField, constructor, ...operations.map((operation) => getSdkClassMethodAst(operation, context, config))],

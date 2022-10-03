@@ -7,8 +7,9 @@ import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { operationsOf } from '../utils/modelUtils'
 
 function getPathParams(params: (ParameterObject | ReferenceObject)[], context: OpenAPIValidatorContext) {
-  const { dereference } = context
-  return (params || []).map((param) => dereference<ParameterObject>(param)).filter((param) => param.in === 'path')
+  return (params || [])
+    .map((param) => context.dereference<ParameterObject>(param))
+    .filter((param) => param.in === 'path')
 }
 
 export function pathItemObjectUrl(
@@ -18,14 +19,13 @@ export function pathItemObjectUrl(
   config: OpenAPIValidatorConfig,
 ): Issue[] {
   let segments: PathSegment[]
-  const { uriOf } = context
   try {
     segments = parsePathToSegments(url)
   } catch (e) {
     return [
       {
         message: `invalid path: "${url}" (${e})`,
-        path: uriOf(data),
+        path: context.uriOf(data),
         severity: 'error',
       },
     ]
@@ -40,7 +40,7 @@ export function pathItemObjectUrl(
       .map(
         (segment): Issue => ({
           message: `parameter "${segment.name}" is missing`,
-          path: uriOf(operation),
+          path: context.uriOf(operation),
           severity: 'error',
         }),
       )
@@ -49,7 +49,7 @@ export function pathItemObjectUrl(
       .map(
         (param): Issue => ({
           message: `parameter "${param.name}" is not defined in "${url}"`,
-          path: uriOf(operation),
+          path: context.uriOf(operation),
           severity: 'error',
         }),
       )

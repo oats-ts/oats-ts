@@ -10,9 +10,8 @@ export function getArrayValidatorAst(
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): CallExpression | Identifier {
-  const { uriOf } = context
   const itemsSchema = data.items as Referenceable<SchemaObject>
-  const uri = uriOf(itemsSchema)
+  const uri = context.uriOf(itemsSchema)
   const itemsValidator = factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.items),
     [],

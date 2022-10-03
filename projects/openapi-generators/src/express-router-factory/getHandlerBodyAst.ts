@@ -20,8 +20,6 @@ export function getHandlerBodyAst(
   context: OpenAPIGeneratorContext,
   config: ExpressRouterFactoriesGeneratorConfig,
 ) {
-  const { referenceOf, nameOf, document } = context
-
   const hasInputParams = hasInput(data, context, true)
   const hasPath = data.path.length > 0
   const hasQuery = data.query.length > 0
@@ -36,7 +34,7 @@ export function getHandlerBodyAst(
         factory.createVariableDeclaration(
           factory.createIdentifier(RouterNames.api),
           undefined,
-          factory.createTypeReferenceNode(referenceOf(document, 'oats/api-type')),
+          factory.createTypeReferenceNode(context.referenceOf(context.document, 'oats/api-type')),
           factory.createElementAccessExpression(
             factory.createPropertyAccessExpression(
               factory.createIdentifier(RouterNames.response),
@@ -68,7 +66,10 @@ export function getHandlerBodyAst(
               factory.createVariableDeclaration(
                 factory.createIdentifier(RouterNames.typedRequest),
                 undefined,
-                factory.createTypeReferenceNode(referenceOf(data.operation, 'oats/request-server-type'), undefined),
+                factory.createTypeReferenceNode(
+                  context.referenceOf(data.operation, 'oats/request-server-type'),
+                  undefined,
+                ),
                 factory.createObjectLiteralExpression(
                   [
                     ...(hasPath
@@ -138,7 +139,7 @@ export function getHandlerBodyAst(
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
                 factory.createIdentifier(RouterNames.api),
-                nameOf(data.operation, 'oats/operation'),
+                context.nameOf(data.operation, 'oats/operation'),
               ),
               undefined,
               hasInputParams ? [factory.createIdentifier(RouterNames.typedRequest)] : [],
@@ -187,7 +188,7 @@ export function getHandlerBodyAst(
                     [
                       factory.createIdentifier(RouterNames.toolkit),
                       factory.createIdentifier(RouterNames.typedResponse),
-                      referenceOf(data.operation, 'oats/response-headers-serializer') ??
+                      context.referenceOf(data.operation, 'oats/response-headers-serializer') ??
                         factory.createIdentifier('undefined'),
                       corsHeaders,
                     ],
@@ -240,7 +241,7 @@ export function getHandlerBodyAst(
                           [
                             factory.createIdentifier(RouterNames.toolkit),
                             factory.createIdentifier(RouterNames.typedResponse),
-                            referenceOf(data.operation, 'oats/set-cookie-serializer') ??
+                            context.referenceOf(data.operation, 'oats/set-cookie-serializer') ??
                               factory.createIdentifier('undefined'),
                           ],
                         ),

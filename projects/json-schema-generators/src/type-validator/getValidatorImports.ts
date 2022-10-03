@@ -22,11 +22,10 @@ export function collectExternalReferenceImports(
   names: Set<string>,
   refs: Set<string>,
 ): void {
-  const { dereference, nameOf, uriOf } = context
-  const schema = dereference(data)
-  if (!isNil(nameOf(schema))) {
+  const schema = context.dereference(data)
+  if (!isNil(context.nameOf(schema))) {
     names.add(RuntimePackages.Validators.lazy)
-    refs.add(uriOf(schema))
+    refs.add(context.uriOf(schema))
   } else {
     collectImports(schema, config, context, names, refs)
   }
@@ -39,9 +38,8 @@ export function collectReferenceImports(
   names: Set<string>,
   refs: Set<string>,
 ): void {
-  const { nameOf, dereference } = context
-  const schema = dereference(data)
-  if (!isNil(nameOf(schema, 'oats/type-validator'))) {
+  const schema = context.dereference(data)
+  if (!isNil(context.nameOf(schema, 'oats/type-validator'))) {
     names.add(RuntimePackages.Validators.lazy)
     refs.add(data.$ref)
   } else {
@@ -92,8 +90,9 @@ export function collectRecordImports(
   refs: Set<string>,
 ): void {
   names.add(RuntimePackages.Validators.object)
-  const { uriOf } = context
-  if (!config.ignore(data.additionalProperties as Referenceable<SchemaObject>, uriOf(data.additionalProperties))) {
+  if (
+    !config.ignore(data.additionalProperties as Referenceable<SchemaObject>, context.uriOf(data.additionalProperties))
+  ) {
     names.add(RuntimePackages.Validators.record)
     names.add(RuntimePackages.Validators.string)
     collectImports(data.additionalProperties as Referenceable<SchemaObject>, config, context, names, refs)
@@ -129,8 +128,7 @@ export function collectArrayTypeImports(
   refs: Set<string>,
 ): void {
   names.add(RuntimePackages.Validators.array)
-  const { uriOf } = context
-  if (!config.ignore(data.items as Referenceable<SchemaObject>, uriOf(data.items))) {
+  if (!config.ignore(data.items as Referenceable<SchemaObject>, context.uriOf(data.items))) {
     names.add(RuntimePackages.Validators.items)
     collectImports(data.items as Referenceable<SchemaObject>, config, context, names, refs)
   }
@@ -173,9 +171,8 @@ export function collectImports(
   names: Set<string>,
   refs: Set<string>,
 ): void {
-  const { uriOf } = context
   const type = getInferredType(data)
-  if (config.ignore(data, uriOf(data))) {
+  if (config.ignore(data, context.uriOf(data))) {
     names.add(RuntimePackages.Validators.any)
     return
   }

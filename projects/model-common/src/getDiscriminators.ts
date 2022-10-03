@@ -9,8 +9,7 @@ function collectFromSchema(
   context: GeneratorContext,
   discriminators: Record<string, string>,
 ): string | undefined {
-  const { dereference, uriOf } = context
-  const schema = isReferenceObject(input) ? dereference<SchemaObject>(input) : input
+  const schema = isReferenceObject(input) ? context.dereference<SchemaObject>(input) : input
 
   const { propertyName, mapping } = schema?.discriminator ?? {}
   if (!isNil(propertyName)) {
@@ -18,7 +17,7 @@ function collectFromSchema(
     for (const [value, ref] of mappingEntries) {
       if (ref == uri && isNil(discriminators[propertyName])) {
         discriminators[propertyName] = value
-        const parentUri = uriOf(schema)
+        const parentUri = context.uriOf(schema)
         return parentUri
       }
     }
@@ -34,9 +33,8 @@ function collectFromDocuments(
   context: GeneratorContext,
   discriminators: Record<string, string>,
 ): string[] {
-  const { documents } = context
   const parents: Set<string> = new Set()
-  for (const document of documents) {
+  for (const document of context.documents) {
     for (const schema of values(document?.components?.schemas || {})) {
       const parentUri = collectFromSchema(uri, schema, context, discriminators)
       if (!isNil(parentUri)) {
@@ -52,8 +50,7 @@ export function getDiscriminators<D extends HasSchemas>(
   input: Referenceable<SchemaObject>,
   context: GeneratorContext<D>,
 ): Record<string, string> {
-  const { uriOf } = context
-  const schemaUri = uriOf(input)
+  const schemaUri = context.uriOf(input)
   const discriminators: Record<string, string> = {}
   if (isNil(schemaUri)) {
     return discriminators
