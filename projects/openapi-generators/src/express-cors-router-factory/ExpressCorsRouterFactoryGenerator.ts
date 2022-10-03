@@ -15,6 +15,7 @@ import { BaseCodeGenerator, RuntimeDependency } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
 import { getCorsEnabledPaths } from './getCorsEnabledPaths'
+import { Issue } from '@oats-ts/validators'
 
 export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   OpenAPIReadOutput,
@@ -54,6 +55,26 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   public dependenciesOf(fromPath: string, input: any): ImportDeclaration[] {
     const [paths] = this.items
     return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+  }
+
+  public getPreGenerateIssues(): Issue[] {
+    const { items } = this
+    // No paths we don't care
+    if (items.length === 0) {
+      return []
+    }
+    const [paths] = items
+    // If we don't have any CORS enabled operations we complain
+    if (getCorsEnabledPaths(paths, this.configuration()).length === 0) {
+      return [
+        {
+          message: `CORS configuration needed, or remove generator`,
+          path: this.name(),
+          severity: 'warning',
+        },
+      ]
+    }
+    return []
   }
 
   public async generateItem(paths: EnhancedPathItem[]): Promise<Try<SourceFile>> {

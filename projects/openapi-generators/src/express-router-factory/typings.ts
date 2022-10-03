@@ -11,6 +11,12 @@ export type ExpressRouterFactoriesGeneratorConfig = {
    */
   getAllowedOrigins(path: string, method: HttpMethod, operation: OperationObject): string[] | boolean
   /**
+   * Returns if the given HTTP method is allowed for the given path.
+   * This influences the Access-Control-Allow-Methods CORS header.
+   * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Methods
+   */
+  isMethodAllowed(path: string, method: HttpMethod, operation: OperationObject): boolean
+  /**
    * Returns if the give response header should be exposed to browser clients.
    * This influences the Access-Control-Expose-Headers CORS header.
    * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers

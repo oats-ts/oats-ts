@@ -1,8 +1,9 @@
 import { nanoid } from 'nanoid'
-import { CodeGenerator, GeneratorConfig, GeneratorInit, RuntimeDependency, StructuredGeneratorResult } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorInit, RuntimeDependency } from './typings'
 import { GeneratorEventEmitter } from './events'
 import { isSuccess, Try } from '@oats-ts/try'
 import { isNil } from 'lodash'
+import { GeneratorResult } from './GeneratorResult'
 
 const emptyConfig: Partial<GeneratorConfig> = {
   noEmit: false,
@@ -22,10 +23,11 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   private readonly globalConfigOverride: Partial<GeneratorConfig>
 
   constructor(config: C & Partial<GeneratorConfig>) {
-    const { nameProvider, pathProvider, ...cfg } = config ?? emptyConfig
+    const { nameProvider, pathProvider, noEmit, ...cfg } = config ?? emptyConfig
     this.globalConfigOverride = {
       ...(nameProvider ? { nameProvider } : {}),
       ...(pathProvider ? { pathProvider } : {}),
+      noEmit: Boolean(noEmit),
     }
     this.config = cfg as C
   }
@@ -61,7 +63,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
     return undefined
   }
 
-  public abstract generate(): Promise<StructuredGeneratorResult<G> | Try<G[]>>
+  public abstract generate(): Promise<GeneratorResult<G>>
   public abstract referenceOf<Model = any, Code = any>(input: Model): Code
   public abstract dependenciesOf<Model = any, Dep = any>(fromPath: string, input: Model): Dep[]
   public abstract name(): string

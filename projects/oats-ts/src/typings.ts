@@ -6,6 +6,7 @@ import {
   ValidatorEventEmitter,
   WriterEventEmitter,
 } from './events'
+import { SimpleGeneratorResult, CompositeGeneratorResult } from './GeneratorResult'
 
 export type ContentReader<P, R> = (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
 export type ContentValidator<P, R> = (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
@@ -20,8 +21,6 @@ export type GeneratorInput<P, R, G, O> = {
   generator: ContentGenerator<R, G>
   writer: ContentWriter<G, O>
 }
-
-export type StructuredGeneratorResult<G> = { [key: string]: Try<G[]> | StructuredGeneratorResult<G> }
 
 export type GeneratorInit<R, G> = {
   parent?: CodeGenerator<R, G>
@@ -45,7 +44,7 @@ export type CodeGenerator<R, G, C = any> = {
   runtimeDependencies(): RuntimeDependency[]
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined
-  generate(): Promise<StructuredGeneratorResult<G> | Try<G[]>>
+  generate(): Promise<CompositeGeneratorResult<G> | SimpleGeneratorResult<G>>
   referenceOf(input: any): any
   dependenciesOf(fromPath: string, input: any): any[]
 }

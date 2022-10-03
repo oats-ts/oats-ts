@@ -2,6 +2,9 @@ import { nanoid } from 'nanoid'
 import { failure, fromArray, isFailure, success, Try } from '@oats-ts/try'
 import { GeneratorInit, RuntimeDependency } from './typings'
 import { BaseGenerator } from './BaseGenerator'
+import { Issue } from '@oats-ts/validators'
+import { flatMap } from 'lodash'
+import { SimpleGeneratorResult, simpleResult, compositeResult } from './GeneratorResult'
 
 export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
   public readonly id = nanoid(6)
@@ -21,27 +24,42 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     return true
   }
 
-  private async generateWithCatch(): Promise<Try<G[]>> {
+  protected getPreGenerateIssues(): Issue[] {
+    return []
+  }
+
+  protected getPostGenerateIssues(data: Try<G[]>): Issue[] {
+    return []
+  }
+
+  protected getIssues(item: M): Issue[] {
+    return []
+  }
+
+  private async generateWithCatch(): Promise<[Try<G[]>, Issue[]]> {
     if (isFailure(this.dependencies)) {
-      return this.dependencies
+      return [this.dependencies, []]
     }
     try {
-      return fromArray(
-        await Promise.all(
-          this.items.filter((model) => this.shouldGenerate(model)).map((model) => this.generateItemInternal(model)),
-        ),
-      )
+      const itemsToGenerate = this.items.filter((model) => this.shouldGenerate(model))
+      return [
+        fromArray(await Promise.all(itemsToGenerate.map((model) => this.generateItemInternal(model)))),
+        flatMap(itemsToGenerate, (item) => this.getIssues(item)),
+      ]
     } catch (e) {
       console.error(e)
-      return failure({
-        message: `${e}`,
-        path: this.name(),
-        severity: 'error',
-      })
+      return [
+        failure({
+          message: `${e}`,
+          path: this.name(),
+          severity: 'error',
+        }),
+        [],
+      ]
     }
   }
 
-  async generate(): Promise<Try<G[]>> {
+  async generate(): Promise<SimpleGeneratorResult<G>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,
@@ -57,21 +75,26 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
     await this.tick()
 
-    const result = noEmit ? success([]) : await this.generateWithCatch()
+    const preIssues = this.getPreGenerateIssues()
+    const [data, itemIssues]: [Try<G[]>, Issue[]] = noEmit ? [success([]), []] : await this.generateWithCatch()
+    const postIssues = this.getPostGenerateIssues(data)
+
+    const issues = [...preIssues, ...itemIssues, ...postIssues]
+    const wrappedResult = simpleResult<G>(data, issues)
 
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',
       id: this.id,
       name: this.name(),
       dependencies: this.runtimeDependencies(),
-      structure: { [this.name()]: result },
-      data: result,
-      issues: [],
+      structure: compositeResult({ [this.name()]: wrappedResult }),
+      data,
+      issues,
     })
 
     await this.tick()
 
-    return result
+    return wrappedResult
   }
 
   protected async generateItemInternal(model: M): Promise<Try<G>> {
