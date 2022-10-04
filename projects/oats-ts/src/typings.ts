@@ -40,6 +40,8 @@ export type CodeGenerator<R, G, C = any> = {
   name(): string
   produces(): string[]
   consumes(): string[]
+  parent(): CodeGenerator<R, G> | undefined
+  root(): CodeGenerator<R, G>
   configuration(): C
   runtimeDependencies(): RuntimeDependency[]
   initialize(init: GeneratorInit<R, G>): void

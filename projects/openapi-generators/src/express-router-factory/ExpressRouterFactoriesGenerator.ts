@@ -8,9 +8,9 @@ import { getExpressRouterImports } from './getExpressRouterImports'
 import { getExpressRouterAst } from './getExpressRouterAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-// import { isNil } from 'lodash'
-// import { isOperationCorsEnabled } from './isOperationCorsEnabled'
-// import { Issue } from '@oats-ts/validators'
+import { isNil } from 'lodash'
+import { isOperationCorsEnabled } from './isOperationCorsEnabled'
+import { Issue } from '@oats-ts/validators'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -41,20 +41,25 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     ]
   }
 
-  // public getPreGenerateIssues(): Issue[] {
-  //   const corsConfig = this.context.configurationOf('oats/express-cors-router-factory')
-  //   const config = this.configuration()
-  //   if (!isNil(corsConfig) && !this.items.some((operation) => isOperationCorsEnabled(operation, config))) {
-  //     return [
-  //       {
-  //         message: `CORS configuration needed, to add inline CORS headers`,
-  //         path: this.name(),
-  //         severity: 'warning',
-  //       },
-  //     ]
-  //   }
-  //   return []
-  // }
+  public getPreGenerateIssues(): Issue[] {
+    const corsTarget: OpenAPIGeneratorTarget = 'oats/express-cors-router-factory'
+    const corsGenerator = this.root().resolve(corsTarget)
+    const config = this.configuration()
+    if (
+      !isNil(corsGenerator) &&
+      this.items.length > 0 &&
+      !this.items.some((operation) => isOperationCorsEnabled(operation, config))
+    ) {
+      return [
+        {
+          message: `CORS configuration needed, to add inline CORS headers`,
+          path: this.name(),
+          severity: 'warning',
+        },
+      ]
+    }
+    return []
+  }
 
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
     return success(

@@ -14,7 +14,7 @@ const emptyConfig: Partial<GeneratorConfig> = {
 export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   public readonly id = nanoid(6)
 
-  protected parent?: CodeGenerator<R, G>
+  protected _parent?: CodeGenerator<R, G>
   protected input!: R
   protected globalConfig!: GeneratorConfig
   protected emitter!: GeneratorEventEmitter<G>
@@ -32,8 +32,20 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
     this.config = cfg as C
   }
 
+  public parent(): CodeGenerator<R, G, any> | undefined {
+    return this._parent
+  }
+
+  public root(): CodeGenerator<R, G, any> {
+    const parent = this.parent()
+    if (isNil(parent)) {
+      return this
+    }
+    return parent.root()
+  }
+
   public initialize({ globalConfig, input, dependencies, emitter, parent }: GeneratorInit<R, G>): void {
-    this.parent = parent
+    this._parent = parent
     this.input = input
     this.globalConfig = { ...globalConfig, ...this.globalConfigOverride }
     this.emitter = emitter
