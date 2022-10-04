@@ -2,7 +2,7 @@
   {
     "definitionName": "lockStepVersion",
     "policyName": "oats",
-    "version": "0.0.37",
+    "version": "0.0.38",
     "nextBump": "patch",
     "mainProject": "@oats-ts/oats-ts"
   }
