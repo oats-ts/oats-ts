@@ -12,11 +12,10 @@ export function getExpressRouterImports(
   operation: EnhancedOperation,
   context: OpenAPIGeneratorContext,
 ): ImportDeclaration[] {
-  const { pathOf, dependenciesOf, document } = context
-  const path = pathOf(operation.operation, 'oats/express-router-factory')
+  const path = context.pathOf(operation.operation, 'oats/express-router-factory')
   const bodyTypesImports = flatMap(
     values(getRequestBodyContent(operation, context)).filter((mediaType) => !isNil(mediaType?.schema)),
-    (mediaType): ImportDeclaration[] => dependenciesOf(path, mediaType.schema, 'oats/type'),
+    (mediaType): ImportDeclaration[] => context.dependenciesOf(path, mediaType.schema, 'oats/type'),
   )
   return [
     getNamedImports(RuntimePackages.Http.name, [
@@ -31,15 +30,15 @@ export function getExpressRouterImports(
       RuntimePackages.Express.Response,
       RuntimePackages.Express.NextFunction,
     ]),
-    ...dependenciesOf(path, document, 'oats/api-type'),
-    ...dependenciesOf(path, operation.operation, 'oats/path-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'oats/query-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'oats/request-headers-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'oats/request-body-validator'),
-    ...dependenciesOf(path, operation.operation, 'oats/request-server-type'),
-    ...dependenciesOf(path, operation.operation, 'oats/response-headers-serializer'),
-    ...dependenciesOf(path, operation.operation, 'oats/cookie-deserializer'),
-    ...dependenciesOf(path, operation.operation, 'oats/set-cookie-serializer'),
+    ...context.dependenciesOf(path, context.document, 'oats/api-type'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/path-deserializer'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/query-deserializer'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/request-headers-deserializer'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/request-body-validator'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/request-server-type'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/response-headers-serializer'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/cookie-deserializer'),
+    ...context.dependenciesOf(path, operation.operation, 'oats/set-cookie-serializer'),
     ...bodyTypesImports,
   ]
 }

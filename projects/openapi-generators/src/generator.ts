@@ -1,9 +1,4 @@
-import {
-  ContentGenerator,
-  CompositeGenerator,
-  flattenStructuredGeneratorResult,
-  GeneratorEventEmitter,
-} from '@oats-ts/oats-ts'
+import { ContentGenerator, CompositeGenerator, toSimpleGeneratorResult, GeneratorEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
 import { RootGeneratorConfig } from './types'
@@ -33,7 +28,8 @@ export const generator =
 
     const structure = await generator.generate()
 
-    const result = fluent(flattenStructuredGeneratorResult<SourceFile>(structure))
+    const { data, issues } = toSimpleGeneratorResult<SourceFile>(structure)
+    const result = fluent(data)
       .map((files) => mergeSourceFiles(files))
       .toTry()
 
@@ -43,7 +39,7 @@ export const generator =
       structure,
       dependencies: generator.runtimeDependencies(),
       name,
-      issues: [],
+      issues,
     })
 
     return result

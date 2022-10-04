@@ -1,8 +1,9 @@
 import { flatMap, isNil, uniqBy } from 'lodash'
-import { CodeGenerator, GeneratorConfig, RuntimeDependency, StructuredGeneratorResult } from './typings'
+import { CodeGenerator, GeneratorConfig, RuntimeDependency } from './typings'
 import { Try, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
-import { flattenStructuredGeneratorResult } from './flattenStructuredGeneratorResult'
+import { toSimpleGeneratorResult } from './toSimpleGeneratorResult'
+import { CompositeGeneratorResult, compositeResult } from './GeneratorResult'
 
 export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
   private readonly _name: string
@@ -79,7 +80,7 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     return success(Object.values(mapping) as CodeGenerator<R, G>[])
   }
 
-  protected async generateChild(child: CodeGenerator<R, G>, results: StructuredGeneratorResult<G>): Promise<void> {
+  protected async generateChild(child: CodeGenerator<R, G>, results: CompositeGeneratorResult<G>): Promise<void> {
     const dependencies = this.getChildDependencies(child)
 
     child.initialize({
@@ -97,7 +98,7 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     return this.tick()
   }
 
-  async generate(): Promise<StructuredGeneratorResult<G>> {
+  public async generate(): Promise<CompositeGeneratorResult<G>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,
@@ -106,20 +107,21 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
 
     await this.tick()
 
-    const childResults: StructuredGeneratorResult<G> = {}
+    const childResults: CompositeGeneratorResult<G> = compositeResult({})
 
     if (!this.globalConfig.noEmit) {
       await Promise.all(this.children.map((child) => this.generateChild(child, childResults)))
     }
 
+    const { data, issues } = toSimpleGeneratorResult(childResults)
     this.emitter.emit('generator-completed', {
       type: 'generator-completed',
       id: this.id,
       name: this.name(),
-      data: flattenStructuredGeneratorResult(childResults),
+      data,
       structure: childResults,
       dependencies: this.runtimeDependencies(),
-      issues: [],
+      issues,
     })
 
     await this.tick()

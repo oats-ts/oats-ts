@@ -9,13 +9,12 @@ export function getValidatorAst(
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ) {
-  const { nameOf } = context
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     factory.createVariableDeclarationList(
       [
         factory.createVariableDeclaration(
-          nameOf(schema, 'oats/type-validator'),
+          context.nameOf(schema, 'oats/type-validator'),
           undefined,
           undefined,
           getRightHandSideValidatorAst(schema, context, config),

@@ -9,9 +9,8 @@ export function getContentTypeBasedValidatorsAst(
   content: ContentObject,
   context: OpenAPIGeneratorContext,
 ): PropertyAssignment[] {
-  const { referenceOf } = context
   return entries(content || {}).map(([contentType, mediaTypeObj]) => {
-    const expression: Expression = referenceOf(mediaTypeObj.schema, 'oats/type-validator')
+    const expression: Expression = context.referenceOf(mediaTypeObj.schema, 'oats/type-validator')
     const validatorExpr = required
       ? expression
       : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [expression])

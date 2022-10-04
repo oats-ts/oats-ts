@@ -41,7 +41,7 @@ abstract class AbstractRefResolver implements ReferenceResolver {
 }
 
 export class ReadRefResolver extends AbstractRefResolver {
-  resolveReferenceUri(input: ReadInput<string>, context: ReadContext): Success<string> {
+  public resolveReferenceUri(input: ReadInput<string>, context: ReadContext): Success<string> {
     const { data, uri } = input
     const fullUri = context.uri.resolve(data!, uri)
     const documentUri = context.uri.document(fullUri)
@@ -70,7 +70,7 @@ export class VerifyRefResolver extends AbstractRefResolver {
     })
   }
 
-  resolveReferenceUri({ uri }: ReadInput<string>, context: ReadContext): Try<string> {
+  public resolveReferenceUri({ uri }: ReadInput<string>, context: ReadContext): Try<string> {
     const specUri = context.uri.document(uri)
     const spec = context.cache.documents.get(specUri)
 

@@ -50,9 +50,8 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
     const { context } = this
-    const { nameOf } = context
     return hasRequestBody(this.enhanced(input), context)
-      ? factory.createIdentifier(nameOf(input, this.name()))
+      ? factory.createIdentifier(context.nameOf(input, this.name()))
       : undefined
   }
 

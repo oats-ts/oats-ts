@@ -11,14 +11,12 @@ export function getSdkClassMethodAst(
   context: OpenAPIGeneratorContext,
   config: SdkGeneratorConfig,
 ): MethodDeclaration {
-  const { nameOf } = context
-
   const parameters = getSdkMethodParameterAsts(data, context)
   const responseType = context.referenceOf<TypeReferenceNode>(data.operation, 'oats/response-type')
 
   const returnStatement = factory.createReturnStatement(
     factory.createCallExpression(
-      factory.createIdentifier(nameOf(data.operation, 'oats/operation')),
+      factory.createIdentifier(context.nameOf(data.operation, 'oats/operation')),
       [],
       [
         ...(parameters.length === 1 ? [factory.createIdentifier('request')] : []),
@@ -31,7 +29,7 @@ export function getSdkClassMethodAst(
     [],
     [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
     undefined,
-    nameOf(data.operation, 'oats/operation'),
+    context.nameOf(data.operation, 'oats/operation'),
     undefined,
     [],
     parameters,

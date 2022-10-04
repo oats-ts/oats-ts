@@ -9,11 +9,11 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
-  name(): OpenAPIGeneratorTarget {
+  public name(): OpenAPIGeneratorTarget {
     return 'oats/operation'
   }
 
-  consumes(): OpenAPIGeneratorTarget[] {
+  public consumes(): OpenAPIGeneratorTarget[] {
     const validatorDep: OpenAPIGeneratorTarget[] = ['oats/response-body-validator']
     const cookieSerializerDep: OpenAPIGeneratorTarget[] = ['oats/cookie-serializer']
     const cookieDeserializerDep: OpenAPIGeneratorTarget[] = ['oats/set-cookie-deserializer']
@@ -37,7 +37,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     ]
   }
 
-  runtimeDependencies(): RuntimeDependency[] {
+  public runtimeDependencies(): RuntimeDependency[] {
     return [
       { name: RuntimePackages.Http.name, version },
       /* Adding this as runtime package as otherwise it's undiscoverable */

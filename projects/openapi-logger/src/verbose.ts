@@ -1,14 +1,16 @@
 import {
-  flattenStructuredGeneratorResult,
   Logger,
   OatsEventEmitter,
-  StructuredGeneratorResult,
   RuntimeDependency,
+  SimpleGeneratorResult,
+  CompositeGeneratorResult,
+  isSimpleGeneratorResult,
+  toSimpleGeneratorResult,
 } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { GeneratedFile } from '@oats-ts/typescript-writer'
-import { isFailure, isSuccess, isTry, Try } from '@oats-ts/try'
+import { isFailure, isSuccess } from '@oats-ts/try'
 import { isOk } from '@oats-ts/validators'
 import { entries } from 'lodash'
 import { SourceFile } from 'typescript'
@@ -24,30 +26,32 @@ function printReadOutput(documents: Map<string, OpenAPIObject>): void {
 
 function printStructuredGeneratorResultLeaf(
   name: string,
-  leaf: Try<SourceFile[]>,
+  leaf: SimpleGeneratorResult<SourceFile>,
   printIssues: boolean,
   indentation: number,
 ): void {
-  const ok = isSuccess(leaf)
+  const { data, issues } = leaf
+  const ok = isSuccess(data)
   const icon = ok ? Icons.s : Icons.x
-  const length = isSuccess(leaf) ? leaf.data.length : -1
+  const length = isSuccess(data) ? data.data.length : -1
   console.log(
     `${Tab.repeat(indentation)}${icon} generator "${blue(name)}" ${ok ? 'completed' : 'failed'}${
       ok ? ` (${blue(length)} output(s))` : ''
     }`,
   )
-  if (isFailure(leaf) && printIssues) {
-    leaf.issues.forEach((issue) => console.log(issueToString(issue, indentation + 1)))
+  const allIssues = [...(isFailure(data) ? data.issues : []), ...issues]
+  if (printIssues) {
+    allIssues.forEach((issue) => console.log(issueToString(issue, indentation + 1)))
   }
 }
 
-function printStructuredGeneratorResult(structured: StructuredGeneratorResult<SourceFile>, indentation: number): void {
+function printStructuredGeneratorResult(structured: CompositeGeneratorResult<SourceFile>, indentation: number): void {
   const data = entries(structured)
   for (const [name, tryOrTree] of data) {
-    if (isTry(tryOrTree)) {
+    if (isSimpleGeneratorResult(tryOrTree)) {
       printStructuredGeneratorResultLeaf(name, tryOrTree, true, indentation)
     } else {
-      printStructuredGeneratorResultLeaf(name, flattenStructuredGeneratorResult(tryOrTree), false, indentation)
+      printStructuredGeneratorResultLeaf(name, toSimpleGeneratorResult(tryOrTree), false, indentation)
       printStructuredGeneratorResult(tryOrTree, indentation + 1)
     }
   }

@@ -4,11 +4,10 @@ import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getContentTypeBasedValidatorsAst } from '../utils/getContentTypeBasedValidatorsAst'
 
 export function getRequestBodyValidatorAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
-  const { nameOf, dereference } = context
   const { operation } = data
-  const body = dereference(data.operation.requestBody)
+  const body = context.dereference(data.operation.requestBody)
 
-  const varName = nameOf(operation, 'oats/request-body-validator')
+  const varName = context.nameOf(operation, 'oats/request-body-validator')
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

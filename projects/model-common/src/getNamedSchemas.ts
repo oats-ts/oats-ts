@@ -10,17 +10,16 @@ function collectNamedTypesForSchema(
   schemas: Set<SchemaObject | ReferenceObject>,
   processed: Set<SchemaObject | ReferenceObject>,
 ) {
-  const { dereference, nameOf } = context
   if (isNil(input) || processed.has(input) || schemas.has(input)) {
     return
   }
-  const schema = isReferenceObject(input) ? dereference<SchemaObject>(input) : input
+  const schema = isReferenceObject(input) ? context.dereference<SchemaObject>(input) : input
 
   if (processed.has(schema) || schemas.has(schema)) {
     return
   }
 
-  if (!isNil(nameOf(schema))) {
+  if (!isNil(context.nameOf(schema))) {
     schemas.add(schema)
   }
 
@@ -60,7 +59,7 @@ function collectNamedTypesForSchema(
 
   processed.add(input)
 
-  if (!isNil(nameOf(input))) {
+  if (!isNil(context.nameOf(input))) {
     schemas.add(input)
   }
 }
@@ -68,11 +67,10 @@ function collectNamedTypesForSchema(
 export function getNamedSchemas<D extends HasSchemas>(
   context: GeneratorContext<D>,
 ): (SchemaObject | ReferenceObject)[] {
-  const { document } = context
   const schemaSet = new Set<SchemaObject | ReferenceObject>()
 
   const processed = new Set<SchemaObject | ReferenceObject>()
-  const rawSchemas = values(document?.components?.schemas || {})
+  const rawSchemas = values(context.document?.components?.schemas || {})
 
   for (const schema of rawSchemas) {
     collectNamedTypesForSchema(schema, context, schemaSet, processed)

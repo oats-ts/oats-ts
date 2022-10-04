@@ -9,11 +9,10 @@ export function getSdkTypeImports(
   context: OpenAPIGeneratorContext,
   params: boolean,
 ): ImportDeclaration[] {
-  const { dependenciesOf, pathOf } = context
-  const apiPath = pathOf(doc, 'oats/sdk-type')
+  const apiPath = context.pathOf(doc, 'oats/sdk-type')
   const imports = flatMap(operations, (data) => [
-    ...(params ? dependenciesOf(apiPath, data.operation, 'oats/request-type') : []),
-    ...dependenciesOf(apiPath, data.operation, 'oats/response-type'),
+    ...(params ? context.dependenciesOf(apiPath, data.operation, 'oats/request-type') : []),
+    ...context.dependenciesOf(apiPath, data.operation, 'oats/response-type'),
   ])
   return operations.length > 0 ? [...imports] : imports
 }

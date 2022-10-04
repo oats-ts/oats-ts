@@ -5,17 +5,17 @@ import { ReadOutput } from './types'
 export class NameProviderHelperImpl<Doc> implements NameProviderHelper {
   private readonly uri = new URIManipulator()
 
-  constructor(private data: ReadOutput<Doc>) {}
+  public constructor(private readonly data: ReadOutput<Doc>) {}
 
-  uriOf<T>(input: T): string | undefined {
+  public uriOf<T>(input: T): string | undefined {
     return this.data.objectToUri.get(input)
   }
 
-  parent<T, P>(input: T): P | undefined {
+  public parent<T, P>(input: T): P | undefined {
     return getParentObject(input, this.uri, this.data)
   }
 
-  nameOf<T>(input: T): string | undefined {
+  public nameOf<T>(input: T): string | undefined {
     return this.data.objectToName.get(input)
   }
 }

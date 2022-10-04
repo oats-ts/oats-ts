@@ -11,12 +11,10 @@ export function getNamedTypeAst(
   context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ): TypeAliasDeclaration | EnumDeclaration {
-  const { nameOf } = context
-
   const node = factory.createTypeAliasDeclaration(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
-    factory.createIdentifier(nameOf(schema, 'oats/type')),
+    factory.createIdentifier(context.nameOf(schema, 'oats/type')),
     undefined,
     getRighthandSideTypeAst(schema, context, config),
   )

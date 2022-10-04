@@ -20,26 +20,33 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   protected configureRequestBodyValidator(validator: Validator<any>): ConfiguredValidator<any> {
     return configure(validator, 'requestBody', DefaultConfig)
   }
-  async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
+
+  public async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
     return deserializer(toolkit.request.url)
   }
-  async getQueryParameters<Q>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<Q>): Promise<Try<Q>> {
+
+  public async getQueryParameters<Q>(
+    toolkit: ExpressToolkit,
+    deserializer: (input: string) => Try<Q>,
+  ): Promise<Try<Q>> {
     return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
   }
-  async getCookieParameters<C>(
+
+  public async getCookieParameters<C>(
     toolkit: ExpressToolkit,
     deserializer: (input?: string) => Try<Partial<C>>,
   ): Promise<Try<Partial<C>>> {
     return deserializer(toolkit.request.header('cookie'))
   }
-  async getRequestHeaders<H>(
+
+  public async getRequestHeaders<H>(
     toolkit: ExpressToolkit,
     deserializer: (input: RawHttpHeaders) => Try<H>,
   ): Promise<Try<H>> {
     return deserializer(toolkit.request.headers as RawHttpHeaders)
   }
 
-  async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
+  public async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
     const mimeType = toolkit.request.header('Content-Type')
     if (mimeType === null || mimeType === undefined) {
       return undefined as unknown as M
@@ -47,7 +54,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return new MIMEType(mimeType).essence as M
   }
 
-  async getRequestBody<M extends string, B>(
+  public async getRequestBody<M extends string, B>(
     toolkit: ExpressToolkit,
     required: boolean,
     mimeType: M | undefined,
@@ -79,11 +86,11 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return issues.length > 0 ? failure(...issues) : success(toolkit.request.body as B)
   }
 
-  async getStatusCode(input: ExpressToolkit, response: HttpResponse): Promise<number> {
+  public async getStatusCode(input: ExpressToolkit, response: HttpResponse): Promise<number> {
     return response.statusCode
   }
 
-  async getResponseBody(input: ExpressToolkit, response: HttpResponse): Promise<any> {
+  public async getResponseBody(input: ExpressToolkit, response: HttpResponse): Promise<any> {
     if (response.body === null || response.body === undefined) {
       return undefined
     }
@@ -114,7 +121,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return allowed.includes(method)
   }
 
-  async getPreflightCorsHeaders(
+  public async getPreflightCorsHeaders(
     { request }: ExpressToolkit,
     {
       allowedOrigins,
@@ -170,7 +177,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return corsHeaders
   }
 
-  async getCorsHeaders(
+  public async getCorsHeaders(
     { request }: ExpressToolkit,
     { allowedOrigins, allowedResponseHeaders = [], allowCredentials }: CorsConfiguration,
   ): Promise<RawHttpHeaders> {
@@ -190,7 +197,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return corsHeaders
   }
 
-  async getResponseHeaders(
+  public async getResponseHeaders(
     input: ExpressToolkit,
     response: HttpResponse,
     serializers?: ResponseHeadersSerializer,
@@ -218,7 +225,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
-  async getResponseCookies<C>(
+  public async getResponseCookies<C>(
     _: ExpressToolkit,
     resp: HttpResponse<any, any, any, any, C>,
     serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
@@ -233,7 +240,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return cookies.data
   }
 
-  async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
+  public async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
     if (typeof rawResponse.statusCode === 'number') {
       toolkit.response.status(rawResponse.statusCode)
     }
@@ -259,7 +266,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
-  async handleError(toolkit: ExpressToolkit, error: any): Promise<void> {
+  public async handleError(toolkit: ExpressToolkit, error: any): Promise<void> {
     return toolkit.next(error)
   }
 }

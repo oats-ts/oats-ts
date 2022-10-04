@@ -12,9 +12,8 @@ export function getModelImports<T extends string = string>(
   referencedModel: any[],
   context: ModelImportsContext,
 ): ImportDeclaration[] {
-  const { pathOf, nameOf } = context
   return getRelativeImports(
     fromPath,
-    referencedModel.map((model): [string, string] => [pathOf(model, target), nameOf(model, target)]),
+    referencedModel.map((model): [string, string] => [context.pathOf(model, target), context.nameOf(model, target)]),
   )
 }

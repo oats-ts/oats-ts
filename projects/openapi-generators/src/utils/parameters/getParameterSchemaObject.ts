@@ -6,14 +6,15 @@ export function getParameterSchemaObject(
   params: (ParameterObject | HeaderObject)[],
   context: OpenAPIGeneratorContext,
 ): SchemaObject {
-  const { nameOf } = context
   return {
     type: 'object',
-    required: params.filter((param) => param.required).map((param) => (param as ParameterObject).name ?? nameOf(param)),
+    required: params
+      .filter((param) => param.required)
+      .map((param) => (param as ParameterObject).name ?? context.nameOf(param)),
     properties: params.reduce(
       (props: Record<string, SchemaObject | ReferenceObject>, param: ParameterObject | HeaderObject) => {
         return Object.assign(props, {
-          [(param as ParameterObject).name ?? nameOf(param)]: param.schema,
+          [(param as ParameterObject).name ?? context.nameOf(param)]: param.schema,
         })
       },
       {},

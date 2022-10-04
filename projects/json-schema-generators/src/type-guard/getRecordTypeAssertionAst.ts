@@ -55,9 +55,8 @@ export function getRecordTypeAssertionAst(
   config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
-  const { uriOf } = context
   const propsSchema = data.additionalProperties as Referenceable<SchemaObject>
-  const propsUri = uriOf(propsSchema)
+  const propsUri = context.uriOf(propsSchema)
   const expressions: Expression[] = [
     factory.createBinaryExpression(variable, SyntaxKind.ExclamationEqualsEqualsToken, factory.createNull()),
     factory.createBinaryExpression(

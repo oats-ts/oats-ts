@@ -3,12 +3,11 @@ import { factory, SyntaxKind } from 'typescript'
 import { RouterNames } from '../utils/express/RouterNames'
 
 export function getRouterFactoryAst(operations: EnhancedOperation[], context: OpenAPIGeneratorContext) {
-  const { nameOf, referenceOf, document } = context
   return factory.createFunctionDeclaration(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    factory.createIdentifier(nameOf(document, 'oats/express-context-handler-factory')),
+    factory.createIdentifier(context.nameOf(context.document, 'oats/express-context-handler-factory')),
     undefined,
     [
       factory.createParameterDeclaration(
@@ -17,7 +16,7 @@ export function getRouterFactoryAst(operations: EnhancedOperation[], context: Op
         undefined,
         factory.createIdentifier(RouterNames.api),
         undefined,
-        factory.createTypeReferenceNode(referenceOf(document, 'oats/api-type')),
+        factory.createTypeReferenceNode(context.referenceOf(context.document, 'oats/api-type')),
         undefined,
       ),
       factory.createParameterDeclaration(

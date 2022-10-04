@@ -12,9 +12,8 @@ export function getReferenceAssertionAst(
   config: TypeGuardGeneratorConfig,
   level: number,
 ): Expression {
-  const { nameOf, dereference } = context
-  const refTarget = dereference(data)
-  const name = nameOf(refTarget, 'oats/type-guard')
+  const refTarget = context.dereference(data)
+  const name = context.nameOf(refTarget, 'oats/type-guard')
   if (isNil(name)) {
     // Not increasing level here so named refs can be validated.
     return getTypeAssertionAst(refTarget, context, variable, config, level)

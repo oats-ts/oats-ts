@@ -7,7 +7,6 @@ import { safeName } from '@oats-ts/typescript-common'
 import { JsonSchemaGeneratorContext } from '../types'
 
 function getSchemaKey(data: Referenceable<SchemaObject>, index: number, context: JsonSchemaGeneratorContext): string {
-  const { dereference, nameOf } = context
   const type = getInferredType(data)
   switch (type) {
     case 'string':
@@ -15,7 +14,7 @@ function getSchemaKey(data: Referenceable<SchemaObject>, index: number, context:
     case 'boolean':
       return type
     case 'ref':
-      return nameOf(dereference(data), 'oats/type')
+      return context.nameOf(context.dereference(data), 'oats/type')
     default:
       return `${type}${index}`
   }

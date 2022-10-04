@@ -18,8 +18,8 @@ function defaultConfig({
     getMaxAge: getMaxAge ?? (() => undefined),
     isMethodAllowed: isMethodAllowed ?? (() => true),
     isCredentialsAllowed: isCredentialsAllowed ?? (() => false),
-    isRequestHeaderAllowed: isRequestHeaderAllowed ?? ((_, header) => header !== 'cookie'),
-    isResponseHeaderAllowed: isResponseHeaderAllowed ?? ((_, header) => header !== 'set-cookie'),
+    isRequestHeaderAllowed: isRequestHeaderAllowed ?? ((header) => header !== 'cookie'),
+    isResponseHeaderAllowed: isResponseHeaderAllowed ?? ((header) => header !== 'set-cookie'),
     ...rest,
   }
 }

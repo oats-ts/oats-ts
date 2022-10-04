@@ -10,12 +10,11 @@ export function getTypeReferenceAst(
   context: JsonSchemaGeneratorContext,
   config: TypesGeneratorConfig,
 ) {
-  const { dereference, nameOf } = context
-  const schema = isNil(data) ? null : dereference(data)
+  const schema = isNil(data) ? null : context.dereference(data)
   if (isNil(schema)) {
     return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)
   }
-  const name = nameOf(schema)
+  const name = context.nameOf(schema)
   if (isNil(name)) {
     return getRighthandSideTypeAst(schema, context, config)
   }

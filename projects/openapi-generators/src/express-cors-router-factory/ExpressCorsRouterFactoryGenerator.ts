@@ -14,6 +14,8 @@ import { ExpressCorsRouterFactoryGeneratorConfig } from './typings'
 import { BaseCodeGenerator, RuntimeDependency } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { getCorsMiddlewareAst } from './getCorsMiddlewareAst'
+import { getCorsEnabledPaths } from './getCorsEnabledPaths'
+import { Issue } from '@oats-ts/validators'
 
 export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   OpenAPIReadOutput,
@@ -35,20 +37,9 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   }
 
   protected getItems(): EnhancedPathItem[][] {
-    const config = this.configuration()
-    const paths = getEnhancedPathItems(this.input.document, this.context).filter(({ url, operations }) => {
-      return operations.some(({ url, operation, method }) => {
-        const isMethodAllowed = config.isMethodAllowed(url, method, operation)
-        const allowedOrigins = config.getAllowedOrigins(url, method, operation)
-        if (!isMethodAllowed) {
-          return false
-        }
-        if (typeof allowedOrigins === 'boolean') {
-          return allowedOrigins
-        }
-        return allowedOrigins.length > 0
-      })
-    })
+    const paths = getEnhancedPathItems(this.input.document, this.context).filter(
+      ({ operations }) => operations.length > 0,
+    )
     return [paths].filter((p) => p.length > 0)
   }
 
@@ -66,6 +57,26 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
     return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
 
+  public getPreGenerateIssues(): Issue[] {
+    const { items } = this
+    // No paths we don't care
+    if (items.length === 0) {
+      return []
+    }
+    const [paths] = items
+    // If we don't have any CORS enabled operations we complain
+    if (getCorsEnabledPaths(paths, this.configuration()).length === 0) {
+      return [
+        {
+          message: `CORS configuration needed, or remove generator`,
+          path: this.name(),
+          severity: 'warning',
+        },
+      ]
+    }
+    return []
+  }
+
   public async generateItem(paths: EnhancedPathItem[]): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(this.input.document, this.name())
     return success(
@@ -74,6 +85,15 @@ export class ExpressCorsRouterFactoryGenerator extends BaseCodeGenerator<
   }
 
   private getImports(): ImportDeclaration[] {
+    const paths = this.items[0]
+    if (getCorsEnabledPaths(paths, this.configuration()).length === 0) {
+      return [
+        getNamedImports(RuntimePackages.Express.name, [
+          RuntimePackages.Express.IRouter,
+          RuntimePackages.Express.Router,
+        ]),
+      ]
+    }
     return [
       getNamedImports(RuntimePackages.Express.name, [
         RuntimePackages.Express.IRouter,

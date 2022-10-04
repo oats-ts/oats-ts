@@ -11,8 +11,7 @@ export function getTypeImports(
   context: JsonSchemaGeneratorContext,
   referenceOnly: boolean,
 ): ImportDeclaration[] {
-  const { nameOf } = context
-  const name = nameOf(schema)
+  const name = context.nameOf(schema)
   if (referenceOnly && !isNil(name)) {
     return getModelImports<JsonSchemaGeneratorTarget>(fromPath, 'oats/type', [schema], context)
   }

@@ -13,13 +13,12 @@ function getImportedRefs(
   refs: Set<ReferenceObject>,
   level: number,
 ): void {
-  const { dereference, nameOf, uriOf } = context
-  if (config.ignore(data, uriOf(data))) {
+  if (config.ignore(data, context.uriOf(data))) {
     return
   }
   if (isReferenceObject(data)) {
-    const refTarget = dereference(data)
-    const name = nameOf(refTarget, 'oats/type-guard')
+    const refTarget = context.dereference(data)
+    const name = context.nameOf(refTarget, 'oats/type-guard')
     if (isNil(name)) {
       getImportedRefs(refTarget, context, config, refs, level)
     } else {
@@ -67,14 +66,13 @@ export function getTypeGuardImports(
   context: JsonSchemaGeneratorContext,
   config: TypeGuardGeneratorConfig,
 ): ImportDeclaration[] {
-  const { dereference, nameOf, pathOf } = context
   const refs = new Set<ReferenceObject>()
   getImportedRefs(data, context, config, refs, 0)
 
   const importedSchemas = sortBy(
-    Array.from(refs).map((ref) => dereference<SchemaObject>(ref)),
-    (schema) => nameOf(schema, 'oats/type-guard'),
+    Array.from(refs).map((ref) => context.dereference<SchemaObject>(ref)),
+    (schema) => context.nameOf(schema, 'oats/type-guard'),
   )
-  const path = pathOf(data, 'oats/type-guard')
+  const path = context.pathOf(data, 'oats/type-guard')
   return isNil(path) ? [] : getModelImports(path, 'oats/type-guard', importedSchemas, context)
 }

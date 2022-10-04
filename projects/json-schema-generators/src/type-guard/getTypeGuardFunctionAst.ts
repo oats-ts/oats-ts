@@ -7,13 +7,12 @@ export function getTypeGuardFunctionAst(
   context: JsonSchemaGeneratorContext,
   assertion: Expression,
 ): FunctionDeclaration {
-  const { referenceOf, nameOf } = context
   const paramName = assertion.kind === SyntaxKind.TrueKeyword ? '_' : 'input'
   return factory.createFunctionDeclaration(
     [],
     [factory.createModifier(SyntaxKind.ExportKeyword)],
     undefined,
-    nameOf(schema, 'oats/type-guard'),
+    context.nameOf(schema, 'oats/type-guard'),
     [],
     [
       factory.createParameterDeclaration(
@@ -25,7 +24,7 @@ export function getTypeGuardFunctionAst(
         factory.createTypeReferenceNode('any'),
       ),
     ],
-    factory.createTypePredicateNode(undefined, paramName, referenceOf(schema, 'oats/type')),
+    factory.createTypePredicateNode(undefined, paramName, context.referenceOf(schema, 'oats/type')),
     factory.createBlock([factory.createReturnStatement(assertion)]),
   )
 }

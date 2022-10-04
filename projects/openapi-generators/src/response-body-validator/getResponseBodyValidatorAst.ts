@@ -4,10 +4,9 @@ import { EnhancedOperation } from '@oats-ts/openapi-common'
 import { getResponseBodyValidatorPropertiesAst } from './getResponseBodyValidatorPropertiesAst'
 
 export function getResponseBodyValidatorAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): Statement {
-  const { nameOf } = context
   const { operation } = data
 
-  const varName = nameOf(operation, 'oats/response-body-validator')
+  const varName = context.nameOf(operation, 'oats/response-body-validator')
 
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],

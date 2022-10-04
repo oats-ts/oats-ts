@@ -11,9 +11,8 @@ export function getReferenceValidatorAst(
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
 ): Expression {
-  const { dereference, nameOf } = context
-  const resolved = dereference(data)
-  const name = nameOf(resolved, 'oats/type-validator')
+  const resolved = context.dereference(data)
+  const name = context.nameOf(resolved, 'oats/type-validator')
   if (!isNil(name)) {
     const validator = factory.createIdentifier(name)
     return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.lazy), undefined, [

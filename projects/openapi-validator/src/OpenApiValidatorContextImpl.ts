@@ -11,7 +11,7 @@ export class OpenAPIValidatorContextImpl
 {
   readonly validated: Set<any> = new Set()
 
-  constructor(data: OpenAPIReadOutput) {
+  public constructor(data: OpenAPIReadOutput) {
     super(
       undefined!,
       data,
@@ -19,10 +19,10 @@ export class OpenAPIValidatorContextImpl
       [],
     )
   }
-  override dependenciesOf = () => {
+  public override dependenciesOf = () => {
     throw new Error(`Cannot use dependenciesOf in a validator context`)
   }
-  override referenceOf = () => {
+  public override referenceOf = () => {
     throw new Error(`Cannot use referenceOf in a validator context`)
   }
 }
