@@ -1,4 +1,3 @@
-import { Issue } from '@oats-ts/validators'
 import { fluent } from './fluent'
 import { success } from './success'
 import { SUCCESS_SYMBOL } from './symbols'
@@ -6,9 +5,9 @@ import { Try, Success, Fluent, FluentTry } from './types'
 
 export class FluentSuccess<T> implements Success<T>, Fluent<T> {
   public readonly data: T
-  [SUCCESS_SYMBOL]: true = true
+  public [SUCCESS_SYMBOL]: true = true
 
-  public constructor(data: T, issues: Issue[] = []) {
+  public constructor(data: T) {
     this.data = data
   }
 

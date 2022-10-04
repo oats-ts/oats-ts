@@ -15,7 +15,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
   private nameProviderHelper: NameProviderHelper
   private pathProviderHelper: PathProviderHelper
 
-  constructor(
+  public constructor(
     private owner: CodeGenerator<any, any>,
     private data: ReadOutput<Doc>,
     readonly config: Cfg,
@@ -27,7 +27,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
   }
 
-  dereference<T>(input: string | ReferenceObject | T, deep?: boolean): T {
+  public dereference<T>(input: string | ReferenceObject | T, deep?: boolean): T {
     if (typeof input === 'string') {
       return deep ? this.dereference(this.data.uriToObject.get(input)) : this.data.uriToObject.get(input)
     } else if (isReferenceObject(input)) {
@@ -36,7 +36,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return input
   }
 
-  nameOf(input: any, target?: Target): string {
+  public nameOf(input: any, target?: Target): string {
     const originalName = this.data.objectToName.get(input)
     if (isNil(target)) {
       return originalName!
@@ -48,7 +48,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return name
   }
 
-  pathOf(input: any, target: Target): string {
+  public pathOf(input: any, target: Target): string {
     const path = this.config.pathProvider(input, target, this.pathProviderHelper)
     if (isNil(path)) {
       throw new TypeError(`Path provider returned ${path} for "${target}" with input ${JSON.stringify(input)}`)
@@ -56,7 +56,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return path
   }
 
-  uriOf(input: any): string {
+  public uriOf(input: any): string {
     const uri = this.data.objectToUri.get(input)
     if (isNil(uri)) {
       throw new Error(
@@ -68,7 +68,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return uri
   }
 
-  dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[] {
+  public dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[] {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.dependenciesOf(fromPath, input) ?? []
@@ -77,7 +77,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     throw this.wrongTargetError(target, 'dependencies')
   }
 
-  referenceOf<T>(input: any, target: Target): T {
+  public referenceOf<T>(input: any, target: Target): T {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.referenceOf(input)
@@ -86,7 +86,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     throw this.wrongTargetError(target, 'reference')
   }
 
-  configurationOf<T>(target: Target): T {
+  public configurationOf<T>(target: Target): T {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.configuration() as T

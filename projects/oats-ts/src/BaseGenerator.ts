@@ -22,7 +22,7 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   private readonly config: C
   private readonly globalConfigOverride: Partial<GeneratorConfig>
 
-  constructor(config: C & Partial<GeneratorConfig>) {
+  public constructor(config: C & Partial<GeneratorConfig>) {
     const { nameProvider, pathProvider, noEmit, ...cfg } = config ?? emptyConfig
     this.globalConfigOverride = {
       ...(nameProvider ? { nameProvider } : {}),

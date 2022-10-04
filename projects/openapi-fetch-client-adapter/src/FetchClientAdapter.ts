@@ -20,10 +20,11 @@ export type FetchClientAdapterConfig = {
 export class FetchClientAdapter implements ClientAdapter {
   private readonly config: FetchClientAdapterConfig
 
-  constructor(config: FetchClientAdapterConfig = {}) {
+  public constructor(config: FetchClientAdapterConfig = {}) {
     this.config = config
   }
-  async getCookies<C>(
+
+  public async getCookies<C>(
     input?: C | undefined,
     serializer?: ((input: C) => Try<string>) | undefined,
   ): Promise<string | undefined> {
@@ -37,7 +38,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return cookie.data
   }
 
-  async getResponseCookies<C>(
+  public async getResponseCookies<C>(
     response: RawHttpResponse,
     deserializer?: (cookie?: string) => Try<Cookies<C>>,
   ): Promise<Cookies<C> | undefined> {
@@ -55,7 +56,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return cookie.data
   }
 
-  async request(request: RawHttpRequest): Promise<RawHttpResponse> {
+  public async request(request: RawHttpRequest): Promise<RawHttpResponse> {
     const response = await crossFetch.fetch(request.url, this.getRequestInit(request))
     const rawHeaders: Record<string, string> = {}
     response.headers.forEach((value, key) => (rawHeaders[key.toLowerCase()] = value))
@@ -85,14 +86,15 @@ export class FetchClientAdapter implements ClientAdapter {
     return configure(validator, 'responseBody', DefaultConfig)
   }
 
-  async getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string> {
+  public async getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string> {
     const path = serializer(input)
     if (isFailure(path)) {
       throw new Error(`Failed to serialize path:\n${path.issues.map(stringify).join('\n')}`)
     }
     return path.data
   }
-  async getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): Promise<string | undefined> {
+
+  public async getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): Promise<string | undefined> {
     if (input === undefined || input === null || serializer === undefined || serializer === null) {
       return undefined
     }
@@ -102,12 +104,13 @@ export class FetchClientAdapter implements ClientAdapter {
     }
     return query.data
   }
-  async getUrl(path: string, query?: string): Promise<string> {
+
+  public async getUrl(path: string, query?: string): Promise<string> {
     const { url } = this.config
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
 
-  async getRequestHeaders<H>(
+  public async getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
     cookie?: string,
@@ -129,7 +132,7 @@ export class FetchClientAdapter implements ClientAdapter {
       ...baseHeaders,
     }
   }
-  async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {
+  public async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {
     switch (mimeType) {
       case 'application/json':
         return JSON.stringify(body)
@@ -137,14 +140,17 @@ export class FetchClientAdapter implements ClientAdapter {
         return body
     }
   }
-  async getStatusCode(response: RawHttpResponse): Promise<number | undefined> {
+
+  public async getStatusCode(response: RawHttpResponse): Promise<number | undefined> {
     return response.statusCode
   }
-  async getMimeType(response: RawHttpResponse): Promise<string | undefined> {
+
+  public async getMimeType(response: RawHttpResponse): Promise<string | undefined> {
     const mimeType = response.headers?.['content-type']
     return typeof mimeType === 'string' ? new MIMEType(mimeType).essence : undefined
   }
-  async getResponseHeaders(
+
+  public async getResponseHeaders(
     response: RawHttpResponse,
     statusCode?: number,
     deserializers?: ResponseHeadersDeserializers,
@@ -169,7 +175,8 @@ export class FetchClientAdapter implements ClientAdapter {
     }
     return headers.data
   }
-  async getResponseBody(
+
+  public async getResponseBody(
     response: RawHttpResponse,
     statusCode?: number,
     mimeType?: string,

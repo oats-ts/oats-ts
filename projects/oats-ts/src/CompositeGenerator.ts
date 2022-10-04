@@ -98,7 +98,7 @@ export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
     return this.tick()
   }
 
-  async generate(): Promise<CompositeGeneratorResult<G>> {
+  public async generate(): Promise<CompositeGeneratorResult<G>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,

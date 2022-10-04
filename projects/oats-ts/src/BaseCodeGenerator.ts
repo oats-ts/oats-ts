@@ -59,7 +59,7 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     }
   }
 
-  async generate(): Promise<SimpleGeneratorResult<G>> {
+  public async generate(): Promise<SimpleGeneratorResult<G>> {
     this.emitter.emit('generator-started', {
       type: 'generator-started',
       id: this.id,
