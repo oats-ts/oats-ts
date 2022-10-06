@@ -11,8 +11,8 @@ import { BookStoreApi } from './apiType'
 
 export function createBookStoreContextHandler(api: BookStoreApi, adapter: ServerAdapter<ExpressToolkit>): Handler {
   return (_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api'] = api
-    response.locals['__oats_adapter'] = adapter
+    response.locals['__oats_api_15ojy6m'] = api
+    response.locals['__oats_adapter_15ojy6m'] = adapter
     next()
   }
 }

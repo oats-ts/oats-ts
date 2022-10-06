@@ -9,6 +9,10 @@ export const overrides: Record<string, Partial<PresetGeneratorConfiguration>> = 
     'oats/express-cors-router-factory': { getAllowedOrigins: () => true },
     'oats/express-router-factory': { getAllowedOrigins: () => true },
   },
+  'generated-schemas/methods.json': {
+    'oats/express-cors-router-factory': { getAllowedOrigins: () => true },
+    'oats/express-router-factory': { getAllowedOrigins: () => true },
+  },
   'generated-schemas/parameters.json': {
     'oats/operation': {
       sendCookieHeader: true,
@@ -22,14 +26,12 @@ export const overrides: Record<string, Partial<PresetGeneratorConfiguration>> = 
     },
     'oats/express-cors-router-factory': {
       getAllowedOrigins: () => true,
-      isResponseHeaderAllowed: () => true,
       isCredentialsAllowed: (url: string) => {
         return url === '/form-cookie-parameters' ? true : undefined
       },
     },
     'oats/express-router-factory': {
       getAllowedOrigins: () => true,
-      isResponseHeaderAllowed: () => true,
       isCredentialsAllowed: (url: string) => {
         return url === '/form-cookie-parameters' ? true : undefined
       },

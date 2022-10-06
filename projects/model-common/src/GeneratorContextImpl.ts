@@ -68,6 +68,18 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return uri
   }
 
+  public hashOf(input: any): number {
+    const hash = this.data.objectToHash.get(input)
+    if (isNil(hash)) {
+      throw new Error(
+        `Input ${JSON.stringify(
+          input,
+        )} doesn't have a valid hash. This means it's either not part of an OpenAPI document, or you found a bug in the reader.`,
+      )
+    }
+    return hash
+  }
+
   public dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[] {
     for (const generator of this.generators) {
       if (generator.name() === target) {

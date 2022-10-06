@@ -42,6 +42,10 @@ export const RouterNames = {
   allowCredentials: 'allowCredentials',
   maxAge: 'maxAge',
 
-  apiKey: '__oats_api',
-  adapterKey: '__oats_adapter',
+  apiKey: (hash: number) => {
+    return `__oats_api_${hash.toString(36)}`
+  },
+  adapterKey: (hash: number) => {
+    return `__oats_adapter_${hash.toString(36)}`
+  },
 }

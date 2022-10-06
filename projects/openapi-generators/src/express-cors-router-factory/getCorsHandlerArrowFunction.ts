@@ -52,7 +52,7 @@ function getFunctionBodyBlock(
     ),
     undefined,
   )
-  return factory.createBlock([getToolkitStatement(), getAdapterStatement(), tryCatch], true)
+  return factory.createBlock([getToolkitStatement(), getAdapterStatement(context), tryCatch], true)
 }
 
 export function getCorsHandlerArrowFunctionAst(

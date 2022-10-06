@@ -16,8 +16,8 @@ export function createOptionalRequestBodyRouter(router?: IRouter): IRouter {
     '/optional-request-body',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: OptionalBodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_132nvbh']
+      const api: OptionalBodiesApi = response.locals['__oats_api_132nvbh']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<

@@ -21,8 +21,8 @@ export function createAddBookRouter(router?: IRouter): IRouter {
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BookStoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
+      const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', Book>(
@@ -54,8 +54,8 @@ export function createGetBookRouter(router?: IRouter): IRouter {
     '/books/:bookId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BookStoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
+      const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
       try {
         const path = await adapter.getPathParameters(toolkit, getBookPathDeserializer)
         const typedRequest: GetBookServerRequest = {
@@ -80,8 +80,8 @@ export function createGetBooksRouter(router?: IRouter): IRouter {
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BookStoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
+      const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
       try {
         const query = await adapter.getQueryParameters(toolkit, getBooksQueryDeserializer)
         const headers = await adapter.getRequestHeaders(toolkit, getBooksRequestHeadersDeserializer)

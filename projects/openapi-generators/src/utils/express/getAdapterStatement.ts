@@ -1,8 +1,8 @@
-import { RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, RuntimePackages } from '@oats-ts/openapi-common'
 import { factory, NodeFlags, Statement } from 'typescript'
 import { RouterNames } from './RouterNames'
 
-export function getAdapterStatement(): Statement {
+export function getAdapterStatement(context: OpenAPIGeneratorContext): Statement {
   return factory.createVariableStatement(
     undefined,
     factory.createVariableDeclarationList(
@@ -21,7 +21,7 @@ export function getAdapterStatement(): Statement {
               factory.createIdentifier(RouterNames.response),
               factory.createIdentifier(RouterNames.locals),
             ),
-            factory.createStringLiteral(RouterNames.adapterKey),
+            factory.createStringLiteral(RouterNames.adapterKey(context.hashOf(context.document))),
           ),
         ),
       ],

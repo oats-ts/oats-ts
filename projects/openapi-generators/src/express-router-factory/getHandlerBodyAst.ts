@@ -40,7 +40,7 @@ export function getHandlerBodyAst(
               factory.createIdentifier(RouterNames.response),
               factory.createIdentifier(RouterNames.locals),
             ),
-            factory.createStringLiteral(RouterNames.apiKey),
+            factory.createStringLiteral(RouterNames.apiKey(context.hashOf(context.document))),
           ),
         ),
       ],
@@ -284,5 +284,5 @@ export function getHandlerBodyAst(
     undefined,
   )
 
-  return factory.createBlock([getToolkitStatement(), getAdapterStatement(), api, tryCatch])
+  return factory.createBlock([getToolkitStatement(), getAdapterStatement(context), api, tryCatch])
 }

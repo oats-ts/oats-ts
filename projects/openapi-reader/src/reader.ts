@@ -27,6 +27,7 @@ export const reader =
       objectToName: new Map(),
       objectToUri: new Map(),
       uriToObject: new Map(),
+      objectToHash: new Map(),
     }
 
     const mainDocResult = await resolveDocument(path, cache, emitter, resolve, sanitize)

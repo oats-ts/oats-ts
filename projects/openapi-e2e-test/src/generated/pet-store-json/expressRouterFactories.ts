@@ -20,8 +20,8 @@ export function createCreatePetsRouter(router?: IRouter): IRouter {
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', Pet>(
@@ -62,8 +62,8 @@ export function createListPetsRouter(router?: IRouter): IRouter {
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
         const query = await adapter.getQueryParameters(toolkit, listPetsQueryDeserializer)
         const typedRequest: ListPetsServerRequest = {
@@ -97,8 +97,8 @@ export function createShowPetByIdRouter(router?: IRouter): IRouter {
     '/pets/:petId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
         const path = await adapter.getPathParameters(toolkit, showPetByIdPathDeserializer)
         const typedRequest: ShowPetByIdServerRequest = {

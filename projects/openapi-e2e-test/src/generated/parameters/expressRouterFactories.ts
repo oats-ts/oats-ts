@@ -43,8 +43,8 @@ export function createDeepObjectQueryParametersRouter(router?: IRouter): IRouter
     '/deepObject-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
         const typedRequest: DeepObjectQueryParametersServerRequest = {
@@ -74,8 +74,8 @@ export function createFormCookieParametersRouter(router?: IRouter): IRouter {
     '/form-cookie-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const cookies = await adapter.getCookieParameters(toolkit, formCookieParametersCookieDeserializer)
         const typedRequest: FormCookieParametersServerRequest = {
@@ -110,8 +110,8 @@ export function createFormQueryParametersRouter(router?: IRouter): IRouter {
     '/form-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
         const typedRequest: FormQueryParametersServerRequest = {
@@ -141,8 +141,8 @@ export function createLabelPathParametersRouter(router?: IRouter): IRouter {
     '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
         const typedRequest: LabelPathParametersServerRequest = {
@@ -172,8 +172,8 @@ export function createMatrixPathParametersRouter(router?: IRouter): IRouter {
     '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
         const typedRequest: MatrixPathParametersServerRequest = {
@@ -203,8 +203,8 @@ export function createPipeDelimitedQueryParametersRouter(router?: IRouter): IRou
     '/pipeDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
         const typedRequest: PipeDelimitedQueryParametersServerRequest = {
@@ -234,8 +234,8 @@ export function createSimpleHeaderParametersRouter(router?: IRouter): IRouter {
     '/simple-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
         const typedRequest: SimpleHeaderParametersServerRequest = {
@@ -265,8 +265,8 @@ export function createSimplePathParametersRouter(router?: IRouter): IRouter {
     '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
         const typedRequest: SimplePathParametersServerRequest = {
@@ -296,8 +296,8 @@ export function createSimpleResponseHeaderParametersRouter(router?: IRouter): IR
     '/simple-response-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
@@ -375,8 +375,8 @@ export function createSpaceDelimitedQueryParametersRouter(router?: IRouter): IRo
     '/spaceDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
         const typedRequest: SpaceDelimitedQueryParametersServerRequest = {

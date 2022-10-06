@@ -12,7 +12,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
   return (router ?? Router())
     .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -68,7 +68,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
     })
     .options('/form-cookie-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -84,7 +84,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
     })
     .options('/simple-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -139,7 +139,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
     })
     .options('/deepObject-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -154,7 +154,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
     })
     .options('/pipeDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -169,7 +169,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
     })
     .options('/spaceDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -184,7 +184,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
     })
     .options('/form-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -201,7 +201,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
       '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: Request, response: Response, next: NextFunction) => {
         const toolkit: ExpressToolkit = { request, response, next }
-        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
         try {
           await adapter.respond(toolkit, {
             headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -219,7 +219,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
       '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: Request, response: Response, next: NextFunction) => {
         const toolkit: ExpressToolkit = { request, response, next }
-        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
         try {
           await adapter.respond(toolkit, {
             headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -237,7 +237,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
       '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: Request, response: Response, next: NextFunction) => {
         const toolkit: ExpressToolkit = { request, response, next }
-        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
         try {
           await adapter.respond(toolkit, {
             headers: await adapter.getPreflightCorsHeaders(toolkit, {

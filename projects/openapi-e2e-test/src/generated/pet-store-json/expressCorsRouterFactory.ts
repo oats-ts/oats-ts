@@ -12,7 +12,7 @@ export function createSwaggerPetstoreCorsRouter(router?: IRouter): IRouter {
   return (router ?? Router())
     .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -28,7 +28,7 @@ export function createSwaggerPetstoreCorsRouter(router?: IRouter): IRouter {
     })
     .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {

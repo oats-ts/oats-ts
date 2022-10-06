@@ -52,8 +52,8 @@ export function createArrObjRouter(router?: IRouter): IRouter {
     '/arr-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithArrays>(
@@ -85,8 +85,8 @@ export function createBoolArrRouter(router?: IRouter): IRouter {
     '/bool-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean[]>(
@@ -118,8 +118,8 @@ export function createBoolRouter(router?: IRouter): IRouter {
     '/bool',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean>(
@@ -151,8 +151,8 @@ export function createEnmArrRouter(router?: IRouter): IRouter {
     '/enm-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType[]>(
@@ -184,8 +184,8 @@ export function createEnmRouter(router?: IRouter): IRouter {
     '/enm',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType>(
@@ -217,8 +217,8 @@ export function createNestedObjRouter(router?: IRouter): IRouter {
     '/nested-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithNestedObjects>(
@@ -250,8 +250,8 @@ export function createNumArrRouter(router?: IRouter): IRouter {
     '/num-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number[]>(
@@ -283,8 +283,8 @@ export function createNumRouter(router?: IRouter): IRouter {
     '/num',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number>(
@@ -316,8 +316,8 @@ export function createOptPrimTupleRouter(router?: IRouter): IRouter {
     '/opt-prim-tuple',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', PrimitiveOptionalTupleType>(
@@ -349,8 +349,8 @@ export function createPrimObjRouter(router?: IRouter): IRouter {
     '/prim-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithPrimitives>(
@@ -382,8 +382,8 @@ export function createPrimTupleRouter(router?: IRouter): IRouter {
     '/prim-tuple',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', PrimitiveTupleType>(
@@ -415,8 +415,8 @@ export function createStrArrRouter(router?: IRouter): IRouter {
     '/str-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string[]>(
@@ -448,8 +448,8 @@ export function createStrRouter(router?: IRouter): IRouter {
     '/str',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string>(
