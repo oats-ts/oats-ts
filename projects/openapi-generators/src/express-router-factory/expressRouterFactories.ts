@@ -15,7 +15,7 @@ function defaultConfig({
     getAllowedOrigins: getAllowedOrigins ?? (() => false),
     isCredentialsAllowed: isCredentialsAllowed ?? (() => false),
     isMethodAllowed: isMethodAllowed ?? (() => true),
-    isResponseHeaderAllowed: isResponseHeaderAllowed ?? ((header) => header !== 'set-cookie'),
+    isResponseHeaderAllowed: isResponseHeaderAllowed ?? (() => true),
     ...rest,
   }
 }

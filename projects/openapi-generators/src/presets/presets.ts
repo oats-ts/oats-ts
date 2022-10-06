@@ -1,7 +1,5 @@
-import { merge, cloneDeep } from 'lodash'
-import { ExpressCorsRouterFactoryGeneratorConfig } from '../express-cors-router-factory'
 import { createPreset } from './createPreset'
-import { BasePresetConfiguration, PresetGeneratorConfiguration } from './types'
+import { PresetGeneratorConfiguration } from './types'
 
 export const commonConfig: PresetGeneratorConfiguration = {
   'oats/type': true,
@@ -47,90 +45,21 @@ export const clientOnlyConfig: PresetGeneratorConfiguration = {
   'oats/sdk-impl': true,
 }
 
-export type ServerPresetConfiguration = BasePresetConfiguration & {
-  cors?: Partial<ExpressCorsRouterFactoryGeneratorConfig>
-}
+const server = createPreset('server', {
+  ...commonConfig,
+  ...serverOnlyConfig,
+})
 
-const server = createPreset<Partial<ServerPresetConfiguration>>(
-  'server',
-  {
-    ...commonConfig,
-    ...serverOnlyConfig,
-  },
-  (base, config) =>
-    merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
-      cloneDeep(base),
-      cloneDeep({
-        'oats/express-cors-router-factory': config?.cors ?? {},
-        'oats/express-router-factory': config?.cors ?? {},
-      }),
-      cloneDeep(config?.overrides ?? {}),
-    ),
-)
+const client = createPreset('client', {
+  ...commonConfig,
+  ...clientOnlyConfig,
+})
 
-export type ClientPresetConfiguration = BasePresetConfiguration & {
-  sendCookieHeader?: boolean
-  parseSetCookieHeaders?: boolean
-}
-
-const client = createPreset<ClientPresetConfiguration>(
-  'client',
-  {
-    ...commonConfig,
-    ...clientOnlyConfig,
-  },
-  (base, config) =>
-    merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
-      cloneDeep(base),
-      cloneDeep({
-        'oats/operation': {
-          sendCookieHeader: config?.sendCookieHeader,
-          parseSetCookieHeaders: config?.parseSetCookieHeaders,
-        },
-        'oats/request-type': {
-          cookies: Boolean(config?.sendCookieHeader),
-        },
-        'oats/response-type': {
-          cookies: Boolean(config?.parseSetCookieHeaders),
-        },
-      }),
-      cloneDeep(config?.overrides ?? {}),
-    ),
-)
-
-export type FullStackPresetConfiguration = BasePresetConfiguration & {
-  sendCookieHeader?: boolean
-  parseSetCookieHeaders?: boolean
-  cors?: Partial<ExpressCorsRouterFactoryGeneratorConfig>
-}
-
-const fullStack = createPreset<FullStackPresetConfiguration>(
-  'full-stack',
-  {
-    ...commonConfig,
-    ...clientOnlyConfig,
-    ...serverOnlyConfig,
-  },
-  (base, config) =>
-    merge<PresetGeneratorConfiguration, PresetGeneratorConfiguration, PresetGeneratorConfiguration>(
-      cloneDeep(base),
-      cloneDeep({
-        'oats/operation': {
-          sendCookieHeader: config?.sendCookieHeader,
-          parseSetCookieHeaders: config?.parseSetCookieHeaders,
-        },
-        'oats/request-type': {
-          cookies: Boolean(config?.sendCookieHeader),
-        },
-        'oats/response-type': {
-          cookies: Boolean(config?.parseSetCookieHeaders),
-        },
-        'oats/express-cors-router-factory': config?.cors ?? {},
-        'oats/express-router-factory': config?.cors ?? {},
-      }),
-      cloneDeep(config?.overrides ?? {}),
-    ),
-)
+const fullStack = createPreset('full-stack', {
+  ...commonConfig,
+  ...clientOnlyConfig,
+  ...serverOnlyConfig,
+})
 
 export const presets = {
   client,

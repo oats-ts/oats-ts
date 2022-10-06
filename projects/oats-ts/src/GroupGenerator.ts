@@ -5,7 +5,7 @@ import { BaseGenerator } from './BaseGenerator'
 import { toSimpleGeneratorResult } from './toSimpleGeneratorResult'
 import { CompositeGeneratorResult, compositeResult } from './GeneratorResult'
 
-export class CompositeGenerator<R, G> extends BaseGenerator<R, G, {}> {
+export class GroupGenerator<R, G> extends BaseGenerator<R, G, {}> {
   private readonly _name: string
 
   public children: ReadonlyArray<CodeGenerator<R, G>>

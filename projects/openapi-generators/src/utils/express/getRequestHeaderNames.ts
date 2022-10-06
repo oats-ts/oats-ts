@@ -14,8 +14,5 @@ export function getRequestHeaderNames(
   if (!isNil(operation.requestBody)) {
     headers.push('content-type')
   }
-  if (params.some((param) => param.in === 'cookie')) {
-    headers.push('cookie')
-  }
   return headers
 }

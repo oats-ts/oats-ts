@@ -74,7 +74,7 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
             allowedOrigins: { get: true },
             allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type', 'set-cookie'] },
+            allowedResponseHeaders: { get: ['content-type'] },
             allowCredentials: { get: true },
           }),
         })

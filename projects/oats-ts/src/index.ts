@@ -1,7 +1,7 @@
 export { BaseCodeGenerator } from './BaseCodeGenerator'
 export { BaseGenerator } from './BaseGenerator'
 export { URIManipulator } from './URIManipulator'
-export { CompositeGenerator } from './CompositeGenerator'
+export { GroupGenerator } from './GroupGenerator'
 export * from './events'
 export { toSimpleGeneratorResult } from './toSimpleGeneratorResult'
 export { generate } from './generate'

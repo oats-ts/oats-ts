@@ -1,7 +1,6 @@
 import { ApiTypeGeneratorConfig } from './api-type'
 
 import { OperationsGeneratorConfig } from './operations'
-import { SdkImplGeneratorConfig } from './sdk-impl'
 import {
   TypeGuardGeneratorConfig,
   TypesGeneratorConfig,
@@ -22,7 +21,7 @@ function create(name: 'oats/type-guard', config?: Config<TypeGuardGeneratorConfi
 function create(name: 'oats/type-validator', config?: Config<ValidatorsGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/api-type', config?: Config<ApiTypeGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/sdk-type', config?: Config<SdkGeneratorConfig>): OpenAPIGenerator
-function create(name: 'oats/sdk-impl', config?: Config<SdkImplGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/sdk-impl', config?: Config<SdkGeneratorConfig>): OpenAPIGenerator
 function create(
   name: 'oats/express-router-factory',
   config?: Config<ExpressRouterFactoriesGeneratorConfig>,
@@ -34,7 +33,6 @@ function create(name: 'oats/query-type', config?: Config<ParameterTypesGenerator
 function create(name: 'oats/request-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/response-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/response-type', config?: Config<ResponseTypesGeneratorConfig>): OpenAPIGenerator
-function create(name: OpenAPIGeneratorTarget, config?: Config): OpenAPIGenerator
 
 function create(name: OpenAPIGeneratorTarget, config?: Config): OpenAPIGenerator {
   const factory = generatorFactoryMap[name]

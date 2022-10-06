@@ -8,7 +8,6 @@ import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { ApiTypeGeneratorConfig } from '../api-type'
 import { ExpressRouterFactoriesGeneratorConfig } from '../express-router-factory'
 import { OperationsGeneratorConfig } from '../operations'
-import { SdkImplGeneratorConfig } from '../sdk-impl'
 import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
 import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
@@ -22,8 +21,9 @@ type GeneratorConfigs = {
   'oats/path-type': ParameterTypesGeneratorConfig
   'oats/query-type': ParameterTypesGeneratorConfig
   'oats/request-headers-type': ParameterTypesGeneratorConfig
+  'oats/cookies-type': ParameterTypesGeneratorConfig
   'oats/sdk-type': SdkGeneratorConfig
-  'oats/sdk-impl': SdkImplGeneratorConfig
+  'oats/sdk-impl': SdkGeneratorConfig
   'oats/type': TypesGeneratorConfig
   'oats/type-guard': TypeGuardGeneratorConfig
   'oats/type-validator': ValidatorsGeneratorConfig
@@ -38,11 +38,6 @@ export type PresetGeneratorConfiguration = {
   [K in OpenAPIGeneratorTarget]?: K extends keyof GeneratorConfigs ? Config<GeneratorConfigs[K]> : Config
 }
 
-export type BasePresetConfiguration = Partial<GeneratorConfig> & {
+export type PresetConfiguration = Partial<GeneratorConfig> & {
   overrides?: PresetGeneratorConfiguration
 }
-
-export type ConfigProducer<T> = (
-  defaultConfig: PresetGeneratorConfiguration,
-  config?: T,
-) => PresetGeneratorConfiguration

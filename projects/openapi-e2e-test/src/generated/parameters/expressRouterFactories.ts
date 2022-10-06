@@ -89,7 +89,7 @@ export function createFormCookieParametersRouter(router?: IRouter): IRouter {
             undefined,
             await adapter.getCorsHeaders(toolkit, {
               allowedOrigins: true,
-              allowedResponseHeaders: ['content-type', 'set-cookie'],
+              allowedResponseHeaders: ['content-type'],
               allowCredentials: true,
             }),
           ),
