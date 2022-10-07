@@ -3,7 +3,12 @@ export { RootGeneratorConfig } from './types'
 export { generator } from './generator'
 export { generators } from './generators'
 export { presets } from './presets/presets'
-export { PresetConfiguration, PresetGeneratorConfiguration } from './presets/types'
+export {
+  OpenAPIPresetConfig,
+  OpenAPIClientPresetConfig,
+  OpenAPIServerPresetConfig,
+  OpenAPIFullStackPresetConfig,
+} from './presets/types'
 
 export * from './api-type'
 export * from './express-router-factory'

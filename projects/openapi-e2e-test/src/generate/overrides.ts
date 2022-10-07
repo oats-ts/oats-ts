@@ -1,35 +1,26 @@
-import { PresetGeneratorConfiguration } from '@oats-ts/openapi-generators'
+import { OpenAPIFullStackPresetConfig } from '@oats-ts/openapi-generators'
 
-export const overrides: Record<string, Partial<PresetGeneratorConfiguration>> = {
+export const overrides: Record<string, Partial<OpenAPIFullStackPresetConfig>> = {
   'schemas/pet-store-yaml.yaml': {
-    'oats/cors-configuration': { getAllowedOrigins: () => ['https://foo.com'] },
-    'oats/express-router-factory': { cors: true },
+    cors: ['https://foo.com'],
   },
   'schemas/book-store.json': {
-    'oats/cors-configuration': { getAllowedOrigins: () => true },
-    'oats/express-router-factory': { cors: true },
+    cors: true,
   },
   'schemas/pet-store-json.json': {
-    'oats/cors-configuration': { getAllowedOrigins: () => true },
-    'oats/express-router-factory': { cors: true },
+    cors: true,
   },
   'generated-schemas/methods.json': {
-    'oats/cors-configuration': { getAllowedOrigins: () => true },
-    'oats/express-router-factory': { cors: true },
+    cors: true,
+  },
+  'generated-schemas/bodies.json': {
+    cors: {
+      getAllowedOrigins: () => false,
+    },
   },
   'generated-schemas/parameters.json': {
-    'oats/operation': {
-      sendCookieHeader: true,
-      parseSetCookieHeaders: true,
-    },
-    'oats/response-type': {
-      cookies: true,
-    },
-    'oats/request-type': {
-      cookies: true,
-    },
-    'oats/express-router-factory': { cors: true },
-    'oats/cors-configuration': {
+    debugCookies: true,
+    cors: {
       getAllowedOrigins: () => true,
       isCredentialsAllowed: (path: string) => {
         return path === '/form-cookie-parameters' ? true : undefined
@@ -37,11 +28,12 @@ export const overrides: Record<string, Partial<PresetGeneratorConfiguration>> = 
     },
   },
   'schemas/ignored-schemas.json': {
-    'oats/type-guard': {
-      ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-    },
-    'oats/type-validator': {
-      ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-    },
+    // TODO
+    // 'oats/type-guard': {
+    //   ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
+    // },
+    // 'oats/type-validator': {
+    //   ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
+    // },
   },
 }

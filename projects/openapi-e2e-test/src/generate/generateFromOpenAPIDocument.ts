@@ -26,7 +26,7 @@ export async function generateFromOpenAPIDocument(
       generator: generator({
         nameProvider: nameProviders.default(),
         pathProvider: pathProviders[pathProviderKind](codePath),
-        children: presets.fullStack({ overrides: overrides[path] ?? {} }),
+        children: presets.fullStack(overrides[path] ?? {}),
       }),
       writer: writers.typescript.file({
         format: formatters.prettier({

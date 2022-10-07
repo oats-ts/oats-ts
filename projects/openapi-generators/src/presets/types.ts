@@ -1,4 +1,3 @@
-import { GeneratorConfig } from '@oats-ts/oats-ts'
 import {
   TypeGuardGeneratorConfig,
   TypesGeneratorConfig,
@@ -36,10 +35,21 @@ type GeneratorConfigs = {
   'oats/cors-configuration': CorsConfigurationGeneratorConfig
 }
 
-export type PresetGeneratorConfiguration = {
+export type OpenAPIPresetConfig = {
   [K in OpenAPIGeneratorTarget]?: K extends keyof GeneratorConfigs ? Config<GeneratorConfigs[K]> : Config
 }
 
-export type PresetConfiguration = Partial<GeneratorConfig> & {
-  overrides?: PresetGeneratorConfiguration
+export type OpenAPICommonPresetConfig = {
+  documentation?: boolean
 }
+
+export type OpenAPIClientPresetConfig = OpenAPICommonPresetConfig & {
+  debugCookies?: boolean
+  validateResponses?: boolean
+}
+
+export type OpenAPIServerPresetConfig = OpenAPICommonPresetConfig & {
+  cors?: boolean | string[] | Partial<CorsConfigurationGeneratorConfig>
+}
+
+export type OpenAPIFullStackPresetConfig = OpenAPIClientPresetConfig & OpenAPIServerPresetConfig
