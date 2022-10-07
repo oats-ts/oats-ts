@@ -6,7 +6,7 @@
 
 import { MainCorsConfig } from '@oats-ts/openapi-http'
 
-export const BookStoreCorsConfiguration: MainCorsConfig = {
+export const bookStoreCorsConfiguration: MainCorsConfig = {
   '/books': {
     get: {
       allowedOrigins: true,

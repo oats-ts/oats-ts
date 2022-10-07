@@ -6,7 +6,7 @@
 
 import { MainCorsConfig } from '@oats-ts/openapi-http'
 
-export const SwaggerPetstoreCorsConfiguration: MainCorsConfig = {
+export const swaggerPetstoreCorsConfiguration: MainCorsConfig = {
   '/pets': {
     get: {
       allowedOrigins: ['https://foo.com'],

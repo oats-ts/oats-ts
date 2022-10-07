@@ -6,7 +6,7 @@
 
 import { MainCorsConfig } from '@oats-ts/openapi-http'
 
-export const HttpMethodsCorsConfiguration: MainCorsConfig = {
+export const httpMethodsCorsConfiguration: MainCorsConfig = {
   '/get-method': {
     get: {
       allowedOrigins: true,

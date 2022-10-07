@@ -6,7 +6,7 @@
 
 import { MainCorsConfig } from '@oats-ts/openapi-http'
 
-export const ParametersCorsConfiguration: MainCorsConfig = {
+export const parametersCorsConfiguration: MainCorsConfig = {
   '/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}':
     {
       get: {
