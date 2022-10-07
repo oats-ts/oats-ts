@@ -4,7 +4,6 @@ import {
   PostMethodServerResponse,
   PutMethodServerResponse,
   PatchMethodServerResponse,
-  OptionsMethodServerResponse,
   DeleteMethodServerResponse,
 } from '../../generated/methods/responseServerTypes'
 
@@ -24,10 +23,8 @@ export class HttpMethodsApiImpl implements HttpMethodsApi {
   async getMethod(): Promise<GetMethodServerResponse> {
     return this.respond('get')
   }
-  async optionsMethod(): Promise<OptionsMethodServerResponse> {
-    return this.respond('options')
-  }
   async patchMethod(): Promise<PatchMethodServerResponse> {
+    console.log("hitting patch")
     return this.respond('patch')
   }
   async postMethod(): Promise<PostMethodServerResponse> {

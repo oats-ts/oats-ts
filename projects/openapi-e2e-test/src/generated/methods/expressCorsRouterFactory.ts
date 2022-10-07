@@ -12,7 +12,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
   return (router ?? Router())
     .options('/delete-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -26,25 +26,9 @@ export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
         adapter.handleError(toolkit, error)
       }
     })
-    .options('/options-method', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { options: true },
-            allowedMethods: ['options'],
-            allowedResponseHeaders: { options: ['content-type'] },
-            allowCredentials: { options: false },
-          }),
-        })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    })
     .options('/patch-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -60,7 +44,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
     })
     .options('/put-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -76,7 +60,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
     })
     .options('/post-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {
@@ -92,7 +76,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
     })
     .options('/get-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       try {
         await adapter.respond(toolkit, {
           headers: await adapter.getPreflightCorsHeaders(toolkit, {

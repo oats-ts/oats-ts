@@ -14,8 +14,8 @@ export function createDeleteMethodRouter(router?: IRouter): IRouter {
     '/delete-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      const api: HttpMethodsApi = response.locals['__oats_api_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
         const typedResponse = await api.deleteMethod()
         const rawResponse: RawHttpResponse = {
@@ -45,41 +45,10 @@ export function createGetMethodRouter(router?: IRouter): IRouter {
     '/get-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      const api: HttpMethodsApi = response.locals['__oats_api_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
         const typedResponse = await api.getMethod()
-        const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
-          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
-          body: await adapter.getResponseBody(toolkit, typedResponse),
-        }
-        await adapter.respond(toolkit, rawResponse)
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    },
-  )
-}
-
-export function createOptionsMethodRouter(router?: IRouter): IRouter {
-  return (router ?? Router()).options(
-    '/options-method',
-    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      const api: HttpMethodsApi = response.locals['__oats_api_dejnqv']
-      try {
-        const typedResponse = await api.optionsMethod()
         const rawResponse: RawHttpResponse = {
           headers: await adapter.getResponseHeaders(
             toolkit,
@@ -107,8 +76,8 @@ export function createPatchMethodRouter(router?: IRouter): IRouter {
     '/patch-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      const api: HttpMethodsApi = response.locals['__oats_api_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
         const typedResponse = await api.patchMethod()
         const rawResponse: RawHttpResponse = {
@@ -138,8 +107,8 @@ export function createPostMethodRouter(router?: IRouter): IRouter {
     '/post-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      const api: HttpMethodsApi = response.locals['__oats_api_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
         const typedResponse = await api.postMethod()
         const rawResponse: RawHttpResponse = {
@@ -169,8 +138,8 @@ export function createPutMethodRouter(router?: IRouter): IRouter {
     '/put-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_dejnqv']
-      const api: HttpMethodsApi = response.locals['__oats_api_dejnqv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
         const typedResponse = await api.putMethod()
         const rawResponse: RawHttpResponse = {

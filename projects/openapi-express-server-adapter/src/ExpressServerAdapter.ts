@@ -148,7 +148,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
 
     const corsHeaders: RawHttpHeaders = {
       'access-control-allow-origin': origin ?? '*',
-      'access-control-allow-methods': method.toUpperCase(),
+      'access-control-allow-methods': `${method}, ${method.toUpperCase()}`,
     }
 
     if (Array.isArray(requestedHeaders) && requestedHeaders.length > 0) {

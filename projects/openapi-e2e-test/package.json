@@ -20,7 +20,8 @@
     "g": "ts-node src/generate/generate.ts",
     "serve": "ts-node src/serve.ts",
     "test": "cross-env jest --runInBand",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "methods": "node src/methods.js"
   },
   "dependencies": {
     "@oats-ts/oats-ts": "0.0.38",

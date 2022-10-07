@@ -11,8 +11,8 @@ import { HttpMethodsApi } from './apiType'
 
 export function createHttpMethodsContextHandler(api: HttpMethodsApi, adapter: ServerAdapter<ExpressToolkit>): Handler {
   return (_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_dejnqv'] = api
-    response.locals['__oats_adapter_dejnqv'] = adapter
+    response.locals['__oats_api_1quzk6y'] = api
+    response.locals['__oats_adapter_1quzk6y'] = adapter
     next()
   }
 }

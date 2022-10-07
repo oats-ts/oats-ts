@@ -11,15 +11,16 @@ import {
   randomPathParameters,
 } from '../tests/parameters/parameters.testdata'
 
+const REPEATS = 5
+const PARAMETERS_PATH = `${PATH}/parameters`
+
 class CookieEnablingAdapter extends FetchClientAdapter {
   protected override getRequestInit(request: RawHttpRequest): RequestInit | undefined {
     return { ...super.getRequestInit(request), credentials: 'include' }
   }
 }
 
-const REPEATS = 5
-
-const normalParamsSdk = new ParametersSdkImpl(new FetchClientAdapter({ url: PATH }))
+const normalParamsSdk = new ParametersSdkImpl(new FetchClientAdapter({ url: PARAMETERS_PATH }))
 
 function s<T extends Record<string, unknown>>(object: T): T {
   return JSON.parse(JSON.stringify(object, undefined, 2))
@@ -150,11 +151,14 @@ describe('Parameters', () => {
     )
   })
   describe('cookies', () => {
-    const cookieSdk = new ParametersSdkImpl(new CookieEnablingAdapter({ url: PATH }))
-
-    it('simple', async () => {
-      const response = await cookieSdk.formCookieParameters({})
-      console.log(response)
-    })
+    const cookieSdk = new ParametersSdkImpl(new CookieEnablingAdapter({ url: PARAMETERS_PATH }))
+    repeat(
+      REPEATS,
+      (i) => `simple #${i}`,
+      async () => {
+        const response = await cookieSdk.formCookieParameters({})
+        console.log(response)
+      },
+    )
   })
 })

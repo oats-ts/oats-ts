@@ -5,11 +5,10 @@
  */
 
 import { ClientAdapter } from '@oats-ts/openapi-http'
-import { deleteMethod, getMethod, optionsMethod, patchMethod, postMethod, putMethod } from './operations'
+import { deleteMethod, getMethod, patchMethod, postMethod, putMethod } from './operations'
 import {
   DeleteMethodResponse,
   GetMethodResponse,
-  OptionsMethodResponse,
   PatchMethodResponse,
   PostMethodResponse,
   PutMethodResponse,
@@ -32,9 +31,6 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   }
   public async patchMethod(): Promise<PatchMethodResponse> {
     return patchMethod(this.adapter)
-  }
-  public async optionsMethod(): Promise<OptionsMethodResponse> {
-    return optionsMethod(this.adapter)
   }
   public async deleteMethod(): Promise<DeleteMethodResponse> {
     return deleteMethod(this.adapter)

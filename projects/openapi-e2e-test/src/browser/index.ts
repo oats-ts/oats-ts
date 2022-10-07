@@ -10,5 +10,6 @@ mocha.setup({
 })
 
 require('./parameters.test')
+require('./methods.test')
 
 mocha.run()
