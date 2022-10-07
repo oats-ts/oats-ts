@@ -66,6 +66,16 @@ export type ServerAdapter<T> = {
   handleError(toolkit: T, error: any): Promise<void>
 }
 
+export type MainCorsConfig = Partial<Record<string, PathCorsConfig>>
+export type PathCorsConfig = Partial<Record<HttpMethod, CorsConfig>>
+export type CorsConfig = {
+  allowedOrigins?: string[] | boolean
+  allowedRequestHeaders?: string[]
+  allowedResponseHeaders?: string[]
+  allowCredentials?: boolean
+  maxAge?: number
+}
+
 export type PreflightCorsConfiguration = {
   allowedOrigins?: Partial<Record<HttpMethod, string[] | true>>
   allowedMethods?: HttpMethod[]

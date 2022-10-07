@@ -36,16 +36,7 @@ export function createCreatePetsRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.createPets(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -75,11 +66,7 @@ export function createListPetsRouter(router?: IRouter): IRouter {
             toolkit,
             typedResponse,
             listPetsResponseHeadersSerializer,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['x-next', 'content-type'],
-              allowCredentials: false,
-            }),
+            undefined,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
@@ -106,16 +93,7 @@ export function createShowPetByIdRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.showPetById(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

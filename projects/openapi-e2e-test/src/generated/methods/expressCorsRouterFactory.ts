@@ -4,90 +4,16 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
-import { IRouter, NextFunction, Request, Response, Router } from 'express'
+import { IRouter, Router } from 'express'
 
+/**
+ * WARNING: CORS router factory found no allowed origins for any operations, and likely needs to be configured!
+ *
+ * - If you don't need CORS, remove "oats/express-cors-router-factory" from your configuration.
+ * - If you need CORS, please provide at least the getAllowedOrigins options for "oats/express-cors-router-factory".
+ * - More info on CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+ * - More info on configuring generators: https://oats-ts.github.io/docs/#/docs/OpenAPI_Generate
+ */
 export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
-  return (router ?? Router())
-    .options('/delete-method', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { delete: true },
-            allowedMethods: ['delete'],
-            allowedResponseHeaders: { delete: ['content-type'] },
-            allowCredentials: { delete: false },
-          }),
-        })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    })
-    .options('/patch-method', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { patch: true },
-            allowedMethods: ['patch'],
-            allowedResponseHeaders: { patch: ['content-type'] },
-            allowCredentials: { patch: false },
-          }),
-        })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    })
-    .options('/put-method', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { put: true },
-            allowedMethods: ['put'],
-            allowedResponseHeaders: { put: ['content-type'] },
-            allowCredentials: { put: false },
-          }),
-        })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    })
-    .options('/post-method', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { post: true },
-            allowedMethods: ['post'],
-            allowedResponseHeaders: { post: ['content-type'] },
-            allowCredentials: { post: false },
-          }),
-        })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    })
-    .options('/get-method', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type'] },
-            allowCredentials: { get: false },
-          }),
-        })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
-      }
-    })
+  return router ?? Router()
 }

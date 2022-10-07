@@ -14,6 +14,7 @@ import { Config } from '../types'
 import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
 import { ExpressCorsRouterFactoryGeneratorConfig } from '../express-cors-router-factory'
+import { CorsConfigurationGeneratorConfig } from '../cors-configuration/typings'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
@@ -32,6 +33,7 @@ type GeneratorConfigs = {
   'oats/response-type': ResponseTypesGeneratorConfig
   'oats/express-router-factory': ExpressRouterFactoriesGeneratorConfig
   'oats/express-cors-router-factory': ExpressCorsRouterFactoryGeneratorConfig
+  'oats/cors-configuration': CorsConfigurationGeneratorConfig
 }
 
 export type PresetGeneratorConfiguration = {

@@ -50,6 +50,7 @@ export type OpenAPIGeneratorTarget =
   | 'oats/sdk-type'
   | 'oats/sdk-impl'
   | 'oats/api-type'
+  | 'oats/cors-configuration'
   | 'oats/express-router-factory'
   | 'oats/express-router-factories-type'
   | 'oats/express-app-router-factory'

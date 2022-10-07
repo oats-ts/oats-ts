@@ -52,12 +52,7 @@ export function createDeepObjectQueryParametersRouter(router?: IRouter): IRouter
         }
         const typedResponse = await api.deepObjectQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -83,16 +78,7 @@ export function createFormCookieParametersRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.formCookieParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: true,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
           cookies: await adapter.getResponseCookies(toolkit, typedResponse, formCookieParametersSetCookieSerializer),
@@ -119,12 +105,7 @@ export function createFormQueryParametersRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.formQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -150,12 +131,7 @@ export function createLabelPathParametersRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.labelPathParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -181,12 +157,7 @@ export function createMatrixPathParametersRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.matrixPathParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -212,12 +183,7 @@ export function createPipeDelimitedQueryParametersRouter(router?: IRouter): IRou
         }
         const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -243,12 +209,7 @@ export function createSimpleHeaderParametersRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.simpleHeaderParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -274,12 +235,7 @@ export function createSimplePathParametersRouter(router?: IRouter): IRouter {
         }
         const typedResponse = await api.simplePathParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -316,48 +272,7 @@ export function createSimpleResponseHeaderParametersRouter(router?: IRouter): IR
             toolkit,
             typedResponse,
             simpleResponseHeaderParametersResponseHeadersSerializer,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: [
-                'x-strexpl-header',
-                'x-optstrexpl-header',
-                'x-str-header',
-                'x-optstr-header',
-                'x-numexpl-header',
-                'x-optnumexpl-header',
-                'x-num-header',
-                'x-optnum-header',
-                'x-boolexpl-header',
-                'x-optboolexpl-header',
-                'x-bool-header',
-                'x-optbool-header',
-                'x-enmexpl-header',
-                'x-optenmexpl-header',
-                'x-enm-header',
-                'x-optenm-header',
-                'x-strarrexpl-header',
-                'x-optstrarrexpl-header',
-                'x-strarr-header',
-                'x-optstrarr-header',
-                'x-numarrexpl-header',
-                'x-optnumarrexpl-header',
-                'x-numarr-header',
-                'x-optnumarr-header',
-                'x-boolarrexpl-header',
-                'x-optboolarrexpl-header',
-                'x-boolarr-header',
-                'x-optboolarr-header',
-                'x-enmarrexpl-header',
-                'x-optenmarrexpl-header',
-                'x-enmarr-header',
-                'x-optenmarr-header',
-                'x-objexpl-header',
-                'x-optobjexpl-header',
-                'x-obj-header',
-                'x-optobj-header',
-                'content-type',
-              ],
-            }),
+            undefined,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
@@ -384,12 +299,7 @@ export function createSpaceDelimitedQueryParametersRouter(router?: IRouter): IRo
         }
         const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

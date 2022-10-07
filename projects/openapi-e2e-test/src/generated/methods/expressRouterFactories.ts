@@ -19,16 +19,7 @@ export function createDeleteMethodRouter(router?: IRouter): IRouter {
       try {
         const typedResponse = await api.deleteMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -50,16 +41,7 @@ export function createGetMethodRouter(router?: IRouter): IRouter {
       try {
         const typedResponse = await api.getMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -81,16 +63,7 @@ export function createPatchMethodRouter(router?: IRouter): IRouter {
       try {
         const typedResponse = await api.patchMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -112,16 +85,7 @@ export function createPostMethodRouter(router?: IRouter): IRouter {
       try {
         const typedResponse = await api.postMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -143,16 +107,7 @@ export function createPutMethodRouter(router?: IRouter): IRouter {
       try {
         const typedResponse = await api.putMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
