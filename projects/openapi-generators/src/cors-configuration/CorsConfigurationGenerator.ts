@@ -1,27 +1,16 @@
-import {
-  createOpenAPIGeneratorContext,
-  EnhancedPathItem,
-  getEnhancedPathItems,
-  OpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  RuntimePackages,
-} from '@oats-ts/openapi-common'
+import { EnhancedPathItem, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
+import { factory, ImportDeclaration, SourceFile, Identifier } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { BaseCodeGenerator, RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { CorsConfigurationGeneratorConfig } from './typings'
 import { getCorsConfigurationStatement } from './getCorsConfigurationStatement'
+import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
+import { Issue } from '@oats-ts/validators'
+import { getCorsEnabledPaths } from './getCorsEnabledPaths'
 
-export class CorsConfigurationGenerator extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  CorsConfigurationGeneratorConfig,
-  EnhancedPathItem[],
-  OpenAPIGeneratorContext
-> {
+export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfigurationGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
     return 'oats/cors-configuration'
   }
@@ -32,35 +21,44 @@ export class CorsConfigurationGenerator extends BaseCodeGenerator<
     return [{ name: RuntimePackages.Http.name, version }]
   }
 
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
-  }
-
-  protected getItems(): EnhancedPathItem[][] {
-    const paths = getEnhancedPathItems(this.input.document, this.context).filter(
-      ({ operations }) => operations.length > 0,
-    )
-    return [paths].filter((p) => p.length > 0)
-  }
-
   protected async generateItem(paths: EnhancedPathItem[]): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(this.context.document, this.name())
     return success(
       createSourceFile(
         path,
-        [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.MainCorsConfig])],
+        [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.CorsConfiguration])],
         [getCorsConfigurationStatement(paths, this.context, this.configuration())],
       ),
     )
   }
 
-  public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
-    const [operations] = this.items
-    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+  public getPreGenerateIssues(): Issue[] {
+    const { items } = this
+    // No paths we don't care
+    if (items.length === 0) {
+      return []
+    }
+    const [paths] = items
+    // If we don't have any CORS enabled operations we complain
+    if (getCorsEnabledPaths(paths, this.configuration()).length === 0) {
+      return [
+        {
+          message: `no paths enabled by configuration`,
+          path: this.name(),
+          severity: 'warning',
+        },
+      ]
+    }
+    return []
   }
 
-  public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
-    const [operations] = this.items
-    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+  public referenceOf(input: OpenAPIObject): Identifier | undefined {
+    const [paths] = this.items
+    return paths?.length > 0 ? factory.createIdentifier(this.context.nameOf(input, this.name())) : undefined
+  }
+
+  public dependenciesOf(fromPath: string, input: any): ImportDeclaration[] {
+    const [paths] = this.items
+    return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
   }
 }

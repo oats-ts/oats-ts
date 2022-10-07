@@ -8,9 +8,6 @@ import { getExpressRouterImports } from './getExpressRouterImports'
 import { getExpressRouterAst } from './getExpressRouterAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { isNil } from 'lodash'
-import { isOperationCorsEnabled } from './isOperationCorsEnabled'
-import { Issue } from '@oats-ts/validators'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -18,6 +15,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
+    const cors: OpenAPIGeneratorTarget[] = ['oats/cors-configuration']
     return [
       'oats/type',
       'oats/request-server-type',
@@ -30,6 +28,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       'oats/request-headers-deserializer',
       'oats/response-headers-serializer',
       'oats/request-body-validator',
+      ...(this.configuration().cors ? cors : []),
     ]
   }
 
@@ -41,31 +40,14 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     ]
   }
 
-  public getPreGenerateIssues(): Issue[] {
-    const corsTarget: OpenAPIGeneratorTarget = 'oats/express-cors-router-factory'
-    const corsGenerator = this.root().resolve(corsTarget)
-    const config = this.configuration()
-    if (
-      !isNil(corsGenerator) &&
-      this.items.length > 0 &&
-      !this.items.some((operation) => isOperationCorsEnabled(operation, config))
-    ) {
-      return [
-        {
-          message: `CORS configuration needed, to add inline CORS headers`,
-          path: this.name(),
-          severity: 'warning',
-        },
-      ]
-    }
-    return []
-  }
-
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
+    const config = this.configuration()
     return success(
-      createSourceFile(this.context.pathOf(item.operation, this.name()), getExpressRouterImports(item, this.context), [
-        getExpressRouterAst(item, this.context, this.configuration()),
-      ]),
+      createSourceFile(
+        this.context.pathOf(item.operation, this.name()),
+        getExpressRouterImports(item, this.context, config),
+        [getExpressRouterAst(item, this.context, config)],
+      ),
     )
   }
 

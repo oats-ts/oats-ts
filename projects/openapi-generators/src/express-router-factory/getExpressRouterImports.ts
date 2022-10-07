@@ -7,10 +7,12 @@ import {
 import { ImportDeclaration } from 'typescript'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { flatMap, isNil, values } from 'lodash'
+import { ExpressRouterFactoriesGeneratorConfig } from './typings'
 
 export function getExpressRouterImports(
   operation: EnhancedOperation,
   context: OpenAPIGeneratorContext,
+  config: ExpressRouterFactoriesGeneratorConfig,
 ): ImportDeclaration[] {
   const path = context.pathOf(operation.operation, 'oats/express-router-factory')
   const bodyTypesImports = flatMap(
@@ -39,6 +41,7 @@ export function getExpressRouterImports(
     ...context.dependenciesOf(path, operation.operation, 'oats/response-headers-serializer'),
     ...context.dependenciesOf(path, operation.operation, 'oats/cookie-deserializer'),
     ...context.dependenciesOf(path, operation.operation, 'oats/set-cookie-serializer'),
+    ...(config.cors ? context.dependenciesOf(path, context.document, 'oats/cors-configuration') : []),
     ...bodyTypesImports,
   ]
 }

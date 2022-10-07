@@ -4,16 +4,26 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { IRouter, Router } from 'express'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import { ServerAdapter } from '@oats-ts/openapi-http'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
+import { optionalBodiesCorsConfiguration } from './corsConfiguration'
 
-/**
- * WARNING: CORS router factory found no allowed origins for any operations, and likely needs to be configured!
- *
- * - If you don't need CORS, remove "oats/express-cors-router-factory" from your configuration.
- * - If you need CORS, please provide at least the getAllowedOrigins options for "oats/express-cors-router-factory".
- * - More info on CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
- * - More info on configuring generators: https://oats-ts.github.io/docs/#/docs/OpenAPI_Generate
- */
 export function createOptionalBodiesCorsRouter(router?: IRouter): IRouter {
-  return router ?? Router()
+  return (router ?? Router()).options(
+    '/optional-request-body',
+    async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_132nvbh']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : optionalBodiesCorsConfiguration?.['/optional-request-body']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    },
+  )
 }

@@ -8,6 +8,7 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
+import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
 import { showPetByIdPathDeserializer } from './pathDeserializers'
 import { listPetsQueryDeserializer } from './queryDeserializers'
 import { createPetsRequestBodyValidator } from './requestBodyValidators'
@@ -34,9 +35,11 @@ export function createCreatePetsRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.createPets(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -60,13 +63,15 @@ export function createListPetsRouter(router?: IRouter): IRouter {
         const typedRequest: ListPetsServerRequest = {
           query,
         }
+        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.listPets(typedRequest)
         const rawResponse: RawHttpResponse = {
           headers: await adapter.getResponseHeaders(
             toolkit,
             typedResponse,
             listPetsResponseHeadersSerializer,
-            undefined,
+            corsHeaders,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
@@ -91,9 +96,11 @@ export function createShowPetByIdRouter(router?: IRouter): IRouter {
         const typedRequest: ShowPetByIdServerRequest = {
           path,
         }
+        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.showPetById(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

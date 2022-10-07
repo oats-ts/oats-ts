@@ -4,24 +4,27 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-json.json
  */
 
-import { MainCorsConfig } from '@oats-ts/openapi-http'
+import { CorsConfiguration } from '@oats-ts/openapi-http'
 
-export const swaggerPetstoreCorsConfiguration: MainCorsConfig = {
+export const swaggerPetstoreCorsConfiguration: CorsConfiguration = {
   '/pets': {
     get: {
       allowedOrigins: true,
       allowedResponseHeaders: ['x-next', 'content-type'],
+      allowCredentials: false,
     },
     post: {
       allowedOrigins: true,
       allowedRequestHeaders: ['content-type'],
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
     },
   },
   '/pets/{petId}': {
     get: {
       allowedOrigins: true,
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
     },
   },
 }

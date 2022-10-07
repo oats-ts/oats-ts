@@ -4,18 +4,12 @@ import { ExpressRouterFactoriesGenerator } from './ExpressRouterFactoriesGenerat
 import { ExpressRouterFactoriesGeneratorConfig as ExpressRouterFactoriesGeneratorConfig } from './typings'
 
 function defaultConfig({
-  getAllowedOrigins,
-  isCredentialsAllowed,
-  isResponseHeaderAllowed,
-  isMethodAllowed,
+  cors,
   ...rest
 }: Partial<ExpressRouterFactoriesGeneratorConfig & GeneratorConfig>): ExpressRouterFactoriesGeneratorConfig &
   Partial<GeneratorConfig> {
   return {
-    getAllowedOrigins: getAllowedOrigins ?? (() => false),
-    isCredentialsAllowed: isCredentialsAllowed ?? (() => false),
-    isMethodAllowed: isMethodAllowed ?? (() => true),
-    isResponseHeaderAllowed: isResponseHeaderAllowed ?? (() => true),
+    cors: cors ?? false,
     ...rest,
   }
 }

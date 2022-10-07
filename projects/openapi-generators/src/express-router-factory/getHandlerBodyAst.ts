@@ -5,15 +5,15 @@ import {
   OpenAPIGeneratorContext,
   RuntimePackages,
 } from '@oats-ts/openapi-common'
-import { factory, NodeFlags } from 'typescript'
+import { factory, NodeFlags, SyntaxKind } from 'typescript'
 import { ExpressRouterFactoriesGeneratorConfig } from './typings'
 import { getParametersStatementAst } from './getParametersStatementAst'
 import { getRequestBodyRelatedStatementAsts } from './getRequestBodyRelatedStatementAsts'
 import { RouterNames } from '../utils/express/RouterNames'
 import { getAdapterStatement } from '../utils/express/getAdapterStatement'
-import { getCorsParameters } from './getCorsParameters'
 import { getRouterCatchBlock } from '../utils/express/getRouterCatchBlock'
 import { getToolkitStatement } from '../utils/express/getToolkitStatement'
+import { isNil } from 'lodash'
 
 export function getHandlerBodyAst(
   data: EnhancedOperation,
@@ -151,20 +151,66 @@ export function getHandlerBodyAst(
     ),
   )
 
-  const corsParams = getCorsParameters(data, context, config)
-  const corsHeaders =
-    corsParams.length > 0
-      ? factory.createAwaitExpression(
-          factory.createCallExpression(
-            factory.createPropertyAccessExpression(
-              factory.createIdentifier(RouterNames.adapter),
-              factory.createIdentifier(RouterNames.getCorsHeaders),
+  const corsConfigStatement = config.cors
+    ? factory.createVariableStatement(
+        undefined,
+        factory.createVariableDeclarationList(
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(RouterNames.corsConfig),
+              undefined,
+              undefined,
+              data.method === 'delete'
+                ? factory.createElementAccessChain(
+                    factory.createElementAccessChain(
+                      context.referenceOf(context.document, 'oats/cors-configuration'),
+                      factory.createToken(SyntaxKind.QuestionDotToken),
+                      factory.createStringLiteral(data.url),
+                    ),
+                    factory.createToken(SyntaxKind.QuestionDotToken),
+                    factory.createStringLiteral(data.method),
+                  )
+                : factory.createPropertyAccessChain(
+                    factory.createElementAccessChain(
+                      context.referenceOf(context.document, 'oats/cors-configuration'),
+                      factory.createToken(SyntaxKind.QuestionDotToken),
+                      factory.createStringLiteral(data.url),
+                    ),
+                    factory.createToken(SyntaxKind.QuestionDotToken),
+                    factory.createIdentifier(data.method),
+                  ),
             ),
-            undefined,
-            corsParams,
-          ),
-        )
-      : factory.createIdentifier('undefined')
+          ],
+          NodeFlags.Const,
+        ),
+      )
+    : undefined
+
+  const corsHeadersStatement = config.cors
+    ? factory.createVariableStatement(
+        undefined,
+        factory.createVariableDeclarationList(
+          [
+            factory.createVariableDeclaration(
+              factory.createIdentifier(RouterNames.corsHeaders),
+              undefined,
+              undefined,
+              factory.createAwaitExpression(
+                factory.createCallExpression(
+                  factory.createPropertyAccessExpression(
+                    factory.createIdentifier(RouterNames.adapter),
+                    factory.createIdentifier(RouterNames.getCorsHeaders),
+                  ),
+                  undefined,
+                  [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.corsConfig)],
+                ),
+              ),
+            ),
+          ],
+          NodeFlags.Const,
+        ),
+      )
+    : undefined
 
   const normalizedResponse = factory.createVariableStatement(
     undefined,
@@ -190,7 +236,9 @@ export function getHandlerBodyAst(
                       factory.createIdentifier(RouterNames.typedResponse),
                       context.referenceOf(data.operation, 'oats/response-headers-serializer') ??
                         factory.createIdentifier('undefined'),
-                      corsHeaders,
+                      config.cors
+                        ? factory.createIdentifier(RouterNames.corsHeaders)
+                        : factory.createIdentifier('undefined'),
                     ],
                   ),
                 ),
@@ -271,7 +319,16 @@ export function getHandlerBodyAst(
   )
 
   const tryBlock = factory.createBlock(
-    [...parameters, ...body, ...typedRequest, typedResponse, normalizedResponse, respondStatement],
+    [
+      ...parameters,
+      ...body,
+      ...typedRequest,
+      ...(isNil(corsConfigStatement) ? [] : [corsConfigStatement]),
+      ...(isNil(corsHeadersStatement) ? [] : [corsHeadersStatement]),
+      typedResponse,
+      normalizedResponse,
+      respondStatement,
+    ],
     true,
   )
 

@@ -16,6 +16,9 @@ export const RouterNames = {
   cookies: 'cookies',
   headers: 'headers',
   error: 'error',
+  method: 'method',
+  corsConfig: 'corsConfig',
+  corsHeaders: 'corsHeaders',
 
   header: 'header',
   origin: 'origin',
@@ -30,13 +33,13 @@ export const RouterNames = {
   responseBody: 'responseBody',
 
   respond: 'respond',
+  getAccessControlRequestedMethod: 'getAccessControlRequestedMethod',
   getPreflightCorsHeaders: 'getPreflightCorsHeaders',
   getCorsHeaders: 'getCorsHeaders',
   getResponseHeaders: 'getResponseHeaders',
   handleError: 'handleError',
 
   allowedOrigins: 'allowedOrigins',
-  allowedMethods: 'allowedMethods',
   allowedRequestHeaders: 'allowedRequestHeaders',
   allowedResponseHeaders: 'allowedResponseHeaders',
   allowCredentials: 'allowCredentials',

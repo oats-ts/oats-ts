@@ -4,16 +4,167 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { IRouter, Router } from 'express'
+import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import { ServerAdapter } from '@oats-ts/openapi-http'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
+import { bodiesCorsConfiguration } from './corsConfiguration'
 
-/**
- * WARNING: CORS router factory found no allowed origins for any operations, and likely needs to be configured!
- *
- * - If you don't need CORS, remove "oats/express-cors-router-factory" from your configuration.
- * - If you need CORS, please provide at least the getAllowedOrigins options for "oats/express-cors-router-factory".
- * - More info on CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
- * - More info on configuring generators: https://oats-ts.github.io/docs/#/docs/OpenAPI_Generate
- */
 export function createBodiesCorsRouter(router?: IRouter): IRouter {
-  return router ?? Router()
+  return (router ?? Router())
+    .options('/nested-obj', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/nested-obj']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/arr-obj', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/arr-obj']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/prim-obj', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/prim-obj']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/bool-arr', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/bool-arr']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/enm-arr', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/enm-arr']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/num-arr', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/num-arr']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/str-arr', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/str-arr']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/opt-prim-tuple', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/opt-prim-tuple']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/prim-tuple', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/prim-tuple']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/bool', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/bool']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/enm', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/enm']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/num', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/num']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
+    .options('/str', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/str']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
 }

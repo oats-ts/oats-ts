@@ -4,9 +4,9 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { MainCorsConfig } from '@oats-ts/openapi-http'
+import { CorsConfiguration } from '@oats-ts/openapi-http'
 
-export const parametersCorsConfiguration: MainCorsConfig = {
+export const parametersCorsConfiguration: CorsConfiguration = {
   '/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}':
     {
       get: {
@@ -100,6 +100,7 @@ export const parametersCorsConfiguration: MainCorsConfig = {
     get: {
       allowedOrigins: true,
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: true,
     },
   },
   '/simple-response-header-parameters': {

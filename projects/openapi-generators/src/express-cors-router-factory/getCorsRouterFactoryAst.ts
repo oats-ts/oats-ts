@@ -8,15 +8,9 @@ import { documentNode } from '@oats-ts/typescript-common'
 import { Expression, factory, Statement, SyntaxKind } from 'typescript'
 import { getPathTemplate } from '../utils/express/getPathTemplate'
 import { RouterNames } from '../utils/express/RouterNames'
-import { getCorsEnabledPaths } from './getCorsEnabledPaths'
 import { getCorsHandlerArrowFunctionAst } from './getCorsHandlerArrowFunction'
-import { ExpressCorsRouterFactoryGeneratorConfig } from './typings'
 
-function getCorsRouterExpression(
-  paths: EnhancedPathItem[],
-  context: OpenAPIGeneratorContext,
-  config: ExpressCorsRouterFactoryGeneratorConfig,
-): Expression {
+function getCorsRouterExpression(paths: EnhancedPathItem[], context: OpenAPIGeneratorContext): Expression {
   const routerExpr: Expression = factory.createBinaryExpression(
     factory.createIdentifier(RouterNames.router),
     SyntaxKind.QuestionQuestionToken,
@@ -28,10 +22,7 @@ function getCorsRouterExpression(
       return factory.createCallExpression(
         factory.createPropertyAccessExpression(prevExpr, 'options'),
         [],
-        [
-          factory.createStringLiteral(getPathTemplate(pathItem.url)),
-          getCorsHandlerArrowFunctionAst(pathItem, context, config),
-        ],
+        [factory.createStringLiteral(getPathTemplate(pathItem.url)), getCorsHandlerArrowFunctionAst(pathItem, context)],
       )
     }, routerExpr)
 }
@@ -45,12 +36,7 @@ const warningLabel = `WARNING: CORS router factory found no allowed origins for 
 - More info on CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 - More info on configuring generators: https://oats-ts.github.io/docs/#/docs/OpenAPI_Generate`
 
-export function getCorsMiddlewareAst(
-  _paths: EnhancedPathItem[],
-  context: OpenAPIGeneratorContext,
-  config: ExpressCorsRouterFactoryGeneratorConfig,
-): Statement {
-  const paths = getCorsEnabledPaths(_paths, config)
+export function getCorsRouterFactoryAst(paths: EnhancedPathItem[], context: OpenAPIGeneratorContext): Statement {
   const fnNode = factory.createFunctionDeclaration(
     undefined,
     [factory.createModifier(SyntaxKind.ExportKeyword)],
@@ -68,7 +54,7 @@ export function getCorsMiddlewareAst(
       ),
     ],
     factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
-    factory.createBlock([factory.createReturnStatement(getCorsRouterExpression(paths, context, config))], true),
+    factory.createBlock([factory.createReturnStatement(getCorsRouterExpression(paths, context))], true),
   )
 
   return paths.length === 0 ? documentNode(fnNode, { description: warningLabel }) : fnNode

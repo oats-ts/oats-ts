@@ -3,15 +3,19 @@ import { PresetGeneratorConfiguration } from '@oats-ts/openapi-generators'
 export const overrides: Record<string, Partial<PresetGeneratorConfiguration>> = {
   'schemas/pet-store-yaml.yaml': {
     'oats/cors-configuration': { getAllowedOrigins: () => ['https://foo.com'] },
+    'oats/express-router-factory': { cors: true },
   },
   'schemas/book-store.json': {
     'oats/cors-configuration': { getAllowedOrigins: () => true },
+    'oats/express-router-factory': { cors: true },
   },
   'schemas/pet-store-json.json': {
     'oats/cors-configuration': { getAllowedOrigins: () => true },
+    'oats/express-router-factory': { cors: true },
   },
   'generated-schemas/methods.json': {
     'oats/cors-configuration': { getAllowedOrigins: () => true },
+    'oats/express-router-factory': { cors: true },
   },
   'generated-schemas/parameters.json': {
     'oats/operation': {
@@ -24,10 +28,11 @@ export const overrides: Record<string, Partial<PresetGeneratorConfiguration>> = 
     'oats/request-type': {
       cookies: true,
     },
+    'oats/express-router-factory': { cors: true },
     'oats/cors-configuration': {
       getAllowedOrigins: () => true,
-      isCredentialsAllowed: (url: string) => {
-        return url === '/form-cookie-parameters' ? true : undefined
+      isCredentialsAllowed: (path: string) => {
+        return path === '/form-cookie-parameters' ? true : undefined
       },
     },
   },

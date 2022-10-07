@@ -53,7 +53,7 @@ export function getCorsExpressionForOperation(
       ...(responseHeaders.length > 0
         ? [factory.createPropertyAssignment(RouterNames.allowedResponseHeaders, responseHeadersExpression)]
         : []),
-      ...(!isNil(credentials) && typeof credentials === 'number'
+      ...(!isNil(credentials) && typeof credentials === 'boolean'
         ? [
             factory.createPropertyAssignment(
               RouterNames.allowCredentials,

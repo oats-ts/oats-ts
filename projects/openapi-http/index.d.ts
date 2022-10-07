@@ -48,8 +48,13 @@ export type ServerAdapter<T> = {
 
   getStatusCode(toolkit: T, resp: HttpResponse): Promise<number>
   getResponseBody(toolkit: T, resp: HttpResponse): Promise<any>
-  getPreflightCorsHeaders(toolkit: T, cors: PreflightCorsConfiguration): Promise<RawHttpHeaders>
-  getCorsHeaders(toolkit: T, cors: CorsConfiguration): Promise<RawHttpHeaders>
+  getPreflightCorsHeaders(
+    toolkit: T,
+    method: HttpMethod | undefined,
+    cors: OperationCorsConfiguration | undefined,
+  ): Promise<RawHttpHeaders>
+  getCorsHeaders(toolkit: T, cors: OperationCorsConfiguration | undefined): Promise<RawHttpHeaders>
+  getAccessControlRequestedMethod(toolkit: T): HttpMethod | undefined
   getResponseHeaders(
     toolkit: T,
     resp: HttpResponse,
@@ -66,29 +71,18 @@ export type ServerAdapter<T> = {
   handleError(toolkit: T, error: any): Promise<void>
 }
 
-export type MainCorsConfig = Partial<Record<string, PathCorsConfig>>
-export type PathCorsConfig = Partial<Record<HttpMethod, CorsConfig>>
-export type CorsConfig = {
-  allowedOrigins?: string[] | boolean
-  allowedRequestHeaders?: string[]
-  allowedResponseHeaders?: string[]
-  allowCredentials?: boolean
-  maxAge?: number
-}
-
-export type PreflightCorsConfiguration = {
-  allowedOrigins?: Partial<Record<HttpMethod, string[] | true>>
-  allowedMethods?: HttpMethod[]
-  allowedRequestHeaders?: Partial<Record<HttpMethod, string[]>>
-  allowedResponseHeaders?: Partial<Record<HttpMethod, string[]>>
-  allowCredentials?: Partial<Record<HttpMethod, boolean | undefined>>
-  maxAge?: Partial<Record<HttpMethod, number | undefined>>
-}
-
 export type CorsConfiguration = {
-  allowedOrigins?: string[] | true
-  allowedResponseHeaders?: string[]
-  allowCredentials?: boolean | undefined
+  readonly [path: string]: {
+    readonly [method in HttpMethod]?: OperationCorsConfiguration
+  }
+}
+
+export type OperationCorsConfiguration = {
+  readonly allowedOrigins?: string[] | boolean
+  readonly allowedRequestHeaders?: string[]
+  readonly allowedResponseHeaders?: string[]
+  readonly allowCredentials?: boolean
+  readonly maxAge?: number
 }
 
 export type RequestBodyValidators<C extends string = string> = {

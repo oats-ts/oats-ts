@@ -24,7 +24,6 @@ export class HttpMethodsApiImpl implements HttpMethodsApi {
     return this.respond('get')
   }
   async patchMethod(): Promise<PatchMethodServerResponse> {
-    console.log("hitting patch")
     return this.respond('patch')
   }
   async postMethod(): Promise<PostMethodServerResponse> {

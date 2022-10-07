@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { MainCorsConfig } from '@oats-ts/openapi-http'
+import { CorsConfiguration } from '@oats-ts/openapi-http'
 
 /**
  * WARNING: No allowed origins for any operations, generator "oats/cors-configuration" likely needs to be configured!
@@ -14,4 +14,4 @@ import { MainCorsConfig } from '@oats-ts/openapi-http'
  * - More info on CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
  * - More info on configuring generators: https://oats-ts.github.io/docs/#/docs/OpenAPI_Generate
  */
-export const optionalBodiesCorsConfiguration: MainCorsConfig = {}
+export const optionalBodiesCorsConfiguration: CorsConfiguration = {}

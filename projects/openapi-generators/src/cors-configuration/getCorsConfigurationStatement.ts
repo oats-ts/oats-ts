@@ -32,7 +32,7 @@ export function getCorsConfigurationStatement(
         factory.createVariableDeclaration(
           context.nameOf(context.document, 'oats/cors-configuration'),
           undefined,
-          factory.createTypeReferenceNode(RuntimePackages.Http.MainCorsConfig),
+          factory.createTypeReferenceNode(RuntimePackages.Http.CorsConfiguration),
           getCorsExpression(paths, context, config),
         ),
       ],

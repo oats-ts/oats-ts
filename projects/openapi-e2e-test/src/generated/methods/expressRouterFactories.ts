@@ -8,6 +8,7 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { HttpMethodsApi } from './apiType'
+import { httpMethodsCorsConfiguration } from './corsConfiguration'
 
 export function createDeleteMethodRouter(router?: IRouter): IRouter {
   return (router ?? Router()).delete(
@@ -17,9 +18,11 @@ export function createDeleteMethodRouter(router?: IRouter): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
+        const corsConfig = httpMethodsCorsConfiguration?.['/delete-method']?.['delete']
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.deleteMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -39,9 +42,11 @@ export function createGetMethodRouter(router?: IRouter): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
+        const corsConfig = httpMethodsCorsConfiguration?.['/get-method']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.getMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -61,9 +66,11 @@ export function createPatchMethodRouter(router?: IRouter): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
+        const corsConfig = httpMethodsCorsConfiguration?.['/patch-method']?.patch
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.patchMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -83,9 +90,11 @@ export function createPostMethodRouter(router?: IRouter): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
+        const corsConfig = httpMethodsCorsConfiguration?.['/post-method']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.postMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -105,9 +114,11 @@ export function createPutMethodRouter(router?: IRouter): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
       const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
       try {
+        const corsConfig = httpMethodsCorsConfiguration?.['/put-method']?.put
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.putMethod()
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

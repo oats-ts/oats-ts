@@ -7,8 +7,7 @@ import {
   ServerAdapter,
   Cookies,
   HttpMethod,
-  PreflightCorsConfiguration,
-  CorsConfiguration,
+  OperationCorsConfiguration,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
@@ -104,6 +103,17 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
+  public getAccessControlRequestedMethod({ request }: ExpressToolkit): HttpMethod | undefined {
+    return request.header('access-control-request-method')?.toLowerCase() as HttpMethod | undefined
+  }
+
+  protected isMatchingHttpMethod(allowed?: HttpMethod[], method?: HttpMethod): method is HttpMethod {
+    if (method === null || method === undefined || allowed === null || allowed === undefined) {
+      return false
+    }
+    return allowed.includes(method)
+  }
+
   protected isMatchingOrigin(allowed?: string[] | boolean, origin?: string): boolean {
     if (typeof allowed === 'boolean') {
       return allowed
@@ -114,74 +124,61 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return allowed.includes(origin)
   }
 
-  protected isMatchingHttpMethod(allowed?: HttpMethod[], method?: HttpMethod): method is HttpMethod {
-    if (method === null || method === undefined || allowed === null || allowed === undefined) {
-      return false
-    }
-    return allowed.includes(method)
-  }
-
   public async getPreflightCorsHeaders(
-    { request }: ExpressToolkit,
-    {
-      allowedOrigins,
-      allowedMethods,
-      allowedRequestHeaders = {},
-      allowedResponseHeaders = {},
-      allowCredentials = {},
-      maxAge = {},
-    }: PreflightCorsConfiguration,
+    toolkit: ExpressToolkit,
+    method: HttpMethod | undefined,
+    cors: OperationCorsConfiguration | undefined = {},
   ): Promise<RawHttpHeaders> {
-    const origin = request.header('origin')
-    const method = request.header('access-control-request-method')?.toLowerCase() as HttpMethod | undefined
-    const requestedHeaders = (request.header('access-control-request-headers') ?? '')
+    const {
+      allowedOrigins,
+      allowedRequestHeaders = [],
+      allowedResponseHeaders = [],
+      allowCredentials,
+      maxAge,
+    } = cors ?? {}
+
+    const origin = toolkit.request.header('origin')
+    const requestedHeaders = (toolkit.request.header('access-control-request-headers') ?? '')
       .split(',')
       .map((header) => header.trim().toLowerCase())
 
-    if (!this.isMatchingHttpMethod(allowedMethods, method)) {
-      return {}
-    }
-
-    if (!this.isMatchingOrigin(allowedOrigins?.[method], origin)) {
+    if (method === undefined || method === null || !this.isMatchingOrigin(allowedOrigins, origin)) {
       return {}
     }
 
     const corsHeaders: RawHttpHeaders = {
       'access-control-allow-origin': origin ?? '*',
-      'access-control-allow-methods': method.toUpperCase(),
+      'access-control-allow-methods': method?.toUpperCase(),
     }
 
     if (Array.isArray(requestedHeaders) && requestedHeaders.length > 0) {
-      const allowedRequestHeadersForMethod = allowedRequestHeaders[method] ?? []
-      const allowedReqHeaders = requestedHeaders.filter((header) => allowedRequestHeadersForMethod.includes(header))
-      if (allowedReqHeaders.length > 0) {
-        corsHeaders['access-control-allow-headers'] = allowedReqHeaders.join(', ')
+      const requestHeaders = requestedHeaders.filter((header) => allowedRequestHeaders.includes(header))
+      if (requestHeaders.length > 0) {
+        corsHeaders['access-control-allow-headers'] = requestHeaders.join(', ')
       }
     }
 
-    const allowedResponseHeadersForMethod = allowedResponseHeaders[method] ?? []
-    if (allowedResponseHeadersForMethod.length > 0) {
-      corsHeaders['access-control-expose-headers'] = allowedResponseHeadersForMethod.join(', ')
+    if (allowedResponseHeaders.length > 0) {
+      corsHeaders['access-control-expose-headers'] = allowedResponseHeaders.join(', ')
     }
 
-    const maxAgeSecs = maxAge[method]
-    if (maxAgeSecs !== undefined) {
-      corsHeaders['access-control-max-age'] = maxAgeSecs.toString(10)
+    if (maxAge !== undefined) {
+      corsHeaders['access-control-max-age'] = maxAge.toString(10)
     }
 
-    const includeCreds = allowCredentials[method]
-    if (includeCreds !== undefined) {
-      corsHeaders['access-control-allow-credentials'] = includeCreds.toString()
+    if (allowCredentials !== undefined) {
+      corsHeaders['access-control-allow-credentials'] = allowCredentials.toString()
     }
 
     return corsHeaders
   }
 
   public async getCorsHeaders(
-    { request }: ExpressToolkit,
-    { allowedOrigins, allowedResponseHeaders = [], allowCredentials }: CorsConfiguration,
+    toolkit: ExpressToolkit,
+    cors: OperationCorsConfiguration | undefined,
   ): Promise<RawHttpHeaders> {
-    const origin = request.header('origin')
+    const { allowedOrigins, allowedResponseHeaders = [], allowCredentials } = cors ?? {}
+    const origin = toolkit.request.header('origin')
 
     if (!this.isMatchingOrigin(allowedOrigins, origin)) {
       return {}
@@ -261,8 +258,14 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
         toolkit.response.header('set-cookie', cookies)
       }
     }
-    if (toolkit.response.writable) {
-      toolkit.response.send(rawResponse.body ?? '')
+    if (rawResponse.body !== undefined && rawResponse.body !== null) {
+      if (toolkit.response.writable) {
+        toolkit.response.send(rawResponse.body)
+      }
+    } else {
+      if (toolkit.response.writable) {
+        toolkit.response.end()
+      }
     }
   }
 
