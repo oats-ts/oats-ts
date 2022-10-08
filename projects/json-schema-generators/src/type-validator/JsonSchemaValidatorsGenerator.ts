@@ -8,14 +8,17 @@ import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile } from '@oats-ts/typescript-common'
 import { getValidatorAst } from './getValidatorAst'
-import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
+import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput, TraversalHelper } from '../types'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { TraversalHelperImpl } from '../TraversalHelperImpl'
 
 export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,
   ValidatorsGeneratorConfig
 > {
+  private helper!: TraversalHelper
+
   public name(): JsonSchemaGeneratorTarget {
     return 'oats/type-validator'
   }
@@ -28,27 +31,38 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     return [{ name: RuntimePackages.Validators.name, version }]
   }
 
+  protected preGenerate(): void {
+    this.helper = new TraversalHelperImpl(this.context)
+  }
+
   protected shouldGenerate(schema: Referenceable<SchemaObject>): boolean {
     const config = this.configuration()
     if (isNil(config?.ignore)) {
       return true
     }
-    return !config.ignore(schema, this.context.uriOf(schema))
+    return !config.ignore(schema, this.helper)
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): Expression {
-    return getRightHandSideValidatorAst(input, this.context, this.configuration())
+    return getRightHandSideValidatorAst(input, this.context, this.configuration(), this.helper)
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
-    return getValidatorImports(fromPath, input, this.context, this.configuration(), collectExternalReferenceImports)
+    return getValidatorImports(
+      fromPath,
+      input,
+      this.context,
+      this.configuration(),
+      this.helper,
+      collectExternalReferenceImports,
+    )
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(schema, 'oats/type-validator')
     return success(
-      createSourceFile(path, getValidatorImports(path, schema, this.context, this.configuration()), [
-        getValidatorAst(schema, this.context, this.configuration()),
+      createSourceFile(path, getValidatorImports(path, schema, this.context, this.configuration(), this.helper), [
+        getValidatorAst(schema, this.context, this.configuration(), this.helper),
       ]),
     )
   }

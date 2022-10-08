@@ -8,13 +8,16 @@ import { getTypeGuardImports } from './getTypeGuardImports'
 import { getTypeGuardFunctionAst } from './getTypeGuardFunctionAst'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
-import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
+import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput, TraversalHelper } from '../types'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
+import { TraversalHelperImpl } from '../TraversalHelperImpl'
 
 export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,
   TypeGuardGeneratorConfig
 > {
+  private helper!: TraversalHelper
+
   public name(): JsonSchemaGeneratorTarget {
     return 'oats/type-guard'
   }
@@ -32,7 +35,11 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     if (isNil(config?.ignore)) {
       return true
     }
-    return !config.ignore(schema, this.context.uriOf(schema))
+    return !config.ignore(schema, this.helper)
+  }
+
+  protected preGenerate(): void {
+    this.helper = new TraversalHelperImpl(this.context)
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
@@ -41,12 +48,19 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     return success(
       createSourceFile(
         path,
-        [...typeImports, ...getTypeGuardImports(schema, this.context, this.configuration())],
+        [...typeImports, ...getTypeGuardImports(schema, this.context, this.configuration(), this.helper)],
         [
           getTypeGuardFunctionAst(
             schema,
             this.context,
-            getTypeAssertionAst(schema, this.context, factory.createIdentifier('input'), this.configuration(), 0),
+            getTypeAssertionAst(
+              schema,
+              this.context,
+              factory.createIdentifier('input'),
+              this.configuration(),
+              this.helper,
+              0,
+            ),
           ),
         ],
       ),

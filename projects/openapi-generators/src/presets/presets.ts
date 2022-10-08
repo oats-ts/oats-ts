@@ -23,11 +23,11 @@ function getCorsConfiguration(
 }
 
 function commonConfig(config: OpenAPICommonPresetConfig): OpenAPIPresetConfig {
-  const { documentation } = config
+  const { documentation, ignoreTypeGuard, ignoreValidator } = config
   return {
     'oats/type': isNil(documentation) ? true : { documentation: documentation },
-    'oats/type-validator': true,
-    'oats/type-guard': true,
+    'oats/type-validator': isNil(ignoreValidator) ? true : { ignore: ignoreValidator },
+    'oats/type-guard': isNil(ignoreTypeGuard) ? true : { ignore: ignoreTypeGuard },
     'oats/query-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/path-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/request-headers-type': isNil(documentation) ? true : { documentation: documentation },

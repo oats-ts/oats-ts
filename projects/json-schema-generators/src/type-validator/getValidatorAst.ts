@@ -1,6 +1,6 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { factory, NodeFlags, SyntaxKind } from 'typescript'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 
@@ -8,6 +8,7 @@ export function getValidatorAst(
   schema: Referenceable<SchemaObject>,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  helper: TraversalHelper,
 ) {
   return factory.createVariableStatement(
     [factory.createModifier(SyntaxKind.ExportKeyword)],
@@ -17,7 +18,7 @@ export function getValidatorAst(
           context.nameOf(schema, 'oats/type-validator'),
           undefined,
           undefined,
-          getRightHandSideValidatorAst(schema, context, config),
+          getRightHandSideValidatorAst(schema, context, config, helper),
         ),
       ],
       NodeFlags.Const,

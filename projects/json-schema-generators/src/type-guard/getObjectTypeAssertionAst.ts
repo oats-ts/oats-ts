@@ -5,13 +5,14 @@ import { getDiscriminators } from '@oats-ts/model-common'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
 import { getLogicalExpression, reduceLogicalExpressions, safeMemberAccess } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getObjectTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: TypeGuardGeneratorConfig,
+  helper: TraversalHelper,
   level: number,
 ): Expression {
   const discriminators = getDiscriminators(data, context) || {}
@@ -26,7 +27,7 @@ export function getObjectTypeAssertionAst(
     .filter(([name]) => !has(discriminators, name))
     .map(([name, schemaOrRef]) => {
       const memberVar = safeMemberAccess(variable, name)
-      const assertion = getTypeAssertionAst(schemaOrRef, context, memberVar, config, level + 1)
+      const assertion = getTypeAssertionAst(schemaOrRef, context, memberVar, config, helper, level + 1)
       if (assertion.kind === SyntaxKind.TrueKeyword) {
         return assertion
       }

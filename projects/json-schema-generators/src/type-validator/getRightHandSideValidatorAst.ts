@@ -12,24 +12,25 @@ import { getEnumValidatorAst } from './getEnumValidatorAst'
 import { getLiteralValidatorAst } from './getLiteralValidatorAst'
 import { getTupleValidatorAst } from './getTupleValidatorAst'
 import { getIntersectionTypeValidatorAst } from './getIntersectionTypeValidatorAst'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getRightHandSideValidatorAst(
   data: SchemaObject | ReferenceObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  helper: TraversalHelper,
 ): Expression {
-  if (config.ignore(data, context.uriOf(data))) {
+  if (config.ignore(data, helper)) {
     return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
   }
   if (isReferenceObject(data)) {
-    return getReferenceValidatorAst(data, context, config)
+    return getReferenceValidatorAst(data, context, config, helper)
   }
   switch (getInferredType(data)) {
     case 'union':
-      return getUnionTypeValidatorAst(data, context, config)
+      return getUnionTypeValidatorAst(data, context, config, helper)
     case 'intersection':
-      return getIntersectionTypeValidatorAst(data, context, config)
+      return getIntersectionTypeValidatorAst(data, context, config, helper)
     case 'enum':
       return getEnumValidatorAst(data)
     case 'string':
@@ -39,15 +40,15 @@ export function getRightHandSideValidatorAst(
     case 'boolean':
       return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.boolean), [], [])
     case 'record':
-      return getRecordValidatorAst(data, context, config)
+      return getRecordValidatorAst(data, context, config, helper)
     case 'object':
-      return getObjectValidatorAst(data, context, config)
+      return getObjectValidatorAst(data, context, config, helper)
     case 'array':
-      return getArrayValidatorAst(data, context, config)
+      return getArrayValidatorAst(data, context, config, helper)
     case 'literal':
       return getLiteralValidatorAst(data)
     case 'tuple':
-      return getTupleValidatorAst(data, context, config)
+      return getTupleValidatorAst(data, context, config, helper)
     default:
       return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
   }

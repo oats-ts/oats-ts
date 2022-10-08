@@ -3,23 +3,23 @@ import { factory, CallExpression, Identifier } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getArrayValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  helper: TraversalHelper,
 ): CallExpression | Identifier {
   const itemsSchema = data.items as Referenceable<SchemaObject>
-  const uri = context.uriOf(itemsSchema)
   const itemsValidator = factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.items),
     [],
-    [getRightHandSideValidatorAst(itemsSchema, context, config)],
+    [getRightHandSideValidatorAst(itemsSchema, context, config, helper)],
   )
   return factory.createCallExpression(
     factory.createIdentifier(RuntimePackages.Validators.array),
     [],
-    config.ignore(itemsSchema, uri) ? [] : [itemsValidator],
+    config.ignore(itemsSchema, helper) ? [] : [itemsValidator],
   )
 }

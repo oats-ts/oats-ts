@@ -3,13 +3,14 @@ import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getTupleTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: TypeGuardGeneratorConfig,
+  helper: TraversalHelper,
   level: number,
 ): Expression {
   const { prefixItems = [], minItems = 0 } = data
@@ -20,7 +21,7 @@ export function getTupleTypeAssertionAst(
   )
   const expressions = prefixItems.map((item, index) => {
     const itemAst = factory.createElementAccessExpression(variable, factory.createNumericLiteral(index))
-    const itemAssert = getTypeAssertionAst(item, context, itemAst, config, level + 1)
+    const itemAssert = getTypeAssertionAst(item, context, itemAst, config, helper, level + 1)
     if (index < minItems) {
       return itemAssert
     }

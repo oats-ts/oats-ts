@@ -28,12 +28,11 @@ export const overrides: Record<string, Partial<OpenAPIFullStackPresetConfig>> = 
     },
   },
   'schemas/ignored-schemas.json': {
-    // TODO
-    // 'oats/type-guard': {
-    //   ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-    // },
-    // 'oats/type-validator': {
-    //   ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-    // },
+    ignoreTypeGuard: (schema: any) => {
+      return Boolean(schema?.['x-ignore'])
+    },
+    ignoreValidator: (schema: any) => {
+      return Boolean(schema?.['x-ignore'])
+    },
   },
 }

@@ -4,12 +4,13 @@ import { factory, Expression } from 'typescript'
 import { ValidatorsGeneratorConfig } from './typings'
 import { isNil } from 'lodash'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getReferenceValidatorAst(
   data: ReferenceObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  helper: TraversalHelper,
 ): Expression {
   const resolved = context.dereference(data)
   const name = context.nameOf(resolved, 'oats/type-validator')
@@ -19,5 +20,5 @@ export function getReferenceValidatorAst(
       factory.createArrowFunction([], [], [], undefined, undefined, validator),
     ])
   }
-  return getRightHandSideValidatorAst(resolved, context, config)
+  return getRightHandSideValidatorAst(resolved, context, config, helper)
 }

@@ -4,19 +4,22 @@ import { Expression, factory, SyntaxKind } from 'typescript'
 import { getTypeAssertionAst } from './getTypeAssertionAst'
 import { TypeGuardGeneratorConfig } from './typings'
 import { reduceLogicalExpressions } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getUnionTypeAssertionAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   variable: Expression,
   config: TypeGuardGeneratorConfig,
+  helper: TraversalHelper,
   level: number,
 ): Expression {
   if (isNil(data.discriminator)) {
     return reduceLogicalExpressions(
       SyntaxKind.BarBarToken,
-      (data.oneOf ?? []).map((refOrSchema) => getTypeAssertionAst(refOrSchema, context, variable, config, level)),
+      (data.oneOf ?? []).map((refOrSchema) =>
+        getTypeAssertionAst(refOrSchema, context, variable, config, helper, level),
+      ),
     )
   }
   // Should be just schema objects at this point.

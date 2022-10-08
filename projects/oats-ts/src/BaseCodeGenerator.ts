@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 import { failure, fromArray, isFailure, success, Try } from '@oats-ts/try'
-import { GeneratorInit, RuntimeDependency } from './typings'
+import { RuntimeDependency } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap } from 'lodash'
@@ -11,10 +11,6 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
   protected context!: Ctx
   protected items!: M[]
-
-  public initialize(init: GeneratorInit<R, G>): void {
-    super.initialize(init)
-  }
 
   public produces(): string[] {
     return [this.name()]
@@ -35,6 +31,10 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
   protected getIssues(item: M): Issue[] {
     return []
   }
+
+  protected preGenerate(): void {}
+
+  protected postGenerate(data: Try<G[]>, issues: Issue[]): void {}
 
   private async generateWithCatch(): Promise<[Try<G[]>, Issue[]]> {
     if (isFailure(this.dependencies)) {
@@ -68,18 +68,21 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
     const { noEmit } = this.globalConfig
 
+    this.context = this.createContext()
+
     if (!noEmit) {
-      this.context = this.createContext()
       this.items = this.getItems()
     }
 
     await this.tick()
 
+    this.preGenerate()
     const preIssues = this.getPreGenerateIssues()
     const [data, itemIssues]: [Try<G[]>, Issue[]] = noEmit ? [success([]), []] : await this.generateWithCatch()
     const postIssues = this.getPostGenerateIssues(data)
-
     const issues = [...preIssues, ...itemIssues, ...postIssues]
+    this.postGenerate(data, issues)
+
     const wrappedResult = simpleResult<G>(data, issues)
 
     this.emitter.emit('generator-completed', {

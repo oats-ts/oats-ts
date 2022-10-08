@@ -1,4 +1,5 @@
 import {
+  TraversalHelper,
   TypeGuardGeneratorConfig,
   TypesGeneratorConfig,
   ValidatorsGeneratorConfig,
@@ -14,6 +15,7 @@ import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
 import { ExpressCorsRouterFactoryGeneratorConfig } from '../express-cors-router-factory'
 import { CorsConfigurationGeneratorConfig } from '../cors-configuration/typings'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
@@ -41,6 +43,8 @@ export type OpenAPIPresetConfig = {
 
 export type OpenAPICommonPresetConfig = {
   documentation?: boolean
+  ignoreValidator?: (schema: Referenceable<SchemaObject>, helper: TraversalHelper) => boolean
+  ignoreTypeGuard?: (schema: Referenceable<SchemaObject>, helper: TraversalHelper) => boolean
 }
 
 export type OpenAPIClientPresetConfig = OpenAPICommonPresetConfig & {

@@ -3,16 +3,17 @@ import { factory, CallExpression, Identifier } from 'typescript'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { ValidatorsGeneratorConfig } from './typings'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 export function getTupleValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  helper: TraversalHelper,
 ): CallExpression | Identifier {
   const { prefixItems = [], minItems = 0 } = data
   const parameters = prefixItems.map((item, index) => {
-    const validator = getRightHandSideValidatorAst(item, context, config)
+    const validator = getRightHandSideValidatorAst(item, context, config, helper)
     return index < minItems
       ? validator
       : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [validator])

@@ -4,7 +4,7 @@ import { getInferredType, RuntimePackages } from '@oats-ts/model-common'
 import { getRightHandSideValidatorAst } from './getRightHandSideValidatorAst'
 import { ValidatorsGeneratorConfig } from './typings'
 import { safeName } from '@oats-ts/typescript-common'
-import { JsonSchemaGeneratorContext } from '../types'
+import { JsonSchemaGeneratorContext, TraversalHelper } from '../types'
 
 function getSchemaKey(data: Referenceable<SchemaObject>, index: number, context: JsonSchemaGeneratorContext): string {
   const type = getInferredType(data)
@@ -24,11 +24,12 @@ export function getUnionTypeValidatorAst(
   data: SchemaObject,
   context: JsonSchemaGeneratorContext,
   config: ValidatorsGeneratorConfig,
+  helper: TraversalHelper,
 ): CallExpression | Identifier {
   const properties = (data.oneOf || []).map((item, index) =>
     factory.createPropertyAssignment(
       safeName(getSchemaKey(item, index, context)),
-      getRightHandSideValidatorAst(item, context, config),
+      getRightHandSideValidatorAst(item, context, config, helper),
     ),
   )
   const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
