@@ -70,6 +70,11 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @param target The generator target
    */
   configurationOf<T>(target: Target): T
+  /**
+   * @param uri The absolute URI of the object you are looking for.
+   * @returns The object associated with this URI.
+   */
+  byUri<T>(uri: string): T | undefined
 }
 
 export type HasSchemas = {

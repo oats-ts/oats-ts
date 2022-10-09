@@ -27,6 +27,10 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
   }
 
+  public byUri<T>(uri: string): T {
+    return this.data.uriToObject.get(uri)
+  }
+
   public dereference<T>(input: string | ReferenceObject | T, deep?: boolean): T {
     if (typeof input === 'string') {
       return deep ? this.dereference(this.data.uriToObject.get(input)) : this.data.uriToObject.get(input)
