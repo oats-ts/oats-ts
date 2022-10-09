@@ -47,43 +47,45 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
       undefined,
       this.getRighthandSideTypeAst(schema),
     )
-    return this.configuration().documentation && !this.isReferenceObject(schema) ? documentNode(node, schema) : node
+    return this.configuration().documentation && !this.type.isReferenceObject(schema)
+      ? documentNode(node, schema)
+      : node
   }
 
   protected getRighthandSideTypeAst(data: Referenceable<SchemaObject>): TypeNode {
-    if (this.isReferenceObject(data)) {
+    if (this.type.isReferenceObject(data)) {
       return this.getTypeReferenceAst(data)
     }
-    if (this.isArraySchema(data)) {
+    if (this.type.isArraySchema(data)) {
       return this.getArrayTypeAst(data)
-    } else if (this.isEnumSchema(data)) {
+    } else if (this.type.isEnumSchema(data)) {
       return this.getLiteralUnionTypeAst(data)
-    } else if (this.isObjectSchema(data)) {
+    } else if (this.type.isObjectSchema(data)) {
       return this.getObjectTypeAst(data)
-    } else if (this.isRecordSchema(data)) {
+    } else if (this.type.isRecordSchema(data)) {
       return this.getRecordTypeAst(data)
-    } else if (this.isUnionSchema(data)) {
+    } else if (this.type.isUnionSchema(data)) {
       return this.getUnionTypeAst(data)
-    } else if (this.isIntersectionSchema(data)) {
+    } else if (this.type.isIntersectionSchema(data)) {
       return this.getIntersectionTypeAst(data)
-    } else if (this.isLiteralSchema(data)) {
+    } else if (this.type.isLiteralSchema(data)) {
       return this.getLiteralTypeAst(data)
-    } else if (this.isTupleSchema(data)) {
+    } else if (this.type.isTupleSchema(data)) {
       return this.getTupleTypeAst(data)
-    } else if (this.isStringSchema(data)) {
+    } else if (this.type.isStringSchema(data)) {
       return this.getStringTypeAst(data)
-    } else if (this.isBooleanSchema(data)) {
+    } else if (this.type.isBooleanSchema(data)) {
       return this.getBooleanTypeAst(data)
-    } else if (this.isNumberSchema(data)) {
+    } else if (this.type.isNumberSchema(data)) {
       return this.getNumberTypeAst(data)
     }
-    return this.getFallbackTypeAst(data)
+    return this.getUnknownTypeAst(data)
   }
 
   protected getTypeReferenceAst(data: Referenceable<SchemaObject> | undefined): TypeNode {
     const schema = isNil(data) ? undefined : this.context.dereference(data)
     if (isNil(schema)) {
-      return this.getFallbackTypeAst(data)
+      return this.getUnknownTypeAst(data)
     }
     const name = this.context.nameOf(schema)
     if (isNil(name)) {
@@ -94,7 +96,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
 
   protected getArrayTypeAst(data: SchemaObject): TypeNode {
     const itemsType =
-      typeof data.items === 'boolean' ? this.getFallbackTypeAst(undefined) : this.getTypeReferenceAst(data.items)
+      typeof data.items === 'boolean' ? this.getUnknownTypeAst(undefined) : this.getTypeReferenceAst(data.items)
     return factory.createArrayTypeNode(itemsType)
   }
 
@@ -157,7 +159,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
           isOptional ? factory.createToken(SyntaxKind.QuestionToken) : undefined,
           this.getTypeReferenceAst(schemaOrRef),
         )
-        return config.documentation && !this.isReferenceObject(data) ? documentNode(node, data) : node
+        return config.documentation && !this.type.isReferenceObject(data) ? documentNode(node, data) : node
       })
 
     return factory.createTypeLiteralNode(discriminatorProperties.concat(properties))
@@ -180,7 +182,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
     const types = (data.allOf ?? [])
       .map((type) => this.getTypeReferenceAst(type))
       .filter((ast) => ast.kind !== SyntaxKind.AnyKeyword)
-    return types.length > 0 ? factory.createIntersectionTypeNode(types) : this.getFallbackTypeAst(data)
+    return types.length > 0 ? factory.createIntersectionTypeNode(types) : this.getUnknownTypeAst(data)
   }
 
   protected getTupleTypeAst(schema: SchemaObject): TypeNode {
@@ -204,7 +206,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
     return factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword)
   }
 
-  protected getFallbackTypeAst(schema: Referenceable<SchemaObject> | undefined): TypeNode {
+  protected getUnknownTypeAst(schema: Referenceable<SchemaObject> | undefined): TypeNode {
     return factory.createKeywordTypeNode(SyntaxKind.AnyKeyword)
   }
 

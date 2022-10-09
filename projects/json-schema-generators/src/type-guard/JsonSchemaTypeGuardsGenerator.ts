@@ -11,17 +11,14 @@ import {
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { success, Try } from '@oats-ts/try'
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
-import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput, TraversalHelper } from '../types'
+import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { TraversalHelperImpl } from '../TraversalHelperImpl'
 import { getDiscriminators } from '@oats-ts/model-common'
 
 export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
   T,
   TypeGuardGeneratorConfig
 > {
-  protected helper!: TraversalHelper
-
   public name(): JsonSchemaGeneratorTarget {
     return 'oats/type-guard'
   }
@@ -32,10 +29,6 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
 
   public runtimeDependencies(): RuntimeDependency[] {
     return []
-  }
-
-  protected preGenerate(): void {
-    this.helper = new TraversalHelperImpl(this.context)
   }
 
   public referenceOf(input: any) {
@@ -106,29 +99,29 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
       return factory.createTrue()
     }
 
-    if (this.isReferenceObject(data)) {
+    if (this.type.isReferenceObject(data)) {
       return this.getReferenceAssertionAst(data, variable)
-    } else if (this.isUnionSchema(data)) {
+    } else if (this.type.isUnionSchema(data)) {
       return this.getUnionTypeAssertionAst(data, variable)
-    } else if (this.isEnumSchema(data)) {
+    } else if (this.type.isEnumSchema(data)) {
       return this.getEnumAssertionAst(data, variable)
-    } else if (this.isLiteralSchema(data)) {
+    } else if (this.type.isLiteralSchema(data)) {
       return this.getLiteralTypeAssertionAst(data, variable)
-    } else if (this.isIntersectionSchema(data)) {
+    } else if (this.type.isIntersectionSchema(data)) {
       return this.getIntersectionTypeAssertionAst(data, variable)
-    } else if (this.isStringSchema(data)) {
+    } else if (this.type.isStringSchema(data)) {
       return this.getStringTypeAssertionAst(data, variable)
-    } else if (this.isNumberSchema(data)) {
+    } else if (this.type.isNumberSchema(data)) {
       return this.getNumberTypeAssertionAst(data, variable)
-    } else if (this.isBooleanSchema(data)) {
+    } else if (this.type.isBooleanSchema(data)) {
       return this.getBooleanTypeAssertionAst(data, variable)
-    } else if (this.isRecordSchema(data)) {
+    } else if (this.type.isRecordSchema(data)) {
       return this.getRecordTypeAssertionAst(data, variable)
-    } else if (this.isObjectSchema(data)) {
+    } else if (this.type.isObjectSchema(data)) {
       return this.getObjectTypeAssertionAst(data, variable)
-    } else if (this.isArraySchema(data)) {
+    } else if (this.type.isArraySchema(data)) {
       return this.getArrayTypeAssertionAst(data, variable)
-    } else if (this.isTupleSchema(data)) {
+    } else if (this.type.isTupleSchema(data)) {
       return this.getTupleTypeAssertionAst(data, variable)
     }
     return this.getUnknownTypeAssertion(data, variable)
@@ -454,7 +447,7 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     if (this.configuration().ignore(data, this.helper)) {
       return
     }
-    if (this.isReferenceObject(data)) {
+    if (this.type.isReferenceObject(data)) {
       const refTarget = this.context.dereference(data)
       const name = this.context.nameOf(refTarget, this.name())
       if (isNil(name)) {
@@ -465,36 +458,36 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
       return
     }
 
-    if (this.isUnionSchema(data)) {
+    if (this.type.isUnionSchema(data)) {
       for (const oneOfItemSchema of data.oneOf!) {
         this.collectImportedTypeGuardRefs(oneOfItemSchema, refs)
       }
       return
     }
 
-    if (this.isIntersectionSchema(data)) {
+    if (this.type.isIntersectionSchema(data)) {
       for (const allOfItemSchema of data.allOf!) {
         this.collectImportedTypeGuardRefs(allOfItemSchema, refs)
       }
       return
     }
 
-    if (this.isRecordSchema(data)) {
+    if (this.type.isRecordSchema(data)) {
       return this.collectImportedTypeGuardRefs(data.additionalProperties as Referenceable<SchemaObject>, refs)
     }
 
-    if (this.isObjectSchema(data)) {
+    if (this.type.isObjectSchema(data)) {
       for (const propSchema of values(data.properties)) {
         this.collectImportedTypeGuardRefs(propSchema, refs)
       }
       return
     }
 
-    if (this.isTupleSchema(data)) {
+    if (this.type.isTupleSchema(data)) {
       return data.prefixItems!.forEach((item) => this.collectImportedTypeGuardRefs(item, refs))
     }
 
-    if (this.isArraySchema(data)) {
+    if (this.type.isArraySchema(data)) {
       return this.collectImportedTypeGuardRefs(data.items as Referenceable<SchemaObject>, refs)
     }
   }

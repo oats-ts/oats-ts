@@ -7,8 +7,8 @@
 import { boolean, lazy, literal, number, object, shape, string, union } from '@oats-ts/validators'
 
 export const inlineObjectUnionTypeTypeValidator = union({
-  object0: object(shape({ foo: string() })),
-  object1: object(shape({ bar: number() })),
+  _0: object(shape({ foo: string() })),
+  _1: object(shape({ bar: number() })),
 })
 
 export const leafType1TypeValidator = object(
