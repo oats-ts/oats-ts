@@ -12,8 +12,8 @@ import { ParameterTypesGeneratorConfig } from './typings'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
 import { getReferencedNamedSchemas } from '@oats-ts/model-common'
-import { getParameterSchemaObject } from './getParameterSchemaObject'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 
 export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
   OpenAPIReadOutput,
@@ -60,10 +60,7 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
   }
 
   protected getImports(path: string, parameters: (ParameterObject | HeaderObject)[]): ImportDeclaration[] {
-    const referencedSchemas = getReferencedNamedSchemas(
-      getParameterSchemaObject(parameters, this.context),
-      this.context,
-    )
+    const referencedSchemas = getReferencedNamedSchemas(this.getParameterSchemaObject(parameters), this.context)
     return flatMap(referencedSchemas, (schema) => this.context.dependenciesOf(path, schema, 'oats/type'))
   }
 
@@ -99,5 +96,22 @@ export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
       throw new Error(`${JSON.stringify(input)} is not a registered operation.`)
     }
     return operation
+  }
+
+  protected getParameterSchemaObject(params: (ParameterObject | HeaderObject)[]): SchemaObject {
+    return {
+      type: 'object',
+      required: params
+        .filter((param) => param.required)
+        .map((param) => (param as ParameterObject).name ?? this.context.nameOf(param)),
+      properties: params.reduce(
+        (props: Record<string, SchemaObject | ReferenceObject>, param: ParameterObject | HeaderObject) => {
+          return Object.assign(props, {
+            [(param as ParameterObject).name ?? this.context.nameOf(param)]: param.schema,
+          })
+        },
+        {},
+      ),
+    }
   }
 }
