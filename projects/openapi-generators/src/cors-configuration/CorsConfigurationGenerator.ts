@@ -43,7 +43,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
     if (getCorsEnabledPaths(paths, this.configuration()).length === 0) {
       return [
         {
-          message: `no paths enabled by configuration`,
+          message: `No paths enabled for CORS by configuration.`,
           path: this.name(),
           severity: 'warning',
         },
