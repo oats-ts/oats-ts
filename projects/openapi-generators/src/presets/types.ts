@@ -14,7 +14,7 @@ import { Config } from '../types'
 import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
 import { ExpressCorsRouterFactoryGeneratorConfig } from '../express-cors-router-factory'
-import { CorsConfigurationGeneratorConfig } from '../cors-configuration/typings'
+import { CorsConfigurationGeneratorConfig } from '../cors-configuration'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
 type GeneratorConfigs = {

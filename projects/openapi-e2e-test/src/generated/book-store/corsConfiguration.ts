@@ -13,19 +13,23 @@ export const bookStoreCorsConfiguration: CorsConfiguration = {
       allowedRequestHeaders: ['x-limit'],
       allowedResponseHeaders: ['x-length', 'content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
     post: {
       allowedOrigins: true,
       allowedRequestHeaders: ['content-type'],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/books/{bookId}': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
 }

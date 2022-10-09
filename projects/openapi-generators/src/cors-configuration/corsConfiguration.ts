@@ -17,7 +17,7 @@ function defaultConfig({
     getAllowedOrigins: getAllowedOrigins ?? (() => false),
     getMaxAge: getMaxAge ?? (() => undefined),
     isMethodAllowed: isMethodAllowed ?? (() => true),
-    isCredentialsAllowed: isCredentialsAllowed ?? (() => false),
+    isCredentialsAllowed: isCredentialsAllowed ?? (() => undefined),
     isRequestHeaderAllowed: isRequestHeaderAllowed ?? (() => true),
     isResponseHeaderAllowed: isResponseHeaderAllowed ?? (() => true),
     ...rest,

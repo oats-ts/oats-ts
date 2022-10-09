@@ -11,45 +11,66 @@ export const parametersCorsConfiguration: CorsConfiguration = {
     {
       get: {
         allowedOrigins: true,
+        allowedRequestHeaders: [],
         allowedResponseHeaders: ['content-type'],
+        allowCredentials: false,
+        maxAge: undefined,
       },
     },
   '/label-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}':
     {
       get: {
         allowedOrigins: true,
+        allowedRequestHeaders: [],
         allowedResponseHeaders: ['content-type'],
+        allowCredentials: false,
+        maxAge: undefined,
       },
     },
   '/matrix-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}':
     {
       get: {
         allowedOrigins: true,
+        allowedRequestHeaders: [],
         allowedResponseHeaders: ['content-type'],
+        allowCredentials: false,
+        maxAge: undefined,
       },
     },
   '/form-query-parameters': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/spaceDelimited-query-parameters': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/pipeDelimited-query-parameters': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/deepObject-query-parameters': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/simple-header-parameters': {
@@ -94,13 +115,17 @@ export const parametersCorsConfiguration: CorsConfiguration = {
         'x-optobj-header',
       ],
       allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/form-cookie-parameters': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: true,
+      maxAge: undefined,
     },
   },
   '/simple-response-header-parameters': {
@@ -146,6 +171,8 @@ export const parametersCorsConfiguration: CorsConfiguration = {
         'x-optobj-header',
         'content-type',
       ],
+      allowCredentials: false,
+      maxAge: undefined,
     },
   },
 }

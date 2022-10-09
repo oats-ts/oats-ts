@@ -10,21 +10,26 @@ export const swaggerPetstoreCorsConfiguration: CorsConfiguration = {
   '/pets': {
     get: {
       allowedOrigins: ['https://foo.com'],
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['x-next', 'content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
     post: {
       allowedOrigins: ['https://foo.com'],
       allowedRequestHeaders: ['content-type'],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/pets/{petId}': {
     get: {
       allowedOrigins: ['https://foo.com'],
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
 }

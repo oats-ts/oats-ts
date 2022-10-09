@@ -32,7 +32,7 @@ import { setCookieDeserializers } from './set-cookie-deserializer'
 import { expressCorsRouterFactory } from './express-cors-router-factory'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 import { expressContextHandlerFactory } from './express-context-handler-factory'
-import { corsConfiguration } from './cors-configuration/corsConfiguration'
+import { corsConfiguration } from './cors-configuration'
 
 export const factories = {
   typeGuards,

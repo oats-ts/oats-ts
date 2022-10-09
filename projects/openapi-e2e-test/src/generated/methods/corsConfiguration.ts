@@ -10,36 +10,46 @@ export const httpMethodsCorsConfiguration: CorsConfiguration = {
   '/get-method': {
     get: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/post-method': {
     post: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/put-method': {
     put: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/patch-method': {
     patch: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
   '/delete-method': {
     delete: {
       allowedOrigins: true,
+      allowedRequestHeaders: [],
       allowedResponseHeaders: ['content-type'],
       allowCredentials: false,
+      maxAge: undefined,
     },
   },
 }
