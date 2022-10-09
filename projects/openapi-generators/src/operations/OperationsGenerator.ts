@@ -144,7 +144,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       this.getCookiesStatement(data),
       this.getRequestHeadersStatement(data),
       this.getRequestBodyStatement(data),
-      this.getRequestBodyStatement(data),
+      this.getRawRequestStatement(data),
       this.getRawResponseStatement(data),
       this.getMimeTypeStatement(data),
       this.getStatusCodeStatement(data),
