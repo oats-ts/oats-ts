@@ -13,7 +13,7 @@ import {
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { OperationBasedCodeGenerator } from '../OperationBasedCodeGenerator'
+import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
 import { entries, flatMap, isNil, negate, values } from 'lodash'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 

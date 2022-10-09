@@ -1,5 +1,5 @@
 import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
-import { SdkGeneratorConfig } from '../utils/sdk/typings'
+import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   TypeNode,

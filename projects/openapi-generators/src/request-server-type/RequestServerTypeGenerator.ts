@@ -2,7 +2,7 @@ import { ParameterObject } from '@oats-ts/openapi-model'
 import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
 import { TypeNode, factory, PropertySignature, ImportDeclaration } from 'typescript'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { BaseRequestTypesGenerator, RequestPropertyName } from '../utils/request/BaseRequestTypesGenerator'
+import { BaseRequestTypesGenerator, RequestPropertyName } from '../utils/BaseRequestTypesGenerator'
 import { getNamedImports } from '@oats-ts/typescript-common'
 
 export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {

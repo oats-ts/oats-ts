@@ -24,9 +24,9 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { RouterNames } from '../utils/express/RouterNames'
+import { RouterNames } from '../utils/RouterNames'
 import { flatMap, isEqual, isNil, keys, uniqWith, values } from 'lodash'
-import { getPathTemplate } from '../utils/express/getPathTemplate'
+import { getPathTemplate } from '../utils/getPathTemplate'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {

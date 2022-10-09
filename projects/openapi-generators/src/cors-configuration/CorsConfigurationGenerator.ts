@@ -24,7 +24,7 @@ import { CorsConfigurationGeneratorConfig } from './typings'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap, isNil } from 'lodash'
-import { RouterNames } from '../utils/express/RouterNames'
+import { RouterNames } from '../utils/RouterNames'
 
 export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfigurationGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {

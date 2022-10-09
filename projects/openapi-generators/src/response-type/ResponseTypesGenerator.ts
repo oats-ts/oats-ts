@@ -1,7 +1,7 @@
 import { EnhancedOperation, EnhancedResponse, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
 import { TypeNode, factory, PropertySignature, SyntaxKind, ImportDeclaration } from 'typescript'
 import { getModelImports, getNamedImports, safeName } from '@oats-ts/typescript-common'
-import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/response/BaseResponseTypeGenerator'
+import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/BaseResponseTypeGenerator'
 import { ResponseTypesGeneratorConfig } from './typings'
 
 export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseTypesGeneratorConfig> {

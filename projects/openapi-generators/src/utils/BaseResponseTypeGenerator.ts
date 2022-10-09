@@ -23,7 +23,7 @@ import {
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { OperationBasedCodeGenerator } from '../OperationBasedCodeGenerator'
+import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
 
 export type ResponsePropertyName = 'mimeType' | 'statusCode' | 'body' | 'headers' | 'cookies'
 

@@ -14,7 +14,7 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { RouterNames } from '../utils/express/RouterNames'
+import { RouterNames } from '../utils/RouterNames'
 
 export class ExpressContextHandlerFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {

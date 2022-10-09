@@ -7,6 +7,7 @@ import {
   Identifier,
   ImportDeclaration,
   NodeFlags,
+  ParameterDeclaration,
   SourceFile,
   Statement,
   SyntaxKind,
@@ -16,9 +17,8 @@ import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { isNil } from 'lodash'
-import { RouterNames } from '../utils/express/RouterNames'
-import { getPathTemplate } from '../utils/express/getPathTemplate'
-import { getExpressRouterHandlerParameters } from '../utils/getExpressRouterHandlerParameters'
+import { RouterNames } from '../utils/RouterNames'
+import { getPathTemplate } from '../utils/getPathTemplate'
 
 export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -93,11 +93,40 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
     return factory.createArrowFunction(
       [factory.createModifier(SyntaxKind.AsyncKeyword)],
       undefined,
-      getExpressRouterHandlerParameters(),
+      this.getCorsHandlerArrowFunctionParameters(),
       undefined,
       factory.createToken(SyntaxKind.EqualsGreaterThanToken),
       this.getCorsHandlerBodyBlock(data),
     )
+  }
+
+  protected getCorsHandlerArrowFunctionParameters(): ParameterDeclaration[] {
+    return [
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        RouterNames.request,
+        undefined,
+        factory.createTypeReferenceNode(RuntimePackages.Express.Request),
+      ),
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        RouterNames.response,
+        undefined,
+        factory.createTypeReferenceNode(RuntimePackages.Express.Response),
+      ),
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        RouterNames.next,
+        undefined,
+        factory.createTypeReferenceNode(RuntimePackages.Express.NextFunction),
+      ),
+    ]
   }
 
   protected getCorsHandlerBodyBlock(data: EnhancedPathItem): Block {

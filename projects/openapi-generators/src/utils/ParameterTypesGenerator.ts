@@ -8,7 +8,7 @@ import {
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind, PropertySignature } from 'typescript'
-import { ParameterTypesGeneratorConfig } from './typings'
+import { ParameterTypesGeneratorConfig } from './parameterTypings'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
 import { getReferencedNamedSchemas } from '@oats-ts/model-common'

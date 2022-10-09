@@ -1,4 +1,4 @@
-import { OperationObject } from '@oats-ts/openapi-model'
+import { ContentObject, OperationObject } from '@oats-ts/openapi-model'
 import { entries, flatMap } from 'lodash'
 import {
   EnhancedOperation,
@@ -6,12 +6,21 @@ import {
   OpenAPIGeneratorTarget,
   getRequestBodyContent,
 } from '@oats-ts/openapi-common'
-import { Expression, TypeNode, ImportDeclaration, factory, SourceFile } from 'typescript'
+import {
+  Expression,
+  TypeNode,
+  ImportDeclaration,
+  factory,
+  SourceFile,
+  PropertyAssignment,
+  NodeFlags,
+  SyntaxKind,
+  Statement,
+} from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { RuntimePackages } from '@oats-ts/model-common'
 import { success, Try } from '@oats-ts/try'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getRequestBodyValidatorAst } from './getRequestBodyValidatorAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
@@ -34,18 +43,59 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(data.operation, this.name())
+    return success(
+      createSourceFile(path, this.getImportDeclarations(path, data), [this.getRequestBodyValidatorAst(data)]),
+    )
+  }
+
+  protected getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
     const content = entries(getRequestBodyContent(data, this.context)).map(
       ([contentType, { schema }]): [string, Referenceable<SchemaObject>] => [contentType, schema!],
     )
     const body = this.context.dereference(data.operation.requestBody)
     const needsOptional = !Boolean(body?.required)
-    const dependencies = [
+    return [
       ...flatMap(content, ([, schema]) => this.context.dependenciesOf(path, schema, 'oats/type-validator')),
       ...(needsOptional
         ? [getNamedImports(RuntimePackages.Validators.name, [RuntimePackages.Validators.optional])]
         : []),
     ]
-    return success(createSourceFile(path, dependencies, [getRequestBodyValidatorAst(data, this.context)]))
+  }
+
+  protected getRequestBodyValidatorAst(data: EnhancedOperation): Statement {
+    const body = this.context.dereference(data.operation.requestBody)
+    return factory.createVariableStatement(
+      [factory.createModifier(SyntaxKind.ExportKeyword)],
+      factory.createVariableDeclarationList(
+        [
+          factory.createVariableDeclaration(
+            this.context.nameOf(data.operation, this.name()),
+            undefined,
+            undefined,
+            factory.createAsExpression(
+              factory.createObjectLiteralExpression(
+                this.getContentTypeBasedValidatorsAst(
+                  Boolean(body?.required),
+                  getRequestBodyContent(data, this.context),
+                ),
+              ),
+              factory.createTypeReferenceNode('const'),
+            ),
+          ),
+        ],
+        NodeFlags.Const,
+      ),
+    )
+  }
+
+  protected getContentTypeBasedValidatorsAst(required: boolean, content: ContentObject): PropertyAssignment[] {
+    return entries(content || {}).map(([contentType, mediaTypeObj]) => {
+      const expression: Expression = this.context.referenceOf(mediaTypeObj.schema, 'oats/type-validator')
+      const validatorExpr = required
+        ? expression
+        : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [expression])
+      return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validatorExpr)
+    })
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {

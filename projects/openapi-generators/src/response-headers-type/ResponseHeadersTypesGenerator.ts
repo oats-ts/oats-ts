@@ -5,12 +5,12 @@ import {
   hasResponseHeaders,
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
-import { ResponseParameterInput } from '../utils/parameters/typings'
+import { ResponseParameterInput } from '../utils/parameterTypings'
 import { TypeNode, ImportDeclaration, factory } from 'typescript'
 import { getModelImports } from '@oats-ts/typescript-common'
 import { getResponseHeaders } from '@oats-ts/openapi-common'
 import { HeaderObject, ResponsesObject } from '@oats-ts/openapi-model'
-import { ParameterTypesGenerator } from '../utils/parameters/ParameterTypesGenerator'
+import { ParameterTypesGenerator } from '../utils/ParameterTypesGenerator'
 
 const EmptyResponsesObject: ResponsesObject = { default: undefined }
 
