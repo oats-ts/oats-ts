@@ -1,48 +1,47 @@
 import { ExpressServerAdapter, jsonBodyParser } from '@oats-ts/openapi-express-server-adapter'
-import express, { Handler, Router } from 'express'
-import { isNil } from 'lodash'
-import { argv } from 'process'
-import { createBookStoreContextHandler } from './generated/book-store/expressContextHandlerFactory'
-import { createBookStoreAppRouter } from './generated/book-store/expressAppRouterFactory'
+import express, { IRouter, Router } from 'express'
 import { createHttpMethodsContextHandler } from './generated/methods/expressContextHandlerFactory'
 import { createHttpMethodsAppRouter } from './generated/methods/expressAppRouterFactory'
 import { createParametersContextHandler } from './generated/parameters/expressContextHandlerFactory'
 import { createParametersCorsRouter } from './generated/parameters/expressCorsRouterFactory'
 import { createParametersAppRouter } from './generated/parameters/expressAppRouterFactory'
-import { BookStoreApiImpl } from './tests/bookStore/BookStoreApiImpl'
 import { PATH, PORT } from './tests/constants'
 import { HttpMethodsApiImpl } from './tests/methods/HttpMethodsApiImpl'
 import { ParametersApiImpl } from './tests/parameters/ParametersApiImpl'
+import { createHttpMethodsCorsRouter } from './generated/methods/expressCorsRouterFactory'
+import { createBookStoreContextHandler } from './generated/book-store/expressContextHandlerFactory'
+import { BookStoreApiImpl } from './tests/bookStore/BookStoreApiImpl'
+import { createBookStoreAppRouter } from './generated/book-store/expressAppRouterFactory'
+import { createBookStoreCorsRouter } from './generated/book-store/expressCorsRouterFactory'
 
-const routers: Record<string, (Router | Handler)[]> = {
-  'book-store': [
-    createBookStoreContextHandler(new BookStoreApiImpl(), new ExpressServerAdapter()),
-    createBookStoreAppRouter(),
-  ],
-  methods: [
-    createHttpMethodsContextHandler(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
-    createHttpMethodsAppRouter(),
-  ],
-  parameters: [
-    createParametersContextHandler(new ParametersApiImpl(), new ExpressServerAdapter()),
-    createParametersCorsRouter(),
-    createParametersAppRouter(),
-  ],
+const app = express().use(jsonBodyParser())
+
+export function methodsRouter(): IRouter {
+  const router = Router()
+  router.use(createHttpMethodsContextHandler(new HttpMethodsApiImpl(), new ExpressServerAdapter()))
+  createHttpMethodsCorsRouter(router)
+  createHttpMethodsAppRouter(router)
+  return router
 }
 
-const serverArg = argv[2] as keyof typeof routers
-const router = routers[serverArg]
-
-if (isNil(router)) {
-  throw new TypeError(
-    `Unexpected server "${serverArg}". Expected one of ${Object.keys(routers)
-      .map((key) => `"${key}"`)
-      .join(', ')}`,
-  )
+export function parametersRouter(): IRouter {
+  const router = Router()
+  router.use(createParametersContextHandler(new ParametersApiImpl(), new ExpressServerAdapter()))
+  createParametersCorsRouter(router)
+  createParametersAppRouter(router)
+  return router
 }
 
-const app = express()
-app.use(jsonBodyParser())
-app.use(router)
+export function bookStoreRouter(): IRouter {
+  const router = Router()
+  router.use(createBookStoreContextHandler(new BookStoreApiImpl(), new ExpressServerAdapter()))
+  createBookStoreCorsRouter(router)
+  createBookStoreAppRouter(router)
+  return router
+}
 
-app.listen(PORT, () => console.log(`Server "${serverArg}" running on ${PATH}`))
+app.use('/parameters', parametersRouter())
+app.use('/methods', methodsRouter())
+app.use('/book-store', bookStoreRouter())
+
+app.listen(PORT, () => console.log(`Server is running on ${PATH}`))

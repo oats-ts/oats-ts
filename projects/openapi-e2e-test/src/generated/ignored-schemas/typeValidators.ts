@@ -4,11 +4,11 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/ignored-schemas.json
  */
 
-import { array, items, literal, object, shape, string } from '@oats-ts/validators'
+import { any, literal, object, shape } from '@oats-ts/validators'
 
 export const ignoredFieldsTypeTypeValidator = object(
   shape({
-    ignored: array(items(string())),
+    ignored: any(),
     type: literal('discriminator-field'),
   }),
 )

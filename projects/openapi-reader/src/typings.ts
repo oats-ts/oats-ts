@@ -36,17 +36,19 @@ export type OpenAPIReadConfig = {
 
 export type OpenAPIReadOutput = {
   /** The full URI of the root document */
-  documentUri: string
+  readonly documentUri: string
   /** The root OpenAPI document */
-  document: OpenAPIObject
+  readonly document: OpenAPIObject
   /** An URI -> OpenAPI document map. Contains all referenced documents fully resolved. */
-  documents: Map<string, OpenAPIObject>
+  readonly documents: Map<string, OpenAPIObject>
   /** An object -> URI mapping for all the objects the resolution traversed */
-  objectToUri: Map<any, string>
+  readonly objectToUri: Map<any, string>
   /** An URI -> object mapping for all the objects the resolution traversed */
-  uriToObject: Map<string, any>
+  readonly uriToObject: Map<string, any>
   /** An object -> name mapping for entites that don't encapsulate their names, eg.: schemas. */
-  objectToName: Map<any, string>
+  readonly objectToName: Map<any, string>
+  /** An object -> hash mapping for entites. Helpful for unique identifiers, as JS doesn't provide an alternative. */
+  readonly objectToHash: Map<OpenAPIObject, number>
 }
 
 export type SchemeConfig = {

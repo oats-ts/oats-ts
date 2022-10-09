@@ -7,38 +7,31 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
+import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
 
 export function createSwaggerPetstoreCorsRouter(router?: IRouter): IRouter {
   return (router ?? Router())
     .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type'] },
-            allowCredentials: { get: false },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true, post: true },
-            allowedMethods: ['get', 'post'],
-            allowedRequestHeaders: { post: ['content-type'] },
-            allowedResponseHeaders: { get: ['x-next', 'content-type'], post: ['content-type'] },
-            allowCredentials: { get: false, post: false },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }

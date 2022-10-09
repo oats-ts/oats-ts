@@ -1,4 +1,4 @@
-import { ContentGenerator, CompositeGenerator, toSimpleGeneratorResult, GeneratorEventEmitter } from '@oats-ts/oats-ts'
+import { ContentGenerator, GroupGenerator, toSimpleGeneratorResult, GeneratorEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
 import { RootGeneratorConfig } from './types'
@@ -16,7 +16,7 @@ export const generator =
     })
 
     const { name: generatorName, children, ...globalConfig } = config
-    const generator = new CompositeGenerator(generatorName ?? 'root', Array.isArray(children) ? children : [children])
+    const generator = new GroupGenerator(generatorName ?? 'root', Array.isArray(children) ? children : [children])
 
     generator.initialize({
       globalConfig,

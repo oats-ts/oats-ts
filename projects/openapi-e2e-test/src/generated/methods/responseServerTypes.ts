@@ -20,14 +20,6 @@ export type GetMethodServerResponse = {
   }
 }
 
-export type OptionsMethodServerResponse = {
-  statusCode: 200
-  mimeType: 'application/json'
-  body: {
-    methodUsed: string
-  }
-}
-
 export type PatchMethodServerResponse = {
   statusCode: 200
   mimeType: 'application/json'

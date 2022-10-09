@@ -3,17 +3,19 @@ import { ImportDeclaration } from 'typescript'
 
 export type ReadOutput<D> = {
   /** The full URI of the root document */
-  documentUri: string
+  readonly documentUri: string
   /** The root document */
-  document: D
+  readonly document: D
   /** An URI -> document map. Contains all referenced documents fully resolved. */
-  documents: Map<string, D>
+  readonly documents: Map<string, D>
   /** An object -> URI mapping for all the objects the resolution traversed */
-  objectToUri: Map<any, string>
+  readonly objectToUri: Map<any, string>
   /** An URI -> object mapping for all the objects the resolution traversed */
-  uriToObject: Map<string, any>
+  readonly uriToObject: Map<string, any>
   /** An object -> name mapping for entites that don't encapsulate their names, eg.: schemas. */
-  objectToName: Map<any, string>
+  readonly objectToName: Map<any, string>
+  /** An object -> hash mapping for entites. Helpful for unique identifiers, as JS doesn't provide an alternative. */
+  readonly objectToHash: Map<any, number>
 }
 
 export type GeneratorContext<D = any, Target extends string = string> = {
@@ -45,7 +47,11 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @returns The absolute URI of the value.
    */
   uriOf(input: any): string
-
+  /**
+   * @param input Any object or array value in the OpenAPI document.
+   * @returns A hash number for the given value.
+   */
+  hashOf(input: any): number
   /**
    * Generator specific reference to the given input and target
    * @param input The input for which the reference is needed. For example SchemaObject
@@ -64,6 +70,11 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @param target The generator target
    */
   configurationOf<T>(target: Target): T
+  /**
+   * @param uri The absolute URI of the object you are looking for.
+   * @returns The object associated with this URI.
+   */
+  byUri<T>(uri: string): T | undefined
 }
 
 export type HasSchemas = {

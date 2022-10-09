@@ -1,6 +1,6 @@
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { ParameterObject } from '@oats-ts/openapi-model'
-import { InputParameterTypesGenerator } from '../utils/parameters/InputParameterTypesGenerator'
+import { InputParameterTypesGenerator } from '../utils/InputParameterTypesGenerator'
 
 export class PathTypesGenerator extends InputParameterTypesGenerator {
   public name(): OpenAPIGeneratorTarget {

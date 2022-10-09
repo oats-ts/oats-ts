@@ -8,7 +8,6 @@ import { IRouter, Router } from 'express'
 import {
   createDeleteMethodRouter,
   createGetMethodRouter,
-  createOptionsMethodRouter,
   createPatchMethodRouter,
   createPostMethodRouter,
   createPutMethodRouter,
@@ -25,7 +24,6 @@ export function createHttpMethodsAppRouter(
     overrides.createPostMethodRouter ?? createPostMethodRouter,
     overrides.createPutMethodRouter ?? createPutMethodRouter,
     overrides.createPatchMethodRouter ?? createPatchMethodRouter,
-    overrides.createOptionsMethodRouter ?? createOptionsMethodRouter,
     overrides.createDeleteMethodRouter ?? createDeleteMethodRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)

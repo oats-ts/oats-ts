@@ -12,10 +12,6 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
   protected context!: Ctx
   protected items!: M[]
 
-  public initialize(init: GeneratorInit<R, G>): void {
-    super.initialize(init)
-  }
-
   public produces(): string[] {
     return [this.name()]
   }
@@ -34,6 +30,11 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
 
   protected getIssues(item: M): Issue[] {
     return []
+  }
+
+  public initialize(init: GeneratorInit<R, G>): void {
+    super.initialize(init)
+    this.context = this.createContext()
   }
 
   private async generateWithCatch(): Promise<[Try<G[]>, Issue[]]> {
@@ -67,19 +68,15 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     })
 
     const { noEmit } = this.globalConfig
-
-    if (!noEmit) {
-      this.context = this.createContext()
-      this.items = this.getItems()
-    }
+    this.items = noEmit ? [] : this.getItems()
 
     await this.tick()
 
     const preIssues = this.getPreGenerateIssues()
     const [data, itemIssues]: [Try<G[]>, Issue[]] = noEmit ? [success([]), []] : await this.generateWithCatch()
     const postIssues = this.getPostGenerateIssues(data)
-
     const issues = [...preIssues, ...itemIssues, ...postIssues]
+
     const wrappedResult = simpleResult<G>(data, issues)
 
     this.emitter.emit('generator-completed', {

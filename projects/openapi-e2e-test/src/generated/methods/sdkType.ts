@@ -7,7 +7,6 @@
 import {
   DeleteMethodResponse,
   GetMethodResponse,
-  OptionsMethodResponse,
   PatchMethodResponse,
   PostMethodResponse,
   PutMethodResponse,
@@ -18,6 +17,5 @@ export type HttpMethodsSdk = {
   postMethod(): Promise<PostMethodResponse>
   putMethod(): Promise<PutMethodResponse>
   patchMethod(): Promise<PatchMethodResponse>
-  optionsMethod(): Promise<OptionsMethodResponse>
   deleteMethod(): Promise<DeleteMethodResponse>
 }

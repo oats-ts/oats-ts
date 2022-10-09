@@ -107,7 +107,6 @@ export class ParametersApiImpl implements ParametersApi {
       }
     }
     const { data } = request.cookies
-    // console.log(request.cookies)
     const noClientCookies = isNil(data.optBool) && isNil(data.optNum) && isNil(data.optEnm) && isNil(data.optStr)
     const defaultCookieCfg: Cookies<FormCookieParametersCookieParameters> = {
       optBool: { value: defaultCookies.optBool },

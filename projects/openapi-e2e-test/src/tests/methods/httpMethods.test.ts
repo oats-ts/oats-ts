@@ -10,7 +10,6 @@ describe('Http methods', () => {
     ['post', () => httpMethodsSdk.postMethod()],
     ['put', () => httpMethodsSdk.putMethod()],
     ['patch', () => httpMethodsSdk.patchMethod()],
-    ['options', () => httpMethodsSdk.optionsMethod()],
     ['delete', () => httpMethodsSdk.deleteMethod()],
   ]
 

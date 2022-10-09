@@ -44,7 +44,8 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
     return parent.root()
   }
 
-  public initialize({ globalConfig, input, dependencies, emitter, parent }: GeneratorInit<R, G>): void {
+  public initialize(init: GeneratorInit<R, G>): void {
+    const { globalConfig, input, dependencies, emitter, parent } = init
     this._parent = parent
     this.input = input
     this.globalConfig = { ...globalConfig, ...this.globalConfigOverride }

@@ -14,8 +14,8 @@ export function createSwaggerPetstoreContextHandler(
   adapter: ServerAdapter<ExpressToolkit>,
 ): Handler {
   return (_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api'] = api
-    response.locals['__oats_adapter'] = adapter
+    response.locals['__oats_api_qslhlh'] = api
+    response.locals['__oats_adapter_qslhlh'] = adapter
     next()
   }
 }

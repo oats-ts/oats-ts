@@ -17,6 +17,7 @@ const Http = {
   Cookies: 'Cookies',
   ClientAdapter: 'ClientAdapter',
   ServerAdapter: 'ServerAdapter',
+  CorsConfiguration: 'CorsConfiguration',
 } as const
 
 const HttpServerExpress = {

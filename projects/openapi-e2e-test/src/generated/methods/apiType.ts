@@ -7,7 +7,6 @@
 import {
   DeleteMethodServerResponse,
   GetMethodServerResponse,
-  OptionsMethodServerResponse,
   PatchMethodServerResponse,
   PostMethodServerResponse,
   PutMethodServerResponse,
@@ -18,6 +17,5 @@ export type HttpMethodsApi = {
   postMethod(): Promise<PostMethodServerResponse>
   putMethod(): Promise<PutMethodServerResponse>
   patchMethod(): Promise<PatchMethodServerResponse>
-  optionsMethod(): Promise<OptionsMethodServerResponse>
   deleteMethod(): Promise<DeleteMethodServerResponse>
 }

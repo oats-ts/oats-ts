@@ -8,6 +8,7 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { BodiesApi } from './apiType'
+import { bodiesCorsConfiguration } from './corsConfiguration'
 import {
   arrObjRequestBodyValidator,
   boolArrRequestBodyValidator,
@@ -52,8 +53,8 @@ export function createArrObjRouter(router?: IRouter): IRouter {
     '/arr-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithArrays>(
@@ -66,9 +67,11 @@ export function createArrObjRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/arr-obj']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.arrObj(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -85,8 +88,8 @@ export function createBoolArrRouter(router?: IRouter): IRouter {
     '/bool-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean[]>(
@@ -99,9 +102,11 @@ export function createBoolArrRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/bool-arr']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.boolArr(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -118,8 +123,8 @@ export function createBoolRouter(router?: IRouter): IRouter {
     '/bool',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', boolean>(
@@ -132,9 +137,11 @@ export function createBoolRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/bool']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.bool(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -151,8 +158,8 @@ export function createEnmArrRouter(router?: IRouter): IRouter {
     '/enm-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType[]>(
@@ -165,9 +172,11 @@ export function createEnmArrRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/enm-arr']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.enmArr(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -184,8 +193,8 @@ export function createEnmRouter(router?: IRouter): IRouter {
     '/enm',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', EnumType>(
@@ -198,9 +207,11 @@ export function createEnmRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/enm']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.enm(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -217,8 +228,8 @@ export function createNestedObjRouter(router?: IRouter): IRouter {
     '/nested-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithNestedObjects>(
@@ -231,9 +242,11 @@ export function createNestedObjRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/nested-obj']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.nestedObj(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -250,8 +263,8 @@ export function createNumArrRouter(router?: IRouter): IRouter {
     '/num-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number[]>(
@@ -264,9 +277,11 @@ export function createNumArrRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/num-arr']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.numArr(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -283,8 +298,8 @@ export function createNumRouter(router?: IRouter): IRouter {
     '/num',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', number>(
@@ -297,9 +312,11 @@ export function createNumRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/num']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.num(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -316,8 +333,8 @@ export function createOptPrimTupleRouter(router?: IRouter): IRouter {
     '/opt-prim-tuple',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', PrimitiveOptionalTupleType>(
@@ -330,9 +347,11 @@ export function createOptPrimTupleRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/opt-prim-tuple']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.optPrimTuple(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -349,8 +368,8 @@ export function createPrimObjRouter(router?: IRouter): IRouter {
     '/prim-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', ObjectWithPrimitives>(
@@ -363,9 +382,11 @@ export function createPrimObjRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/prim-obj']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.primObj(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -382,8 +403,8 @@ export function createPrimTupleRouter(router?: IRouter): IRouter {
     '/prim-tuple',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', PrimitiveTupleType>(
@@ -396,9 +417,11 @@ export function createPrimTupleRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/prim-tuple']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.primTuple(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -415,8 +438,8 @@ export function createStrArrRouter(router?: IRouter): IRouter {
     '/str-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string[]>(
@@ -429,9 +452,11 @@ export function createStrArrRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/str-arr']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.strArr(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -448,8 +473,8 @@ export function createStrRouter(router?: IRouter): IRouter {
     '/str',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: BodiesApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const api: BodiesApi = response.locals['__oats_api_14n8ypu']
       try {
         const mimeType = await adapter.getMimeType<'application/json' | 'application/yaml'>(toolkit)
         const body = await adapter.getRequestBody<'application/json' | 'application/yaml', string>(
@@ -462,9 +487,11 @@ export function createStrRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = bodiesCorsConfiguration?.['/str']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.str(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

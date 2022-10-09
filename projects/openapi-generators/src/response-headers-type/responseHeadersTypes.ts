@@ -1,6 +1,6 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGenerator } from '../types'
-import { ParameterTypesGeneratorConfig } from '../utils/parameters/typings'
+import { ParameterTypesGeneratorConfig } from '../utils/parameterTypings'
 import { ResponseHeadersTypesGenerator } from './ResponseHeadersTypesGenerator'
 
 function defaultConfig({

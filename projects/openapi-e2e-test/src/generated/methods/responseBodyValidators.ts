@@ -14,10 +14,6 @@ export const getMethodResponseBodyValidator = {
   200: { 'application/json': object(shape({ methodUsed: string() })) },
 } as const
 
-export const optionsMethodResponseBodyValidator = {
-  200: { 'application/json': object(shape({ methodUsed: string() })) },
-} as const
-
 export const patchMethodResponseBodyValidator = {
   200: { 'application/json': object(shape({ methodUsed: string() })) },
 } as const

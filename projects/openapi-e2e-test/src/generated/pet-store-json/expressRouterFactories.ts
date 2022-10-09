@@ -8,6 +8,7 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
+import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
 import { showPetByIdPathDeserializer } from './pathDeserializers'
 import { listPetsQueryDeserializer } from './queryDeserializers'
 import { createPetsRequestBodyValidator } from './requestBodyValidators'
@@ -20,8 +21,8 @@ export function createCreatePetsRouter(router?: IRouter): IRouter {
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', Pet>(
@@ -34,18 +35,11 @@ export function createCreatePetsRouter(router?: IRouter): IRouter {
           mimeType,
           body,
         }
+        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.createPets(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -62,24 +56,22 @@ export function createListPetsRouter(router?: IRouter): IRouter {
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
         const query = await adapter.getQueryParameters(toolkit, listPetsQueryDeserializer)
         const typedRequest: ListPetsServerRequest = {
           query,
         }
+        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.listPets(typedRequest)
         const rawResponse: RawHttpResponse = {
           headers: await adapter.getResponseHeaders(
             toolkit,
             typedResponse,
             listPetsResponseHeadersSerializer,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['x-next', 'content-type'],
-              allowCredentials: false,
-            }),
+            corsHeaders,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
@@ -97,25 +89,18 @@ export function createShowPetByIdRouter(router?: IRouter): IRouter {
     '/pets/:petId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
         const path = await adapter.getPathParameters(toolkit, showPetByIdPathDeserializer)
         const typedRequest: ShowPetByIdServerRequest = {
           path,
         }
+        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.showPetById(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type'],
-              allowCredentials: false,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

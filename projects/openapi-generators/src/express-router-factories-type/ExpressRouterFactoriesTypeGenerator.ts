@@ -1,11 +1,11 @@
 import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { TypeNode, Expression, factory, ImportDeclaration, SourceFile } from 'typescript'
+import { TypeNode, Expression, factory, ImportDeclaration, SourceFile, SyntaxKind, Statement } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { getRoutersTypeAst } from './getRoutesTypeAst'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
+import { RouterNames } from '../utils/RouterNames'
 
 export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -20,16 +20,6 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
     return [{ name: RuntimePackages.Express.name, version: '^4.18.1' }]
   }
 
-  protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
-    return success(
-      createSourceFile(
-        this.context.pathOf(this.input.document, this.name()),
-        [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.IRouter])],
-        [getRoutersTypeAst(operations, this.context)],
-      ),
-    )
-  }
-
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
     const [operations] = this.items
     return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
@@ -38,5 +28,49 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const [operations] = this.items
     return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+  }
+
+  protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
+    return success(
+      createSourceFile(
+        this.context.pathOf(this.input.document, this.name()),
+        [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.IRouter])],
+        [this.getRouterFactoriesTypeStatement(operations)],
+      ),
+    )
+  }
+
+  getRouterFactoriesTypeStatement(operations: EnhancedOperation[]): Statement {
+    return factory.createTypeAliasDeclaration(
+      undefined,
+      [factory.createModifier(SyntaxKind.ExportKeyword)],
+      this.context.nameOf(this.context.document, this.name()),
+      undefined,
+      factory.createTypeLiteralNode(
+        operations.map((operation) => {
+          const fieldType = factory.createFunctionTypeNode(
+            undefined,
+            [
+              factory.createParameterDeclaration(
+                [],
+                [],
+                undefined,
+                factory.createIdentifier(RouterNames.router),
+                factory.createToken(SyntaxKind.QuestionToken),
+                factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+                undefined,
+              ),
+            ],
+            factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+          )
+          return factory.createPropertySignature(
+            undefined,
+            this.context.nameOf(operation.operation, 'oats/express-router-factory'),
+            undefined,
+            fieldType,
+          )
+        }),
+      ),
+    )
   }
 }

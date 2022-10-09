@@ -10,19 +10,7 @@ import {
   generator,
   loggers,
 } from '@oats-ts/openapi'
-import { ExpressCorsRouterFactoryGeneratorConfig } from '@oats-ts/openapi-generators'
-
-const corsConfigs: Record<string, Partial<ExpressCorsRouterFactoryGeneratorConfig>> = {
-  'schemas/pet-store-yaml.yaml': { getAllowedOrigins: () => ['https://foo.com'] },
-  'schemas/pet-store-json.json': { getAllowedOrigins: () => true },
-  'generated-schemas/parameters.json': {
-    getAllowedOrigins: () => true,
-    isResponseHeaderAllowed: () => true,
-    isCredentialsAllowed: (url: string) => {
-      return url === '/form-cookie-parameters' ? true : undefined
-    },
-  },
-}
+import { overrides } from './overrides'
 
 export async function generateFromOpenAPIDocument(
   path: string,
@@ -38,19 +26,7 @@ export async function generateFromOpenAPIDocument(
       generator: generator({
         nameProvider: nameProviders.default(),
         pathProvider: pathProviders[pathProviderKind](codePath),
-        children: presets.fullStack({
-          sendCookieHeader: true,
-          parseSetCookieHeaders: true,
-          cors: corsConfigs[path],
-          overrides: {
-            'oats/type-guard': {
-              ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-            },
-            'oats/type-validator': {
-              ignore: (schema: any) => Boolean(schema?.['x-ignore-validation']),
-            },
-          },
-        }),
+        children: presets.fullStack(overrides[path] ?? {}),
       }),
       writer: writers.typescript.file({
         format: formatters.prettier({

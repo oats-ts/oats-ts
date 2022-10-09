@@ -9,10 +9,19 @@ import {
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { entries, flatMap } from 'lodash'
-import { factory, Identifier, ImportDeclaration, SourceFile } from 'typescript'
+import { entries, flatMap, values } from 'lodash'
+import {
+  factory,
+  Identifier,
+  ImportDeclaration,
+  NodeFlags,
+  PropertyAssignment,
+  SourceFile,
+  Statement,
+  SyntaxKind,
+} from 'typescript'
+import { getDslObjectAst } from '../utils/getDslObjectAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { getResponseHeadersDeserializerAst } from './getResponseHeadersDeserializerAst'
 
 export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -33,20 +42,54 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(data.operation, this.name())
-    const headersByStatus = getResponseHeaders(data.operation, this.context)
     return success(
-      createSourceFile(
-        path,
+      createSourceFile(path, this.getImportDeclarations(path, data), [this.getResponseHeadersDeserializerAst(data)]),
+    )
+  }
+
+  private getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
+    const headersByStatus = getResponseHeaders(data.operation, this.context)
+    return [
+      getNamedImports(RuntimePackages.ParameterSerialization.name, [
+        RuntimePackages.ParameterSerialization.dsl,
+        RuntimePackages.ParameterSerialization.createHeaderDeserializer,
+      ]),
+      ...flatMap(entries(headersByStatus), ([statusCode]) =>
+        this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
+      ),
+    ]
+  }
+
+  protected getResponseHeadersDeserializerAst(data: EnhancedOperation): Statement {
+    const headers = entries(getResponseHeaders(data.operation, this.context))
+    const props = headers
+      .filter(([, headers]) => values(headers).length > 0)
+      .map(([status, headers]): PropertyAssignment => {
+        return factory.createPropertyAssignment(
+          status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
+          factory.createCallExpression(
+            factory.createIdentifier(RuntimePackages.ParameterSerialization.createHeaderDeserializer),
+            [this.context.referenceOf([data.operation, status], 'oats/response-headers-type')],
+            [getDslObjectAst(values(headers), this.context)],
+          ),
+        )
+      })
+
+    return factory.createVariableStatement(
+      [factory.createModifier(SyntaxKind.ExportKeyword)],
+      factory.createVariableDeclarationList(
         [
-          getNamedImports(RuntimePackages.ParameterSerialization.name, [
-            RuntimePackages.ParameterSerialization.dsl,
-            RuntimePackages.ParameterSerialization.createHeaderDeserializer,
-          ]),
-          ...flatMap(entries(headersByStatus), ([statusCode]) =>
-            this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
+          factory.createVariableDeclaration(
+            this.context.nameOf(data.operation, this.name()),
+            undefined,
+            undefined,
+            factory.createAsExpression(
+              factory.createObjectLiteralExpression(props),
+              factory.createTypeReferenceNode('const'),
+            ),
           ),
         ],
-        [getResponseHeadersDeserializerAst(data, this.context)],
+        NodeFlags.Const,
       ),
     )
   }

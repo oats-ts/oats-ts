@@ -11,6 +11,5 @@ export type HttpMethodsRouterFactories = {
   createPostMethodRouter: (router?: IRouter) => IRouter
   createPutMethodRouter: (router?: IRouter) => IRouter
   createPatchMethodRouter: (router?: IRouter) => IRouter
-  createOptionsMethodRouter: (router?: IRouter) => IRouter
   createDeleteMethodRouter: (router?: IRouter) => IRouter
 }

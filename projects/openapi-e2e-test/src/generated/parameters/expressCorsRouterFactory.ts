@@ -7,192 +7,99 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
+import { parametersCorsConfiguration } from './corsConfiguration'
 
 export function createParametersCorsRouter(router?: IRouter): IRouter {
   return (router ?? Router())
     .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { post: true },
-            allowedMethods: ['post'],
-            allowedRequestHeaders: { post: ['content-type'] },
-            allowedResponseHeaders: {
-              post: [
-                'x-strexpl-header',
-                'x-optstrexpl-header',
-                'x-str-header',
-                'x-optstr-header',
-                'x-numexpl-header',
-                'x-optnumexpl-header',
-                'x-num-header',
-                'x-optnum-header',
-                'x-boolexpl-header',
-                'x-optboolexpl-header',
-                'x-bool-header',
-                'x-optbool-header',
-                'x-enmexpl-header',
-                'x-optenmexpl-header',
-                'x-enm-header',
-                'x-optenm-header',
-                'x-strarrexpl-header',
-                'x-optstrarrexpl-header',
-                'x-strarr-header',
-                'x-optstrarr-header',
-                'x-numarrexpl-header',
-                'x-optnumarrexpl-header',
-                'x-numarr-header',
-                'x-optnumarr-header',
-                'x-boolarrexpl-header',
-                'x-optboolarrexpl-header',
-                'x-boolarr-header',
-                'x-optboolarr-header',
-                'x-enmarrexpl-header',
-                'x-optenmarrexpl-header',
-                'x-enmarr-header',
-                'x-optenmarr-header',
-                'x-objexpl-header',
-                'x-optobjexpl-header',
-                'x-obj-header',
-                'x-optobj-header',
-                'content-type',
-              ],
-            },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined
+            ? undefined
+            : parametersCorsConfiguration?.['/simple-response-header-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/form-cookie-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type', 'set-cookie'] },
-            allowCredentials: { get: true },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : parametersCorsConfiguration?.['/form-cookie-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/simple-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedRequestHeaders: {
-              get: [
-                'x-strexpl-header',
-                'x-optstrexpl-header',
-                'x-str-header',
-                'x-optstr-header',
-                'x-numexpl-header',
-                'x-optnumexpl-header',
-                'x-num-header',
-                'x-optnum-header',
-                'x-boolexpl-header',
-                'x-optboolexpl-header',
-                'x-bool-header',
-                'x-optbool-header',
-                'x-enmexpl-header',
-                'x-optenmexpl-header',
-                'x-enm-header',
-                'x-optenm-header',
-                'x-strarrexpl-header',
-                'x-optstrarrexpl-header',
-                'x-strarr-header',
-                'x-optstrarr-header',
-                'x-numarrexpl-header',
-                'x-optnumarrexpl-header',
-                'x-numarr-header',
-                'x-optnumarr-header',
-                'x-boolarrexpl-header',
-                'x-optboolarrexpl-header',
-                'x-boolarr-header',
-                'x-optboolarr-header',
-                'x-enmarrexpl-header',
-                'x-optenmarrexpl-header',
-                'x-enmarr-header',
-                'x-optenmarr-header',
-                'x-objexpl-header',
-                'x-optobjexpl-header',
-                'x-obj-header',
-                'x-optobj-header',
-              ],
-            },
-            allowedResponseHeaders: { get: ['content-type'] },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : parametersCorsConfiguration?.['/simple-header-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/deepObject-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type'] },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : parametersCorsConfiguration?.['/deepObject-query-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/pipeDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type'] },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : parametersCorsConfiguration?.['/pipeDelimited-query-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/spaceDelimited-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type'] },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : parametersCorsConfiguration?.['/spaceDelimited-query-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
     })
     .options('/form-query-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       try {
-        await adapter.respond(toolkit, {
-          headers: await adapter.getPreflightCorsHeaders(toolkit, {
-            allowedOrigins: { get: true },
-            allowedMethods: ['get'],
-            allowedResponseHeaders: { get: ['content-type'] },
-          }),
-        })
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig =
+          method === undefined ? undefined : parametersCorsConfiguration?.['/form-query-parameters']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
         adapter.handleError(toolkit, error)
       }
@@ -201,15 +108,17 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
       '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: Request, response: Response, next: NextFunction) => {
         const toolkit: ExpressToolkit = { request, response, next }
-        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
         try {
-          await adapter.respond(toolkit, {
-            headers: await adapter.getPreflightCorsHeaders(toolkit, {
-              allowedOrigins: { get: true },
-              allowedMethods: ['get'],
-              allowedResponseHeaders: { get: ['content-type'] },
-            }),
-          })
+          const method = adapter.getAccessControlRequestedMethod(toolkit)
+          const corsConfig =
+            method === undefined
+              ? undefined
+              : parametersCorsConfiguration?.[
+                  '/matrix-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}'
+                ]?.[method]
+          const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+          await adapter.respond(toolkit, { headers: corsHeaders })
         } catch (error) {
           adapter.handleError(toolkit, error)
         }
@@ -219,15 +128,17 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
       '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: Request, response: Response, next: NextFunction) => {
         const toolkit: ExpressToolkit = { request, response, next }
-        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
         try {
-          await adapter.respond(toolkit, {
-            headers: await adapter.getPreflightCorsHeaders(toolkit, {
-              allowedOrigins: { get: true },
-              allowedMethods: ['get'],
-              allowedResponseHeaders: { get: ['content-type'] },
-            }),
-          })
+          const method = adapter.getAccessControlRequestedMethod(toolkit)
+          const corsConfig =
+            method === undefined
+              ? undefined
+              : parametersCorsConfiguration?.[
+                  '/label-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}'
+                ]?.[method]
+          const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+          await adapter.respond(toolkit, { headers: corsHeaders })
         } catch (error) {
           adapter.handleError(toolkit, error)
         }
@@ -237,15 +148,17 @@ export function createParametersCorsRouter(router?: IRouter): IRouter {
       '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: Request, response: Response, next: NextFunction) => {
         const toolkit: ExpressToolkit = { request, response, next }
-        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
+        const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
         try {
-          await adapter.respond(toolkit, {
-            headers: await adapter.getPreflightCorsHeaders(toolkit, {
-              allowedOrigins: { get: true },
-              allowedMethods: ['get'],
-              allowedResponseHeaders: { get: ['content-type'] },
-            }),
-          })
+          const method = adapter.getAccessControlRequestedMethod(toolkit)
+          const corsConfig =
+            method === undefined
+              ? undefined
+              : parametersCorsConfiguration?.[
+                  '/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}'
+                ]?.[method]
+          const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+          await adapter.respond(toolkit, { headers: corsHeaders })
         } catch (error) {
           adapter.handleError(toolkit, error)
         }

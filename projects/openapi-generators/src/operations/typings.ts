@@ -5,16 +5,17 @@ export type OperationsGeneratorConfig = {
    */
   documentation: boolean
   /**
-   * If set to true, validators will be generated for the response parser hint objects. This will allow
-   * responses to be validated. This is useful, in case you are unsure the backend respects the contract.
+   * If set to true, response headers and response bodies will be validated by the operations.
+   * This works well to detect if the backend has steered away from the OpenAPI spec, or if
+   * the spec you generate from is out of sync with the backend.
    */
   validate: boolean
   /**
-   * If set to true, the cookie header will be manually sent, otherwise it will be ignored.
+   * If set to true, the Cookie header will be manually sent, otherwise it will be ignored.
    */
   sendCookieHeader: boolean
   /**
-   * If set to true, the set-cookie header(s) will be parsed, otherwise they will be ignored.
+   * If set to true, the Set-Sookie header(s) will be parsed, otherwise they will be ignored.
    */
   parseSetCookieHeaders: boolean
 }

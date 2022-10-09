@@ -8,7 +8,7 @@ import {
 } from '@oats-ts/openapi-common'
 import { TypeNode, ImportDeclaration, factory, PropertySignature, SyntaxKind } from 'typescript'
 import { getModelImports, getNamedImports, safeName } from '@oats-ts/typescript-common'
-import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/response/BaseResponseTypeGenerator'
+import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/BaseResponseTypeGenerator'
 
 export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
   public name(): OpenAPIGeneratorTarget {

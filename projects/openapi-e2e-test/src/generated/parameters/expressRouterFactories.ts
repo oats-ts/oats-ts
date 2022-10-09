@@ -9,6 +9,7 @@ import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { ParametersApi } from './apiType'
 import { formCookieParametersCookieDeserializer } from './cookieDeserializers'
+import { parametersCorsConfiguration } from './corsConfiguration'
 import {
   labelPathParametersPathDeserializer,
   matrixPathParametersPathDeserializer,
@@ -43,21 +44,18 @@ export function createDeepObjectQueryParametersRouter(router?: IRouter): IRouter
     '/deepObject-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
         const typedRequest: DeepObjectQueryParametersServerRequest = {
           query,
         }
+        const corsConfig = parametersCorsConfiguration?.['/deepObject-query-parameters']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.deepObjectQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -74,25 +72,18 @@ export function createFormCookieParametersRouter(router?: IRouter): IRouter {
     '/form-cookie-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const cookies = await adapter.getCookieParameters(toolkit, formCookieParametersCookieDeserializer)
         const typedRequest: FormCookieParametersServerRequest = {
           cookies,
         }
+        const corsConfig = parametersCorsConfiguration?.['/form-cookie-parameters']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.formCookieParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: ['content-type', 'set-cookie'],
-              allowCredentials: true,
-            }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
           cookies: await adapter.getResponseCookies(toolkit, typedResponse, formCookieParametersSetCookieSerializer),
@@ -110,21 +101,18 @@ export function createFormQueryParametersRouter(router?: IRouter): IRouter {
     '/form-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
         const typedRequest: FormQueryParametersServerRequest = {
           query,
         }
+        const corsConfig = parametersCorsConfiguration?.['/form-query-parameters']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.formQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -141,21 +129,21 @@ export function createLabelPathParametersRouter(router?: IRouter): IRouter {
     '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
         const typedRequest: LabelPathParametersServerRequest = {
           path,
         }
+        const corsConfig =
+          parametersCorsConfiguration?.[
+            '/label-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}'
+          ]?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.labelPathParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -172,21 +160,21 @@ export function createMatrixPathParametersRouter(router?: IRouter): IRouter {
     '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
         const typedRequest: MatrixPathParametersServerRequest = {
           path,
         }
+        const corsConfig =
+          parametersCorsConfiguration?.[
+            '/matrix-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}'
+          ]?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.matrixPathParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -203,21 +191,18 @@ export function createPipeDelimitedQueryParametersRouter(router?: IRouter): IRou
     '/pipeDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
         const typedRequest: PipeDelimitedQueryParametersServerRequest = {
           query,
         }
+        const corsConfig = parametersCorsConfiguration?.['/pipeDelimited-query-parameters']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.pipeDelimitedQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -234,21 +219,18 @@ export function createSimpleHeaderParametersRouter(router?: IRouter): IRouter {
     '/simple-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
         const typedRequest: SimpleHeaderParametersServerRequest = {
           headers,
         }
+        const corsConfig = parametersCorsConfiguration?.['/simple-header-parameters']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.simpleHeaderParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -265,21 +247,21 @@ export function createSimplePathParametersRouter(router?: IRouter): IRouter {
     '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
         const typedRequest: SimplePathParametersServerRequest = {
           path,
         }
+        const corsConfig =
+          parametersCorsConfiguration?.[
+            '/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}'
+          ]?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.simplePathParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }
@@ -296,8 +278,8 @@ export function createSimpleResponseHeaderParametersRouter(router?: IRouter): IR
     '/simple-response-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
@@ -310,54 +292,15 @@ export function createSimpleResponseHeaderParametersRouter(router?: IRouter): IR
           mimeType,
           body,
         }
+        const corsConfig = parametersCorsConfiguration?.['/simple-response-header-parameters']?.post
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.simpleResponseHeaderParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
           headers: await adapter.getResponseHeaders(
             toolkit,
             typedResponse,
             simpleResponseHeaderParametersResponseHeadersSerializer,
-            await adapter.getCorsHeaders(toolkit, {
-              allowedOrigins: true,
-              allowedResponseHeaders: [
-                'x-strexpl-header',
-                'x-optstrexpl-header',
-                'x-str-header',
-                'x-optstr-header',
-                'x-numexpl-header',
-                'x-optnumexpl-header',
-                'x-num-header',
-                'x-optnum-header',
-                'x-boolexpl-header',
-                'x-optboolexpl-header',
-                'x-bool-header',
-                'x-optbool-header',
-                'x-enmexpl-header',
-                'x-optenmexpl-header',
-                'x-enm-header',
-                'x-optenm-header',
-                'x-strarrexpl-header',
-                'x-optstrarrexpl-header',
-                'x-strarr-header',
-                'x-optstrarr-header',
-                'x-numarrexpl-header',
-                'x-optnumarrexpl-header',
-                'x-numarr-header',
-                'x-optnumarr-header',
-                'x-boolarrexpl-header',
-                'x-optboolarrexpl-header',
-                'x-boolarr-header',
-                'x-optboolarr-header',
-                'x-enmarrexpl-header',
-                'x-optenmarrexpl-header',
-                'x-enmarr-header',
-                'x-optenmarr-header',
-                'x-objexpl-header',
-                'x-optobjexpl-header',
-                'x-obj-header',
-                'x-optobj-header',
-                'content-type',
-              ],
-            }),
+            corsHeaders,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
@@ -375,21 +318,18 @@ export function createSpaceDelimitedQueryParametersRouter(router?: IRouter): IRo
     '/spaceDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter']
-      const api: ParametersApi = response.locals['__oats_api']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
         const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
         const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
           query,
         }
+        const corsConfig = parametersCorsConfiguration?.['/spaceDelimited-query-parameters']?.get
+        const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.spaceDelimitedQueryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
-          headers: await adapter.getResponseHeaders(
-            toolkit,
-            typedResponse,
-            undefined,
-            await adapter.getCorsHeaders(toolkit, { allowedOrigins: true, allowedResponseHeaders: ['content-type'] }),
-          ),
+          headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
         }

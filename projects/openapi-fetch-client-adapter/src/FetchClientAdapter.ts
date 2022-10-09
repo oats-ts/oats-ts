@@ -228,7 +228,11 @@ export class FetchClientAdapter implements ClientAdapter {
   protected getRequestInit(request: RawHttpRequest): RequestInit | undefined {
     return {
       headers: request.headers,
-      method: request.method,
+      /**
+       * It's important to uppercase this. In most cases it's irrelevant,
+       * but for PATCH only the uppercase variant goes through properly.
+       */
+      method: request.method.toUpperCase(),
       ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
     }
   }

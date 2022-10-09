@@ -27,6 +27,10 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
   }
 
+  public byUri<T>(uri: string): T {
+    return this.data.uriToObject.get(uri)
+  }
+
   public dereference<T>(input: string | ReferenceObject | T, deep?: boolean): T {
     if (typeof input === 'string') {
       return deep ? this.dereference(this.data.uriToObject.get(input)) : this.data.uriToObject.get(input)
@@ -66,6 +70,18 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
       )
     }
     return uri
+  }
+
+  public hashOf(input: any): number {
+    const hash = this.data.objectToHash.get(input)
+    if (isNil(hash)) {
+      throw new Error(
+        `Input ${JSON.stringify(
+          input,
+        )} doesn't have a valid hash. This means it's either not part of an OpenAPI document, or you found a bug in the reader.`,
+      )
+    }
+    return hash
   }
 
   public dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[] {

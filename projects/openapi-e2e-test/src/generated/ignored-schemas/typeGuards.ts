@@ -7,11 +7,5 @@
 import { IgnoredFieldsType } from './types'
 
 export function isIgnoredFieldsType(input: any): input is IgnoredFieldsType {
-  return (
-    input !== null &&
-    typeof input === 'object' &&
-    Array.isArray(input.ignored) &&
-    input.ignored.every((item: any) => typeof item === 'string') &&
-    input.type === 'discriminator-field'
-  )
+  return input !== null && typeof input === 'object' && input.type === 'discriminator-field'
 }

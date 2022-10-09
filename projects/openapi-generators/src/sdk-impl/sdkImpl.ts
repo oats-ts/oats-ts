@@ -1,6 +1,6 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIGenerator } from '../types'
-import { SdkGeneratorConfig } from '../utils/sdk/typings'
+import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { SdkImplementationGenerator } from './SdkImplementationGenerator'
 
 function defaultConfig({

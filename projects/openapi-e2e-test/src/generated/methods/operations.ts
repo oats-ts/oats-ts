@@ -8,7 +8,6 @@ import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-http'
 import {
   deleteMethodResponseBodyValidator,
   getMethodResponseBodyValidator,
-  optionsMethodResponseBodyValidator,
   patchMethodResponseBodyValidator,
   postMethodResponseBodyValidator,
   putMethodResponseBodyValidator,
@@ -16,7 +15,6 @@ import {
 import {
   DeleteMethodResponse,
   GetMethodResponse,
-  OptionsMethodResponse,
   PatchMethodResponse,
   PostMethodResponse,
   PutMethodResponse,
@@ -63,30 +61,6 @@ export async function getMethod(adapter: ClientAdapter): Promise<GetMethodRespon
     statusCode,
     body: responseBody,
   } as GetMethodResponse
-}
-
-export async function optionsMethod(adapter: ClientAdapter): Promise<OptionsMethodResponse> {
-  const requestUrl = await adapter.getUrl('/options-method', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
-    method: 'options',
-    headers: requestHeaders,
-  }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
-    optionsMethodResponseBodyValidator,
-  )
-  return {
-    mimeType,
-    statusCode,
-    body: responseBody,
-  } as OptionsMethodResponse
 }
 
 export async function patchMethod(adapter: ClientAdapter): Promise<PatchMethodResponse> {
