@@ -6,7 +6,7 @@ import { createSourceFile, documentNode, getModelImports, safeName } from '@oats
 import { SchemaBasedCodeGenerator } from '../SchemaBasedCodeGenerator'
 import { JsonSchemaGeneratorTarget, JsonSchemaReadOutput } from '../types'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { getDiscriminators, getInferredType, getReferencedNamedSchemas, isReferenceObject } from '@oats-ts/model-common'
+import { getDiscriminators, getReferencedNamedSchemas } from '@oats-ts/model-common'
 import { entries, has, isNil, sortBy } from 'lodash'
 
 export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends SchemaBasedCodeGenerator<
@@ -47,39 +47,37 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
       undefined,
       this.getRighthandSideTypeAst(schema),
     )
-    return this.configuration().documentation && !isReferenceObject(schema) ? documentNode(node, schema) : node
+    return this.configuration().documentation && !this.isReferenceObject(schema) ? documentNode(node, schema) : node
   }
 
   protected getRighthandSideTypeAst(data: Referenceable<SchemaObject>): TypeNode {
-    if (isReferenceObject(data)) {
+    if (this.isReferenceObject(data)) {
       return this.getTypeReferenceAst(data)
     }
-    switch (getInferredType(data)) {
-      case 'array':
-        return this.getArrayTypeAst(data)
-      case 'enum':
-        return this.getLiteralUnionTypeAst(data)
-      case 'object':
-        return this.getObjectTypeAst(data)
-      case 'record':
-        return this.getRecordTypeAst(data)
-      case 'union':
-        return this.getUnionTypeAst(data)
-      case 'intersection':
-        return this.getIntersectionTypeAst(data)
-      case 'literal':
-        return this.getLiteralTypeAst(data)
-      case 'tuple':
-        return this.getTupleTypeAst(data)
-      case 'string':
-        return this.getStringTypeAst(data)
-      case 'boolean':
-        return this.getBooleanTypeAst(data)
-      case 'number':
-        return this.getNumberTypeAst(data)
-      default:
-        return this.getFallbackTypeAst(data)
+    if (this.isArraySchema(data)) {
+      return this.getArrayTypeAst(data)
+    } else if (this.isEnumSchema(data)) {
+      return this.getLiteralUnionTypeAst(data)
+    } else if (this.isObjectSchema(data)) {
+      return this.getObjectTypeAst(data)
+    } else if (this.isRecordSchema(data)) {
+      return this.getRecordTypeAst(data)
+    } else if (this.isUnionSchema(data)) {
+      return this.getUnionTypeAst(data)
+    } else if (this.isIntersectionSchema(data)) {
+      return this.getIntersectionTypeAst(data)
+    } else if (this.isLiteralSchema(data)) {
+      return this.getLiteralTypeAst(data)
+    } else if (this.isTupleSchema(data)) {
+      return this.getTupleTypeAst(data)
+    } else if (this.isStringSchema(data)) {
+      return this.getStringTypeAst(data)
+    } else if (this.isBooleanSchema(data)) {
+      return this.getBooleanTypeAst(data)
+    } else if (this.isNumberSchema(data)) {
+      return this.getNumberTypeAst(data)
     }
+    return this.getFallbackTypeAst(data)
   }
 
   protected getTypeReferenceAst(data: Referenceable<SchemaObject> | undefined): TypeNode {
@@ -159,7 +157,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
           isOptional ? factory.createToken(SyntaxKind.QuestionToken) : undefined,
           this.getTypeReferenceAst(schemaOrRef),
         )
-        return config.documentation && !isReferenceObject(data) ? documentNode(node, data) : node
+        return config.documentation && !this.isReferenceObject(data) ? documentNode(node, data) : node
       })
 
     return factory.createTypeLiteralNode(discriminatorProperties.concat(properties))
