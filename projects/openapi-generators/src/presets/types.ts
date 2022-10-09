@@ -13,7 +13,6 @@ import { SdkGeneratorConfig } from '../utils/sdk/typings'
 import { Config } from '../types'
 import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
-import { ExpressCorsRouterFactoryGeneratorConfig } from '../express-cors-router-factory'
 import { CorsConfigurationGeneratorConfig } from '../cors-configuration'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 
@@ -33,7 +32,6 @@ type GeneratorConfigs = {
   'oats/request-type': RequestTypesGeneratorConfig
   'oats/response-type': ResponseTypesGeneratorConfig
   'oats/express-router-factory': ExpressRouterFactoriesGeneratorConfig
-  'oats/express-cors-router-factory': ExpressCorsRouterFactoryGeneratorConfig
   'oats/cors-configuration': CorsConfigurationGeneratorConfig
 }
 
