@@ -187,11 +187,12 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   protected getHandlerBodyAst(data: EnhancedOperation): Block {
-    const api = this.getApiStatement(data)
-    const toolkit = this.getToolkitStatement(data)
-    const adapter = this.getAdapterStatement(data)
-    const tryCatch = this.getTryCatchBlock(data)
-    return factory.createBlock([toolkit, adapter, api, tryCatch])
+    return factory.createBlock([
+      this.getToolkitStatement(data),
+      this.getAdapterStatement(data),
+      this.getApiStatement(data),
+      this.getTryCatchBlock(data),
+    ])
   }
 
   protected getToolkitStatement(data: EnhancedOperation): Statement {
@@ -273,32 +274,19 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   private getTryCatchBlock(data: EnhancedOperation) {
-    const query = this.getQueryParametersStatement(data)
-    const path = this.getParametersParametersStatement(data)
-    const requestHeaders = this.getRequestHeadersParamtersStatement(data)
-    const cookies = this.getCookieParametersStatement(data)
-    const mimeType = this.getMimeTypeStatement(data)
-    const body = this.getRequestBodyStatement(data)
-    const typedRequest = this.getTypeRequestStatement(data)
-    const corsConfig = this.getCorsConfigurationStatement(data)
-    const corsHeaders = this.getCorsHeadersStatement(data)
-    const typedResponse = this.getTypedResponseStatement(data)
-    const normalizedResponse = this.getNormalizedResponse(data)
-    const respond = this.getRespondStatement(data)
-
     const statements = [
-      query,
-      path,
-      requestHeaders,
-      cookies,
-      mimeType,
-      body,
-      typedRequest,
-      corsConfig,
-      corsHeaders,
-      typedResponse,
-      normalizedResponse,
-      respond,
+      this.getQueryParametersStatement(data),
+      this.getParametersParametersStatement(data),
+      this.getRequestHeadersParamtersStatement(data),
+      this.getCookieParametersStatement(data),
+      this.getMimeTypeStatement(data),
+      this.getRequestBodyStatement(data),
+      this.getTypeRequestStatement(data),
+      this.getCorsConfigurationStatement(data),
+      this.getCorsHeadersStatement(data),
+      this.getTypedResponseStatement(data),
+      this.getNormalizedResponseStatement(data),
+      this.getRespondStatement(data),
     ].filter((statement): statement is Statement => !isNil(statement))
 
     return factory.createTryStatement(
@@ -633,7 +621,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     )
   }
 
-  protected getNormalizedResponse(data: EnhancedOperation): Statement | undefined {
+  protected getNormalizedResponseStatement(data: EnhancedOperation): Statement | undefined {
     return factory.createVariableStatement(
       undefined,
       factory.createVariableDeclarationList(
