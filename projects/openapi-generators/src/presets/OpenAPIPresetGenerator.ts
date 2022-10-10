@@ -14,7 +14,7 @@ export class OpenAPIPresetGenerator extends GroupGenerator<OpenAPIReadOutput, So
     super(name, createOpenAPIGenerators(preset), globalConfig)
   }
 
-  public update(preset: OpenAPIPresetConfig): OpenAPIPresetGenerator {
+  public override(preset: OpenAPIPresetConfig): OpenAPIPresetGenerator {
     return new OpenAPIPresetGenerator(
       this.customName(),
       merge(cloneDeep(this.preset), cloneDeep(preset)),

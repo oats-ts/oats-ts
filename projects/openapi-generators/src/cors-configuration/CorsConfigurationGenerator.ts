@@ -77,7 +77,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
   }
 
   protected getConfigurationWarningLabel(): string {
-    const label = `WARNING: No allowed origins for any operations, generator "${this.name()}" likely needs to be configured!
+    const label = `WARNING: No allowed origin + method combination for any operations, generator "${this.name()}" likely needs to be configured!
 
     - If you don't need CORS, remove "${this.name()}" from your configuration.
     - If you need CORS, please provide at least the getAllowedOrigins options for "${this.name()}".
@@ -89,8 +89,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
       .join('\n')
   }
 
-  protected getCorsConfigurationStatement(_paths: EnhancedPathItem[]): Statement {
-    const paths = this.getCorsEnabledPaths(_paths)
+  protected getCorsConfigurationStatement(paths: EnhancedPathItem[]): Statement {
     const statement = factory.createVariableStatement(
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       factory.createVariableDeclarationList(
@@ -105,7 +104,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
         NodeFlags.Const,
       ),
     )
-    if (paths.length === 0) {
+    if (this.getCorsEnabledPaths(paths).length === 0) {
       return documentNode(statement, { description: this.getConfigurationWarningLabel() })
     }
     return statement
@@ -125,13 +124,13 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
 
   protected getPathCorsObjectAst(data: EnhancedPathItem): Expression | undefined {
     const { operations } = data
+    const config = this.configuration()
 
     const properties = flatMap(operations, (operation) => {
-      const corsExpression = this.getOperationCorsObjectAst(operation)
-      if (isNil(corsExpression)) {
+      if (!config.isMethodAllowed(operation.url, operation.method, operation.operation)) {
         return []
       }
-      return factory.createPropertyAssignment(operation.method, corsExpression)
+      return [factory.createPropertyAssignment(operation.method, this.getOperationCorsObjectAst(operation))]
     })
 
     if (properties.length === 0) {
@@ -140,11 +139,11 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
     return factory.createObjectLiteralExpression(properties, true)
   }
 
-  protected getAllowedOriginsAst(data: EnhancedOperation): Expression | undefined {
+  protected getAllowedOriginsAst(data: EnhancedOperation): Expression {
     const { getAllowedOrigins } = this.configuration()
     const allowedOrigins = getAllowedOrigins(data.url, data.method, data.operation)
     if (allowedOrigins === false) {
-      return undefined
+      return factory.createFalse()
     }
     if (allowedOrigins === true) {
       return factory.createTrue()
@@ -152,7 +151,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
     if (Array.isArray(allowedOrigins)) {
       return factory.createArrayLiteralExpression(allowedOrigins.map((origin) => factory.createStringLiteral(origin)))
     }
-    return undefined
+    return factory.createFalse()
   }
 
   protected getAllowedResponseHeadersAst(data: EnhancedOperation): Expression {
@@ -183,16 +182,12 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
     return isNil(maxAge) ? factory.createIdentifier('undefined') : factory.createNumericLiteral(maxAge)
   }
 
-  protected getOperationCorsObjectAst(data: EnhancedOperation): Expression | undefined {
+  protected getOperationCorsObjectAst(data: EnhancedOperation): Expression {
     const allowedOriginsAst = this.getAllowedOriginsAst(data)
     const allowedRequestHeadersAst = this.getAllowedRequestHeadersAst(data)
     const allowedResponseHeadersAst = this.getAllowedResponseHeadersAst(data)
     const allowCredentialsAst = this.getAllowCredentialsAst(data)
     const maxAgeAst = this.getMaxAgeAst(data)
-
-    if (isNil(allowedOriginsAst)) {
-      return undefined
-    }
 
     return factory.createObjectLiteralExpression(
       [

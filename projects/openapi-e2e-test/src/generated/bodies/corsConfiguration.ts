@@ -14,4 +14,122 @@ import { CorsConfiguration } from '@oats-ts/openapi-http'
  * - More info on CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
  * - More info on configuring generators: https://oats-ts.github.io/docs/#/docs/OpenAPI_Generate
  */
-export const bodiesCorsConfiguration: CorsConfiguration = {}
+export const bodiesCorsConfiguration: CorsConfiguration = {
+  '/str': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/num': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/enm': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/bool': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/prim-tuple': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/opt-prim-tuple': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/str-arr': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/num-arr': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/enm-arr': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/bool-arr': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/prim-obj': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/arr-obj': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+  '/nested-obj': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
+}

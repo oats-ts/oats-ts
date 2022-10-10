@@ -38,7 +38,6 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     return [
       'oats/type',
       'oats/request-server-type',
-      'oats/response-type',
       'oats/api-type',
       'oats/path-deserializer',
       'oats/query-deserializer',

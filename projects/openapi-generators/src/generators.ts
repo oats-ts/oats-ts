@@ -15,6 +15,7 @@ import { SdkGeneratorConfig } from './utils/sdkTypings'
 import { group } from './group'
 import { ResponseTypesGeneratorConfig } from './response-type'
 import { ExpressRouterFactoriesGeneratorConfig } from './express-router-factory'
+import { CorsConfigurationGeneratorConfig } from './cors-configuration'
 
 function create(name: 'oats/type', config?: Config<TypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/type-guard', config?: Config<TypeGuardGeneratorConfig>): OpenAPIGenerator
@@ -33,6 +34,8 @@ function create(name: 'oats/query-type', config?: Config<ParameterTypesGenerator
 function create(name: 'oats/request-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/response-headers-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/response-type', config?: Config<ResponseTypesGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/cors-configuration', config?: Config<CorsConfigurationGeneratorConfig>): OpenAPIGenerator
+function create(name: OpenAPIGeneratorTarget, config?: Config): OpenAPIGenerator
 
 function create(name: OpenAPIGeneratorTarget, config?: Config): OpenAPIGenerator {
   const factory = generatorFactoryMap[name]
