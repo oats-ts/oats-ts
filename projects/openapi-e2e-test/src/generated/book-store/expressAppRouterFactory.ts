@@ -8,7 +8,10 @@ import { IRouter, Router } from 'express'
 import { createAddBookRouter, createGetBookRouter, createGetBooksRouter } from './expressRouterFactories'
 import { BookStoreRouterFactories } from './expressRouterFactoriesType'
 
-export function createBookStoreAppRouter(router?: IRouter, overrides: Partial<BookStoreRouterFactories> = {}): IRouter {
+export function createBookStoreAppRouter(
+  router?: IRouter | undefined,
+  overrides: Partial<BookStoreRouterFactories> = {},
+): IRouter {
   const root = router ?? Router()
   const factories = [
     overrides.createGetBooksRouter ?? createGetBooksRouter,

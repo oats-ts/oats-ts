@@ -17,7 +17,7 @@ import { AddBookServerRequest, GetBookServerRequest, GetBooksServerRequest } fro
 import { getBooksResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Book } from './types'
 
-export function createAddBookRouter(router?: IRouter): IRouter {
+export function createAddBookRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -52,7 +52,7 @@ export function createAddBookRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createGetBookRouter(router?: IRouter): IRouter {
+export function createGetBookRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/books/:bookId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -80,7 +80,7 @@ export function createGetBookRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createGetBooksRouter(router?: IRouter): IRouter {
+export function createGetBooksRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

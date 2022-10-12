@@ -9,7 +9,7 @@ import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { httpMethodsCorsConfiguration } from './corsConfiguration'
 
-export function createHttpMethodsCorsRouter(router?: IRouter): IRouter {
+export function createHttpMethodsCorsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router())
     .options('/delete-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }

@@ -7,9 +7,9 @@
 import { IRouter } from 'express'
 
 export type HttpMethodsRouterFactories = {
-  createGetMethodRouter: (router?: IRouter) => IRouter
-  createPostMethodRouter: (router?: IRouter) => IRouter
-  createPutMethodRouter: (router?: IRouter) => IRouter
-  createPatchMethodRouter: (router?: IRouter) => IRouter
-  createDeleteMethodRouter: (router?: IRouter) => IRouter
+  createGetMethodRouter: (router?: IRouter | undefined) => IRouter
+  createPostMethodRouter: (router?: IRouter | undefined) => IRouter
+  createPutMethodRouter: (router?: IRouter | undefined) => IRouter
+  createPatchMethodRouter: (router?: IRouter | undefined) => IRouter
+  createDeleteMethodRouter: (router?: IRouter | undefined) => IRouter
 }

@@ -7,14 +7,14 @@
 import { IRouter } from 'express'
 
 export type ParametersRouterFactories = {
-  createSimplePathParametersRouter: (router?: IRouter) => IRouter
-  createLabelPathParametersRouter: (router?: IRouter) => IRouter
-  createMatrixPathParametersRouter: (router?: IRouter) => IRouter
-  createFormQueryParametersRouter: (router?: IRouter) => IRouter
-  createSpaceDelimitedQueryParametersRouter: (router?: IRouter) => IRouter
-  createPipeDelimitedQueryParametersRouter: (router?: IRouter) => IRouter
-  createDeepObjectQueryParametersRouter: (router?: IRouter) => IRouter
-  createSimpleHeaderParametersRouter: (router?: IRouter) => IRouter
-  createFormCookieParametersRouter: (router?: IRouter) => IRouter
-  createSimpleResponseHeaderParametersRouter: (router?: IRouter) => IRouter
+  createSimplePathParametersRouter: (router?: IRouter | undefined) => IRouter
+  createLabelPathParametersRouter: (router?: IRouter | undefined) => IRouter
+  createMatrixPathParametersRouter: (router?: IRouter | undefined) => IRouter
+  createFormQueryParametersRouter: (router?: IRouter | undefined) => IRouter
+  createSpaceDelimitedQueryParametersRouter: (router?: IRouter | undefined) => IRouter
+  createPipeDelimitedQueryParametersRouter: (router?: IRouter | undefined) => IRouter
+  createDeepObjectQueryParametersRouter: (router?: IRouter | undefined) => IRouter
+  createSimpleHeaderParametersRouter: (router?: IRouter | undefined) => IRouter
+  createFormCookieParametersRouter: (router?: IRouter | undefined) => IRouter
+  createSimpleResponseHeaderParametersRouter: (router?: IRouter | undefined) => IRouter
 }

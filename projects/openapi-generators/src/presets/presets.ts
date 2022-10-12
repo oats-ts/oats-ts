@@ -54,7 +54,7 @@ function serverConfig(config: OpenAPIServerPresetConfig): OpenAPIPresetConfig {
     'oats/express-router-factories-type': true,
     'oats/express-app-router-factory': true,
     'oats/express-cors-router-factory': shouldGenerateCors,
-    'oats/express-context-handler-factory': true,
+    'oats/express-context-router-factory': true,
     'oats/cors-configuration': shouldGenerateCors ? getCorsConfiguration(cors) : false,
   }
 }

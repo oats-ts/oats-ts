@@ -7,17 +7,17 @@
 import { IRouter } from 'express'
 
 export type BodiesRouterFactories = {
-  createStrRouter: (router?: IRouter) => IRouter
-  createNumRouter: (router?: IRouter) => IRouter
-  createEnmRouter: (router?: IRouter) => IRouter
-  createBoolRouter: (router?: IRouter) => IRouter
-  createPrimTupleRouter: (router?: IRouter) => IRouter
-  createOptPrimTupleRouter: (router?: IRouter) => IRouter
-  createStrArrRouter: (router?: IRouter) => IRouter
-  createNumArrRouter: (router?: IRouter) => IRouter
-  createEnmArrRouter: (router?: IRouter) => IRouter
-  createBoolArrRouter: (router?: IRouter) => IRouter
-  createPrimObjRouter: (router?: IRouter) => IRouter
-  createArrObjRouter: (router?: IRouter) => IRouter
-  createNestedObjRouter: (router?: IRouter) => IRouter
+  createStrRouter: (router?: IRouter | undefined) => IRouter
+  createNumRouter: (router?: IRouter | undefined) => IRouter
+  createEnmRouter: (router?: IRouter | undefined) => IRouter
+  createBoolRouter: (router?: IRouter | undefined) => IRouter
+  createPrimTupleRouter: (router?: IRouter | undefined) => IRouter
+  createOptPrimTupleRouter: (router?: IRouter | undefined) => IRouter
+  createStrArrRouter: (router?: IRouter | undefined) => IRouter
+  createNumArrRouter: (router?: IRouter | undefined) => IRouter
+  createEnmArrRouter: (router?: IRouter | undefined) => IRouter
+  createBoolArrRouter: (router?: IRouter | undefined) => IRouter
+  createPrimObjRouter: (router?: IRouter | undefined) => IRouter
+  createArrObjRouter: (router?: IRouter | undefined) => IRouter
+  createNestedObjRouter: (router?: IRouter | undefined) => IRouter
 }

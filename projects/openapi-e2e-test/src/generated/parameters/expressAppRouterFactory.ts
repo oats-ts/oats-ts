@@ -20,7 +20,7 @@ import {
 import { ParametersRouterFactories } from './expressRouterFactoriesType'
 
 export function createParametersAppRouter(
-  router?: IRouter,
+  router?: IRouter | undefined,
   overrides: Partial<ParametersRouterFactories> = {},
 ): IRouter {
   const root = router ?? Router()

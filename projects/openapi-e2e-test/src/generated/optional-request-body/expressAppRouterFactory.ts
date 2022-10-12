@@ -9,7 +9,7 @@ import { createOptionalRequestBodyRouter } from './expressRouterFactories'
 import { OptionalBodiesRouterFactories } from './expressRouterFactoriesType'
 
 export function createOptionalBodiesAppRouter(
-  router?: IRouter,
+  router?: IRouter | undefined,
   overrides: Partial<OptionalBodiesRouterFactories> = {},
 ): IRouter {
   const root = router ?? Router()

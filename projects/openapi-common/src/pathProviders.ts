@@ -39,7 +39,7 @@ const fileNameByTarget: NameByTarget = {
   'oats/set-cookie-deserializer': 'setCookieDeserializers.ts',
   'oats/express-cors-router-factory': 'expressCorsRouterFactory.ts',
   'oats/cors-configuration': 'corsConfiguration.ts',
-  'oats/express-context-handler-factory': 'expressContextHandlerFactory.ts',
+  'oats/express-context-router-factory': 'expressContextRouterFactory.ts',
 }
 
 const delegate =
@@ -103,7 +103,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/express-app-router-factory': routers,
     'oats/express-router-factories-type': routers,
     'oats/express-cors-router-factory': routers,
-    'oats/express-context-handler-factory': routers,
+    'oats/express-context-router-factory': routers,
     'oats/sdk-type': sdk,
     'oats/sdk-impl': sdk,
   }

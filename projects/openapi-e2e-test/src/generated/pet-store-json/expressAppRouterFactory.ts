@@ -9,7 +9,7 @@ import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter }
 import { SwaggerPetstoreRouterFactories } from './expressRouterFactoriesType'
 
 export function createSwaggerPetstoreAppRouter(
-  router?: IRouter,
+  router?: IRouter | undefined,
   overrides: Partial<SwaggerPetstoreRouterFactories> = {},
 ): IRouter {
   const root = router ?? Router()

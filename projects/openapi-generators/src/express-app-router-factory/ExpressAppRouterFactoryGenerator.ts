@@ -234,7 +234,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         factory.createCallExpression(
           factory.createPropertyAccessExpression(
             factory.createIdentifier(RouterFactoryNames.root),
-            factory.createIdentifier('use'),
+            factory.createIdentifier(RouterNames.use),
           ),
           undefined,
           [factory.createSpreadElement(factory.createIdentifier(RouterFactoryNames.uniqueRouters))],
@@ -251,7 +251,10 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         undefined,
         factory.createIdentifier(RouterNames.router),
         factory.createToken(SyntaxKind.QuestionToken),
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
+        factory.createUnionTypeNode([
+          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+          factory.createTypeReferenceNode('undefined', undefined),
+        ]),
         undefined,
       ),
       factory.createParameterDeclaration(

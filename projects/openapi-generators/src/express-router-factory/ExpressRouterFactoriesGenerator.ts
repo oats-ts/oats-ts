@@ -123,7 +123,10 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
           undefined,
           RouterNames.router,
           factory.createToken(SyntaxKind.QuestionToken),
-          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter),
+          factory.createUnionTypeNode([
+            factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+            factory.createTypeReferenceNode('undefined', undefined),
+          ]),
         ),
       ],
       factory.createTypeReferenceNode(RuntimePackages.Express.IRouter),

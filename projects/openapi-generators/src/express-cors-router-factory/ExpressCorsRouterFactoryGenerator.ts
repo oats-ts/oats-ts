@@ -64,7 +64,10 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
           undefined,
           RouterNames.router,
           factory.createToken(SyntaxKind.QuestionToken),
-          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter),
+          factory.createUnionTypeNode([
+            factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+            factory.createTypeReferenceNode('undefined', undefined),
+          ]),
         ),
       ],
       factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),

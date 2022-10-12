@@ -15,11 +15,11 @@ import { createBodiesAppRouter } from '../generated/bodies/expressAppRouterFacto
 import { createHttpMethodsAppRouter } from '../generated/methods/expressAppRouterFactory'
 import { createParametersAppRouter } from '../generated/parameters/expressAppRouterFactory'
 import { createParametersCorsRouter } from '../generated/parameters/expressCorsRouterFactory'
-import { createParametersContextHandler } from '../generated/parameters/expressContextHandlerFactory'
-import { createHttpMethodsContextHandler } from '../generated/methods/expressContextHandlerFactory'
-import { createBodiesContextHandler } from '../generated/bodies/expressContextHandlerFactory'
-import { createOptionalBodiesContextHandler } from '../generated/optional-request-body/expressContextHandlerFactory'
-import { createBookStoreContextHandler } from '../generated/book-store/expressContextHandlerFactory'
+import { createParametersContextRouter } from '../generated/parameters/expressContextRouterFactory'
+import { createHttpMethodsContextRouter } from '../generated/methods/expressContextRouterFactory'
+import { createBodiesContextRouter } from '../generated/bodies/expressContextRouterFactory'
+import { createOptionalBodiesContextRouter } from '../generated/optional-request-body/expressContextRouterFactory'
+import { createBookStoreContextRouter } from '../generated/book-store/expressContextRouterFactory'
 import { Router } from 'express'
 import { createFormQueryParametersRouter } from '../generated/parameters/expressRouterFactories'
 
@@ -27,11 +27,11 @@ export function testBookStoreServer() {
   testExpressServer({
     port: PORT,
     runBeforeAndAfter: 'each',
-    handlers: () => [
-      customBodyParsers.json(),
-      createBookStoreContextHandler(new BookStoreApiImpl(), new ExpressServerAdapter()),
-      createBookStoreAppRouter(),
-    ],
+    attachHandlers: (router) => {
+      router.use(customBodyParsers.json())
+      createBookStoreContextRouter(router, new BookStoreApiImpl(), new ExpressServerAdapter())
+      createBookStoreAppRouter(router)
+    },
   })
 }
 
@@ -39,11 +39,11 @@ export function testOptionalBodiesServer() {
   testExpressServer({
     port: PORT,
     runBeforeAndAfter: 'each',
-    handlers: () => [
-      customBodyParsers.json(),
-      createOptionalBodiesContextHandler(new OptionalBodiesImpl(), new ExpressServerAdapter()),
-      createOptionalBodiesAppRouter(),
-    ],
+    attachHandlers: (router) => {
+      router.use(customBodyParsers.json())
+      createOptionalBodiesContextRouter(router, new OptionalBodiesImpl(), new ExpressServerAdapter())
+      createOptionalBodiesAppRouter(router)
+    },
   })
 }
 
@@ -59,12 +59,12 @@ export function testBodiesServer(mimeType: 'application/json' | 'application/yam
   testExpressServer({
     port: PORT,
     runBeforeAndAfter: 'all',
-    handlers: () => [
-      customBodyParsers.yaml(),
-      customBodyParsers.json(),
-      createBodiesContextHandler(new BodiesApiImpl(), adapter),
-      createBodiesAppRouter(),
-    ],
+    attachHandlers: (router) => {
+      router.use(customBodyParsers.yaml())
+      router.use(customBodyParsers.json())
+      createBodiesContextRouter(router, new BodiesApiImpl(), adapter)
+      createBodiesAppRouter(router)
+    },
   })
 }
 
@@ -72,12 +72,12 @@ export function testHttpMethodsServer() {
   testExpressServer({
     port: PORT,
     runBeforeAndAfter: 'all',
-    handlers: () => [
-      customBodyParsers.yaml(),
-      customBodyParsers.json(),
-      createHttpMethodsContextHandler(new HttpMethodsApiImpl(), new ExpressServerAdapter()),
-      createHttpMethodsAppRouter(),
-    ],
+    attachHandlers: (router) => {
+      router.use(customBodyParsers.yaml())
+      router.use(customBodyParsers.json())
+      createHttpMethodsContextRouter(router, new HttpMethodsApiImpl(), new ExpressServerAdapter())
+      createHttpMethodsAppRouter(router)
+    },
   })
 }
 
@@ -85,13 +85,15 @@ export function testParametersServer() {
   testExpressServer({
     port: PORT,
     runBeforeAndAfter: 'all',
-    handlers: () => [
-      customBodyParsers.yaml(),
-      customBodyParsers.json(),
-      createParametersContextHandler(new ParametersApiImpl(), new ExpressServerAdapter()),
-      createParametersAppRouter(createParametersCorsRouter(Router()), {
-        createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
-      }),
-    ],
+    attachHandlers: (router) => {
+      router.use(customBodyParsers.yaml())
+      router.use(customBodyParsers.json())
+      router.use(createParametersContextRouter(undefined, new ParametersApiImpl(), new ExpressServerAdapter())),
+        router.use(
+          createParametersAppRouter(createParametersCorsRouter(Router()), {
+            createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
+          }),
+        )
+    },
   })
 }

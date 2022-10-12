@@ -22,7 +22,10 @@ import {
 } from './expressRouterFactories'
 import { BodiesRouterFactories } from './expressRouterFactoriesType'
 
-export function createBodiesAppRouter(router?: IRouter, overrides: Partial<BodiesRouterFactories> = {}): IRouter {
+export function createBodiesAppRouter(
+  router?: IRouter | undefined,
+  overrides: Partial<BodiesRouterFactories> = {},
+): IRouter {
   const root = router ?? Router()
   const factories = [
     overrides.createStrRouter ?? createStrRouter,

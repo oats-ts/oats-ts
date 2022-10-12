@@ -39,7 +39,7 @@ import { simpleResponseHeaderParametersResponseHeadersSerializer } from './respo
 import { formCookieParametersSetCookieSerializer } from './setCookieSerializers'
 import { SimpleResponseHeaderParameters } from './types'
 
-export function createDeepObjectQueryParametersRouter(router?: IRouter): IRouter {
+export function createDeepObjectQueryParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/deepObject-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -67,7 +67,7 @@ export function createDeepObjectQueryParametersRouter(router?: IRouter): IRouter
   )
 }
 
-export function createFormCookieParametersRouter(router?: IRouter): IRouter {
+export function createFormCookieParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/form-cookie-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -96,7 +96,7 @@ export function createFormCookieParametersRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createFormQueryParametersRouter(router?: IRouter): IRouter {
+export function createFormQueryParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/form-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -124,7 +124,7 @@ export function createFormQueryParametersRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createLabelPathParametersRouter(router?: IRouter): IRouter {
+export function createLabelPathParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -155,7 +155,7 @@ export function createLabelPathParametersRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createMatrixPathParametersRouter(router?: IRouter): IRouter {
+export function createMatrixPathParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -186,7 +186,7 @@ export function createMatrixPathParametersRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createPipeDelimitedQueryParametersRouter(router?: IRouter): IRouter {
+export function createPipeDelimitedQueryParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/pipeDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -214,7 +214,7 @@ export function createPipeDelimitedQueryParametersRouter(router?: IRouter): IRou
   )
 }
 
-export function createSimpleHeaderParametersRouter(router?: IRouter): IRouter {
+export function createSimpleHeaderParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/simple-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -242,7 +242,7 @@ export function createSimpleHeaderParametersRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createSimplePathParametersRouter(router?: IRouter): IRouter {
+export function createSimplePathParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -273,7 +273,7 @@ export function createSimplePathParametersRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createSimpleResponseHeaderParametersRouter(router?: IRouter): IRouter {
+export function createSimpleResponseHeaderParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/simple-response-header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -313,7 +313,7 @@ export function createSimpleResponseHeaderParametersRouter(router?: IRouter): IR
   )
 }
 
-export function createSpaceDelimitedQueryParametersRouter(router?: IRouter): IRouter {
+export function createSpaceDelimitedQueryParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/spaceDelimited-query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
