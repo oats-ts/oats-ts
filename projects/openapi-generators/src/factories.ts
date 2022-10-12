@@ -31,7 +31,7 @@ import { setCookieSerializers } from './set-cookie-serializer'
 import { setCookieDeserializers } from './set-cookie-deserializer'
 import { expressCorsRouterFactory } from './express-cors-router-factory'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
-import { expressContextRouterFactory } from './express-context-handler-factory'
+import { expressContextRouterFactory } from './express-context-router-factory'
 import { corsConfiguration } from './cors-configuration'
 
 export const factories = {
