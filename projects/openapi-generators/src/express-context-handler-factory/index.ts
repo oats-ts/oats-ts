@@ -1,2 +1,2 @@
-export { expressContextHandlerFactory } from './expressContextHandlerFactory'
-export { ExpressContextHandlerFactoryGenerator } from './ExpressContextHandlerFactoryGenerator'
+export { expressContextRouterFactory } from './expressContextHandlerFactory'
+export { ExpressContextRouterFactoryGenerator } from './ExpressContextHandlerFactoryGenerator'

@@ -9,7 +9,7 @@ import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { BodiesApi } from './apiType'
 
-export function createBodiesContextHandler(
+export function createBodiesContextRouter(
   router: IRouter | undefined,
   api: BodiesApi,
   adapter: ServerAdapter<ExpressToolkit>,

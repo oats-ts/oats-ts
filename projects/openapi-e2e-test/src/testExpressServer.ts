@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express'
+import express, { Express, IRouter } from 'express'
 import { HttpTerminator, createHttpTerminator } from 'http-terminator'
 import { Server } from 'http'
 
@@ -6,7 +6,7 @@ export type TestServerInput = {
   /** The port the server should be running on */
   port: number
   /** The express request handlers to handle the servers logic. */
-  handlers: () => RequestHandler[]
+  attachHandlers: (router: IRouter) => void
   /**
    * Determines which lifecycle event pair is used for starting/stopping the server
    * - all - beforeAll() starts and afterAll() stops the server
@@ -22,9 +22,8 @@ export async function stopExpressServer(terminator?: HttpTerminator): Promise<vo
   return terminator.terminate()
 }
 
-export async function startExpressServer(input: TestServerInput): Promise<HttpTerminator> {
-  const app = express()
-  app.use(...input.handlers())
+export async function startExpressServer(app: Express, input: TestServerInput): Promise<HttpTerminator> {
+  input.attachHandlers(app)
   const server = await new Promise<Server>((resolve) => {
     const s = app.listen(input.port, () => resolve(s))
   })
@@ -39,9 +38,10 @@ export async function startExpressServer(input: TestServerInput): Promise<HttpTe
  * and it's shutdown in the after or afterAll lifecycle events.
  */
 export function testExpressServer(input: TestServerInput) {
+  const app = express()
   let terminator: HttpTerminator | undefined = undefined
   const startHandler = async () => {
-    terminator = await startExpressServer(input)
+    terminator = await startExpressServer(app, input)
   }
   const stopHandler = async () => stopExpressServer(terminator)
 

@@ -9,7 +9,7 @@ import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
 
-export function createSwaggerPetstoreContextHandler(
+export function createSwaggerPetstoreContextRouter(
   router: IRouter | undefined,
   api: SwaggerPetstoreApi,
   adapter: ServerAdapter<ExpressToolkit>,

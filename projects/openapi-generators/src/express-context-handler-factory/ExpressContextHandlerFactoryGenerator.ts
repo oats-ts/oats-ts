@@ -17,9 +17,9 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
 
-export class ExpressContextHandlerFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
+export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
-    return 'oats/express-context-handler-factory'
+    return 'oats/express-context-router-factory'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/express-router-factory', 'oats/express-router-factories-type', 'oats/api-type']
