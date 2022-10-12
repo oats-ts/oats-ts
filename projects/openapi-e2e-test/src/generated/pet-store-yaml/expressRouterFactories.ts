@@ -16,7 +16,7 @@ import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerReques
 import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
 import { Pet } from './types'
 
-export function createCreatePetsRouter(router?: IRouter): IRouter {
+export function createCreatePetsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -51,7 +51,7 @@ export function createCreatePetsRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createListPetsRouter(router?: IRouter): IRouter {
+export function createListPetsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -84,7 +84,7 @@ export function createListPetsRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createShowPetByIdRouter(router?: IRouter): IRouter {
+export function createShowPetByIdRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/pets/:petId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

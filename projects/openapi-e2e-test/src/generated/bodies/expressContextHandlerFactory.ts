@@ -6,13 +6,17 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
-import { Handler, NextFunction, Request, Response } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { BodiesApi } from './apiType'
 
-export function createBodiesContextHandler(api: BodiesApi, adapter: ServerAdapter<ExpressToolkit>): Handler {
-  return (_: Request, response: Response, next: NextFunction) => {
+export function createBodiesContextHandler(
+  router: IRouter | undefined,
+  api: BodiesApi,
+  adapter: ServerAdapter<ExpressToolkit>,
+): IRouter {
+  return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
     response.locals['__oats_api_14n8ypu'] = api
     response.locals['__oats_adapter_14n8ypu'] = adapter
     next()
-  }
+  })
 }

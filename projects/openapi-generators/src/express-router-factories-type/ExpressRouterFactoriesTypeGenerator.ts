@@ -57,7 +57,10 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
                 undefined,
                 factory.createIdentifier(RouterNames.router),
                 factory.createToken(SyntaxKind.QuestionToken),
-                factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+                factory.createUnionTypeNode([
+                  factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+                  factory.createTypeReferenceNode('undefined', undefined),
+                ]),
                 undefined,
               ),
             ],

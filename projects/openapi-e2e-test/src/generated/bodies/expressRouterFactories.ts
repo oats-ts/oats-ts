@@ -48,7 +48,7 @@ import {
   PrimitiveTupleType,
 } from './types'
 
-export function createArrObjRouter(router?: IRouter): IRouter {
+export function createArrObjRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/arr-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -83,7 +83,7 @@ export function createArrObjRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createBoolArrRouter(router?: IRouter): IRouter {
+export function createBoolArrRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/bool-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -118,7 +118,7 @@ export function createBoolArrRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createBoolRouter(router?: IRouter): IRouter {
+export function createBoolRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/bool',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -153,7 +153,7 @@ export function createBoolRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createEnmArrRouter(router?: IRouter): IRouter {
+export function createEnmArrRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/enm-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -188,7 +188,7 @@ export function createEnmArrRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createEnmRouter(router?: IRouter): IRouter {
+export function createEnmRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/enm',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -223,7 +223,7 @@ export function createEnmRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createNestedObjRouter(router?: IRouter): IRouter {
+export function createNestedObjRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/nested-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -258,7 +258,7 @@ export function createNestedObjRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createNumArrRouter(router?: IRouter): IRouter {
+export function createNumArrRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/num-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -293,7 +293,7 @@ export function createNumArrRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createNumRouter(router?: IRouter): IRouter {
+export function createNumRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/num',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -328,7 +328,7 @@ export function createNumRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createOptPrimTupleRouter(router?: IRouter): IRouter {
+export function createOptPrimTupleRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/opt-prim-tuple',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -363,7 +363,7 @@ export function createOptPrimTupleRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createPrimObjRouter(router?: IRouter): IRouter {
+export function createPrimObjRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/prim-obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -398,7 +398,7 @@ export function createPrimObjRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createPrimTupleRouter(router?: IRouter): IRouter {
+export function createPrimTupleRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/prim-tuple',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -433,7 +433,7 @@ export function createPrimTupleRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createStrArrRouter(router?: IRouter): IRouter {
+export function createStrArrRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/str-arr',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -468,7 +468,7 @@ export function createStrArrRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createStrRouter(router?: IRouter): IRouter {
+export function createStrRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/str',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

@@ -9,7 +9,7 @@ import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { bookStoreCorsConfiguration } from './corsConfiguration'
 
-export function createBookStoreCorsRouter(router?: IRouter): IRouter {
+export function createBookStoreCorsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router())
     .options('/books/:bookId', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }

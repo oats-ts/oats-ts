@@ -11,7 +11,7 @@ import { OptionalBodiesApi } from './apiType'
 import { optionalRequestBodyRequestBodyValidator } from './requestBodyValidators'
 import { OptionalRequestBodyServerRequest } from './requestServerTypes'
 
-export function createOptionalRequestBodyRouter(router?: IRouter): IRouter {
+export function createOptionalRequestBodyRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/optional-request-body',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {

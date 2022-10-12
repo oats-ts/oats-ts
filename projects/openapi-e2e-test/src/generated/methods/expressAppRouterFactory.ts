@@ -15,7 +15,7 @@ import {
 import { HttpMethodsRouterFactories } from './expressRouterFactoriesType'
 
 export function createHttpMethodsAppRouter(
-  router?: IRouter,
+  router?: IRouter | undefined,
   overrides: Partial<HttpMethodsRouterFactories> = {},
 ): IRouter {
   const root = router ?? Router()

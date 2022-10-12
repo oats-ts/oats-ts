@@ -9,7 +9,7 @@ import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { parametersCorsConfiguration } from './corsConfiguration'
 
-export function createParametersCorsRouter(router?: IRouter): IRouter {
+export function createParametersCorsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router())
     .options('/simple-response-header-parameters', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }

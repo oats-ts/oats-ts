@@ -9,6 +9,7 @@ import {
   ParameterDeclaration,
   SyntaxKind,
   Statement,
+  Block,
 } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
@@ -49,7 +50,8 @@ export class ExpressContextHandlerFactoryGenerator extends DocumentBasedCodeGene
   protected getImportDeclarations(path: string): ImportDeclaration[] {
     return [
       getNamedImports(RuntimePackages.Express.name, [
-        RuntimePackages.Express.Handler,
+        RuntimePackages.Express.IRouter,
+        RuntimePackages.Express.Router,
         RuntimePackages.Express.NextFunction,
         RuntimePackages.Express.Request,
         RuntimePackages.Express.Response,
@@ -86,7 +88,7 @@ export class ExpressContextHandlerFactoryGenerator extends DocumentBasedCodeGene
         undefined,
         factory.createIdentifier(RouterNames.next),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.NextFunction), undefined),
+        factory.createTypeReferenceNode(RuntimePackages.Express.NextFunction, undefined),
         undefined,
       ),
     ]
@@ -94,6 +96,18 @@ export class ExpressContextHandlerFactoryGenerator extends DocumentBasedCodeGene
 
   protected getFactoryParameters(): ParameterDeclaration[] {
     return [
+      factory.createParameterDeclaration(
+        [],
+        [],
+        undefined,
+        factory.createIdentifier(RouterNames.router),
+        undefined,
+        factory.createUnionTypeNode([
+          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+          factory.createTypeReferenceNode('undefined', undefined),
+        ]),
+        undefined,
+      ),
       factory.createParameterDeclaration(
         undefined,
         undefined,
@@ -128,54 +142,86 @@ export class ExpressContextHandlerFactoryGenerator extends DocumentBasedCodeGene
       factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
       undefined,
       this.getFactoryParameters(),
-      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Handler), undefined),
-      factory.createBlock(
-        [
-          factory.createReturnStatement(
-            factory.createArrowFunction(
-              undefined,
-              undefined,
-              this.getHandlerParamteters(),
-              undefined,
-              factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-              factory.createBlock(
-                [
-                  factory.createExpressionStatement(
-                    factory.createBinaryExpression(
-                      factory.createElementAccessExpression(
-                        factory.createPropertyAccessExpression(
-                          factory.createIdentifier(RouterNames.response),
-                          factory.createIdentifier(RouterNames.locals),
-                        ),
-                        factory.createStringLiteral(RouterNames.apiKey(this.context.hashOf(this.context.document))),
-                      ),
-                      factory.createToken(SyntaxKind.EqualsToken),
-                      factory.createIdentifier(RouterNames.api),
-                    ),
-                  ),
-                  factory.createExpressionStatement(
-                    factory.createBinaryExpression(
-                      factory.createElementAccessExpression(
-                        factory.createPropertyAccessExpression(
-                          factory.createIdentifier(RouterNames.response),
-                          factory.createIdentifier(RouterNames.locals),
-                        ),
-                        factory.createStringLiteral(RouterNames.adapterKey(this.context.hashOf(this.context.document))),
-                      ),
-                      factory.createToken(SyntaxKind.EqualsToken),
-                      factory.createIdentifier(RouterNames.adapter),
-                    ),
-                  ),
-                  factory.createExpressionStatement(
-                    factory.createCallExpression(factory.createIdentifier(RouterNames.next), undefined, []),
-                  ),
-                ],
-                true,
-              ),
-            ),
+      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
+      this.getFactoryFunctionBodyBlockAst(),
+    )
+  }
+
+  private getFactoryFunctionBodyBlockAst(): Block {
+    return factory.createBlock([factory.createReturnStatement(this.getRouterExpressionAst())], true)
+  }
+
+  protected getRouterExpressionAst(): Expression {
+    return factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        factory.createParenthesizedExpression(
+          factory.createBinaryExpression(
+            factory.createIdentifier(RouterNames.router),
+            factory.createToken(SyntaxKind.QuestionQuestionToken),
+            factory.createCallExpression(factory.createIdentifier(RuntimePackages.Express.Router), undefined, []),
           ),
-        ],
-        true,
+        ),
+        factory.createIdentifier(RouterNames.use),
+      ),
+      undefined,
+      [this.getHandlerArrowFunctionAst()],
+    )
+  }
+
+  protected getHandlerArrowFunctionAst(): Expression {
+    return factory.createArrowFunction(
+      undefined,
+      undefined,
+      this.getHandlerParamteters(),
+      undefined,
+      factory.createToken(SyntaxKind.EqualsGreaterThanToken),
+      this.getHandlerFunctionBodyBlockAst(),
+    )
+  }
+
+  protected getHandlerFunctionBodyBlockAst(): Block {
+    const statements = [
+      this.getApiAssignmentStatementAst(),
+      this.getAdapterAssignmentStatementAst(),
+      this.getNextCallStatementAst(),
+    ]
+    return factory.createBlock(statements, true)
+  }
+
+  protected getNextCallStatementAst(): Statement {
+    return factory.createExpressionStatement(
+      factory.createCallExpression(factory.createIdentifier(RouterNames.next), undefined, []),
+    )
+  }
+
+  protected getAdapterAssignmentStatementAst(): Statement {
+    return factory.createExpressionStatement(
+      factory.createBinaryExpression(
+        factory.createElementAccessExpression(
+          factory.createPropertyAccessExpression(
+            factory.createIdentifier(RouterNames.response),
+            factory.createIdentifier(RouterNames.locals),
+          ),
+          factory.createStringLiteral(RouterNames.adapterKey(this.context.hashOf(this.context.document))),
+        ),
+        factory.createToken(SyntaxKind.EqualsToken),
+        factory.createIdentifier(RouterNames.adapter),
+      ),
+    )
+  }
+
+  protected getApiAssignmentStatementAst(): Statement {
+    return factory.createExpressionStatement(
+      factory.createBinaryExpression(
+        factory.createElementAccessExpression(
+          factory.createPropertyAccessExpression(
+            factory.createIdentifier(RouterNames.response),
+            factory.createIdentifier(RouterNames.locals),
+          ),
+          factory.createStringLiteral(RouterNames.apiKey(this.context.hashOf(this.context.document))),
+        ),
+        factory.createToken(SyntaxKind.EqualsToken),
+        factory.createIdentifier(RouterNames.api),
       ),
     )
   }

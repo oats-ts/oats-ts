@@ -7,7 +7,7 @@
 import { CorsConfiguration } from '@oats-ts/openapi-http'
 
 /**
- * WARNING: No allowed origins for any operations, generator "oats/cors-configuration" likely needs to be configured!
+ * WARNING: No allowed origin + method combination for any operations, generator "oats/cors-configuration" likely needs to be configured!
  *
  * - If you don't need CORS, remove "oats/cors-configuration" from your configuration.
  * - If you need CORS, please provide at least the getAllowedOrigins options for "oats/cors-configuration".

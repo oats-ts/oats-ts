@@ -6,16 +6,17 @@
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-http'
-import { Handler, NextFunction, Request, Response } from 'express'
+import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
 
 export function createSwaggerPetstoreContextHandler(
+  router: IRouter | undefined,
   api: SwaggerPetstoreApi,
   adapter: ServerAdapter<ExpressToolkit>,
-): Handler {
-  return (_: Request, response: Response, next: NextFunction) => {
+): IRouter {
+  return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
     response.locals['__oats_api_qslhlh'] = api
     response.locals['__oats_adapter_qslhlh'] = adapter
     next()
-  }
+  })
 }

@@ -9,7 +9,7 @@ import { ServerAdapter } from '@oats-ts/openapi-http'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { bodiesCorsConfiguration } from './corsConfiguration'
 
-export function createBodiesCorsRouter(router?: IRouter): IRouter {
+export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router())
     .options('/nested-obj', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }

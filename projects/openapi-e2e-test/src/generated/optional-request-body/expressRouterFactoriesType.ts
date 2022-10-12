@@ -7,5 +7,5 @@
 import { IRouter } from 'express'
 
 export type OptionalBodiesRouterFactories = {
-  createOptionalRequestBodyRouter: (router?: IRouter) => IRouter
+  createOptionalRequestBodyRouter: (router?: IRouter | undefined) => IRouter
 }

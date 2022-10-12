@@ -4,6 +4,7 @@ export const RouterNames = {
   next: 'next',
   locals: 'locals',
   router: 'router',
+  use: 'use',
 
   api: 'api',
   adapter: 'adapter',

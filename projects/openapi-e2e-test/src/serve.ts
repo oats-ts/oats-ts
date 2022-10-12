@@ -18,7 +18,7 @@ const app = express().use(jsonBodyParser())
 
 export function methodsRouter(): IRouter {
   const router = Router()
-  router.use(createHttpMethodsContextHandler(new HttpMethodsApiImpl(), new ExpressServerAdapter()))
+  createHttpMethodsContextHandler(router, new HttpMethodsApiImpl(), new ExpressServerAdapter())
   createHttpMethodsCorsRouter(router)
   createHttpMethodsAppRouter(router)
   return router
@@ -26,7 +26,7 @@ export function methodsRouter(): IRouter {
 
 export function parametersRouter(): IRouter {
   const router = Router()
-  router.use(createParametersContextHandler(new ParametersApiImpl(), new ExpressServerAdapter()))
+  createParametersContextHandler(router, new ParametersApiImpl(), new ExpressServerAdapter())
   createParametersCorsRouter(router)
   createParametersAppRouter(router)
   return router
@@ -34,7 +34,7 @@ export function parametersRouter(): IRouter {
 
 export function bookStoreRouter(): IRouter {
   const router = Router()
-  router.use(createBookStoreContextHandler(new BookStoreApiImpl(), new ExpressServerAdapter()))
+  createBookStoreContextHandler(router, new BookStoreApiImpl(), new ExpressServerAdapter())
   createBookStoreCorsRouter(router)
   createBookStoreAppRouter(router)
   return router

@@ -10,7 +10,7 @@ import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { HttpMethodsApi } from './apiType'
 import { httpMethodsCorsConfiguration } from './corsConfiguration'
 
-export function createDeleteMethodRouter(router?: IRouter): IRouter {
+export function createDeleteMethodRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).delete(
     '/delete-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -34,7 +34,7 @@ export function createDeleteMethodRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createGetMethodRouter(router?: IRouter): IRouter {
+export function createGetMethodRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/get-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -58,7 +58,7 @@ export function createGetMethodRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createPatchMethodRouter(router?: IRouter): IRouter {
+export function createPatchMethodRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).patch(
     '/patch-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -82,7 +82,7 @@ export function createPatchMethodRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createPostMethodRouter(router?: IRouter): IRouter {
+export function createPostMethodRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).post(
     '/post-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
@@ -106,7 +106,7 @@ export function createPostMethodRouter(router?: IRouter): IRouter {
   )
 }
 
-export function createPutMethodRouter(router?: IRouter): IRouter {
+export function createPutMethodRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).put(
     '/put-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
