@@ -12,12 +12,12 @@ export function createBookStoreAppRouter(
   router?: IRouter | undefined,
   overrides: Partial<BookStoreRouterFactories> = {},
 ): IRouter {
-  const root = router ?? Router()
+  const main = router ?? Router()
   const factories = [
     overrides.createGetBooksRouter ?? createGetBooksRouter,
     overrides.createAddBookRouter ?? createAddBookRouter,
     overrides.createGetBookRouter ?? createGetBookRouter,
   ]
-  const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
-  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
+  const routers = factories.map((factory) => factory(main)).filter((partial) => partial !== main)
+  return routers.length === 0 ? main : main.use(...routers)
 }

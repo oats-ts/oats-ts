@@ -26,7 +26,7 @@ export function createBodiesAppRouter(
   router?: IRouter | undefined,
   overrides: Partial<BodiesRouterFactories> = {},
 ): IRouter {
-  const root = router ?? Router()
+  const main = router ?? Router()
   const factories = [
     overrides.createStrRouter ?? createStrRouter,
     overrides.createNumRouter ?? createNumRouter,
@@ -42,6 +42,6 @@ export function createBodiesAppRouter(
     overrides.createArrObjRouter ?? createArrObjRouter,
     overrides.createNestedObjRouter ?? createNestedObjRouter,
   ]
-  const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
-  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
+  const routers = factories.map((factory) => factory(main)).filter((partial) => partial !== main)
+  return routers.length === 0 ? main : main.use(...routers)
 }

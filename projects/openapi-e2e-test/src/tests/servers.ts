@@ -88,12 +88,12 @@ export function testParametersServer() {
     attachHandlers: (router) => {
       router.use(customBodyParsers.yaml())
       router.use(customBodyParsers.json())
-      router.use(createParametersContextRouter(undefined, new ParametersApiImpl(), new ExpressServerAdapter())),
-        router.use(
-          createParametersAppRouter(createParametersCorsRouter(Router()), {
-            createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
-          }),
-        )
+      router.use(createParametersContextRouter(undefined, new ParametersApiImpl(), new ExpressServerAdapter()))
+      router.use(
+        createParametersAppRouter(createParametersCorsRouter(Router()), {
+          createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
+        }),
+      )
     },
   })
 }

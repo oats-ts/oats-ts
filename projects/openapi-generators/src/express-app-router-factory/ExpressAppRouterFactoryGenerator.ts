@@ -18,12 +18,11 @@ import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
 
 const RouterFactoryNames = {
-  root: 'root',
+  main: 'main',
   routers: 'routers',
-  uniqueRouters: 'uniqueRouters',
   overrides: 'overrides',
   factories: 'factories',
-  childRouter: 'childRouter',
+  childRouter: 'partial',
   factory: 'factory',
 }
 
@@ -104,7 +103,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterFactoryNames.root),
+            factory.createIdentifier(RouterFactoryNames.main),
             undefined,
             undefined,
             factory.createBinaryExpression(
@@ -154,7 +153,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterFactoryNames.uniqueRouters),
+            factory.createIdentifier(RouterFactoryNames.routers),
             undefined,
             undefined,
             factory.createCallExpression(
@@ -180,7 +179,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
                       undefined,
                       factory.createToken(SyntaxKind.EqualsGreaterThanToken),
                       factory.createCallExpression(factory.createIdentifier(RouterFactoryNames.factory), undefined, [
-                        factory.createIdentifier(RouterNames.router),
+                        factory.createIdentifier(RouterFactoryNames.main),
                       ]),
                     ),
                   ],
@@ -205,7 +204,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
                   factory.createBinaryExpression(
                     factory.createIdentifier(RouterFactoryNames.childRouter),
                     factory.createToken(SyntaxKind.ExclamationEqualsEqualsToken),
-                    factory.createIdentifier(RouterFactoryNames.root),
+                    factory.createIdentifier(RouterFactoryNames.main),
                   ),
                 ),
               ],
@@ -222,22 +221,22 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createConditionalExpression(
         factory.createBinaryExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterFactoryNames.uniqueRouters),
+            factory.createIdentifier(RouterFactoryNames.routers),
             factory.createIdentifier('length'),
           ),
           factory.createToken(SyntaxKind.EqualsEqualsEqualsToken),
           factory.createNumericLiteral(0),
         ),
         factory.createToken(SyntaxKind.QuestionToken),
-        factory.createIdentifier(RouterFactoryNames.root),
+        factory.createIdentifier(RouterFactoryNames.main),
         factory.createToken(SyntaxKind.ColonToken),
         factory.createCallExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterFactoryNames.root),
+            factory.createIdentifier(RouterFactoryNames.main),
             factory.createIdentifier(RouterNames.use),
           ),
           undefined,
-          [factory.createSpreadElement(factory.createIdentifier(RouterFactoryNames.uniqueRouters))],
+          [factory.createSpreadElement(factory.createIdentifier(RouterFactoryNames.routers))],
         ),
       ),
     )
