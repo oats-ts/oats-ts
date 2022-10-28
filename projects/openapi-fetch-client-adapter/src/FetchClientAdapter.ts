@@ -68,7 +68,9 @@ export class FetchClientAdapter implements ClientAdapter {
     }
   }
 
-  protected async getParsedResponseBody(response: Response): Promise<any> {
+  protected async getParsedResponseBody(_response: any): Promise<any> {
+    // So the Response type doesn't leak out into the definition
+    const response = _response as Response
     if (typeof response.headers.get('content-type') !== 'string') {
       return undefined
     }
@@ -225,8 +227,9 @@ export class FetchClientAdapter implements ClientAdapter {
     return response.body
   }
 
-  protected getRequestInit(request: RawHttpRequest): RequestInit | undefined {
-    return {
+  protected getRequestInit(request: RawHttpRequest): any | undefined {
+    // Using any here, so the RequestInit type doesn't leak out into the definition
+    const init: RequestInit = {
       headers: request.headers,
       /**
        * It's important to uppercase this. In most cases it's irrelevant,
@@ -235,5 +238,6 @@ export class FetchClientAdapter implements ClientAdapter {
       method: request.method.toUpperCase(),
       ...(request.body === null || request.body === undefined ? {} : { body: request.body }),
     }
+    return init
   }
 }
