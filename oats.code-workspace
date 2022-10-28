@@ -25,20 +25,12 @@
       "path": "projects/openapi"
     },
     {
-      "name": "openapi-client-runtime",
-      "path": "projects/openapi-client-runtime"
-    },
-    {
       "name": "openapi-common",
       "path": "projects/openapi-common"
     },
     {
       "name": "openapi-e2e-test",
       "path": "projects/openapi-e2e-test"
-    },
-    {
-      "name": "openapi-express-runtime",
-      "path": "projects/openapi-express-runtime"
     },
     {
       "name": "openapi-express-server-adapter",
@@ -71,6 +63,10 @@
     {
       "name": "openapi-reader",
       "path": "projects/openapi-reader"
+    },
+    {
+      "name": "openapi-runtime",
+      "path": "projects/openapi-runtime"
     },
     {
       "name": "openapi-validator",

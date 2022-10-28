@@ -1,4 +1,3 @@
-export * from '@oats-ts/openapi-fetch-client-adapter'
 export * from '@oats-ts/openapi-http'
 export * from '@oats-ts/openapi-parameter-serialization'
 export * from '@oats-ts/try'

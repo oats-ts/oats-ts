@@ -6,10 +6,8 @@ specifiers:
   '@rush-temp/model-common': file:./projects/model-common.tgz
   '@rush-temp/oats-ts': file:./projects/oats-ts.tgz
   '@rush-temp/openapi': file:./projects/openapi.tgz
-  '@rush-temp/openapi-client-runtime': file:./projects/openapi-client-runtime.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
   '@rush-temp/openapi-e2e-test': file:./projects/openapi-e2e-test.tgz
-  '@rush-temp/openapi-express-runtime': file:./projects/openapi-express-runtime.tgz
   '@rush-temp/openapi-express-server-adapter': file:./projects/openapi-express-server-adapter.tgz
   '@rush-temp/openapi-fetch-client-adapter': file:./projects/openapi-fetch-client-adapter.tgz
   '@rush-temp/openapi-generators': file:./projects/openapi-generators.tgz
@@ -18,6 +16,7 @@ specifiers:
   '@rush-temp/openapi-model': file:./projects/openapi-model.tgz
   '@rush-temp/openapi-parameter-serialization': file:./projects/openapi-parameter-serialization.tgz
   '@rush-temp/openapi-reader': file:./projects/openapi-reader.tgz
+  '@rush-temp/openapi-runtime': file:./projects/openapi-runtime.tgz
   '@rush-temp/openapi-validator': file:./projects/openapi-validator.tgz
   '@rush-temp/try': file:./projects/try.tgz
   '@rush-temp/typescript-common': file:./projects/typescript-common.tgz
@@ -76,10 +75,8 @@ dependencies:
   '@rush-temp/model-common': file:projects/model-common.tgz
   '@rush-temp/oats-ts': file:projects/oats-ts.tgz
   '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.8.2+typescript@4.7.4
-  '@rush-temp/openapi-client-runtime': file:projects/openapi-client-runtime.tgz_ts-node@10.8.2+typescript@4.7.4
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.8.2
   '@rush-temp/openapi-e2e-test': file:projects/openapi-e2e-test.tgz
-  '@rush-temp/openapi-express-runtime': file:projects/openapi-express-runtime.tgz
   '@rush-temp/openapi-express-server-adapter': file:projects/openapi-express-server-adapter.tgz_ts-node@10.8.2
   '@rush-temp/openapi-fetch-client-adapter': file:projects/openapi-fetch-client-adapter.tgz_ts-node@10.8.2
   '@rush-temp/openapi-generators': file:projects/openapi-generators.tgz_ts-node@10.8.2
@@ -88,6 +85,7 @@ dependencies:
   '@rush-temp/openapi-model': file:projects/openapi-model.tgz
   '@rush-temp/openapi-parameter-serialization': file:projects/openapi-parameter-serialization.tgz_ts-node@10.8.2
   '@rush-temp/openapi-reader': file:projects/openapi-reader.tgz_ts-node@10.8.2
+  '@rush-temp/openapi-runtime': file:projects/openapi-runtime.tgz
   '@rush-temp/openapi-validator': file:projects/openapi-validator.tgz_ts-node@10.8.2
   '@rush-temp/try': file:projects/try.tgz_ts-node@10.8.2
   '@rush-temp/typescript-common': file:projects/typescript-common.tgz_ts-node@10.8.2
@@ -7302,31 +7300,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/openapi-client-runtime.tgz_ts-node@10.8.2+typescript@4.7.4:
-    resolution: {integrity: sha512-84dA7mMyhlQ3+sC3sQMz1uL//RiKzM0+NDtTaXBYEaYsS4XTUgA0rKjQOdZ16sZ4OCmgN6yy2eGrAL85Lzbb2g==, tarball: file:projects/openapi-client-runtime.tgz}
-    id: file:projects/openapi-client-runtime.tgz
-    name: '@rush-temp/openapi-client-runtime'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.182
-      '@types/node': 16.7.1
-      '@types/pascalcase': 1.0.1
-      '@types/prettier': 2.4.4
-      jest: 27.0.4_ts-node@10.8.2
-      prettier: 2.6.1
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - typescript
-      - utf-8-validate
-    dev: false
-
   file:projects/openapi-common.tgz_ts-node@10.8.2:
     resolution: {integrity: sha512-iZVHpOY1usT+kGd+iVwsmEvaWD1hHQPXCjQIle61LjnwGStsaNwOBM6f4cMx5Ew2KlWyc5qv19pgn68TLoWDWQ==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
@@ -7407,14 +7380,6 @@ packages:
       - utf-8-validate
       - webpack-bundle-analyzer
       - webpack-command
-    dev: false
-
-  file:projects/openapi-express-runtime.tgz:
-    resolution: {integrity: sha512-ldonj7wg9VO5GZuwTeSRfFpK3tbquns1aLTbSbBp8sZeQxPgLdoS09eCyyNumLC2e6HgHxqkEpKKfe1Vb9ieew==, tarball: file:projects/openapi-express-runtime.tgz}
-    name: '@rush-temp/openapi-express-runtime'
-    version: 0.0.0
-    dependencies:
-      '@types/node': 16.7.1
     dev: false
 
   file:projects/openapi-express-server-adapter.tgz_ts-node@10.8.2:
@@ -7598,6 +7563,14 @@ packages:
       - supports-color
       - ts-node
       - utf-8-validate
+    dev: false
+
+  file:projects/openapi-runtime.tgz:
+    resolution: {integrity: sha512-X9eBnIWMfBF9RBdjKV/uhNYuCofzcBxuBj9GR5tCqahH2FjJUJPmi/M5vLPJAGHbYzTLuoxXg5lFWAGnL8B12w==, tarball: file:projects/openapi-runtime.tgz}
+    name: '@rush-temp/openapi-runtime'
+    version: 0.0.0
+    dependencies:
+      '@types/node': 16.7.1
     dev: false
 
   file:projects/openapi-validator.tgz_ts-node@10.8.2:
