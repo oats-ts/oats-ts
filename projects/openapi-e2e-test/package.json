@@ -18,19 +18,19 @@
     "browser-test": "webpack-dev-server",
     "build": "tsc --noEmit",
     "g": "ts-node src/generate/generate.ts",
+    "methods": "node src/methods.js",
     "serve": "ts-node src/serve.ts",
     "test": "cross-env jest --runInBand",
-    "typecheck": "tsc --noEmit",
-    "methods": "node src/methods.js"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@oats-ts/oats-ts": "0.0.42",
     "@oats-ts/openapi": "0.0.42",
     "@oats-ts/openapi-express-server-adapter": "0.0.42",
     "@oats-ts/openapi-fetch-client-adapter": "0.0.42",
+    "@oats-ts/openapi-generators": "0.0.42",
     "@oats-ts/openapi-http": "0.0.42",
     "@oats-ts/openapi-parameter-serialization": "0.0.42",
-    "@oats-ts/openapi-generators": "0.0.42",
     "@oats-ts/try": "0.0.42",
     "@oats-ts/validators": "0.0.42",
     "@types/chai": "4.3.3",
