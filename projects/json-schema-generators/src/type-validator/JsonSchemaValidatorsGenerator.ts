@@ -320,9 +320,10 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getValidatorAst(type: keyof ValidatorsPackage['content']['validators']): Expression {
+    const pkg = this.getValidatorPackage()
     return factory.createPropertyAccessExpression(
-      factory.createIdentifier(this.getValidatorPackage().exports.validators),
-      type,
+      factory.createIdentifier(this.context.exportOf(pkg.name, pkg.exports.validators)),
+      pkg.content.validators[type],
     )
   }
 }

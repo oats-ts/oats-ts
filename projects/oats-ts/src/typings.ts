@@ -43,6 +43,7 @@ export type CodeGenerator<R, G, C = any> = {
   parent(): CodeGenerator<R, G> | undefined
   root(): CodeGenerator<R, G>
   configuration(): C
+  globalConfiguration(): GeneratorConfig
   runtimeDependencies(): RuntimeDependency[]
   initialize(init: GeneratorInit<R, G>): void
   resolve(name: string): CodeGenerator<R, G> | undefined
@@ -71,10 +72,11 @@ export type GeneratorConfig = {
   /**
    * In case runtime library imports would clash with names in your generated code,
    * you can use this to replace import names
+   * @param packageName The package name
    * @param importedName The original imported name
    * @returns The transformed import name
    */
-  importReplacer?: (importedName: string) => string
+  importReplacer?: (packageName: string, importedName: string) => string | undefined
   /**
    * When true, generators with this configuration should emit no outputs from the generate method
    */

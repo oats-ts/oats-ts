@@ -32,6 +32,10 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
     this.config = cfg as C
   }
 
+  public globalConfiguration(): GeneratorConfig {
+    return this.globalConfig ?? ({} as GeneratorConfig)
+  }
+
   public parent(): CodeGenerator<R, G, any> | undefined {
     return this._parent
   }

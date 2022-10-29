@@ -75,6 +75,8 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @returns The object associated with this URI.
    */
   byUri<T>(uri: string): T | undefined
+
+  exportOf(packageName: string, exportName: string): string
 }
 
 export type HasSchemas = {

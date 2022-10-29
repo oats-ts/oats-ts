@@ -1,4 +1,4 @@
-import { SourceFile } from 'typescript'
+import { ImportSpecifier, SourceFile } from 'typescript'
 import {
   factory,
   ImportClause,
@@ -13,6 +13,14 @@ import { createSourceFile } from './createSourceFile'
 import { getStatements } from './getStatements'
 import { getImportDeclarations } from './getImportDeclarations'
 
+function importSpecifierKey(specifier: ImportSpecifier): string {
+  const { propertyName, name } = specifier
+  if (isNil(propertyName)) {
+    return name.text
+  }
+  return `${propertyName.text} as ${name.text}`
+}
+
 function mergeNamedImportBindings(bindings: NamedImportBindings[]): NamedImports {
   const specifiers = sortBy(
     uniqBy(
@@ -20,9 +28,9 @@ function mergeNamedImportBindings(bindings: NamedImportBindings[]): NamedImports
         bindings.filter((node): node is NamedImports => node.kind === SyntaxKind.NamedImports),
         (imports: NamedImports) => Array.from(imports.elements),
       ),
-      (specifier) => specifier.name.text,
+      importSpecifierKey,
     ),
-    (specifier) => specifier.name.text,
+    importSpecifierKey,
   )
   return factory.createNamedImports(specifiers)
 }

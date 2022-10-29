@@ -176,7 +176,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     const validatorImports = Array.from(validatorImportSet)
     const referenceImports = Array.from(referenceImportSet)
     return [
-      ...(isEmpty(validatorImports) ? [] : [getNamedImports(this.pkg.name, validatorImports)]),
+      ...(isEmpty(validatorImports) ? [] : [getNamedImports(this.pkg.name, validatorImports, this.context)]),
       ...getModelImports<JsonSchemaGeneratorTarget>(
         fromPath,
         'oats/type-validator',
