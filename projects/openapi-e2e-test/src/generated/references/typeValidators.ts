@@ -4,26 +4,30 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/references.json
  */
 
-import { array, items, lazy, literal, object, optional, shape, string } from '@oats-ts/validators'
+import { validators } from '@oats-ts/validators'
 
-export const inlineRefTargetTypeValidator = object(shape({ foo: optional(string()) }))
+export const inlineRefTargetTypeValidator = validators.object(
+  validators.shape({ foo: validators.optional(validators.string()) }),
+)
 
-export const inlineRefTypeTypeValidator = lazy(() => inlineRefTargetTypeValidator)
+export const inlineRefTypeTypeValidator = validators.lazy(() => inlineRefTargetTypeValidator)
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+export const referenceTargetTypeValidator = validators.object(
+  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+)
 
-export const remoteRefTypeTypeValidator = lazy(() => typeWithRemoteRefFieldTypeValidator)
+export const remoteRefTypeTypeValidator = validators.lazy(() => typeWithRemoteRefFieldTypeValidator)
 
-export const typeWithRefOfRemoteRefTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => typeWithRemoteRefFieldTypeValidator))),
-    referenceField: lazy(() => typeWithRemoteRefFieldTypeValidator),
+export const typeWithRefOfRemoteRefTypeValidator = validators.object(
+  validators.shape({
+    referenceArrayField: validators.array(validators.items(validators.lazy(() => typeWithRemoteRefFieldTypeValidator))),
+    referenceField: validators.lazy(() => typeWithRemoteRefFieldTypeValidator),
   }),
 )
 
-export const typeWithRemoteRefFieldTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
-    referenceField: lazy(() => referenceTargetTypeValidator),
+export const typeWithRemoteRefFieldTypeValidator = validators.object(
+  validators.shape({
+    referenceArrayField: validators.array(validators.items(validators.lazy(() => referenceTargetTypeValidator))),
+    referenceField: validators.lazy(() => referenceTargetTypeValidator),
   }),
 )

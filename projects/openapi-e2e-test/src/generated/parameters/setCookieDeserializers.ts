@@ -4,11 +4,11 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { createSetCookieDeserializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers, dsl } from '@oats-ts/openapi-parameter-serialization'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 
 export const formCookieParametersSetCookieDeserializer =
-  createSetCookieDeserializer<FormCookieParametersCookieParameters>({
+  deserializers.createSetCookieDeserializer<FormCookieParametersCookieParameters>({
     optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
     optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
     optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),

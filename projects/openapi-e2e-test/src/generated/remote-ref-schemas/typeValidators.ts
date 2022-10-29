@@ -4,13 +4,15 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/remote-ref-schemas.json
  */
 
-import { array, items, lazy, literal, object, optional, shape } from '@oats-ts/validators'
+import { validators } from '@oats-ts/validators'
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+export const referenceTargetTypeValidator = validators.object(
+  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+)
 
-export const typeWithRemoteRefFieldTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
-    referenceField: lazy(() => referenceTargetTypeValidator),
+export const typeWithRemoteRefFieldTypeValidator = validators.object(
+  validators.shape({
+    referenceArrayField: validators.array(validators.items(validators.lazy(() => referenceTargetTypeValidator))),
+    referenceField: validators.lazy(() => referenceTargetTypeValidator),
   }),
 )

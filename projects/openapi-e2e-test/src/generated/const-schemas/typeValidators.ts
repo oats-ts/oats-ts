@@ -4,47 +4,55 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/const-schemas.json
  */
 
-import { array, literal, object, shape, tuple } from '@oats-ts/validators'
+import { validators } from '@oats-ts/validators'
 
-export const arrayLiteralTypeTypeValidator = array(
-  tuple(
-    literal('string value'),
-    literal(42),
-    literal(false),
-    literal(null),
-    object(shape({ key: literal(10) })),
-    array(tuple(literal(3), literal(false), literal('hello'))),
+export const arrayLiteralTypeTypeValidator = validators.array(
+  validators.tuple(
+    validators.literal('string value'),
+    validators.literal(42),
+    validators.literal(false),
+    validators.literal(null),
+    validators.object(validators.shape({ key: validators.literal(10) })),
+    validators.array(validators.tuple(validators.literal(3), validators.literal(false), validators.literal('hello'))),
   ),
 )
 
-export const booleanLiteralTypeTypeValidator = literal(true)
+export const booleanLiteralTypeTypeValidator = validators.literal(true)
 
-export const nestedObjectLiteralTypeTypeValidator = object(
-  shape({
-    obj: object(
-      shape({ I: object(shape({ am: object(shape({ deeply: object(shape({ nested: literal(true) })) })) })) }),
+export const nestedObjectLiteralTypeTypeValidator = validators.object(
+  validators.shape({
+    obj: validators.object(
+      validators.shape({
+        I: validators.object(
+          validators.shape({
+            am: validators.object(
+              validators.shape({ deeply: validators.object(validators.shape({ nested: validators.literal(true) })) }),
+            ),
+          }),
+        ),
+      }),
     ),
   }),
 )
 
-export const nullLiteralTypeTypeValidator = literal(null)
+export const nullLiteralTypeTypeValidator = validators.literal(null)
 
-export const numberLiteralTypeTypeValidator = literal(125)
+export const numberLiteralTypeTypeValidator = validators.literal(125)
 
-export const quotedKeysObjectLiteralTypeTypeValidator = object(
-  shape({
-    'has-dashes': literal(true),
-    'has space': literal(true),
-    'has .`/!+^ chars': literal(true),
+export const quotedKeysObjectLiteralTypeTypeValidator = validators.object(
+  validators.shape({
+    'has-dashes': validators.literal(true),
+    'has space': validators.literal(true),
+    'has .`/!+^ chars': validators.literal(true),
   }),
 )
 
-export const simpleObjectLiteralTypeTypeValidator = object(
-  shape({
-    s: literal("I'm a string"),
-    n: literal(10),
-    b: literal(true),
+export const simpleObjectLiteralTypeTypeValidator = validators.object(
+  validators.shape({
+    s: validators.literal("I'm a string"),
+    n: validators.literal(10),
+    b: validators.literal(true),
   }),
 )
 
-export const stringLiteralTypeTypeValidator = literal("I'm a constant string")
+export const stringLiteralTypeTypeValidator = validators.literal("I'm a constant string")

@@ -4,11 +4,11 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { createHeaderSerializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { dsl, serializers } from '@oats-ts/openapi-parameter-serialization'
 import { ListPets200ResponseHeaderParameters } from './responseHeaderTypes'
 
 export const listPetsResponseHeadersSerializer = {
-  200: createHeaderSerializer<ListPets200ResponseHeaderParameters>({
+  200: serializers.createHeaderSerializer<ListPets200ResponseHeaderParameters>({
     'x-next': dsl.header.simple.primitive(dsl.value.string()),
   }),
 } as const

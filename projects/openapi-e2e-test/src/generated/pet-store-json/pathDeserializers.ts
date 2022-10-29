@@ -4,10 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-json.json
  */
 
-import { createPathDeserializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers, dsl } from '@oats-ts/openapi-parameter-serialization'
 import { ShowPetByIdPathParameters } from './pathTypes'
 
-export const showPetByIdPathDeserializer = createPathDeserializer<ShowPetByIdPathParameters>(
+export const showPetByIdPathDeserializer = deserializers.createPathDeserializer<ShowPetByIdPathParameters>(
   { petId: dsl.path.simple.primitive(dsl.value.string()) },
   ['petId'],
   /^\/pets(?:\/([^\/#\?]+?))[\/#\?]?$/i,

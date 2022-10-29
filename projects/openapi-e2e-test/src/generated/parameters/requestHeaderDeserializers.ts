@@ -4,11 +4,11 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { createHeaderDeserializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers, dsl } from '@oats-ts/openapi-parameter-serialization'
 import { SimpleHeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
 
 export const simpleHeaderParametersRequestHeadersDeserializer =
-  createHeaderDeserializer<SimpleHeaderParametersRequestHeaderParameters>({
+  deserializers.createHeaderDeserializer<SimpleHeaderParametersRequestHeaderParameters>({
     'X-StrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: true }),
     'X-OptStrExpl-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: true, required: false }),
     'X-Str-Header': dsl.header.simple.primitive(dsl.value.string(), { explode: false, required: true }),

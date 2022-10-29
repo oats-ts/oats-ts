@@ -4,14 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { createPathSerializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { dsl, serializers } from '@oats-ts/openapi-parameter-serialization'
 import {
   LabelPathParametersPathParameters,
   MatrixPathParametersPathParameters,
   SimplePathParametersPathParameters,
 } from './pathTypes'
 
-export const labelPathParametersPathSerializer = createPathSerializer<LabelPathParametersPathParameters>(
+export const labelPathParametersPathSerializer = serializers.createPathSerializer<LabelPathParametersPathParameters>(
   {
     strExpl: dsl.path.label.primitive(dsl.value.string(), { explode: true }),
     str: dsl.path.label.primitive(dsl.value.string(), { explode: false }),
@@ -59,7 +59,7 @@ export const labelPathParametersPathSerializer = createPathSerializer<LabelPathP
   '/label-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}',
 )
 
-export const matrixPathParametersPathSerializer = createPathSerializer<MatrixPathParametersPathParameters>(
+export const matrixPathParametersPathSerializer = serializers.createPathSerializer<MatrixPathParametersPathParameters>(
   {
     strExpl: dsl.path.matrix.primitive(dsl.value.string(), { explode: true }),
     str: dsl.path.matrix.primitive(dsl.value.string(), { explode: false }),
@@ -107,7 +107,7 @@ export const matrixPathParametersPathSerializer = createPathSerializer<MatrixPat
   '/matrix-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}',
 )
 
-export const simplePathParametersPathSerializer = createPathSerializer<SimplePathParametersPathParameters>(
+export const simplePathParametersPathSerializer = serializers.createPathSerializer<SimplePathParametersPathParameters>(
   {
     strExpl: dsl.path.simple.primitive(dsl.value.string(), { explode: true }),
     str: dsl.path.simple.primitive(dsl.value.string(), { explode: false }),

@@ -4,9 +4,9 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-json.json
  */
 
-import { createQuerySerializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { dsl, serializers } from '@oats-ts/openapi-parameter-serialization'
 import { ListPetsQueryParameters } from './queryTypes'
 
-export const listPetsQuerySerializer = createQuerySerializer<ListPetsQueryParameters>({
+export const listPetsQuerySerializer = serializers.createQuerySerializer<ListPetsQueryParameters>({
   limit: dsl.query.form.primitive(dsl.value.number(), { required: false }),
 })

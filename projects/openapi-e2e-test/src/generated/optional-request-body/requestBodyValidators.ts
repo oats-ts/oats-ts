@@ -4,8 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { object, optional, shape, string } from '@oats-ts/validators'
+import { validators } from '@oats-ts/validators'
 
 export const optionalRequestBodyRequestBodyValidator = {
-  'application/json': optional(object(shape({ foo: optional(string()) }))),
+  'application/json': validators.optional(
+    validators.object(validators.shape({ foo: validators.optional(validators.string()) })),
+  ),
 } as const

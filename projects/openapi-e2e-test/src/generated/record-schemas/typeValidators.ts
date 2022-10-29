@@ -4,35 +4,35 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/record-schemas.json
  */
 
-import {
-  array,
-  boolean,
-  items,
-  lazy,
-  literal,
-  number,
-  object,
-  optional,
-  record,
-  shape,
-  string,
-} from '@oats-ts/validators'
+import { validators } from '@oats-ts/validators'
 
-export const arrayRecordTypeTypeValidator = object(record(string(), array(items(string()))))
+export const arrayRecordTypeTypeValidator = validators.object(
+  validators.record(validators.string(), validators.array(validators.items(validators.string()))),
+)
 
-export const booleanRecordTypeTypeValidator = object(record(string(), boolean()))
+export const booleanRecordTypeTypeValidator = validators.object(
+  validators.record(validators.string(), validators.boolean()),
+)
 
-export const numberRecordTypeTypeValidator = object(record(string(), number()))
+export const numberRecordTypeTypeValidator = validators.object(
+  validators.record(validators.string(), validators.number()),
+)
 
-export const objectRecordTypeTypeValidator = object(record(string(), object(shape({ foo: string() }))))
+export const objectRecordTypeTypeValidator = validators.object(
+  validators.record(validators.string(), validators.object(validators.shape({ foo: validators.string() }))),
+)
 
-export const refRecordTypeTypeValidator = object(
-  record(
-    string(),
-    lazy(() => referenceTargetTypeValidator),
+export const refRecordTypeTypeValidator = validators.object(
+  validators.record(
+    validators.string(),
+    validators.lazy(() => referenceTargetTypeValidator),
   ),
 )
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+export const referenceTargetTypeValidator = validators.object(
+  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+)
 
-export const stringRecordTypeTypeValidator = object(record(string(), string()))
+export const stringRecordTypeTypeValidator = validators.object(
+  validators.record(validators.string(), validators.string()),
+)
