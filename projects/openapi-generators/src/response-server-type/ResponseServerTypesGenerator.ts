@@ -8,7 +8,6 @@ import {
 import { TypeNode, ImportDeclaration, factory, PropertySignature, SyntaxKind } from 'typescript'
 import { getModelImports, getNamedImports, safeName } from '@oats-ts/typescript-common'
 import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/BaseResponseTypeGenerator'
-import { packages } from '@oats-ts/model-common'
 
 export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
   public name(): OpenAPIGeneratorTarget {
@@ -24,7 +23,7 @@ export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
       ...super.getImports(path, operation, responses),
       ...(operation.cookie.length > 0
         ? [
-            getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.Cookies]),
+            getNamedImports(this.httpPkg.name, [this.httpPkg.imports.Cookies]),
             ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/cookies-type', [operation.operation], this.context),
           ]
         : []),
@@ -46,7 +45,7 @@ export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
           undefined,
           propName,
           isOptional ? factory.createToken(SyntaxKind.QuestionToken) : undefined,
-          factory.createTypeReferenceNode(packages.openApiHttp.exports.Cookies, [type]),
+          factory.createTypeReferenceNode(this.httpPkg.exports.Cookies, [type]),
         )
       }
       case 'headers': {

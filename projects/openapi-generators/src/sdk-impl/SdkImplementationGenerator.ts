@@ -17,16 +17,24 @@ import {
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { Try, success } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { packages } from '@oats-ts/model-common'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { OpenApiHttpPackage, packages } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
+  protected httpPkg!: OpenApiHttpPackage
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/sdk-impl'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/operation', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
+  }
+
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.httpPkg = this.getHttpPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -55,7 +63,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
   protected getImportDeclarations(path: string, operations: EnhancedOperation[]): ImportDeclaration[] {
     return [
-      getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.ClientAdapter]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ClientAdapter]),
       ...flatMap(operations, (data) => [
         ...this.context.dependenciesOf(path, data.operation, 'oats/request-type'),
         ...this.context.dependenciesOf(path, data.operation, 'oats/response-type'),
@@ -71,7 +79,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
       this.getAdapterName(),
       undefined,
-      factory.createTypeReferenceNode(packages.openApiHttp.exports.ClientAdapter),
+      factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       undefined,
     )
 
@@ -85,7 +93,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
           undefined,
           this.getAdapterName(),
           undefined,
-          factory.createTypeReferenceNode(packages.openApiHttp.exports.ClientAdapter),
+          factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
         ),
       ],
       factory.createBlock([
@@ -151,5 +159,9 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     return isNil(requestType)
       ? []
       : [factory.createParameterDeclaration([], [], undefined, 'request', undefined, requestType)]
+  }
+
+  protected getHttpPackage(): OpenApiHttpPackage {
+    return packages.openApiHttp(this.context)
   }
 }

@@ -1,4 +1,3 @@
-import { packages } from '@oats-ts/model-common'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { Expression, factory } from 'typescript'
@@ -14,11 +13,14 @@ export class PathSerializersGenerator extends BaseDslGenerator {
   protected getTypeGeneratorTarget(): OpenAPIGeneratorTarget {
     return 'oats/path-type'
   }
-  protected getRuntimeExport(): string {
-    return packages.openApiParameterSerialization.exports.serializers
+  protected getRuntimeFactoryName(): string {
+    return this.paramsPkg.exports.serializers
+  }
+  protected getRuntimeImport(): string | [string, string] {
+    return this.paramsPkg.imports.serializers
   }
   protected getFactoryFunctionName(): string {
-    return packages.openApiParameterSerialization.content.serializers.createPathSerializer
+    return this.paramsPkg.content.serializers.createPathSerializer
   }
   protected getParameters(data: EnhancedOperation): BaseParameterObject[] {
     return data?.path ?? []

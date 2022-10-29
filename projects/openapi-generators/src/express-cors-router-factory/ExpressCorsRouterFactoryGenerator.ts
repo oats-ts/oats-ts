@@ -14,14 +14,19 @@ import {
 } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { isNil } from 'lodash'
 import { RouterNames } from '../utils/RouterNames'
 import { getPathTemplate } from '../utils/getPathTemplate'
-import { packages } from '@oats-ts/model-common'
+import { ExpressPackage, OpenApiExpressServerAdapterPackage, OpenApiHttpPackage, packages } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}> {
+  protected expressPkg!: ExpressPackage
+  protected adapterPkg!: OpenApiExpressServerAdapterPackage
+  protected httpPkg!: OpenApiHttpPackage
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-cors-router-factory'
   }
@@ -30,11 +35,18 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
     return ['oats/cors-configuration']
   }
 
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.expressPkg = this.getExpressPackage()
+    this.adapterPkg = this.getAdapterPackage()
+    this.httpPkg = this.getHttpPackage()
+  }
+
   public runtimeDependencies(): RuntimeDependency[] {
     return [
-      { name: packages.express.name, version: '^4.18.1' },
-      { name: packages.openApiExpressServerAdapter.name, version },
-      { name: packages.openApiHttp.name, version },
+      { name: this.httpPkg.name, version },
+      { name: this.adapterPkg.name, version },
+      { name: this.expressPkg.name, version: '^4.18.1' },
     ]
   }
 
@@ -70,12 +82,12 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
           RouterNames.router,
           factory.createToken(SyntaxKind.QuestionToken),
           factory.createUnionTypeNode([
-            factory.createTypeReferenceNode(packages.express.exports.IRouter, undefined),
+            factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
             factory.createTypeReferenceNode('undefined', undefined),
           ]),
         ),
       ],
-      factory.createTypeReferenceNode(factory.createIdentifier(packages.express.exports.IRouter), undefined),
+      factory.createTypeReferenceNode(factory.createIdentifier(this.expressPkg.exports.IRouter), undefined),
       factory.createBlock([factory.createReturnStatement(this.getCorsRouterExpression(paths))], true),
     )
   }
@@ -84,7 +96,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
     const routerExpr: Expression = factory.createBinaryExpression(
       factory.createIdentifier(RouterNames.router),
       SyntaxKind.QuestionQuestionToken,
-      factory.createCallExpression(factory.createIdentifier(packages.express.exports.Router), [], []),
+      factory.createCallExpression(factory.createIdentifier(this.expressPkg.exports.Router), [], []),
     )
     return Array.from(paths)
       .reverse()
@@ -116,7 +128,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
         undefined,
         RouterNames.request,
         undefined,
-        factory.createTypeReferenceNode(packages.express.exports.Request),
+        factory.createTypeReferenceNode(this.expressPkg.exports.Request),
       ),
       factory.createParameterDeclaration(
         [],
@@ -124,7 +136,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
         undefined,
         RouterNames.response,
         undefined,
-        factory.createTypeReferenceNode(packages.express.exports.Response),
+        factory.createTypeReferenceNode(this.expressPkg.exports.Response),
       ),
       factory.createParameterDeclaration(
         [],
@@ -132,7 +144,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
         undefined,
         RouterNames.next,
         undefined,
-        factory.createTypeReferenceNode(packages.express.exports.NextFunction),
+        factory.createTypeReferenceNode(this.expressPkg.exports.NextFunction),
       ),
     ]
   }
@@ -184,7 +196,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
             factory.createIdentifier(RouterNames.toolkit),
             undefined,
             factory.createTypeReferenceNode(
-              factory.createIdentifier(packages.openApiExpressServerAdapter.exports.ExpressToolkit),
+              factory.createIdentifier(this.adapterPkg.exports.ExpressToolkit),
               undefined,
             ),
             factory.createObjectLiteralExpression(
@@ -210,9 +222,9 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
           factory.createVariableDeclaration(
             factory.createIdentifier(RouterNames.adapter),
             undefined,
-            factory.createTypeReferenceNode(factory.createIdentifier(packages.openApiHttp.exports.ServerAdapter), [
+            factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.ServerAdapter), [
               factory.createTypeReferenceNode(
-                factory.createIdentifier(packages.openApiExpressServerAdapter.exports.ExpressToolkit),
+                factory.createIdentifier(this.adapterPkg.exports.ExpressToolkit),
                 undefined,
               ),
             ]),
@@ -343,22 +355,18 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
     const paths = this.items[0]
 
     if (isNil(paths) || paths.length === 0) {
-      return [
-        getNamedImports(packages.express.name, [packages.express.exports.IRouter, packages.express.exports.Router]),
-      ]
+      return [getNamedImports(this.expressPkg.name, [this.expressPkg.imports.IRouter, this.expressPkg.imports.Router])]
     }
     return [
-      getNamedImports(packages.express.name, [
-        packages.express.exports.IRouter,
-        packages.express.exports.Router,
-        packages.express.exports.Request,
-        packages.express.exports.Response,
-        packages.express.exports.NextFunction,
+      getNamedImports(this.expressPkg.name, [
+        this.expressPkg.imports.IRouter,
+        this.expressPkg.imports.Router,
+        this.expressPkg.imports.Request,
+        this.expressPkg.imports.Response,
+        this.expressPkg.imports.NextFunction,
       ]),
-      getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.ServerAdapter]),
-      getNamedImports(packages.openApiExpressServerAdapter.name, [
-        packages.openApiExpressServerAdapter.exports.ExpressToolkit,
-      ]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ServerAdapter]),
+      getNamedImports(this.adapterPkg.name, [this.adapterPkg.imports.ExpressToolkit]),
       ...getModelImports<OpenAPIGeneratorTarget>(
         path,
         'oats/cors-configuration',
@@ -366,5 +374,17 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
         this.context,
       ),
     ]
+  }
+
+  protected getExpressPackage(): ExpressPackage {
+    return packages.express(this.context)
+  }
+
+  protected getHttpPackage(): OpenApiHttpPackage {
+    return packages.openApiHttp(this.context)
+  }
+
+  protected getAdapterPackage(): OpenApiExpressServerAdapterPackage {
+    return packages.openApiExpressServerAdapter(this.context)
   }
 }

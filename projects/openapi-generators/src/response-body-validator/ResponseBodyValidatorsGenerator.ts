@@ -15,10 +15,13 @@ import {
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { packages } from '@oats-ts/model-common'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { packages, ValidatorsPackage } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
+  protected validatorsPkg!: ValidatorsPackage
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/response-body-validator'
   }
@@ -27,8 +30,13 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
     return ['oats/type', 'oats/type-validator']
   }
 
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.validatorsPkg = this.getValidatorPackage()
+  }
+
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: packages.validators.name, version }]
+    return [{ name: this.validatorsPkg.name, version }]
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
@@ -108,13 +116,17 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
         ? expression
         : factory.createCallExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier(packages.validators.exports.validators),
-              packages.validators.content.validators.optional,
+              factory.createIdentifier(this.validatorsPkg.exports.validators),
+              this.validatorsPkg.content.validators.optional,
             ),
             [],
             [expression],
           )
       return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validatorExpr)
     })
+  }
+
+  protected getValidatorPackage(): ValidatorsPackage {
+    return packages.validators(this.context)
   }
 }

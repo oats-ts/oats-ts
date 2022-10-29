@@ -21,10 +21,13 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { packages } from '@oats-ts/model-common'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { packages, ValidatorsPackage } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
+  protected validatorsPkg!: ValidatorsPackage
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/request-body-validator'
   }
@@ -35,6 +38,11 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
 
   public runtimeDependencies(): RuntimeDependency[] {
     return [{ name: packages.validators.name, version }]
+  }
+
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.validatorsPkg = this.getValidatorPackage()
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {
@@ -56,7 +64,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     const needsOptional = !Boolean(body?.required)
     return [
       ...flatMap(content, ([, schema]) => this.context.dependenciesOf(path, schema, 'oats/type-validator')),
-      ...(needsOptional ? [getNamedImports(packages.validators.name, [packages.validators.exports.validators])] : []),
+      ...(needsOptional ? [getNamedImports(this.validatorsPkg.name, [this.validatorsPkg.imports.validators])] : []),
     ]
   }
 
@@ -93,8 +101,8 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
         ? expression
         : factory.createCallExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier(packages.validators.exports.validators),
-              packages.validators.content.validators.optional,
+              factory.createIdentifier(this.validatorsPkg.exports.validators),
+              this.validatorsPkg.content.validators.optional,
             ),
             [],
             [expression],
@@ -114,5 +122,9 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     return hasRequestBody(this.enhanced(input), this.context)
       ? getModelImports(fromPath, this.name(), [input], this.context)
       : []
+  }
+
+  protected getValidatorPackage(): ValidatorsPackage {
+    return packages.validators(this.context)
   }
 }

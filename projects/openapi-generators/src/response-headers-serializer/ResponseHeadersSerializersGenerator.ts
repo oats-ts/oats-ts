@@ -1,5 +1,5 @@
-import { packages } from '@oats-ts/model-common'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { OpenApiParameterSerializationPackage, packages } from '@oats-ts/model-common'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
 import {
   EnhancedOperation,
   getResponseHeaders,
@@ -7,6 +7,7 @@ import {
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { entries, flatMap, values } from 'lodash'
@@ -24,6 +25,8 @@ import { getDslObjectAst } from '../utils/getDslObjectAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
 export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGenerator<{}> {
+  protected paramsPkg!: OpenApiParameterSerializationPackage
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/response-headers-serializer'
   }
@@ -32,8 +35,13 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
     return ['oats/type', 'oats/response-headers-type']
   }
 
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.paramsPkg = this.getParametersPackage()
+  }
+
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: packages.openApiParameterSerialization.name, version }]
+    return [{ name: this.paramsPkg.name, version }]
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {
@@ -61,8 +69,8 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
     const headersByStatus = getResponseHeaders(data.operation, this.context)
     return [
       getNamedImports(packages.openApiParameterSerialization.name, [
-        packages.openApiParameterSerialization.exports.dsl,
-        packages.openApiParameterSerialization.exports.serializers,
+        this.paramsPkg.imports.dsl,
+        this.paramsPkg.imports.serializers,
       ]),
       ...flatMap(entries(headersByStatus), ([statusCode]) =>
         this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
@@ -79,11 +87,11 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
           status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
           factory.createCallExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier(packages.openApiParameterSerialization.exports.serializers),
-              packages.openApiParameterSerialization.content.serializers.createHeaderSerializer,
+              factory.createIdentifier(this.paramsPkg.exports.serializers),
+              this.paramsPkg.content.serializers.createHeaderSerializer,
             ),
             [this.context.referenceOf([data.operation, status], 'oats/response-headers-type')],
-            [getDslObjectAst(values(headers), this.context)],
+            [getDslObjectAst(values(headers), this.context, this.paramsPkg)],
           ),
         )
       })
@@ -105,5 +113,9 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
         NodeFlags.Const,
       ),
     )
+  }
+
+  protected getParametersPackage(): OpenApiParameterSerializationPackage {
+    return packages.openApiParameterSerialization(this.context)
   }
 }

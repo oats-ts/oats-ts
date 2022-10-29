@@ -18,15 +18,18 @@ import {
 } from 'typescript'
 import { createSourceFile, documentNode, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { CorsConfigurationGeneratorConfig } from './typings'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap, isNil } from 'lodash'
 import { RouterNames } from '../utils/RouterNames'
-import { packages } from '@oats-ts/model-common'
+import { OpenApiHttpPackage, packages } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfigurationGeneratorConfig> {
+  protected pkg!: OpenApiHttpPackage
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/cors-configuration'
   }
@@ -35,6 +38,15 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
   }
   public runtimeDependencies(): RuntimeDependency[] {
     return [{ name: packages.openApiHttp.name, version }]
+  }
+
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.pkg = this.getOpenApiHttpPackage()
+  }
+
+  protected getOpenApiHttpPackage(): OpenApiHttpPackage {
+    return packages.openApiHttp(this.context)
   }
 
   public getPreGenerateIssues(): Issue[] {
@@ -73,7 +85,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
   }
 
   protected getImportDeclarations(): ImportDeclaration[] {
-    return [getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.CorsConfiguration])]
+    return [getNamedImports(this.pkg.name, [this.pkg.imports.CorsConfiguration])]
   }
 
   protected getConfigurationWarningLabel(): string {
@@ -97,7 +109,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
           factory.createVariableDeclaration(
             this.context.nameOf(this.context.document, this.name()),
             undefined,
-            factory.createTypeReferenceNode(packages.openApiHttp.exports.CorsConfiguration),
+            factory.createTypeReferenceNode(this.pkg.exports.CorsConfiguration),
             this.getCorsObjectAst(paths),
           ),
         ],

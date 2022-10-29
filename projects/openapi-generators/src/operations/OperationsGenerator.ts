@@ -23,12 +23,16 @@ import {
 import { createSourceFile, documentNode, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
 import { OperationNames } from './OperationNames'
-import { packages } from '@oats-ts/model-common'
+import { OpenApiHttpPackage, packages, RuntimePackage } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
+  protected httpPkg!: OpenApiHttpPackage
+  protected fetchPkg!: RuntimePackage<any, any>
+
   public name(): OpenAPIGeneratorTarget {
     return 'oats/operation'
   }
@@ -57,11 +61,17 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     ]
   }
 
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.httpPkg = this.getHttpPackage()
+    this.fetchPkg = this.getFetchPackage()
+  }
+
   public runtimeDependencies(): RuntimeDependency[] {
     return [
-      { name: packages.openApiHttp.name, version },
+      { name: this.httpPkg.name, version },
       /* Adding this as runtime package as otherwise it's undiscoverable */
-      { name: packages.openApiFetchClientAdapter.name, version },
+      { name: this.fetchPkg.name, version },
     ]
   }
 
@@ -80,10 +90,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
 
   protected getImportDeclarations(path: string, item: EnhancedOperation): ImportDeclaration[] {
     return [
-      getNamedImports(packages.openApiHttp.name, [
-        packages.openApiHttp.exports.RawHttpRequest,
-        packages.openApiHttp.exports.ClientAdapter,
-      ]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.exports.RawHttpRequest, this.httpPkg.exports.ClientAdapter]),
       ...this.context.dependenciesOf(path, item.operation, 'oats/request-type'),
       ...this.context.dependenciesOf(path, item.operation, 'oats/response-type'),
       ...this.context.dependenciesOf(path, item.operation, 'oats/path-serializer'),
@@ -117,7 +124,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         undefined,
         OperationNames.adapter,
         undefined,
-        factory.createTypeReferenceNode(packages.openApiHttp.exports.ClientAdapter),
+        factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       ),
     ]
 
@@ -378,10 +385,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           factory.createVariableDeclaration(
             factory.createIdentifier(OperationNames.rawRequest),
             undefined,
-            factory.createTypeReferenceNode(
-              factory.createIdentifier(packages.openApiHttp.exports.RawHttpRequest),
-              undefined,
-            ),
+            factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.RawHttpRequest), undefined),
             factory.createObjectLiteralExpression(
               [
                 factory.createPropertyAssignment(
@@ -634,5 +638,13 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         NodeFlags.Const,
       ),
     )
+  }
+
+  protected getHttpPackage(): OpenApiHttpPackage {
+    return packages.openApiHttp(this.context)
+  }
+
+  protected getFetchPackage(): RuntimePackage<any, any> {
+    return packages.openApiFetchClientAdapter(this.context)
   }
 }

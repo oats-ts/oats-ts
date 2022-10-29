@@ -21,13 +21,16 @@ import {
 } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
-import { packages } from '@oats-ts/model-common'
+import { OpenApiHttpPackage, packages } from '@oats-ts/model-common'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export type ResponsePropertyName = 'mimeType' | 'statusCode' | 'body' | 'headers' | 'cookies'
 
 export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedCodeGenerator<T> {
+  protected httpPkg!: OpenApiHttpPackage
+
   protected abstract createProperty(
     name: ResponsePropertyName,
     type: TypeNode,
@@ -36,8 +39,13 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
     context: OpenAPIGeneratorContext,
   ): PropertySignature | undefined
 
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.httpPkg = this.getHttpPackage()
+  }
+
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: packages.openApiHttp.name, version }]
+    return [{ name: this.httpPkg.name, version }]
   }
 
   protected shouldGenerate({ operation }: EnhancedOperation): boolean {
@@ -134,5 +142,9 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
       undefined,
       responseTypes.length === 1 ? head(responseTypes)! : factory.createUnionTypeNode(responseTypes),
     )
+  }
+
+  protected getHttpPackage(): OpenApiHttpPackage {
+    return packages.openApiHttp(this.context)
   }
 }

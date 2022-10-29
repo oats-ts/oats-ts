@@ -1,4 +1,3 @@
-import { packages } from '@oats-ts/model-common'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { BaseDslGenerator } from '../utils/BaseDslGenerator'
@@ -14,10 +13,13 @@ export class SetCookieDeserializersGenerator extends BaseDslGenerator {
     return 'oats/cookies-type'
   }
   protected getFactoryFunctionName(): string {
-    return packages.openApiParameterSerialization.content.deserializers.createSetCookieDeserializer
+    return this.paramsPkg.content.deserializers.createSetCookieDeserializer
   }
-  protected getRuntimeExport(): string {
-    return packages.openApiParameterSerialization.exports.deserializers
+  protected getRuntimeFactoryName(): string {
+    return this.paramsPkg.exports.deserializers
+  }
+  protected getRuntimeImport(): string | [string, string] {
+    return this.paramsPkg.imports.deserializers
   }
   protected getParameters(data: EnhancedOperation): BaseParameterObject[] {
     return data?.cookie ?? []

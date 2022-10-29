@@ -4,20 +4,24 @@ import { entries, flatMap, has, isNil, negate } from 'lodash'
 import { Expression, factory, ObjectLiteralExpression, PropertyAccessExpression, PropertyAssignment } from 'typescript'
 import { isIdentifier, getLiteralAst } from '@oats-ts/typescript-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, packages } from '@oats-ts/model-common'
+import { getInferredType, OpenApiParameterSerializationPackage } from '@oats-ts/model-common'
 
 export function getDslObjectAst(
   parameters: Referenceable<BaseParameterObject>[],
   context: OpenAPIGeneratorContext,
+  paramsPkg: OpenApiParameterSerializationPackage,
 ): ObjectLiteralExpression {
   return factory.createObjectLiteralExpression(
-    parameters.map((parameter) => getParameterDsl(parameter, context)).filter(negate(isNil)) as PropertyAssignment[],
+    parameters
+      .map((parameter) => getParameterDsl(parameter, context, paramsPkg))
+      .filter(negate(isNil)) as PropertyAssignment[],
   )
 }
 
 function getParameterDsl(
   param: Referenceable<BaseParameterObject>,
   context: OpenAPIGeneratorContext,
+  paramsPkg: OpenApiParameterSerializationPackage,
 ): PropertyAssignment | undefined {
   const name = getParameterName(param, context)
   const parameter = context.dereference(param, true)
@@ -34,7 +38,7 @@ function getParameterDsl(
       factory.createPropertyAccessExpression(
         factory.createPropertyAccessExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(packages.openApiParameterSerialization.exports.dsl),
+            factory.createIdentifier(paramsPkg.exports.dsl),
             factory.createIdentifier(location),
           ),
           factory.createIdentifier(getParameterStyle(parameter)),
@@ -42,7 +46,7 @@ function getParameterDsl(
         factory.createIdentifier(kind),
       ),
       [],
-      [getTypeDsl(schema, context), ...getDslOptions(parameter)],
+      [getTypeDsl(schema, context, paramsPkg), ...getDslOptions(parameter)],
     ),
   )
 }
@@ -50,6 +54,7 @@ function getParameterDsl(
 function getTypeDsl(
   schemaOrRef: Referenceable<SchemaObject> | undefined,
   context: OpenAPIGeneratorContext,
+  paramsPkg: OpenApiParameterSerializationPackage,
 ): Expression {
   const schema = context.dereference(schemaOrRef, true)
   if (isNil(schema)) {
@@ -60,15 +65,15 @@ function getTypeDsl(
     case 'string':
     case 'number':
     case 'boolean': {
-      return factory.createCallExpression(valueAccess(inferredType), [], [])
+      return factory.createCallExpression(valueAccess(inferredType, context, paramsPkg), [], [])
     }
     case 'enum': {
       const type = schema.type === 'number' || schema.type === 'integer' ? 'number' : 'string'
       return factory.createCallExpression(
-        valueAccess(type),
+        valueAccess(type, context, paramsPkg),
         [],
         [
-          factory.createCallExpression(valueAccess('enum'), undefined, [
+          factory.createCallExpression(valueAccess('enum', context, paramsPkg), undefined, [
             factory.createArrayLiteralExpression((schema.enum ?? []).map((v) => getLiteralAst(v))),
           ]),
         ],
@@ -76,17 +81,19 @@ function getTypeDsl(
     }
     case 'array': {
       if (typeof schema.items !== 'boolean') {
-        return getTypeDsl(schema.items, context)
+        return getTypeDsl(schema.items, context, paramsPkg)
       }
       return factory.createIdentifier('undefined')
     }
     case 'object': {
       const properties = entries(schema.properties).map(([name, propSchema]) => {
         const isRequired = (schema.required || []).indexOf(name) >= 0
-        const typeDsl = getTypeDsl(propSchema, context)
+        const typeDsl = getTypeDsl(propSchema, context, paramsPkg)
         return factory.createPropertyAssignment(
           isIdentifier(name) ? name : factory.createStringLiteral(name),
-          isRequired ? typeDsl : factory.createCallExpression(valueAccess('optional'), [], [typeDsl]),
+          isRequired
+            ? typeDsl
+            : factory.createCallExpression(valueAccess('optional', context, paramsPkg), [], [typeDsl]),
         )
       })
       return factory.createObjectLiteralExpression(properties)
@@ -96,10 +103,14 @@ function getTypeDsl(
   }
 }
 
-function valueAccess(field: string): PropertyAccessExpression {
+function valueAccess(
+  field: string,
+  context: OpenAPIGeneratorContext,
+  paramsPkg: OpenApiParameterSerializationPackage,
+): PropertyAccessExpression {
   return factory.createPropertyAccessExpression(
     factory.createPropertyAccessExpression(
-      factory.createIdentifier(packages.openApiParameterSerialization.exports.dsl),
+      factory.createIdentifier(paramsPkg.exports.dsl),
       factory.createIdentifier('value'),
     ),
     field,
