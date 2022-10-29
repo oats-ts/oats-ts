@@ -1,7 +1,7 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { ValidatorsPackage } from '@oats-ts/model-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { isEmpty, isNil } from 'lodash'
+import { entries, isEmpty, isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'
 import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget, TraversalHelper, TypeDiscriminator } from '../types'
 import { ValidatorImportProvider, ValidatorsGeneratorConfig } from './typings'
@@ -35,6 +35,16 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     referenceImports: Set<string>,
   ): void {
     validatorImports.add(this.pkg.exports.validators)
+
+    if (!isNil(data.discriminator)) {
+      for (const schemaOrRef of data.oneOf ?? []) {
+        this.collectImports(schemaOrRef, validatorImports, referenceImports)
+      }
+    } else {
+      for (const schemaOrRef of data.oneOf ?? []) {
+        this.collectImports(schemaOrRef, validatorImports, referenceImports)
+      }
+    }
   }
 
   protected collectIntersectionTypeImports(
@@ -43,6 +53,9 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     referenceImports: Set<string>,
   ): void {
     validatorImports.add(this.pkg.exports.validators)
+    for (const schemaOrRef of data.allOf ?? []) {
+      this.collectImports(schemaOrRef, validatorImports, referenceImports)
+    }
   }
 
   protected collectJsonLiteralImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
@@ -75,6 +88,9 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     referenceImports: Set<string>,
   ): void {
     validatorImports.add(this.pkg.exports.validators)
+    if (!this.config.ignore(data.additionalProperties as Referenceable<SchemaObject>, this.helper)) {
+      this.collectImports(data.additionalProperties as Referenceable<SchemaObject>, validatorImports, referenceImports)
+    }
   }
 
   protected collectArrayTypeImports(
@@ -83,6 +99,9 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     referenceImports: Set<string>,
   ): void {
     validatorImports.add(this.pkg.exports.validators)
+    if (!this.config.ignore(data.items as Referenceable<SchemaObject>, this.helper)) {
+      this.collectImports(data.items as Referenceable<SchemaObject>, validatorImports, referenceImports)
+    }
   }
 
   protected collectTupleTypeImports(
@@ -90,7 +109,9 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
+    const { prefixItems = [] } = data
     validatorImports.add(this.pkg.exports.validators)
+    prefixItems.forEach((item) => this.collectImports(item, validatorImports, referenceImports))
   }
 
   protected collectObjectTypeImports(
@@ -99,6 +120,9 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     referenceImports: Set<string>,
   ): void {
     validatorImports.add(this.pkg.exports.validators)
+    for (const [_, propSchema] of entries(data.properties)) {
+      this.collectImports(propSchema, validatorImports, referenceImports)
+    }
   }
 
   protected collectUnknownTypeImports(
