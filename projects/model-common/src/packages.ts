@@ -1,4 +1,5 @@
-import { RuntimePackage } from './types'
+import { entries } from 'lodash'
+import { GeneratorContext, RuntimePackage, RuntimePackageInternal } from './types'
 
 const validatorsExports = {
   validators: 'validators',
@@ -161,43 +162,43 @@ export type OpenAPIRuntimeExports = ValidatorsExports &
 export type OpenAPIRuntimeContent = ValidatorsContent & OpenApiParameterSerializationContent
 export type OpenAPIRuntimePackage = RuntimePackage<OpenAPIRuntimeExports, OpenAPIRuntimeContent>
 
-export const validators: ValidatorsPackage = {
+const validators = {
   name: '@oats-ts/validators',
   exports: validatorsExports,
   content: validatorsContent,
 }
 
-export const _try: TryPackage = {
+const _try = {
   name: '@oats-ts/try',
   exports: tryExports,
   content: {},
 }
 
-export const openApiHttp: OpenApiHttpPackage = {
+const openApiHttp = {
   name: '@oats-ts/openapi-http',
   exports: openApiHttpExports,
   content: {},
 }
 
-export const openApiExpressServerAdapter: OpenApiExpressServerAdapterPackage = {
+const openApiExpressServerAdapter = {
   name: '@oats-ts/openapi-express-server-adapter',
   exports: openApiExpressServerAdapterExports,
   content: {},
 }
 
-export const openApiParameterSerialization: OpenApiParameterSerializationPackage = {
+const openApiParameterSerialization = {
   name: '@oats-ts/openapi-parameter-serialization',
   exports: openApiParameterSerializationExports,
   content: openApiParameterSerializationContent,
 }
 
-export const express: ExpressPackage = {
+const express = {
   name: 'express',
   exports: expressExports,
   content: {},
 }
 
-export const openApiRuntime: OpenAPIRuntimePackage = {
+const openApiRuntime = {
   name: '@oats-ts/openapi-runtime',
   exports: {
     ...validatorsExports,
@@ -211,19 +212,45 @@ export const openApiRuntime: OpenAPIRuntimePackage = {
   },
 }
 
-export const openApiFetchClientAdapter: RuntimePackage<{}, {}> = {
+const openApiFetchClientAdapter = {
   name: '@oats-ts/openapi-fetch-client-adapter',
   content: {},
   exports: {},
 }
 
+const createPackage =
+  <T extends RuntimePackage<any, any>>(pkg: RuntimePackageInternal<any, any>) =>
+  (context: GeneratorContext): T => {
+    const { name, content, exports } = pkg
+    return {
+      name,
+      content,
+      imports: entries(exports).reduce((newExports: Record<string, string | [string, string]>, [key, originalName]) => {
+        const exportedName = context.exportOf(name, originalName as string)
+        const value =
+          exportedName === originalName ? originalName : ([originalName, exportedName] as string | [string, string])
+        return {
+          ...newExports,
+          [key]: value,
+        }
+      }, {}),
+      exports: entries(exports).reduce((newExports: Record<string, string>, [key, originalName]) => {
+        const exportedName = context.exportOf(name, originalName as string)
+        return {
+          ...newExports,
+          [key]: exportedName === originalName ? originalName : exportedName,
+        }
+      }, {}),
+    } as T
+  }
+
 export const packages = {
-  validators,
-  try: _try,
-  openApiHttp,
-  openApiExpressServerAdapter,
-  openApiParameterSerialization,
-  express,
-  openApiRuntime,
-  openApiFetchClientAdapter,
+  validators: createPackage<ValidatorsPackage>(validators),
+  try: createPackage<TryPackage>(_try),
+  openApiHttp: createPackage<OpenApiHttpPackage>(openApiHttp),
+  openApiExpressServerAdapter: createPackage<OpenApiExpressServerAdapterPackage>(openApiExpressServerAdapter),
+  openApiParameterSerialization: createPackage<OpenApiParameterSerializationPackage>(openApiParameterSerialization),
+  express: createPackage<ExpressPackage>(express),
+  openApiRuntime: createPackage<OpenAPIRuntimePackage>(openApiRuntime),
+  openApiFetchClientAdapter: createPackage(openApiFetchClientAdapter),
 }

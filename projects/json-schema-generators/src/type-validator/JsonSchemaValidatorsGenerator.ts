@@ -17,6 +17,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
 > {
   protected importProvider!: ValidatorImportProvider
   protected externalRefImportProvider!: ValidatorImportProvider
+  protected validatorsPkg!: ValidatorsPackage
 
   public name(): JsonSchemaGeneratorTarget {
     return 'oats/type-validator'
@@ -30,12 +31,9 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     return [{ name: this.getValidatorPackage().name, version }]
   }
 
-  protected getValidatorPackage(): ValidatorsPackage {
-    return packages.validators
-  }
-
   public initialize(init: GeneratorInit<T, SourceFile>): void {
     super.initialize(init)
+    this.validatorsPkg = this.getValidatorPackage()
     this.importProvider = new ValidatorImportProviderImpl(
       this.context,
       this.configuration(),
@@ -322,8 +320,12 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   protected getValidatorAst(type: keyof ValidatorsPackage['content']['validators']): Expression {
     const pkg = this.getValidatorPackage()
     return factory.createPropertyAccessExpression(
-      factory.createIdentifier(this.context.exportOf(pkg.name, pkg.exports.validators)),
+      factory.createIdentifier(pkg.exports.validators),
       pkg.content.validators[type],
     )
+  }
+
+  protected getValidatorPackage(): ValidatorsPackage {
+    return packages.validators(this.context)
   }
 }

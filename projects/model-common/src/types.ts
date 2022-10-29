@@ -100,8 +100,15 @@ export type InferredType =
   | 'unknown'
   | 'ref'
 
-export type RuntimePackage<T, C> = {
+export type RuntimePackageInternal<T extends Record<string, string>, C> = {
   name: string
   exports: T
   content: C
+}
+
+export type RuntimePackage<Exports extends Record<string, string>, Content> = {
+  name: string
+  exports: Exports
+  imports: Record<keyof Exports, string | [string, string]>
+  content: Content
 }

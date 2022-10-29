@@ -1,10 +1,10 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { ValidatorsPackage } from '@oats-ts/model-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { entries, isEmpty, isNil } from 'lodash'
+import { entries, isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'
 import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget, TraversalHelper, TypeDiscriminator } from '../types'
-import { ValidatorImportProvider, ValidatorsGeneratorConfig } from './typings'
+import { ValidatorImportProvider, ValidatorImportProviderData, ValidatorsGeneratorConfig } from './typings'
 
 export class ValidatorImportProviderImpl implements ValidatorImportProvider {
   public constructor(
@@ -15,168 +15,130 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     protected readonly pkg: ValidatorsPackage,
   ) {}
 
-  protected collectReferenceTypeImports(
-    data: ReferenceObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
+  protected collectReferenceTypeImports(data: ReferenceObject, d: ValidatorImportProviderData): void {
     const schema = this.context.dereference(data)
     if (!isNil(this.context.nameOf(schema, 'oats/type-validator'))) {
-      validatorImports.add(this.pkg.exports.validators)
-      referenceImports.add(data.$ref)
+      d.needsValidatorImport = true
+      d.referenceImports.add(data.$ref)
     } else {
-      this.collectImports(schema, validatorImports, referenceImports)
+      this.collectImports(schema, d)
     }
   }
 
-  protected collectUnionTypeImports(
-    data: SchemaObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectUnionTypeImports(data: SchemaObject, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
 
     if (!isNil(data.discriminator)) {
       for (const schemaOrRef of data.oneOf ?? []) {
-        this.collectImports(schemaOrRef, validatorImports, referenceImports)
+        this.collectImports(schemaOrRef, d)
       }
     } else {
       for (const schemaOrRef of data.oneOf ?? []) {
-        this.collectImports(schemaOrRef, validatorImports, referenceImports)
+        this.collectImports(schemaOrRef, d)
       }
     }
   }
 
-  protected collectIntersectionTypeImports(
-    data: SchemaObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectIntersectionTypeImports(data: SchemaObject, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
     for (const schemaOrRef of data.allOf ?? []) {
-      this.collectImports(schemaOrRef, validatorImports, referenceImports)
+      this.collectImports(schemaOrRef, d)
     }
   }
 
-  protected collectJsonLiteralImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectJsonLiteralImports(data: any, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
   }
 
-  protected collectEnumTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectEnumTypeImports(data: any, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
   }
 
-  protected collectLiteralTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    this.collectJsonLiteralImports(data.const, validatorImports, referenceImports)
+  protected collectLiteralTypeImports(data: any, d: ValidatorImportProviderData): void {
+    this.collectJsonLiteralImports(data.const, d)
   }
 
-  protected collectStringTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectStringTypeImports(data: any, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
   }
 
-  protected collectNumberTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectNumberTypeImports(data: any, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
   }
 
-  protected collectBooleanTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectBooleanTypeImports(data: any, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
   }
 
-  protected collectRecordTypeImports(
-    data: SchemaObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectRecordTypeImports(data: SchemaObject, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
     if (!this.config.ignore(data.additionalProperties as Referenceable<SchemaObject>, this.helper)) {
-      this.collectImports(data.additionalProperties as Referenceable<SchemaObject>, validatorImports, referenceImports)
+      this.collectImports(data.additionalProperties as Referenceable<SchemaObject>, d)
     }
   }
 
-  protected collectArrayTypeImports(
-    data: SchemaObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectArrayTypeImports(data: SchemaObject, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
     if (!this.config.ignore(data.items as Referenceable<SchemaObject>, this.helper)) {
-      this.collectImports(data.items as Referenceable<SchemaObject>, validatorImports, referenceImports)
+      this.collectImports(data.items as Referenceable<SchemaObject>, d)
     }
   }
 
-  protected collectTupleTypeImports(
-    data: SchemaObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
+  protected collectTupleTypeImports(data: SchemaObject, d: ValidatorImportProviderData): void {
     const { prefixItems = [] } = data
-    validatorImports.add(this.pkg.exports.validators)
-    prefixItems.forEach((item) => this.collectImports(item, validatorImports, referenceImports))
+    d.needsValidatorImport = true
+    prefixItems.forEach((item) => this.collectImports(item, d))
   }
 
-  protected collectObjectTypeImports(
-    data: SchemaObject,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectObjectTypeImports(data: SchemaObject, d: ValidatorImportProviderData): void {
+    d.needsValidatorImport = true
     for (const [_, propSchema] of entries(data.properties)) {
-      this.collectImports(propSchema, validatorImports, referenceImports)
+      this.collectImports(propSchema, d)
     }
   }
 
-  protected collectUnknownTypeImports(
-    data: Referenceable<SchemaObject> | undefined,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ) {
-    validatorImports.add(this.pkg.exports.validators)
+  protected collectUnknownTypeImports(data: Referenceable<SchemaObject> | undefined, d: ValidatorImportProviderData) {
+    d.needsValidatorImport = true
   }
 
-  protected collectImports(
-    data: Referenceable<SchemaObject>,
-    validatorImports: Set<string>,
-    referenceImports: Set<string>,
-  ): void {
+  protected collectImports(data: Referenceable<SchemaObject>, d: ValidatorImportProviderData): void {
     if (this.config.ignore(data, this.helper)) {
-      return this.collectUnknownTypeImports(data, validatorImports, referenceImports)
+      return this.collectUnknownTypeImports(data, d)
     }
     if (this.type.isReferenceObject(data)) {
-      return this.collectReferenceTypeImports(data, validatorImports, referenceImports)
+      return this.collectReferenceTypeImports(data, d)
     } else if (this.type.isUnionSchema(data)) {
-      return this.collectUnionTypeImports(data, validatorImports, referenceImports)
+      return this.collectUnionTypeImports(data, d)
     } else if (this.type.isIntersectionSchema(data)) {
-      return this.collectIntersectionTypeImports(data, validatorImports, referenceImports)
+      return this.collectIntersectionTypeImports(data, d)
     } else if (this.type.isEnumSchema(data)) {
-      return this.collectEnumTypeImports(data, validatorImports, referenceImports)
+      return this.collectEnumTypeImports(data, d)
     } else if (this.type.isLiteralSchema(data)) {
-      return this.collectLiteralTypeImports(data, validatorImports, referenceImports)
+      return this.collectLiteralTypeImports(data, d)
     } else if (this.type.isStringSchema(data)) {
-      return this.collectStringTypeImports(data, validatorImports, referenceImports)
+      return this.collectStringTypeImports(data, d)
     } else if (this.type.isNumberSchema(data)) {
-      return this.collectNumberTypeImports(data, validatorImports, referenceImports)
+      return this.collectNumberTypeImports(data, d)
     } else if (this.type.isBooleanSchema(data)) {
-      return this.collectBooleanTypeImports(data, validatorImports, referenceImports)
+      return this.collectBooleanTypeImports(data, d)
     } else if (this.type.isRecordSchema(data)) {
-      return this.collectRecordTypeImports(data, validatorImports, referenceImports)
+      return this.collectRecordTypeImports(data, d)
     } else if (this.type.isObjectSchema(data)) {
-      return this.collectObjectTypeImports(data, validatorImports, referenceImports)
+      return this.collectObjectTypeImports(data, d)
     } else if (this.type.isArraySchema(data)) {
-      return this.collectArrayTypeImports(data, validatorImports, referenceImports)
+      return this.collectArrayTypeImports(data, d)
     } else if (this.type.isTupleSchema(data)) {
-      return this.collectTupleTypeImports(data, validatorImports, referenceImports)
+      return this.collectTupleTypeImports(data, d)
     }
-    return this.collectUnknownTypeImports(data, validatorImports, referenceImports)
+    return this.collectUnknownTypeImports(data, d)
   }
 
   public getImports(fromPath: string, schema: Referenceable<SchemaObject>): ImportDeclaration[] {
-    const validatorImportSet = new Set<string>()
-    const referenceImportSet = new Set<string>()
-    this.collectImports(schema, validatorImportSet, referenceImportSet)
-    const validatorImports = Array.from(validatorImportSet)
-    const referenceImports = Array.from(referenceImportSet)
+    const data: ValidatorImportProviderData = { needsValidatorImport: false, referenceImports: new Set<string>() }
+    this.collectImports(schema, data)
+    const referenceImports = Array.from(data.referenceImports)
     return [
-      ...(isEmpty(validatorImports) ? [] : [getNamedImports(this.pkg.name, validatorImports, this.context)]),
+      ...(data.needsValidatorImport ? [getNamedImports(this.pkg.name, [this.pkg.imports.validators])] : []),
       ...getModelImports<JsonSchemaGeneratorTarget>(
         fromPath,
         'oats/type-validator',

@@ -1,7 +1,6 @@
 import { factory, ImportDeclaration } from 'typescript'
-import { GeneratorContext } from '@oats-ts/model-common'
 
-export function getNamedImports(from: string, names: string[], context?: GeneratorContext): ImportDeclaration {
+export function getNamedImports(from: string, names: (string | [string, string])[]): ImportDeclaration {
   return factory.createImportDeclaration(
     undefined,
     undefined,
@@ -9,16 +8,16 @@ export function getNamedImports(from: string, names: string[], context?: Generat
       false,
       undefined,
       factory.createNamedImports(
-        names.map((originalName) => {
-          const asName = context?.exportOf(from, originalName) ?? originalName
-          if (asName === originalName) {
-            return factory.createImportSpecifier(false, undefined, factory.createIdentifier(originalName))
+        names.map((name) => {
+          if (Array.isArray(name)) {
+            const [original, asName] = name
+            return factory.createImportSpecifier(
+              false,
+              factory.createIdentifier(original),
+              factory.createIdentifier(asName),
+            )
           }
-          return factory.createImportSpecifier(
-            false,
-            factory.createIdentifier(originalName),
-            factory.createIdentifier(asName),
-          )
+          return factory.createImportSpecifier(false, undefined, factory.createIdentifier(name))
         }),
       ),
     ),
