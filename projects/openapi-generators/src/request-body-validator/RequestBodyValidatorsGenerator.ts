@@ -18,11 +18,11 @@ import {
   Statement,
 } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { RuntimePackages } from '@oats-ts/model-common'
 import { success, Try } from '@oats-ts/try'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { packages } from '@oats-ts/model-common'
 
 export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -34,7 +34,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Validators.name, version }]
+    return [{ name: packages.validators.name, version }]
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {
@@ -56,9 +56,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     const needsOptional = !Boolean(body?.required)
     return [
       ...flatMap(content, ([, schema]) => this.context.dependenciesOf(path, schema, 'oats/type-validator')),
-      ...(needsOptional
-        ? [getNamedImports(RuntimePackages.Validators.name, [RuntimePackages.Validators.optional])]
-        : []),
+      ...(needsOptional ? [getNamedImports(packages.validators.name, [packages.validators.exports.validators])] : []),
     ]
   }
 
@@ -93,7 +91,14 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
       const expression: Expression = this.context.referenceOf(mediaTypeObj.schema, 'oats/type-validator')
       const validatorExpr = required
         ? expression
-        : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [expression])
+        : factory.createCallExpression(
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(packages.validators.exports.validators),
+              packages.validators.content.validators.optional,
+            ),
+            [],
+            [expression],
+          )
       return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validatorExpr)
     })
   }

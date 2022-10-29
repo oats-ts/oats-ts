@@ -1,5 +1,5 @@
 import { flatMap, isNil } from 'lodash'
-import { OpenAPIGeneratorTarget, RuntimePackages, EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
@@ -18,6 +18,7 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { Try, success } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { packages } from '@oats-ts/model-common'
 
 export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -29,7 +30,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Http.name, version }]
+    return [{ name: packages.openApiHttp.name, version }]
   }
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
@@ -54,7 +55,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
   protected getImportDeclarations(path: string, operations: EnhancedOperation[]): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientAdapter]),
+      getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.ClientAdapter]),
       ...flatMap(operations, (data) => [
         ...this.context.dependenciesOf(path, data.operation, 'oats/request-type'),
         ...this.context.dependenciesOf(path, data.operation, 'oats/response-type'),
@@ -70,7 +71,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
       this.getAdapterName(),
       undefined,
-      factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
+      factory.createTypeReferenceNode(packages.openApiHttp.exports.ClientAdapter),
       undefined,
     )
 
@@ -84,7 +85,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
           undefined,
           this.getAdapterName(),
           undefined,
-          factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
+          factory.createTypeReferenceNode(packages.openApiHttp.exports.ClientAdapter),
         ),
       ],
       factory.createBlock([

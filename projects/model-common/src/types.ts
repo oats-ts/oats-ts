@@ -97,3 +97,9 @@ export type InferredType =
   | 'intersection'
   | 'unknown'
   | 'ref'
+
+export type RuntimePackage<T, C> = {
+  name: string
+  exports: T
+  content: C
+}

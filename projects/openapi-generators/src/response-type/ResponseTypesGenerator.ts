@@ -1,8 +1,9 @@
-import { EnhancedOperation, EnhancedResponse, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation, EnhancedResponse, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { TypeNode, factory, PropertySignature, SyntaxKind, ImportDeclaration } from 'typescript'
 import { getModelImports, getNamedImports, safeName } from '@oats-ts/typescript-common'
 import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/BaseResponseTypeGenerator'
 import { ResponseTypesGeneratorConfig } from './typings'
+import { packages } from '@oats-ts/model-common'
 
 export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseTypesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -22,7 +23,7 @@ export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseT
       ...super.getImports(path, operation, responses),
       ...(operation.cookie.length > 0 && this.configuration().cookies
         ? [
-            getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.Cookies]),
+            getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.Cookies]),
             ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/cookies-type', [operation.operation], this.context),
           ]
         : []),
@@ -40,7 +41,7 @@ export class ResponseTypesGenerator extends BaseResponseTypesGenerator<ResponseT
           undefined,
           propName,
           factory.createToken(SyntaxKind.QuestionToken),
-          factory.createTypeReferenceNode(RuntimePackages.Http.Cookies, [type]),
+          factory.createTypeReferenceNode(packages.openApiHttp.exports.Cookies, [type]),
         )
       }
       case 'body': {

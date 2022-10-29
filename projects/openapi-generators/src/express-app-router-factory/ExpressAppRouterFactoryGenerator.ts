@@ -1,4 +1,4 @@
-import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   TypeNode,
@@ -16,6 +16,7 @@ import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
+import { packages } from '@oats-ts/model-common'
 
 const RouterFactoryNames = {
   root: 'root',
@@ -36,9 +37,9 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
   }
   public runtimeDependencies(): RuntimeDependency[] {
     return [
-      { name: RuntimePackages.Http.name, version },
-      { name: RuntimePackages.HttpServerExpress.name, version },
-      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+      { name: packages.openApiHttp.name, version },
+      { name: packages.openApiExpressServerAdapter.name, version },
+      { name: packages.express.name, version: '^4.18.1' },
     ]
   }
 
@@ -67,7 +68,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
       undefined,
       this.getParametersAst(),
-      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
+      factory.createTypeReferenceNode(factory.createIdentifier(packages.express.exports.IRouter), undefined),
       factory.createBlock(
         [
           this.getRootRouterStatement(),
@@ -82,7 +83,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
 
   protected getImportDeclarations(path: string, operations: EnhancedOperation[]): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.Router, RuntimePackages.Express.IRouter]),
+      getNamedImports(packages.express.name, [packages.express.exports.Router, packages.express.exports.IRouter]),
       ...getModelImports<OpenAPIGeneratorTarget>(
         path,
         'oats/express-router-factories-type',
@@ -110,7 +111,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
             factory.createBinaryExpression(
               factory.createIdentifier(RouterNames.router),
               factory.createToken(SyntaxKind.QuestionQuestionToken),
-              factory.createCallExpression(factory.createIdentifier(RuntimePackages.Express.Router), undefined, []),
+              factory.createCallExpression(factory.createIdentifier(packages.express.exports.Router), undefined, []),
             ),
           ),
         ],
@@ -252,7 +253,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         factory.createIdentifier(RouterNames.router),
         factory.createToken(SyntaxKind.QuestionToken),
         factory.createUnionTypeNode([
-          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+          factory.createTypeReferenceNode(packages.express.exports.IRouter, undefined),
           factory.createTypeReferenceNode('undefined', undefined),
         ]),
         undefined,

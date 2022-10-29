@@ -4,7 +4,6 @@ import {
   getResponseHeaders,
   hasResponses,
   OpenAPIGeneratorTarget,
-  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
@@ -25,6 +24,7 @@ import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap, isNil } from 'lodash'
 import { RouterNames } from '../utils/RouterNames'
+import { packages } from '@oats-ts/model-common'
 
 export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfigurationGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -34,7 +34,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
     return []
   }
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Http.name, version }]
+    return [{ name: packages.openApiHttp.name, version }]
   }
 
   public getPreGenerateIssues(): Issue[] {
@@ -73,7 +73,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
   }
 
   protected getImportDeclarations(): ImportDeclaration[] {
-    return [getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.CorsConfiguration])]
+    return [getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.CorsConfiguration])]
   }
 
   protected getConfigurationWarningLabel(): string {
@@ -97,7 +97,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
           factory.createVariableDeclaration(
             this.context.nameOf(this.context.document, this.name()),
             undefined,
-            factory.createTypeReferenceNode(RuntimePackages.Http.CorsConfiguration),
+            factory.createTypeReferenceNode(packages.openApiHttp.exports.CorsConfiguration),
             this.getCorsObjectAst(paths),
           ),
         ],

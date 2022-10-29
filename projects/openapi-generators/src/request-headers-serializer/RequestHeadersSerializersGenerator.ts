@@ -1,4 +1,5 @@
-import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { packages } from '@oats-ts/model-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { BaseDslGenerator } from '../utils/BaseDslGenerator'
 
@@ -13,7 +14,10 @@ export class RequestHeadersSerializersGenerator extends BaseDslGenerator {
     return 'oats/request-headers-type'
   }
   protected getFactoryFunctionName(): string {
-    return RuntimePackages.ParameterSerialization.createHeaderSerializer
+    return packages.openApiParameterSerialization.content.serializers.createHeaderSerializer
+  }
+  protected getRuntimeExport(): string {
+    return packages.openApiParameterSerialization.exports.serializers
   }
   protected getParameters(data: EnhancedOperation): BaseParameterObject[] {
     return data?.header ?? []

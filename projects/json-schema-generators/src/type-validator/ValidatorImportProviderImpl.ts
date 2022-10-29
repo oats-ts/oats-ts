@@ -1,7 +1,7 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { getDiscriminators, RuntimePackages } from '@oats-ts/model-common'
+import { ValidatorsPackage } from '@oats-ts/model-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { entries, isEmpty, isNil, values } from 'lodash'
+import { isEmpty, isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'
 import { JsonSchemaGeneratorContext, JsonSchemaGeneratorTarget, TraversalHelper, TypeDiscriminator } from '../types'
 import { ValidatorImportProvider, ValidatorsGeneratorConfig } from './typings'
@@ -12,6 +12,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     protected readonly config: ValidatorsGeneratorConfig,
     protected readonly helper: TraversalHelper,
     protected readonly type: TypeDiscriminator,
+    protected readonly pkg: ValidatorsPackage,
   ) {}
 
   protected collectReferenceTypeImports(
@@ -21,7 +22,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
   ): void {
     const schema = this.context.dereference(data)
     if (!isNil(this.context.nameOf(schema, 'oats/type-validator'))) {
-      validatorImports.add(RuntimePackages.Validators.lazy)
+      validatorImports.add(this.pkg.exports.validators)
       referenceImports.add(data.$ref)
     } else {
       this.collectImports(schema, validatorImports, referenceImports)
@@ -33,19 +34,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
-    validatorImports.add(RuntimePackages.Validators.union)
-    if (!isNil(data.discriminator)) {
-      for (const schemaOrRef of data.oneOf ?? []) {
-        this.collectImports(schemaOrRef, validatorImports, referenceImports)
-      }
-      if ((data.oneOf?.length ?? 0) > 0) {
-        validatorImports.add(RuntimePackages.Validators.lazy)
-      }
-    } else {
-      for (const schemaOrRef of data.oneOf ?? []) {
-        this.collectImports(schemaOrRef, validatorImports, referenceImports)
-      }
-    }
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectIntersectionTypeImports(
@@ -53,29 +42,15 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
-    validatorImports.add(RuntimePackages.Validators.combine)
-    for (const schemaOrRef of data.allOf ?? []) {
-      this.collectImports(schemaOrRef, validatorImports, referenceImports)
-    }
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectJsonLiteralImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    if (data === null || typeof data === 'number' || typeof data === 'boolean' || typeof data === 'string') {
-      validatorImports.add(RuntimePackages.Validators.literal)
-    } else if (Array.isArray(data)) {
-      validatorImports.add(RuntimePackages.Validators.array).add(RuntimePackages.Validators.tuple)
-      data.forEach((item: any) => this.collectJsonLiteralImports(item, validatorImports, referenceImports))
-    } else if (typeof data === 'object') {
-      validatorImports.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
-      values(data).forEach((item) => this.collectJsonLiteralImports(item, validatorImports, referenceImports))
-    } else {
-      validatorImports.add(RuntimePackages.Validators.any)
-    }
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectEnumTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(RuntimePackages.Validators.union)
-    data.enum?.forEach((value: any) => this.collectJsonLiteralImports(value, validatorImports, referenceImports))
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectLiteralTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
@@ -83,15 +58,15 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
   }
 
   protected collectStringTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(RuntimePackages.Validators.string)
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectNumberTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(RuntimePackages.Validators.number)
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectBooleanTypeImports(data: any, validatorImports: Set<string>, referenceImports: Set<string>): void {
-    validatorImports.add(RuntimePackages.Validators.boolean)
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectRecordTypeImports(
@@ -99,12 +74,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
-    validatorImports.add(RuntimePackages.Validators.object)
-    if (!this.config.ignore(data.additionalProperties as Referenceable<SchemaObject>, this.helper)) {
-      validatorImports.add(RuntimePackages.Validators.record)
-      validatorImports.add(RuntimePackages.Validators.string)
-      this.collectImports(data.additionalProperties as Referenceable<SchemaObject>, validatorImports, referenceImports)
-    }
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectArrayTypeImports(
@@ -112,11 +82,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
-    validatorImports.add(RuntimePackages.Validators.array)
-    if (!this.config.ignore(data.items as Referenceable<SchemaObject>, this.helper)) {
-      validatorImports.add(RuntimePackages.Validators.items)
-      this.collectImports(data.items as Referenceable<SchemaObject>, validatorImports, referenceImports)
-    }
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectTupleTypeImports(
@@ -124,13 +90,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
-    const { prefixItems = [], minItems = 0 } = data
-    if (minItems < prefixItems.length) {
-      validatorImports.add(RuntimePackages.Validators.optional)
-    }
-    validatorImports.add(RuntimePackages.Validators.array)
-    validatorImports.add(RuntimePackages.Validators.tuple)
-    return prefixItems.forEach((item) => this.collectImports(item, validatorImports, referenceImports))
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectObjectTypeImports(
@@ -138,18 +98,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ): void {
-    const discriminators = getDiscriminators(data, this.context)
-    if (values(discriminators).length > 0) {
-      validatorImports.add(RuntimePackages.Validators.literal)
-    }
-    validatorImports.add(RuntimePackages.Validators.object).add(RuntimePackages.Validators.shape)
-    for (const [name, propSchema] of entries(data.properties)) {
-      const isOptional = (data.required || []).indexOf(name) < 0
-      if (isOptional) {
-        validatorImports.add(RuntimePackages.Validators.optional)
-      }
-      this.collectImports(propSchema, validatorImports, referenceImports)
-    }
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectUnknownTypeImports(
@@ -157,7 +106,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     validatorImports: Set<string>,
     referenceImports: Set<string>,
   ) {
-    validatorImports.add(RuntimePackages.Validators.any)
+    validatorImports.add(this.pkg.exports.validators)
   }
 
   protected collectImports(
@@ -203,7 +152,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     const validatorImports = Array.from(validatorImportSet)
     const referenceImports = Array.from(referenceImportSet)
     return [
-      ...(isEmpty(validatorImports) ? [] : [getNamedImports(RuntimePackages.Validators.name, validatorImports)]),
+      ...(isEmpty(validatorImports) ? [] : [getNamedImports(this.pkg.name, validatorImports)]),
       ...getModelImports<JsonSchemaGeneratorTarget>(
         fromPath,
         'oats/type-validator',

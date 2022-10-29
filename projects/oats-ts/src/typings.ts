@@ -55,19 +55,26 @@ export type CodeGenerator<R, G, C = any> = {
 export type GeneratorConfig = {
   /**
    * @param input The named object (schema, operation, parameter, etc).
-   * @param originalName The name of the object as described in the document.
-   * It's a separate argument, as in many cases it's separate from input object.
    * @param target The generator target (type definition, operation, etc).
+   * @param helper A helper object for simplifying object traversal
    * @returns The desired name based on the parameters.
    */
-  nameProvider: NameProvider
+  nameProvider: (input: any, target: string, helper: NameProviderHelper) => string
   /**
    * @param input The named object (schema, operation, parameter, etc).
-   * @param name A simplified name provider.
    * @param target The generator target (type definition, operation, etc).
+   * @param helper A helper object for simplifying object traversal
    * @returns The operating system dependent path for the desired generator target.
    */
-  pathProvider: PathProvider
+  pathProvider: (input: any, target: string, helper: PathProviderHelper) => string
+
+  /**
+   * In case runtime library imports would clash with names in your generated code,
+   * you can use this to replace import names
+   * @param importedName The original imported name
+   * @returns The transformed import name
+   */
+  importReplacer?: (importedName: string) => string
   /**
    * When true, generators with this configuration should emit no outputs from the generate method
    */

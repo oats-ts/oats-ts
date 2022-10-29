@@ -13,10 +13,10 @@ import {
   PropertyAssignment,
 } from 'typescript'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
-import { RuntimePackages } from '@oats-ts/model-common'
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { packages } from '@oats-ts/model-common'
 
 export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -28,7 +28,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Validators.name, version }]
+    return [{ name: packages.validators.name, version }]
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
@@ -106,7 +106,14 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
       const expression: Expression = this.context.referenceOf(mediaTypeObj.schema, 'oats/type-validator')
       const validatorExpr = required
         ? expression
-        : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [expression])
+        : factory.createCallExpression(
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(packages.validators.exports.validators),
+              packages.validators.content.validators.optional,
+            ),
+            [],
+            [expression],
+          )
       return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validatorExpr)
     })
   }

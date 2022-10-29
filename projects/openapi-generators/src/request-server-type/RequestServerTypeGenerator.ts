@@ -1,9 +1,10 @@
 import { ParameterObject } from '@oats-ts/openapi-model'
-import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { TypeNode, factory, PropertySignature, ImportDeclaration } from 'typescript'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { BaseRequestTypesGenerator, RequestPropertyName } from '../utils/BaseRequestTypesGenerator'
 import { getNamedImports } from '@oats-ts/typescript-common'
+import { packages } from '@oats-ts/model-common'
 
 export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -15,7 +16,7 @@ export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Try.name, version }]
+    return [{ name: packages.try.name, version }]
   }
 
   protected includeCookie(): boolean {
@@ -34,21 +35,21 @@ export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {
         const wrappedType = body?.required
           ? type
           : factory.createUnionTypeNode([type, factory.createTypeReferenceNode('undefined')])
-        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [wrappedType])
+        const tryType = factory.createTypeReferenceNode(packages.try.exports.Try, [wrappedType])
         return factory.createPropertySignature([], name, undefined, tryType)
       }
       case 'cookies': {
-        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [type])
+        const tryType = factory.createTypeReferenceNode(packages.try.exports.Try, [type])
         return factory.createPropertySignature([], name, undefined, tryType)
       }
       default: {
-        const tryType = factory.createTypeReferenceNode(RuntimePackages.Try.Try, [type])
+        const tryType = factory.createTypeReferenceNode(packages.try.exports.Try, [type])
         return factory.createPropertySignature([], name, undefined, tryType)
       }
     }
   }
 
   protected getImports(path: string, data: EnhancedOperation): ImportDeclaration[] {
-    return [...super.getImports(path, data), getNamedImports(RuntimePackages.Try.name, [RuntimePackages.Try.Try])]
+    return [...super.getImports(path, data), getNamedImports(packages.try.name, [packages.try.exports.Try])]
   }
 }

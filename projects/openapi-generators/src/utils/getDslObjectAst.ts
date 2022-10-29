@@ -1,16 +1,10 @@
 import { BaseParameterObject, ParameterObject } from '@oats-ts/openapi-model'
-import {
-  getParameterKind,
-  getParameterName,
-  getParameterStyle,
-  OpenAPIGeneratorContext,
-  RuntimePackages,
-} from '@oats-ts/openapi-common'
+import { getParameterKind, getParameterName, getParameterStyle, OpenAPIGeneratorContext } from '@oats-ts/openapi-common'
 import { entries, flatMap, has, isNil, negate } from 'lodash'
 import { Expression, factory, ObjectLiteralExpression, PropertyAccessExpression, PropertyAssignment } from 'typescript'
 import { isIdentifier, getLiteralAst } from '@oats-ts/typescript-common'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType } from '@oats-ts/model-common'
+import { getInferredType, packages } from '@oats-ts/model-common'
 
 export function getDslObjectAst(
   parameters: Referenceable<BaseParameterObject>[],
@@ -40,7 +34,7 @@ function getParameterDsl(
       factory.createPropertyAccessExpression(
         factory.createPropertyAccessExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RuntimePackages.ParameterSerialization.dsl),
+            factory.createIdentifier(packages.openApiParameterSerialization.exports.dsl),
             factory.createIdentifier(location),
           ),
           factory.createIdentifier(getParameterStyle(parameter)),
@@ -105,7 +99,7 @@ function getTypeDsl(
 function valueAccess(field: string): PropertyAccessExpression {
   return factory.createPropertyAccessExpression(
     factory.createPropertyAccessExpression(
-      factory.createIdentifier(RuntimePackages.ParameterSerialization.dsl),
+      factory.createIdentifier(packages.openApiParameterSerialization.exports.dsl),
       factory.createIdentifier('value'),
     ),
     field,

@@ -1,4 +1,4 @@
-import { OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   TypeNode,
@@ -16,6 +16,7 @@ import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
+import { packages } from '@oats-ts/model-common'
 
 export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -26,9 +27,9 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
   }
   public runtimeDependencies(): RuntimeDependency[] {
     return [
-      { name: RuntimePackages.Http.name, version },
-      { name: RuntimePackages.HttpServerExpress.name, version },
-      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+      { name: packages.openApiHttp.name, version },
+      { name: packages.openApiExpressServerAdapter.name, version },
+      { name: packages.express.name, version: '^4.18.1' },
     ]
   }
 
@@ -49,15 +50,17 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
 
   protected getImportDeclarations(path: string): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.Express.name, [
-        RuntimePackages.Express.IRouter,
-        RuntimePackages.Express.Router,
-        RuntimePackages.Express.NextFunction,
-        RuntimePackages.Express.Request,
-        RuntimePackages.Express.Response,
+      getNamedImports(packages.express.name, [
+        packages.express.exports.IRouter,
+        packages.express.exports.Router,
+        packages.express.exports.NextFunction,
+        packages.express.exports.Request,
+        packages.express.exports.Response,
       ]),
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ServerAdapter]),
-      getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
+      getNamedImports(packages.openApiHttp.name, [packages.openApiHttp.exports.ServerAdapter]),
+      getNamedImports(packages.openApiExpressServerAdapter.name, [
+        packages.openApiExpressServerAdapter.exports.ExpressToolkit,
+      ]),
       ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context),
     ]
   }
@@ -70,7 +73,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier('_'),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Request), undefined),
+        factory.createTypeReferenceNode(factory.createIdentifier(packages.express.exports.Request), undefined),
         undefined,
       ),
       factory.createParameterDeclaration(
@@ -79,7 +82,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.response),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Response), undefined),
+        factory.createTypeReferenceNode(factory.createIdentifier(packages.express.exports.Response), undefined),
         undefined,
       ),
       factory.createParameterDeclaration(
@@ -88,7 +91,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.next),
         undefined,
-        factory.createTypeReferenceNode(RuntimePackages.Express.NextFunction, undefined),
+        factory.createTypeReferenceNode(packages.express.exports.NextFunction, undefined),
         undefined,
       ),
     ]
@@ -103,7 +106,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         factory.createIdentifier(RouterNames.router),
         undefined,
         factory.createUnionTypeNode([
-          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+          factory.createTypeReferenceNode(packages.express.exports.IRouter, undefined),
           factory.createTypeReferenceNode('undefined', undefined),
         ]),
         undefined,
@@ -123,9 +126,9 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.adapter),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
+        factory.createTypeReferenceNode(factory.createIdentifier(packages.openApiHttp.exports.ServerAdapter), [
           factory.createTypeReferenceNode(
-            factory.createIdentifier(RuntimePackages.HttpServerExpress.ExpressToolkit),
+            factory.createIdentifier(packages.openApiExpressServerAdapter.exports.ExpressToolkit),
             undefined,
           ),
         ]),
@@ -142,7 +145,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
       factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
       undefined,
       this.getFactoryParameters(),
-      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
+      factory.createTypeReferenceNode(factory.createIdentifier(packages.express.exports.IRouter), undefined),
       this.getFactoryFunctionBodyBlockAst(),
     )
   }
@@ -158,7 +161,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
           factory.createBinaryExpression(
             factory.createIdentifier(RouterNames.router),
             factory.createToken(SyntaxKind.QuestionQuestionToken),
-            factory.createCallExpression(factory.createIdentifier(RuntimePackages.Express.Router), undefined, []),
+            factory.createCallExpression(factory.createIdentifier(packages.express.exports.Router), undefined, []),
           ),
         ),
         factory.createIdentifier(RouterNames.use),

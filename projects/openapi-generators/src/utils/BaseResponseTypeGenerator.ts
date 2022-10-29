@@ -6,7 +6,6 @@ import {
   getEnhancedResponses,
   OpenAPIGeneratorContext,
   EnhancedResponse,
-  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import {
   Expression,
@@ -24,6 +23,7 @@ import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
+import { packages } from '@oats-ts/model-common'
 
 export type ResponsePropertyName = 'mimeType' | 'statusCode' | 'body' | 'headers' | 'cookies'
 
@@ -37,7 +37,7 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   ): PropertySignature | undefined
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Http.name, version }]
+    return [{ name: packages.openApiHttp.name, version }]
   }
 
   protected shouldGenerate({ operation }: EnhancedOperation): boolean {

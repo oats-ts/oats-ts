@@ -1,6 +1,6 @@
 export type Severity = 'error' | 'warning' | 'info'
 
-export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'object' | 'string'
+export type ValueType = 'array' | 'boolean' | 'nil' | 'number' | 'object' | 'string' | 'integer'
 
 export type ValidatorType =
   | ValueType

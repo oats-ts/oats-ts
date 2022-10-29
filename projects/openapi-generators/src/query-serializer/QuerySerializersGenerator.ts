@@ -1,4 +1,5 @@
-import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { packages } from '@oats-ts/model-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { BaseDslGenerator } from '../utils/BaseDslGenerator'
 
@@ -12,8 +13,11 @@ export class QuerySerializersGenerator extends BaseDslGenerator {
   protected getTypeGeneratorTarget(): OpenAPIGeneratorTarget {
     return 'oats/query-type'
   }
+  protected getRuntimeExport(): string {
+    return packages.openApiParameterSerialization.exports.serializers
+  }
   protected getFactoryFunctionName(): string {
-    return RuntimePackages.ParameterSerialization.createQuerySerializer
+    return packages.openApiParameterSerialization.content.serializers.createQuerySerializer
   }
   protected getParameters(data: EnhancedOperation): BaseParameterObject[] {
     return data?.query ?? []

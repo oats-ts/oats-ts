@@ -1,10 +1,10 @@
+import { packages } from '@oats-ts/model-common'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import {
   EnhancedOperation,
   getResponseHeaders,
   hasResponseHeaders,
   OpenAPIGeneratorTarget,
-  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
@@ -33,7 +33,7 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.ParameterSerialization.name, version }]
+    return [{ name: packages.openApiParameterSerialization.name, version }]
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {
@@ -50,9 +50,9 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   private getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
     const headersByStatus = getResponseHeaders(data.operation, this.context)
     return [
-      getNamedImports(RuntimePackages.ParameterSerialization.name, [
-        RuntimePackages.ParameterSerialization.dsl,
-        RuntimePackages.ParameterSerialization.createHeaderDeserializer,
+      getNamedImports(packages.openApiParameterSerialization.name, [
+        packages.openApiParameterSerialization.exports.dsl,
+        packages.openApiParameterSerialization.exports.deserializers,
       ]),
       ...flatMap(entries(headersByStatus), ([statusCode]) =>
         this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
@@ -68,7 +68,10 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
         return factory.createPropertyAssignment(
           status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
           factory.createCallExpression(
-            factory.createIdentifier(RuntimePackages.ParameterSerialization.createHeaderDeserializer),
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(packages.openApiParameterSerialization.exports.deserializers),
+              packages.openApiParameterSerialization.content.deserializers.createHeaderDeserializer,
+            ),
             [this.context.referenceOf([data.operation, status], 'oats/response-headers-type')],
             [getDslObjectAst(values(headers), this.context)],
           ),
