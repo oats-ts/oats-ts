@@ -23,16 +23,11 @@ import {
 import { createSourceFile, documentNode, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
 import { OperationNames } from './OperationNames'
-import { OpenApiHttpPackage, packages, RuntimePackage } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
-  protected httpPkg!: OpenApiHttpPackage
-  protected fetchPkg!: RuntimePackage<any, any>
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/operation'
   }
@@ -59,12 +54,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       ...(config.parseSetCookieHeaders ? cookieDeserializerDep : []),
       ...(config.validate ? validatorDep : []),
     ]
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.httpPkg = this.getHttpPackage()
-    this.fetchPkg = this.getFetchPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -638,13 +627,5 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         NodeFlags.Const,
       ),
     )
-  }
-
-  protected getHttpPackage(): OpenApiHttpPackage {
-    return packages.openApiHttp(this.context)
-  }
-
-  protected getFetchPackage(): RuntimePackage<any, any> {
-    return packages.openApiFetchClientAdapter(this.context)
   }
 }

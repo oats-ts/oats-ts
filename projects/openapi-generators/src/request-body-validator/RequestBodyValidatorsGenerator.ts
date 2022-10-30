@@ -21,13 +21,9 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { packages, ValidatorsPackage } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
-  protected validatorsPkg!: ValidatorsPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/request-body-validator'
   }
@@ -37,12 +33,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: packages.validators.name, version }]
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.validatorsPkg = this.getValidatorPackage()
+    return [{ name: this.validatorsPkg.name, version }]
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {
@@ -122,9 +113,5 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
     return hasRequestBody(this.enhanced(input), this.context)
       ? getModelImports(fromPath, this.name(), [input], this.context)
       : []
-  }
-
-  protected getValidatorPackage(): ValidatorsPackage {
-    return packages.validators(this.context)
   }
 }

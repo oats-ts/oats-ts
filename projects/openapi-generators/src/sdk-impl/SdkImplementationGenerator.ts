@@ -17,13 +17,9 @@ import {
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { Try, success } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { OpenApiHttpPackage, packages } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
-  protected httpPkg!: OpenApiHttpPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/sdk-impl'
   }
@@ -32,13 +28,8 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     return ['oats/operation', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
   }
 
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.httpPkg = this.getHttpPackage()
-  }
-
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: packages.openApiHttp.name, version }]
+    return [{ name: this.httpPkg.name, version }]
   }
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
@@ -159,9 +150,5 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     return isNil(requestType)
       ? []
       : [factory.createParameterDeclaration([], [], undefined, 'request', undefined, requestType)]
-  }
-
-  protected getHttpPackage(): OpenApiHttpPackage {
-    return packages.openApiHttp(this.context)
   }
 }

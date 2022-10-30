@@ -1,8 +1,7 @@
-import { OpenApiParameterSerializationPackage, packages } from '@oats-ts/model-common'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { OpenApiParameterSerializationPackage } from '@oats-ts/model-common'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject, OperationObject } from '@oats-ts/openapi-model'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { isEmpty } from 'lodash'
@@ -19,13 +18,8 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
   protected abstract getRuntimeImport(): string | [string, string]
   protected abstract getParameters(data: EnhancedOperation): BaseParameterObject[]
 
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.paramsPkg = this.getParametersPackage()
-  }
-
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: packages.openApiParameterSerialization.name, version }]
+    return [{ name: this.paramsPkg.name, version }]
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {
@@ -73,10 +67,6 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
 
   protected getExtraFactoryFunctionParameters(data: EnhancedOperation): Expression[] {
     return []
-  }
-
-  protected getParametersPackage(): OpenApiParameterSerializationPackage {
-    return packages.openApiParameterSerialization(this.context)
   }
 
   public referenceOf(input: OperationObject): Expression | undefined {

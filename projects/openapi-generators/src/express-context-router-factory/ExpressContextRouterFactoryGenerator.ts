@@ -14,29 +14,16 @@ import {
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
-import { ExpressPackage, OpenApiExpressServerAdapterPackage, OpenApiHttpPackage, packages } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
-  protected expressPkg!: ExpressPackage
-  protected adapterPkg!: OpenApiExpressServerAdapterPackage
-  protected httpPkg!: OpenApiHttpPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-context-router-factory'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/express-router-factory', 'oats/express-router-factories-type', 'oats/api-type']
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.expressPkg = this.getExpressPackage()
-    this.adapterPkg = this.getAdapterPackage()
-    this.httpPkg = this.getHttpPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -236,17 +223,5 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         factory.createIdentifier(RouterNames.api),
       ),
     )
-  }
-
-  protected getExpressPackage(): ExpressPackage {
-    return packages.express(this.context)
-  }
-
-  protected getHttpPackage(): OpenApiHttpPackage {
-    return packages.openApiHttp(this.context)
-  }
-
-  protected getAdapterPackage(): OpenApiExpressServerAdapterPackage {
-    return packages.openApiExpressServerAdapter(this.context)
   }
 }

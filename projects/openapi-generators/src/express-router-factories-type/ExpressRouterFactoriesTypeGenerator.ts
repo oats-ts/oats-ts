@@ -4,25 +4,16 @@ import { TypeNode, Expression, factory, ImportDeclaration, SourceFile, SyntaxKin
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency } from '@oats-ts/oats-ts'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
-import { ExpressPackage, packages } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
-  protected expressPkg!: ExpressPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-router-factories-type'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/express-router-factory']
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.expressPkg = this.getExpressPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -84,9 +75,5 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
         }),
       ),
     )
-  }
-
-  protected getExpressPackage(): ExpressPackage {
-    return packages.express(this.context)
   }
 }

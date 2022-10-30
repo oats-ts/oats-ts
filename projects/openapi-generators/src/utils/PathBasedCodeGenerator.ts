@@ -1,4 +1,3 @@
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import {
   OpenAPIGeneratorContext,
   createOpenAPIGeneratorContext,
@@ -6,16 +5,9 @@ import {
   EnhancedPathItem,
   getEnhancedPathItems,
 } from '@oats-ts/openapi-common'
-import { BaseCodeGenerator } from '@oats-ts/oats-ts'
-import { SourceFile } from 'typescript'
+import { OpenAPIGenerator } from './OpenAPIGenerator'
 
-export abstract class PathBasedCodeGenerator<Cfg> extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  Cfg,
-  EnhancedPathItem[],
-  OpenAPIGeneratorContext
-> {
+export abstract class PathBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, EnhancedPathItem[]> {
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 

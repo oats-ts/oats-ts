@@ -14,32 +14,19 @@ import {
 } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { isNil } from 'lodash'
 import { RouterNames } from '../utils/RouterNames'
 import { getPathTemplate } from '../utils/getPathTemplate'
-import { ExpressPackage, OpenApiExpressServerAdapterPackage, OpenApiHttpPackage, packages } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}> {
-  protected expressPkg!: ExpressPackage
-  protected adapterPkg!: OpenApiExpressServerAdapterPackage
-  protected httpPkg!: OpenApiHttpPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-cors-router-factory'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/cors-configuration']
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.expressPkg = this.getExpressPackage()
-    this.adapterPkg = this.getAdapterPackage()
-    this.httpPkg = this.getHttpPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -374,17 +361,5 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
         this.context,
       ),
     ]
-  }
-
-  protected getExpressPackage(): ExpressPackage {
-    return packages.express(this.context)
-  }
-
-  protected getHttpPackage(): OpenApiHttpPackage {
-    return packages.openApiHttp(this.context)
-  }
-
-  protected getAdapterPackage(): OpenApiExpressServerAdapterPackage {
-    return packages.openApiExpressServerAdapter(this.context)
   }
 }

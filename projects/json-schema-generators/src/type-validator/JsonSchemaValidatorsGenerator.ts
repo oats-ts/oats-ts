@@ -326,6 +326,6 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getValidatorPackage(): ValidatorsPackage {
-    return packages.validators(this.context)
+    return packages.openApiRuntime(this.context)
   }
 }

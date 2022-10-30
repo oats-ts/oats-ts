@@ -15,24 +15,15 @@ import {
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { packages, ValidatorsPackage } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 
 export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator<{}> {
-  protected validatorsPkg!: ValidatorsPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/response-body-validator'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/type', 'oats/type-validator']
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.validatorsPkg = this.getValidatorPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -124,9 +115,5 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
           )
       return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validatorExpr)
     })
-  }
-
-  protected getValidatorPackage(): ValidatorsPackage {
-    return packages.validators(this.context)
   }
 }

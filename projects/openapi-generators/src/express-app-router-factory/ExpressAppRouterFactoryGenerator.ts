@@ -14,10 +14,8 @@ import {
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
-import { GeneratorInit, RuntimeDependency } from '@oats-ts/oats-ts'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { RouterNames } from '../utils/RouterNames'
-import { ExpressPackage, packages } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 
 const RouterFactoryNames = {
   root: 'root',
@@ -30,8 +28,6 @@ const RouterFactoryNames = {
 }
 
 export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
-  protected expressPkg!: ExpressPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-app-router-factory'
   }
@@ -42,11 +38,6 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
 
   public runtimeDependencies(): RuntimeDependency[] {
     return [{ name: this.expressPkg.name, version: '^4.18.1' }]
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.expressPkg = this.createExpressPackage()
   }
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
@@ -276,9 +267,5 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         factory.createObjectLiteralExpression([], false),
       ),
     ]
-  }
-
-  protected createExpressPackage(): ExpressPackage {
-    return packages.express(this.context)
   }
 }

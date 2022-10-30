@@ -1,4 +1,4 @@
-import { BaseCodeGenerator, RuntimeDependency } from '@oats-ts/oats-ts'
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { HeaderObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { flatMap, isNil } from 'lodash'
 import {
@@ -12,16 +12,10 @@ import { ParameterTypesGeneratorConfig } from './parameterTypings'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
 import { getReferencedNamedSchemas } from '@oats-ts/model-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { OpenAPIGenerator } from './OpenAPIGenerator'
 
-export abstract class ParameterTypesGenerator<T> extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  ParameterTypesGeneratorConfig,
-  T,
-  OpenAPIGeneratorContext
-> {
+export abstract class ParameterTypesGenerator<T> extends OpenAPIGenerator<ParameterTypesGeneratorConfig, T> {
   public abstract name(): OpenAPIGeneratorTarget
   protected abstract getParameterObjects(data: T): (ParameterObject | HeaderObject)[]
   protected abstract getEnhancedOperation(data: T): EnhancedOperation

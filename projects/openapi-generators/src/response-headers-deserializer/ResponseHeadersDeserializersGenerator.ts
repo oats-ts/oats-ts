@@ -1,5 +1,4 @@
-import { OpenApiParameterSerializationPackage, packages } from '@oats-ts/model-common'
-import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import {
   EnhancedOperation,
   getResponseHeaders,
@@ -7,7 +6,6 @@ import {
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { entries, flatMap, values } from 'lodash'
@@ -25,19 +23,12 @@ import { getDslObjectAst } from '../utils/getDslObjectAst'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 
 export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGenerator<{}> {
-  protected paramsPkg!: OpenApiParameterSerializationPackage
-
   public name(): OpenAPIGeneratorTarget {
     return 'oats/response-headers-deserializer'
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/type', 'oats/response-headers-type']
-  }
-
-  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
-    super.initialize(init)
-    this.paramsPkg = this.getParametersPackage()
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -110,9 +101,5 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     return hasResponseHeaders(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
-  }
-
-  protected getParametersPackage(): OpenApiParameterSerializationPackage {
-    return packages.openApiParameterSerialization(this.context)
   }
 }
