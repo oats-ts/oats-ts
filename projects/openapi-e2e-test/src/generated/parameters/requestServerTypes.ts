@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { Try } from '@oats-ts/try'
+import { Try as _Try } from '@oats-ts/try'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 import {
   LabelPathParametersPathParameters,
@@ -21,42 +21,42 @@ import { SimpleHeaderParametersRequestHeaderParameters } from './requestHeaderTy
 import { SimpleResponseHeaderParameters } from './types'
 
 export type DeepObjectQueryParametersServerRequest = {
-  query: Try<DeepObjectQueryParametersQueryParameters>
+  query: _Try<DeepObjectQueryParametersQueryParameters>
 }
 
 export type FormCookieParametersServerRequest = {
-  cookies: Try<FormCookieParametersCookieParameters>
+  cookies: _Try<FormCookieParametersCookieParameters>
 }
 
 export type FormQueryParametersServerRequest = {
-  query: Try<FormQueryParametersQueryParameters>
+  query: _Try<FormQueryParametersQueryParameters>
 }
 
 export type LabelPathParametersServerRequest = {
-  path: Try<LabelPathParametersPathParameters>
+  path: _Try<LabelPathParametersPathParameters>
 }
 
 export type MatrixPathParametersServerRequest = {
-  path: Try<MatrixPathParametersPathParameters>
+  path: _Try<MatrixPathParametersPathParameters>
 }
 
 export type PipeDelimitedQueryParametersServerRequest = {
-  query: Try<PipeDelimitedQueryParametersQueryParameters>
+  query: _Try<PipeDelimitedQueryParametersQueryParameters>
 }
 
 export type SimpleHeaderParametersServerRequest = {
-  headers: Try<SimpleHeaderParametersRequestHeaderParameters>
+  headers: _Try<SimpleHeaderParametersRequestHeaderParameters>
 }
 
 export type SimplePathParametersServerRequest = {
-  path: Try<SimplePathParametersPathParameters>
+  path: _Try<SimplePathParametersPathParameters>
 }
 
 export type SimpleResponseHeaderParametersServerRequest = {
   mimeType: 'application/json'
-  body: Try<SimpleResponseHeaderParameters>
+  body: _Try<SimpleResponseHeaderParameters>
 }
 
 export type SpaceDelimitedQueryParametersServerRequest = {
-  query: Try<SpaceDelimitedQueryParametersQueryParameters>
+  query: _Try<SpaceDelimitedQueryParametersQueryParameters>
 }

@@ -4,17 +4,17 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { IRouter } from 'express'
+import { IRouter as _IRouter } from 'express'
 
 export type ParametersRouterFactories = {
-  createSimplePathParametersRouter: (router?: IRouter | undefined) => IRouter
-  createLabelPathParametersRouter: (router?: IRouter | undefined) => IRouter
-  createMatrixPathParametersRouter: (router?: IRouter | undefined) => IRouter
-  createFormQueryParametersRouter: (router?: IRouter | undefined) => IRouter
-  createSpaceDelimitedQueryParametersRouter: (router?: IRouter | undefined) => IRouter
-  createPipeDelimitedQueryParametersRouter: (router?: IRouter | undefined) => IRouter
-  createDeepObjectQueryParametersRouter: (router?: IRouter | undefined) => IRouter
-  createSimpleHeaderParametersRouter: (router?: IRouter | undefined) => IRouter
-  createFormCookieParametersRouter: (router?: IRouter | undefined) => IRouter
-  createSimpleResponseHeaderParametersRouter: (router?: IRouter | undefined) => IRouter
+  createSimplePathParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createLabelPathParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createMatrixPathParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createFormQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createSpaceDelimitedQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createPipeDelimitedQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createDeepObjectQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createSimpleHeaderParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createFormCookieParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createSimpleResponseHeaderParametersRouter: (router?: _IRouter | undefined) => _IRouter
 }

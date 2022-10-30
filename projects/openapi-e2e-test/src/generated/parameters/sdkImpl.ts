@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter as _ClientAdapter } from '@oats-ts/openapi-http'
 import {
   deepObjectQueryParameters,
   formCookieParameters,
@@ -44,8 +44,8 @@ import {
 import { ParametersSdk } from './sdkType'
 
 export class ParametersSdkImpl implements ParametersSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   public async simplePathParameters(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
