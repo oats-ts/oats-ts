@@ -1,5 +1,5 @@
 import { flatMap, isNil } from 'lodash'
-import { OpenAPIGeneratorTarget, RuntimePackages, EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
@@ -29,7 +29,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Http.name, version }]
+    return [{ name: this.httpPkg.name, version }]
   }
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
@@ -54,7 +54,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
   protected getImportDeclarations(path: string, operations: EnhancedOperation[]): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ClientAdapter]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ClientAdapter]),
       ...flatMap(operations, (data) => [
         ...this.context.dependenciesOf(path, data.operation, 'oats/request-type'),
         ...this.context.dependenciesOf(path, data.operation, 'oats/response-type'),
@@ -70,7 +70,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
       this.getAdapterName(),
       undefined,
-      factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
+      factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       undefined,
     )
 
@@ -84,7 +84,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
           undefined,
           this.getAdapterName(),
           undefined,
-          factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
+          factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
         ),
       ],
       factory.createBlock([

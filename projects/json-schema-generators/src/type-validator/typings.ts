@@ -2,6 +2,11 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { ImportDeclaration } from 'typescript'
 import { TraversalHelper } from '../types'
 
+export type ValidatorImportProviderData = {
+  needsValidatorImport: boolean
+  referenceImports: Set<string>
+}
+
 export type ValidatorImportProvider = {
   getImports: (fromPath: string, schema: Referenceable<SchemaObject>) => ImportDeclaration[]
 }

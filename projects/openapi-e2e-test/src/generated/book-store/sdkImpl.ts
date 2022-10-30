@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter } from '@oats-ts/openapi-runtime'
 import { addBook, getBook, getBooks } from './operations'
 import { AddBookRequest, GetBookRequest, GetBooksRequest } from './requestTypes'
 import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTypes'

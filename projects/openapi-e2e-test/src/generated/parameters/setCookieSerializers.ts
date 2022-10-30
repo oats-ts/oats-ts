@@ -4,15 +4,16 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { createSetCookieSerializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { dsl as _dsl, serializers as _serializers } from '@oats-ts/openapi-runtime'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 
-export const formCookieParametersSetCookieSerializer = createSetCookieSerializer<FormCookieParametersCookieParameters>({
-  optStr: dsl.cookie.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  optNum: dsl.cookie.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  optBool: dsl.cookie.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  optEnm: dsl.cookie.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-})
+export const formCookieParametersSetCookieSerializer =
+  _serializers.createSetCookieSerializer<FormCookieParametersCookieParameters>({
+    optStr: _dsl.cookie.form.primitive(_dsl.value.string(), { explode: false, required: false }),
+    optNum: _dsl.cookie.form.primitive(_dsl.value.number(), { explode: false, required: false }),
+    optBool: _dsl.cookie.form.primitive(_dsl.value.boolean(), { explode: false, required: false }),
+    optEnm: _dsl.cookie.form.primitive(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+  })

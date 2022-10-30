@@ -4,10 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/primitive-schemas.json
  */
 
-import { boolean, number, string } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
-export const booleanTypeTypeValidator = boolean()
+export const booleanTypeTypeValidator = validators.boolean()
 
-export const numberTypeTypeValidator = number()
+export const numberTypeTypeValidator = validators.number()
 
-export const stringTypeTypeValidator = string()
+export const stringTypeTypeValidator = validators.string()

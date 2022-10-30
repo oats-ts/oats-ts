@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-http'
+import { ClientAdapter as _ClientAdapter, RawHttpRequest as _RawHttpRequest } from '@oats-ts/openapi-runtime'
 import { formCookieParametersCookieSerializer } from './cookieSerializers'
 import {
   labelPathParametersPathSerializer,
@@ -62,12 +62,12 @@ import { formCookieParametersSetCookieDeserializer } from './setCookieDeserializ
  */
 export async function deepObjectQueryParameters(
   request: DeepObjectQueryParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<DeepObjectQueryParametersResponse> {
   const query = await adapter.getQuery(request.query, deepObjectQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/deepObject-query-parameters', query)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -93,12 +93,12 @@ export async function deepObjectQueryParameters(
  */
 export async function formCookieParameters(
   request: FormCookieParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<FormCookieParametersResponse> {
   const requestUrl = await adapter.getUrl('/form-cookie-parameters', undefined)
   const cookies = await adapter.getCookies(request.cookies, formCookieParametersCookieSerializer)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -126,12 +126,12 @@ export async function formCookieParameters(
  */
 export async function formQueryParameters(
   request: FormQueryParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<FormQueryParametersResponse> {
   const query = await adapter.getQuery(request.query, formQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/form-query-parameters', query)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -157,12 +157,12 @@ export async function formQueryParameters(
  */
 export async function labelPathParameters(
   request: LabelPathParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<LabelPathParametersResponse> {
   const path = await adapter.getPath(request.path, labelPathParametersPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -188,12 +188,12 @@ export async function labelPathParameters(
  */
 export async function matrixPathParameters(
   request: MatrixPathParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<MatrixPathParametersResponse> {
   const path = await adapter.getPath(request.path, matrixPathParametersPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -219,12 +219,12 @@ export async function matrixPathParameters(
  */
 export async function pipeDelimitedQueryParameters(
   request: PipeDelimitedQueryParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<PipeDelimitedQueryParametersResponse> {
   const query = await adapter.getQuery(request.query, pipeDelimitedQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/pipeDelimited-query-parameters', query)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -250,7 +250,7 @@ export async function pipeDelimitedQueryParameters(
  */
 export async function simpleHeaderParameters(
   request: SimpleHeaderParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<SimpleHeaderParametersResponse> {
   const requestUrl = await adapter.getUrl('/simple-header-parameters', undefined)
   const requestHeaders = await adapter.getRequestHeaders(
@@ -259,7 +259,7 @@ export async function simpleHeaderParameters(
     undefined,
     simpleHeaderParametersRequestHeadersSerializer,
   )
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -285,12 +285,12 @@ export async function simpleHeaderParameters(
  */
 export async function simplePathParameters(
   request: SimplePathParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<SimplePathParametersResponse> {
   const path = await adapter.getPath(request.path, simplePathParametersPathSerializer)
   const requestUrl = await adapter.getUrl(path, undefined)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,
@@ -316,12 +316,12 @@ export async function simplePathParameters(
  */
 export async function simpleResponseHeaderParameters(
   request: SimpleResponseHeaderParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<SimpleResponseHeaderParametersResponse> {
   const requestUrl = await adapter.getUrl('/simple-response-header-parameters', undefined)
   const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'post',
     body: requestBody,
@@ -354,12 +354,12 @@ export async function simpleResponseHeaderParameters(
  */
 export async function spaceDelimitedQueryParameters(
   request: SpaceDelimitedQueryParametersRequest,
-  adapter: ClientAdapter,
+  adapter: _ClientAdapter,
 ): Promise<SpaceDelimitedQueryParametersResponse> {
   const query = await adapter.getQuery(request.query, spaceDelimitedQueryParametersQuerySerializer)
   const requestUrl = await adapter.getUrl('/spaceDelimited-query-parameters', query)
   const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
+  const rawRequest: _RawHttpRequest = {
     url: requestUrl,
     method: 'get',
     headers: requestHeaders,

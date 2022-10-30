@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { lazy } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 import { bookTypeValidator } from './typeValidators'
 
-export const addBookRequestBodyValidator = { 'application/json': lazy(() => bookTypeValidator) } as const
+export const addBookRequestBodyValidator = { 'application/json': validators.lazy(() => bookTypeValidator) } as const

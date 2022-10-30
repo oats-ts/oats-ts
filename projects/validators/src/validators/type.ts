@@ -26,6 +26,7 @@ const type =
 
 export const string = type<string>('string', (input: any): input is string => typeof input === 'string')
 export const number = type<number>('number', (input: any): input is number => typeof input === 'number')
+export const integer = type<number>('integer', (input: any): input is number => Number.isInteger(input))
 export const boolean = type<boolean>('boolean', (input: any): input is boolean => typeof input === 'boolean')
 export const array = type<any[]>('array', Array.isArray)
 export const nil = type<null | undefined>(

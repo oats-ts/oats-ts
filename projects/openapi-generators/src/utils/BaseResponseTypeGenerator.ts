@@ -6,7 +6,6 @@ import {
   getEnhancedResponses,
   OpenAPIGeneratorContext,
   EnhancedResponse,
-  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import {
   Expression,
@@ -37,7 +36,7 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   ): PropertySignature | undefined
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Http.name, version }]
+    return [{ name: this.httpPkg.name, version }]
   }
 
   protected shouldGenerate({ operation }: EnhancedOperation): boolean {

@@ -4,9 +4,9 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { lazy } from '@oats-ts/validators'
+import { validators as _validators } from '@oats-ts/openapi-runtime'
 import { simpleResponseHeaderParametersTypeValidator } from './typeValidators'
 
 export const simpleResponseHeaderParametersRequestBodyValidator = {
-  'application/json': lazy(() => simpleResponseHeaderParametersTypeValidator),
+  'application/json': _validators.lazy(() => simpleResponseHeaderParametersTypeValidator),
 } as const

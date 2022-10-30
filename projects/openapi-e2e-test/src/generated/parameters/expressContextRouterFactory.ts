@@ -4,17 +4,23 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
-import { IRouter, NextFunction, Request, Response, Router } from 'express'
+import { ExpressToolkit as _ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import { ServerAdapter as _ServerAdapter } from '@oats-ts/openapi-runtime'
+import {
+  IRouter as _IRouter,
+  NextFunction as _NextFunction,
+  Request as _Request,
+  Response as _Response,
+  Router as _Router,
+} from 'express'
 import { ParametersApi } from './apiType'
 
 export function createParametersContextRouter(
-  router: IRouter | undefined,
+  router: _IRouter | undefined,
   api: ParametersApi,
-  adapter: ServerAdapter<ExpressToolkit>,
-): IRouter {
-  return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
+  adapter: _ServerAdapter<_ExpressToolkit>,
+): _IRouter {
+  return (router ?? _Router()).use((_: _Request, response: _Response, next: _NextFunction) => {
     response.locals['__oats_api_7xzhoe'] = api
     response.locals['__oats_adapter_7xzhoe'] = adapter
     next()

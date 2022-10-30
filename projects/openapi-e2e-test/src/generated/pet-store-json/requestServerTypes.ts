@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-json.json
  */
 
-import { Try } from '@oats-ts/try'
+import { Try } from '@oats-ts/openapi-runtime'
 import { ShowPetByIdPathParameters } from './pathTypes'
 import { ListPetsQueryParameters } from './queryTypes'
 import { Pet } from './types'

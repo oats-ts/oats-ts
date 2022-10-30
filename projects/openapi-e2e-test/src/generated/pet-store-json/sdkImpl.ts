@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-json.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter } from '@oats-ts/openapi-runtime'
 import { createPets, listPets, showPetById } from './operations'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'

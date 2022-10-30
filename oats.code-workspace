@@ -21,12 +21,12 @@
       "path": "projects/oats-ts"
     },
     {
-      "name": "openapi-common",
-      "path": "projects/openapi-common"
-    },
-    {
       "name": "openapi",
       "path": "projects/openapi"
+    },
+    {
+      "name": "openapi-common",
+      "path": "projects/openapi-common"
     },
     {
       "name": "openapi-e2e-test",
@@ -63,6 +63,10 @@
     {
       "name": "openapi-reader",
       "path": "projects/openapi-reader"
+    },
+    {
+      "name": "openapi-runtime",
+      "path": "projects/openapi-runtime"
     },
     {
       "name": "openapi-validator",

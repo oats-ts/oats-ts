@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { IRouter, Router } from 'express'
+import { IRouter as _IRouter, Router as _Router } from 'express'
 import {
   createDeepObjectQueryParametersRouter,
   createFormCookieParametersRouter,
@@ -20,10 +20,10 @@ import {
 import { ParametersRouterFactories } from './expressRouterFactoriesType'
 
 export function createParametersAppRouter(
-  router?: IRouter | undefined,
+  router?: _IRouter | undefined,
   overrides: Partial<ParametersRouterFactories> = {},
-): IRouter {
-  const root = router ?? Router()
+): _IRouter {
+  const root = router ?? _Router()
   const factories = [
     overrides.createSimplePathParametersRouter ?? createSimplePathParametersRouter,
     overrides.createLabelPathParametersRouter ?? createLabelPathParametersRouter,

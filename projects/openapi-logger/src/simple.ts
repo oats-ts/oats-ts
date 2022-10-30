@@ -4,9 +4,8 @@ import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { isSuccess } from '@oats-ts/try'
 import { GeneratedFile } from '@oats-ts/typescript-writer'
 import { isOk } from '@oats-ts/validators'
-import { blue } from 'chalk'
 import { SourceFile } from 'typescript'
-import { Icons, issueToString, statusText } from './utils'
+import { issueToString, printRuntimeDependencies, statusText } from './utils'
 
 export const simple =
   (): Logger =>
@@ -31,11 +30,7 @@ export const simple =
         console.log(statusText('generator', 'completed', e.name))
         e.issues.forEach((issue) => console.log(issueToString(issue)))
         if (e.dependencies.length > 0) {
-          const deps = Array.from(e.dependencies)
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map(({ name, version }) => `${name}@${version}`)
-            .join(' ')
-          console.log(`${Icons.i} npm i ${blue(deps)}`)
+          printRuntimeDependencies(e.dependencies, 0)
         }
       } else {
         console.log(statusText('generator', 'failed', e.name))

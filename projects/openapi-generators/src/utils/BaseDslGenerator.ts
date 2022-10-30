@@ -1,5 +1,6 @@
+import { OpenApiParameterSerializationPackage } from '@oats-ts/model-common'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject, OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
@@ -9,16 +10,22 @@ import { getDslObjectAst } from './getDslObjectAst'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
 
 export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerator<T> {
+  protected paramsPkg!: OpenApiParameterSerializationPackage
+
   protected abstract getTypeGeneratorTarget(): OpenAPIGeneratorTarget
   protected abstract getFactoryFunctionName(): string
+  protected abstract getRuntimeFactoryName(): string
+  protected abstract getRuntimeImport(): string | [string, string]
   protected abstract getParameters(data: EnhancedOperation): BaseParameterObject[]
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.ParameterSerialization.name, version }]
+    return [{ name: this.paramsPkg.name, version }]
   }
+
   protected shouldGenerate(item: EnhancedOperation): boolean {
     return this.getParameters(item).length > 0
   }
+
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
     const path = this.context.pathOf(data.operation, this.name())
     return success(
@@ -32,10 +39,13 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
                 undefined,
                 undefined,
                 factory.createCallExpression(
-                  factory.createIdentifier(this.getFactoryFunctionName()),
+                  factory.createPropertyAccessExpression(
+                    factory.createIdentifier(this.getRuntimeFactoryName()),
+                    this.getFactoryFunctionName(),
+                  ),
                   [this.context.referenceOf(data.operation, this.getTypeGeneratorTarget())],
                   [
-                    getDslObjectAst(this.getParameters(data), this.context),
+                    getDslObjectAst(this.getParameters(data), this.context, this.paramsPkg),
                     ...this.getExtraFactoryFunctionParameters(data),
                   ],
                 ),
@@ -50,10 +60,7 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
 
   protected getImports(path: string, data: EnhancedOperation): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.ParameterSerialization.name, [
-        RuntimePackages.ParameterSerialization.dsl,
-        this.getFactoryFunctionName(),
-      ]),
+      getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.dsl, this.getRuntimeImport()]),
       ...this.context.dependenciesOf(path, data.operation, this.getTypeGeneratorTarget()),
     ]
   }

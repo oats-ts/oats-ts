@@ -21,38 +21,38 @@
     {
       "packageName": "@oats-ts/json-schema-generators",
       "projectFolder": "projects/json-schema-generators",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/json-schema-model",
       "projectFolder": "projects/json-schema-model",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/model-common",
       "projectFolder": "projects/model-common",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/oats-ts",
       "projectFolder": "projects/oats-ts",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@oats-ts/openapi-common",
-      "projectFolder": "projects/openapi-common",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi",
       "projectFolder": "projects/openapi",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
+    },
+    {
+      "packageName": "@oats-ts/openapi-common",
+      "projectFolder": "projects/openapi-common",
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-e2e-test",
@@ -62,80 +62,86 @@
     {
       "packageName": "@oats-ts/openapi-express-server-adapter",
       "projectFolder": "projects/openapi-express-server-adapter",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-fetch-client-adapter",
       "projectFolder": "projects/openapi-fetch-client-adapter",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-generators",
       "projectFolder": "projects/openapi-generators",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-http",
       "projectFolder": "projects/openapi-http",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-logger",
       "projectFolder": "projects/openapi-logger",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-model",
       "projectFolder": "projects/openapi-model",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-parameter-serialization",
       "projectFolder": "projects/openapi-parameter-serialization",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-reader",
       "projectFolder": "projects/openapi-reader",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
+    },
+    {
+      "packageName": "@oats-ts/openapi-runtime",
+      "projectFolder": "projects/openapi-runtime",
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/openapi-validator",
       "projectFolder": "projects/openapi-validator",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/try",
       "projectFolder": "projects/try",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/typescript-common",
       "projectFolder": "projects/typescript-common",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/typescript-writer",
       "projectFolder": "projects/typescript-writer",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     },
     {
       "packageName": "@oats-ts/validators",
       "projectFolder": "projects/validators",
-      "versionPolicyName": "oats",
-      "shouldPublish": true
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
     }
   ]
 }

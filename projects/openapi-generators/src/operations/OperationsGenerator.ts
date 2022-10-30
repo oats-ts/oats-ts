@@ -6,7 +6,6 @@ import {
   hasResponseHeaders,
   hasResponses,
   OpenAPIGeneratorTarget,
-  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import {
   Expression,
@@ -59,9 +58,9 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
 
   public runtimeDependencies(): RuntimeDependency[] {
     return [
-      { name: RuntimePackages.Http.name, version },
+      { name: this.httpPkg.name, version },
       /* Adding this as runtime package as otherwise it's undiscoverable */
-      { name: '@oats-ts/openapi-fetch-client-adapter', version },
+      { name: this.fetchPkg.name, version },
     ]
   }
 
@@ -80,10 +79,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
 
   protected getImportDeclarations(path: string, item: EnhancedOperation): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.Http.name, [
-        RuntimePackages.Http.RawHttpRequest,
-        RuntimePackages.Http.ClientAdapter,
-      ]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.RawHttpRequest, this.httpPkg.imports.ClientAdapter]),
       ...this.context.dependenciesOf(path, item.operation, 'oats/request-type'),
       ...this.context.dependenciesOf(path, item.operation, 'oats/response-type'),
       ...this.context.dependenciesOf(path, item.operation, 'oats/path-serializer'),
@@ -117,7 +113,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         undefined,
         OperationNames.adapter,
         undefined,
-        factory.createTypeReferenceNode(RuntimePackages.Http.ClientAdapter),
+        factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       ),
     ]
 
@@ -378,7 +374,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           factory.createVariableDeclaration(
             factory.createIdentifier(OperationNames.rawRequest),
             undefined,
-            factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.RawHttpRequest), undefined),
+            factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.RawHttpRequest), undefined),
             factory.createObjectLiteralExpression(
               [
                 factory.createPropertyAssignment(

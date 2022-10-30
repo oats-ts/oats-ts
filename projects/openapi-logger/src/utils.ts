@@ -1,3 +1,4 @@
+import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { Issue, Severity } from '@oats-ts/validators'
 import { red, green, blue, yellow } from 'chalk'
 
@@ -43,4 +44,21 @@ export function severityComparator(a: Issue, b: Issue): number {
     return 0
   }
   return (SeverityMap[a.severity] ?? -1) - (SeverityMap[b.severity] ?? -1)
+}
+
+export function printRuntimeDependencies(deps: RuntimeDependency[], indentation: number): void {
+  if (deps.length === 0) {
+  }
+  const sortedDeps = Array.from(deps)
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(({ name, version }) => `${name}@${version}`)
+
+  if (deps.length <= 3) {
+    console.log(`${Icons.i} npm i ${blue(sortedDeps.join(' '))}`)
+  } else {
+    console.log(`${Tab.repeat(indentation)}${Icons.i} some outputs have runtime dependencies:`)
+    console.log(`${Tab.repeat(indentation + 1)}npm i \\`)
+    const depsText = sortedDeps.map((dep) => `${Tab.repeat(indentation + 2)}${blue(dep)}`).join(' \\\n')
+    console.log(depsText)
+  }
 }

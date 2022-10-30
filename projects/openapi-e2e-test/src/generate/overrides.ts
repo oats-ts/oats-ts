@@ -1,6 +1,7 @@
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { OpenAPIFullStackPresetConfig } from '@oats-ts/openapi-generators'
 
-export const overrides: Record<string, Partial<OpenAPIFullStackPresetConfig>> = {
+export const presetOverrides: Record<string, Partial<OpenAPIFullStackPresetConfig>> = {
   'schemas/pet-store-yaml.yaml': {
     cors: ['https://foo.com'],
   },
@@ -35,4 +36,8 @@ export const overrides: Record<string, Partial<OpenAPIFullStackPresetConfig>> = 
       return Boolean(schema?.['x-ignore'])
     },
   },
+}
+
+export const importReplacerOverrides: Record<string, GeneratorConfig['importReplacer']> = {
+  'generated-schemas/parameters.json': (_, importName) => `_${importName}`,
 }

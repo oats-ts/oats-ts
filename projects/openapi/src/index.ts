@@ -1,3 +1,4 @@
+export { generate } from '@oats-ts/oats-ts'
 export { readers } from '@oats-ts/openapi-reader'
 export { validator } from '@oats-ts/openapi-validator'
 export { generator, generators, presets } from '@oats-ts/openapi-generators'

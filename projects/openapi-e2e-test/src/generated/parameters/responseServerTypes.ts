@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { Cookies } from '@oats-ts/openapi-http'
+import { Cookies as _Cookies } from '@oats-ts/openapi-runtime'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 import { SimpleResponseHeaderParameters200ResponseHeaderParameters } from './responseHeaderTypes'
 import {
@@ -37,13 +37,13 @@ export type FormCookieParametersServerResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: FormCookieParameters
-      cookies?: Cookies<FormCookieParametersCookieParameters>
+      cookies?: _Cookies<FormCookieParametersCookieParameters>
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
-      cookies?: Cookies<FormCookieParametersCookieParameters>
+      cookies?: _Cookies<FormCookieParametersCookieParameters>
     }
 
 export type FormQueryParametersServerResponse =

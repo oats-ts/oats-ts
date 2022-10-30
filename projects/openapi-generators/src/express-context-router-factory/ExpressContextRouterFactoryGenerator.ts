@@ -1,4 +1,4 @@
-import { OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   TypeNode,
@@ -21,14 +21,16 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
   public name(): OpenAPIGeneratorTarget {
     return 'oats/express-context-router-factory'
   }
+
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/express-router-factory', 'oats/express-router-factories-type', 'oats/api-type']
   }
+
   public runtimeDependencies(): RuntimeDependency[] {
     return [
-      { name: RuntimePackages.Http.name, version },
-      { name: RuntimePackages.HttpServerExpress.name, version },
-      { name: RuntimePackages.Express.name, version: '^4.18.1' },
+      { name: this.httpPkg.name, version },
+      { name: this.adapterPkg.name, version },
+      { name: this.expressPkg.name, version: '^4.18.1' },
     ]
   }
 
@@ -49,15 +51,15 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
 
   protected getImportDeclarations(path: string): ImportDeclaration[] {
     return [
-      getNamedImports(RuntimePackages.Express.name, [
-        RuntimePackages.Express.IRouter,
-        RuntimePackages.Express.Router,
-        RuntimePackages.Express.NextFunction,
-        RuntimePackages.Express.Request,
-        RuntimePackages.Express.Response,
+      getNamedImports(this.expressPkg.name, [
+        this.expressPkg.imports.IRouter,
+        this.expressPkg.imports.Router,
+        this.expressPkg.imports.NextFunction,
+        this.expressPkg.imports.Request,
+        this.expressPkg.imports.Response,
       ]),
-      getNamedImports(RuntimePackages.Http.name, [RuntimePackages.Http.ServerAdapter]),
-      getNamedImports(RuntimePackages.HttpServerExpress.name, [RuntimePackages.HttpServerExpress.ExpressToolkit]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ServerAdapter]),
+      getNamedImports(this.adapterPkg.name, [this.adapterPkg.imports.ExpressToolkit]),
       ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context),
     ]
   }
@@ -70,7 +72,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier('_'),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Request), undefined),
+        factory.createTypeReferenceNode(factory.createIdentifier(this.expressPkg.exports.Request), undefined),
         undefined,
       ),
       factory.createParameterDeclaration(
@@ -79,7 +81,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.response),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.Response), undefined),
+        factory.createTypeReferenceNode(factory.createIdentifier(this.expressPkg.exports.Response), undefined),
         undefined,
       ),
       factory.createParameterDeclaration(
@@ -88,7 +90,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.next),
         undefined,
-        factory.createTypeReferenceNode(RuntimePackages.Express.NextFunction, undefined),
+        factory.createTypeReferenceNode(this.expressPkg.exports.NextFunction, undefined),
         undefined,
       ),
     ]
@@ -103,7 +105,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         factory.createIdentifier(RouterNames.router),
         undefined,
         factory.createUnionTypeNode([
-          factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+          factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
           factory.createTypeReferenceNode('undefined', undefined),
         ]),
         undefined,
@@ -123,11 +125,8 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.adapter),
         undefined,
-        factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Http.ServerAdapter), [
-          factory.createTypeReferenceNode(
-            factory.createIdentifier(RuntimePackages.HttpServerExpress.ExpressToolkit),
-            undefined,
-          ),
+        factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.ServerAdapter), [
+          factory.createTypeReferenceNode(factory.createIdentifier(this.adapterPkg.exports.ExpressToolkit), undefined),
         ]),
         undefined,
       ),
@@ -142,7 +141,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
       factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
       undefined,
       this.getFactoryParameters(),
-      factory.createTypeReferenceNode(factory.createIdentifier(RuntimePackages.Express.IRouter), undefined),
+      factory.createTypeReferenceNode(factory.createIdentifier(this.expressPkg.exports.IRouter), undefined),
       this.getFactoryFunctionBodyBlockAst(),
     )
   }
@@ -158,7 +157,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
           factory.createBinaryExpression(
             factory.createIdentifier(RouterNames.router),
             factory.createToken(SyntaxKind.QuestionQuestionToken),
-            factory.createCallExpression(factory.createIdentifier(RuntimePackages.Express.Router), undefined, []),
+            factory.createCallExpression(factory.createIdentifier(this.expressPkg.exports.Router), undefined, []),
           ),
         ),
         factory.createIdentifier(RouterNames.use),

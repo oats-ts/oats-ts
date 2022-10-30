@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { CorsConfiguration } from '@oats-ts/openapi-http'
+import { CorsConfiguration } from '@oats-ts/openapi-runtime'
 
 export const bookStoreCorsConfiguration: CorsConfiguration = {
   '/books': {

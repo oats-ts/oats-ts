@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter } from '@oats-ts/openapi-runtime'
 import {
   arrObj,
   bool,

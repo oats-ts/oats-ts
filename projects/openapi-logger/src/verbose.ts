@@ -1,7 +1,6 @@
 import {
   Logger,
   OatsEventEmitter,
-  RuntimeDependency,
   SimpleGeneratorResult,
   CompositeGeneratorResult,
   isSimpleGeneratorResult,
@@ -15,7 +14,7 @@ import { isOk } from '@oats-ts/validators'
 import { entries } from 'lodash'
 import { SourceFile } from 'typescript'
 import { blue } from 'chalk'
-import { Icons, issueToString, statusText, Tab } from './utils'
+import { Icons, issueToString, printRuntimeDependencies, statusText, Tab } from './utils'
 
 function printReadOutput(documents: Map<string, OpenAPIObject>): void {
   const data = Array.from(documents.entries())
@@ -57,19 +56,6 @@ function printStructuredGeneratorResult(structured: CompositeGeneratorResult<Sou
   }
 }
 
-function printRuntimeDependencies(deps: RuntimeDependency[]): void {
-  if (deps.length === 0) {
-    return
-  }
-  console.log(`${Tab}${Icons.i} some outputs have runtime dependencies:`)
-  console.log(`${Tab}  npm i \\`)
-  const sortedDeps = Array.from(deps)
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .map(({ name, version }) => `${name}@${version}`)
-  const depsText = sortedDeps.map((dep) => `${Tab}${Tab}${Tab}${blue(dep)}`).join(' \\\n')
-  console.log(depsText)
-}
-
 export const verbose =
   (): Logger =>
   (emitter: OatsEventEmitter<OpenAPIObject, OpenAPIReadOutput, SourceFile, GeneratedFile>): void => {
@@ -92,7 +78,7 @@ export const verbose =
       if (isSuccess(e.data)) {
         console.log(statusText('generator', 'completed', e.name))
         printStructuredGeneratorResult(e.structure, 1)
-        printRuntimeDependencies(e.dependencies)
+        printRuntimeDependencies(e.dependencies, 1)
       } else {
         console.log(statusText('generator', 'failed', e.name))
         printStructuredGeneratorResult(e.structure, 1)

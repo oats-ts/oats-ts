@@ -4,35 +4,35 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/discriminated-union-type-schemas.json
  */
 
-import { lazy, literal, object, shape, string, union } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
-export const leafType1TypeValidator = object(
-  shape({
-    type: literal('LeafType1'),
-    foo: string(),
+export const leafType1TypeValidator = validators.object(
+  validators.shape({
+    type: validators.literal('LeafType1'),
+    foo: validators.string(),
   }),
 )
 
-export const leafType2TypeValidator = object(
-  shape({
-    type: literal('LeafType2'),
-    bar: string(),
+export const leafType2TypeValidator = validators.object(
+  validators.shape({
+    type: validators.literal('LeafType2'),
+    bar: validators.string(),
   }),
 )
 
-export const leafType3TypeValidator = object(
-  shape({
-    type: literal('LeafType3'),
-    foobar: string(),
+export const leafType3TypeValidator = validators.object(
+  validators.shape({
+    type: validators.literal('LeafType3'),
+    foobar: validators.string(),
   }),
 )
 
-export const midLevelUnionTypeTypeValidator = union({
-  LeafType2: lazy(() => leafType2TypeValidator),
-  LeafType3: lazy(() => leafType3TypeValidator),
+export const midLevelUnionTypeTypeValidator = validators.union({
+  LeafType2: validators.lazy(() => leafType2TypeValidator),
+  LeafType3: validators.lazy(() => leafType3TypeValidator),
 })
 
-export const topLevelUnionTypeTypeValidator = union({
-  LeafType1: lazy(() => leafType1TypeValidator),
-  MidLevelUnionType: lazy(() => midLevelUnionTypeTypeValidator),
+export const topLevelUnionTypeTypeValidator = validators.union({
+  LeafType1: validators.lazy(() => leafType1TypeValidator),
+  MidLevelUnionType: validators.lazy(() => midLevelUnionTypeTypeValidator),
 })

@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { array, boolean, items, lazy, number, string } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 import {
   enumTypeTypeValidator,
   objectWithArraysTypeValidator,
@@ -15,57 +15,66 @@ import {
 } from './typeValidators'
 
 export const arrObjRequestBodyValidator = {
-  'application/json': lazy(() => objectWithArraysTypeValidator),
-  'application/yaml': lazy(() => objectWithArraysTypeValidator),
+  'application/json': validators.lazy(() => objectWithArraysTypeValidator),
+  'application/yaml': validators.lazy(() => objectWithArraysTypeValidator),
 } as const
 
 export const boolArrRequestBodyValidator = {
-  'application/json': array(items(boolean())),
-  'application/yaml': array(items(boolean())),
+  'application/json': validators.array(validators.items(validators.boolean())),
+  'application/yaml': validators.array(validators.items(validators.boolean())),
 } as const
 
-export const boolRequestBodyValidator = { 'application/json': boolean(), 'application/yaml': boolean() } as const
+export const boolRequestBodyValidator = {
+  'application/json': validators.boolean(),
+  'application/yaml': validators.boolean(),
+} as const
 
 export const enmArrRequestBodyValidator = {
-  'application/json': array(items(lazy(() => enumTypeTypeValidator))),
-  'application/yaml': array(items(lazy(() => enumTypeTypeValidator))),
+  'application/json': validators.array(validators.items(validators.lazy(() => enumTypeTypeValidator))),
+  'application/yaml': validators.array(validators.items(validators.lazy(() => enumTypeTypeValidator))),
 } as const
 
 export const enmRequestBodyValidator = {
-  'application/json': lazy(() => enumTypeTypeValidator),
-  'application/yaml': lazy(() => enumTypeTypeValidator),
+  'application/json': validators.lazy(() => enumTypeTypeValidator),
+  'application/yaml': validators.lazy(() => enumTypeTypeValidator),
 } as const
 
 export const nestedObjRequestBodyValidator = {
-  'application/json': lazy(() => objectWithNestedObjectsTypeValidator),
-  'application/yaml': lazy(() => objectWithNestedObjectsTypeValidator),
+  'application/json': validators.lazy(() => objectWithNestedObjectsTypeValidator),
+  'application/yaml': validators.lazy(() => objectWithNestedObjectsTypeValidator),
 } as const
 
 export const numArrRequestBodyValidator = {
-  'application/json': array(items(number())),
-  'application/yaml': array(items(number())),
+  'application/json': validators.array(validators.items(validators.number())),
+  'application/yaml': validators.array(validators.items(validators.number())),
 } as const
 
-export const numRequestBodyValidator = { 'application/json': number(), 'application/yaml': number() } as const
+export const numRequestBodyValidator = {
+  'application/json': validators.number(),
+  'application/yaml': validators.number(),
+} as const
 
 export const optPrimTupleRequestBodyValidator = {
-  'application/json': lazy(() => primitiveOptionalTupleTypeTypeValidator),
-  'application/yaml': lazy(() => primitiveOptionalTupleTypeTypeValidator),
+  'application/json': validators.lazy(() => primitiveOptionalTupleTypeTypeValidator),
+  'application/yaml': validators.lazy(() => primitiveOptionalTupleTypeTypeValidator),
 } as const
 
 export const primObjRequestBodyValidator = {
-  'application/json': lazy(() => objectWithPrimitivesTypeValidator),
-  'application/yaml': lazy(() => objectWithPrimitivesTypeValidator),
+  'application/json': validators.lazy(() => objectWithPrimitivesTypeValidator),
+  'application/yaml': validators.lazy(() => objectWithPrimitivesTypeValidator),
 } as const
 
 export const primTupleRequestBodyValidator = {
-  'application/json': lazy(() => primitiveTupleTypeTypeValidator),
-  'application/yaml': lazy(() => primitiveTupleTypeTypeValidator),
+  'application/json': validators.lazy(() => primitiveTupleTypeTypeValidator),
+  'application/yaml': validators.lazy(() => primitiveTupleTypeTypeValidator),
 } as const
 
 export const strArrRequestBodyValidator = {
-  'application/json': array(items(string())),
-  'application/yaml': array(items(string())),
+  'application/json': validators.array(validators.items(validators.string())),
+  'application/yaml': validators.array(validators.items(validators.string())),
 } as const
 
-export const strRequestBodyValidator = { 'application/json': string(), 'application/yaml': string() } as const
+export const strRequestBodyValidator = {
+  'application/json': validators.string(),
+  'application/yaml': validators.string(),
+} as const

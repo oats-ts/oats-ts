@@ -16,3 +16,6 @@ export { parsePathToSegments } from './parsePathToSegments'
 export { serializeCookieValue } from './serializeCookieValue'
 
 export * from './types'
+
+export { serializers } from './serializers'
+export { deserializers } from './deserializers'

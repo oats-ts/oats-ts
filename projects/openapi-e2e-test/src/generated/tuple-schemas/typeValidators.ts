@@ -4,33 +4,35 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/tuple-schemas.json
  */
 
-import {
-  array,
-  boolean,
-  items,
-  lazy,
-  literal,
-  number,
-  object,
-  optional,
-  shape,
-  string,
-  tuple,
-} from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
-export const mixedTupleTypeTypeValidator = array(tuple(string(), optional(number()), optional(boolean())))
+export const mixedTupleTypeTypeValidator = validators.array(
+  validators.tuple(
+    validators.string(),
+    validators.optional(validators.number()),
+    validators.optional(validators.boolean()),
+  ),
+)
 
-export const optionalTupleTypeTypeValidator = array(tuple(optional(string()), optional(number()), optional(boolean())))
+export const optionalTupleTypeTypeValidator = validators.array(
+  validators.tuple(
+    validators.optional(validators.string()),
+    validators.optional(validators.number()),
+    validators.optional(validators.boolean()),
+  ),
+)
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+export const referenceTargetTypeValidator = validators.object(
+  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+)
 
-export const tupleTypeTypeValidator = array(
-  tuple(
-    string(),
-    number(),
-    boolean(),
-    array(items(string())),
-    object(shape({ foo: optional(string()) })),
-    lazy(() => referenceTargetTypeValidator),
+export const tupleTypeTypeValidator = validators.array(
+  validators.tuple(
+    validators.string(),
+    validators.number(),
+    validators.boolean(),
+    validators.array(validators.items(validators.string())),
+    validators.object(validators.shape({ foo: validators.optional(validators.string()) })),
+    validators.lazy(() => referenceTargetTypeValidator),
   ),
 )

@@ -4,55 +4,46 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/object-schemas.json
  */
 
-import {
-  array,
-  boolean,
-  items,
-  lazy,
-  literal,
-  number,
-  object,
-  optional,
-  shape,
-  string,
-  tuple,
-  union,
-} from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
-export const objectWithNestedTypeFieldsTypeTypeValidator = object(
-  shape({
-    arrayField: array(items(string())),
-    enumField: union({
-      A: literal('A'),
-      B: literal('B'),
-      C: literal('C'),
+export const objectWithNestedTypeFieldsTypeTypeValidator = validators.object(
+  validators.shape({
+    arrayField: validators.array(validators.items(validators.string())),
+    enumField: validators.union({
+      A: validators.literal('A'),
+      B: validators.literal('B'),
+      C: validators.literal('C'),
     }),
-    objectField: object(shape({ nestedField: optional(string()) })),
-    tupleField: array(tuple(optional(string()), optional(number()))),
+    objectField: validators.object(validators.shape({ nestedField: validators.optional(validators.string()) })),
+    tupleField: validators.array(
+      validators.tuple(validators.optional(validators.string()), validators.optional(validators.number())),
+    ),
   }),
 )
 
-export const objectWithOptionalPrimitiveFieldsTypeTypeValidator = object(
-  shape({
-    booleanField: optional(boolean()),
-    numberField: optional(number()),
-    stringField: optional(string()),
+export const objectWithOptionalPrimitiveFieldsTypeTypeValidator = validators.object(
+  validators.shape({
+    booleanField: validators.optional(validators.boolean()),
+    numberField: validators.optional(validators.number()),
+    stringField: validators.optional(validators.string()),
   }),
 )
 
-export const objectWithPrimitiveFieldsTypeTypeValidator = object(
-  shape({
-    booleanField: boolean(),
-    numberField: number(),
-    stringField: string(),
+export const objectWithPrimitiveFieldsTypeTypeValidator = validators.object(
+  validators.shape({
+    booleanField: validators.boolean(),
+    numberField: validators.number(),
+    stringField: validators.string(),
   }),
 )
 
-export const objectWithReferenceFieldsTypeTypeValidator = object(
-  shape({
-    referenceArrayField: array(items(lazy(() => referenceTargetTypeValidator))),
-    referenceField: lazy(() => referenceTargetTypeValidator),
+export const objectWithReferenceFieldsTypeTypeValidator = validators.object(
+  validators.shape({
+    referenceArrayField: validators.array(validators.items(validators.lazy(() => referenceTargetTypeValidator))),
+    referenceField: validators.lazy(() => referenceTargetTypeValidator),
   }),
 )
 
-export const referenceTargetTypeValidator = object(shape({ referenceTarget: optional(literal(true)) }))
+export const referenceTargetTypeValidator = validators.object(
+  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+)

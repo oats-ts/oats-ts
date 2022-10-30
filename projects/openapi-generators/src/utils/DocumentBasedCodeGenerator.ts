@@ -1,4 +1,3 @@
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { sortBy } from 'lodash'
 import {
   getEnhancedOperations,
@@ -7,16 +6,9 @@ import {
   OpenAPIGeneratorTarget,
   EnhancedOperation,
 } from '@oats-ts/openapi-common'
-import { BaseCodeGenerator } from '@oats-ts/oats-ts'
-import { SourceFile } from 'typescript'
+import { OpenAPIGenerator } from './OpenAPIGenerator'
 
-export abstract class DocumentBasedCodeGenerator<Cfg> extends BaseCodeGenerator<
-  OpenAPIReadOutput,
-  SourceFile,
-  Cfg,
-  EnhancedOperation[],
-  OpenAPIGeneratorContext
-> {
+export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, EnhancedOperation[]> {
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 

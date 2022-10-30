@@ -1,4 +1,4 @@
-import { getDiscriminators, RuntimePackages } from '@oats-ts/model-common'
+import { getDiscriminators, packages, ValidatorsPackage } from '@oats-ts/model-common'
 import { ValidatorImportProvider, ValidatorsGeneratorConfig } from './typings'
 import { Expression, factory, ImportDeclaration, NodeFlags, SourceFile, Statement, SyntaxKind } from 'typescript'
 import { SchemaObject, Referenceable, ReferenceObject } from '@oats-ts/json-schema-model'
@@ -17,6 +17,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
 > {
   protected importProvider!: ValidatorImportProvider
   protected externalRefImportProvider!: ValidatorImportProvider
+  protected validatorsPkg!: ValidatorsPackage
 
   public name(): JsonSchemaGeneratorTarget {
     return 'oats/type-validator'
@@ -27,17 +28,25 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Validators.name, version }]
+    return [{ name: this.getValidatorPackage().name, version }]
   }
 
   public initialize(init: GeneratorInit<T, SourceFile>): void {
     super.initialize(init)
-    this.importProvider = new ValidatorImportProviderImpl(this.context, this.configuration(), this.helper, this.type)
+    this.validatorsPkg = this.getValidatorPackage()
+    this.importProvider = new ValidatorImportProviderImpl(
+      this.context,
+      this.configuration(),
+      this.helper,
+      this.type,
+      this.getValidatorPackage(),
+    )
     this.externalRefImportProvider = new ExternalRefValidatorImportProviderImpl(
       this.context,
       this.configuration(),
       this.helper,
       this.type,
+      this.getValidatorPackage(),
     )
   }
 
@@ -75,7 +84,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
 
   protected getRightHandSideValidatorAst(data: Referenceable<SchemaObject>): Expression {
     if (this.configuration().ignore(data, this.helper)) {
-      return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
+      return factory.createCallExpression(this.getValidatorAst('any'), [], [])
     }
 
     if (this.type.isReferenceObject(data)) {
@@ -107,18 +116,18 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getStringTypeValidatorAst(data: SchemaObject): Expression {
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.string), [], [])
+    return factory.createCallExpression(this.getValidatorAst('string'), [], [])
   }
 
   protected getNumberTypeValidatorAst(data: SchemaObject): Expression {
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.number), [], [])
+    return factory.createCallExpression(this.getValidatorAst('number'), [], [])
   }
   protected getBooleanTypeValidatorAst(data: SchemaObject): Expression {
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.boolean), [], [])
+    return factory.createCallExpression(this.getValidatorAst('boolean'), [], [])
   }
 
   protected getUnknownTypeValidatorAst(data?: Referenceable<SchemaObject>): Expression {
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
+    return factory.createCallExpression(this.getValidatorAst('any'), [], [])
   }
 
   protected getReferenceTypeValidatorAst(data: ReferenceObject): Expression {
@@ -126,7 +135,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     const name = this.context.nameOf(resolved, this.name())
     if (!isNil(name)) {
       const validator = factory.createIdentifier(name)
-      return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.lazy), undefined, [
+      return factory.createCallExpression(this.getValidatorAst('lazy'), undefined, [
         factory.createArrowFunction([], [], [], undefined, undefined, validator),
       ])
     }
@@ -141,7 +150,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
       ),
     )
     const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.union), [], [parameters])
+    return factory.createCallExpression(this.getValidatorAst('union'), [], [parameters])
   }
 
   protected getUnionValidatorKey(data: Referenceable<SchemaObject>, schemaIndex: number): string {
@@ -166,7 +175,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
       factory.createPropertyAssignment(this.getSafePropertyKey(value), this.getJsonLiteralValidatorAst(value)),
     )
     const parameters = factory.createObjectLiteralExpression(properties, properties.length > 1)
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.union), [], [parameters])
+    return factory.createCallExpression(this.getValidatorAst('union'), [], [parameters])
   }
 
   protected getSafePropertyKey(value: any) {
@@ -181,53 +190,41 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
 
   protected getJsonLiteralValidatorAst(data: any): Expression {
     if (data === null) {
-      return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.literal),
-        [],
-        [factory.createNull()],
-      )
+      return factory.createCallExpression(this.getValidatorAst('literal'), [], [factory.createNull()])
     } else if (typeof data === 'string') {
-      return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.literal),
-        [],
-        [factory.createStringLiteral(data)],
-      )
+      return factory.createCallExpression(this.getValidatorAst('literal'), [], [factory.createStringLiteral(data)])
     } else if (typeof data === 'number') {
-      return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.literal),
-        [],
-        [factory.createNumericLiteral(data)],
-      )
+      return factory.createCallExpression(this.getValidatorAst('literal'), [], [factory.createNumericLiteral(data)])
     } else if (typeof data === 'boolean') {
       return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.literal),
+        this.getValidatorAst('literal'),
         [],
         [data ? factory.createTrue() : factory.createFalse()],
       )
     } else if (Array.isArray(data)) {
       const parameters = data.map((value) => this.getJsonLiteralValidatorAst(value))
       return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.array),
+        this.getValidatorAst('array'),
         [],
-        [factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.tuple), [], parameters)],
+        [factory.createCallExpression(this.getValidatorAst('tuple'), [], parameters)],
       )
     } else if (typeof data === 'object') {
       const properties = entries(data).map(([key, value]) =>
         factory.createPropertyAssignment(safeName(key), this.getJsonLiteralValidatorAst(value)),
       )
       return factory.createCallExpression(
-        factory.createIdentifier(RuntimePackages.Validators.object),
+        this.getValidatorAst('object'),
         [],
         [
           factory.createCallExpression(
-            factory.createIdentifier(RuntimePackages.Validators.shape),
+            this.getValidatorAst('shape'),
             [],
             [factory.createObjectLiteralExpression(properties, properties.length > 1)],
           ),
         ],
       )
     }
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.any), [], [])
+    return factory.createCallExpression(this.getValidatorAst('any'), [], [])
   }
 
   protected getLiteralTypeValidatorAst(data: SchemaObject): Expression {
@@ -236,23 +233,23 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
 
   protected getIntersectionTypeValidatorAst(data: SchemaObject): Expression {
     const parameters = (data.allOf || []).map((item) => this.getRightHandSideValidatorAst(item))
-    return factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.combine), [], parameters)
+    return factory.createCallExpression(this.getValidatorAst('combine'), [], parameters)
   }
 
   protected getRecordTypeValidatorAst(data: SchemaObject): Expression {
     const addPropsSchema = data.additionalProperties
     const params = factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.record),
+      this.getValidatorAst('record'),
       [],
       [
-        factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.string), [], []),
+        factory.createCallExpression(this.getValidatorAst('string'), [], []),
         typeof addPropsSchema === 'boolean'
           ? this.getUnknownTypeValidatorAst()
           : this.getRightHandSideValidatorAst(addPropsSchema!),
       ],
     )
     return factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.object),
+      this.getValidatorAst('object'),
       [],
       typeof addPropsSchema !== 'boolean' && this.configuration().ignore(addPropsSchema!, this.helper) ? [] : [params],
     )
@@ -263,11 +260,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
       factory.createPropertyAssignment(
         safeName(name),
-        factory.createCallExpression(
-          factory.createIdentifier(RuntimePackages.Validators.literal),
-          [],
-          [factory.createStringLiteral(value)],
-        ),
+        factory.createCallExpression(this.getValidatorAst('literal'), [], [factory.createStringLiteral(value)]),
       ),
     )
 
@@ -276,20 +269,18 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
       .map(([name, schema]) => {
         const isOptional = (data.required || []).indexOf(name) < 0
         const rhs = this.getRightHandSideValidatorAst(schema)
-        const value = isOptional
-          ? factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [rhs])
-          : rhs
+        const value = isOptional ? factory.createCallExpression(this.getValidatorAst('optional'), [], [rhs]) : rhs
         return factory.createPropertyAssignment(safeName(name), value)
       })
 
     const properties = discriminatorProperties.concat(basicProperties)
 
     return factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.object),
+      this.getValidatorAst('object'),
       [],
       [
         factory.createCallExpression(
-          factory.createIdentifier(RuntimePackages.Validators.shape),
+          this.getValidatorAst('shape'),
           [],
           [factory.createObjectLiteralExpression(properties, properties.length > 1)],
         ),
@@ -300,12 +291,12 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   protected getArrayTypeValidatorAst(data: SchemaObject): Expression {
     const itemsSchema = data.items as Referenceable<SchemaObject>
     const itemsValidator = factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.items),
+      this.getValidatorAst('items'),
       [],
       [this.getRightHandSideValidatorAst(itemsSchema)],
     )
     return factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.array),
+      this.getValidatorAst('array'),
       [],
       this.configuration().ignore(itemsSchema, this.helper) ? [] : [itemsValidator],
     )
@@ -317,12 +308,24 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
       const validator = this.getRightHandSideValidatorAst(item)
       return index < minItems
         ? validator
-        : factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.optional), [], [validator])
+        : factory.createCallExpression(this.getValidatorAst('optional'), [], [validator])
     })
     return factory.createCallExpression(
-      factory.createIdentifier(RuntimePackages.Validators.array),
+      this.getValidatorAst('array'),
       [],
-      [factory.createCallExpression(factory.createIdentifier(RuntimePackages.Validators.tuple), [], parameters)],
+      [factory.createCallExpression(this.getValidatorAst('tuple'), [], parameters)],
     )
+  }
+
+  protected getValidatorAst(type: keyof ValidatorsPackage['content']['validators']): Expression {
+    const pkg = this.getValidatorPackage()
+    return factory.createPropertyAccessExpression(
+      factory.createIdentifier(pkg.exports.validators),
+      pkg.content.validators[type],
+    )
+  }
+
+  protected getValidatorPackage(): ValidatorsPackage {
+    return packages.openApiRuntime(this.context)
   }
 }

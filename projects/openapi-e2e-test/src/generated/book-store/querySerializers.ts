@@ -4,9 +4,9 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { createQuerySerializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { dsl, serializers } from '@oats-ts/openapi-runtime'
 import { GetBooksQueryParameters } from './queryTypes'
 
-export const getBooksQuerySerializer = createQuerySerializer<GetBooksQueryParameters>({
+export const getBooksQuerySerializer = serializers.createQuerySerializer<GetBooksQueryParameters>({
   offset: dsl.query.form.primitive(dsl.value.number(), { required: false }),
 })

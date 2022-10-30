@@ -4,7 +4,6 @@ import {
   getResponseHeaders,
   hasResponseHeaders,
   OpenAPIGeneratorTarget,
-  RuntimePackages,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
@@ -33,7 +32,7 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.ParameterSerialization.name, version }]
+    return [{ name: this.paramsPkg.name, version }]
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {
@@ -50,10 +49,7 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   private getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
     const headersByStatus = getResponseHeaders(data.operation, this.context)
     return [
-      getNamedImports(RuntimePackages.ParameterSerialization.name, [
-        RuntimePackages.ParameterSerialization.dsl,
-        RuntimePackages.ParameterSerialization.createHeaderDeserializer,
-      ]),
+      getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.dsl, this.paramsPkg.imports.deserializers]),
       ...flatMap(entries(headersByStatus), ([statusCode]) =>
         this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
       ),
@@ -68,9 +64,12 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
         return factory.createPropertyAssignment(
           status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
           factory.createCallExpression(
-            factory.createIdentifier(RuntimePackages.ParameterSerialization.createHeaderDeserializer),
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(this.paramsPkg.exports.deserializers),
+              this.paramsPkg.content.deserializers.createHeaderDeserializer,
+            ),
             [this.context.referenceOf([data.operation, status], 'oats/response-headers-type')],
-            [getDslObjectAst(values(headers), this.context)],
+            [getDslObjectAst(values(headers), this.context, this.paramsPkg)],
           ),
         )
       })

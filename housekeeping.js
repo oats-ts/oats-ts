@@ -1,15 +1,19 @@
 const { readdir, readFile, writeFile, unlink, stat, access } = require('fs/promises')
-const { join, resolve } = require('path')
+const { join, resolve, basename } = require('path')
 
+const PROJECTS_FOLDER = resolve('projects')
 const HOMEPAGE = 'https://oats-ts.github.io/docs'
 const REPO_URL = 'https://github.com/oats-ts/oats-ts'
 const LICENSE_NAME = 'MIT'
 const TSCONFIG_FILE_NAME = 'tsconfig.json'
+const WORKSPACE_FILE_NAME = 'oats.code-workspace'
+const RUSH_FILE_NAME = 'rush.json'
 const LICENSE_FILE_NAME = 'LICENSE.txt'
 const README_FILE_NAME = 'readme.md'
 const PACKAGE_JSON_FILE_NAME = 'package.json'
 const LOG_IGNORE_FOLDERS = ['node_modules', '.git']
 const LOG_ENDINGS = ['.build.log', '.build.error.log', '.pnpm-debug.log']
+const NO_PUBLISH_PROJECTS = ['openapi-e2e-test']
 
 const LICENSE_TEXT = `Copyright ${new Date().getFullYear()} Balázs Édes
 
@@ -88,6 +92,7 @@ async function updatePackageJson(folder) {
   const files = updateFiles(Array.from(content.files ?? []), readmeExists)
   const hasFiles = Array.isArray(content.files)
 
+  content.name = `@oats-ts/${basename(folder)}`
   if (hasFiles) {
     content.files = files
   }
@@ -145,19 +150,53 @@ async function deleteLogs(folder) {
   }
 }
 
+/**
+ * @param {string[]} folders
+ * @returns {Promise<void>}
+ */
+async function updateCodeWorkspace(folders) {
+  const root = { name: 'root', path: '.' }
+  const mappedFolders = [root].concat(folders.map((folder) => ({ name: folder, path: `projects/${folder}` })))
+  const content = JSON.stringify({ folders: mappedFolders }, null, 2)
+  await writeFile(join(resolve(), WORKSPACE_FILE_NAME), content, 'utf-8')
+}
+
+/**
+ * @param {string[]} folders
+ * @returns {Promise<void>}
+ */
+async function updateRush(folders) {
+  const rushPath = join(resolve(), RUSH_FILE_NAME)
+  const content = JSON.parse(await readFile(rushPath, 'utf-8'))
+  const projects = folders.map((folder) => {
+    const shouldPublish = !NO_PUBLISH_PROJECTS.includes(folder)
+    const project = {
+      packageName: `@oats-ts/${folder}`,
+      projectFolder: `projects/${folder}`,
+      shouldPublish,
+      ...(shouldPublish ? { versionPolicyName: 'oats' } : {}),
+    }
+    return project
+  })
+  content.projects = projects
+  await writeFile(rushPath, JSON.stringify(content, null, 2), 'utf-8')
+}
+
 async function run() {
-  const projects = resolve('projects')
-  const rootFolders = await readdir(projects)
+  const rootFolders = (await readdir(PROJECTS_FOLDER)).sort((a, b) => a.localeCompare(b))
 
   await updateLicenseTxt(resolve())
   await deleteLogs(resolve())
 
   for (const folder of rootFolders) {
-    const folderPath = join(projects, folder)
+    const folderPath = join(PROJECTS_FOLDER, folder)
     await updateTsConfig(folderPath)
     await updatePackageJson(folderPath)
     await updateLicenseTxt(folderPath)
   }
+
+  await updateCodeWorkspace(rootFolders)
+  await updateRush(rootFolders)
 }
 
 run()

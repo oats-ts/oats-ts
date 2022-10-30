@@ -4,23 +4,23 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { array, items, lazy } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 import { appErrorTypeValidator, bookTypeValidator } from './typeValidators'
 
 export const addBookResponseBodyValidator = {
-  201: { 'application/json': lazy(() => bookTypeValidator) },
-  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  201: { 'application/json': validators.lazy(() => bookTypeValidator) },
+  400: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBookResponseBodyValidator = {
-  200: { 'application/json': lazy(() => bookTypeValidator) },
-  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  200: { 'application/json': validators.lazy(() => bookTypeValidator) },
+  400: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBooksResponseBodyValidator = {
-  200: { 'application/json': array(items(lazy(() => bookTypeValidator))) },
-  400: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': array(items(lazy(() => appErrorTypeValidator))) },
+  200: { 'application/json': validators.array(validators.items(validators.lazy(() => bookTypeValidator))) },
+  400: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
 } as const

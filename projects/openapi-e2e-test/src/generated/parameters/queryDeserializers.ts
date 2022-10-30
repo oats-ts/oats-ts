@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { createQueryDeserializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers as _deserializers, dsl as _dsl } from '@oats-ts/openapi-runtime'
 import {
   DeepObjectQueryParametersQueryParameters,
   FormQueryParametersQueryParameters,
@@ -13,171 +13,178 @@ import {
 } from './queryTypes'
 
 export const deepObjectQueryParametersQueryDeserializer =
-  createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
-    objExpl: dsl.query.deepObject.object(
+  _deserializers.createQueryDeserializer<DeepObjectQueryParametersQueryParameters>({
+    objExpl: _dsl.query.deepObject.object(
       {
-        objExplStrField: dsl.value.string(),
-        objExplNumField: dsl.value.number(),
-        objExplBoolField: dsl.value.boolean(),
-        objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        objExplOptStrField: dsl.value.optional(dsl.value.string()),
-        objExplOptNumField: dsl.value.optional(dsl.value.number()),
-        objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+        objExplStrField: _dsl.value.string(),
+        objExplNumField: _dsl.value.number(),
+        objExplBoolField: _dsl.value.boolean(),
+        objExplEnmField: _dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: _dsl.value.optional(_dsl.value.string()),
+        objExplOptNumField: _dsl.value.optional(_dsl.value.number()),
+        objExplOptBoolField: _dsl.value.optional(_dsl.value.boolean()),
+        objExplOptEnmField: _dsl.value.optional(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C']))),
       },
       { explode: true, required: true },
     ),
-    optObjExpl: dsl.query.deepObject.object(
+    optObjExpl: _dsl.query.deepObject.object(
       {
-        optObjExplStrField: dsl.value.string(),
-        optObjExplNumField: dsl.value.number(),
-        optObjExplBoolField: dsl.value.boolean(),
-        optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-        optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
-        optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
-        optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-        optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
+        optObjExplStrField: _dsl.value.string(),
+        optObjExplNumField: _dsl.value.number(),
+        optObjExplBoolField: _dsl.value.boolean(),
+        optObjExplEnmField: _dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])),
+        optObjExplOptStrField: _dsl.value.optional(_dsl.value.string()),
+        optObjExplOptNumField: _dsl.value.optional(_dsl.value.number()),
+        optObjExplOptBoolField: _dsl.value.optional(_dsl.value.boolean()),
+        optObjExplOptEnmField: _dsl.value.optional(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C']))),
       },
       { explode: true, required: false },
     ),
   })
 
-export const formQueryParametersQueryDeserializer = createQueryDeserializer<FormQueryParametersQueryParameters>({
-  strExpl: dsl.query.form.primitive(dsl.value.string(), { explode: true, required: true }),
-  optStrExpl: dsl.query.form.primitive(dsl.value.string(), { explode: true, required: false }),
-  str: dsl.query.form.primitive(dsl.value.string(), { explode: false, required: true }),
-  optStr: dsl.query.form.primitive(dsl.value.string(), { explode: false, required: false }),
-  numExpl: dsl.query.form.primitive(dsl.value.number(), { explode: true, required: true }),
-  optNumExpl: dsl.query.form.primitive(dsl.value.number(), { explode: true, required: false }),
-  num: dsl.query.form.primitive(dsl.value.number(), { explode: false, required: true }),
-  optNum: dsl.query.form.primitive(dsl.value.number(), { explode: false, required: false }),
-  boolExpl: dsl.query.form.primitive(dsl.value.boolean(), { explode: true, required: true }),
-  optBoolExpl: dsl.query.form.primitive(dsl.value.boolean(), { explode: true, required: false }),
-  bool: dsl.query.form.primitive(dsl.value.boolean(), { explode: false, required: true }),
-  optBool: dsl.query.form.primitive(dsl.value.boolean(), { explode: false, required: false }),
-  enmExpl: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: true,
-  }),
-  optEnmExpl: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: false,
-  }),
-  enm: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
-  optEnm: dsl.query.form.primitive(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-  strArrExpl: dsl.query.form.array(dsl.value.string(), { explode: true, required: true }),
-  optStrArrExpl: dsl.query.form.array(dsl.value.string(), { explode: true, required: false }),
-  strArr: dsl.query.form.array(dsl.value.string(), { explode: false, required: true }),
-  optStrArr: dsl.query.form.array(dsl.value.string(), { explode: false, required: false }),
-  numArrExpl: dsl.query.form.array(dsl.value.number(), { explode: true, required: true }),
-  optNumArrExpl: dsl.query.form.array(dsl.value.number(), { explode: true, required: false }),
-  numArr: dsl.query.form.array(dsl.value.number(), { explode: false, required: true }),
-  optNumArr: dsl.query.form.array(dsl.value.number(), { explode: false, required: false }),
-  boolArrExpl: dsl.query.form.array(dsl.value.boolean(), { explode: true, required: true }),
-  optBoolArrExpl: dsl.query.form.array(dsl.value.boolean(), { explode: true, required: false }),
-  boolArr: dsl.query.form.array(dsl.value.boolean(), { explode: false, required: true }),
-  optBoolArr: dsl.query.form.array(dsl.value.boolean(), { explode: false, required: false }),
-  enmArrExpl: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: true,
-  }),
-  optEnmArrExpl: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: true,
-    required: false,
-  }),
-  enmArr: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), { explode: false, required: true }),
-  optEnmArr: dsl.query.form.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
-    explode: false,
-    required: false,
-  }),
-  objExpl: dsl.query.form.object(
-    {
-      objExplStrField: dsl.value.string(),
-      objExplNumField: dsl.value.number(),
-      objExplBoolField: dsl.value.boolean(),
-      objExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      objExplOptStrField: dsl.value.optional(dsl.value.string()),
-      objExplOptNumField: dsl.value.optional(dsl.value.number()),
-      objExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      objExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: true, required: true },
-  ),
-  optObjExpl: dsl.query.form.object(
-    {
-      optObjExplStrField: dsl.value.string(),
-      optObjExplNumField: dsl.value.number(),
-      optObjExplBoolField: dsl.value.boolean(),
-      optObjExplEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      optObjExplOptStrField: dsl.value.optional(dsl.value.string()),
-      optObjExplOptNumField: dsl.value.optional(dsl.value.number()),
-      optObjExplOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      optObjExplOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: true, required: false },
-  ),
-  obj: dsl.query.form.object(
-    {
-      objStrField: dsl.value.string(),
-      objNumField: dsl.value.number(),
-      objBoolField: dsl.value.boolean(),
-      objEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      objOptStrField: dsl.value.optional(dsl.value.string()),
-      objOptNumField: dsl.value.optional(dsl.value.number()),
-      objOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      objOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: false, required: true },
-  ),
-  optObj: dsl.query.form.object(
-    {
-      optObjStrField: dsl.value.string(),
-      optObjNumField: dsl.value.number(),
-      optObjBoolField: dsl.value.boolean(),
-      optObjEnmField: dsl.value.string(dsl.value.enum(['A', 'B', 'C'])),
-      optObjOptStrField: dsl.value.optional(dsl.value.string()),
-      optObjOptNumField: dsl.value.optional(dsl.value.number()),
-      optObjOptBoolField: dsl.value.optional(dsl.value.boolean()),
-      optObjOptEnmField: dsl.value.optional(dsl.value.string(dsl.value.enum(['A', 'B', 'C']))),
-    },
-    { explode: false, required: false },
-  ),
-})
-
-export const pipeDelimitedQueryParametersQueryDeserializer =
-  createQueryDeserializer<PipeDelimitedQueryParametersQueryParameters>({
-    strArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(), { explode: true, required: true }),
-    optStrArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(), { explode: true, required: false }),
-    numArrExpl: dsl.query.pipeDelimited.array(dsl.value.number(), { explode: true, required: true }),
-    optNumArrExpl: dsl.query.pipeDelimited.array(dsl.value.number(), { explode: true, required: false }),
-    boolArrExpl: dsl.query.pipeDelimited.array(dsl.value.boolean(), { explode: true, required: true }),
-    optBoolArrExpl: dsl.query.pipeDelimited.array(dsl.value.boolean(), { explode: true, required: false }),
-    enmArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+export const formQueryParametersQueryDeserializer =
+  _deserializers.createQueryDeserializer<FormQueryParametersQueryParameters>({
+    strExpl: _dsl.query.form.primitive(_dsl.value.string(), { explode: true, required: true }),
+    optStrExpl: _dsl.query.form.primitive(_dsl.value.string(), { explode: true, required: false }),
+    str: _dsl.query.form.primitive(_dsl.value.string(), { explode: false, required: true }),
+    optStr: _dsl.query.form.primitive(_dsl.value.string(), { explode: false, required: false }),
+    numExpl: _dsl.query.form.primitive(_dsl.value.number(), { explode: true, required: true }),
+    optNumExpl: _dsl.query.form.primitive(_dsl.value.number(), { explode: true, required: false }),
+    num: _dsl.query.form.primitive(_dsl.value.number(), { explode: false, required: true }),
+    optNum: _dsl.query.form.primitive(_dsl.value.number(), { explode: false, required: false }),
+    boolExpl: _dsl.query.form.primitive(_dsl.value.boolean(), { explode: true, required: true }),
+    optBoolExpl: _dsl.query.form.primitive(_dsl.value.boolean(), { explode: true, required: false }),
+    bool: _dsl.query.form.primitive(_dsl.value.boolean(), { explode: false, required: true }),
+    optBool: _dsl.query.form.primitive(_dsl.value.boolean(), { explode: false, required: false }),
+    enmExpl: _dsl.query.form.primitive(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
       explode: true,
       required: true,
     }),
-    optEnmArrExpl: dsl.query.pipeDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    optEnmExpl: _dsl.query.form.primitive(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+    enm: _dsl.query.form.primitive(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: true,
+    }),
+    optEnm: _dsl.query.form.primitive(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+    strArrExpl: _dsl.query.form.array(_dsl.value.string(), { explode: true, required: true }),
+    optStrArrExpl: _dsl.query.form.array(_dsl.value.string(), { explode: true, required: false }),
+    strArr: _dsl.query.form.array(_dsl.value.string(), { explode: false, required: true }),
+    optStrArr: _dsl.query.form.array(_dsl.value.string(), { explode: false, required: false }),
+    numArrExpl: _dsl.query.form.array(_dsl.value.number(), { explode: true, required: true }),
+    optNumArrExpl: _dsl.query.form.array(_dsl.value.number(), { explode: true, required: false }),
+    numArr: _dsl.query.form.array(_dsl.value.number(), { explode: false, required: true }),
+    optNumArr: _dsl.query.form.array(_dsl.value.number(), { explode: false, required: false }),
+    boolArrExpl: _dsl.query.form.array(_dsl.value.boolean(), { explode: true, required: true }),
+    optBoolArrExpl: _dsl.query.form.array(_dsl.value.boolean(), { explode: true, required: false }),
+    boolArr: _dsl.query.form.array(_dsl.value.boolean(), { explode: false, required: true }),
+    optBoolArr: _dsl.query.form.array(_dsl.value.boolean(), { explode: false, required: false }),
+    enmArrExpl: _dsl.query.form.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    optEnmArrExpl: _dsl.query.form.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: false,
+    }),
+    enmArr: _dsl.query.form.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: true,
+    }),
+    optEnmArr: _dsl.query.form.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: false,
+      required: false,
+    }),
+    objExpl: _dsl.query.form.object(
+      {
+        objExplStrField: _dsl.value.string(),
+        objExplNumField: _dsl.value.number(),
+        objExplBoolField: _dsl.value.boolean(),
+        objExplEnmField: _dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])),
+        objExplOptStrField: _dsl.value.optional(_dsl.value.string()),
+        objExplOptNumField: _dsl.value.optional(_dsl.value.number()),
+        objExplOptBoolField: _dsl.value.optional(_dsl.value.boolean()),
+        objExplOptEnmField: _dsl.value.optional(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: true },
+    ),
+    optObjExpl: _dsl.query.form.object(
+      {
+        optObjExplStrField: _dsl.value.string(),
+        optObjExplNumField: _dsl.value.number(),
+        optObjExplBoolField: _dsl.value.boolean(),
+        optObjExplEnmField: _dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])),
+        optObjExplOptStrField: _dsl.value.optional(_dsl.value.string()),
+        optObjExplOptNumField: _dsl.value.optional(_dsl.value.number()),
+        optObjExplOptBoolField: _dsl.value.optional(_dsl.value.boolean()),
+        optObjExplOptEnmField: _dsl.value.optional(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: true, required: false },
+    ),
+    obj: _dsl.query.form.object(
+      {
+        objStrField: _dsl.value.string(),
+        objNumField: _dsl.value.number(),
+        objBoolField: _dsl.value.boolean(),
+        objEnmField: _dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])),
+        objOptStrField: _dsl.value.optional(_dsl.value.string()),
+        objOptNumField: _dsl.value.optional(_dsl.value.number()),
+        objOptBoolField: _dsl.value.optional(_dsl.value.boolean()),
+        objOptEnmField: _dsl.value.optional(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false, required: true },
+    ),
+    optObj: _dsl.query.form.object(
+      {
+        optObjStrField: _dsl.value.string(),
+        optObjNumField: _dsl.value.number(),
+        optObjBoolField: _dsl.value.boolean(),
+        optObjEnmField: _dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])),
+        optObjOptStrField: _dsl.value.optional(_dsl.value.string()),
+        optObjOptNumField: _dsl.value.optional(_dsl.value.number()),
+        optObjOptBoolField: _dsl.value.optional(_dsl.value.boolean()),
+        optObjOptEnmField: _dsl.value.optional(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C']))),
+      },
+      { explode: false, required: false },
+    ),
+  })
+
+export const pipeDelimitedQueryParametersQueryDeserializer =
+  _deserializers.createQueryDeserializer<PipeDelimitedQueryParametersQueryParameters>({
+    strArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.string(), { explode: true, required: true }),
+    optStrArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.string(), { explode: true, required: false }),
+    numArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.number(), { explode: true, required: true }),
+    optNumArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.number(), { explode: true, required: false }),
+    boolArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.boolean(), { explode: true, required: true }),
+    optBoolArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.boolean(), { explode: true, required: false }),
+    enmArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
+      explode: true,
+      required: true,
+    }),
+    optEnmArrExpl: _dsl.query.pipeDelimited.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
       explode: true,
       required: false,
     }),
   })
 
 export const spaceDelimitedQueryParametersQueryDeserializer =
-  createQueryDeserializer<SpaceDelimitedQueryParametersQueryParameters>({
-    strArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(), { explode: true, required: true }),
-    optStrArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(), { explode: true, required: false }),
-    numArrExpl: dsl.query.spaceDelimited.array(dsl.value.number(), { explode: true, required: true }),
-    optNumArrExpl: dsl.query.spaceDelimited.array(dsl.value.number(), { explode: true, required: false }),
-    boolArrExpl: dsl.query.spaceDelimited.array(dsl.value.boolean(), { explode: true, required: true }),
-    optBoolArrExpl: dsl.query.spaceDelimited.array(dsl.value.boolean(), { explode: true, required: false }),
-    enmArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+  _deserializers.createQueryDeserializer<SpaceDelimitedQueryParametersQueryParameters>({
+    strArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.string(), { explode: true, required: true }),
+    optStrArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.string(), { explode: true, required: false }),
+    numArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.number(), { explode: true, required: true }),
+    optNumArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.number(), { explode: true, required: false }),
+    boolArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.boolean(), { explode: true, required: true }),
+    optBoolArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.boolean(), { explode: true, required: false }),
+    enmArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
       explode: true,
       required: true,
     }),
-    optEnmArrExpl: dsl.query.spaceDelimited.array(dsl.value.string(dsl.value.enum(['A', 'B', 'C'])), {
+    optEnmArrExpl: _dsl.query.spaceDelimited.array(_dsl.value.string(_dsl.value.enum(['A', 'B', 'C'])), {
       explode: true,
       required: false,
     }),

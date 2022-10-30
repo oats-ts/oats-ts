@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { CorsConfiguration } from '@oats-ts/openapi-http'
+import { CorsConfiguration } from '@oats-ts/openapi-runtime'
 
 /**
  * WARNING: No allowed origin + method combination for any operations, generator "oats/cors-configuration" likely needs to be configured!

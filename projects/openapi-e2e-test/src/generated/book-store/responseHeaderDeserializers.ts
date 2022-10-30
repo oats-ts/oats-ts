@@ -4,11 +4,11 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { createHeaderDeserializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers, dsl } from '@oats-ts/openapi-runtime'
 import { GetBooks200ResponseHeaderParameters } from './responseHeaderTypes'
 
 export const getBooksResponseHeadersDeserializer = {
-  200: createHeaderDeserializer<GetBooks200ResponseHeaderParameters>({
+  200: deserializers.createHeaderDeserializer<GetBooks200ResponseHeaderParameters>({
     'x-length': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
   }),
 } as const

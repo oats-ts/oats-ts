@@ -5,7 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-http'
+import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
 import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'

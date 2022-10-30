@@ -26,7 +26,6 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     this.nameProviderHelper = new NameProviderHelperImpl(data)
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
   }
-
   public byUri<T>(uri: string): T {
     return this.data.uriToObject.get(uri)
   }
@@ -109,6 +108,11 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
       }
     }
     throw this.wrongTargetError(target, 'configuration')
+  }
+
+  public exportOf(packageName: string, exportName: string): string {
+    const { importReplacer } = this.owner.globalConfiguration()
+    return isNil(importReplacer) ? exportName : importReplacer(packageName, exportName) ?? exportName
   }
 
   private wrongTargetError(target: Target, requested: string): Error {

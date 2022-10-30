@@ -4,10 +4,10 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { createPathDeserializer, dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers, dsl } from '@oats-ts/openapi-runtime'
 import { GetBookPathParameters } from './pathTypes'
 
-export const getBookPathDeserializer = createPathDeserializer<GetBookPathParameters>(
+export const getBookPathDeserializer = deserializers.createPathDeserializer<GetBookPathParameters>(
   { bookId: dsl.path.simple.primitive(dsl.value.number()) },
   ['bookId'],
   /^\/books(?:\/([^\/#\?]+?))[\/#\?]?$/i,

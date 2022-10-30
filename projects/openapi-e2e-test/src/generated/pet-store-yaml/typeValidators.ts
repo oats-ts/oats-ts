@@ -4,21 +4,21 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { array, items, lazy, number, object, optional, shape, string } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
-export const errorTypeValidator = object(
-  shape({
-    code: number(),
-    message: string(),
+export const errorTypeValidator = validators.object(
+  validators.shape({
+    code: validators.number(),
+    message: validators.string(),
   }),
 )
 
-export const petTypeValidator = object(
-  shape({
-    id: number(),
-    name: string(),
-    tag: optional(string()),
+export const petTypeValidator = validators.object(
+  validators.shape({
+    id: validators.number(),
+    name: validators.string(),
+    tag: validators.optional(validators.string()),
   }),
 )
 
-export const petsTypeValidator = array(items(lazy(() => petTypeValidator)))
+export const petsTypeValidator = validators.array(validators.items(validators.lazy(() => petTypeValidator)))

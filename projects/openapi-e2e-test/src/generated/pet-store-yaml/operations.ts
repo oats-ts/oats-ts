@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
 import { showPetByIdPathSerializer } from './pathSerializers'
 import { listPetsQuerySerializer } from './querySerializers'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'

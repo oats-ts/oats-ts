@@ -1,4 +1,4 @@
-import { EnhancedOperation, OpenAPIGeneratorTarget, RuntimePackages } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile, SyntaxKind, Statement } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
@@ -17,7 +17,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: RuntimePackages.Express.name, version: '^4.18.1' }]
+    return [{ name: this.expressPkg.name, version: '^4.18.1' }]
   }
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
@@ -34,7 +34,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
     return success(
       createSourceFile(
         this.context.pathOf(this.input.document, this.name()),
-        [getNamedImports(RuntimePackages.Express.name, [RuntimePackages.Express.IRouter])],
+        [getNamedImports(this.expressPkg.name, [this.expressPkg.imports.IRouter])],
         [this.getRouterFactoriesTypeStatement(operations)],
       ),
     )
@@ -58,13 +58,13 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
                 factory.createIdentifier(RouterNames.router),
                 factory.createToken(SyntaxKind.QuestionToken),
                 factory.createUnionTypeNode([
-                  factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+                  factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
                   factory.createTypeReferenceNode('undefined', undefined),
                 ]),
                 undefined,
               ),
             ],
-            factory.createTypeReferenceNode(RuntimePackages.Express.IRouter, undefined),
+            factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
           )
           return factory.createPropertySignature(
             undefined,

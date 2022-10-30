@@ -75,6 +75,8 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    * @returns The object associated with this URI.
    */
   byUri<T>(uri: string): T | undefined
+
+  exportOf(packageName: string, exportName: string): string
 }
 
 export type HasSchemas = {
@@ -97,3 +99,16 @@ export type InferredType =
   | 'intersection'
   | 'unknown'
   | 'ref'
+
+export type RuntimePackageInternal<T extends Record<string, string>, C> = {
+  name: string
+  exports: T
+  content: C
+}
+
+export type RuntimePackage<Exports extends Record<string, string>, Content> = {
+  name: string
+  exports: Exports
+  imports: Record<keyof Exports, string | [string, string]>
+  content: Content
+}

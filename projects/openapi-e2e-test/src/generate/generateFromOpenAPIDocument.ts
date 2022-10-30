@@ -10,7 +10,7 @@ import {
   generator,
   loggers,
 } from '@oats-ts/openapi'
-import { overrides } from './overrides'
+import { importReplacerOverrides, presetOverrides } from './overrides'
 
 export async function generateFromOpenAPIDocument(
   path: string,
@@ -26,7 +26,8 @@ export async function generateFromOpenAPIDocument(
       generator: generator({
         nameProvider: nameProviders.default(),
         pathProvider: pathProviders[pathProviderKind](codePath),
-        children: presets.fullStack(overrides[path] ?? {}),
+        importReplacer: importReplacerOverrides[path],
+        children: presets.fullStack(presetOverrides[path] ?? {}),
       }),
       writer: writers.typescript.file({
         format: formatters.prettier({
