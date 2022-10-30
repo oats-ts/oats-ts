@@ -68,10 +68,7 @@ export class ResponseHeadersSerializersGenerator extends OperationBasedCodeGener
   protected getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
     const headersByStatus = getResponseHeaders(data.operation, this.context)
     return [
-      getNamedImports(packages.openApiParameterSerialization.name, [
-        this.paramsPkg.imports.dsl,
-        this.paramsPkg.imports.serializers,
-      ]),
+      getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.dsl, this.paramsPkg.imports.serializers]),
       ...flatMap(entries(headersByStatus), ([statusCode]) =>
         this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
       ),

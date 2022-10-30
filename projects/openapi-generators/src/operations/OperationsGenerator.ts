@@ -90,7 +90,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
 
   protected getImportDeclarations(path: string, item: EnhancedOperation): ImportDeclaration[] {
     return [
-      getNamedImports(this.httpPkg.name, [this.httpPkg.exports.RawHttpRequest, this.httpPkg.exports.ClientAdapter]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.RawHttpRequest, this.httpPkg.imports.ClientAdapter]),
       ...this.context.dependenciesOf(path, item.operation, 'oats/request-type'),
       ...this.context.dependenciesOf(path, item.operation, 'oats/response-type'),
       ...this.context.dependenciesOf(path, item.operation, 'oats/path-serializer'),
