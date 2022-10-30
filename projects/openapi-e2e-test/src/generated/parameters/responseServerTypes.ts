@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { Cookies as _Cookies } from '@oats-ts/openapi-http'
+import { Cookies as _Cookies } from '@oats-ts/openapi-runtime'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 import { SimpleResponseHeaderParameters200ResponseHeaderParameters } from './responseHeaderTypes'
 import {

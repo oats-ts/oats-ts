@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { validators } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 import { appErrorTypeValidator, bookTypeValidator } from './typeValidators'
 
 export const addBookResponseBodyValidator = {

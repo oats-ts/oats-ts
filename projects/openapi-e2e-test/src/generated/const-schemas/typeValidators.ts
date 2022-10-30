@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/const-schemas.json
  */
 
-import { validators } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
 export const arrayLiteralTypeTypeValidator = validators.array(
   validators.tuple(

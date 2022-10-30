@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { CorsConfiguration as _CorsConfiguration } from '@oats-ts/openapi-http'
+import { CorsConfiguration as _CorsConfiguration } from '@oats-ts/openapi-runtime'
 
 export const parametersCorsConfiguration: _CorsConfiguration = {
   '/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}':

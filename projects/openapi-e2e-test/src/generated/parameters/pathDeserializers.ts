@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { deserializers as _deserializers, dsl as _dsl } from '@oats-ts/openapi-parameter-serialization'
+import { deserializers as _deserializers, dsl as _dsl } from '@oats-ts/openapi-runtime'
 import {
   LabelPathParametersPathParameters,
   MatrixPathParametersPathParameters,

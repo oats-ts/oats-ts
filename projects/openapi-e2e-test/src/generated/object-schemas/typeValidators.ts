@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/object-schemas.json
  */
 
-import { validators } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
 export const objectWithNestedTypeFieldsTypeTypeValidator = validators.object(
   validators.shape({

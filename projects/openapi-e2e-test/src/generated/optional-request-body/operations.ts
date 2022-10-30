@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
 import { OptionalRequestBodyRequest } from './requestTypes'
 import { optionalRequestBodyResponseBodyValidator } from './responseBodyValidators'
 import { OptionalRequestBodyResponse } from './responseTypes'

@@ -29,6 +29,7 @@
     "@oats-ts/openapi-express-server-adapter": "0.0.42",
     "@oats-ts/openapi-fetch-client-adapter": "0.0.42",
     "@oats-ts/openapi-generators": "0.0.42",
+    "@oats-ts/openapi-runtime": "0.0.42",
     "@oats-ts/openapi-http": "0.0.42",
     "@oats-ts/openapi-parameter-serialization": "0.0.42",
     "@oats-ts/try": "0.0.42",

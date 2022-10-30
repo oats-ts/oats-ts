@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { validators } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
 export const deleteMethodResponseBodyValidator = {
   200: { 'application/json': validators.object(validators.shape({ methodUsed: validators.string() })) },

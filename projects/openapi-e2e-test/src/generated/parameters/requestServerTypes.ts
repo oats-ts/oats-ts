@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { Try as _Try } from '@oats-ts/try'
+import { Try as _Try } from '@oats-ts/openapi-runtime'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 import {
   LabelPathParametersPathParameters,

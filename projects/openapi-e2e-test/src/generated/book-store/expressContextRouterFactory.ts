@@ -5,7 +5,7 @@
  */
 
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter } from '@oats-ts/openapi-http'
+import { ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { BookStoreApi } from './apiType'
 

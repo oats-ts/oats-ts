@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { validators as _validators } from '@oats-ts/validators'
+import { validators as _validators } from '@oats-ts/openapi-runtime'
 import { simpleResponseHeaderParametersTypeValidator } from './typeValidators'
 
 export const simpleResponseHeaderParametersRequestBodyValidator = {

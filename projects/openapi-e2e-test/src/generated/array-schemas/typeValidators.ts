@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/array-schemas.json
  */
 
-import { validators } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
 export const arrayArrayTypeTypeValidator = validators.array(
   validators.items(validators.array(validators.items(validators.string()))),

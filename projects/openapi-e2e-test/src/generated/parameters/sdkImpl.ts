@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { ClientAdapter as _ClientAdapter } from '@oats-ts/openapi-http'
+import { ClientAdapter as _ClientAdapter } from '@oats-ts/openapi-runtime'
 import {
   deepObjectQueryParameters,
   formCookieParameters,

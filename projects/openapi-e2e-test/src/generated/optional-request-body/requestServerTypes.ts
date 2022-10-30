@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { Try } from '@oats-ts/try'
+import { Try } from '@oats-ts/openapi-runtime'
 
 export type OptionalRequestBodyServerRequest = {
   mimeType?: 'application/json'

@@ -1,4 +1,4 @@
-import { HasRequestBody, HttpResponse } from '@oats-ts/openapi-http'
+import { HttpResponse } from '@oats-ts/openapi-http'
 import { isFailure, Try } from '@oats-ts/try'
 import { BodiesApi } from '../../generated/bodies/apiType'
 import {
@@ -33,7 +33,7 @@ import {
 } from '../../generated/bodies/responseServerTypes'
 
 export class BodiesApiImpl implements BodiesApi {
-  async respond(request: HasRequestBody<any, Try<any>>): Promise<HttpResponse<any, 200, any, undefined>> {
+  async respond(request: { body: Try<any>; mimeType: string }): Promise<HttpResponse<any, 200, any, undefined>> {
     if (isFailure(request.body)) {
       console.error(request.body.issues)
       throw new TypeError(JSON.stringify(request.body.issues))

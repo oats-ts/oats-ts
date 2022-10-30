@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { Try } from '@oats-ts/try'
+import { Try } from '@oats-ts/openapi-runtime'
 import { GetBookPathParameters } from './pathTypes'
 import { GetBooksQueryParameters } from './queryTypes'
 import { GetBooksRequestHeaderParameters } from './requestHeaderTypes'

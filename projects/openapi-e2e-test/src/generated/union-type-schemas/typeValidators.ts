@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/union-type-schemas.json
  */
 
-import { validators } from '@oats-ts/validators'
+import { validators } from '@oats-ts/openapi-runtime'
 
 export const inlineObjectUnionTypeTypeValidator = validators.union({
   _0: validators.object(validators.shape({ foo: validators.string() })),

@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { dsl, serializers } from '@oats-ts/openapi-parameter-serialization'
+import { dsl, serializers } from '@oats-ts/openapi-runtime'
 import { GetBooks200ResponseHeaderParameters } from './responseHeaderTypes'
 
 export const getBooksResponseHeadersSerializer = {

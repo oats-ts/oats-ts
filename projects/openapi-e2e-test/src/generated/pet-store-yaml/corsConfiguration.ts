@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { CorsConfiguration } from '@oats-ts/openapi-http'
+import { CorsConfiguration } from '@oats-ts/openapi-runtime'
 
 export const swaggerPetstoreCorsConfiguration: CorsConfiguration = {
   '/pets': {

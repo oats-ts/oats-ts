@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-http'
+import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
 import { getBookPathSerializer } from './pathSerializers'
 import { getBooksQuerySerializer } from './querySerializers'
 import { getBooksRequestHeadersSerializer } from './requestHeaderSerializers'

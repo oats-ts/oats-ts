@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-json.json
  */
 
-import { dsl, serializers } from '@oats-ts/openapi-parameter-serialization'
+import { dsl, serializers } from '@oats-ts/openapi-runtime'
 import { ShowPetByIdPathParameters } from './pathTypes'
 
 export const showPetByIdPathSerializer = serializers.createPathSerializer<ShowPetByIdPathParameters>(

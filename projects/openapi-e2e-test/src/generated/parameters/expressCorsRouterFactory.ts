@@ -5,7 +5,7 @@
  */
 
 import { ExpressToolkit as _ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
-import { ServerAdapter as _ServerAdapter } from '@oats-ts/openapi-http'
+import { ServerAdapter as _ServerAdapter } from '@oats-ts/openapi-runtime'
 import {
   IRouter as _IRouter,
   NextFunction as _NextFunction,
