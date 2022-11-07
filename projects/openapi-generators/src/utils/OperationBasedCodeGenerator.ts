@@ -18,8 +18,8 @@ export abstract class OperationBasedCodeGenerator<Cfg> extends OpenAPIGenerator<
   }
 
   protected getItems(): EnhancedOperation[] {
-    return sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation, this.name()),
+    return sortBy(getEnhancedOperations(this.input.document, this.context()), ({ operation }) =>
+      this.context().nameOf(operation, this.name()),
     )
   }
 

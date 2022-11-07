@@ -1,7 +1,8 @@
 import { entries, isNil, values } from 'lodash'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext, HasSchemas } from './types'
+import { HasSchemas } from './types'
 import { isReferenceObject } from './isReferenceObject'
+import { GeneratorContext } from '@oats-ts/oats-ts'
 
 function collectFromSchema(
   uri: string,
@@ -34,7 +35,7 @@ function collectFromDocuments(
   discriminators: Record<string, string>,
 ): string[] {
   const parents: Set<string> = new Set()
-  for (const document of context.documents) {
+  for (const document of context.documents()) {
     for (const schema of values(document?.components?.schemas || {})) {
       const parentUri = collectFromSchema(uri, schema, context, discriminators)
       if (!isNil(parentUri)) {

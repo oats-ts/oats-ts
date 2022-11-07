@@ -1,7 +1,7 @@
 import { entries, isNil } from 'lodash'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext } from './types'
 import { isReferenceObject } from './isReferenceObject'
+import { GeneratorContext } from '@oats-ts/oats-ts'
 
 function collectInChildren(input: SchemaObject, context: GeneratorContext, schemas: SchemaObject[]) {
   const { items, additionalProperties, properties, oneOf, prefixItems } = input

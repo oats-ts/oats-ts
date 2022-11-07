@@ -36,16 +36,18 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
     const [operations] = this.items
-    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+    return operations?.length > 0
+      ? factory.createTypeReferenceNode(this.context().nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const [operations] = this.items
-    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected async generateItem(): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(this.input.document, this.name())
+    const path = this.context().pathOf(this.input.document, this.name())
     return success(createSourceFile(path, this.getImportDeclarations(path), [this.getRouterFactoryAst()]))
   }
 
@@ -60,7 +62,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
       ]),
       getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ServerAdapter]),
       getNamedImports(this.adapterPkg.name, [this.adapterPkg.imports.ExpressToolkit]),
-      ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context),
+      ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/api-type', [this.input.document], this.context()),
     ]
   }
 
@@ -116,7 +118,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
         undefined,
         factory.createIdentifier(RouterNames.api),
         undefined,
-        factory.createTypeReferenceNode(this.context.referenceOf(this.context.document, 'oats/api-type')),
+        factory.createTypeReferenceNode(this.context().referenceOf(this.context().document(), 'oats/api-type')),
         undefined,
       ),
       factory.createParameterDeclaration(
@@ -138,7 +140,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       undefined,
-      factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
+      factory.createIdentifier(this.context().nameOf(this.context().document(), this.name())),
       undefined,
       this.getFactoryParameters(),
       factory.createTypeReferenceNode(factory.createIdentifier(this.expressPkg.exports.IRouter), undefined),
@@ -201,7 +203,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
             factory.createIdentifier(RouterNames.response),
             factory.createIdentifier(RouterNames.locals),
           ),
-          factory.createStringLiteral(RouterNames.adapterKey(this.context.hashOf(this.context.document))),
+          factory.createStringLiteral(RouterNames.adapterKey(this.context().hashOf(this.context().document()))),
         ),
         factory.createToken(SyntaxKind.EqualsToken),
         factory.createIdentifier(RouterNames.adapter),
@@ -217,7 +219,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
             factory.createIdentifier(RouterNames.response),
             factory.createIdentifier(RouterNames.locals),
           ),
-          factory.createStringLiteral(RouterNames.apiKey(this.context.hashOf(this.context.document))),
+          factory.createStringLiteral(RouterNames.apiKey(this.context().hashOf(this.context().document()))),
         ),
         factory.createToken(SyntaxKind.EqualsToken),
         factory.createIdentifier(RouterNames.api),

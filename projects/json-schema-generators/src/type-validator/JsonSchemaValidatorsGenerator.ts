@@ -35,14 +35,14 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
     super.initialize(init)
     this.validatorsPkg = this.getValidatorPackage()
     this.importProvider = new ValidatorImportProviderImpl(
-      this.context,
+      this.context(),
       this.configuration(),
       this.helper,
       this.type,
       this.getValidatorPackage(),
     )
     this.externalRefImportProvider = new ExternalRefValidatorImportProviderImpl(
-      this.context,
+      this.context(),
       this.configuration(),
       this.helper,
       this.type,
@@ -59,7 +59,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(schema, 'oats/type-validator')
+    const path = this.context().pathOf(schema, 'oats/type-validator')
     return success(
       createSourceFile(path, this.importProvider.getImports(path, schema), [this.getValidatorStatementAst(schema)]),
     )
@@ -71,7 +71,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            this.context.nameOf(schema, this.name()),
+            this.context().nameOf(schema, this.name()),
             undefined,
             undefined,
             this.getRightHandSideValidatorAst(schema),
@@ -131,8 +131,8 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getReferenceTypeValidatorAst(data: ReferenceObject): Expression {
-    const resolved = this.context.dereference(data)
-    const name = this.context.nameOf(resolved, this.name())
+    const resolved = this.context().dereference(data)
+    const name = this.context().nameOf(resolved, this.name())
     if (!isNil(name)) {
       const validator = factory.createIdentifier(name)
       return factory.createCallExpression(this.getValidatorAst('lazy'), undefined, [
@@ -155,7 +155,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
 
   protected getUnionValidatorKey(data: Referenceable<SchemaObject>, schemaIndex: number): string {
     if (this.type.isReferenceObject(data)) {
-      return this.context.nameOf(this.context.dereference(data), 'oats/type')
+      return this.context().nameOf(this.context().dereference(data), 'oats/type')
     } else if (this.type.isStringSchema(data)) {
       return 'string'
     } else if (this.type.isNumberSchema(data)) {
@@ -256,7 +256,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getObjectTypeValidatorAst(data: SchemaObject): Expression {
-    const discriminators = getDiscriminators(data, this.context) || {}
+    const discriminators = getDiscriminators(data, this.context()) || {}
     const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
       factory.createPropertyAssignment(
         safeName(name),
@@ -326,6 +326,6 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getValidatorPackage(): ValidatorsPackage {
-    return packages.openApiRuntime(this.context)
+    return packages.openApiRuntime(this.context())
   }
 }

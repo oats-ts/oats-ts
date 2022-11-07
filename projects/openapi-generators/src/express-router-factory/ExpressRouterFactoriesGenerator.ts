@@ -58,26 +58,26 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression {
-    return factory.createIdentifier(this.context.nameOf(input, this.name()))
+    return factory.createIdentifier(this.context().nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return getModelImports(fromPath, this.id, [input], this.context)
+    return getModelImports(fromPath, this.id, [input], this.context())
   }
 
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
     return success(
-      createSourceFile(this.context.pathOf(item.operation, this.name()), this.getImportDeclarations(item), [
+      createSourceFile(this.context().pathOf(item.operation, this.name()), this.getImportDeclarations(item), [
         this.getExpressRouterFactoryStatement(item),
       ]),
     )
   }
 
   protected getImportDeclarations(operation: EnhancedOperation): ImportDeclaration[] {
-    const path = this.context.pathOf(operation.operation, this.name())
+    const path = this.context().pathOf(operation.operation, this.name())
     const bodyTypesImports = flatMap(
-      values(getRequestBodyContent(operation, this.context)).filter((mediaType) => !isNil(mediaType?.schema)),
-      (mediaType): ImportDeclaration[] => this.context.dependenciesOf(path, mediaType.schema, 'oats/type'),
+      values(getRequestBodyContent(operation, this.context())).filter((mediaType) => !isNil(mediaType?.schema)),
+      (mediaType): ImportDeclaration[] => this.context().dependenciesOf(path, mediaType.schema, 'oats/type'),
     )
     return [
       getNamedImports(this.httpPkg.name, [this.httpPkg.imports.RawHttpResponse, this.httpPkg.imports.ServerAdapter]),
@@ -89,17 +89,25 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
         this.expressPkg.imports.Response,
         this.expressPkg.imports.NextFunction,
       ]),
-      ...this.context.dependenciesOf(path, this.context.document, 'oats/api-type'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/path-deserializer'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/query-deserializer'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/request-headers-deserializer'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/request-body-validator'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/request-server-type'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/response-headers-serializer'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/cookie-deserializer'),
-      ...this.context.dependenciesOf(path, operation.operation, 'oats/set-cookie-serializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, this.context().document(), 'oats/api-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/path-deserializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/query-deserializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(
+        path,
+        operation.operation,
+        'oats/request-headers-deserializer',
+      ),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/request-body-validator'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/request-server-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(
+        path,
+        operation.operation,
+        'oats/response-headers-serializer',
+      ),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/cookie-deserializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/set-cookie-serializer'),
       ...(this.configuration().cors
-        ? this.context.dependenciesOf(path, this.context.document, 'oats/cors-configuration')
+        ? this.context().dependenciesOf<ImportDeclaration>(path, this.context().document(), 'oats/cors-configuration')
         : []),
       ...bodyTypesImports,
     ]
@@ -110,7 +118,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       undefined,
-      this.context.nameOf(data.operation, this.name()),
+      this.context().nameOf(data.operation, this.name()),
       [],
       [
         factory.createParameterDeclaration(
@@ -228,13 +236,13 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
           factory.createVariableDeclaration(
             factory.createIdentifier(RouterNames.api),
             undefined,
-            factory.createTypeReferenceNode(this.context.referenceOf(this.context.document, 'oats/api-type')),
+            factory.createTypeReferenceNode(this.context().referenceOf(this.context().document(), 'oats/api-type')),
             factory.createElementAccessExpression(
               factory.createPropertyAccessExpression(
                 factory.createIdentifier(RouterNames.response),
                 factory.createIdentifier(RouterNames.locals),
               ),
-              factory.createStringLiteral(RouterNames.apiKey(this.context.hashOf(this.context.document))),
+              factory.createStringLiteral(RouterNames.apiKey(this.context().hashOf(this.context().document()))),
             ),
           ),
         ],
@@ -262,7 +270,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                 factory.createIdentifier(RouterNames.response),
                 factory.createIdentifier(RouterNames.locals),
               ),
-              factory.createStringLiteral(RouterNames.adapterKey(this.context.hashOf(this.context.document))),
+              factory.createStringLiteral(RouterNames.adapterKey(this.context().hashOf(this.context().document()))),
             ),
           ),
         ],
@@ -332,7 +340,10 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                   factory.createIdentifier(getterName),
                 ),
                 undefined,
-                [factory.createIdentifier(RouterNames.toolkit), this.context.referenceOf(data.operation, deserializer)],
+                [
+                  factory.createIdentifier(RouterNames.toolkit),
+                  this.context().referenceOf(data.operation, deserializer),
+                ],
               ),
             ),
           ),
@@ -377,10 +388,10 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
 
   protected getBodyType(data: EnhancedOperation): TypeNode {
     const bodyTypes = uniqWith(
-      values(getRequestBodyContent(data, this.context))
+      values(getRequestBodyContent(data, this.context()))
         .map((mediaType) => mediaType.schema)
         .filter((schema) => !isNil(schema))
-        .map((schema) => this.context.referenceOf<TypeNode>(schema, 'oats/type')),
+        .map((schema) => this.context().referenceOf<TypeNode>(schema, 'oats/type')),
       isEqual,
     )
     switch (bodyTypes.length) {
@@ -394,7 +405,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   protected getMimeTypeType(data: EnhancedOperation): TypeNode {
-    const mediaTypes = Array.from(new Set(keys(getRequestBodyContent(data, this.context)))).map(
+    const mediaTypes = Array.from(new Set(keys(getRequestBodyContent(data, this.context())))).map(
       (mediaType): TypeNode => factory.createLiteralTypeNode(factory.createStringLiteral(mediaType)),
     )
     switch (mediaTypes.length) {
@@ -408,12 +419,12 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   protected getRequestBodyStatement(data: EnhancedOperation): Statement | undefined {
-    if (!hasRequestBody(data, this.context)) {
+    if (!hasRequestBody(data, this.context())) {
       return undefined
     }
     const mimeType = this.getMimeTypeType(data)
     const bodyType = this.getBodyType(data)
-    const reqBody = this.context.dereference(data.operation.requestBody, true)
+    const reqBody = this.context().dereference(data.operation.requestBody, true)
 
     return factory.createVariableStatement(
       undefined,
@@ -434,7 +445,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                   factory.createIdentifier(RouterNames.toolkit),
                   reqBody?.required ? factory.createTrue() : factory.createFalse(),
                   factory.createIdentifier(RouterNames.mimeType),
-                  this.context.referenceOf(data.operation, 'oats/request-body-validator'),
+                  this.context().referenceOf(data.operation, 'oats/request-body-validator'),
                 ],
               ),
             ),
@@ -446,7 +457,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   protected getMimeTypeStatement(data: EnhancedOperation): Statement | undefined {
-    if (!hasRequestBody(data, this.context)) {
+    if (!hasRequestBody(data, this.context())) {
       return undefined
     }
     const mimeType = this.getMimeTypeType(data)
@@ -481,9 +492,9 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     const hasQuery = data.query.length > 0
     const hasHeaders = data.header.length > 0
     const hasCookie = data.cookie.length > 0
-    const hasBody = hasRequestBody(data, this.context)
+    const hasBody = hasRequestBody(data, this.context())
 
-    if (!hasInput(data, this.context, true)) {
+    if (!hasInput(data, this.context(), true)) {
       return undefined
     }
 
@@ -515,7 +526,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
             factory.createIdentifier(RouterNames.typedRequest),
             undefined,
             factory.createTypeReferenceNode(
-              this.context.referenceOf(data.operation, 'oats/request-server-type'),
+              this.context().referenceOf(data.operation, 'oats/request-server-type'),
               undefined,
             ),
             factory.createObjectLiteralExpression(properties, true),
@@ -539,10 +550,10 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
                   factory.createIdentifier(RouterNames.api),
-                  this.context.nameOf(data.operation, 'oats/operation'),
+                  this.context().nameOf(data.operation, 'oats/operation'),
                 ),
                 undefined,
-                hasInput(data, this.context, true) ? [factory.createIdentifier(RouterNames.typedRequest)] : [],
+                hasInput(data, this.context(), true) ? [factory.createIdentifier(RouterNames.typedRequest)] : [],
               ),
             ),
           ),
@@ -567,7 +578,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
             data.method === 'delete'
               ? factory.createElementAccessChain(
                   factory.createElementAccessChain(
-                    this.context.referenceOf(this.context.document, 'oats/cors-configuration'),
+                    this.context().referenceOf(this.context().document(), 'oats/cors-configuration'),
                     factory.createToken(SyntaxKind.QuestionDotToken),
                     factory.createStringLiteral(data.url),
                   ),
@@ -576,7 +587,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                 )
               : factory.createPropertyAccessChain(
                   factory.createElementAccessChain(
-                    this.context.referenceOf(this.context.document, 'oats/cors-configuration'),
+                    this.context().referenceOf(this.context().document(), 'oats/cors-configuration'),
                     factory.createToken(SyntaxKind.QuestionDotToken),
                     factory.createStringLiteral(data.url),
                   ),
@@ -642,7 +653,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                       [
                         factory.createIdentifier(RouterNames.toolkit),
                         factory.createIdentifier(RouterNames.typedResponse),
-                        this.context.referenceOf(data.operation, 'oats/response-headers-serializer') ??
+                        this.context().referenceOf(data.operation, 'oats/response-headers-serializer') ??
                           factory.createIdentifier('undefined'),
                         this.configuration().cors
                           ? factory.createIdentifier(RouterNames.corsHeaders)
@@ -697,7 +708,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                             [
                               factory.createIdentifier(RouterNames.toolkit),
                               factory.createIdentifier(RouterNames.typedResponse),
-                              this.context.referenceOf(data.operation, 'oats/set-cookie-serializer') ??
+                              this.context().referenceOf(data.operation, 'oats/set-cookie-serializer') ??
                                 factory.createIdentifier('undefined'),
                             ],
                           ),

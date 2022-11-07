@@ -1,8 +1,8 @@
 import { OpenAPIGenerator } from '../types'
 import { GroupGeneratorConfig } from './types'
-import { GroupGenerator } from '@oats-ts/oats-ts'
+import { OpenAPIGroupGenerator } from './OpenAPIGroupGenerator'
 
 export const group = (config: GroupGeneratorConfig): OpenAPIGenerator => {
   const { name, children, ...globalConfig } = config
-  return new GroupGenerator(name, Array.isArray(children) ? children : [children], globalConfig)
+  return new OpenAPIGroupGenerator(name, Array.isArray(children) ? children : [children], globalConfig)
 }

@@ -1,11 +1,10 @@
-import { GeneratorConfig, GroupGenerator } from '@oats-ts/oats-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { GeneratorConfig } from '@oats-ts/oats-ts'
 import { clone, cloneDeep, merge } from 'lodash'
-import { SourceFile } from 'typescript'
+import { OpenAPIGroupGenerator } from '../group/OpenAPIGroupGenerator'
 import { createOpenAPIGenerators } from './createOpenAPIGenerators'
 import { OpenAPIPresetConfig } from './types'
 
-export class OpenAPIPresetGenerator extends GroupGenerator<OpenAPIReadOutput, SourceFile> {
+export class OpenAPIPresetGenerator extends OpenAPIGroupGenerator {
   public constructor(
     name: string,
     private readonly preset: Readonly<OpenAPIPresetConfig>,

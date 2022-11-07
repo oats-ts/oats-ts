@@ -22,18 +22,18 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
 
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
     const [operations] = this.items
-    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context().nameOf(input, this.name())) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const [operations] = this.items
-    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(
-        this.context.pathOf(this.input.document, this.name()),
+        this.context().pathOf(this.input.document, this.name()),
         [getNamedImports(this.expressPkg.name, [this.expressPkg.imports.IRouter])],
         [this.getRouterFactoriesTypeStatement(operations)],
       ),
@@ -44,7 +44,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
     return factory.createTypeAliasDeclaration(
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      this.context.nameOf(this.context.document, this.name()),
+      this.context().nameOf(this.context().document(), this.name()),
       undefined,
       factory.createTypeLiteralNode(
         operations.map((operation) => {
@@ -68,7 +68,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
           )
           return factory.createPropertySignature(
             undefined,
-            this.context.nameOf(operation.operation, 'oats/express-router-factory'),
+            this.context().nameOf(operation.operation, 'oats/express-router-factory'),
             undefined,
             fieldType,
           )

@@ -21,8 +21,8 @@ export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPIGenerator<C
   }
 
   protected getItems(): [] | [EnhancedOperation[]] {
-    const operations = sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation),
+    const operations = sortBy(getEnhancedOperations(this.input.document, this.context()), ({ operation }) =>
+      this.context().nameOf(operation),
     )
     return this.shouldGenerate(operations) ? [operations] : []
   }

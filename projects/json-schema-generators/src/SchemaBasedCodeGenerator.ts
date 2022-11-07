@@ -23,7 +23,7 @@ export abstract class SchemaBasedCodeGenerator<T extends ReadOutput<HasSchemas>,
   public initialize(init: GeneratorInit<T, SourceFile>): void {
     super.initialize(init)
     this.type = new TypeDiscriminatorImpl()
-    this.helper = new TraversalHelperImpl(this.context)
+    this.helper = new TraversalHelperImpl(this.context())
   }
 
   protected createContext(): JsonSchemaGeneratorContext {
@@ -31,6 +31,6 @@ export abstract class SchemaBasedCodeGenerator<T extends ReadOutput<HasSchemas>,
   }
 
   protected getItems(): Referenceable<SchemaObject>[] {
-    return sortBy(getNamedSchemas(this.context), (schema) => this.context.nameOf(schema, this.name()))
+    return sortBy(getNamedSchemas(this.context()), (schema) => this.context().nameOf(schema, this.name()))
   }
 }

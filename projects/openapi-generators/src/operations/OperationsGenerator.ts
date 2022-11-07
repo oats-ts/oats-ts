@@ -65,35 +65,35 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression {
-    return factory.createIdentifier(this.context.nameOf(input, this.name()))
+    return factory.createIdentifier(this.context().nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return getModelImports(fromPath, this.name(), [input], this.context)
+    return getModelImports(fromPath, this.name(), [input], this.context())
   }
 
   protected async generateItem(item: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(item.operation, 'oats/operation')
+    const path = this.context().pathOf(item.operation, 'oats/operation')
     return success(createSourceFile(path, this.getImportDeclarations(path, item), [this.getOperationFunctionAst(item)]))
   }
 
   protected getImportDeclarations(path: string, item: EnhancedOperation): ImportDeclaration[] {
     return [
       getNamedImports(this.httpPkg.name, [this.httpPkg.imports.RawHttpRequest, this.httpPkg.imports.ClientAdapter]),
-      ...this.context.dependenciesOf(path, item.operation, 'oats/request-type'),
-      ...this.context.dependenciesOf(path, item.operation, 'oats/response-type'),
-      ...this.context.dependenciesOf(path, item.operation, 'oats/path-serializer'),
-      ...this.context.dependenciesOf(path, item.operation, 'oats/query-serializer'),
-      ...this.context.dependenciesOf(path, item.operation, 'oats/request-headers-serializer'),
-      ...this.context.dependenciesOf(path, item.operation, 'oats/response-headers-deserializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/path-serializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/query-serializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-headers-serializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-headers-deserializer'),
       ...(this.configuration().validate
-        ? this.context.dependenciesOf(path, item.operation, 'oats/response-body-validator')
+        ? this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-body-validator')
         : []),
       ...(this.configuration().sendCookieHeader
-        ? [...this.context.dependenciesOf(path, item.operation, 'oats/cookie-serializer')]
+        ? [...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/cookie-serializer')]
         : []),
       ...(this.configuration().parseSetCookieHeaders
-        ? [...this.context.dependenciesOf(path, item.operation, 'oats/set-cookie-deserializer')]
+        ? [...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/set-cookie-deserializer')]
         : []),
     ]
   }
@@ -101,8 +101,8 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   protected getOperationFunctionAst(data: EnhancedOperation): Statement {
     const { operation } = data
 
-    const responseType = this.context.referenceOf<TypeReferenceNode>(operation, 'oats/response-type')
-    const requestType = this.context.referenceOf<TypeReferenceNode>(operation, 'oats/request-type')
+    const responseType = this.context().referenceOf<TypeReferenceNode>(operation, 'oats/response-type')
+    const requestType = this.context().referenceOf<TypeReferenceNode>(operation, 'oats/request-type')
     const params: ParameterDeclaration[] = [
       ...(isNil(requestType)
         ? []
@@ -121,7 +121,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
       undefined,
-      this.context.nameOf(operation, 'oats/operation'),
+      this.context().nameOf(operation, 'oats/operation'),
       [],
       params,
       factory.createTypeReferenceNode('Promise', [
@@ -160,7 +160,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           [
             factory.createShorthandPropertyAssignment(factory.createIdentifier(OperationNames.mimeType), undefined),
             factory.createShorthandPropertyAssignment(factory.createIdentifier(OperationNames.statusCode), undefined),
-            ...(hasResponseHeaders(data.operation, this.context)
+            ...(hasResponseHeaders(data.operation, this.context())
               ? [
                   factory.createPropertyAssignment(
                     factory.createIdentifier(OperationNames.headers),
@@ -183,7 +183,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           ],
           true,
         ),
-        factory.createTypeReferenceNode(this.context.referenceOf(data.operation, 'oats/response-type'), undefined),
+        factory.createTypeReferenceNode(this.context().referenceOf(data.operation, 'oats/response-type'), undefined),
       ),
     )
   }
@@ -208,8 +208,8 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                   factory.createIdentifier(OperationNames.rawResponse),
                   factory.createIdentifier(OperationNames.statusCode),
                   factory.createIdentifier(OperationNames.mimeType),
-                  this.configuration().validate && hasResponses(data.operation, this.context)
-                    ? this.context.referenceOf(data.operation, 'oats/response-body-validator')
+                  this.configuration().validate && hasResponses(data.operation, this.context())
+                    ? this.context().referenceOf(data.operation, 'oats/response-body-validator')
                     : factory.createIdentifier('undefined'),
                 ],
               ),
@@ -242,7 +242,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                 undefined,
                 [
                   factory.createIdentifier(OperationNames.rawResponse),
-                  this.context.referenceOf(data.operation, 'oats/set-cookie-deserializer'),
+                  this.context().referenceOf(data.operation, 'oats/set-cookie-deserializer'),
                 ],
               ),
             ),
@@ -254,7 +254,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getResponseHeadersStatement(data: EnhancedOperation): Statement | undefined {
-    if (!hasResponseHeaders(data.operation, this.context)) {
+    if (!hasResponseHeaders(data.operation, this.context())) {
       return undefined
     }
     return factory.createVariableStatement(
@@ -275,8 +275,8 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                 [
                   factory.createIdentifier(OperationNames.rawResponse),
                   factory.createIdentifier(OperationNames.statusCode),
-                  hasResponseHeaders(data.operation, this.context)
-                    ? this.context.referenceOf(data.operation, 'oats/response-headers-deserializer')
+                  hasResponseHeaders(data.operation, this.context())
+                    ? this.context().referenceOf(data.operation, 'oats/response-headers-deserializer')
                     : factory.createIdentifier('undefined'),
                 ],
               ),
@@ -385,7 +385,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                   factory.createIdentifier(OperationNames.method),
                   factory.createStringLiteral(data.method),
                 ),
-                ...(hasRequestBody(data, this.context)
+                ...(hasRequestBody(data, this.context())
                   ? [
                       factory.createPropertyAssignment(
                         factory.createIdentifier(OperationNames.body),
@@ -408,7 +408,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getRequestBodyStatement(data: EnhancedOperation): Statement | undefined {
-    if (!hasRequestBody(data, this.context)) {
+    if (!hasRequestBody(data, this.context())) {
       return undefined
     }
     return factory.createVariableStatement(
@@ -468,7 +468,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                         factory.createIdentifier(OperationNames.headers),
                       )
                     : factory.createIdentifier('undefined'),
-                  hasRequestBody(data, this.context)
+                  hasRequestBody(data, this.context())
                     ? factory.createPropertyAccessExpression(
                         factory.createIdentifier(OperationNames.request),
                         factory.createIdentifier(OperationNames.mimeType),
@@ -478,7 +478,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                     ? factory.createIdentifier(OperationNames.cookies)
                     : factory.createIdentifier('undefined'),
                   data.header.length > 0
-                    ? this.context.referenceOf(data.operation, 'oats/request-headers-serializer')
+                    ? this.context().referenceOf(data.operation, 'oats/request-headers-serializer')
                     : factory.createIdentifier('undefined'),
                 ],
               ),
@@ -514,7 +514,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                     factory.createIdentifier(OperationNames.request),
                     factory.createIdentifier(OperationNames.cookies),
                   ),
-                  this.context.referenceOf(data.operation, 'oats/cookie-serializer'),
+                  this.context().referenceOf(data.operation, 'oats/cookie-serializer'),
                 ],
               ),
             ),
@@ -583,7 +583,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                     factory.createIdentifier(OperationNames.request),
                     factory.createIdentifier(OperationNames.query),
                   ),
-                  this.context.referenceOf(data.operation, 'oats/query-serializer'),
+                  this.context().referenceOf(data.operation, 'oats/query-serializer'),
                 ],
               ),
             ),
@@ -618,7 +618,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                     factory.createIdentifier(OperationNames.request),
                     factory.createIdentifier(OperationNames.path),
                   ),
-                  this.context.referenceOf(data.operation, 'oats/path-serializer'),
+                  this.context().referenceOf(data.operation, 'oats/path-serializer'),
                 ],
               ),
             ),

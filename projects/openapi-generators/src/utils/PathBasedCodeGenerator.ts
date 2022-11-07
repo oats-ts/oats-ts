@@ -16,7 +16,7 @@ export abstract class PathBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, 
   }
 
   protected getItems(): EnhancedPathItem[][] {
-    const paths = getEnhancedPathItems(this.input.document, this.context).filter(
+    const paths = getEnhancedPathItems(this.input.document, this.context()).filter(
       ({ operations }) => operations.length > 0,
     )
     return [paths].filter((p) => p.length > 0)

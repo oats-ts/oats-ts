@@ -1,11 +1,11 @@
 import { flatMap, isNil, uniqBy } from 'lodash'
-import { CodeGenerator, GeneratorConfig, RuntimeDependency } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorContext, RuntimeDependency } from './typings'
 import { Try, success, failure } from '@oats-ts/try'
 import { BaseGenerator } from './BaseGenerator'
 import { toSimpleGeneratorResult } from './toSimpleGeneratorResult'
 import { CompositeGeneratorResult, compositeResult } from './GeneratorResult'
 
-export class GroupGenerator<R, G> extends BaseGenerator<R, G, {}> {
+export abstract class GroupGenerator<R, G, Ctx extends GeneratorContext> extends BaseGenerator<R, G, {}, Ctx> {
   private readonly _name: string
 
   public children: ReadonlyArray<CodeGenerator<R, G>>

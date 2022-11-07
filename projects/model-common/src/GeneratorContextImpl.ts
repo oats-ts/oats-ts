@@ -1,17 +1,26 @@
-import { CodeGenerator, GeneratorConfig, NameProviderHelper, PathProviderHelper } from '@oats-ts/oats-ts'
+import {
+  CodeGenerator,
+  GeneratorConfig,
+  NameProviderHelper,
+  PathProviderHelper,
+  GeneratorContext,
+} from '@oats-ts/oats-ts'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
-import { ImportDeclaration } from 'typescript'
 import { isReferenceObject } from './isReferenceObject'
-import { GeneratorContext, ReadOutput } from './types'
+import { LocalNameDefaults, ReadOutput } from './types'
 import { NameProviderHelperImpl } from './NameProviderHelperImpl'
 import { PathProviderHelperImpl } from './PathProviderHelperImpl'
 
-export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
-  implements GeneratorContext<Doc, Target>
+export class GeneratorContextImpl<
+  Doc,
+  Cfg extends GeneratorConfig,
+  Target extends string,
+  Locals extends LocalNameDefaults = {},
+> implements GeneratorContext<Doc, Target, keyof Locals & string>
 {
-  public readonly document: Doc
-  public readonly documents: Doc[]
+  public readonly _document: Doc
+  public readonly _documents: Doc[]
   private nameProviderHelper: NameProviderHelper
   private pathProviderHelper: PathProviderHelper
 
@@ -20,12 +29,50 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     private data: ReadOutput<Doc>,
     readonly config: Cfg,
     readonly generators: CodeGenerator<any, any>[],
+    readonly locals: Locals,
   ) {
-    this.document = data.document
-    this.documents = Array.from(data.documents.values())
+    this._document = data.document
+    this._documents = Array.from(data.documents.values())
     this.nameProviderHelper = new NameProviderHelperImpl(data)
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
   }
+
+  public document(): Doc {
+    return this._document
+  }
+
+  public documents(): Doc[] {
+    return this._documents
+  }
+
+  private getDefaultName(input: any | undefined, local: (keyof Locals & string) | (string & Record<never, never>)) {
+    const defaultName = this.locals[local]
+    if (isNil(defaultName)) {
+      throw new TypeError(`Unexpected local key "${local}"!`)
+    } else if (typeof defaultName === 'string') {
+      return defaultName
+    } else {
+      return defaultName(input, this.pathProviderHelper)
+    }
+  }
+
+  public localNameOf(
+    input: any | undefined,
+    target: Target,
+    local: (keyof Locals & string) | (string & Record<never, never>),
+  ): string {
+    const generator = this.owner.resolve(target)
+    if (isNil(generator)) {
+      throw new Error(`"${this.owner.name()}" requested to resolve generator "${target}", which cannot be found.`)
+    }
+    const config = generator.globalConfiguration()
+    const localNameProvider = config.localNameProvider
+    if (isNil(localNameProvider)) {
+      return this.getDefaultName(input, local)
+    }
+    return localNameProvider(input, target, local, this.pathProviderHelper) ?? this.getDefaultName(input, local)
+  }
+
   public byUri<T>(uri: string): T {
     return this.data.uriToObject.get(uri)
   }
@@ -83,7 +130,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return hash
   }
 
-  public dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[] {
+  public dependenciesOf<T>(fromPath: string, input: any, target: Target): T[] {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.dependenciesOf(fromPath, input) ?? []

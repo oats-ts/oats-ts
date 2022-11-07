@@ -17,6 +17,7 @@ export class OpenAPIValidatorContextImpl
       data,
       { noEmit: true, nameProvider: (input, name) => name ?? '', pathProvider: (input, name) => '' },
       [],
+      {},
     )
   }
   public override dependenciesOf = () => {

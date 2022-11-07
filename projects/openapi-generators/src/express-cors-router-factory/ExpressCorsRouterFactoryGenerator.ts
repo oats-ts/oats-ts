@@ -39,16 +39,16 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
 
   public referenceOf(input: OpenAPIObject): Identifier | undefined {
     const [paths] = this.items
-    return paths?.length > 0 ? factory.createIdentifier(this.context.nameOf(input, this.name())) : undefined
+    return paths?.length > 0 ? factory.createIdentifier(this.context().nameOf(input, this.name())) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: any): ImportDeclaration[] {
     const [paths] = this.items
-    return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   public async generateItem(paths: EnhancedPathItem[]): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(this.input.document, this.name())
+    const path = this.context().pathOf(this.input.document, this.name())
     return success(
       createSourceFile(path, this.getImportDeclarations(path), [this.getCorsRouterFactoryStatement(paths)]),
     )
@@ -59,7 +59,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       undefined,
-      factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
+      factory.createIdentifier(this.context().nameOf(this.context().document(), this.name())),
       undefined,
       [
         factory.createParameterDeclaration(
@@ -220,7 +220,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
                 factory.createIdentifier(RouterNames.response),
                 factory.createIdentifier(RouterNames.locals),
               ),
-              factory.createStringLiteral(RouterNames.adapterKey(this.context.hashOf(this.context.document))),
+              factory.createStringLiteral(RouterNames.adapterKey(this.context().hashOf(this.context().document()))),
             ),
           ),
         ],
@@ -299,7 +299,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
               factory.createToken(SyntaxKind.ColonToken),
               factory.createElementAccessChain(
                 factory.createElementAccessChain(
-                  this.context.referenceOf(this.context.document, 'oats/cors-configuration'),
+                  this.context().referenceOf(this.context().document(), 'oats/cors-configuration'),
                   factory.createToken(SyntaxKind.QuestionDotToken),
                   factory.createStringLiteral(data.url),
                 ),
@@ -357,8 +357,8 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
       ...getModelImports<OpenAPIGeneratorTarget>(
         path,
         'oats/cors-configuration',
-        [this.context.document],
-        this.context,
+        [this.context().document()],
+        this.context(),
       ),
     ]
   }

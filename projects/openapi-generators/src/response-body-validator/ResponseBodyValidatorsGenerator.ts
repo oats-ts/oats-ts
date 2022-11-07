@@ -31,17 +31,17 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasResponses(input, this.context)
-      ? factory.createIdentifier(this.context.nameOf(input, this.name()))
+    return hasResponses(input, this.context())
+      ? factory.createIdentifier(this.context().nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return hasResponses(input, this.context()) ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(data.operation, 'oats/response-body-validator')
+    const path = this.context().pathOf(data.operation, 'oats/response-body-validator')
     return success(
       createSourceFile(path, this.getImportDeclarations(path, data), [this.getResponseBodyValidatorAst(data)]),
     )
@@ -49,8 +49,8 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
 
   protected getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
     return [
-      ...flatMap(getEnhancedResponses(data.operation, this.context), ({ schema }) =>
-        this.context.dependenciesOf(path, schema, 'oats/type-validator'),
+      ...flatMap(getEnhancedResponses(data.operation, this.context()), ({ schema }) =>
+        this.context().dependenciesOf<ImportDeclaration>(path, schema, 'oats/type-validator'),
       ),
     ]
   }
@@ -61,7 +61,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            this.context.nameOf(data.operation, this.name()),
+            this.context().nameOf(data.operation, this.name()),
             undefined,
             undefined,
             factory.createAsExpression(
@@ -83,7 +83,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
         factory.createPropertyAssignment(
           factory.createNumericLiteral(Number(statusCode)),
           factory.createObjectLiteralExpression(
-            this.getContentTypeBasedValidatorsAst(true, this.context.dereference(response)?.content || {}),
+            this.getContentTypeBasedValidatorsAst(true, this.context().dereference(response)?.content || {}),
           ),
         ),
     )
@@ -92,7 +92,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
         factory.createPropertyAssignment(
           'default',
           factory.createObjectLiteralExpression(
-            this.getContentTypeBasedValidatorsAst(true, this.context.dereference(defaultResponse).content || {}),
+            this.getContentTypeBasedValidatorsAst(true, this.context().dereference(defaultResponse).content || {}),
           ),
         ),
       )
@@ -102,7 +102,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
 
   protected getContentTypeBasedValidatorsAst(required: boolean, content: ContentObject): PropertyAssignment[] {
     return entries(content || {}).map(([contentType, mediaTypeObj]) => {
-      const expression: Expression = this.context.referenceOf(mediaTypeObj.schema, 'oats/type-validator')
+      const expression: Expression = this.context().referenceOf(mediaTypeObj.schema, 'oats/type-validator')
       const validatorExpr = required
         ? expression
         : factory.createCallExpression(

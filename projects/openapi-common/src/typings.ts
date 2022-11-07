@@ -1,8 +1,7 @@
 import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
+import { GeneratorContext, NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
 import { HttpMethod } from '@oats-ts/openapi-http'
-import { GeneratorContext } from '@oats-ts/model-common'
 
 /**
  * @param input The object (schema, operation, parameter, etc).

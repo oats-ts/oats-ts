@@ -30,7 +30,7 @@ export function validator(
     const config = createOpenAPIValidatorConfig(configuration)
     const context = new OpenAPIValidatorContextImpl(data)
     const validationResult = await Promise.allSettled(
-      context.documents.map((document) => validateDocument(document, context, config, emitter)),
+      context.documents().map((document) => validateDocument(document, context, config, emitter)),
     )
     const results = fluent(fromArray(validationResult.map(fromPromiseSettledResult))).map((data) =>
       flatMap(data).sort(severityComparator),

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { CodeGenerator, GeneratorConfig, GeneratorInit, RuntimeDependency } from './typings'
+import { CodeGenerator, GeneratorConfig, GeneratorContext, GeneratorInit, RuntimeDependency } from './typings'
 import { GeneratorEventEmitter } from './events'
 import { isSuccess, Try } from '@oats-ts/try'
 import { isNil } from 'lodash'
@@ -11,7 +11,9 @@ const emptyConfig: Partial<GeneratorConfig> = {
   pathProvider: undefined,
 }
 
-export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
+export abstract class BaseGenerator<R, G, C, Ctx extends GeneratorContext = GeneratorContext>
+  implements CodeGenerator<R, G, C, Ctx>
+{
   public readonly id = nanoid(6)
 
   protected _parent?: CodeGenerator<R, G>
@@ -23,10 +25,12 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   private readonly globalConfigOverride: Partial<GeneratorConfig>
 
   public constructor(config: C & Partial<GeneratorConfig>) {
-    const { nameProvider, pathProvider, noEmit, ...cfg } = config ?? emptyConfig
+    const { nameProvider, pathProvider, importReplacer, localNameProvider, noEmit, ...cfg } = config ?? emptyConfig
     this.globalConfigOverride = {
       ...(nameProvider ? { nameProvider } : {}),
       ...(pathProvider ? { pathProvider } : {}),
+      ...(importReplacer ? { importReplacer } : {}),
+      ...(localNameProvider ? { localNameProvider } : {}),
       noEmit: Boolean(noEmit),
     }
     this.config = cfg as C
@@ -86,5 +90,6 @@ export abstract class BaseGenerator<R, G, C> implements CodeGenerator<R, G, C> {
   public abstract name(): string
   public abstract produces(): string[]
   public abstract consumes(): string[]
+  public abstract context(): Ctx
   public abstract runtimeDependencies(): RuntimeDependency[]
 }

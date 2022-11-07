@@ -8,10 +8,7 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": [
-    "LICENSE.txt",
-    "lib"
-  ],
+  "files": ["LICENSE.txt", "lib"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oats-ts/oats-ts.git"
@@ -47,6 +44,7 @@
     "@oats-ts/validators": "0.0.43",
     "chalk": "4.1.1",
     "lodash": "4.17.21",
-    "typescript": "4.7.4"
+    "typescript": "4.7.4",
+    "camelcase": "6.2.0"
   }
 }

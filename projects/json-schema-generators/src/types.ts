@@ -1,5 +1,6 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext, ReadOutput, HasSchemas } from '@oats-ts/model-common'
+import { ReadOutput, HasSchemas } from '@oats-ts/model-common'
+import { GeneratorContext } from '@oats-ts/oats-ts'
 
 export type JsonSchemaGeneratorTarget = 'oats/type' | 'oats/type-guard' | 'oats/type-validator'
 

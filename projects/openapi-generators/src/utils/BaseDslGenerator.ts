@@ -27,7 +27,7 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(data.operation, this.name())
+    const path = this.context().pathOf(data.operation, this.name())
     return success(
       createSourceFile(path, this.getImports(path, data), [
         factory.createVariableStatement(
@@ -35,7 +35,7 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
           factory.createVariableDeclarationList(
             [
               factory.createVariableDeclaration(
-                this.context.nameOf(data.operation, this.name()),
+                this.context().nameOf(data.operation, this.name()),
                 undefined,
                 undefined,
                 factory.createCallExpression(
@@ -43,9 +43,9 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
                     factory.createIdentifier(this.getRuntimeFactoryName()),
                     this.getFactoryFunctionName(),
                   ),
-                  [this.context.referenceOf(data.operation, this.getTypeGeneratorTarget())],
+                  [this.context().referenceOf(data.operation, this.getTypeGeneratorTarget())],
                   [
-                    getDslObjectAst(this.getParameters(data), this.context, this.paramsPkg),
+                    getDslObjectAst(this.getParameters(data), this.context(), this.paramsPkg),
                     ...this.getExtraFactoryFunctionParameters(data),
                   ],
                 ),
@@ -61,7 +61,7 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
   protected getImports(path: string, data: EnhancedOperation): ImportDeclaration[] {
     return [
       getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.dsl, this.getRuntimeImport()]),
-      ...this.context.dependenciesOf(path, data.operation, this.getTypeGeneratorTarget()),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, data.operation, this.getTypeGeneratorTarget()),
     ]
   }
 
@@ -71,11 +71,11 @@ export abstract class BaseDslGenerator<T = {}> extends OperationBasedCodeGenerat
 
   public referenceOf(input: OperationObject): Expression | undefined {
     const params = this.getParameters(this.enhanced(input))
-    return isEmpty(params) ? undefined : factory.createIdentifier(this.context.nameOf(input, this.name()))
+    return isEmpty(params) ? undefined : factory.createIdentifier(this.context().nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
     const params = this.getParameters(this.enhanced(input))
-    return isEmpty(params) ? [] : getModelImports(fromPath, this.name(), [input], this.context)
+    return isEmpty(params) ? [] : getModelImports(fromPath, this.name(), [input], this.context())
   }
 }
