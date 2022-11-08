@@ -5,7 +5,7 @@ import {
   hasRequestBody,
   hasInput,
 } from '@oats-ts/openapi-common'
-import { ExpressRouterFactoriesGeneratorConfig } from './typings'
+import { ExpressRouterFactoriesGeneratorConfig, ExpressRouterFactoriesLocals } from './typings'
 import { OperationObject } from '@oats-ts/openapi-model'
 import {
   TypeNode,
@@ -23,9 +23,11 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { RouterNames } from '../utils/RouterNames'
+import { ExpressRouterFactoriesDefaultLocals } from './ExpressRouterFactoriesDefaultLocals'
 import { flatMap, isEqual, isNil, keys, uniqWith, values } from 'lodash'
 import { getPathTemplate } from '../utils/getPathTemplate'
+import { LocalNameDefaults } from '@oats-ts/model-common'
+import { RawHttpResponseFields, ServerAdapterMethods, TypedRequestFields } from '../utils/OatsApiNames'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -47,6 +49,10 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       'oats/request-body-validator',
       ...(this.configuration().cors ? cors : []),
     ]
+  }
+
+  protected getDefaultLocals(): LocalNameDefaults {
+    return ExpressRouterFactoriesDefaultLocals
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -125,7 +131,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
           [],
           [],
           undefined,
-          RouterNames.router,
+          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'router'),
           factory.createToken(SyntaxKind.QuestionToken),
           factory.createUnionTypeNode([
             factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
@@ -140,7 +146,9 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
 
   protected getExpressRouterExpressionAst(data: EnhancedOperation): Expression {
     const routerAst = factory.createBinaryExpression(
-      factory.createIdentifier(RouterNames.router),
+      factory.createIdentifier(
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'router'),
+      ),
       SyntaxKind.QuestionQuestionToken,
       factory.createCallExpression(factory.createIdentifier(this.expressPkg.exports.Router), [], []),
     )
@@ -169,7 +177,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
         [],
         [],
         undefined,
-        RouterNames.request,
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'request'),
         undefined,
         factory.createTypeReferenceNode(this.expressPkg.exports.Request),
       ),
@@ -177,7 +185,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
         [],
         [],
         undefined,
-        RouterNames.response,
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
         undefined,
         factory.createTypeReferenceNode(this.expressPkg.exports.Response),
       ),
@@ -185,7 +193,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
         [],
         [],
         undefined,
-        RouterNames.next,
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'next'),
         undefined,
         factory.createTypeReferenceNode(this.expressPkg.exports.NextFunction),
       ),
@@ -207,7 +215,9 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.toolkit),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+            ),
             undefined,
             factory.createTypeReferenceNode(
               factory.createIdentifier(this.adapterPkg.exports.ExpressToolkit),
@@ -215,9 +225,24 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
             ),
             factory.createObjectLiteralExpression(
               [
-                factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.request), undefined),
-                factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.response), undefined),
-                factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.next), undefined),
+                factory.createShorthandPropertyAssignment(
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'request'),
+                  ),
+                  undefined,
+                ),
+                factory.createShorthandPropertyAssignment(
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
+                  ),
+                  undefined,
+                ),
+                factory.createShorthandPropertyAssignment(
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'next'),
+                  ),
+                  undefined,
+                ),
               ],
               false,
             ),
@@ -234,15 +259,25 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.api),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'api'),
+            ),
             undefined,
             factory.createTypeReferenceNode(this.context().referenceOf(this.context().document(), 'oats/api-type')),
             factory.createElementAccessExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(RouterNames.response),
-                factory.createIdentifier(RouterNames.locals),
+                factory.createIdentifier(
+                  this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
+                ),
+                factory.createIdentifier('locals'),
               ),
-              factory.createStringLiteral(RouterNames.apiKey(this.context().hashOf(this.context().document()))),
+              factory.createStringLiteral(
+                this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                  this.context().document(),
+                  this.name(),
+                  'apiKey',
+                ),
+              ),
             ),
           ),
         ],
@@ -257,7 +292,9 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.adapter),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+            ),
             undefined,
             factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.ServerAdapter), [
               factory.createTypeReferenceNode(
@@ -267,10 +304,18 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
             ]),
             factory.createElementAccessExpression(
               factory.createPropertyAccessExpression(
-                factory.createIdentifier(RouterNames.response),
-                factory.createIdentifier(RouterNames.locals),
+                factory.createIdentifier(
+                  this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
+                ),
+                factory.createIdentifier('locals'),
               ),
-              factory.createStringLiteral(RouterNames.adapterKey(this.context().hashOf(this.context().document()))),
+              factory.createStringLiteral(
+                this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                  this.context().document(),
+                  this.name(),
+                  'adapterKey',
+                ),
+              ),
             ),
           ),
         ],
@@ -298,17 +343,33 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     return factory.createTryStatement(
       factory.createBlock(statements, true),
       factory.createCatchClause(
-        factory.createVariableDeclaration(factory.createIdentifier(RouterNames.error), undefined, undefined, undefined),
+        factory.createVariableDeclaration(
+          factory.createIdentifier(
+            this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'error'),
+          ),
+          undefined,
+          undefined,
+          undefined,
+        ),
         factory.createBlock(
           [
             factory.createExpressionStatement(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(RouterNames.adapter),
-                  factory.createIdentifier(RouterNames.handleError),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ServerAdapterMethods.handleError),
                 ),
                 undefined,
-                [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.error)],
+                [
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                  ),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'error'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -322,7 +383,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   protected getParametersStatementAst(
     data: EnhancedOperation,
     name: string,
-    getterName: string,
+    getterName: keyof typeof ServerAdapterMethods,
     deserializer: OpenAPIGeneratorTarget,
   ): Statement {
     return factory.createVariableStatement(
@@ -336,12 +397,16 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(RouterNames.adapter),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                  ),
                   factory.createIdentifier(getterName),
                 ),
                 undefined,
                 [
-                  factory.createIdentifier(RouterNames.toolkit),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                  ),
                   this.context().referenceOf(data.operation, deserializer),
                 ],
               ),
@@ -357,14 +422,24 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     if (data.query.length === 0) {
       return undefined
     }
-    return this.getParametersStatementAst(data, RouterNames.query, 'getQueryParameters', 'oats/query-deserializer')
+    return this.getParametersStatementAst(
+      data,
+      this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'query'),
+      ServerAdapterMethods.getQueryParameters,
+      'oats/query-deserializer',
+    )
   }
 
   protected getParametersParametersStatement(data: EnhancedOperation): Statement | undefined {
     if (data.path.length === 0) {
       return undefined
     }
-    return this.getParametersStatementAst(data, RouterNames.path, 'getPathParameters', 'oats/path-deserializer')
+    return this.getParametersStatementAst(
+      data,
+      this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'path'),
+      ServerAdapterMethods.getPathParameters,
+      'oats/path-deserializer',
+    )
   }
 
   protected getRequestHeadersParamtersStatement(data: EnhancedOperation): Statement | undefined {
@@ -373,8 +448,8 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     }
     return this.getParametersStatementAst(
       data,
-      RouterNames.headers,
-      'getRequestHeaders',
+      this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'requestHeaders'),
+      ServerAdapterMethods.getRequestHeaders,
       'oats/request-headers-deserializer',
     )
   }
@@ -383,7 +458,12 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     if (data.cookie.length === 0) {
       return undefined
     }
-    return this.getParametersStatementAst(data, RouterNames.cookies, 'getCookieParameters', 'oats/cookie-deserializer')
+    return this.getParametersStatementAst(
+      data,
+      this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'cookies'),
+      ServerAdapterMethods.getCookieParameters,
+      'oats/cookie-deserializer',
+    )
   }
 
   protected getBodyType(data: EnhancedOperation): TypeNode {
@@ -431,20 +511,28 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.body),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'requestBody'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(RouterNames.adapter),
-                  factory.createIdentifier('getRequestBody'),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ServerAdapterMethods.getRequestBody),
                 ),
                 [mimeType, bodyType],
                 [
-                  factory.createIdentifier(RouterNames.toolkit),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                  ),
                   reqBody?.required ? factory.createTrue() : factory.createFalse(),
-                  factory.createIdentifier(RouterNames.mimeType),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'mimeType'),
+                  ),
                   this.context().referenceOf(data.operation, 'oats/request-body-validator'),
                 ],
               ),
@@ -467,17 +555,25 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.mimeType),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'mimeType'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(RouterNames.adapter),
-                  factory.createIdentifier('getMimeType'),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ServerAdapterMethods.getMimeType),
                 ),
                 [mimeType],
-                [factory.createIdentifier(RouterNames.toolkit)],
+                [
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                  ),
+                ],
               ),
             ),
           ),
@@ -498,32 +594,33 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       return undefined
     }
 
-    const properties = [
-      ...(hasPath
-        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.path), undefined)]
-        : []),
-      ...(hasQuery
-        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.query), undefined)]
-        : []),
-      ...(hasHeaders
-        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.headers), undefined)]
-        : []),
-      ...(hasCookie
-        ? [factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.cookies), undefined)]
-        : []),
-      ...(hasBody
-        ? [
-            factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.mimeType), undefined),
-            factory.createShorthandPropertyAssignment(factory.createIdentifier(RouterNames.body), undefined),
-          ]
-        : []),
+    const fields: (keyof typeof TypedRequestFields | undefined)[] = [
+      hasPath ? 'path' : undefined,
+      hasQuery ? 'query' : undefined,
+      hasHeaders ? 'requestHeaders' : undefined,
+      hasCookie ? 'cookies' : undefined,
+      hasBody ? 'mimeType' : undefined,
+      hasBody ? 'body' : undefined,
     ]
+
+    const presentFields = fields.filter((f): f is keyof typeof TypedRequestFields => !isNil(f))
+
+    const properties = presentFields.map((key) => {
+      const fieldName = TypedRequestFields[key]
+      const valueName = this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), key)
+      return fieldName === valueName
+        ? factory.createShorthandPropertyAssignment(fieldName, undefined)
+        : factory.createPropertyAssignment(fieldName, factory.createIdentifier(valueName))
+    })
+
     return factory.createVariableStatement(
       undefined,
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.typedRequest),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'typedRequest'),
+            ),
             undefined,
             factory.createTypeReferenceNode(
               this.context().referenceOf(data.operation, 'oats/request-server-type'),
@@ -543,17 +640,31 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.typedResponse),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'typedResponse'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(RouterNames.api),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'api'),
+                  ),
                   this.context().nameOf(data.operation, 'oats/operation'),
                 ),
                 undefined,
-                hasInput(data, this.context(), true) ? [factory.createIdentifier(RouterNames.typedRequest)] : [],
+                hasInput(data, this.context(), true)
+                  ? [
+                      factory.createIdentifier(
+                        this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                          undefined,
+                          this.name(),
+                          'typedRequest',
+                        ),
+                      ),
+                    ]
+                  : [],
               ),
             ),
           ),
@@ -572,7 +683,9 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.corsConfig),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'corsConfig'),
+            ),
             undefined,
             undefined,
             data.method === 'delete'
@@ -610,17 +723,28 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.corsHeaders),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'corsHeaders'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(RouterNames.adapter),
-                  factory.createIdentifier(RouterNames.getCorsHeaders),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ServerAdapterMethods.getCorsHeaders),
                 ),
                 undefined,
-                [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.corsConfig)],
+                [
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                  ),
+                  factory.createIdentifier(
+                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'corsConfig'),
+                  ),
+                ],
               ),
             ),
           ),
@@ -636,60 +760,98 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterNames.rawResponse),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'rawResponse'),
+            ),
             undefined,
             factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.RawHttpResponse), undefined),
             factory.createObjectLiteralExpression(
               [
                 factory.createPropertyAssignment(
-                  factory.createIdentifier(RouterNames.headers),
+                  RawHttpResponseFields.headers,
                   factory.createAwaitExpression(
                     factory.createCallExpression(
                       factory.createPropertyAccessExpression(
-                        factory.createIdentifier(RouterNames.adapter),
-                        factory.createIdentifier(RouterNames.getResponseHeaders),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                        ),
+                        factory.createIdentifier(ServerAdapterMethods.getResponseHeaders),
                       ),
                       undefined,
                       [
-                        factory.createIdentifier(RouterNames.toolkit),
-                        factory.createIdentifier(RouterNames.typedResponse),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                        ),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                            undefined,
+                            this.name(),
+                            'typedResponse',
+                          ),
+                        ),
                         this.context().referenceOf(data.operation, 'oats/response-headers-serializer') ??
                           factory.createIdentifier('undefined'),
                         this.configuration().cors
-                          ? factory.createIdentifier(RouterNames.corsHeaders)
+                          ? factory.createIdentifier(
+                              this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                                undefined,
+                                this.name(),
+                                'corsHeaders',
+                              ),
+                            )
                           : factory.createIdentifier('undefined'),
                       ],
                     ),
                   ),
                 ),
                 factory.createPropertyAssignment(
-                  factory.createIdentifier(RouterNames.statusCode),
+                  factory.createIdentifier(RawHttpResponseFields.statusCode),
                   factory.createAwaitExpression(
                     factory.createCallExpression(
                       factory.createPropertyAccessExpression(
-                        factory.createIdentifier(RouterNames.adapter),
-                        factory.createIdentifier('getStatusCode'),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                        ),
+                        factory.createIdentifier(ServerAdapterMethods.getStatusCode),
                       ),
                       undefined,
                       [
-                        factory.createIdentifier(RouterNames.toolkit),
-                        factory.createIdentifier(RouterNames.typedResponse),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                        ),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                            undefined,
+                            this.name(),
+                            'typedResponse',
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
                 factory.createPropertyAssignment(
-                  factory.createIdentifier(RouterNames.body),
+                  factory.createIdentifier(RawHttpResponseFields.body),
                   factory.createAwaitExpression(
                     factory.createCallExpression(
                       factory.createPropertyAccessExpression(
-                        factory.createIdentifier(RouterNames.adapter),
-                        factory.createIdentifier('getResponseBody'),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+                        ),
+                        factory.createIdentifier(ServerAdapterMethods.getResponseBody),
                       ),
                       undefined,
                       [
-                        factory.createIdentifier(RouterNames.toolkit),
-                        factory.createIdentifier(RouterNames.typedResponse),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+                        ),
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                            undefined,
+                            this.name(),
+                            'typedResponse',
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -697,17 +859,35 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                 ...(data.cookie.length > 0
                   ? [
                       factory.createPropertyAssignment(
-                        factory.createIdentifier(RouterNames.cookies),
+                        factory.createIdentifier(RawHttpResponseFields.cookies),
                         factory.createAwaitExpression(
                           factory.createCallExpression(
                             factory.createPropertyAccessExpression(
-                              factory.createIdentifier(RouterNames.adapter),
-                              factory.createIdentifier('getResponseCookies'),
+                              factory.createIdentifier(
+                                this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                                  undefined,
+                                  this.name(),
+                                  'adapter',
+                                ),
+                              ),
+                              factory.createIdentifier(ServerAdapterMethods.getResponseCookies),
                             ),
                             undefined,
                             [
-                              factory.createIdentifier(RouterNames.toolkit),
-                              factory.createIdentifier(RouterNames.typedResponse),
+                              factory.createIdentifier(
+                                this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                                  undefined,
+                                  this.name(),
+                                  'toolkit',
+                                ),
+                              ),
+                              factory.createIdentifier(
+                                this.context().localNameOf<ExpressRouterFactoriesLocals>(
+                                  undefined,
+                                  this.name(),
+                                  'typedResponse',
+                                ),
+                              ),
                               this.context().referenceOf(data.operation, 'oats/set-cookie-serializer') ??
                                 factory.createIdentifier('undefined'),
                             ],
@@ -731,11 +911,20 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       factory.createAwaitExpression(
         factory.createCallExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterNames.adapter),
-            factory.createIdentifier(RouterNames.respond),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'adapter'),
+            ),
+            factory.createIdentifier(ServerAdapterMethods.respond),
           ),
           undefined,
-          [factory.createIdentifier(RouterNames.toolkit), factory.createIdentifier(RouterNames.rawResponse)],
+          [
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
+            ),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'rawResponse'),
+            ),
+          ],
         ),
       ),
     )

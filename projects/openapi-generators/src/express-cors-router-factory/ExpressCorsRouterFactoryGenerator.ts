@@ -18,7 +18,7 @@ import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { isNil } from 'lodash'
 import { getPathTemplate } from '../utils/getPathTemplate'
-import { RawResponseFields, ServerAdapterMethods } from '../utils/OatsApiNames'
+import { RawHttpResponseFields, ServerAdapterMethods } from '../utils/OatsApiNames'
 import { LocalNameDefaults } from '@oats-ts/model-common'
 import { ExpressCorsRouterFactoryDefaultLocals } from './ExpressCorsRouterFactoryDefaultLocals'
 import { ExpressCorsRouterFactoryLocals } from './typings'
@@ -300,7 +300,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
             ),
             factory.createObjectLiteralExpression([
               factory.createPropertyAssignment(
-                RawResponseFields.headers,
+                RawHttpResponseFields.headers,
                 factory.createIdentifier(
                   this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'corsHeaders'),
                 ),
