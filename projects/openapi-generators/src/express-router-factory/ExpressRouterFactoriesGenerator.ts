@@ -27,7 +27,13 @@ import { ExpressRouterFactoriesDefaultLocals } from './ExpressRouterFactoriesDef
 import { flatMap, isEqual, isNil, keys, uniqWith, values } from 'lodash'
 import { getPathTemplate } from '../utils/getPathTemplate'
 import { LocalNameDefaults } from '@oats-ts/model-common'
-import { RawHttpResponseFields, ServerAdapterMethods, TypedRequestFields } from '../utils/OatsApiNames'
+import {
+  ExpressFields,
+  ExpressToolkitFields,
+  RawHttpResponseFields,
+  ServerAdapterMethods,
+  TypedRequestFields,
+} from '../utils/OatsApiNames'
 import { ApiTypeLocals } from '../api-type/typings'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
@@ -211,6 +217,27 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
   }
 
   protected getToolkitStatement(data: EnhancedOperation): Statement {
+    const fields: [string, string][] = [
+      [
+        ExpressToolkitFields.request,
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'request'),
+      ],
+      [
+        ExpressToolkitFields.response,
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
+      ],
+      [
+        ExpressToolkitFields.next,
+        this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'next'),
+      ],
+    ]
+
+    const properties = fields.map(([key, value]) => {
+      return key === value
+        ? factory.createShorthandPropertyAssignment(key, undefined)
+        : factory.createPropertyAssignment(key, factory.createIdentifier(value))
+    })
+
     return factory.createVariableStatement(
       undefined,
       factory.createVariableDeclarationList(
@@ -224,29 +251,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
               factory.createIdentifier(this.adapterPkg.exports.ExpressToolkit),
               undefined,
             ),
-            factory.createObjectLiteralExpression(
-              [
-                factory.createShorthandPropertyAssignment(
-                  factory.createIdentifier(
-                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'request'),
-                  ),
-                  undefined,
-                ),
-                factory.createShorthandPropertyAssignment(
-                  factory.createIdentifier(
-                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
-                  ),
-                  undefined,
-                ),
-                factory.createShorthandPropertyAssignment(
-                  factory.createIdentifier(
-                    this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'next'),
-                  ),
-                  undefined,
-                ),
-              ],
-              false,
-            ),
+            factory.createObjectLiteralExpression(properties, false),
           ),
         ],
         NodeFlags.Const,
@@ -270,7 +275,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                 factory.createIdentifier(
                   this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
                 ),
-                factory.createIdentifier('locals'),
+                factory.createIdentifier(ExpressFields.locals),
               ),
               factory.createStringLiteral(
                 this.context().localNameOf<ExpressRouterFactoriesLocals>(
@@ -308,7 +313,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                 factory.createIdentifier(
                   this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'response'),
                 ),
-                factory.createIdentifier('locals'),
+                factory.createIdentifier(ExpressFields.locals),
               ),
               factory.createStringLiteral(
                 this.context().localNameOf<ExpressRouterFactoriesLocals>(

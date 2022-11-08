@@ -23,7 +23,7 @@ import { CorsConfigurationGeneratorConfig } from './typings'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap, isNil } from 'lodash'
-import { RouterNames } from '../utils/RouterNames'
+import { OperationCorsConfigurationFields } from '../utils/OatsApiNames'
 
 export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfigurationGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -190,11 +190,17 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
 
     return factory.createObjectLiteralExpression(
       [
-        factory.createPropertyAssignment(RouterNames.allowedOrigins, allowedOriginsAst),
-        factory.createPropertyAssignment(RouterNames.allowedRequestHeaders, allowedRequestHeadersAst),
-        factory.createPropertyAssignment(RouterNames.allowedResponseHeaders, allowedResponseHeadersAst),
-        factory.createPropertyAssignment(RouterNames.allowCredentials, allowCredentialsAst),
-        factory.createPropertyAssignment(RouterNames.maxAge, maxAgeAst),
+        factory.createPropertyAssignment(OperationCorsConfigurationFields.allowedOrigins, allowedOriginsAst),
+        factory.createPropertyAssignment(
+          OperationCorsConfigurationFields.allowedRequestHeaders,
+          allowedRequestHeadersAst,
+        ),
+        factory.createPropertyAssignment(
+          OperationCorsConfigurationFields.allowedResponseHeaders,
+          allowedResponseHeadersAst,
+        ),
+        factory.createPropertyAssignment(OperationCorsConfigurationFields.allowCredentials, allowCredentialsAst),
+        factory.createPropertyAssignment(OperationCorsConfigurationFields.maxAge, maxAgeAst),
       ],
       true,
     )

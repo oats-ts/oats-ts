@@ -17,6 +17,7 @@ import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { ExpressAppRouterFactoryLocals } from './typings'
 import { ExpressAppRouterFactoryDefaultLocals } from './ExpressAppRouterFactoryDefaultLocals'
+import { ExpressFields } from '../utils/OatsApiNames'
 
 export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -271,7 +272,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
             factory.createIdentifier(
               this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'root'),
             ),
-            factory.createIdentifier('use'),
+            factory.createIdentifier(ExpressFields.use),
           ),
           undefined,
           [

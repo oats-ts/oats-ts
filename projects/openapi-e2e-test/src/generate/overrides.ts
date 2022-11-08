@@ -41,3 +41,7 @@ export const presetOverrides: Record<string, Partial<OpenAPIFullStackPresetConfi
 export const importReplacerOverrides: Record<string, GeneratorConfig['importReplacer']> = {
   'generated-schemas/parameters.json': (_, importName) => `_${importName}`,
 }
+
+export const localNameProviderOverrides: Record<string, GeneratorConfig['localNameProvider']> = {
+  // 'generated-schemas/parameters.json': (_input, _target, _local, defaultName) => `customLocal${defaultName}`,
+}

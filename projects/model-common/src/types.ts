@@ -1,5 +1,5 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext, PathProviderHelper } from '@oats-ts/oats-ts'
+import { GeneratorContext, LocalNameProviderHelper } from '@oats-ts/oats-ts'
 
 export type ReadOutput<D> = {
   /** The full URI of the root document */
@@ -60,4 +60,4 @@ export type RuntimePackage<Exports extends Record<string, string>, Content> = {
   content: Content
 }
 
-export type LocalNameDefaults = Record<string, string | ((input: any, helper: PathProviderHelper) => string)>
+export type LocalNameDefaults = Record<string, string | ((input: any, helper: LocalNameProviderHelper) => string)>

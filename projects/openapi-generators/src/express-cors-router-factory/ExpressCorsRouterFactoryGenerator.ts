@@ -18,7 +18,7 @@ import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { isNil } from 'lodash'
 import { getPathTemplate } from '../utils/getPathTemplate'
-import { RawHttpResponseFields, ServerAdapterMethods } from '../utils/OatsApiNames'
+import { ExpressFields, ExpressToolkitFields, RawHttpResponseFields, ServerAdapterMethods } from '../utils/OatsApiNames'
 import { LocalNameDefaults } from '@oats-ts/model-common'
 import { ExpressCorsRouterFactoryDefaultLocals } from './ExpressCorsRouterFactoryDefaultLocals'
 import { ExpressCorsRouterFactoryLocals } from './typings'
@@ -200,6 +200,27 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
   }
 
   protected getToolkitStatement(data: EnhancedPathItem): Statement {
+    const fields: [string, string][] = [
+      [
+        ExpressToolkitFields.request,
+        this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'request'),
+      ],
+      [
+        ExpressToolkitFields.response,
+        this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'response'),
+      ],
+      [
+        ExpressToolkitFields.next,
+        this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'next'),
+      ],
+    ]
+
+    const properties = fields.map(([key, value]) => {
+      return key === value
+        ? factory.createShorthandPropertyAssignment(key, undefined)
+        : factory.createPropertyAssignment(key, factory.createIdentifier(value))
+    })
+
     return factory.createVariableStatement(
       undefined,
       factory.createVariableDeclarationList(
@@ -213,29 +234,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
               factory.createIdentifier(this.adapterPkg.exports.ExpressToolkit),
               undefined,
             ),
-            factory.createObjectLiteralExpression(
-              [
-                factory.createShorthandPropertyAssignment(
-                  factory.createIdentifier(
-                    this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'request'),
-                  ),
-                  undefined,
-                ),
-                factory.createShorthandPropertyAssignment(
-                  factory.createIdentifier(
-                    this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'response'),
-                  ),
-                  undefined,
-                ),
-                factory.createShorthandPropertyAssignment(
-                  factory.createIdentifier(
-                    this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'next'),
-                  ),
-                  undefined,
-                ),
-              ],
-              false,
-            ),
+            factory.createObjectLiteralExpression(properties, false),
           ),
         ],
         NodeFlags.Const,
@@ -264,9 +263,7 @@ export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}
                 factory.createIdentifier(
                   this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'response'),
                 ),
-                factory.createIdentifier(
-                  this.context().localNameOf<ExpressCorsRouterFactoryLocals>(undefined, this.name(), 'locals'),
-                ),
+                factory.createIdentifier(ExpressFields.locals),
               ),
               factory.createStringLiteral(
                 this.context().localNameOf<ExpressCorsRouterFactoryLocals>(

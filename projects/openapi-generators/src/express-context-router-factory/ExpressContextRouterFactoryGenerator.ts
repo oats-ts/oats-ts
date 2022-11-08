@@ -18,6 +18,7 @@ import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { LocalNameDefaults } from '@oats-ts/model-common'
 import { ExpressContextRouterFactoryDefaultLocals } from './ExpressContextRouterFactoryDefaultLocals'
 import { ExpressContextRouterFactoryLocals } from './typings'
+import { ExpressFields } from '../utils/OatsApiNames'
 
 export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -182,7 +183,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
             factory.createCallExpression(factory.createIdentifier(this.expressPkg.exports.Router), undefined, []),
           ),
         ),
-        factory.createIdentifier('use'),
+        factory.createIdentifier(ExpressFields.use),
       ),
       undefined,
       [this.getHandlerArrowFunctionAst()],
@@ -229,9 +230,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
             factory.createIdentifier(
               this.context().localNameOf<ExpressContextRouterFactoryLocals>(undefined, this.name(), 'response'),
             ),
-            factory.createIdentifier(
-              this.context().localNameOf<ExpressContextRouterFactoryLocals>(undefined, this.name(), 'locals'),
-            ),
+            factory.createIdentifier(ExpressFields.locals),
           ),
           factory.createStringLiteral(
             this.context().localNameOf<ExpressContextRouterFactoryLocals>(
@@ -257,9 +256,7 @@ export class ExpressContextRouterFactoryGenerator extends DocumentBasedCodeGener
             factory.createIdentifier(
               this.context().localNameOf<ExpressContextRouterFactoryLocals>(undefined, this.name(), 'response'),
             ),
-            factory.createIdentifier(
-              this.context().localNameOf<ExpressContextRouterFactoryLocals>(undefined, this.name(), 'locals'),
-            ),
+            factory.createIdentifier(ExpressFields.locals),
           ),
           factory.createStringLiteral(
             this.context().localNameOf<ExpressContextRouterFactoryLocals>(

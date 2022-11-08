@@ -1,22 +1,30 @@
-import { CodeGenerator, GeneratorConfig, NameProviderHelper, PathProviderHelper } from '@oats-ts/oats-ts'
+import {
+  CodeGenerator,
+  GeneratorConfig,
+  LocalNameProviderHelper,
+  NameProviderHelper,
+  PathProviderHelper,
+} from '@oats-ts/oats-ts'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
 import { isReferenceObject } from './isReferenceObject'
 import { JsonSchemaBasedGeneratorContext, LocalNameDefaults, ReadOutput } from './types'
 import { NameProviderHelperImpl } from './NameProviderHelperImpl'
 import { PathProviderHelperImpl } from './PathProviderHelperImpl'
+import { LocalNameProviderHelperImpl } from './LocalNameProviderHelperImpl'
 
 export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
   implements JsonSchemaBasedGeneratorContext<Doc, Target>
 {
   public readonly _document: Doc
   public readonly _documents: Doc[]
-  private nameProviderHelper: NameProviderHelper
-  private pathProviderHelper: PathProviderHelper
+  protected readonly nameProviderHelper: NameProviderHelper
+  protected readonly pathProviderHelper: PathProviderHelper
+  protected readonly localNameProviderHelper: LocalNameProviderHelper
 
   public constructor(
-    private owner: CodeGenerator<any, any>,
-    private data: ReadOutput<Doc>,
+    protected owner: CodeGenerator<any, any>,
+    protected data: ReadOutput<Doc>,
     readonly config: Cfg,
     readonly generators: CodeGenerator<any, any>[],
     readonly locals: LocalNameDefaults,
@@ -25,6 +33,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     this._documents = Array.from(data.documents.values())
     this.nameProviderHelper = new NameProviderHelperImpl(data)
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
+    this.localNameProviderHelper = new LocalNameProviderHelperImpl(data)
   }
 
   public document(): Doc {
@@ -44,7 +53,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     } else if (typeof defaultName === 'string') {
       return defaultName
     } else {
-      return defaultName(input, this.pathProviderHelper)
+      return defaultName(input, this.localNameProviderHelper)
     }
   }
 
@@ -59,10 +68,9 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
 
     const config = this.owner.globalConfiguration()
     const localNameProvider = config.localNameProvider
-    if (isNil(localNameProvider)) {
-      return this.getDefaultName(input, target, local)
-    }
-    return localNameProvider(input, target, local, this.pathProviderHelper) ?? this.getDefaultName(input, target, local)
+    const defaultName = this.getDefaultName(input, target, local)
+    const providedName = localNameProvider?.(input, target, local, defaultName, this.localNameProviderHelper)
+    return providedName ?? defaultName
   }
 
   public byUri<T>(uri: string): T {

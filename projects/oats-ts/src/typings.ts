@@ -90,7 +90,8 @@ export type GeneratorConfig = {
     input: any | undefined,
     target: string,
     local: string,
-    helper: PathProviderHelper,
+    defaultName: string | undefined,
+    helper: LocalNameProviderHelper,
   ) => string | undefined
   /**
    * When true, generators with this configuration should emit no outputs from the generate method
@@ -109,6 +110,12 @@ export type PathProviderHelper = {
   uriOf<T>(input: T): string | undefined
   parent<T, P>(input: T): P | undefined
   nameOf<T>(input: T, target: string): string
+  hashOf<T>(input: T): number | undefined
+}
+
+export type LocalNameProviderHelper = {
+  uriOf<T>(input: T): string | undefined
+  parent<T, P>(input: T): P | undefined
   hashOf<T>(input: T): number | undefined
 }
 

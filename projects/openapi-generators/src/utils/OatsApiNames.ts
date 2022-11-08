@@ -1,4 +1,10 @@
-import { ClientAdapter, ServerAdapter, RawHttpResponse, RawHttpRequest } from '@oats-ts/openapi-http'
+import {
+  ClientAdapter,
+  ServerAdapter,
+  RawHttpResponse,
+  RawHttpRequest,
+  OperationCorsConfiguration,
+} from '@oats-ts/openapi-http'
 
 export const ServerAdapterMethods: Record<keyof ServerAdapter<any>, keyof ServerAdapter<any>> = {
   getPathParameters: 'getPathParameters',
@@ -63,3 +69,25 @@ export const TypedResponseFields = {
   body: 'body',
   cookies: 'cookies',
 } as const
+
+export const ExpressFields = {
+  locals: 'locals',
+  use: 'use',
+}
+
+export const ExpressToolkitFields = {
+  request: 'request',
+  response: 'response',
+  next: 'next',
+}
+
+export const OperationCorsConfigurationFields: Record<
+  keyof OperationCorsConfiguration,
+  keyof OperationCorsConfiguration
+> = {
+  allowedOrigins: 'allowedOrigins',
+  allowedRequestHeaders: 'allowedRequestHeaders',
+  allowedResponseHeaders: 'allowedResponseHeaders',
+  allowCredentials: 'allowCredentials',
+  maxAge: 'maxAge',
+}

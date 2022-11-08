@@ -1,4 +1,4 @@
-import { PathProviderHelper } from '@oats-ts/oats-ts'
+import { LocalNameProviderHelper } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 
 export const ExpressCorsRouterFactoryDefaultLocals = {
@@ -9,11 +9,10 @@ export const ExpressCorsRouterFactoryDefaultLocals = {
   error: 'error',
   adapter: 'adapter',
   toolkit: 'toolkit',
-  locals: 'locals',
   corsHeaders: 'corsHeaders',
   corsConfig: 'corsConfig',
   method: 'method',
-  adapterKey: (document: OpenAPIObject, helper: PathProviderHelper) => {
+  adapterKey: (document: OpenAPIObject, helper: LocalNameProviderHelper) => {
     return `__oats_adapter_${helper.hashOf(document)?.toString(36)}`
   },
 }
