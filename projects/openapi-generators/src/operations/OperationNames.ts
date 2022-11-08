@@ -1,4 +1,4 @@
-export const OperationNames = {
+export const OperationDefaultLocals = {
   adapter: 'adapter',
   url: 'url',
   path: 'path',
@@ -9,6 +9,7 @@ export const OperationNames = {
   method: 'method',
   mimeType: 'mimeType',
   statusCode: 'statusCode',
+  request: 'request',
   requestHeaders: 'requestHeaders',
   responseHeaders: 'responseHeaders',
   requestBody: 'requestBody',
@@ -17,17 +18,4 @@ export const OperationNames = {
   rawResponse: 'rawResponse',
   responseBody: 'responseBody',
   responseCookies: 'responseCookies',
-
-  getPath: 'getPath',
-  getQuery: 'getQuery',
-  getUrl: 'getUrl',
-  getCookies: 'getCookies',
-  getRequestHeaders: 'getRequestHeaders',
-  getResponseHeaders: 'getResponseHeaders',
-  getResponseCookies: 'getResponseCookies',
-  getRequestBody: 'getRequestBody',
-  getResponseBody: 'getResponseBody',
-  getMimeType: 'getMimeType',
-  getStatusCode: 'getStatusCode',
-  request: 'request',
 }

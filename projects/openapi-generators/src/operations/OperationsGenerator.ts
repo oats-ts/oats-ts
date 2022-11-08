@@ -1,5 +1,5 @@
 import { OperationObject } from '@oats-ts/openapi-model'
-import { OperationsGeneratorConfig } from './typings'
+import { OperationLocals, OperationsGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
   hasRequestBody,
@@ -25,7 +25,14 @@ import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
-import { OperationNames } from './OperationNames'
+import {
+  ClientAdapterMethods,
+  RawHttpRequestFields,
+  TypedRequestFields,
+  TypedResponseFields,
+} from '../utils/OatsApiNames'
+import { LocalNameDefaults } from '@oats-ts/model-common'
+import { OperationDefaultLocals } from './OperationNames'
 
 export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -54,6 +61,10 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       ...(config.parseSetCookieHeaders ? cookieDeserializerDep : []),
       ...(config.validate ? validatorDep : []),
     ]
+  }
+
+  protected getDefaultLocals(): LocalNameDefaults {
+    return OperationDefaultLocals
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -106,12 +117,21 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     const params: ParameterDeclaration[] = [
       ...(isNil(requestType)
         ? []
-        : [factory.createParameterDeclaration([], [], undefined, OperationNames.request, undefined, requestType)]),
+        : [
+            factory.createParameterDeclaration(
+              [],
+              [],
+              undefined,
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+              undefined,
+              requestType,
+            ),
+          ]),
       factory.createParameterDeclaration(
         [],
         [],
         undefined,
-        OperationNames.adapter,
+        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
         undefined,
         factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       ),
@@ -154,35 +174,44 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getReturnStatement(data: EnhancedOperation): Statement | undefined {
+    const responseHeaderNames: [string, string] = [
+      TypedResponseFields.headers,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseHeaders'),
+    ]
+    const mimeTypeNames: [string, string] = [
+      TypedResponseFields.mimeType,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'mimeType'),
+    ]
+    const statusCodeNames: [string, string] = [
+      TypedResponseFields.statusCode,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode'),
+    ]
+    const bodyNames: [string, string] = [
+      TypedResponseFields.body,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseBody'),
+    ]
+    const cokiesNames: [string, string] = [
+      TypedResponseFields.cookies,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseCookies'),
+    ]
+
+    const names: [string, string][] = [
+      mimeTypeNames,
+      statusCodeNames,
+      ...(hasResponseHeaders(data.operation, this.context()) ? [responseHeaderNames] : []),
+      bodyNames,
+      ...(data.cookie.length > 0 && this.configuration().parseSetCookieHeaders ? [cokiesNames] : []),
+    ]
+
+    const properties = names.map(([key, value]) => {
+      return key === value
+        ? factory.createShorthandPropertyAssignment(key, undefined)
+        : factory.createPropertyAssignment(key, factory.createIdentifier(value))
+    })
+
     return factory.createReturnStatement(
       factory.createAsExpression(
-        factory.createObjectLiteralExpression(
-          [
-            factory.createShorthandPropertyAssignment(factory.createIdentifier(OperationNames.mimeType), undefined),
-            factory.createShorthandPropertyAssignment(factory.createIdentifier(OperationNames.statusCode), undefined),
-            ...(hasResponseHeaders(data.operation, this.context())
-              ? [
-                  factory.createPropertyAssignment(
-                    factory.createIdentifier(OperationNames.headers),
-                    factory.createIdentifier(OperationNames.responseHeaders),
-                  ),
-                ]
-              : []),
-            factory.createPropertyAssignment(
-              factory.createIdentifier(OperationNames.body),
-              factory.createIdentifier(OperationNames.responseBody),
-            ),
-            ...(data.cookie.length > 0 && this.configuration().parseSetCookieHeaders
-              ? [
-                  factory.createPropertyAssignment(
-                    factory.createIdentifier(OperationNames.cookies),
-                    factory.createIdentifier(OperationNames.responseCookies),
-                  ),
-                ]
-              : []),
-          ],
-          true,
-        ),
+        factory.createObjectLiteralExpression(properties, true),
         factory.createTypeReferenceNode(this.context().referenceOf(data.operation, 'oats/response-type'), undefined),
       ),
     )
@@ -194,20 +223,30 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.responseBody),
+            factory.createIdentifier(
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseBody'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getResponseBody),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getResponseBody),
                 ),
                 undefined,
                 [
-                  factory.createIdentifier(OperationNames.rawResponse),
-                  factory.createIdentifier(OperationNames.statusCode),
-                  factory.createIdentifier(OperationNames.mimeType),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
+                  ),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode'),
+                  ),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'mimeType'),
+                  ),
                   this.configuration().validate && hasResponses(data.operation, this.context())
                     ? this.context().referenceOf(data.operation, 'oats/response-body-validator')
                     : factory.createIdentifier('undefined'),
@@ -230,18 +269,24 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.responseCookies),
+            factory.createIdentifier(
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseCookies'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getResponseCookies),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getResponseCookies),
                 ),
                 undefined,
                 [
-                  factory.createIdentifier(OperationNames.rawResponse),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
+                  ),
                   this.context().referenceOf(data.operation, 'oats/set-cookie-deserializer'),
                 ],
               ),
@@ -262,19 +307,27 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.responseHeaders),
+            factory.createIdentifier(
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseHeaders'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getResponseHeaders),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getResponseHeaders),
                 ),
                 undefined,
                 [
-                  factory.createIdentifier(OperationNames.rawResponse),
-                  factory.createIdentifier(OperationNames.statusCode),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
+                  ),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode'),
+                  ),
                   hasResponseHeaders(data.operation, this.context())
                     ? this.context().referenceOf(data.operation, 'oats/response-headers-deserializer')
                     : factory.createIdentifier('undefined'),
@@ -294,17 +347,23 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.statusCode),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode')),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getStatusCode),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getStatusCode),
                 ),
                 undefined,
-                [factory.createIdentifier(OperationNames.rawResponse)],
+                [
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
+                  ),
+                ],
               ),
             ),
           ),
@@ -320,17 +379,23 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.mimeType),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'mimeType')),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getMimeType),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getMimeType),
                 ),
                 undefined,
-                [factory.createIdentifier(OperationNames.rawResponse)],
+                [
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
+                  ),
+                ],
               ),
             ),
           ),
@@ -346,17 +411,25 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.rawResponse),
+            factory.createIdentifier(
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.request),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.request),
                 ),
                 undefined,
-                [factory.createIdentifier(OperationNames.rawRequest)],
+                [
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawRequest'),
+                  ),
+                ],
               ),
             ),
           ),
@@ -367,39 +440,37 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getRawRequestStatement(data: EnhancedOperation): Statement | undefined {
+    const urlNames: [string, string] = [
+      RawHttpRequestFields.url,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'requestUrl'),
+    ]
+    const methodNames: [string, Expression] = [RawHttpRequestFields.method, factory.createStringLiteral(data.method)]
+    const bodyNames: [string, string] = [
+      RawHttpRequestFields.body,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'requestBody'),
+    ]
+    const headerNames: [string, string] = [
+      RawHttpRequestFields.headers,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'requestHeaders'),
+    ]
+
+    const names = [urlNames, methodNames, ...(hasRequestBody(data, this.context()) ? [bodyNames] : []), headerNames]
+
+    const properties = names.map(([key, value]) => {
+      return key === value
+        ? factory.createShorthandPropertyAssignment(key, undefined)
+        : factory.createPropertyAssignment(key, typeof value === 'string' ? factory.createIdentifier(value) : value)
+    })
+
     return factory.createVariableStatement(
       undefined,
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.rawRequest),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawRequest')),
             undefined,
             factory.createTypeReferenceNode(factory.createIdentifier(this.httpPkg.exports.RawHttpRequest), undefined),
-            factory.createObjectLiteralExpression(
-              [
-                factory.createPropertyAssignment(
-                  factory.createIdentifier(OperationNames.url),
-                  factory.createIdentifier(OperationNames.requestUrl),
-                ),
-                factory.createPropertyAssignment(
-                  factory.createIdentifier(OperationNames.method),
-                  factory.createStringLiteral(data.method),
-                ),
-                ...(hasRequestBody(data, this.context())
-                  ? [
-                      factory.createPropertyAssignment(
-                        factory.createIdentifier(OperationNames.body),
-                        factory.createIdentifier(OperationNames.requestBody),
-                      ),
-                    ]
-                  : []),
-                factory.createPropertyAssignment(
-                  factory.createIdentifier(OperationNames.headers),
-                  factory.createIdentifier(OperationNames.requestHeaders),
-                ),
-              ],
-              true,
-            ),
+            factory.createObjectLiteralExpression(properties, true),
           ),
         ],
         NodeFlags.Const,
@@ -416,24 +487,32 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.requestBody),
+            factory.createIdentifier(
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'requestBody'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getRequestBody),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getRequestBody),
                 ),
                 undefined,
                 [
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(OperationNames.request),
-                    factory.createIdentifier(OperationNames.mimeType),
+                    factory.createIdentifier(
+                      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                    ),
+                    factory.createIdentifier(TypedRequestFields.mimeType),
                   ),
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(OperationNames.request),
-                    factory.createIdentifier(OperationNames.body),
+                    factory.createIdentifier(
+                      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                    ),
+                    factory.createIdentifier(TypedRequestFields.body),
                   ),
                 ],
               ),
@@ -451,31 +530,41 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.requestHeaders),
+            factory.createIdentifier(
+              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'requestHeaders'),
+            ),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getRequestHeaders),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getRequestHeaders),
                 ),
                 undefined,
                 [
                   data.header.length > 0
                     ? factory.createPropertyAccessExpression(
-                        factory.createIdentifier(OperationNames.request),
-                        factory.createIdentifier(OperationNames.headers),
+                        factory.createIdentifier(
+                          this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                        ),
+                        factory.createIdentifier(TypedRequestFields.requestHeaders),
                       )
                     : factory.createIdentifier('undefined'),
                   hasRequestBody(data, this.context())
                     ? factory.createPropertyAccessExpression(
-                        factory.createIdentifier(OperationNames.request),
-                        factory.createIdentifier(OperationNames.mimeType),
+                        factory.createIdentifier(
+                          this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                        ),
+                        factory.createIdentifier(TypedRequestFields.mimeType),
                       )
                     : factory.createIdentifier('undefined'),
                   data.cookie.length > 0 && this.configuration().sendCookieHeader
-                    ? factory.createIdentifier(OperationNames.cookies)
+                    ? factory.createIdentifier(
+                        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'cookies'),
+                      )
                     : factory.createIdentifier('undefined'),
                   data.header.length > 0
                     ? this.context().referenceOf(data.operation, 'oats/request-headers-serializer')
@@ -499,20 +588,24 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.cookies),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'cookies')),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getCookies),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getCookies),
                 ),
                 undefined,
                 [
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(OperationNames.request),
-                    factory.createIdentifier(OperationNames.cookies),
+                    factory.createIdentifier(
+                      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                    ),
+                    factory.createIdentifier(TypedRequestFields.cookies),
                   ),
                   this.context().referenceOf(data.operation, 'oats/cookie-serializer'),
                 ],
@@ -531,23 +624,29 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.requestUrl),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'requestUrl')),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getUrl),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getUrl),
                 ),
                 undefined,
                 [
                   data.path.length === 0
                     ? factory.createStringLiteral(data.url)
-                    : factory.createIdentifier(OperationNames.path),
+                    : factory.createIdentifier(
+                        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'path'),
+                      ),
                   data.query.length === 0
                     ? factory.createIdentifier('undefined')
-                    : factory.createIdentifier(OperationNames.query),
+                    : factory.createIdentifier(
+                        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'query'),
+                      ),
                 ],
               ),
             ),
@@ -568,20 +667,24 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.query),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'query')),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getQuery),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getQuery),
                 ),
                 undefined,
                 [
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(OperationNames.request),
-                    factory.createIdentifier(OperationNames.query),
+                    factory.createIdentifier(
+                      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                    ),
+                    factory.createIdentifier(TypedRequestFields.query),
                   ),
                   this.context().referenceOf(data.operation, 'oats/query-serializer'),
                 ],
@@ -603,20 +706,24 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(OperationNames.path),
+            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'path')),
             undefined,
             undefined,
             factory.createAwaitExpression(
               factory.createCallExpression(
                 factory.createPropertyAccessExpression(
-                  factory.createIdentifier(OperationNames.adapter),
-                  factory.createIdentifier(OperationNames.getPath),
+                  factory.createIdentifier(
+                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
+                  ),
+                  factory.createIdentifier(ClientAdapterMethods.getPath),
                 ),
                 undefined,
                 [
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(OperationNames.request),
-                    factory.createIdentifier(OperationNames.path),
+                    factory.createIdentifier(
+                      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
+                    ),
+                    factory.createIdentifier(TypedRequestFields.path),
                   ),
                   this.context().referenceOf(data.operation, 'oats/path-serializer'),
                 ],

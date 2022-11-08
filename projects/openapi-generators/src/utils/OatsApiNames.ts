@@ -37,7 +37,7 @@ export const RawHttpRequestFields: Record<keyof RawHttpRequest, keyof RawHttpReq
   url: 'url',
   method: 'method',
   body: 'body',
-  headers: 'body',
+  headers: 'headers',
 }
 
 export const RawHttpResponseFields: Record<keyof RawHttpResponse, keyof RawHttpResponse> = {
@@ -54,4 +54,12 @@ export const TypedRequestFields = {
   cookies: 'cookies',
   mimeType: 'mimeType',
   body: 'body',
+} as const
+
+export const TypedResponseFields = {
+  headers: 'headers',
+  statusCode: 'statusCode',
+  mimeType: 'mimeType',
+  body: 'body',
+  cookies: 'cookies',
 } as const
