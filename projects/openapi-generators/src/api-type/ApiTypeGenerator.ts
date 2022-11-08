@@ -95,7 +95,7 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
 
     const node = factory.createMethodSignature(
       [],
-      this.context().localNameOf<ApiTypeLocals>(data.operation, this.name(), 'methodName'),
+      this.context().localNameOf<ApiTypeLocals>(data.operation, this.name(), 'apiMethodName'),
       undefined,
       [],
       parameters,

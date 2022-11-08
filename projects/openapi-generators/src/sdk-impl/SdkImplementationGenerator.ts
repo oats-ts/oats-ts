@@ -18,6 +18,10 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { Try, success } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { LocalNameDefaults } from '@oats-ts/model-common'
+import { SdkImplDefaultLocals } from './SdkImplDefaultLocals'
+import { SdkImplLocals } from './typings'
+import { SdkTypeLocals } from '../sdk-type/typings'
 
 export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -26,6 +30,10 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/operation', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
+  }
+
+  protected getDefaultLocals(): LocalNameDefaults {
+    return SdkImplDefaultLocals
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -48,10 +56,6 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     )
   }
 
-  protected getAdapterName(): string {
-    return 'adapter'
-  }
-
   protected getImportDeclarations(path: string, operations: EnhancedOperation[]): ImportDeclaration[] {
     return [
       getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ClientAdapter]),
@@ -70,7 +74,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
     const configField = factory.createPropertyDeclaration(
       [],
       [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
-      this.getAdapterName(),
+      this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapter'),
       undefined,
       factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       undefined,
@@ -84,7 +88,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
           [],
           [],
           undefined,
-          this.getAdapterName(),
+          this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapter'),
           undefined,
           factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
         ),
@@ -92,9 +96,12 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       factory.createBlock([
         factory.createExpressionStatement(
           factory.createBinaryExpression(
-            factory.createPropertyAccessExpression(factory.createIdentifier('this'), this.getAdapterName()),
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier('this'),
+              this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapter'),
+            ),
             SyntaxKind.EqualsToken,
-            factory.createIdentifier(this.getAdapterName()),
+            factory.createIdentifier(this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapter')),
           ),
         ),
       ]),
@@ -127,7 +134,10 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
         [],
         [
           ...(parameters.length === 1 ? [factory.createIdentifier('request')] : []),
-          factory.createPropertyAccessExpression(factory.createIdentifier('this'), this.getAdapterName()),
+          factory.createPropertyAccessExpression(
+            factory.createIdentifier('this'),
+            this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapter'),
+          ),
         ],
       ),
     )
@@ -136,7 +146,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [],
       [factory.createModifier(SyntaxKind.PublicKeyword), factory.createModifier(SyntaxKind.AsyncKeyword)],
       undefined,
-      this.context().nameOf(data.operation, 'oats/operation'),
+      this.context().localNameOf<SdkTypeLocals>(data.operation, 'oats/sdk-type', 'sdkMethod'),
       undefined,
       [],
       parameters,

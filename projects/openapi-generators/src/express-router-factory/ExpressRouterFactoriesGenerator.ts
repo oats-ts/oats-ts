@@ -28,6 +28,7 @@ import { flatMap, isEqual, isNil, keys, uniqWith, values } from 'lodash'
 import { getPathTemplate } from '../utils/getPathTemplate'
 import { LocalNameDefaults } from '@oats-ts/model-common'
 import { RawHttpResponseFields, ServerAdapterMethods, TypedRequestFields } from '../utils/OatsApiNames'
+import { ApiTypeLocals } from '../api-type/typings'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -651,7 +652,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                   factory.createIdentifier(
                     this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'api'),
                   ),
-                  this.context().nameOf(data.operation, 'oats/operation'),
+                  this.context().localNameOf<ApiTypeLocals>(data.operation, 'oats/api-type', 'apiMethodName'),
                 ),
                 undefined,
                 hasInput(data, this.context(), true)

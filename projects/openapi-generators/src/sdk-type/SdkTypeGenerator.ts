@@ -18,6 +18,9 @@ import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { flatMap, isNil } from 'lodash'
+import { LocalNameDefaults } from '@oats-ts/model-common'
+import { SdkTypeDefaultLocals } from './SdkTypeDefaultLocals'
+import { SdkTypeLocals } from './typings'
 
 export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -26,6 +29,10 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
 
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/operation', 'oats/request-type', 'oats/response-type']
+  }
+
+  protected getDefaultLocals(): LocalNameDefaults {
+    return SdkTypeDefaultLocals
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -65,7 +72,7 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
     ])
     const node = factory.createMethodSignature(
       [],
-      this.context().nameOf(data.operation, 'oats/operation'),
+      this.context().localNameOf<SdkTypeLocals>(data.operation, this.name(), 'sdkMethod'),
       undefined,
       [],
       parameters,
