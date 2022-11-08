@@ -1,23 +1,13 @@
-import {
-  CodeGenerator,
-  GeneratorConfig,
-  NameProviderHelper,
-  PathProviderHelper,
-  GeneratorContext,
-} from '@oats-ts/oats-ts'
+import { CodeGenerator, GeneratorConfig, NameProviderHelper, PathProviderHelper } from '@oats-ts/oats-ts'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
 import { isReferenceObject } from './isReferenceObject'
-import { LocalNameDefaults, ReadOutput } from './types'
+import { JsonSchemaBasedGeneratorContext, LocalNameDefaults, ReadOutput } from './types'
 import { NameProviderHelperImpl } from './NameProviderHelperImpl'
 import { PathProviderHelperImpl } from './PathProviderHelperImpl'
 
-export class GeneratorContextImpl<
-  Doc,
-  Cfg extends GeneratorConfig,
-  Target extends string,
-  Locals extends LocalNameDefaults = {},
-> implements GeneratorContext<Doc, Target, keyof Locals & string>
+export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
+  implements JsonSchemaBasedGeneratorContext<Doc, Target>
 {
   public readonly _document: Doc
   public readonly _documents: Doc[]
@@ -29,7 +19,7 @@ export class GeneratorContextImpl<
     private data: ReadOutput<Doc>,
     readonly config: Cfg,
     readonly generators: CodeGenerator<any, any>[],
-    readonly locals: Locals,
+    readonly locals: LocalNameDefaults,
   ) {
     this._document = data.document
     this._documents = Array.from(data.documents.values())
@@ -45,10 +35,12 @@ export class GeneratorContextImpl<
     return this._documents
   }
 
-  private getDefaultName(input: any | undefined, local: (keyof Locals & string) | (string & Record<never, never>)) {
+  private getDefaultName(input: any | undefined, target: Target, local: string) {
     const defaultName = this.locals[local]
     if (isNil(defaultName)) {
-      throw new TypeError(`Unexpected local key "${local}"!`)
+      throw new TypeError(
+        `Local "${target}"."${local}" cannot be resolved, as there is no default value for it, and localNameProvider doesn't provide this name!`,
+      )
     } else if (typeof defaultName === 'string') {
       return defaultName
     } else {
@@ -56,21 +48,21 @@ export class GeneratorContextImpl<
     }
   }
 
-  public localNameOf(
-    input: any | undefined,
-    target: Target,
-    local: (keyof Locals & string) | (string & Record<never, never>),
-  ): string {
-    const generator = this.owner.resolve(target)
-    if (isNil(generator)) {
-      throw new Error(`"${this.owner.name()}" requested to resolve generator "${target}", which cannot be found.`)
+  public localNameOf<L extends string>(input: any | undefined, target: Target, local: L): string {
+    if (target !== this.owner.name()) {
+      const generator = this.owner.resolve(target)
+      if (isNil(generator)) {
+        throw new Error(`"${this.owner.name()}" requested to resolve generator "${target}", which cannot be found.`)
+      }
+      return generator.context().localNameOf<L>(input, target, local)
     }
-    const config = generator.globalConfiguration()
+
+    const config = this.owner.globalConfiguration()
     const localNameProvider = config.localNameProvider
     if (isNil(localNameProvider)) {
-      return this.getDefaultName(input, local)
+      return this.getDefaultName(input, target, local)
     }
-    return localNameProvider(input, target, local, this.pathProviderHelper) ?? this.getDefaultName(input, local)
+    return localNameProvider(input, target, local, this.pathProviderHelper) ?? this.getDefaultName(input, target, local)
   }
 
   public byUri<T>(uri: string): T {

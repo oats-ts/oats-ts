@@ -1,5 +1,5 @@
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { PathProviderHelper } from '@oats-ts/oats-ts'
+import { GeneratorContext, PathProviderHelper } from '@oats-ts/oats-ts'
 
 export type ReadOutput<D> = {
   /** The full URI of the root document */
@@ -22,6 +22,14 @@ export type HasSchemas = {
   components?: {
     schemas?: Record<string, Referenceable<SchemaObject>>
   }
+}
+
+export type JsonSchemaBasedGeneratorContext<D = any, Target extends string = string> = GeneratorContext<D, Target> & {
+  /**
+   * @param input Either a string ref, a ReferenceObject, the desired target value.
+   * @returns The dereferenced value (in case its not a string or a ReferenceObject the value itself).
+   */
+  dereference<T>(input: string | Referenceable<T>, deep?: boolean): T
 }
 
 export type InferredType =
@@ -53,5 +61,3 @@ export type RuntimePackage<Exports extends Record<string, string>, Content> = {
 }
 
 export type LocalNameDefaults = Record<string, string | ((input: any, helper: PathProviderHelper) => string)>
-
-export type LocalNamer<K> = (local: K, input?: any) => string

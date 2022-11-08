@@ -1,3 +1,5 @@
+import { ApiTypeDefaultLocals } from './ApiTypeDefaultLocals'
+
 export type ApiTypeGeneratorConfig = {
   /**
    * If set to true, the summary and description fields in OperationObjects will be used
@@ -5,3 +7,5 @@ export type ApiTypeGeneratorConfig = {
    */
   documentation: boolean
 }
+
+export type ApiTypeLocals = keyof typeof ApiTypeDefaultLocals

@@ -156,7 +156,7 @@ export type URIManipulatorType = {
   setFragments(uri: string, fragments: string[]): string
 }
 
-export type GeneratorContext<D = any, Target extends string = string, Local extends string = string> = {
+export type GeneratorContext<D = any, Target extends string = string> = {
   /** Returns the root document, that's being processed */
   document(): D
   /** Returns the root and all referenced documents */
@@ -174,7 +174,7 @@ export type GeneratorContext<D = any, Target extends string = string, Local exte
    * @param target The generator target (type, operation, etc).
    * @returns The name of the value.
    */
-  localNameOf(input: any | undefined, target: Target, local: Local | (string & Record<never, never>)): string
+  localNameOf<L extends string>(input: any | undefined, target: Target, local: L): string
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).
@@ -220,9 +220,4 @@ export type GeneratorContext<D = any, Target extends string = string, Local exte
    * @param target The generator target, for example "type" or "validator"
    */
   dependenciesOf<T>(fromPath: string, input: any, target: Target): T[]
-  /**
-   * @param input Either a string ref, a ReferenceObject, the desired target value.
-   * @returns The dereferenced value (in case its not a string or a ReferenceObject the value itself).
-   */
-  dereference<T>(input: string | { $ref: string } | T, deep?: boolean): T
 }

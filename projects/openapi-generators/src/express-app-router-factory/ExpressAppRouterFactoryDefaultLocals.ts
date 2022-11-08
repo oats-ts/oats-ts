@@ -1,4 +1,4 @@
-export const ExpressAppRouterFactoryLocalNames = {
+export const ExpressAppRouterFactoryDefaultLocals = {
   root: 'root',
   router: 'router',
   routers: 'routers',

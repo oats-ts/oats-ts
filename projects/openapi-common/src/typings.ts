@@ -1,6 +1,7 @@
 import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
+import { JsonSchemaBasedGeneratorContext } from '@oats-ts/model-common'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext, NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
+import { NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
 import { HttpMethod } from '@oats-ts/openapi-http'
 
 /**
@@ -56,7 +57,7 @@ export type OpenAPIGeneratorTarget =
   | 'oats/express-cors-router-factory'
   | 'oats/express-context-router-factory'
 
-export type OpenAPIGeneratorContext = GeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
+export type OpenAPIGeneratorContext = JsonSchemaBasedGeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
 /**
  * Type to contain all the related stuff for an operation.

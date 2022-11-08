@@ -1,9 +1,9 @@
 import { entries, isNil } from 'lodash'
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from './isReferenceObject'
-import { GeneratorContext } from '@oats-ts/oats-ts'
+import { JsonSchemaBasedGeneratorContext } from './types'
 
-function collectInChildren(input: SchemaObject, context: GeneratorContext, schemas: SchemaObject[]) {
+function collectInChildren(input: SchemaObject, context: JsonSchemaBasedGeneratorContext, schemas: SchemaObject[]) {
   const { items, additionalProperties, properties, oneOf, prefixItems } = input
   if (!isNil(prefixItems)) {
     return prefixItems.forEach((item) => collect(item, context, schemas))
@@ -22,7 +22,11 @@ function collectInChildren(input: SchemaObject, context: GeneratorContext, schem
   }
 }
 
-function collect(input: SchemaObject | ReferenceObject, context: GeneratorContext, schemas: SchemaObject[]): void {
+function collect(
+  input: Referenceable<SchemaObject>,
+  context: JsonSchemaBasedGeneratorContext,
+  schemas: SchemaObject[],
+): void {
   const schema = context.dereference(input)
   if (!isNil(context.nameOf(schema))) {
     schemas.push(schema)
@@ -36,8 +40,8 @@ function collect(input: SchemaObject | ReferenceObject, context: GeneratorContex
 }
 
 export function getReferencedNamedSchemas(
-  schema: SchemaObject | ReferenceObject,
-  context: GeneratorContext,
+  schema: Referenceable<SchemaObject>,
+  context: JsonSchemaBasedGeneratorContext,
 ): SchemaObject[] {
   const schemas: SchemaObject[] = []
   if (isReferenceObject(schema)) {

@@ -12,6 +12,7 @@ import {
   OpenApiExpressServerAdapterPackage,
   RuntimePackage,
   packages,
+  LocalNameDefaults,
 } from '@oats-ts/model-common'
 
 export abstract class OpenAPIGenerator<Config, Items> extends BaseCodeGenerator<
@@ -33,8 +34,18 @@ export abstract class OpenAPIGenerator<Config, Items> extends BaseCodeGenerator<
   protected adapterPkg!: OpenApiExpressServerAdapterPackage
   protected fetchPkg!: RuntimePackage<any, any>
 
+  protected getDefaultLocals(): LocalNameDefaults {
+    return {}
+  }
+
   protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
+    return createOpenAPIGeneratorContext(
+      this,
+      this.input,
+      this.globalConfig,
+      this.dependencies,
+      this.getDefaultLocals(),
+    )
   }
 
   public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {

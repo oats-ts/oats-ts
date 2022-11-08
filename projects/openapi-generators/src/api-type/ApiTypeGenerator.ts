@@ -12,10 +12,11 @@ import {
 } from 'typescript'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, getModelImports } from '@oats-ts/typescript-common'
-import { ApiTypeGeneratorConfig } from './typings'
+import { ApiTypeGeneratorConfig, ApiTypeLocals } from './typings'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { flatMap } from 'lodash'
+import { ApiTypeDefaultLocals } from './ApiTypeDefaultLocals'
 
 export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -60,6 +61,10 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
     ])
   }
 
+  protected getDefaultLocals() {
+    return ApiTypeDefaultLocals
+  }
+
   protected getApiTypeStatement(operations: EnhancedOperation[]): Statement {
     return factory.createTypeAliasDeclaration(
       [],
@@ -77,7 +82,7 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
             [],
             [],
             undefined,
-            'request',
+            this.context().localNameOf<ApiTypeLocals>(undefined, this.name(), 'request'),
             undefined,
             this.context().referenceOf(data.operation, 'oats/request-server-type'),
           ),
@@ -90,7 +95,7 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
 
     const node = factory.createMethodSignature(
       [],
-      this.context().nameOf(data.operation, 'oats/operation'),
+      this.context().localNameOf<ApiTypeLocals>(data.operation, this.name(), 'methodName'),
       undefined,
       [],
       parameters,
