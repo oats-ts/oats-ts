@@ -9,15 +9,17 @@ import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter }
 import { SwaggerPetstoreRouterFactories } from './expressRouterFactoriesType'
 
 export function createSwaggerPetstoreAppRouter(
-  router?: IRouter | undefined,
-  overrides: Partial<SwaggerPetstoreRouterFactories> = {},
+  _local_router?: IRouter | undefined,
+  _local_overrides: Partial<SwaggerPetstoreRouterFactories> = {},
 ): IRouter {
-  const root = router ?? Router()
-  const factories = [
-    overrides.createListPetsRouter ?? createListPetsRouter,
-    overrides.createCreatePetsRouter ?? createCreatePetsRouter,
-    overrides.createShowPetByIdRouter ?? createShowPetByIdRouter,
+  const _local_root = _local_router ?? Router()
+  const _local_factories = [
+    _local_overrides.createListPetsRouter ?? createListPetsRouter,
+    _local_overrides.createCreatePetsRouter ?? createCreatePetsRouter,
+    _local_overrides.createShowPetByIdRouter ?? createShowPetByIdRouter,
   ]
-  const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
-  return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)
+  const _local_uniqueRouters = _local_factories
+    .map((_local_factory) => _local_factory(_local_router))
+    .filter((_local_childRouter) => _local_childRouter !== _local_root)
+  return _local_uniqueRouters.length === 0 ? _local_root : _local_root.use(..._local_uniqueRouters)
 }

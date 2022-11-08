@@ -43,5 +43,5 @@ export const importReplacerOverrides: Record<string, GeneratorConfig['importRepl
 }
 
 export const localNameProviderOverrides: Record<string, GeneratorConfig['localNameProvider']> = {
-  // 'generated-schemas/parameters.json': (_input, _target, _local, defaultName) => `customLocal${defaultName}`,
+  'schemas/pet-store-json.json': (_input, _target, _local, defaultName) => `_local_${defaultName}`,
 }

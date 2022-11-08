@@ -11,13 +11,13 @@ export type SwaggerPetstoreSdk = {
   /**
    * List all pets
    */
-  listPets(request: ListPetsRequest): Promise<ListPetsResponse>
+  _local_listPets(request: ListPetsRequest): Promise<ListPetsResponse>
   /**
    * Create a pet
    */
-  createPets(request: CreatePetsRequest): Promise<CreatePetsResponse>
+  _local_createPets(request: CreatePetsRequest): Promise<CreatePetsResponse>
   /**
    * Info for a specific pet
    */
-  showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse>
+  _local_showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse>
 }
