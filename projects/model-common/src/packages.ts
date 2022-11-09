@@ -1,5 +1,6 @@
+import { GeneratorContext } from '@oats-ts/oats-ts'
 import { entries } from 'lodash'
-import { GeneratorContext, RuntimePackage, RuntimePackageInternal } from './types'
+import { RuntimePackage, RuntimePackageInternal } from './types'
 
 const validatorsExports = {
   validators: 'validators',

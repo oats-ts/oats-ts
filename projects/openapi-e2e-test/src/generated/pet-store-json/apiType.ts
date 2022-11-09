@@ -11,13 +11,13 @@ export type SwaggerPetstoreApi = {
   /**
    * List all pets
    */
-  listPets(request: ListPetsServerRequest): Promise<ListPetsServerResponse>
+  _local_listPets(_local_request: ListPetsServerRequest): Promise<ListPetsServerResponse>
   /**
    * Create a pet
    */
-  createPets(request: CreatePetsServerRequest): Promise<CreatePetsServerResponse>
+  _local_createPets(_local_request: CreatePetsServerRequest): Promise<CreatePetsServerResponse>
   /**
    * Info for a specific pet
    */
-  showPetById(request: ShowPetByIdServerRequest): Promise<ShowPetByIdServerResponse>
+  _local_showPetById(_local_request: ShowPetByIdServerRequest): Promise<ShowPetByIdServerResponse>
 }

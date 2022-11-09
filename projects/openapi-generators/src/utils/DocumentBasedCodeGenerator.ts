@@ -1,11 +1,5 @@
 import { sortBy } from 'lodash'
-import {
-  getEnhancedOperations,
-  OpenAPIGeneratorContext,
-  createOpenAPIGeneratorContext,
-  OpenAPIGeneratorTarget,
-  EnhancedOperation,
-} from '@oats-ts/openapi-common'
+import { getEnhancedOperations, OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
 import { OpenAPIGenerator } from './OpenAPIGenerator'
 
 export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, EnhancedOperation[]> {
@@ -16,13 +10,9 @@ export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPIGenerator<C
     return operations.length > 0
   }
 
-  protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
-  }
-
   protected getItems(): [] | [EnhancedOperation[]] {
-    const operations = sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation),
+    const operations = sortBy(getEnhancedOperations(this.input.document, this.context()), ({ operation }) =>
+      this.context().nameOf(operation),
     )
     return this.shouldGenerate(operations) ? [operations] : []
   }

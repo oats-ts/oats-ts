@@ -5,7 +5,9 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { RouterNames } from '../utils/RouterNames'
+import { LocalNameDefaults } from '@oats-ts/model-common'
+import { ExpressRouterFactoriesTypeDefaultLocals } from './ExpressRouterFactoriesTypeDefaultLocals'
+import { ExpressRouterFactoriesTypeLocals } from './typings'
 
 export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -20,20 +22,26 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
     return [{ name: this.expressPkg.name, version: '^4.18.1' }]
   }
 
+  protected getDefaultLocals(): LocalNameDefaults {
+    return ExpressRouterFactoriesTypeDefaultLocals
+  }
+
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
     const [operations] = this.items
-    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+    return operations?.length > 0
+      ? factory.createTypeReferenceNode(this.context().nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const [operations] = this.items
-    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(
-        this.context.pathOf(this.input.document, this.name()),
+        this.context().pathOf(this.input.document, this.name()),
         [getNamedImports(this.expressPkg.name, [this.expressPkg.imports.IRouter])],
         [this.getRouterFactoriesTypeStatement(operations)],
       ),
@@ -44,7 +52,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
     return factory.createTypeAliasDeclaration(
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      this.context.nameOf(this.context.document, this.name()),
+      this.context().nameOf(this.context().document(), this.name()),
       undefined,
       factory.createTypeLiteralNode(
         operations.map((operation) => {
@@ -55,7 +63,9 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
                 [],
                 [],
                 undefined,
-                factory.createIdentifier(RouterNames.router),
+                factory.createIdentifier(
+                  this.context().localNameOf<ExpressRouterFactoriesTypeLocals>(undefined, this.name(), 'router'),
+                ),
                 factory.createToken(SyntaxKind.QuestionToken),
                 factory.createUnionTypeNode([
                   factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
@@ -68,7 +78,7 @@ export class ExpressRouterFactoriesTypeGenerator extends DocumentBasedCodeGenera
           )
           return factory.createPropertySignature(
             undefined,
-            this.context.nameOf(operation.operation, 'oats/express-router-factory'),
+            this.context().nameOf(operation.operation, 'oats/express-router-factory'),
             undefined,
             fieldType,
           )

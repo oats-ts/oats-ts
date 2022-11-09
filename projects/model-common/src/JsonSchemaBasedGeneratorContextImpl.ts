@@ -1,31 +1,78 @@
-import { CodeGenerator, GeneratorConfig, NameProviderHelper, PathProviderHelper } from '@oats-ts/oats-ts'
+import {
+  CodeGenerator,
+  GeneratorConfig,
+  LocalNameProviderHelper,
+  NameProviderHelper,
+  PathProviderHelper,
+} from '@oats-ts/oats-ts'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
-import { ImportDeclaration } from 'typescript'
 import { isReferenceObject } from './isReferenceObject'
-import { GeneratorContext, ReadOutput } from './types'
+import { JsonSchemaBasedGeneratorContext, LocalNameDefaults, ReadOutput } from './types'
 import { NameProviderHelperImpl } from './NameProviderHelperImpl'
 import { PathProviderHelperImpl } from './PathProviderHelperImpl'
+import { LocalNameProviderHelperImpl } from './LocalNameProviderHelperImpl'
 
-export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
-  implements GeneratorContext<Doc, Target>
+export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
+  implements JsonSchemaBasedGeneratorContext<Doc, Target>
 {
-  public readonly document: Doc
-  public readonly documents: Doc[]
-  private nameProviderHelper: NameProviderHelper
-  private pathProviderHelper: PathProviderHelper
+  public readonly _document: Doc
+  public readonly _documents: Doc[]
+  protected readonly nameProviderHelper: NameProviderHelper
+  protected readonly pathProviderHelper: PathProviderHelper
+  protected readonly localNameProviderHelper: LocalNameProviderHelper
 
   public constructor(
-    private owner: CodeGenerator<any, any>,
-    private data: ReadOutput<Doc>,
+    protected owner: CodeGenerator<any, any>,
+    protected data: ReadOutput<Doc>,
     readonly config: Cfg,
     readonly generators: CodeGenerator<any, any>[],
+    readonly locals: LocalNameDefaults,
   ) {
-    this.document = data.document
-    this.documents = Array.from(data.documents.values())
+    this._document = data.document
+    this._documents = Array.from(data.documents.values())
     this.nameProviderHelper = new NameProviderHelperImpl(data)
     this.pathProviderHelper = new PathProviderHelperImpl(data, this.config.nameProvider, this.nameProviderHelper)
+    this.localNameProviderHelper = new LocalNameProviderHelperImpl(data)
   }
+
+  public document(): Doc {
+    return this._document
+  }
+
+  public documents(): Doc[] {
+    return this._documents
+  }
+
+  private getDefaultName(input: any | undefined, target: Target, local: string) {
+    const defaultName = this.locals[local]
+    if (isNil(defaultName)) {
+      throw new TypeError(
+        `Local "${target}"."${local}" cannot be resolved, as there is no default value for it, and localNameProvider doesn't provide this name!`,
+      )
+    } else if (typeof defaultName === 'string') {
+      return defaultName
+    } else {
+      return defaultName(input, this.localNameProviderHelper)
+    }
+  }
+
+  public localNameOf<L extends string>(input: any | undefined, target: Target, local: L): string {
+    if (target !== this.owner.name()) {
+      const generator = this.owner.resolve(target)
+      if (isNil(generator)) {
+        throw new Error(`"${this.owner.name()}" requested to resolve generator "${target}", which cannot be found.`)
+      }
+      return generator.context().localNameOf<L>(input, target, local)
+    }
+
+    const config = this.owner.globalConfiguration()
+    const localNameProvider = config.localNameProvider
+    const defaultName = this.getDefaultName(input, target, local)
+    const providedName = localNameProvider?.(input, target, local, defaultName, this.localNameProviderHelper)
+    return providedName ?? defaultName
+  }
+
   public byUri<T>(uri: string): T {
     return this.data.uriToObject.get(uri)
   }
@@ -83,7 +130,7 @@ export class GeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target exten
     return hash
   }
 
-  public dependenciesOf(fromPath: string, input: any, target: Target): ImportDeclaration[] {
+  public dependenciesOf<T>(fromPath: string, input: any, target: Target): T[] {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.dependenciesOf(fromPath, input) ?? []

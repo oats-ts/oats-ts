@@ -31,7 +31,7 @@ export class RequestTypesGenerator extends BaseRequestTypesGenerator<RequestType
   ): PropertySignature {
     switch (name) {
       case 'body': {
-        const body = this.context.dereference(operation.operation.requestBody)
+        const body = this.context().dereference(operation.operation.requestBody)
         return factory.createPropertySignature(
           [],
           name,

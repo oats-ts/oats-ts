@@ -1,12 +1,12 @@
 import { isNil, values } from 'lodash'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext, HasSchemas } from './types'
+import { HasSchemas, JsonSchemaBasedGeneratorContext } from './types'
 import { isReferenceObject } from './isReferenceObject'
 
 /* TODO prevent recursion */
 function collectNamedTypesForSchema(
   input: SchemaObject | ReferenceObject,
-  context: GeneratorContext,
+  context: JsonSchemaBasedGeneratorContext,
   schemas: Set<SchemaObject | ReferenceObject>,
   processed: Set<SchemaObject | ReferenceObject>,
 ) {
@@ -65,12 +65,12 @@ function collectNamedTypesForSchema(
 }
 
 export function getNamedSchemas<D extends HasSchemas>(
-  context: GeneratorContext<D>,
+  context: JsonSchemaBasedGeneratorContext<D>,
 ): (SchemaObject | ReferenceObject)[] {
   const schemaSet = new Set<SchemaObject | ReferenceObject>()
 
   const processed = new Set<SchemaObject | ReferenceObject>()
-  const rawSchemas = values(context.document?.components?.schemas || {})
+  const rawSchemas = values(context.document()?.components?.schemas || {})
 
   for (const schema of rawSchemas) {
     collectNamedTypesForSchema(schema, context, schemaSet, processed)

@@ -23,7 +23,7 @@ import { CorsConfigurationGeneratorConfig } from './typings'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap, isNil } from 'lodash'
-import { RouterNames } from '../utils/RouterNames'
+import { OperationCorsConfigurationFields } from '../utils/OatsApiNames'
 
 export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfigurationGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -58,16 +58,16 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
 
   public referenceOf(input: OpenAPIObject): Identifier | undefined {
     const [paths] = this.items
-    return paths?.length > 0 ? factory.createIdentifier(this.context.nameOf(input, this.name())) : undefined
+    return paths?.length > 0 ? factory.createIdentifier(this.context().nameOf(input, this.name())) : undefined
   }
 
   public dependenciesOf(fromPath: string, input: any): ImportDeclaration[] {
     const [paths] = this.items
-    return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return paths?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected async generateItem(paths: EnhancedPathItem[]): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(this.context.document, this.name())
+    const path = this.context().pathOf(this.context().document(), this.name())
     return success(createSourceFile(path, this.getImportDeclarations(), [this.getCorsConfigurationStatement(paths)]))
   }
 
@@ -94,7 +94,7 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            this.context.nameOf(this.context.document, this.name()),
+            this.context().nameOf(this.context().document(), this.name()),
             undefined,
             factory.createTypeReferenceNode(this.httpPkg.exports.CorsConfiguration),
             this.getCorsObjectAst(paths),
@@ -190,22 +190,28 @@ export class CorsConfigurationGenerator extends PathBasedCodeGenerator<CorsConfi
 
     return factory.createObjectLiteralExpression(
       [
-        factory.createPropertyAssignment(RouterNames.allowedOrigins, allowedOriginsAst),
-        factory.createPropertyAssignment(RouterNames.allowedRequestHeaders, allowedRequestHeadersAst),
-        factory.createPropertyAssignment(RouterNames.allowedResponseHeaders, allowedResponseHeadersAst),
-        factory.createPropertyAssignment(RouterNames.allowCredentials, allowCredentialsAst),
-        factory.createPropertyAssignment(RouterNames.maxAge, maxAgeAst),
+        factory.createPropertyAssignment(OperationCorsConfigurationFields.allowedOrigins, allowedOriginsAst),
+        factory.createPropertyAssignment(
+          OperationCorsConfigurationFields.allowedRequestHeaders,
+          allowedRequestHeadersAst,
+        ),
+        factory.createPropertyAssignment(
+          OperationCorsConfigurationFields.allowedResponseHeaders,
+          allowedResponseHeadersAst,
+        ),
+        factory.createPropertyAssignment(OperationCorsConfigurationFields.allowCredentials, allowCredentialsAst),
+        factory.createPropertyAssignment(OperationCorsConfigurationFields.maxAge, maxAgeAst),
       ],
       true,
     )
   }
 
   protected getResponseHeaderNames(data: EnhancedOperation): string[] {
-    const headers = flatMap(Object.values(getResponseHeaders(data.operation, this.context)), (headersObject) =>
+    const headers = flatMap(Object.values(getResponseHeaders(data.operation, this.context())), (headersObject) =>
       Object.keys(headersObject),
     ).map((header) => header.toLowerCase())
 
-    if (hasResponses(data.operation, this.context)) {
+    if (hasResponses(data.operation, this.context())) {
       headers.push('content-type')
     }
     return headers

@@ -30,7 +30,7 @@ export class RequestServerTypesGenerator extends BaseRequestTypesGenerator<{}> {
   ): PropertySignature {
     switch (name) {
       case 'body': {
-        const body = this.context.dereference(operation.operation.requestBody)
+        const body = this.context().dereference(operation.operation.requestBody)
         const wrappedType = body?.required
           ? type
           : factory.createUnionTypeNode([type, factory.createTypeReferenceNode('undefined')])

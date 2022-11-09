@@ -12,10 +12,11 @@ import {
 } from 'typescript'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, getModelImports } from '@oats-ts/typescript-common'
-import { ApiTypeGeneratorConfig } from './typings'
+import { ApiTypeGeneratorConfig, ApiTypeLocals } from './typings'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { flatMap } from 'lodash'
+import { ApiTypeDefaultLocals } from './ApiTypeDefaultLocals'
 
 export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {
@@ -32,18 +33,20 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
 
   public referenceOf(input: OpenAPIObject): TypeReferenceNode | undefined {
     const [operations] = this.items
-    return operations.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+    return operations.length > 0
+      ? factory.createTypeReferenceNode(this.context().nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const [operations] = this.items
-    return operations.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return operations.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   public async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
     return success(
       createSourceFile(
-        this.context.pathOf(this.context.document, this.name()),
+        this.context().pathOf(this.context().document(), this.name()),
         this.getImportDeclarations(operations),
         [this.getApiTypeStatement(operations)],
       ),
@@ -51,44 +54,48 @@ export class ApiTypeGenerator extends DocumentBasedCodeGenerator<ApiTypeGenerato
   }
 
   protected getImportDeclarations(operations: EnhancedOperation[]): ImportDeclaration[] {
-    const apiPath = this.context.pathOf(this.context.document, this.name())
+    const apiPath = this.context().pathOf(this.context().document(), this.name())
     return flatMap(operations, (data) => [
-      ...this.context.dependenciesOf(apiPath, data.operation, 'oats/request-server-type'),
-      ...this.context.dependenciesOf(apiPath, data.operation, 'oats/response-server-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(apiPath, data.operation, 'oats/request-server-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(apiPath, data.operation, 'oats/response-server-type'),
     ])
+  }
+
+  protected getDefaultLocals() {
+    return ApiTypeDefaultLocals
   }
 
   protected getApiTypeStatement(operations: EnhancedOperation[]): Statement {
     return factory.createTypeAliasDeclaration(
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      this.context.nameOf(this.context.document, this.name()),
+      this.context().nameOf(this.context().document(), this.name()),
       [],
       factory.createTypeLiteralNode(operations.map((operation) => this.getApiTypeMethodSignatureAst(operation))),
     )
   }
 
   protected getApiTypeMethodSignatureAst(data: EnhancedOperation): MethodSignature {
-    const parameters: ParameterDeclaration[] = hasInput(data, this.context, true)
+    const parameters: ParameterDeclaration[] = hasInput(data, this.context(), true)
       ? [
           factory.createParameterDeclaration(
             [],
             [],
             undefined,
-            'request',
+            this.context().localNameOf<ApiTypeLocals>(undefined, this.name(), 'request'),
             undefined,
-            this.context.referenceOf(data.operation, 'oats/request-server-type'),
+            this.context().referenceOf(data.operation, 'oats/request-server-type'),
           ),
         ]
       : []
 
     const returnType = factory.createTypeReferenceNode('Promise', [
-      factory.createTypeReferenceNode(this.context.nameOf(data.operation, 'oats/response-server-type')),
+      factory.createTypeReferenceNode(this.context().nameOf(data.operation, 'oats/response-server-type')),
     ])
 
     const node = factory.createMethodSignature(
       [],
-      this.context.nameOf(data.operation, 'oats/operation'),
+      this.context().localNameOf<ApiTypeLocals>(data.operation, this.name(), 'apiMethodName'),
       undefined,
       [],
       parameters,
