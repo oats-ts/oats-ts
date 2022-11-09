@@ -1,15 +1,21 @@
 import { nanoid } from 'nanoid'
 import { failure, fromArray, isFailure, success, Try } from '@oats-ts/try'
-import { GeneratorInit, RuntimeDependency } from './typings'
+import { GeneratorContext, GeneratorInit, RuntimeDependency } from './typings'
 import { BaseGenerator } from './BaseGenerator'
 import { Issue } from '@oats-ts/validators'
 import { flatMap } from 'lodash'
 import { SimpleGeneratorResult, simpleResult, compositeResult } from './GeneratorResult'
 
-export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator<R, G, Cfg> {
+export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx extends GeneratorContext> extends BaseGenerator<
+  R,
+  G,
+  Cfg,
+  Ctx
+> {
+  private _context!: Ctx
+
   public readonly id = nanoid(6)
 
-  protected context!: Ctx
   protected items!: M[]
 
   public produces(): string[] {
@@ -32,9 +38,13 @@ export abstract class BaseCodeGenerator<R, G, Cfg, M, Ctx> extends BaseGenerator
     return []
   }
 
+  public context(): Ctx {
+    return this._context
+  }
+
   public initialize(init: GeneratorInit<R, G>): void {
     super.initialize(init)
-    this.context = this.createContext()
+    this._context = this.createContext()
   }
 
   private async generateWithCatch(): Promise<[Try<G[]>, Issue[]]> {

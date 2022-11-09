@@ -1,12 +1,12 @@
 import { entries, isNil, values } from 'lodash'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { GeneratorContext, HasSchemas } from './types'
+import { HasSchemas, JsonSchemaBasedGeneratorContext } from './types'
 import { isReferenceObject } from './isReferenceObject'
 
 function collectFromSchema(
   uri: string,
   input: Referenceable<SchemaObject>,
-  context: GeneratorContext,
+  context: JsonSchemaBasedGeneratorContext,
   discriminators: Record<string, string>,
 ): string | undefined {
   const schema = isReferenceObject(input) ? context.dereference<SchemaObject>(input) : input
@@ -30,11 +30,11 @@ function collectFromSchema(
 
 function collectFromDocuments(
   uri: string,
-  context: GeneratorContext,
+  context: JsonSchemaBasedGeneratorContext,
   discriminators: Record<string, string>,
 ): string[] {
   const parents: Set<string> = new Set()
-  for (const document of context.documents) {
+  for (const document of context.documents()) {
     for (const schema of values(document?.components?.schemas || {})) {
       const parentUri = collectFromSchema(uri, schema, context, discriminators)
       if (!isNil(parentUri)) {
@@ -48,7 +48,7 @@ function collectFromDocuments(
 /** @returns Discriminators in a propertyName -> value format */
 export function getDiscriminators<D extends HasSchemas>(
   input: Referenceable<SchemaObject>,
-  context: GeneratorContext<D>,
+  context: JsonSchemaBasedGeneratorContext<D>,
 ): Record<string, string> {
   const schemaUri = context.uriOf(input)
   const discriminators: Record<string, string> = {}

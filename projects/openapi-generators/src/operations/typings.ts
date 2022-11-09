@@ -1,3 +1,5 @@
+import { OperationDefaultLocals } from './OperationNames'
+
 export type OperationsGeneratorConfig = {
   /**
    * If set to true, the summary, description and deprecated fields in OperationObjects will be used
@@ -19,3 +21,5 @@ export type OperationsGeneratorConfig = {
    */
   parseSetCookieHeaders: boolean
 }
+
+export type OperationLocals = keyof typeof OperationDefaultLocals

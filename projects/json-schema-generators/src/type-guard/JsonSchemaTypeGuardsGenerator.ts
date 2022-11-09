@@ -32,19 +32,18 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   public referenceOf(input: any) {
-    return isNil(this.context.nameOf(input))
+    return isNil(this.context().nameOf(input))
       ? undefined
-      : factory.createIdentifier(this.context.nameOf(input, this.name()))
+      : factory.createIdentifier(this.context().nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
-    const { context } = this
-    return getModelImports(fromPath, this.id, [input], context)
+    return getModelImports(fromPath, this.id, [input], this.context())
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(schema, this.name())
-    const typeImports = this.context.dependenciesOf(path, schema, 'oats/type')
+    const path = this.context().pathOf(schema, this.name())
+    const typeImports = this.context().dependenciesOf<ImportDeclaration>(path, schema, 'oats/type')
     const assertion = this.getTopLevelTypeAssertionAst(schema, factory.createIdentifier(this.getInputParameterName()))
     return success(
       createSourceFile(
@@ -65,7 +64,7 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       undefined,
-      this.context.nameOf(schema, this.name()),
+      this.context().nameOf(schema, this.name()),
       [],
       [
         factory.createParameterDeclaration(
@@ -77,7 +76,7 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
           factory.createTypeReferenceNode('any'),
         ),
       ],
-      factory.createTypePredicateNode(undefined, paramName, this.context.referenceOf(schema, 'oats/type')),
+      factory.createTypePredicateNode(undefined, paramName, this.context().referenceOf(schema, 'oats/type')),
       factory.createBlock([factory.createReturnStatement(assertion)]),
     )
   }
@@ -128,8 +127,8 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getReferenceAssertionAst(data: ReferenceObject, variable: Expression): Expression {
-    const refTarget = this.context.dereference(data)
-    const name = this.context.nameOf(refTarget, this.name())
+    const refTarget = this.context().dereference(data)
+    const name = this.context().nameOf(refTarget, this.name())
     if (isNil(name)) {
       // Not increasing level here so named refs can be validated.
       return this.getTypeAssertionAst(refTarget, variable)
@@ -151,9 +150,9 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     return reduceLogicalExpressions(
       SyntaxKind.BarBarToken,
       (data.oneOf ?? []).map((refOrSchema) => {
-        const schema = this.context.dereference<SchemaObject>(refOrSchema)
+        const schema = this.context().dereference<SchemaObject>(refOrSchema)
         return factory.createCallExpression(
-          factory.createIdentifier(this.context.nameOf(schema, this.name())),
+          factory.createIdentifier(this.context().nameOf(schema, this.name())),
           [],
           [variable],
         )
@@ -311,7 +310,7 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getObjectTypeAssertionAst(data: SchemaObject, variable: Expression): Expression {
-    const discriminators = getDiscriminators(data, this.context) || {}
+    const discriminators = getDiscriminators(data, this.context()) || {}
     const discriminatorAssertions = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) => {
       return factory.createBinaryExpression(
         safeMemberAccess(variable, name),
@@ -436,11 +435,11 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
     this.collectImportedTypeGuardRefs(data, refs)
 
     const importedSchemas = sortBy(
-      Array.from(refs).map((ref) => this.context.dereference<SchemaObject>(ref)),
-      (schema) => this.context.nameOf(schema, this.name()),
+      Array.from(refs).map((ref) => this.context().dereference<SchemaObject>(ref)),
+      (schema) => this.context().nameOf(schema, this.name()),
     )
-    const path = this.context.pathOf(data, this.name())
-    return isNil(path) ? [] : getModelImports(path, this.name(), importedSchemas, this.context)
+    const path = this.context().pathOf(data, this.name())
+    return isNil(path) ? [] : getModelImports(path, this.name(), importedSchemas, this.context())
   }
 
   private collectImportedTypeGuardRefs(data: Referenceable<SchemaObject>, refs: Set<ReferenceObject>): void {
@@ -448,8 +447,8 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
       return
     }
     if (this.type.isReferenceObject(data)) {
-      const refTarget = this.context.dereference(data)
-      const name = this.context.nameOf(refTarget, this.name())
+      const refTarget = this.context().dereference(data)
+      const name = this.context().nameOf(refTarget, this.name())
       if (isNil(name)) {
         this.collectImportedTypeGuardRefs(refTarget, refs)
       } else {

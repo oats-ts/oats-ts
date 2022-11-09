@@ -9,31 +9,40 @@ import { ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
 
-export function createSwaggerPetstoreCorsRouter(router?: IRouter | undefined): IRouter {
-  return (router ?? Router())
-    .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+export function createSwaggerPetstoreCorsRouter(_local_router?: IRouter | undefined): IRouter {
+  return (_local_router ?? Router())
+    .options('/pets/:petId', async (_local_request: Request, _local_response: Response, _local_next: NextFunction) => {
+      const _local_toolkit: ExpressToolkit = { request: _local_request, response: _local_response, next: _local_next }
+      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_qslhlh']
       try {
-        const method = adapter.getAccessControlRequestedMethod(toolkit)
-        const corsConfig =
-          method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.[method]
-        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
-        await adapter.respond(toolkit, { headers: corsHeaders })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
+        const _local_method = _local_adapter.getAccessControlRequestedMethod(_local_toolkit)
+        const _local_corsConfig =
+          _local_method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.[_local_method]
+        const _local_corsHeaders = await _local_adapter.getPreflightCorsHeaders(
+          _local_toolkit,
+          _local_method,
+          _local_corsConfig,
+        )
+        await _local_adapter.respond(_local_toolkit, { headers: _local_corsHeaders })
+      } catch (_local_error) {
+        _local_adapter.handleError(_local_toolkit, _local_error)
       }
     })
-    .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
-      const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+    .options('/pets', async (_local_request: Request, _local_response: Response, _local_next: NextFunction) => {
+      const _local_toolkit: ExpressToolkit = { request: _local_request, response: _local_response, next: _local_next }
+      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_qslhlh']
       try {
-        const method = adapter.getAccessControlRequestedMethod(toolkit)
-        const corsConfig = method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets']?.[method]
-        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
-        await adapter.respond(toolkit, { headers: corsHeaders })
-      } catch (error) {
-        adapter.handleError(toolkit, error)
+        const _local_method = _local_adapter.getAccessControlRequestedMethod(_local_toolkit)
+        const _local_corsConfig =
+          _local_method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets']?.[_local_method]
+        const _local_corsHeaders = await _local_adapter.getPreflightCorsHeaders(
+          _local_toolkit,
+          _local_method,
+          _local_corsConfig,
+        )
+        await _local_adapter.respond(_local_toolkit, { headers: _local_corsHeaders })
+      } catch (_local_error) {
+        _local_adapter.handleError(_local_toolkit, _local_error)
       }
     })
 }

@@ -40,25 +40,25 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   }
 
   protected shouldGenerate({ operation }: EnhancedOperation): boolean {
-    return hasResponses(operation, this.context)
+    return hasResponses(operation, this.context())
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const responses = getEnhancedResponses(data.operation, this.context)
-    const path = this.context.pathOf(data.operation, this.name())
+    const responses = getEnhancedResponses(data.operation, this.context())
+    const path = this.context().pathOf(data.operation, this.name())
     return success(
-      createSourceFile(path, this.getImports(path, data, responses), [this.getResponseTypeAst(data, this.context)]),
+      createSourceFile(path, this.getImports(path, data, responses), [this.getResponseTypeAst(data, this.context())]),
     )
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasResponses(input, this.context)
-      ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
+    return hasResponses(input, this.context())
+      ? factory.createTypeReferenceNode(this.context().nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasResponses(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return hasResponses(input, this.context()) ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected createDefaultStatusCodeType(knownStatusCodes: string[]): TypeReferenceNode {
@@ -75,8 +75,12 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
     return [
       ...flatMap(responses, ({ schema, statusCode }) => [
-        ...this.context.dependenciesOf(path, schema, 'oats/type'),
-        ...this.context.dependenciesOf(path, [operation.operation, statusCode], 'oats/response-headers-type'),
+        ...this.context().dependenciesOf<ImportDeclaration>(path, schema, 'oats/type'),
+        ...this.context().dependenciesOf<ImportDeclaration>(
+          path,
+          [operation.operation, statusCode],
+          'oats/response-headers-type',
+        ),
       ]),
     ]
   }

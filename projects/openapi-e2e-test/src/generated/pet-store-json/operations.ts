@@ -19,76 +19,104 @@ import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './res
 /**
  * Create a pet
  */
-export async function createPets(request: CreatePetsRequest, adapter: ClientAdapter): Promise<CreatePetsResponse> {
-  const requestUrl = await adapter.getUrl('/pets', undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
-  const requestBody = await adapter.getRequestBody(request.mimeType, request.body)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
+export async function createPets(
+  _local_request: CreatePetsRequest,
+  _local_adapter: ClientAdapter,
+): Promise<CreatePetsResponse> {
+  const _local_requestUrl = await _local_adapter.getUrl('/pets', undefined)
+  const _local_requestHeaders = await _local_adapter.getRequestHeaders(
+    undefined,
+    _local_request.mimeType,
+    undefined,
+    undefined,
+  )
+  const _local_requestBody = await _local_adapter.getRequestBody(_local_request.mimeType, _local_request.body)
+  const _local_rawRequest: RawHttpRequest = {
+    url: _local_requestUrl,
     method: 'post',
-    body: requestBody,
-    headers: requestHeaders,
+    body: _local_requestBody,
+    headers: _local_requestHeaders,
   }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, createPetsResponseBodyValidator)
+  const _local_rawResponse = await _local_adapter.request(_local_rawRequest)
+  const _local_mimeType = await _local_adapter.getMimeType(_local_rawResponse)
+  const _local_statusCode = await _local_adapter.getStatusCode(_local_rawResponse)
+  const _local_responseBody = await _local_adapter.getResponseBody(
+    _local_rawResponse,
+    _local_statusCode,
+    _local_mimeType,
+    createPetsResponseBodyValidator,
+  )
   return {
-    mimeType,
-    statusCode,
-    body: responseBody,
+    mimeType: _local_mimeType,
+    statusCode: _local_statusCode,
+    body: _local_responseBody,
   } as CreatePetsResponse
 }
 
 /**
  * List all pets
  */
-export async function listPets(request: ListPetsRequest, adapter: ClientAdapter): Promise<ListPetsResponse> {
-  const query = await adapter.getQuery(request.query, listPetsQuerySerializer)
-  const requestUrl = await adapter.getUrl('/pets', query)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
+export async function listPets(
+  _local_request: ListPetsRequest,
+  _local_adapter: ClientAdapter,
+): Promise<ListPetsResponse> {
+  const _local_query = await _local_adapter.getQuery(_local_request.query, listPetsQuerySerializer)
+  const _local_requestUrl = await _local_adapter.getUrl('/pets', _local_query)
+  const _local_requestHeaders = await _local_adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const _local_rawRequest: RawHttpRequest = {
+    url: _local_requestUrl,
     method: 'get',
-    headers: requestHeaders,
+    headers: _local_requestHeaders,
   }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseHeaders = await adapter.getResponseHeaders(rawResponse, statusCode, listPetsResponseHeadersDeserializer)
-  const responseBody = await adapter.getResponseBody(rawResponse, statusCode, mimeType, listPetsResponseBodyValidator)
+  const _local_rawResponse = await _local_adapter.request(_local_rawRequest)
+  const _local_mimeType = await _local_adapter.getMimeType(_local_rawResponse)
+  const _local_statusCode = await _local_adapter.getStatusCode(_local_rawResponse)
+  const _local_responseHeaders = await _local_adapter.getResponseHeaders(
+    _local_rawResponse,
+    _local_statusCode,
+    listPetsResponseHeadersDeserializer,
+  )
+  const _local_responseBody = await _local_adapter.getResponseBody(
+    _local_rawResponse,
+    _local_statusCode,
+    _local_mimeType,
+    listPetsResponseBodyValidator,
+  )
   return {
-    mimeType,
-    statusCode,
-    headers: responseHeaders,
-    body: responseBody,
+    mimeType: _local_mimeType,
+    statusCode: _local_statusCode,
+    headers: _local_responseHeaders,
+    body: _local_responseBody,
   } as ListPetsResponse
 }
 
 /**
  * Info for a specific pet
  */
-export async function showPetById(request: ShowPetByIdRequest, adapter: ClientAdapter): Promise<ShowPetByIdResponse> {
-  const path = await adapter.getPath(request.path, showPetByIdPathSerializer)
-  const requestUrl = await adapter.getUrl(path, undefined)
-  const requestHeaders = await adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
-  const rawRequest: RawHttpRequest = {
-    url: requestUrl,
+export async function showPetById(
+  _local_request: ShowPetByIdRequest,
+  _local_adapter: ClientAdapter,
+): Promise<ShowPetByIdResponse> {
+  const _local_path = await _local_adapter.getPath(_local_request.path, showPetByIdPathSerializer)
+  const _local_requestUrl = await _local_adapter.getUrl(_local_path, undefined)
+  const _local_requestHeaders = await _local_adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  const _local_rawRequest: RawHttpRequest = {
+    url: _local_requestUrl,
     method: 'get',
-    headers: requestHeaders,
+    headers: _local_requestHeaders,
   }
-  const rawResponse = await adapter.request(rawRequest)
-  const mimeType = await adapter.getMimeType(rawResponse)
-  const statusCode = await adapter.getStatusCode(rawResponse)
-  const responseBody = await adapter.getResponseBody(
-    rawResponse,
-    statusCode,
-    mimeType,
+  const _local_rawResponse = await _local_adapter.request(_local_rawRequest)
+  const _local_mimeType = await _local_adapter.getMimeType(_local_rawResponse)
+  const _local_statusCode = await _local_adapter.getStatusCode(_local_rawResponse)
+  const _local_responseBody = await _local_adapter.getResponseBody(
+    _local_rawResponse,
+    _local_statusCode,
+    _local_mimeType,
     showPetByIdResponseBodyValidator,
   )
   return {
-    mimeType,
-    statusCode,
-    body: responseBody,
+    mimeType: _local_mimeType,
+    statusCode: _local_statusCode,
+    body: _local_responseBody,
   } as ShowPetByIdResponse
 }

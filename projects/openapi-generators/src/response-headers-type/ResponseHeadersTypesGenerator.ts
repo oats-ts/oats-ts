@@ -22,14 +22,14 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
   }
 
   protected getItems(): ResponseParameterInputInternal[] {
-    const operations = sortBy(getEnhancedOperations(this.input.document, this.context), ({ operation }) =>
-      this.context.nameOf(operation),
+    const operations = sortBy(getEnhancedOperations(this.input.document, this.context()), ({ operation }) =>
+      this.context().nameOf(operation),
     )
     return flatMap(operations, (operation: EnhancedOperation): ResponseParameterInputInternal[] => {
-      if (!hasResponseHeaders(operation.operation, this.context)) {
+      if (!hasResponseHeaders(operation.operation, this.context())) {
         return []
       }
-      return keys(getResponseHeaders(operation.operation, this.context)).map(
+      return keys(getResponseHeaders(operation.operation, this.context())).map(
         (status): ResponseParameterInputInternal => [operation, status],
       )
     })
@@ -41,13 +41,13 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
     }
     return !this.hasResponsesHeaders(input)
       ? factory.createTypeReferenceNode('undefined')
-      : factory.createTypeReferenceNode(this.context.nameOf(input, this.name()))
+      : factory.createTypeReferenceNode(this.context().nameOf(input, this.name()))
   }
 
   public dependenciesOf(fromPath: string, input: ResponseParameterInput): ImportDeclaration[] {
     return isNil(input) || !Array.isArray(input) || !this.hasResponsesHeaders(input)
       ? []
-      : getModelImports(fromPath, this.name(), [input], this.context)
+      : getModelImports(fromPath, this.name(), [input], this.context())
   }
 
   protected getEnhancedOperation([operation]: ResponseParameterInputInternal): EnhancedOperation {
@@ -59,8 +59,8 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
   }
 
   protected getParameterObjects([data, status]: ResponseParameterInputInternal): HeaderObject[] {
-    return values(getResponseHeaders(data.operation, this.context)[status]).map((header) =>
-      this.context.dereference(header, true),
+    return values(getResponseHeaders(data.operation, this.context())[status]).map((header) =>
+      this.context().dereference(header, true),
     )
   }
 
@@ -69,7 +69,7 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
     if (isNil(responseOrRef)) {
       return false
     }
-    const response = this.context.dereference(responseOrRef, true)
+    const response = this.context().dereference(responseOrRef, true)
     const headers = response.headers || {}
     return values(headers).length > 0
   }

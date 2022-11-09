@@ -12,8 +12,7 @@ import {
   ResponsesObject,
   ContentObject,
 } from '@oats-ts/openapi-model'
-import { GeneratorContextImpl } from '@oats-ts/model-common'
-import { GeneratorConfig } from '@oats-ts/oats-ts'
+import { JsonSchemaBasedGeneratorContext } from '@oats-ts/model-common'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 
 export type OpenAPIValidatorFn<T> = (
@@ -37,6 +36,6 @@ export type OpenAPIValidatorConfig = {
   referenceObject: OpenAPIValidatorFn<ReferenceObject>
 }
 
-export type OpenAPIValidatorContext = GeneratorContextImpl<OpenAPIObject, GeneratorConfig, OpenAPIGeneratorTarget> & {
+export type OpenAPIValidatorContext = JsonSchemaBasedGeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget> & {
   readonly validated: Set<any>
 }

@@ -36,28 +36,32 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {
-    return hasResponseHeaders(item.operation, this.context)
+    return hasResponseHeaders(item.operation, this.context())
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(data.operation, this.name())
+    const path = this.context().pathOf(data.operation, this.name())
     return success(
       createSourceFile(path, this.getImportDeclarations(path, data), [this.getResponseHeadersDeserializerAst(data)]),
     )
   }
 
   private getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
-    const headersByStatus = getResponseHeaders(data.operation, this.context)
+    const headersByStatus = getResponseHeaders(data.operation, this.context())
     return [
       getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.dsl, this.paramsPkg.imports.deserializers]),
       ...flatMap(entries(headersByStatus), ([statusCode]) =>
-        this.context.dependenciesOf(path, [data.operation, statusCode], 'oats/response-headers-type'),
+        this.context().dependenciesOf<ImportDeclaration>(
+          path,
+          [data.operation, statusCode],
+          'oats/response-headers-type',
+        ),
       ),
     ]
   }
 
   protected getResponseHeadersDeserializerAst(data: EnhancedOperation): Statement {
-    const headers = entries(getResponseHeaders(data.operation, this.context))
+    const headers = entries(getResponseHeaders(data.operation, this.context()))
     const props = headers
       .filter(([, headers]) => values(headers).length > 0)
       .map(([status, headers]): PropertyAssignment => {
@@ -68,8 +72,8 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
               factory.createIdentifier(this.paramsPkg.exports.deserializers),
               this.paramsPkg.content.deserializers.createHeaderDeserializer,
             ),
-            [this.context.referenceOf([data.operation, status], 'oats/response-headers-type')],
-            [getDslObjectAst(values(headers), this.context, this.paramsPkg)],
+            [this.context().referenceOf([data.operation, status], 'oats/response-headers-type')],
+            [getDslObjectAst(values(headers), this.context(), this.paramsPkg)],
           ),
         )
       })
@@ -79,7 +83,7 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            this.context.nameOf(data.operation, this.name()),
+            this.context().nameOf(data.operation, this.name()),
             undefined,
             undefined,
             factory.createAsExpression(
@@ -94,12 +98,14 @@ export class ResponseHeadersDeserializersGenerator extends OperationBasedCodeGen
   }
 
   public referenceOf(input: OperationObject): Identifier | undefined {
-    return hasResponseHeaders(input, this.context)
-      ? factory.createIdentifier(this.context.nameOf(input, this.name()))
+    return hasResponseHeaders(input, this.context())
+      ? factory.createIdentifier(this.context().nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasResponseHeaders(input, this.context) ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return hasResponseHeaders(input, this.context())
+      ? getModelImports(fromPath, this.name(), [input], this.context())
+      : []
   }
 }

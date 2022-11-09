@@ -26,7 +26,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
-    const typeName = this.context.nameOf(input)
+    const typeName = this.context().nameOf(input)
     return isNil(typeName) ? this.getTypeReferenceAst(input) : factory.createTypeReferenceNode(typeName)
   }
 
@@ -35,7 +35,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   public async generateItem(schema: Referenceable<SchemaObject>): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(schema, this.name())
+    const path = this.context().pathOf(schema, this.name())
     return success(createSourceFile(path, this.getTypeImports(path, schema, false), [this.getNamedTypeAst(schema)]))
   }
 
@@ -43,7 +43,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
     const node = factory.createTypeAliasDeclaration(
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      factory.createIdentifier(this.context.nameOf(schema, this.name())),
+      factory.createIdentifier(this.context().nameOf(schema, this.name())),
       undefined,
       this.getRighthandSideTypeAst(schema),
     )
@@ -83,11 +83,11 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   protected getTypeReferenceAst(data: Referenceable<SchemaObject> | undefined): TypeNode {
-    const schema = isNil(data) ? undefined : this.context.dereference(data)
+    const schema = isNil(data) ? undefined : this.context().dereference(data)
     if (isNil(schema)) {
       return this.getUnknownTypeAst(data)
     }
-    const name = this.context.nameOf(schema)
+    const name = this.context().nameOf(schema)
     if (isNil(name)) {
       return this.getRighthandSideTypeAst(schema)
     }
@@ -136,7 +136,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   protected getObjectTypeAst(data: SchemaObject): TypeNode {
-    const discriminators = getDiscriminators(data, this.context) || {}
+    const discriminators = getDiscriminators(data, this.context()) || {}
     const config = this.configuration()
     const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(
       ([name, value]): PropertySignature => {
@@ -215,11 +215,11 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
     schema: Referenceable<SchemaObject>,
     referenceOnly: boolean,
   ): ImportDeclaration[] {
-    const name = this.context.nameOf(schema)
+    const name = this.context().nameOf(schema)
     if (referenceOnly && !isNil(name)) {
-      return getModelImports<JsonSchemaGeneratorTarget>(fromPath, this.name(), [schema], this.context)
+      return getModelImports<JsonSchemaGeneratorTarget>(fromPath, this.name(), [schema], this.context())
     }
-    const refSchemas = getReferencedNamedSchemas(schema, this.context)
-    return getModelImports<JsonSchemaGeneratorTarget>(fromPath, this.name(), refSchemas, this.context)
+    const refSchemas = getReferencedNamedSchemas(schema, this.context())
+    return getModelImports<JsonSchemaGeneratorTarget>(fromPath, this.name(), refSchemas, this.context())
   }
 }

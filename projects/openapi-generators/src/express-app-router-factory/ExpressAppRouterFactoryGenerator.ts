@@ -15,17 +15,9 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { RouterNames } from '../utils/RouterNames'
-
-const RouterFactoryNames = {
-  root: 'root',
-  routers: 'routers',
-  uniqueRouters: 'uniqueRouters',
-  overrides: 'overrides',
-  factories: 'factories',
-  childRouter: 'childRouter',
-  factory: 'factory',
-}
+import { ExpressAppRouterFactoryLocals } from './typings'
+import { ExpressAppRouterFactoryDefaultLocals } from './ExpressAppRouterFactoryDefaultLocals'
+import { ExpressFields } from '../utils/OatsApiNames'
 
 export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {
@@ -40,18 +32,24 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
     return [{ name: this.expressPkg.name, version: '^4.18.1' }]
   }
 
+  protected getDefaultLocals() {
+    return ExpressAppRouterFactoryDefaultLocals
+  }
+
   public referenceOf(input: OpenAPIObject): TypeNode | Expression | undefined {
     const [operations] = this.items
-    return operations?.length > 0 ? factory.createTypeReferenceNode(this.context.nameOf(input, this.name())) : undefined
+    return operations?.length > 0
+      ? factory.createTypeReferenceNode(this.context().nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OpenAPIObject): ImportDeclaration[] {
     const [operations] = this.items
-    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context) : []
+    return operations?.length > 0 ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
   protected async generateItem(operations: EnhancedOperation[]): Promise<Try<SourceFile>> {
-    const path = this.context.pathOf(this.input.document, this.name())
+    const path = this.context().pathOf(this.input.document, this.name())
     return success(
       createSourceFile(path, this.getImportDeclarations(path, operations), [this.getAppRouterFactoryAst(operations)]),
     )
@@ -62,7 +60,7 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       undefined,
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       undefined,
-      factory.createIdentifier(this.context.nameOf(this.context.document, this.name())),
+      factory.createIdentifier(this.context().nameOf(this.context().document(), this.name())),
       undefined,
       this.getParametersAst(),
       factory.createTypeReferenceNode(factory.createIdentifier(this.expressPkg.exports.IRouter), undefined),
@@ -85,13 +83,13 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         path,
         'oats/express-router-factories-type',
         [this.input.document],
-        this.context,
+        this.context(),
       ),
       ...getModelImports<OpenAPIGeneratorTarget>(
         path,
         'oats/express-router-factory',
         operations.map(({ operation }) => operation),
-        this.context,
+        this.context(),
       ),
     ]
   }
@@ -102,11 +100,15 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterFactoryNames.root),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'root'),
+            ),
             undefined,
             undefined,
             factory.createBinaryExpression(
-              factory.createIdentifier(RouterNames.router),
+              factory.createIdentifier(
+                this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'router'),
+              ),
               factory.createToken(SyntaxKind.QuestionQuestionToken),
               factory.createCallExpression(factory.createIdentifier(this.expressPkg.exports.Router), undefined, []),
             ),
@@ -122,11 +124,13 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       operations.map(({ operation }) => {
         return factory.createBinaryExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterFactoryNames.overrides),
-            this.context.nameOf(operation, 'oats/express-router-factory'),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'overrides'),
+            ),
+            this.context().nameOf(operation, 'oats/express-router-factory'),
           ),
           factory.createToken(SyntaxKind.QuestionQuestionToken),
-          this.context.referenceOf(operation, 'oats/express-router-factory'),
+          this.context().referenceOf(operation, 'oats/express-router-factory'),
         )
       }),
     )
@@ -135,7 +139,9 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterFactoryNames.factories),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'factories'),
+            ),
             undefined,
             undefined,
             factoriesArrayAst,
@@ -152,14 +158,18 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createVariableDeclarationList(
         [
           factory.createVariableDeclaration(
-            factory.createIdentifier(RouterFactoryNames.uniqueRouters),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'uniqueRouters'),
+            ),
             undefined,
             undefined,
             factory.createCallExpression(
               factory.createPropertyAccessExpression(
                 factory.createCallExpression(
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier(RouterFactoryNames.factories),
+                    factory.createIdentifier(
+                      this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'factories'),
+                    ),
                     factory.createIdentifier('map'),
                   ),
                   undefined,
@@ -172,14 +182,28 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
                           undefined,
                           undefined,
                           undefined,
-                          factory.createIdentifier(RouterFactoryNames.factory),
+                          factory.createIdentifier(
+                            this.context().localNameOf<ExpressAppRouterFactoryLocals>(
+                              undefined,
+                              this.name(),
+                              'factory',
+                            ),
+                          ),
                         ),
                       ],
                       undefined,
                       factory.createToken(SyntaxKind.EqualsGreaterThanToken),
-                      factory.createCallExpression(factory.createIdentifier(RouterFactoryNames.factory), undefined, [
-                        factory.createIdentifier(RouterNames.router),
-                      ]),
+                      factory.createCallExpression(
+                        factory.createIdentifier(
+                          this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'factory'),
+                        ),
+                        undefined,
+                        [
+                          factory.createIdentifier(
+                            this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'router'),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -195,15 +219,25 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
                       undefined,
                       undefined,
                       undefined,
-                      factory.createIdentifier(RouterFactoryNames.childRouter),
+                      factory.createIdentifier(
+                        this.context().localNameOf<ExpressAppRouterFactoryLocals>(
+                          undefined,
+                          this.name(),
+                          'childRouter',
+                        ),
+                      ),
                     ),
                   ],
                   undefined,
                   factory.createToken(SyntaxKind.EqualsGreaterThanToken),
                   factory.createBinaryExpression(
-                    factory.createIdentifier(RouterFactoryNames.childRouter),
+                    factory.createIdentifier(
+                      this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'childRouter'),
+                    ),
                     factory.createToken(SyntaxKind.ExclamationEqualsEqualsToken),
-                    factory.createIdentifier(RouterFactoryNames.root),
+                    factory.createIdentifier(
+                      this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'root'),
+                    ),
                   ),
                 ),
               ],
@@ -220,22 +254,34 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
       factory.createConditionalExpression(
         factory.createBinaryExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterFactoryNames.uniqueRouters),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'uniqueRouters'),
+            ),
             factory.createIdentifier('length'),
           ),
           factory.createToken(SyntaxKind.EqualsEqualsEqualsToken),
           factory.createNumericLiteral(0),
         ),
         factory.createToken(SyntaxKind.QuestionToken),
-        factory.createIdentifier(RouterFactoryNames.root),
+        factory.createIdentifier(
+          this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'root'),
+        ),
         factory.createToken(SyntaxKind.ColonToken),
         factory.createCallExpression(
           factory.createPropertyAccessExpression(
-            factory.createIdentifier(RouterFactoryNames.root),
-            factory.createIdentifier(RouterNames.use),
+            factory.createIdentifier(
+              this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'root'),
+            ),
+            factory.createIdentifier(ExpressFields.use),
           ),
           undefined,
-          [factory.createSpreadElement(factory.createIdentifier(RouterFactoryNames.uniqueRouters))],
+          [
+            factory.createSpreadElement(
+              factory.createIdentifier(
+                this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'uniqueRouters'),
+              ),
+            ),
+          ],
         ),
       ),
     )
@@ -247,7 +293,9 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         [],
         [],
         undefined,
-        factory.createIdentifier(RouterNames.router),
+        factory.createIdentifier(
+          this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'router'),
+        ),
         factory.createToken(SyntaxKind.QuestionToken),
         factory.createUnionTypeNode([
           factory.createTypeReferenceNode(this.expressPkg.exports.IRouter, undefined),
@@ -259,10 +307,12 @@ export class ExpressAppRouterFactoryGenerator extends DocumentBasedCodeGenerator
         undefined,
         undefined,
         undefined,
-        factory.createIdentifier(RouterFactoryNames.overrides),
+        factory.createIdentifier(
+          this.context().localNameOf<ExpressAppRouterFactoryLocals>(undefined, this.name(), 'overrides'),
+        ),
         undefined,
         factory.createTypeReferenceNode(factory.createIdentifier('Partial'), [
-          this.context.referenceOf(this.context.document, 'oats/express-router-factories-type'),
+          this.context().referenceOf(this.context().document(), 'oats/express-router-factories-type'),
         ]),
         factory.createObjectLiteralExpression([], false),
       ),

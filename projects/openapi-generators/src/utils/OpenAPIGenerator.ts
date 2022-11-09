@@ -12,6 +12,7 @@ import {
   OpenApiExpressServerAdapterPackage,
   RuntimePackage,
   packages,
+  LocalNameDefaults,
 } from '@oats-ts/model-common'
 
 export abstract class OpenAPIGenerator<Config, Items> extends BaseCodeGenerator<
@@ -33,8 +34,18 @@ export abstract class OpenAPIGenerator<Config, Items> extends BaseCodeGenerator<
   protected adapterPkg!: OpenApiExpressServerAdapterPackage
   protected fetchPkg!: RuntimePackage<any, any>
 
+  protected getDefaultLocals(): LocalNameDefaults {
+    return {}
+  }
+
   protected createContext(): OpenAPIGeneratorContext {
-    return createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
+    return createOpenAPIGeneratorContext(
+      this,
+      this.input,
+      this.globalConfig,
+      this.dependencies,
+      this.getDefaultLocals(),
+    )
   }
 
   public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
@@ -66,18 +77,18 @@ export abstract class OpenAPIGenerator<Config, Items> extends BaseCodeGenerator<
   }
 
   protected getOpenAPIRuntimePackage(): OpenAPIRuntimePackage {
-    return packages.openApiRuntime(this.context)
+    return packages.openApiRuntime(this.context())
   }
 
   protected createExpressPackage(): ExpressPackage {
-    return packages.express(this.context)
+    return packages.express(this.context())
   }
 
   protected getOpenApiExpressServerAdapterPackage(): OpenApiExpressServerAdapterPackage {
-    return packages.openApiExpressServerAdapter(this.context)
+    return packages.openApiExpressServerAdapter(this.context())
   }
 
   protected getFetchPackage(): RuntimePackage<any, any> {
-    return packages.openApiFetchClientAdapter(this.context)
+    return packages.openApiFetchClientAdapter(this.context())
   }
 }

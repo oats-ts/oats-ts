@@ -11,17 +11,17 @@ import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './res
 import { SwaggerPetstoreSdk } from './sdkType'
 
 export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
-    this.adapter = adapter
+  protected readonly _local_adapter: ClientAdapter
+  public constructor(_local_adapter: ClientAdapter) {
+    this._local_adapter = _local_adapter
   }
-  public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
-    return listPets(request, this.adapter)
+  public async _local_listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
+    return listPets(request, this._local_adapter)
   }
-  public async createPets(request: CreatePetsRequest): Promise<CreatePetsResponse> {
-    return createPets(request, this.adapter)
+  public async _local_createPets(request: CreatePetsRequest): Promise<CreatePetsResponse> {
+    return createPets(request, this._local_adapter)
   }
-  public async showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
-    return showPetById(request, this.adapter)
+  public async _local_showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
+    return showPetById(request, this._local_adapter)
   }
 }

@@ -24,7 +24,7 @@ export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
       ...(operation.cookie.length > 0
         ? [
             getNamedImports(this.httpPkg.name, [this.httpPkg.imports.Cookies]),
-            ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/cookies-type', [operation.operation], this.context),
+            ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/cookies-type', [operation.operation], this.context()),
           ]
         : []),
     ]

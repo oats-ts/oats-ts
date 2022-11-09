@@ -18,4 +18,8 @@ export class NameProviderHelperImpl<Doc> implements NameProviderHelper {
   public nameOf<T>(input: T): string | undefined {
     return this.data.objectToName.get(input)
   }
+
+  public hashOf<T>(input: T): number | undefined {
+    return this.data.objectToHash.get(input)
+  }
 }

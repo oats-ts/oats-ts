@@ -10,13 +10,13 @@ import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
 
 export function createSwaggerPetstoreContextRouter(
-  router: IRouter | undefined,
-  api: SwaggerPetstoreApi,
-  adapter: ServerAdapter<ExpressToolkit>,
+  _local_router: IRouter | undefined,
+  _local_api: SwaggerPetstoreApi,
+  _local_adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
-  return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_qslhlh'] = api
-    response.locals['__oats_adapter_qslhlh'] = adapter
-    next()
+  return (_local_router ?? Router()).use((_local__: Request, _local_response: Response, _local_next: NextFunction) => {
+    _local_response.locals['_local___oats_api_qslhlh'] = _local_api
+    _local_response.locals['_local___oats_adapter_qslhlh'] = _local_adapter
+    _local_next()
   })
 }

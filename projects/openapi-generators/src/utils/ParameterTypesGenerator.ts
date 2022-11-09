@@ -41,12 +41,12 @@ export abstract class ParameterTypesGenerator<T> extends OpenAPIGenerator<Parame
     const parameters = this.getParameterObjects(data)
     const nameable = this.getNameable(data)
 
-    const path = this.context.pathOf(nameable, this.name())
+    const path = this.context().pathOf(nameable, this.name())
 
     const ast = factory.createTypeAliasDeclaration(
       [],
       [factory.createModifier(SyntaxKind.ExportKeyword)],
-      this.context.nameOf(nameable, this.name()),
+      this.context().nameOf(nameable, this.name()),
       undefined,
       this.getTypeLiteral(parameters),
     )
@@ -54,18 +54,18 @@ export abstract class ParameterTypesGenerator<T> extends OpenAPIGenerator<Parame
   }
 
   protected getImports(path: string, parameters: (ParameterObject | HeaderObject)[]): ImportDeclaration[] {
-    const referencedSchemas = getReferencedNamedSchemas(this.getParameterSchemaObject(parameters), this.context)
-    return flatMap(referencedSchemas, (schema) => this.context.dependenciesOf(path, schema, 'oats/type'))
+    const referencedSchemas = getReferencedNamedSchemas(this.getParameterSchemaObject(parameters), this.context())
+    return flatMap(referencedSchemas, (schema) => this.context().dependenciesOf(path, schema, 'oats/type'))
   }
 
   protected getTypeLiteral(parameters: (ParameterObject | HeaderObject)[]) {
     return factory.createTypeLiteralNode(
       parameters.map((parameter) => {
-        const name = (parameter as ParameterObject).name ?? this.context.nameOf(parameter)
+        const name = (parameter as ParameterObject).name ?? this.context().nameOf(parameter)
         const node = this.createProperty(
           name,
           Boolean(parameter.required),
-          this.context.referenceOf(parameter.schema, 'oats/type'),
+          this.context().referenceOf(parameter.schema, 'oats/type'),
         )
         return this.configuration().documentation ? documentNode(node, parameter) : node
       }),
@@ -97,11 +97,11 @@ export abstract class ParameterTypesGenerator<T> extends OpenAPIGenerator<Parame
       type: 'object',
       required: params
         .filter((param) => param.required)
-        .map((param) => (param as ParameterObject).name ?? this.context.nameOf(param)),
+        .map((param) => (param as ParameterObject).name ?? this.context().nameOf(param)),
       properties: params.reduce(
         (props: Record<string, SchemaObject | ReferenceObject>, param: ParameterObject | HeaderObject) => {
           return Object.assign(props, {
-            [(param as ParameterObject).name ?? this.context.nameOf(param)]: param.schema,
+            [(param as ParameterObject).name ?? this.context().nameOf(param)]: param.schema,
           })
         },
         {},
