@@ -4,6 +4,7 @@ import { expressAppRouterFactory } from './express-app-router-factory'
 import { expressRoutersFactoriesType } from './express-router-factories-type'
 import { group } from './group'
 import { operations } from './operations'
+import { operations as operationClasses } from './operation-classes'
 import { pathDeserializers } from './path-deserializer'
 import { pathSerializers } from './path-serializer'
 import { pathTypes } from './path-type'
@@ -72,4 +73,5 @@ export const factories = {
   expressCorsRouterFactory,
   expressContextRouterFactory,
   corsConfiguration,
+  operationClasses,
 } as const

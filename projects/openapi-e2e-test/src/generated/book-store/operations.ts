@@ -4,7 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
+import {
+  ClientAdapter,
+  HttpMethod,
+  RawHttpHeaders,
+  RawHttpRequest,
+  RunnableOperation,
+  SyncClientAdapter,
+} from '@oats-ts/openapi-runtime'
 import { getBookPathSerializer } from './pathSerializers'
 import { getBooksQuerySerializer } from './querySerializers'
 import { getBooksRequestHeadersSerializer } from './requestHeaderSerializers'
@@ -92,4 +99,110 @@ export async function getBooks(request: GetBooksRequest, adapter: ClientAdapter)
     headers: responseHeaders,
     body: responseBody,
   } as GetBooksResponse
+}
+
+/**
+ * Creates a new book based on the request body.
+ */
+export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBookResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(_request: AddBookRequest): string {
+    return this.adapter.getUrl('/books', undefined)
+  }
+  protected getRequestMethod(_request: AddBookRequest): HttpMethod {
+    return 'post'
+  }
+  protected getRequestBody(request: AddBookRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
+  }
+  protected getRequestHeaders(request: AddBookRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  public async run(request: AddBookRequest): Promise<AddBookResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      body: this.getRequestBody(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as AddBookResponse
+  }
+}
+
+/**
+ * Returns the book associated with the given bookId
+ */
+export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBookResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(request: GetBookRequest): string {
+    const path = this.adapter.getPath(request.path, getBookPathSerializer)
+    return this.adapter.getUrl(path, undefined)
+  }
+  protected getRequestMethod(_request: GetBookRequest): HttpMethod {
+    return 'get'
+  }
+  protected getRequestHeaders(_request: GetBookRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(request: GetBookRequest): Promise<GetBookResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as GetBookResponse
+  }
+}
+
+/**
+ * Returns a list of books, can be paginated
+ */
+export class GetBooksOperation implements RunnableOperation<GetBooksRequest, GetBooksResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(request: GetBooksRequest): string {
+    const query = this.adapter.getQuery(request.query, getBooksQuerySerializer)
+    return this.adapter.getUrl('/books', query)
+  }
+  protected getRequestMethod(_request: GetBooksRequest): HttpMethod {
+    return 'get'
+  }
+  protected getRequestHeaders(_request: GetBooksRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(request.headers, undefined, undefined, getBooksRequestHeadersSerializer)
+  }
+  public async run(request: GetBooksRequest): Promise<GetBooksResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      headers: this.getResponseHeaders(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as GetBooksResponse
+  }
 }

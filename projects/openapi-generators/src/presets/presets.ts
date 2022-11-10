@@ -76,6 +76,11 @@ function clientConfig(config: OpenAPIClientPresetConfig = {}): OpenAPIPresetConf
       ...(isNil(debugCookies) ? {} : { parseSetCookieHeaders: debugCookies, sendCookieHeader: debugCookies }),
       ...(isNil(validateResponses) ? {} : { validate: validateResponses }),
     },
+    'oats/operation-class': {
+      ...(isNil(documentation) ? {} : { documentation: documentation }),
+      ...(isNil(debugCookies) ? {} : { parseSetCookieHeaders: debugCookies, sendCookieHeader: debugCookies }),
+      ...(isNil(validateResponses) ? {} : { validate: validateResponses }),
+    },
     'oats/sdk-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/sdk-impl': isNil(documentation) ? true : { documentation: documentation },
   }

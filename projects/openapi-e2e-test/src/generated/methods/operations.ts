@@ -4,7 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
+import {
+  ClientAdapter,
+  HttpMethod,
+  RawHttpHeaders,
+  RawHttpRequest,
+  RunnableOperation,
+  SyncClientAdapter,
+} from '@oats-ts/openapi-runtime'
 import {
   deleteMethodResponseBodyValidator,
   getMethodResponseBodyValidator,
@@ -123,4 +130,154 @@ export async function putMethod(adapter: ClientAdapter): Promise<PutMethodRespon
     statusCode,
     body: responseBody,
   } as PutMethodResponse
+}
+
+export class DeleteMethodOperation implements RunnableOperation<never, DeleteMethodResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(): string {
+    return this.adapter.getUrl('/delete-method', undefined)
+  }
+  protected getRequestMethod(): HttpMethod {
+    return 'delete'
+  }
+  protected getRequestHeaders(): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(): Promise<DeleteMethodResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(),
+      method: this.getRequestMethod(),
+      headers: this.getRequestHeaders(),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as DeleteMethodResponse
+  }
+}
+
+export class GetMethodOperation implements RunnableOperation<never, GetMethodResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(): string {
+    return this.adapter.getUrl('/get-method', undefined)
+  }
+  protected getRequestMethod(): HttpMethod {
+    return 'get'
+  }
+  protected getRequestHeaders(): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(): Promise<GetMethodResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(),
+      method: this.getRequestMethod(),
+      headers: this.getRequestHeaders(),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as GetMethodResponse
+  }
+}
+
+export class PatchMethodOperation implements RunnableOperation<never, PatchMethodResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(): string {
+    return this.adapter.getUrl('/patch-method', undefined)
+  }
+  protected getRequestMethod(): HttpMethod {
+    return 'patch'
+  }
+  protected getRequestHeaders(): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(): Promise<PatchMethodResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(),
+      method: this.getRequestMethod(),
+      headers: this.getRequestHeaders(),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as PatchMethodResponse
+  }
+}
+
+export class PostMethodOperation implements RunnableOperation<never, PostMethodResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(): string {
+    return this.adapter.getUrl('/post-method', undefined)
+  }
+  protected getRequestMethod(): HttpMethod {
+    return 'post'
+  }
+  protected getRequestHeaders(): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(): Promise<PostMethodResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(),
+      method: this.getRequestMethod(),
+      headers: this.getRequestHeaders(),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as PostMethodResponse
+  }
+}
+
+export class PutMethodOperation implements RunnableOperation<never, PutMethodResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(): string {
+    return this.adapter.getUrl('/put-method', undefined)
+  }
+  protected getRequestMethod(): HttpMethod {
+    return 'put'
+  }
+  protected getRequestHeaders(): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(): Promise<PutMethodResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(),
+      method: this.getRequestMethod(),
+      headers: this.getRequestHeaders(),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as PutMethodResponse
+  }
 }

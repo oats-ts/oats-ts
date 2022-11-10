@@ -33,6 +33,38 @@ export type ClientAdapter = {
   ): Promise<any>
 }
 
+export type SyncClientAdapter = {
+  getPath<P>(input: P, serializer: (input: P) => Try<string>): string
+  getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): string | undefined
+  getUrl(path: string, query?: string): string
+  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): string
+  getRequestHeaders<H>(
+    input?: H,
+    mimeType?: string,
+    cookie?: string,
+    serializer?: (input: H) => Try<RawHttpHeaders>,
+  ): RawHttpHeaders
+  getRequestBody<B>(mimeType?: string, input?: B): any
+  request(request: RawHttpRequest): Promise<RawHttpResponse>
+  getMimeType(response: RawHttpResponse): string | undefined
+  getStatusCode(response: RawHttpResponse): number | undefined
+  getResponseCookies<C>(
+    response: RawHttpResponse,
+    deserializer?: (cookie?: string) => Try<Cookies<C>>,
+  ): Cookies<C> | undefined
+  getResponseHeaders(response: RawHttpResponse, statusCode?: number, deserializers?: ResponseHeadersDeserializers): any
+  getResponseBody(
+    response: RawHttpResponse,
+    statusCode?: number,
+    mimeType?: string,
+    validators?: ResponseBodyValidators,
+  ): any
+}
+
+export type RunnableOperation<Request, Response> = {
+  run(request: Request): Promise<Response>
+}
+
 export type ServerAdapter<T> = {
   getPathParameters<P>(toolkit: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
   getQueryParameters<Q>(toolkit: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>

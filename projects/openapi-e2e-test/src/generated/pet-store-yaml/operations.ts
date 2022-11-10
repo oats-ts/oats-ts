@@ -4,7 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
+import {
+  ClientAdapter,
+  HttpMethod,
+  RawHttpHeaders,
+  RawHttpRequest,
+  RunnableOperation,
+  SyncClientAdapter,
+} from '@oats-ts/openapi-runtime'
 import { showPetByIdPathSerializer } from './pathSerializers'
 import { listPetsQuerySerializer } from './querySerializers'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
@@ -91,4 +98,110 @@ export async function showPetById(request: ShowPetByIdRequest, adapter: ClientAd
     statusCode,
     body: responseBody,
   } as ShowPetByIdResponse
+}
+
+/**
+ * Create a pet
+ */
+export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest, CreatePetsResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(_request: CreatePetsRequest): string {
+    return this.adapter.getUrl('/pets', undefined)
+  }
+  protected getRequestMethod(_request: CreatePetsRequest): HttpMethod {
+    return 'post'
+  }
+  protected getRequestBody(request: CreatePetsRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
+  }
+  protected getRequestHeaders(request: CreatePetsRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  public async run(request: CreatePetsRequest): Promise<CreatePetsResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      body: this.getRequestBody(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as CreatePetsResponse
+  }
+}
+
+/**
+ * List all pets
+ */
+export class ListPetsOperation implements RunnableOperation<ListPetsRequest, ListPetsResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(request: ListPetsRequest): string {
+    const query = this.adapter.getQuery(request.query, listPetsQuerySerializer)
+    return this.adapter.getUrl('/pets', query)
+  }
+  protected getRequestMethod(_request: ListPetsRequest): HttpMethod {
+    return 'get'
+  }
+  protected getRequestHeaders(_request: ListPetsRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(request: ListPetsRequest): Promise<ListPetsResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      headers: this.getResponseHeaders(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as ListPetsResponse
+  }
+}
+
+/**
+ * Info for a specific pet
+ */
+export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdRequest, ShowPetByIdResponse> {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(request: ShowPetByIdRequest): string {
+    const path = this.adapter.getPath(request.path, showPetByIdPathSerializer)
+    return this.adapter.getUrl(path, undefined)
+  }
+  protected getRequestMethod(_request: ShowPetByIdRequest): HttpMethod {
+    return 'get'
+  }
+  protected getRequestHeaders(_request: ShowPetByIdRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  public async run(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as ShowPetByIdResponse
+  }
 }

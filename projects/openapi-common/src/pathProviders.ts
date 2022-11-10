@@ -7,6 +7,7 @@ const fileNameByTarget: NameByTarget = {
   'oats/type': 'types.ts',
   'oats/type-guard': 'typeGuards.ts',
   'oats/operation': 'operations.ts',
+  'oats/operation-class': 'operationClasses.ts',
   'oats/query-type': 'queryTypes.ts',
   'oats/cookies-type': 'cookieTypes.ts',
   'oats/request-headers-type': 'requestHeaderTypes.ts',
@@ -97,6 +98,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/set-cookie-deserializer': serializers,
 
     'oats/operation': operations,
+    'oats/operation-class': operations,
 
     'oats/cors-configuration': routers,
     'oats/express-router-factory': routers,

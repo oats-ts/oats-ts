@@ -51,6 +51,8 @@ const openApiHttpExports = {
   CookieValue: 'CookieValue',
   Cookies: 'Cookies',
   ClientAdapter: 'ClientAdapter',
+  SyncClientAdapter: 'SyncClientAdapter',
+  RunnableOperation: 'RunnableOperation',
   ServerAdapter: 'ServerAdapter',
   CorsConfiguration: 'CorsConfiguration',
 }

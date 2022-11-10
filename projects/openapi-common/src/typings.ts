@@ -47,6 +47,7 @@ export type OpenAPIGeneratorTarget =
   | 'oats/cookie-deserializer'
   | 'oats/set-cookie-deserializer'
   | 'oats/operation'
+  | 'oats/operation-class'
   | 'oats/sdk-type'
   | 'oats/sdk-impl'
   | 'oats/api-type'

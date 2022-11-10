@@ -4,7 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/optional-request-body.json
  */
 
-import { ClientAdapter, RawHttpRequest } from '@oats-ts/openapi-runtime'
+import {
+  ClientAdapter,
+  HttpMethod,
+  RawHttpHeaders,
+  RawHttpRequest,
+  RunnableOperation,
+  SyncClientAdapter,
+} from '@oats-ts/openapi-runtime'
 import { OptionalRequestBodyRequest } from './requestTypes'
 import { optionalRequestBodyResponseBodyValidator } from './responseBodyValidators'
 import { OptionalRequestBodyResponse } from './responseTypes'
@@ -36,4 +43,40 @@ export async function optionalRequestBody(
     statusCode,
     body: responseBody,
   } as OptionalRequestBodyResponse
+}
+
+export class OptionalRequestBodyOperation
+  implements RunnableOperation<OptionalRequestBodyRequest, OptionalRequestBodyResponse>
+{
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(_request: OptionalRequestBodyRequest): string {
+    return this.adapter.getUrl('/optional-request-body', undefined)
+  }
+  protected getRequestMethod(_request: OptionalRequestBodyRequest): HttpMethod {
+    return 'post'
+  }
+  protected getRequestBody(request: OptionalRequestBodyRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
+  }
+  protected getRequestHeaders(request: OptionalRequestBodyRequest): RawHttpHeaders {
+    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  public async run(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getRequestMethod(request),
+      body: this.getRequestBody(request),
+      headers: this.getRequestHeaders(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as OptionalRequestBodyResponse
+  }
 }

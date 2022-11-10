@@ -11,6 +11,7 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/express-router-factory': factories.expressRouterFactories,
   'oats/express-router-factories-type': factories.expressRoutersFactoriesType,
   'oats/operation': factories.operations,
+  'oats/operation-class': factories.operationClasses,
   'oats/path-deserializer': factories.pathDeserializers,
   'oats/path-serializer': factories.pathSerializers,
   'oats/path-type': factories.pathTypes,
