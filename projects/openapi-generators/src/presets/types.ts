@@ -19,6 +19,7 @@ import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
   'oats/operation': OperationsGeneratorConfig
+  'oats/operation-class': OperationsGeneratorConfig
   'oats/path-type': ParameterTypesGeneratorConfig
   'oats/query-type': ParameterTypesGeneratorConfig
   'oats/request-headers-type': ParameterTypesGeneratorConfig

@@ -4,6 +4,7 @@ import {
   RawHttpResponse,
   RawHttpRequest,
   OperationCorsConfiguration,
+  RunnableOperation,
 } from '@oats-ts/openapi-http'
 
 export const ServerAdapterMethods: Record<keyof ServerAdapter<any>, keyof ServerAdapter<any>> = {
@@ -90,4 +91,8 @@ export const OperationCorsConfigurationFields: Record<
   allowedResponseHeaders: 'allowedResponseHeaders',
   allowCredentials: 'allowCredentials',
   maxAge: 'maxAge',
+}
+
+export const RunnableOperationMethods: Record<keyof RunnableOperation<any, any>, keyof RunnableOperation<any, any>> = {
+  run: 'run',
 }

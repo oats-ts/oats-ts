@@ -28,7 +28,7 @@ export class SdkTypeGenerator extends DocumentBasedCodeGenerator<SdkGeneratorCon
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/operation', 'oats/request-type', 'oats/response-type']
+    return ['oats/request-type', 'oats/response-type']
   }
 
   protected getDefaultLocals(): LocalNameDefaults {
