@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter,
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
-  SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import {
   deleteMethodResponseBodyValidator,
@@ -27,9 +27,9 @@ import {
   PutMethodResponse,
 } from './responseTypes'
 
-export class DeleteMethodOperation implements RunnableOperation<never, DeleteMethodResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+export class DeleteMethodOperation implements RunnableOperation<void, DeleteMethodResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(): string {
@@ -71,9 +71,9 @@ export class DeleteMethodOperation implements RunnableOperation<never, DeleteMet
   }
 }
 
-export class GetMethodOperation implements RunnableOperation<never, GetMethodResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+export class GetMethodOperation implements RunnableOperation<void, GetMethodResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(): string {
@@ -115,9 +115,9 @@ export class GetMethodOperation implements RunnableOperation<never, GetMethodRes
   }
 }
 
-export class PatchMethodOperation implements RunnableOperation<never, PatchMethodResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+export class PatchMethodOperation implements RunnableOperation<void, PatchMethodResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(): string {
@@ -159,9 +159,9 @@ export class PatchMethodOperation implements RunnableOperation<never, PatchMetho
   }
 }
 
-export class PostMethodOperation implements RunnableOperation<never, PostMethodResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+export class PostMethodOperation implements RunnableOperation<void, PostMethodResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(): string {
@@ -203,9 +203,9 @@ export class PostMethodOperation implements RunnableOperation<never, PostMethodR
   }
 }
 
-export class PutMethodOperation implements RunnableOperation<never, PutMethodResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+export class PutMethodOperation implements RunnableOperation<void, PutMethodResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(): string {

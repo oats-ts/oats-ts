@@ -4,10 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import {
-  RunnableOperation as _RunnableOperation,
-  SyncClientAdapter as _SyncClientAdapter,
-} from '@oats-ts/openapi-runtime'
+import { ClientAdapter as _ClientAdapter, RunnableOperation as _RunnableOperation } from '@oats-ts/openapi-runtime'
 import {
   DeepObjectQueryParametersOperation,
   FormCookieParametersOperation,
@@ -47,8 +44,8 @@ import {
 import { ParametersSdk } from './sdkType'
 
 export class ParametersSdkImpl implements ParametersSdk {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   public async simplePathParameters(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {

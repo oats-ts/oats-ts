@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import {
   DeleteMethodOperation,
   GetMethodOperation,
@@ -22,8 +22,8 @@ import {
 import { HttpMethodsSdk } from './sdkType'
 
 export class HttpMethodsSdkImpl implements HttpMethodsSdk {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   public async getMethod(): Promise<GetMethodResponse> {
@@ -41,19 +41,19 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   public async deleteMethod(): Promise<DeleteMethodResponse> {
     return this.createDeleteMethodOperation().run()
   }
-  protected createGetMethodOperation(): RunnableOperation<never, GetMethodResponse> {
+  protected createGetMethodOperation(): RunnableOperation<void, GetMethodResponse> {
     return new GetMethodOperation(this.adapter)
   }
-  protected createPostMethodOperation(): RunnableOperation<never, PostMethodResponse> {
+  protected createPostMethodOperation(): RunnableOperation<void, PostMethodResponse> {
     return new PostMethodOperation(this.adapter)
   }
-  protected createPutMethodOperation(): RunnableOperation<never, PutMethodResponse> {
+  protected createPutMethodOperation(): RunnableOperation<void, PutMethodResponse> {
     return new PutMethodOperation(this.adapter)
   }
-  protected createPatchMethodOperation(): RunnableOperation<never, PatchMethodResponse> {
+  protected createPatchMethodOperation(): RunnableOperation<void, PatchMethodResponse> {
     return new PatchMethodOperation(this.adapter)
   }
-  protected createDeleteMethodOperation(): RunnableOperation<never, DeleteMethodResponse> {
+  protected createDeleteMethodOperation(): RunnableOperation<void, DeleteMethodResponse> {
     return new DeleteMethodOperation(this.adapter)
   }
 }

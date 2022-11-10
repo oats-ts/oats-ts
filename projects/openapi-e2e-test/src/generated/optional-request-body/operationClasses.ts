@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter,
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
-  SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import { OptionalRequestBodyRequest } from './requestTypes'
 import { optionalRequestBodyResponseBodyValidator } from './responseBodyValidators'
@@ -19,8 +19,8 @@ import { OptionalRequestBodyResponse } from './responseTypes'
 export class OptionalRequestBodyOperation
   implements RunnableOperation<OptionalRequestBodyRequest, OptionalRequestBodyResponse>
 {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: OptionalRequestBodyRequest): string {

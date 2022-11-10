@@ -4,7 +4,7 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import {
   ArrObjOperation,
   BoolArrOperation,
@@ -53,8 +53,8 @@ import {
 import { BodiesSdk } from './sdkType'
 
 export class BodiesSdkImpl implements BodiesSdk {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   public async str(request: StrRequest): Promise<StrResponse> {

@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter,
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
-  SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import { showPetByIdPathSerializer } from './pathSerializers'
 import { listPetsQuerySerializer } from './querySerializers'
@@ -27,8 +27,8 @@ import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './res
  * Create a pet
  */
 export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest, CreatePetsResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: CreatePetsRequest): string {
@@ -78,8 +78,8 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
  * List all pets
  */
 export class ListPetsOperation implements RunnableOperation<ListPetsRequest, ListPetsResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: ListPetsRequest): string {
@@ -130,8 +130,8 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
  * Info for a specific pet
  */
 export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdRequest, ShowPetByIdResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: ShowPetByIdRequest): string {

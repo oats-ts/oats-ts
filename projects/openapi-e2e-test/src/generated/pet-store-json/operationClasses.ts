@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter,
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
-  SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import { showPetByIdPathSerializer } from './pathSerializers'
 import { listPetsQuerySerializer } from './querySerializers'
@@ -27,8 +27,8 @@ import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './res
  * Create a pet
  */
 export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest, CreatePetsResponse> {
-  protected readonly _local_adapter: SyncClientAdapter
-  public constructor(_local_adapter: SyncClientAdapter) {
+  protected readonly _local_adapter: ClientAdapter
+  public constructor(_local_adapter: ClientAdapter) {
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local__request: CreatePetsRequest): string {
@@ -78,8 +78,8 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
  * List all pets
  */
 export class ListPetsOperation implements RunnableOperation<ListPetsRequest, ListPetsResponse> {
-  protected readonly _local_adapter: SyncClientAdapter
-  public constructor(_local_adapter: SyncClientAdapter) {
+  protected readonly _local_adapter: ClientAdapter
+  public constructor(_local_adapter: ClientAdapter) {
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local_request: ListPetsRequest): string {
@@ -134,8 +134,8 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
  * Info for a specific pet
  */
 export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdRequest, ShowPetByIdResponse> {
-  protected readonly _local_adapter: SyncClientAdapter
-  public constructor(_local_adapter: SyncClientAdapter) {
+  protected readonly _local_adapter: ClientAdapter
+  public constructor(_local_adapter: ClientAdapter) {
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local_request: ShowPetByIdRequest): string {

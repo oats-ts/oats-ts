@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter,
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
-  SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import {
   ArrObjRequest,
@@ -59,8 +59,8 @@ import {
 } from './responseTypes'
 
 export class ArrObjOperation implements RunnableOperation<ArrObjRequest, ArrObjResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: ArrObjRequest): string {
@@ -107,8 +107,8 @@ export class ArrObjOperation implements RunnableOperation<ArrObjRequest, ArrObjR
 }
 
 export class BoolArrOperation implements RunnableOperation<BoolArrRequest, BoolArrResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: BoolArrRequest): string {
@@ -155,8 +155,8 @@ export class BoolArrOperation implements RunnableOperation<BoolArrRequest, BoolA
 }
 
 export class BoolOperation implements RunnableOperation<BoolRequest, BoolResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: BoolRequest): string {
@@ -203,8 +203,8 @@ export class BoolOperation implements RunnableOperation<BoolRequest, BoolRespons
 }
 
 export class EnmArrOperation implements RunnableOperation<EnmArrRequest, EnmArrResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: EnmArrRequest): string {
@@ -251,8 +251,8 @@ export class EnmArrOperation implements RunnableOperation<EnmArrRequest, EnmArrR
 }
 
 export class EnmOperation implements RunnableOperation<EnmRequest, EnmResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: EnmRequest): string {
@@ -299,8 +299,8 @@ export class EnmOperation implements RunnableOperation<EnmRequest, EnmResponse> 
 }
 
 export class NestedObjOperation implements RunnableOperation<NestedObjRequest, NestedObjResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: NestedObjRequest): string {
@@ -347,8 +347,8 @@ export class NestedObjOperation implements RunnableOperation<NestedObjRequest, N
 }
 
 export class NumArrOperation implements RunnableOperation<NumArrRequest, NumArrResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: NumArrRequest): string {
@@ -395,8 +395,8 @@ export class NumArrOperation implements RunnableOperation<NumArrRequest, NumArrR
 }
 
 export class NumOperation implements RunnableOperation<NumRequest, NumResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: NumRequest): string {
@@ -443,8 +443,8 @@ export class NumOperation implements RunnableOperation<NumRequest, NumResponse> 
 }
 
 export class OptPrimTupleOperation implements RunnableOperation<OptPrimTupleRequest, OptPrimTupleResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: OptPrimTupleRequest): string {
@@ -491,8 +491,8 @@ export class OptPrimTupleOperation implements RunnableOperation<OptPrimTupleRequ
 }
 
 export class PrimObjOperation implements RunnableOperation<PrimObjRequest, PrimObjResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: PrimObjRequest): string {
@@ -539,8 +539,8 @@ export class PrimObjOperation implements RunnableOperation<PrimObjRequest, PrimO
 }
 
 export class PrimTupleOperation implements RunnableOperation<PrimTupleRequest, PrimTupleResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: PrimTupleRequest): string {
@@ -587,8 +587,8 @@ export class PrimTupleOperation implements RunnableOperation<PrimTupleRequest, P
 }
 
 export class StrArrOperation implements RunnableOperation<StrArrRequest, StrArrResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: StrArrRequest): string {
@@ -635,8 +635,8 @@ export class StrArrOperation implements RunnableOperation<StrArrRequest, StrArrR
 }
 
 export class StrOperation implements RunnableOperation<StrRequest, StrResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: StrRequest): string {

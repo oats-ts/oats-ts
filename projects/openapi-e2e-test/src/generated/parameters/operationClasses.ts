@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter as _ClientAdapter,
   HttpMethod as _HttpMethod,
   RawHttpHeaders as _RawHttpHeaders,
   RawHttpRequest as _RawHttpRequest,
   RawHttpResponse as _RawHttpResponse,
   RunnableOperation as _RunnableOperation,
-  SyncClientAdapter as _SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import { formCookieParametersCookieSerializer } from './cookieSerializers'
 import {
@@ -62,7 +62,6 @@ import {
   SimpleResponseHeaderParametersResponse,
   SpaceDelimitedQueryParametersResponse,
 } from './responseTypes'
-import { formCookieParametersSetCookieDeserializer } from './setCookieDeserializers'
 
 /**
  * Endpoint for testing query parameters with deepObject serialization
@@ -70,8 +69,8 @@ import { formCookieParametersSetCookieDeserializer } from './setCookieDeserializ
 export class DeepObjectQueryParametersOperation
   implements _RunnableOperation<DeepObjectQueryParametersRequest, DeepObjectQueryParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: DeepObjectQueryParametersRequest): string {
@@ -120,8 +119,8 @@ export class DeepObjectQueryParametersOperation
 export class FormCookieParametersOperation
   implements _RunnableOperation<FormCookieParametersRequest, FormCookieParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: FormCookieParametersRequest): string {
@@ -170,8 +169,8 @@ export class FormCookieParametersOperation
 export class FormQueryParametersOperation
   implements _RunnableOperation<FormQueryParametersRequest, FormQueryParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: FormQueryParametersRequest): string {
@@ -220,8 +219,8 @@ export class FormQueryParametersOperation
 export class LabelPathParametersOperation
   implements _RunnableOperation<LabelPathParametersRequest, LabelPathParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: LabelPathParametersRequest): string {
@@ -270,8 +269,8 @@ export class LabelPathParametersOperation
 export class MatrixPathParametersOperation
   implements _RunnableOperation<MatrixPathParametersRequest, MatrixPathParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: MatrixPathParametersRequest): string {
@@ -320,8 +319,8 @@ export class MatrixPathParametersOperation
 export class PipeDelimitedQueryParametersOperation
   implements _RunnableOperation<PipeDelimitedQueryParametersRequest, PipeDelimitedQueryParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: PipeDelimitedQueryParametersRequest): string {
@@ -370,8 +369,8 @@ export class PipeDelimitedQueryParametersOperation
 export class SimpleHeaderParametersOperation
   implements _RunnableOperation<SimpleHeaderParametersRequest, SimpleHeaderParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: SimpleHeaderParametersRequest): string {
@@ -424,8 +423,8 @@ export class SimpleHeaderParametersOperation
 export class SimplePathParametersOperation
   implements _RunnableOperation<SimplePathParametersRequest, SimplePathParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: SimplePathParametersRequest): string {
@@ -474,8 +473,8 @@ export class SimplePathParametersOperation
 export class SimpleResponseHeaderParametersOperation
   implements _RunnableOperation<SimpleResponseHeaderParametersRequest, SimpleResponseHeaderParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: SimpleResponseHeaderParametersRequest): string {
@@ -535,8 +534,8 @@ export class SimpleResponseHeaderParametersOperation
 export class SpaceDelimitedQueryParametersOperation
   implements _RunnableOperation<SpaceDelimitedQueryParametersRequest, SpaceDelimitedQueryParametersResponse>
 {
-  protected readonly adapter: _SyncClientAdapter
-  public constructor(adapter: _SyncClientAdapter) {
+  protected readonly adapter: _ClientAdapter
+  public constructor(adapter: _ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: SpaceDelimitedQueryParametersRequest): string {

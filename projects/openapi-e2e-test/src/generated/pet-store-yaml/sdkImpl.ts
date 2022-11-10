@@ -4,15 +4,15 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import { CreatePetsOperation, ListPetsOperation, ShowPetByIdOperation } from './operationClasses'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 import { SwaggerPetstoreSdk } from './sdkType'
 
 export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {

@@ -100,7 +100,7 @@ describe('Parameters', () => {
       })
     })
   })
-  describe('cookies', () => {
+  xdescribe('cookies', () => {
     describe('simple', () => {
       it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
         const reqCookies = randomCookieParameters()

@@ -5,12 +5,12 @@
  */
 
 import {
+  ClientAdapter,
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
-  SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
 import { getBookPathSerializer } from './pathSerializers'
 import { getBooksQuerySerializer } from './querySerializers'
@@ -28,8 +28,8 @@ import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTy
  * Creates a new book based on the request body.
  */
 export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBookResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(_request: AddBookRequest): string {
@@ -79,8 +79,8 @@ export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBo
  * Returns the book associated with the given bookId
  */
 export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBookResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: GetBookRequest): string {
@@ -127,8 +127,8 @@ export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBo
  * Returns a list of books, can be paginated
  */
 export class GetBooksOperation implements RunnableOperation<GetBooksRequest, GetBooksResponse> {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   protected getUrl(request: GetBooksRequest): string {

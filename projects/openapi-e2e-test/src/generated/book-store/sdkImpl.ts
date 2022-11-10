@@ -4,15 +4,15 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import { AddBookOperation, GetBookOperation, GetBooksOperation } from './operationClasses'
 import { AddBookRequest, GetBookRequest, GetBooksRequest } from './requestTypes'
 import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTypes'
 import { BookStoreSdk } from './sdkType'
 
 export class BookStoreSdkImpl implements BookStoreSdk {
-  protected readonly adapter: SyncClientAdapter
-  public constructor(adapter: SyncClientAdapter) {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
   public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
