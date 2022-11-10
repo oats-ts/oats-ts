@@ -9,6 +9,7 @@ import {
   HttpMethod as _HttpMethod,
   RawHttpHeaders as _RawHttpHeaders,
   RawHttpRequest as _RawHttpRequest,
+  RawHttpResponse as _RawHttpResponse,
   RunnableOperation as _RunnableOperation,
   SyncClientAdapter as _SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
@@ -407,6 +408,20 @@ export class DeepObjectQueryParametersOperation
   protected getRequestHeaders(_request: DeepObjectQueryParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      deepObjectQueryParametersResponseBodyValidator,
+    )
+  }
   public async run(request: DeepObjectQueryParametersRequest): Promise<DeepObjectQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -441,6 +456,20 @@ export class FormCookieParametersOperation
   }
   protected getRequestHeaders(_request: FormCookieParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
+  }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      formCookieParametersResponseBodyValidator,
+    )
   }
   public async run(request: FormCookieParametersRequest): Promise<FormCookieParametersResponse> {
     const rawRequest: _RawHttpRequest = {
@@ -479,6 +508,20 @@ export class FormQueryParametersOperation
   protected getRequestHeaders(_request: FormQueryParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      formQueryParametersResponseBodyValidator,
+    )
+  }
   public async run(request: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -514,6 +557,20 @@ export class LabelPathParametersOperation
   }
   protected getRequestHeaders(_request: LabelPathParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      labelPathParametersResponseBodyValidator,
+    )
   }
   public async run(request: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
@@ -551,6 +608,20 @@ export class MatrixPathParametersOperation
   protected getRequestHeaders(_request: MatrixPathParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      matrixPathParametersResponseBodyValidator,
+    )
+  }
   public async run(request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -587,6 +658,20 @@ export class PipeDelimitedQueryParametersOperation
   protected getRequestHeaders(_request: PipeDelimitedQueryParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      pipeDelimitedQueryParametersResponseBodyValidator,
+    )
+  }
   public async run(request: PipeDelimitedQueryParametersRequest): Promise<PipeDelimitedQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -619,12 +704,26 @@ export class SimpleHeaderParametersOperation
   protected getRequestMethod(_request: SimpleHeaderParametersRequest): _HttpMethod {
     return 'get'
   }
-  protected getRequestHeaders(_request: SimpleHeaderParametersRequest): _RawHttpHeaders {
+  protected getRequestHeaders(request: SimpleHeaderParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(
       request.headers,
       undefined,
       undefined,
       simpleHeaderParametersRequestHeadersSerializer,
+    )
+  }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      simpleHeaderParametersResponseBodyValidator,
     )
   }
   public async run(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
@@ -662,6 +761,20 @@ export class SimplePathParametersOperation
   }
   protected getRequestHeaders(_request: SimplePathParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      simplePathParametersResponseBodyValidator,
+    )
   }
   public async run(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
@@ -701,6 +814,27 @@ export class SimpleResponseHeaderParametersOperation
   protected getRequestHeaders(request: SimpleResponseHeaderParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      simpleResponseHeaderParametersResponseBodyValidator,
+    )
+  }
+  protected getResponseHeaders(response: _RawHttpResponse): _RawHttpHeaders {
+    return this.adapter.getResponseHeaders(
+      response,
+      this.getStatusCode(response),
+      simpleResponseHeaderParametersResponseHeadersDeserializer,
+    )
+  }
   public async run(request: SimpleResponseHeaderParametersRequest): Promise<SimpleResponseHeaderParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -738,6 +872,20 @@ export class SpaceDelimitedQueryParametersOperation
   }
   protected getRequestHeaders(_request: SpaceDelimitedQueryParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  protected getMimeType(response: _RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: _RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: _RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      spaceDelimitedQueryParametersResponseBodyValidator,
+    )
   }
   public async run(request: SpaceDelimitedQueryParametersRequest): Promise<SpaceDelimitedQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {

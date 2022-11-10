@@ -9,6 +9,7 @@ import {
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
+  RawHttpResponse,
   RunnableOperation,
   SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
@@ -121,6 +122,20 @@ export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBo
   protected getRequestHeaders(request: AddBookRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      addBookResponseBodyValidator,
+    )
+  }
   public async run(request: AddBookRequest): Promise<AddBookResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -156,6 +171,20 @@ export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBo
   protected getRequestHeaders(_request: GetBookRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      getBookResponseBodyValidator,
+    )
+  }
   public async run(request: GetBookRequest): Promise<GetBookResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -187,8 +216,25 @@ export class GetBooksOperation implements RunnableOperation<GetBooksRequest, Get
   protected getRequestMethod(_request: GetBooksRequest): HttpMethod {
     return 'get'
   }
-  protected getRequestHeaders(_request: GetBooksRequest): RawHttpHeaders {
+  protected getRequestHeaders(request: GetBooksRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(request.headers, undefined, undefined, getBooksRequestHeadersSerializer)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      getBooksResponseBodyValidator,
+    )
+  }
+  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
+    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), getBooksResponseHeadersDeserializer)
   }
   public async run(request: GetBooksRequest): Promise<GetBooksResponse> {
     const rawRequest: RawHttpRequest = {

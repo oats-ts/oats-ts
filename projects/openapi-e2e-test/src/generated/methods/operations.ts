@@ -9,6 +9,7 @@ import {
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
+  RawHttpResponse,
   RunnableOperation,
   SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
@@ -146,6 +147,20 @@ export class DeleteMethodOperation implements RunnableOperation<never, DeleteMet
   protected getRequestHeaders(): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      deleteMethodResponseBodyValidator,
+    )
+  }
   public async run(): Promise<DeleteMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
@@ -175,6 +190,20 @@ export class GetMethodOperation implements RunnableOperation<never, GetMethodRes
   }
   protected getRequestHeaders(): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      getMethodResponseBodyValidator,
+    )
   }
   public async run(): Promise<GetMethodResponse> {
     const rawRequest: RawHttpRequest = {
@@ -206,6 +235,20 @@ export class PatchMethodOperation implements RunnableOperation<never, PatchMetho
   protected getRequestHeaders(): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      patchMethodResponseBodyValidator,
+    )
+  }
   public async run(): Promise<PatchMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
@@ -236,6 +279,20 @@ export class PostMethodOperation implements RunnableOperation<never, PostMethodR
   protected getRequestHeaders(): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      postMethodResponseBodyValidator,
+    )
+  }
   public async run(): Promise<PostMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
@@ -265,6 +322,20 @@ export class PutMethodOperation implements RunnableOperation<never, PutMethodRes
   }
   protected getRequestHeaders(): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      putMethodResponseBodyValidator,
+    )
   }
   public async run(): Promise<PutMethodResponse> {
     const rawRequest: RawHttpRequest = {

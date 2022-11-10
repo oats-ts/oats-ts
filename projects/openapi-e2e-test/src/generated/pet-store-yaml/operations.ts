@@ -9,6 +9,7 @@ import {
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
+  RawHttpResponse,
   RunnableOperation,
   SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
@@ -120,6 +121,20 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
   protected getRequestHeaders(request: CreatePetsRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      createPetsResponseBodyValidator,
+    )
+  }
   public async run(request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -155,6 +170,23 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
   protected getRequestHeaders(_request: ListPetsRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      listPetsResponseBodyValidator,
+    )
+  }
+  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
+    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeadersDeserializer)
+  }
   public async run(request: ListPetsRequest): Promise<ListPetsResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -189,6 +221,20 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
   }
   protected getRequestHeaders(_request: ShowPetByIdRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      showPetByIdResponseBodyValidator,
+    )
   }
   public async run(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const rawRequest: RawHttpRequest = {

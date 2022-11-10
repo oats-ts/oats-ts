@@ -9,6 +9,7 @@ import {
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
+  RawHttpResponse,
   RunnableOperation,
   SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
@@ -63,6 +64,20 @@ export class OptionalRequestBodyOperation
   }
   protected getRequestHeaders(request: OptionalRequestBodyRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(
+      response,
+      this.getStatusCode(response),
+      this.getMimeType(response),
+      optionalRequestBodyResponseBodyValidator,
+    )
   }
   public async run(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
     const rawRequest: RawHttpRequest = {

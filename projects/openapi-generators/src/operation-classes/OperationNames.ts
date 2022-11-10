@@ -12,14 +12,18 @@ export const OperationDefaultLocals = {
   method: 'method',
   mimeType: 'mimeType',
   statusCode: 'statusCode',
-  unusedRequest: '_request',
-  request: 'request',
   requestHeaders: 'requestHeaders',
   responseHeaders: 'responseHeaders',
   requestBody: 'requestBody',
   requestUrl: 'requestUrl',
   responseBody: 'responseBody',
   responseCookies: 'responseCookies',
+
+  unusedRequest: '_request',
+  request: 'request',
+
+  unusedResponse: '_response',
+  response: 'response',
 
   rawRequest: 'rawRequest',
   rawResponse: 'rawResponse',

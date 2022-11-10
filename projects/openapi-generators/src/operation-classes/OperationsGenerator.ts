@@ -25,6 +25,7 @@ import {
   isTypeReferenceNode,
   isIdentifier,
   ReturnStatement,
+  Identifier,
 } from 'typescript'
 import { createSourceFile, documentNode, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
@@ -98,6 +99,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     return [
       getNamedImports(this.httpPkg.name, [
         this.httpPkg.imports.RawHttpRequest,
+        this.httpPkg.imports.RawHttpResponse,
         this.httpPkg.imports.RawHttpHeaders,
         this.httpPkg.imports.HttpMethod,
         this.httpPkg.imports.ClientAdapter,
@@ -235,12 +237,31 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
+  private getRawResponseParameterAst(data: EnhancedOperation): ParameterDeclaration {
+    return factory.createParameterDeclaration(
+      undefined,
+      undefined,
+      undefined,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'response'),
+      undefined,
+      factory.createTypeReferenceNode(this.httpPkg.exports.RawHttpResponse),
+      undefined,
+    )
+  }
+
   private getMethodDeclarations(data: EnhancedOperation): MethodDeclaration[] {
     const methods = [
+      // Request
       this.getUrlGetterMethodAst(data),
       this.getRequestMethodGetterMethodAst(data),
       this.getRequestBodyGetterMethod(data),
-      this.getRequestHeaderGetterMethod(data),
+      this.getRequestHeadersGetterMethod(data),
+      // Response
+      this.getMimeTypeGetterAst(data),
+      this.getStatusCodeGetterAst(data),
+      this.getResponseBodyGetterAst(data),
+      this.getResponseHeadersGetterAst(data),
+      // Run
       this.getRunMethodAst(data),
     ]
     return methods.filter((method): method is MethodDeclaration => !isNil(method))
@@ -340,9 +361,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                       this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
                     ),
                   ),
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'),
-                  ),
+                  ClientAdapterMethods.request,
                 ),
                 undefined,
                 [
@@ -610,8 +629,11 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
-  private getRequestHeaderGetterMethod(data: EnhancedOperation): MethodDeclaration | undefined {
-    const requestParam = this.getRequestParameterAst(data, !hasRequestBody(data, this.context()))
+  private getRequestHeadersGetterMethod(data: EnhancedOperation): MethodDeclaration | undefined {
+    const requestParam = this.getRequestParameterAst(
+      data,
+      data.header.length === 0 && !hasRequestBody(data, this.context()),
+    )
     return factory.createMethodDeclaration(
       undefined,
       [factory.createModifier(SyntaxKind.ProtectedKeyword)],
@@ -664,110 +686,128 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
-  private getOperationBodyAst(data: EnhancedOperation): Block {
-    const statements = [
-      // this.getPathParametersStatement(data),
-      // this.getQueryParametersStatement(data),
-      // this.getRequestUrlStatement(data),
-      this.getCookiesStatement(data),
-      // this.getRequestHeadersStatement(data),
-      // this.getRequestBodyStatement(data),
-      this.getRawResponseStatement(data),
-      this.getMimeTypeStatement(data),
-      this.getStatusCodeStatement(data),
-      this.getResponseHeadersStatement(data),
-      this.getResponseCookiesStatement(data),
-      this.getResponseBodyStatement(data),
-      this.getReturnStatement(data),
-    ].filter((statement): statement is Statement => !isNil(statement))
-
-    return factory.createBlock(statements, true)
+  private getLocalIdentifierAst(local: OperationLocals): Identifier {
+    return factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), local))
   }
 
-  private getReturnStatement(data: EnhancedOperation): Statement | undefined {
-    const responseHeaderNames: [string, string] = [
-      TypedResponseFields.headers,
-      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseHeaders'),
-    ]
-    const mimeTypeNames: [string, string] = [
-      TypedResponseFields.mimeType,
-      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'mimeType'),
-    ]
-    const statusCodeNames: [string, string] = [
-      TypedResponseFields.statusCode,
-      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode'),
-    ]
-    const bodyNames: [string, string] = [
-      TypedResponseFields.body,
-      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseBody'),
-    ]
-    const cokiesNames: [string, string] = [
-      TypedResponseFields.cookies,
-      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseCookies'),
-    ]
-
-    const names: [string, string][] = [
-      mimeTypeNames,
-      statusCodeNames,
-      ...(hasResponseHeaders(data.operation, this.context()) ? [responseHeaderNames] : []),
-      bodyNames,
-      ...(data.cookie.length > 0 && this.configuration().parseSetCookieHeaders ? [cokiesNames] : []),
-    ]
-
-    const properties = names.map(([key, value]) => {
-      return key === value
-        ? factory.createShorthandPropertyAssignment(key, undefined)
-        : factory.createPropertyAssignment(key, factory.createIdentifier(value))
-    })
-
-    return factory.createReturnStatement(
-      factory.createAsExpression(
-        factory.createObjectLiteralExpression(properties, true),
-        factory.createTypeReferenceNode(this.context().referenceOf(data.operation, 'oats/response-type'), undefined),
+  private getAdapterCallAst(name: keyof typeof ClientAdapterMethods, params: Expression[]): Expression {
+    return factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        factory.createPropertyAccessExpression(
+          factory.createThis(),
+          this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
+        ),
+        ClientAdapterMethods[name],
       ),
+      undefined,
+      params,
     )
   }
 
-  private getResponseBodyStatement(data: EnhancedOperation): Statement | undefined {
-    return factory.createVariableStatement(
-      undefined,
-      factory.createVariableDeclarationList(
-        [
-          factory.createVariableDeclaration(
-            factory.createIdentifier(
-              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseBody'),
-            ),
-            undefined,
-            undefined,
-            factory.createAwaitExpression(
-              factory.createCallExpression(
-                factory.createPropertyAccessExpression(
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
-                  ),
-                  factory.createIdentifier(ClientAdapterMethods.getResponseBody),
-                ),
-                undefined,
-                [
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
-                  ),
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode'),
-                  ),
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'mimeType'),
-                  ),
-                  this.configuration().validate && hasResponses(data.operation, this.context())
-                    ? this.context().referenceOf(data.operation, 'oats/response-body-validator')
-                    : factory.createIdentifier('undefined'),
-                ],
-              ),
-            ),
-          ),
-        ],
-        NodeFlags.Const,
+  private getMemberCallAst(name: OperationLocals, params: Expression[]): Expression {
+    return factory.createCallExpression(
+      factory.createPropertyAccessExpression(
+        factory.createThis(),
+        this.context().localNameOf<OperationLocals>(undefined, this.name(), name),
       ),
+      undefined,
+      params,
+    )
+  }
+
+  private getMimeTypeGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
+    const responseParam = this.getRawResponseParameterAst(data)
+    const returnStatement = factory.createReturnStatement(
+      this.getAdapterCallAst('getMimeType', [this.getLocalIdentifierAst('response')]),
+    )
+    return factory.createMethodDeclaration(
+      undefined,
+      [factory.createModifier(SyntaxKind.ProtectedKeyword)],
+      undefined,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getMimeType'),
+      undefined,
+      undefined,
+      // TODO check if has response body
+      [responseParam],
+      factory.createUnionTypeNode([
+        factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
+        factory.createTypeReferenceNode('undefined'),
+      ]),
+      factory.createBlock([returnStatement], true),
+    )
+  }
+  private getStatusCodeGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
+    const responseParam = this.getRawResponseParameterAst(data)
+    const returnStatement = factory.createReturnStatement(
+      this.getAdapterCallAst('getStatusCode', [this.getLocalIdentifierAst('response')]),
+    )
+    return factory.createMethodDeclaration(
+      undefined,
+      [factory.createModifier(SyntaxKind.ProtectedKeyword)],
+      undefined,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getStatusCode'),
+      undefined,
+      undefined,
+      // TODO check if has response body
+      [responseParam],
+      factory.createUnionTypeNode([
+        factory.createKeywordTypeNode(SyntaxKind.NumberKeyword),
+        factory.createTypeReferenceNode('undefined'),
+      ]),
+      factory.createBlock([returnStatement], true),
+    )
+  }
+
+  private getResponseBodyGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
+    // TODO check if has responses
+    const responseParam = this.getRawResponseParameterAst(data)
+    const returnStatement = factory.createReturnStatement(
+      this.getAdapterCallAst('getResponseBody', [
+        this.getLocalIdentifierAst('response'),
+        this.getMemberCallAst('getStatusCode', [this.getLocalIdentifierAst('response')]),
+        this.getMemberCallAst('getMimeType', [this.getLocalIdentifierAst('response')]),
+        this.configuration().validate && hasResponses(data.operation, this.context())
+          ? this.context().referenceOf<Identifier>(data.operation, 'oats/response-body-validator')
+          : factory.createIdentifier('undefined'),
+      ]),
+    )
+    return factory.createMethodDeclaration(
+      undefined,
+      [factory.createModifier(SyntaxKind.ProtectedKeyword)],
+      undefined,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getResponseBody'),
+      undefined,
+      undefined,
+      // TODO check if has response body
+      [responseParam],
+      factory.createTypeReferenceNode('any'),
+      factory.createBlock([returnStatement], true),
+    )
+  }
+
+  private getResponseHeadersGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
+    if (!hasResponseHeaders(data.operation, this.context())) {
+      return undefined
+    }
+    const responseParam = this.getRawResponseParameterAst(data)
+    const returnStatement = factory.createReturnStatement(
+      this.getAdapterCallAst('getResponseHeaders', [
+        this.getLocalIdentifierAst('response'),
+        this.getMemberCallAst('getStatusCode', [this.getLocalIdentifierAst('response')]),
+        this.context().referenceOf<Identifier>(data.operation, 'oats/response-headers-deserializer'),
+      ]),
+    )
+    return factory.createMethodDeclaration(
+      undefined,
+      [factory.createModifier(SyntaxKind.ProtectedKeyword)],
+      undefined,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getResponseHeaders'),
+      undefined,
+      undefined,
+      // TODO check if has response body
+      [responseParam],
+      factory.createTypeReferenceNode(this.httpPkg.exports.RawHttpHeaders),
+      factory.createBlock([returnStatement], true),
     )
   }
 
@@ -799,113 +839,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                     this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
                   ),
                   this.context().referenceOf(data.operation, 'oats/set-cookie-deserializer'),
-                ],
-              ),
-            ),
-          ),
-        ],
-        NodeFlags.Const,
-      ),
-    )
-  }
-
-  private getResponseHeadersStatement(data: EnhancedOperation): Statement | undefined {
-    if (!hasResponseHeaders(data.operation, this.context())) {
-      return undefined
-    }
-    return factory.createVariableStatement(
-      undefined,
-      factory.createVariableDeclarationList(
-        [
-          factory.createVariableDeclaration(
-            factory.createIdentifier(
-              this.context().localNameOf<OperationLocals>(undefined, this.name(), 'responseHeaders'),
-            ),
-            undefined,
-            undefined,
-            factory.createAwaitExpression(
-              factory.createCallExpression(
-                factory.createPropertyAccessExpression(
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
-                  ),
-                  factory.createIdentifier(ClientAdapterMethods.getResponseHeaders),
-                ),
-                undefined,
-                [
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
-                  ),
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode'),
-                  ),
-                  hasResponseHeaders(data.operation, this.context())
-                    ? this.context().referenceOf(data.operation, 'oats/response-headers-deserializer')
-                    : factory.createIdentifier('undefined'),
-                ],
-              ),
-            ),
-          ),
-        ],
-        NodeFlags.Const,
-      ),
-    )
-  }
-
-  private getStatusCodeStatement(data: EnhancedOperation): Statement | undefined {
-    return factory.createVariableStatement(
-      undefined,
-      factory.createVariableDeclarationList(
-        [
-          factory.createVariableDeclaration(
-            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'statusCode')),
-            undefined,
-            undefined,
-            factory.createAwaitExpression(
-              factory.createCallExpression(
-                factory.createPropertyAccessExpression(
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
-                  ),
-                  factory.createIdentifier(ClientAdapterMethods.getStatusCode),
-                ),
-                undefined,
-                [
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-        NodeFlags.Const,
-      ),
-    )
-  }
-
-  private getMimeTypeStatement(data: EnhancedOperation): Statement | undefined {
-    return factory.createVariableStatement(
-      undefined,
-      factory.createVariableDeclarationList(
-        [
-          factory.createVariableDeclaration(
-            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'mimeType')),
-            undefined,
-            undefined,
-            factory.createAwaitExpression(
-              factory.createCallExpression(
-                factory.createPropertyAccessExpression(
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapter'),
-                  ),
-                  factory.createIdentifier(ClientAdapterMethods.getMimeType),
-                ),
-                undefined,
-                [
-                  factory.createIdentifier(
-                    this.context().localNameOf<OperationLocals>(undefined, this.name(), 'rawResponse'),
-                  ),
                 ],
               ),
             ),

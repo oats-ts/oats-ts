@@ -9,6 +9,7 @@ import {
   HttpMethod,
   RawHttpHeaders,
   RawHttpRequest,
+  RawHttpResponse,
   RunnableOperation,
   SyncClientAdapter,
 } from '@oats-ts/openapi-runtime'
@@ -148,6 +149,20 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
   protected _local_getRequestHeaders(_local_request: CreatePetsRequest): RawHttpHeaders {
     return this._local_adapter.getRequestHeaders(undefined, _local_request.mimeType, undefined, undefined)
   }
+  protected _local_getMimeType(_local_response: RawHttpResponse): string | undefined {
+    return this._local_adapter.getMimeType(_local_response)
+  }
+  protected _local_getStatusCode(_local_response: RawHttpResponse): number | undefined {
+    return this._local_adapter.getStatusCode(_local_response)
+  }
+  protected _local_getResponseBody(_local_response: RawHttpResponse): any {
+    return this._local_adapter.getResponseBody(
+      _local_response,
+      this._local_getStatusCode(_local_response),
+      this._local_getMimeType(_local_response),
+      createPetsResponseBodyValidator,
+    )
+  }
   public async run(_local_request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const _local_rawRequest: RawHttpRequest = {
       url: this._local_getUrl(_local_request),
@@ -155,7 +170,7 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
       body: this._local_getRequestBody(_local_request),
       headers: this._local_getRequestHeaders(_local_request),
     }
-    const _local_rawResponse = await this._local_adapter._local_request(_local_rawRequest)
+    const _local_rawResponse = await this._local_adapter.request(_local_rawRequest)
     const _local_typedResponse = {
       mimeType: this._local_getMimeType(_local_rawResponse),
       statusCode: this._local_getStatusCode(_local_rawResponse),
@@ -183,13 +198,34 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
   protected _local_getRequestHeaders(_local__request: ListPetsRequest): RawHttpHeaders {
     return this._local_adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected _local_getMimeType(_local_response: RawHttpResponse): string | undefined {
+    return this._local_adapter.getMimeType(_local_response)
+  }
+  protected _local_getStatusCode(_local_response: RawHttpResponse): number | undefined {
+    return this._local_adapter.getStatusCode(_local_response)
+  }
+  protected _local_getResponseBody(_local_response: RawHttpResponse): any {
+    return this._local_adapter.getResponseBody(
+      _local_response,
+      this._local_getStatusCode(_local_response),
+      this._local_getMimeType(_local_response),
+      listPetsResponseBodyValidator,
+    )
+  }
+  protected _local_getResponseHeaders(_local_response: RawHttpResponse): RawHttpHeaders {
+    return this._local_adapter.getResponseHeaders(
+      _local_response,
+      this._local_getStatusCode(_local_response),
+      listPetsResponseHeadersDeserializer,
+    )
+  }
   public async run(_local_request: ListPetsRequest): Promise<ListPetsResponse> {
     const _local_rawRequest: RawHttpRequest = {
       url: this._local_getUrl(_local_request),
       method: this._local_getRequestMethod(_local_request),
       headers: this._local_getRequestHeaders(_local_request),
     }
-    const _local_rawResponse = await this._local_adapter._local_request(_local_rawRequest)
+    const _local_rawResponse = await this._local_adapter.request(_local_rawRequest)
     const _local_typedResponse = {
       mimeType: this._local_getMimeType(_local_rawResponse),
       statusCode: this._local_getStatusCode(_local_rawResponse),
@@ -218,13 +254,27 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
   protected _local_getRequestHeaders(_local__request: ShowPetByIdRequest): RawHttpHeaders {
     return this._local_adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
+  protected _local_getMimeType(_local_response: RawHttpResponse): string | undefined {
+    return this._local_adapter.getMimeType(_local_response)
+  }
+  protected _local_getStatusCode(_local_response: RawHttpResponse): number | undefined {
+    return this._local_adapter.getStatusCode(_local_response)
+  }
+  protected _local_getResponseBody(_local_response: RawHttpResponse): any {
+    return this._local_adapter.getResponseBody(
+      _local_response,
+      this._local_getStatusCode(_local_response),
+      this._local_getMimeType(_local_response),
+      showPetByIdResponseBodyValidator,
+    )
+  }
   public async run(_local_request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const _local_rawRequest: RawHttpRequest = {
       url: this._local_getUrl(_local_request),
       method: this._local_getRequestMethod(_local_request),
       headers: this._local_getRequestHeaders(_local_request),
     }
-    const _local_rawResponse = await this._local_adapter._local_request(_local_rawRequest)
+    const _local_rawResponse = await this._local_adapter.request(_local_rawRequest)
     const _local_typedResponse = {
       mimeType: this._local_getMimeType(_local_rawResponse),
       statusCode: this._local_getStatusCode(_local_rawResponse),
