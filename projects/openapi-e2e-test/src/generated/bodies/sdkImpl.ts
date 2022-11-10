@@ -4,22 +4,22 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/bodies.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-runtime'
+import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
 import {
-  arrObj,
-  bool,
-  boolArr,
-  enm,
-  enmArr,
-  nestedObj,
-  num,
-  numArr,
-  optPrimTuple,
-  primObj,
-  primTuple,
-  str,
-  strArr,
-} from './operations'
+  ArrObjOperation,
+  BoolArrOperation,
+  BoolOperation,
+  EnmArrOperation,
+  EnmOperation,
+  NestedObjOperation,
+  NumArrOperation,
+  NumOperation,
+  OptPrimTupleOperation,
+  PrimObjOperation,
+  PrimTupleOperation,
+  StrArrOperation,
+  StrOperation,
+} from './operationClasses'
 import {
   ArrObjRequest,
   BoolArrRequest,
@@ -53,47 +53,86 @@ import {
 import { BodiesSdk } from './sdkType'
 
 export class BodiesSdkImpl implements BodiesSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
     this.adapter = adapter
   }
   public async str(request: StrRequest): Promise<StrResponse> {
-    return str(request, this.adapter)
+    return this.createStrOperation().run(request)
   }
   public async num(request: NumRequest): Promise<NumResponse> {
-    return num(request, this.adapter)
+    return this.createNumOperation().run(request)
   }
   public async enm(request: EnmRequest): Promise<EnmResponse> {
-    return enm(request, this.adapter)
+    return this.createEnmOperation().run(request)
   }
   public async bool(request: BoolRequest): Promise<BoolResponse> {
-    return bool(request, this.adapter)
+    return this.createBoolOperation().run(request)
   }
   public async primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse> {
-    return primTuple(request, this.adapter)
+    return this.createPrimTupleOperation().run(request)
   }
   public async optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
-    return optPrimTuple(request, this.adapter)
+    return this.createOptPrimTupleOperation().run(request)
   }
   public async strArr(request: StrArrRequest): Promise<StrArrResponse> {
-    return strArr(request, this.adapter)
+    return this.createStrArrOperation().run(request)
   }
   public async numArr(request: NumArrRequest): Promise<NumArrResponse> {
-    return numArr(request, this.adapter)
+    return this.createNumArrOperation().run(request)
   }
   public async enmArr(request: EnmArrRequest): Promise<EnmArrResponse> {
-    return enmArr(request, this.adapter)
+    return this.createEnmArrOperation().run(request)
   }
   public async boolArr(request: BoolArrRequest): Promise<BoolArrResponse> {
-    return boolArr(request, this.adapter)
+    return this.createBoolArrOperation().run(request)
   }
   public async primObj(request: PrimObjRequest): Promise<PrimObjResponse> {
-    return primObj(request, this.adapter)
+    return this.createPrimObjOperation().run(request)
   }
   public async arrObj(request: ArrObjRequest): Promise<ArrObjResponse> {
-    return arrObj(request, this.adapter)
+    return this.createArrObjOperation().run(request)
   }
   public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
-    return nestedObj(request, this.adapter)
+    return this.createNestedObjOperation().run(request)
+  }
+  protected createStrOperation(): RunnableOperation<StrRequest, StrResponse> {
+    return new StrOperation(this.adapter)
+  }
+  protected createNumOperation(): RunnableOperation<NumRequest, NumResponse> {
+    return new NumOperation(this.adapter)
+  }
+  protected createEnmOperation(): RunnableOperation<EnmRequest, EnmResponse> {
+    return new EnmOperation(this.adapter)
+  }
+  protected createBoolOperation(): RunnableOperation<BoolRequest, BoolResponse> {
+    return new BoolOperation(this.adapter)
+  }
+  protected createPrimTupleOperation(): RunnableOperation<PrimTupleRequest, PrimTupleResponse> {
+    return new PrimTupleOperation(this.adapter)
+  }
+  protected createOptPrimTupleOperation(): RunnableOperation<OptPrimTupleRequest, OptPrimTupleResponse> {
+    return new OptPrimTupleOperation(this.adapter)
+  }
+  protected createStrArrOperation(): RunnableOperation<StrArrRequest, StrArrResponse> {
+    return new StrArrOperation(this.adapter)
+  }
+  protected createNumArrOperation(): RunnableOperation<NumArrRequest, NumArrResponse> {
+    return new NumArrOperation(this.adapter)
+  }
+  protected createEnmArrOperation(): RunnableOperation<EnmArrRequest, EnmArrResponse> {
+    return new EnmArrOperation(this.adapter)
+  }
+  protected createBoolArrOperation(): RunnableOperation<BoolArrRequest, BoolArrResponse> {
+    return new BoolArrOperation(this.adapter)
+  }
+  protected createPrimObjOperation(): RunnableOperation<PrimObjRequest, PrimObjResponse> {
+    return new PrimObjOperation(this.adapter)
+  }
+  protected createArrObjOperation(): RunnableOperation<ArrObjRequest, ArrObjResponse> {
+    return new ArrObjOperation(this.adapter)
+  }
+  protected createNestedObjOperation(): RunnableOperation<NestedObjRequest, NestedObjResponse> {
+    return new NestedObjOperation(this.adapter)
   }
 }

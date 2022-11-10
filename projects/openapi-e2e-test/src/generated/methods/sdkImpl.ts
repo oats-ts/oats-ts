@@ -4,8 +4,14 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/methods.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-runtime'
-import { deleteMethod, getMethod, patchMethod, postMethod, putMethod } from './operations'
+import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import {
+  DeleteMethodOperation,
+  GetMethodOperation,
+  PatchMethodOperation,
+  PostMethodOperation,
+  PutMethodOperation,
+} from './operationClasses'
 import {
   DeleteMethodResponse,
   GetMethodResponse,
@@ -16,23 +22,38 @@ import {
 import { HttpMethodsSdk } from './sdkType'
 
 export class HttpMethodsSdkImpl implements HttpMethodsSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
     this.adapter = adapter
   }
   public async getMethod(): Promise<GetMethodResponse> {
-    return getMethod(this.adapter)
+    return this.createGetMethodOperation().run()
   }
   public async postMethod(): Promise<PostMethodResponse> {
-    return postMethod(this.adapter)
+    return this.createPostMethodOperation().run()
   }
   public async putMethod(): Promise<PutMethodResponse> {
-    return putMethod(this.adapter)
+    return this.createPutMethodOperation().run()
   }
   public async patchMethod(): Promise<PatchMethodResponse> {
-    return patchMethod(this.adapter)
+    return this.createPatchMethodOperation().run()
   }
   public async deleteMethod(): Promise<DeleteMethodResponse> {
-    return deleteMethod(this.adapter)
+    return this.createDeleteMethodOperation().run()
+  }
+  protected createGetMethodOperation(): RunnableOperation<never, GetMethodResponse> {
+    return new GetMethodOperation(this.adapter)
+  }
+  protected createPostMethodOperation(): RunnableOperation<never, PostMethodResponse> {
+    return new PostMethodOperation(this.adapter)
+  }
+  protected createPutMethodOperation(): RunnableOperation<never, PutMethodResponse> {
+    return new PutMethodOperation(this.adapter)
+  }
+  protected createPatchMethodOperation(): RunnableOperation<never, PatchMethodResponse> {
+    return new PatchMethodOperation(this.adapter)
+  }
+  protected createDeleteMethodOperation(): RunnableOperation<never, DeleteMethodResponse> {
+    return new DeleteMethodOperation(this.adapter)
   }
 }

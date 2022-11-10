@@ -4,19 +4,22 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/generated-schemas/parameters.json
  */
 
-import { ClientAdapter as _ClientAdapter } from '@oats-ts/openapi-runtime'
 import {
-  deepObjectQueryParameters,
-  formCookieParameters,
-  formQueryParameters,
-  labelPathParameters,
-  matrixPathParameters,
-  pipeDelimitedQueryParameters,
-  simpleHeaderParameters,
-  simplePathParameters,
-  simpleResponseHeaderParameters,
-  spaceDelimitedQueryParameters,
-} from './operations'
+  RunnableOperation as _RunnableOperation,
+  SyncClientAdapter as _SyncClientAdapter,
+} from '@oats-ts/openapi-runtime'
+import {
+  DeepObjectQueryParametersOperation,
+  FormCookieParametersOperation,
+  FormQueryParametersOperation,
+  LabelPathParametersOperation,
+  MatrixPathParametersOperation,
+  PipeDelimitedQueryParametersOperation,
+  SimpleHeaderParametersOperation,
+  SimplePathParametersOperation,
+  SimpleResponseHeaderParametersOperation,
+  SpaceDelimitedQueryParametersOperation,
+} from './operationClasses'
 import {
   DeepObjectQueryParametersRequest,
   FormCookieParametersRequest,
@@ -44,46 +47,106 @@ import {
 import { ParametersSdk } from './sdkType'
 
 export class ParametersSdkImpl implements ParametersSdk {
-  protected readonly adapter: _ClientAdapter
-  public constructor(adapter: _ClientAdapter) {
+  protected readonly adapter: _SyncClientAdapter
+  public constructor(adapter: _SyncClientAdapter) {
     this.adapter = adapter
   }
   public async simplePathParameters(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
-    return simplePathParameters(request, this.adapter)
+    return this.createSimplePathParametersOperation().run(request)
   }
   public async labelPathParameters(request: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
-    return labelPathParameters(request, this.adapter)
+    return this.createLabelPathParametersOperation().run(request)
   }
   public async matrixPathParameters(request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
-    return matrixPathParameters(request, this.adapter)
+    return this.createMatrixPathParametersOperation().run(request)
   }
   public async formQueryParameters(request: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
-    return formQueryParameters(request, this.adapter)
+    return this.createFormQueryParametersOperation().run(request)
   }
   public async spaceDelimitedQueryParameters(
     request: SpaceDelimitedQueryParametersRequest,
   ): Promise<SpaceDelimitedQueryParametersResponse> {
-    return spaceDelimitedQueryParameters(request, this.adapter)
+    return this.createSpaceDelimitedQueryParametersOperation().run(request)
   }
   public async pipeDelimitedQueryParameters(
     request: PipeDelimitedQueryParametersRequest,
   ): Promise<PipeDelimitedQueryParametersResponse> {
-    return pipeDelimitedQueryParameters(request, this.adapter)
+    return this.createPipeDelimitedQueryParametersOperation().run(request)
   }
   public async deepObjectQueryParameters(
     request: DeepObjectQueryParametersRequest,
   ): Promise<DeepObjectQueryParametersResponse> {
-    return deepObjectQueryParameters(request, this.adapter)
+    return this.createDeepObjectQueryParametersOperation().run(request)
   }
   public async simpleHeaderParameters(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
-    return simpleHeaderParameters(request, this.adapter)
+    return this.createSimpleHeaderParametersOperation().run(request)
   }
   public async formCookieParameters(request: FormCookieParametersRequest): Promise<FormCookieParametersResponse> {
-    return formCookieParameters(request, this.adapter)
+    return this.createFormCookieParametersOperation().run(request)
   }
   public async simpleResponseHeaderParameters(
     request: SimpleResponseHeaderParametersRequest,
   ): Promise<SimpleResponseHeaderParametersResponse> {
-    return simpleResponseHeaderParameters(request, this.adapter)
+    return this.createSimpleResponseHeaderParametersOperation().run(request)
+  }
+  protected createSimplePathParametersOperation(): _RunnableOperation<
+    SimplePathParametersRequest,
+    SimplePathParametersResponse
+  > {
+    return new SimplePathParametersOperation(this.adapter)
+  }
+  protected createLabelPathParametersOperation(): _RunnableOperation<
+    LabelPathParametersRequest,
+    LabelPathParametersResponse
+  > {
+    return new LabelPathParametersOperation(this.adapter)
+  }
+  protected createMatrixPathParametersOperation(): _RunnableOperation<
+    MatrixPathParametersRequest,
+    MatrixPathParametersResponse
+  > {
+    return new MatrixPathParametersOperation(this.adapter)
+  }
+  protected createFormQueryParametersOperation(): _RunnableOperation<
+    FormQueryParametersRequest,
+    FormQueryParametersResponse
+  > {
+    return new FormQueryParametersOperation(this.adapter)
+  }
+  protected createSpaceDelimitedQueryParametersOperation(): _RunnableOperation<
+    SpaceDelimitedQueryParametersRequest,
+    SpaceDelimitedQueryParametersResponse
+  > {
+    return new SpaceDelimitedQueryParametersOperation(this.adapter)
+  }
+  protected createPipeDelimitedQueryParametersOperation(): _RunnableOperation<
+    PipeDelimitedQueryParametersRequest,
+    PipeDelimitedQueryParametersResponse
+  > {
+    return new PipeDelimitedQueryParametersOperation(this.adapter)
+  }
+  protected createDeepObjectQueryParametersOperation(): _RunnableOperation<
+    DeepObjectQueryParametersRequest,
+    DeepObjectQueryParametersResponse
+  > {
+    return new DeepObjectQueryParametersOperation(this.adapter)
+  }
+  protected createSimpleHeaderParametersOperation(): _RunnableOperation<
+    SimpleHeaderParametersRequest,
+    SimpleHeaderParametersResponse
+  > {
+    return new SimpleHeaderParametersOperation(this.adapter)
+  }
+  protected createFormCookieParametersOperation(): _RunnableOperation<
+    FormCookieParametersRequest,
+    FormCookieParametersResponse
+  > {
+    return new FormCookieParametersOperation(this.adapter)
+  }
+  protected createSimpleResponseHeaderParametersOperation(): _RunnableOperation<
+    SimpleResponseHeaderParametersRequest,
+    SimpleResponseHeaderParametersResponse
+  > {
+    return new SimpleResponseHeaderParametersOperation(this.adapter)
   }
 }

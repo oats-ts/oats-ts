@@ -4,24 +4,33 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/pet-store-yaml.yaml
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-runtime'
-import { createPets, listPets, showPetById } from './operations'
+import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import { CreatePetsOperation, ListPetsOperation, ShowPetByIdOperation } from './operationClasses'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 import { SwaggerPetstoreSdk } from './sdkType'
 
 export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
     this.adapter = adapter
   }
   public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
-    return listPets(request, this.adapter)
+    return this.createListPetsOperation().run(request)
   }
   public async createPets(request: CreatePetsRequest): Promise<CreatePetsResponse> {
-    return createPets(request, this.adapter)
+    return this.createCreatePetsOperation().run(request)
   }
   public async showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
-    return showPetById(request, this.adapter)
+    return this.createShowPetByIdOperation().run(request)
+  }
+  protected createListPetsOperation(): RunnableOperation<ListPetsRequest, ListPetsResponse> {
+    return new ListPetsOperation(this.adapter)
+  }
+  protected createCreatePetsOperation(): RunnableOperation<CreatePetsRequest, CreatePetsResponse> {
+    return new CreatePetsOperation(this.adapter)
+  }
+  protected createShowPetByIdOperation(): RunnableOperation<ShowPetByIdRequest, ShowPetByIdResponse> {
+    return new ShowPetByIdOperation(this.adapter)
   }
 }

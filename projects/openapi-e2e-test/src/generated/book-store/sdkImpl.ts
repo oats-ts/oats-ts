@@ -4,24 +4,33 @@
  * Generated from https://raw.githubusercontent.com/oats-ts/oats-schemas/master/schemas/book-store.json
  */
 
-import { ClientAdapter } from '@oats-ts/openapi-runtime'
-import { addBook, getBook, getBooks } from './operations'
+import { RunnableOperation, SyncClientAdapter } from '@oats-ts/openapi-runtime'
+import { AddBookOperation, GetBookOperation, GetBooksOperation } from './operationClasses'
 import { AddBookRequest, GetBookRequest, GetBooksRequest } from './requestTypes'
 import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTypes'
 import { BookStoreSdk } from './sdkType'
 
 export class BookStoreSdkImpl implements BookStoreSdk {
-  protected readonly adapter: ClientAdapter
-  public constructor(adapter: ClientAdapter) {
+  protected readonly adapter: SyncClientAdapter
+  public constructor(adapter: SyncClientAdapter) {
     this.adapter = adapter
   }
   public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
-    return getBooks(request, this.adapter)
+    return this.createGetBooksOperation().run(request)
   }
   public async addBook(request: AddBookRequest): Promise<AddBookResponse> {
-    return addBook(request, this.adapter)
+    return this.createAddBookOperation().run(request)
   }
   public async getBook(request: GetBookRequest): Promise<GetBookResponse> {
-    return getBook(request, this.adapter)
+    return this.createGetBookOperation().run(request)
+  }
+  protected createGetBooksOperation(): RunnableOperation<GetBooksRequest, GetBooksResponse> {
+    return new GetBooksOperation(this.adapter)
+  }
+  protected createAddBookOperation(): RunnableOperation<AddBookRequest, AddBookResponse> {
+    return new AddBookOperation(this.adapter)
+  }
+  protected createGetBookOperation(): RunnableOperation<GetBookRequest, GetBookResponse> {
+    return new GetBookOperation(this.adapter)
   }
 }
