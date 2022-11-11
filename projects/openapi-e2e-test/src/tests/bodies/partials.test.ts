@@ -1,7 +1,7 @@
 import { partialContentSdk } from '../sdks'
 import { testPartialContentServer } from '../servers'
 
-describe('Optional request bodies', () => {
+describe('Partials', () => {
   testPartialContentServer()
 
   it('should handle empty request body', async () => {
@@ -14,5 +14,9 @@ describe('Optional request bodies', () => {
       body: { foo: 'hi' },
     })
     expect(response.body).toEqual({ foo: 'hi' })
+  })
+  it('should handle empty response body', async () => {
+    const response = await partialContentSdk.missingBody()
+    expect(response).toEqual({ statusCode: 200 })
   })
 })
