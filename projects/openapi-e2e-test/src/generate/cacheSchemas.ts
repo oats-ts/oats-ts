@@ -8,7 +8,7 @@ import fetch from 'node-fetch'
 import { SCHEMA_CACHE } from './constants'
 import { exists, getSchemaUrl } from './utils'
 import { dirname, join, resolve } from 'path'
-import { promises as fs } from 'fs'
+import { mkdir, writeFile, rm } from 'fs/promises'
 import { LocalFileDescriptor } from './typings'
 import { getGithubFiles } from './getGithubFiles'
 
@@ -29,9 +29,9 @@ async function loadGithubFiles(paths: string[]): Promise<LocalFileDescriptor[]> 
 async function writeLocalFile(file: LocalFileDescriptor): Promise<void> {
   const dir = dirname(file.filePath)
   if (!(await exists(dir))) {
-    await fs.mkdir(dir, { recursive: true })
+    await mkdir(dir, { recursive: true })
   }
-  return fs.writeFile(file.filePath, file.content, 'utf-8')
+  return writeFile(file.filePath, file.content, 'utf-8')
 }
 
 async function writeLocalFiles(files: LocalFileDescriptor[]): Promise<void> {
@@ -42,6 +42,7 @@ async function writeLocalFiles(files: LocalFileDescriptor[]): Promise<void> {
 
 async function cacheSchemas() {
   try {
+    await rm(resolve(SCHEMA_CACHE), { recursive: true, force: true })
     const paths = await getGithubFiles()
     const files = await loadGithubFiles(paths)
     await writeLocalFiles(files)

@@ -4,9 +4,10 @@ import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
+import { isNil } from 'lodash'
 
 const responseShape: ShapeInput<ResponseObject> = {
-  content: object(record(string(), object())),
+  content: optional(object(record(string(), object()))),
   headers: optional(object(record(string(), object()))),
   description: optional(string()),
 }
@@ -22,7 +23,7 @@ export function responseObject(
     data,
   )(() =>
     ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
-      config.contentObject(data.content ?? {}, context, config),
+      isNil(data.content) ? [] : config.contentObject(data.content, context, config),
     ),
   )
 }

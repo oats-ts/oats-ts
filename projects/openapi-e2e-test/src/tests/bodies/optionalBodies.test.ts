@@ -1,15 +1,15 @@
-import { optionalRequestBodySdk } from '../sdks'
-import { testOptionalBodiesServer } from '../servers'
+import { partialContentSdk } from '../sdks'
+import { testPartialContentServer } from '../servers'
 
 describe('Optional request bodies', () => {
-  testOptionalBodiesServer()
+  testPartialContentServer()
 
   it('should handle empty request body', async () => {
-    const response = await optionalRequestBodySdk.optionalRequestBody({})
+    const response = await partialContentSdk.optionalRequestBody({})
     expect(response.body).toEqual({})
   })
   it('should handle non-empty request body', async () => {
-    const response = await optionalRequestBodySdk.optionalRequestBody({
+    const response = await partialContentSdk.optionalRequestBody({
       mimeType: 'application/json',
       body: { foo: 'hi' },
     })

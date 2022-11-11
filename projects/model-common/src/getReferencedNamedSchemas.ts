@@ -4,7 +4,7 @@ import { isReferenceObject } from './isReferenceObject'
 import { JsonSchemaBasedGeneratorContext } from './types'
 
 function collectInChildren(input: SchemaObject, context: JsonSchemaBasedGeneratorContext, schemas: SchemaObject[]) {
-  const { items, additionalProperties, properties, oneOf, prefixItems } = input
+  const { items, additionalProperties, properties, oneOf, prefixItems } = input ?? {}
   if (!isNil(prefixItems)) {
     return prefixItems.forEach((item) => collect(item, context, schemas))
   } else if (!isNil(items) && typeof items !== 'boolean') {

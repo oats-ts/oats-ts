@@ -157,7 +157,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [],
       factory.createTypeReferenceNode(this.httpPkg.exports.RunnableOperation, [
         isNil(requestType) ? factory.createTypeReferenceNode('void') : requestType,
-        isNil(responseType) ? factory.createTypeReferenceNode('void') : responseType,
+        responseType,
       ]),
       factory.createBlock([returnStatement]),
     )

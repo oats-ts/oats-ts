@@ -112,11 +112,11 @@ export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' 
 /** Generic type representing a HTTP response */
 export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
   /** The parsed response body */
-  body: B
+  body?: B
   /** The response status code */
   statusCode: S
   /** The mime type of the response */
-  mimeType: M
+  mimeType?: M
   /** The cookies in the response (Set-Cookie header) */
   cookies?: Cookies<C>
   /** The response headers */

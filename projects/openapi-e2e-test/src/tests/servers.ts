@@ -2,7 +2,7 @@ import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-s
 import { HttpResponse } from '@oats-ts/openapi-http'
 import YAML from 'yamljs'
 import { BodiesApiImpl } from './bodies/BodiesApiImpl'
-import { OptionalBodiesImpl } from './bodies/OptionalBodiesApiImpl'
+import { PartialContentApiImpl } from './bodies/PartialContentApiImpl'
 import { BookStoreApiImpl } from './bookStore/BookStoreApiImpl'
 import { customBodyParsers } from './common/customBodyParsers'
 import { PORT } from './constants'
@@ -10,7 +10,6 @@ import { HttpMethodsApiImpl } from './methods/HttpMethodsApiImpl'
 import { ParametersApiImpl } from './parameters/ParametersApiImpl'
 import { testExpressServer } from '../testExpressServer'
 import { createBookStoreAppRouter } from '../generated/book-store/expressAppRouterFactory'
-import { createOptionalBodiesAppRouter } from '../generated/optional-request-body/expressAppRouterFactory'
 import { createBodiesAppRouter } from '../generated/bodies/expressAppRouterFactory'
 import { createHttpMethodsAppRouter } from '../generated/methods/expressAppRouterFactory'
 import { createParametersAppRouter } from '../generated/parameters/expressAppRouterFactory'
@@ -18,10 +17,11 @@ import { createParametersCorsRouter } from '../generated/parameters/expressCorsR
 import { createParametersContextRouter } from '../generated/parameters/expressContextRouterFactory'
 import { createHttpMethodsContextRouter } from '../generated/methods/expressContextRouterFactory'
 import { createBodiesContextRouter } from '../generated/bodies/expressContextRouterFactory'
-import { createOptionalBodiesContextRouter } from '../generated/optional-request-body/expressContextRouterFactory'
 import { createBookStoreContextRouter } from '../generated/book-store/expressContextRouterFactory'
 import { Router } from 'express'
 import { createFormQueryParametersRouter } from '../generated/parameters/expressRouterFactories'
+import { createPartialContentContextRouter } from '../generated/partial-content/expressContextRouterFactory'
+import { createPartialContentAppRouter } from '../generated/partial-content/expressAppRouterFactory'
 
 export function testBookStoreServer() {
   testExpressServer({
@@ -35,14 +35,14 @@ export function testBookStoreServer() {
   })
 }
 
-export function testOptionalBodiesServer() {
+export function testPartialContentServer() {
   testExpressServer({
     port: PORT,
     runBeforeAndAfter: 'each',
     attachHandlers: (router) => {
       router.use(customBodyParsers.json())
-      createOptionalBodiesContextRouter(router, new OptionalBodiesImpl(), new ExpressServerAdapter())
-      createOptionalBodiesAppRouter(router)
+      createPartialContentContextRouter(router, new PartialContentApiImpl(), new ExpressServerAdapter())
+      createPartialContentAppRouter(router)
     },
   })
 }
