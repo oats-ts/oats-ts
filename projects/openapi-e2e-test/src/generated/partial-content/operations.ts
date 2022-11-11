@@ -13,7 +13,7 @@ import {
   RunnableOperation,
 } from '@oats-ts/openapi-runtime'
 import { OptionalRequestBodyRequest } from './requestTypes'
-import { missingBodyResponseBodyValidator, optionalRequestBodyResponseBodyValidator } from './responseBodyValidators'
+import { optionalRequestBodyResponseBodyValidator } from './responseBodyValidators'
 import { MissingBodyResponse, OptionalRequestBodyResponse } from './responseTypes'
 
 export class MissingBodyOperation implements RunnableOperation<void, MissingBodyResponse> {
@@ -30,19 +30,8 @@ export class MissingBodyOperation implements RunnableOperation<void, MissingBody
   protected getRequestHeaders(): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
   }
-  protected getMimeType(response: RawHttpResponse): string | undefined {
-    return this.adapter.getMimeType(response)
-  }
   protected getStatusCode(response: RawHttpResponse): number | undefined {
     return this.adapter.getStatusCode(response)
-  }
-  protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      missingBodyResponseBodyValidator,
-    )
   }
   public async run(): Promise<MissingBodyResponse> {
     const rawRequest: RawHttpRequest = {
@@ -52,9 +41,7 @@ export class MissingBodyOperation implements RunnableOperation<void, MissingBody
     }
     const rawResponse = await this.adapter.request(rawRequest)
     const typedResponse = {
-      mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
-      body: this.getResponseBody(rawResponse),
     }
     return typedResponse as MissingBodyResponse
   }

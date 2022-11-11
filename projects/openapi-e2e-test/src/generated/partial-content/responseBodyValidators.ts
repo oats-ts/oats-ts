@@ -6,8 +6,6 @@
 
 import { validators } from '@oats-ts/openapi-runtime'
 
-export const missingBodyResponseBodyValidator = { 200: {} } as const
-
 export const optionalRequestBodyResponseBodyValidator = {
   200: { 'application/json': validators.object(validators.shape({ foo: validators.optional(validators.string()) })) },
 } as const

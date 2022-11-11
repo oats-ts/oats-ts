@@ -91,10 +91,10 @@ async function getFileDescriptors(method: LoadMethod): Promise<GeneratorInputFil
 }
 
 async function getOptions(args: string[], files: GeneratorInputFileDescriptor[]): Promise<GenerateOptions> {
-  if (args.includes('-d') || args.includes('--default')) {
-    return DefaultOptions
+  if (args.includes('-i') || args.includes('--interactive')) {
+    return promptForResult(files)
   }
-  return promptForResult(files)
+  return DefaultOptions
 }
 
 async function generateAll() {
