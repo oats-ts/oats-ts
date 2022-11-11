@@ -1,6 +1,6 @@
 import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
 import YAML from 'yamljs'
-import { OptionalBodiesSdkImpl } from '../generated/optional-request-body/sdkImpl'
+import { PartialContentSdkImpl } from '../generated/partial-content/sdkImpl'
 import { BodiesSdkImpl } from '../generated/bodies/sdkImpl'
 import { PATH } from './constants'
 import { BookStoreSdkImpl } from '../generated/book-store/sdkImpl'
@@ -28,4 +28,4 @@ export const httpMethodsSdk = new HttpMethodsSdkImpl(defaultAdapter)
 
 export const parametersSdk = new ParametersSdkImpl(defaultAdapter)
 
-export const optionalRequestBodySdk = new OptionalBodiesSdkImpl(defaultAdapter)
+export const partialContentSdk = new PartialContentSdkImpl(defaultAdapter)

@@ -1,6 +1,6 @@
 import { ContentObject, OperationObject } from '@oats-ts/openapi-model'
 import { entries, flatMap, isNil } from 'lodash'
-import { EnhancedOperation, hasResponses, OpenAPIGeneratorTarget, getEnhancedResponses } from '@oats-ts/openapi-common'
+import { EnhancedOperation, OpenAPIGeneratorTarget, getEnhancedResponses } from '@oats-ts/openapi-common'
 import {
   Expression,
   TypeNode,
@@ -30,14 +30,22 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
     return [{ name: this.validatorsPkg.name, version }]
   }
 
+  protected shouldGenerate(item: EnhancedOperation): boolean {
+    return getEnhancedResponses(item.operation, this.context()).some(
+      (resp) => !isNil(resp.mediaType) && !isNil(resp.schema),
+    )
+  }
+
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {
-    return hasResponses(input, this.context())
+    return this.shouldGenerate(this.enhanced(input))
       ? factory.createIdentifier(this.context().nameOf(input, this.name()))
       : undefined
   }
 
   public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
-    return hasResponses(input, this.context()) ? getModelImports(fromPath, this.name(), [input], this.context()) : []
+    return this.shouldGenerate(this.enhanced(input))
+      ? getModelImports(fromPath, this.name(), [input], this.context())
+      : []
   }
 
   protected async generateItem(data: EnhancedOperation): Promise<Try<SourceFile>> {

@@ -1,6 +1,6 @@
 import { ApiTypeGeneratorConfig } from './api-type'
 
-import { OperationsGeneratorConfig } from './operations'
+import { OperationsGeneratorConfig } from './operation-functions'
 import {
   TypeGuardGeneratorConfig,
   TypesGeneratorConfig,
@@ -27,7 +27,7 @@ function create(
   name: 'oats/express-router-factory',
   config?: Config<ExpressRouterFactoriesGeneratorConfig>,
 ): OpenAPIGenerator
-function create(name: 'oats/operation', config?: Config<OperationsGeneratorConfig>): OpenAPIGenerator
+function create(name: 'oats/operation-function', config?: Config<OperationsGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/path-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/cookies-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator
 function create(name: 'oats/query-type', config?: Config<ParameterTypesGeneratorConfig>): OpenAPIGenerator

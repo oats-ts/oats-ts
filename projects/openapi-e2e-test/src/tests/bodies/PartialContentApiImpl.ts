@@ -1,11 +1,19 @@
 import { isSuccess } from '@oats-ts/try'
 import { stringify } from '@oats-ts/validators'
 import { isNil } from 'lodash'
-import { OptionalBodiesApi } from '../../generated/optional-request-body/apiType'
-import { OptionalRequestBodyServerRequest } from '../../generated/optional-request-body/requestServerTypes'
-import { OptionalRequestBodyServerResponse } from '../../generated/optional-request-body/responseServerTypes'
+import { PartialContentApi } from '../../generated/partial-content/apiType'
+import { OptionalRequestBodyServerRequest } from '../../generated/partial-content/requestServerTypes'
+import {
+  MissingBodyServerResponse,
+  OptionalRequestBodyServerResponse,
+} from '../../generated/partial-content/responseServerTypes'
 
-export class OptionalBodiesImpl implements OptionalBodiesApi {
+export class PartialContentApiImpl implements PartialContentApi {
+  async missingBody(): Promise<MissingBodyServerResponse> {
+    return {
+      statusCode: 200,
+    }
+  }
   async optionalRequestBody(request: OptionalRequestBodyServerRequest): Promise<OptionalRequestBodyServerResponse> {
     if (isSuccess(request.body)) {
       return {

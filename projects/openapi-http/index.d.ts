@@ -2,35 +2,35 @@ import type { Validator } from '@oats-ts/validators'
 import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
-  getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
-  getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
-  getUrl(path: string, query?: string): Promise<string>
-  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined>
+  getPath<P>(input: P, serializer: (input: P) => Try<string>): string
+  getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): string | undefined
+  getUrl(path: string, query?: string): string
+  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): string | undefined
   getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
     cookie?: string,
     serializer?: (input: H) => Try<RawHttpHeaders>,
-  ): Promise<RawHttpHeaders>
-  getRequestBody<B>(mimeType?: string, input?: B): Promise<any>
+  ): RawHttpHeaders
+  getRequestBody<B>(mimeType?: string, input?: B): any
   request(request: RawHttpRequest): Promise<RawHttpResponse>
-  getMimeType(response: RawHttpResponse): Promise<string | undefined>
-  getStatusCode(response: RawHttpResponse): Promise<number | undefined>
+  getMimeType(response: RawHttpResponse): string | undefined
+  getStatusCode(response: RawHttpResponse): number | undefined
   getResponseCookies<C>(
     response: RawHttpResponse,
     deserializer?: (cookie?: string) => Try<Cookies<C>>,
-  ): Promise<Cookies<C> | undefined>
-  getResponseHeaders(
-    response: RawHttpResponse,
-    statusCode?: number,
-    deserializers?: ResponseHeadersDeserializers,
-  ): Promise<any>
+  ): Cookies<C> | undefined
+  getResponseHeaders(response: RawHttpResponse, statusCode?: number, deserializers?: ResponseHeadersDeserializers): any
   getResponseBody(
     response: RawHttpResponse,
     statusCode?: number,
     mimeType?: string,
     validators?: ResponseBodyValidators,
-  ): Promise<any>
+  ): any
+}
+
+export type RunnableOperation<Request, Response> = {
+  run(request: Request): Promise<Response>
 }
 
 export type ServerAdapter<T> = {
@@ -112,11 +112,11 @@ export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' 
 /** Generic type representing a HTTP response */
 export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
   /** The parsed response body */
-  body: B
+  body?: B
   /** The response status code */
   statusCode: S
   /** The mime type of the response */
-  mimeType: M
+  mimeType?: M
   /** The cookies in the response (Set-Cookie header) */
   cookies?: Cookies<C>
   /** The response headers */

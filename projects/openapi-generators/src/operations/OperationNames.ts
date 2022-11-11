@@ -1,5 +1,6 @@
 export const OperationDefaultLocals = {
-  adapter: 'adapter',
+  adapterParameter: 'adapter',
+  adapterProperty: 'adapter',
   url: 'url',
   path: 'path',
   query: 'query',
@@ -9,13 +10,31 @@ export const OperationDefaultLocals = {
   method: 'method',
   mimeType: 'mimeType',
   statusCode: 'statusCode',
-  request: 'request',
   requestHeaders: 'requestHeaders',
   responseHeaders: 'responseHeaders',
   requestBody: 'requestBody',
   requestUrl: 'requestUrl',
-  rawRequest: 'rawRequest',
-  rawResponse: 'rawResponse',
   responseBody: 'responseBody',
   responseCookies: 'responseCookies',
+
+  unusedRequest: '_request',
+  request: 'request',
+
+  unusedResponse: '_response',
+  response: 'response',
+
+  rawRequest: 'rawRequest',
+  rawResponse: 'rawResponse',
+  typedResponse: 'typedResponse',
+
+  getUrl: 'getUrl',
+  getHttpMethod: 'getHttpMethod',
+  getRequestBody: 'getRequestBody',
+  getRequestHeaders: 'getRequestHeaders',
+
+  getMimeType: 'getMimeType',
+  getStatusCode: 'getStatusCode',
+  getResponseBody: 'getResponseBody',
+  getResponseHeaders: 'getResponseHeaders',
+  getResponseCookies: 'getResponseCookies',
 }

@@ -33,17 +33,19 @@ import {
 } from '../../generated/bodies/responseServerTypes'
 
 export class BodiesApiImpl implements BodiesApi {
-  async respond(request: { body: Try<any>; mimeType: string }): Promise<HttpResponse<any, 200, any, undefined>> {
+  async respond<T extends HttpResponse<any, 200, any, undefined>>(request: {
+    body: Try<any>
+    mimeType: string
+  }): Promise<T> {
     if (isFailure(request.body)) {
       console.error(request.body.issues)
       throw new TypeError(JSON.stringify(request.body.issues))
     }
     return {
       body: request.body.data,
-      headers: undefined,
       mimeType: request.mimeType,
       statusCode: 200,
-    }
+    } as T
   }
   async optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleServerResponse> {
     return this.respond(request)

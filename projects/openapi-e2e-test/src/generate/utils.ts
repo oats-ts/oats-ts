@@ -1,10 +1,15 @@
-import { join, parse } from 'path'
-import { PATH, REPO } from './constants'
+import { lstat } from 'fs/promises'
+import { REPO } from './constants'
 
 export function getSchemaUrl(path: string): string {
   return `https://raw.githubusercontent.com/${REPO}/master/${path}`
 }
 
-export function getCodePath(path: string, hasExtension: boolean): string {
-  return join(PATH, `${parse(path).name}${hasExtension ? '.ts' : ''}`)
+export async function exists(dir: string): Promise<boolean> {
+  try {
+    const stats = await lstat(dir)
+    return stats.isDirectory()
+  } catch (e) {
+    return false
+  }
 }

@@ -6,6 +6,7 @@ import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, Path
 const fileNameByTarget: NameByTarget = {
   'oats/type': 'types.ts',
   'oats/type-guard': 'typeGuards.ts',
+  'oats/operation-function': 'operationFunctions.ts',
   'oats/operation': 'operations.ts',
   'oats/query-type': 'queryTypes.ts',
   'oats/cookies-type': 'cookieTypes.ts',
@@ -96,6 +97,7 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/cookie-deserializer': serializers,
     'oats/set-cookie-deserializer': serializers,
 
+    'oats/operation-function': operations,
     'oats/operation': operations,
 
     'oats/cors-configuration': routers,

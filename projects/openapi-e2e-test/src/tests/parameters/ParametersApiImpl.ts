@@ -29,25 +29,37 @@ import {
 import { defaultCookies } from './parameters.testdata'
 import { FormCookieParametersCookieParameters } from '../../generated/parameters/cookieTypes'
 import { isNil } from 'lodash'
+import {
+  DeepObjectQueryParametersQueryParameters,
+  FormQueryParametersQueryParameters,
+  PipeDelimitedQueryParametersQueryParameters,
+  SpaceDelimitedQueryParametersQueryParameters,
+} from '../../generated/parameters/queryTypes'
+import {
+  LabelPathParametersPathParameters,
+  MatrixPathParametersPathParameters,
+  SimplePathParametersPathParameters,
+} from '../../generated/parameters/pathTypes'
+import { SimpleHeaderParametersRequestHeaderParameters } from '../../generated/parameters/requestHeaderTypes'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
   | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
 
 export class ParametersApiImpl implements ParametersApi {
-  private respond<T>(params: Try<T>): ParameterResponse<T> {
+  private respond<T, R extends ParameterResponse<T>>(params: Try<T>): R {
     if (isFailure(params)) {
       return {
         mimeType: 'application/json',
         statusCode: 400,
         body: params.issues.map((issue) => ({ message: issue.message })),
-      }
+      } as R
     }
     return {
       mimeType: 'application/json',
       statusCode: 200,
       body: params.data,
-    }
+    } as R
   }
   async simpleResponseHeaderParameters(
     input: SimpleResponseHeaderParametersServerRequest,
@@ -69,34 +81,40 @@ export class ParametersApiImpl implements ParametersApi {
   async deepObjectQueryParameters(
     input: DeepObjectQueryParametersServerRequest,
   ): Promise<DeepObjectQueryParametersServerResponse> {
-    return this.respond(input.query)
+    return this.respond<DeepObjectQueryParametersQueryParameters, DeepObjectQueryParametersServerResponse>(input.query)
   }
   async formQueryParameters(input: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse> {
-    return this.respond(input.query)
+    return this.respond<FormQueryParametersQueryParameters, FormQueryParametersServerResponse>(input.query)
   }
   async labelPathParameters(input: LabelPathParametersServerRequest): Promise<LabelPathParametersServerResponse> {
-    return this.respond(input.path)
+    return this.respond<LabelPathParametersPathParameters, LabelPathParametersServerResponse>(input.path)
   }
   async matrixPathParameters(input: MatrixPathParametersServerRequest): Promise<MatrixPathParametersServerResponse> {
-    return this.respond(input.path)
+    return this.respond<MatrixPathParametersPathParameters, MatrixPathParametersServerResponse>(input.path)
   }
   async pipeDelimitedQueryParameters(
     input: PipeDelimitedQueryParametersServerRequest,
   ): Promise<PipeDelimitedQueryParametersServerResponse> {
-    return this.respond(input.query)
+    return this.respond<PipeDelimitedQueryParametersQueryParameters, PipeDelimitedQueryParametersServerResponse>(
+      input.query,
+    )
   }
   async simpleHeaderParameters(
     input: SimpleHeaderParametersServerRequest,
   ): Promise<SimpleHeaderParametersServerResponse> {
-    return this.respond(input.headers)
+    return this.respond<SimpleHeaderParametersRequestHeaderParameters, SimpleHeaderParametersServerResponse>(
+      input.headers,
+    )
   }
   async simplePathParameters(input: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse> {
-    return this.respond(input.path)
+    return this.respond<SimplePathParametersPathParameters, SimplePathParametersServerResponse>(input.path)
   }
   async spaceDelimitedQueryParameters(
     input: SpaceDelimitedQueryParametersServerRequest,
   ): Promise<SpaceDelimitedQueryParametersServerResponse> {
-    return this.respond(input.query)
+    return this.respond<SpaceDelimitedQueryParametersQueryParameters, SpaceDelimitedQueryParametersServerResponse>(
+      input.query,
+    )
   }
   async formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse> {
     if (isFailure(request.cookies)) {
