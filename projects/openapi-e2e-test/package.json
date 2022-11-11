@@ -18,6 +18,7 @@
     "browser-test": "webpack-dev-server",
     "build": "tsc --noEmit",
     "g": "ts-node src/generate/generate.ts",
+    "load-schemas": "ts-node src/generate/cacheSchemas.ts",
     "methods": "node src/methods.js",
     "serve": "ts-node src/serve.ts",
     "test": "cross-env jest --runInBand",
