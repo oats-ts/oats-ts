@@ -27,9 +27,9 @@ import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
 import {
   ClientAdapterMethods,
+  HttpResponseFields,
   RawHttpRequestFields,
   TypedRequestFields,
-  TypedResponseFields,
 } from '../utils/OatsApiNames'
 import { LocalNameDefaults } from '@oats-ts/model-common'
 import { OperationDefaultLocals } from './OperationFunctionNames'
@@ -175,23 +175,23 @@ export class OperationFunctionsGenerator extends OperationBasedCodeGenerator<Ope
 
   protected getReturnStatement(data: EnhancedOperation): Statement | undefined {
     const responseHeaderNames: [string, string] = [
-      TypedResponseFields.headers,
+      HttpResponseFields.headers,
       this.context().localNameOf<OperationFunctionLocals>(undefined, this.name(), 'responseHeaders'),
     ]
     const mimeTypeNames: [string, string] = [
-      TypedResponseFields.mimeType,
+      HttpResponseFields.mimeType,
       this.context().localNameOf<OperationFunctionLocals>(undefined, this.name(), 'mimeType'),
     ]
     const statusCodeNames: [string, string] = [
-      TypedResponseFields.statusCode,
+      HttpResponseFields.statusCode,
       this.context().localNameOf<OperationFunctionLocals>(undefined, this.name(), 'statusCode'),
     ]
     const bodyNames: [string, string] = [
-      TypedResponseFields.body,
+      HttpResponseFields.body,
       this.context().localNameOf<OperationFunctionLocals>(undefined, this.name(), 'responseBody'),
     ]
     const cokiesNames: [string, string] = [
-      TypedResponseFields.cookies,
+      HttpResponseFields.cookies,
       this.context().localNameOf<OperationFunctionLocals>(undefined, this.name(), 'responseCookies'),
     ]
 
