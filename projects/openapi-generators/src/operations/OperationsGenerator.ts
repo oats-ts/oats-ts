@@ -139,37 +139,37 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     return isNil(requestType) ? factory.createTypeReferenceNode('void') : requestType
   }
 
-  protected needsUrlGetter(data: EnhancedOperation): boolean {
+  protected needsUrl(data: EnhancedOperation): boolean {
     return true
   }
 
-  protected needsHttpMethodGetter(data: EnhancedOperation): boolean {
+  protected needsHttpMethod(data: EnhancedOperation): boolean {
     return true
   }
 
-  protected needsRequestHeadersGetter(data: EnhancedOperation): boolean {
+  protected needsRequestHeaders(data: EnhancedOperation): boolean {
     return true
   }
 
-  protected needsRequestBodyGetter(data: EnhancedOperation): boolean {
+  protected needsRequestBody(data: EnhancedOperation): boolean {
     return hasRequestBody(data, this.context())
   }
 
-  protected needsResponseHeadersGetter(data: EnhancedOperation): boolean {
+  protected needsResponseHeaders(data: EnhancedOperation): boolean {
     return hasResponseHeaders(data.operation, this.context())
   }
 
-  protected needsMimeTypeGetter(data: EnhancedOperation): boolean {
-    return getEnhancedResponses(data.operation, this.context()).some((resp) => !isNil(resp.mediaType))
+  protected needsMimeType(data: EnhancedOperation): boolean {
+    return this.needsResponseBody(data)
   }
 
-  protected needsResponseBodyGetter(data: EnhancedOperation): boolean {
+  protected needsResponseBody(data: EnhancedOperation): boolean {
     return getEnhancedResponses(data.operation, this.context()).some(
       (resp) => !isNil(resp.schema) && !isNil(resp.mediaType),
     )
   }
 
-  protected needsStatusCodeGetter(data: EnhancedOperation): boolean {
+  protected needsStatusCode(data: EnhancedOperation): boolean {
     return true
   }
 
@@ -286,13 +286,13 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       // Request
       this.getUrlGetterMethodAst(data),
       this.getHttpMethodGetterMethodAst(data),
-      this.getRequestBodyGetterMethod(data),
       this.getRequestHeadersGetterMethod(data),
+      this.getRequestBodyGetterMethod(data),
       // Response
       this.getMimeTypeGetterAst(data),
       this.getStatusCodeGetterAst(data),
-      this.getResponseBodyGetterAst(data),
       this.getResponseHeadersGetterAst(data),
+      this.getResponseBodyGetterAst(data),
       // Run
       this.getRunMethodAst(data),
     ]
@@ -343,12 +343,9 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getRunRawRequestStatementAst(data: EnhancedOperation): Statement | undefined {
-    const properties = [
-      this.getUrlPropertyAssignmentAst(data),
-      this.getMethodPropertyAssignment(data),
-      this.getRequestBodyPropertyAssignment(data),
-      this.getRequestHeadersPropertyAssignment(data),
-    ].filter((prop): prop is PropertyAssignment => !isNil(prop))
+    const properties = this.getRunRawRequestPropertiesAst(data).filter(
+      (prop): prop is PropertyAssignment => !isNil(prop),
+    )
 
     return factory.createVariableStatement(
       undefined,
@@ -366,13 +363,19 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
+  private getRunRawRequestPropertiesAst(data: EnhancedOperation): (PropertyAssignment | undefined)[] {
+    return [
+      this.getUrlPropertyAssignmentAst(data),
+      this.getMethodPropertyAssignment(data),
+      this.getRequestHeadersPropertyAssignment(data),
+      this.getRequestBodyPropertyAssignment(data),
+    ]
+  }
+
   protected getRunTypedResponseStatementAst(data: EnhancedOperation): Statement {
-    const properties = [
-      this.getMimeTypePropertyAssignment(data),
-      this.getStatusCodePropertyAssignment(data),
-      this.getResponseHeadersPropertyAssignment(data),
-      this.getResponseBodyPropertyAssignment(data),
-    ].filter((prop): prop is PropertyAssignment => !isNil(prop))
+    const properties = this.getRunTypedReturnTypePropertiesAst(data).filter(
+      (prop): prop is PropertyAssignment => !isNil(prop),
+    )
 
     return factory.createVariableStatement(
       undefined,
@@ -390,6 +393,15 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         NodeFlags.Const,
       ),
     )
+  }
+
+  private getRunTypedReturnTypePropertiesAst(data: EnhancedOperation): (PropertyAssignment | undefined)[] {
+    return [
+      this.getMimeTypePropertyAssignment(data),
+      this.getStatusCodePropertyAssignment(data),
+      this.getResponseHeadersPropertyAssignment(data),
+      this.getResponseBodyPropertyAssignment(data),
+    ]
   }
 
   protected getBasicRequestPropertyAssignmentAst(
@@ -433,47 +445,47 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getUrlPropertyAssignmentAst(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsUrlGetter(data) ? this.getBasicRequestPropertyAssignmentAst(data, 'url', 'getUrl') : undefined
+    return this.needsUrl(data) ? this.getBasicRequestPropertyAssignmentAst(data, 'url', 'getUrl') : undefined
   }
 
   protected getMethodPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsHttpMethodGetter(data)
-      ? this.getBasicRequestPropertyAssignmentAst(data, 'method', 'getRequestMethod')
+    return this.needsHttpMethod(data)
+      ? this.getBasicRequestPropertyAssignmentAst(data, 'method', 'getHttpMethod')
       : undefined
   }
 
   protected getRequestBodyPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsRequestBodyGetter(data)
+    return this.needsRequestBody(data)
       ? this.getBasicRequestPropertyAssignmentAst(data, 'body', 'getRequestBody')
       : undefined
   }
 
   protected getRequestHeadersPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsRequestHeadersGetter(data)
+    return this.needsRequestHeaders(data)
       ? this.getBasicRequestPropertyAssignmentAst(data, 'headers', 'getRequestHeaders')
       : undefined
   }
 
   protected getMimeTypePropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsMimeTypeGetter(data)
+    return this.needsMimeType(data)
       ? this.getBasicResponsePropertyAssignmentAst(data, 'mimeType', 'getMimeType')
       : undefined
   }
 
   protected getStatusCodePropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsStatusCodeGetter(data)
+    return this.needsStatusCode(data)
       ? this.getBasicResponsePropertyAssignmentAst(data, 'statusCode', 'getStatusCode')
       : undefined
   }
 
   protected getResponseBodyPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsResponseBodyGetter(data)
+    return this.needsResponseBody(data)
       ? this.getBasicResponsePropertyAssignmentAst(data, 'body', 'getResponseBody')
       : undefined
   }
 
   protected getResponseHeadersPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
-    return this.needsResponseHeadersGetter(data)
+    return this.needsResponseHeaders(data)
       ? this.getBasicResponsePropertyAssignmentAst(data, 'headers', 'getResponseHeaders')
       : undefined
   }
@@ -488,7 +500,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getUrlGetterMethodAst(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsUrlGetter(data)) {
+    if (!this.needsUrl(data)) {
       return undefined
     }
     const requestParam = this.getRequestParameterAst(data, data.query.length === 0 && data.path.length === 0)
@@ -596,7 +608,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getHttpMethodGetterMethodAst(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsHttpMethodGetter(data)) {
+    if (!this.needsHttpMethod(data)) {
       return undefined
     }
     const requestParam = this.getRequestParameterAst(data, true)
@@ -604,7 +616,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       undefined,
       [factory.createModifier(SyntaxKind.ProtectedKeyword)],
       undefined,
-      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getRequestMethod'),
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getHttpMethod'),
       undefined,
       undefined,
       this.needsRequestParameter(data) ? [requestParam] : [],
@@ -614,7 +626,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getRequestBodyGetterMethod(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsRequestBodyGetter(data)) {
+    if (!this.needsRequestBody(data)) {
       return undefined
     }
     const requestParam = this.getRequestParameterAst(data, !hasRequestBody(data, this.context()))
@@ -652,7 +664,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getRequestHeadersGetterMethod(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsRequestHeadersGetter(data)) {
+    if (!this.needsRequestHeaders(data)) {
       return undefined
     }
     const requestParam = this.getRequestParameterAst(
@@ -765,7 +777,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getMimeTypeGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsMimeTypeGetter(data)) {
+    if (!this.needsMimeType(data)) {
       return undefined
     }
     const responseParam = this.getRawResponseParameterAst(data)
@@ -779,7 +791,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getMimeType'),
       undefined,
       undefined,
-      // TODO check if has response body
       [responseParam],
       factory.createUnionTypeNode([
         factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
@@ -790,7 +801,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getStatusCodeGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsStatusCodeGetter(data)) {
+    if (!this.needsStatusCode(data)) {
       return undefined
     }
     const responseParam = this.getRawResponseParameterAst(data)
@@ -815,7 +826,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getResponseBodyGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsResponseBodyGetter(data)) {
+    if (!this.needsResponseBody(data)) {
       return undefined
     }
     const responseParam = this.getRawResponseParameterAst(data)
@@ -844,7 +855,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getResponseHeadersGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
-    if (!this.needsResponseHeadersGetter(data)) {
+    if (!this.needsResponseHeaders(data)) {
       return undefined
     }
     const responseParam = this.getRawResponseParameterAst(data)
@@ -862,7 +873,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getResponseHeaders'),
       undefined,
       undefined,
-      // TODO check if has response body
       [responseParam],
       factory.createTypeReferenceNode(this.httpPkg.exports.RawHttpHeaders),
       factory.createBlock([returnStatement], true),

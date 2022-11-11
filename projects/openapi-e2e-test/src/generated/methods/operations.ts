@@ -35,7 +35,7 @@ export class DeleteMethodOperation implements RunnableOperation<void, DeleteMeth
   protected getUrl(): string {
     return this.adapter.getUrl('/delete-method', undefined)
   }
-  protected getRequestMethod(): HttpMethod {
+  protected getHttpMethod(): HttpMethod {
     return 'delete'
   }
   protected getRequestHeaders(): RawHttpHeaders {
@@ -58,7 +58,7 @@ export class DeleteMethodOperation implements RunnableOperation<void, DeleteMeth
   public async run(): Promise<DeleteMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
-      method: this.getRequestMethod(),
+      method: this.getHttpMethod(),
       headers: this.getRequestHeaders(),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -79,7 +79,7 @@ export class GetMethodOperation implements RunnableOperation<void, GetMethodResp
   protected getUrl(): string {
     return this.adapter.getUrl('/get-method', undefined)
   }
-  protected getRequestMethod(): HttpMethod {
+  protected getHttpMethod(): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(): RawHttpHeaders {
@@ -102,7 +102,7 @@ export class GetMethodOperation implements RunnableOperation<void, GetMethodResp
   public async run(): Promise<GetMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
-      method: this.getRequestMethod(),
+      method: this.getHttpMethod(),
       headers: this.getRequestHeaders(),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -123,7 +123,7 @@ export class PatchMethodOperation implements RunnableOperation<void, PatchMethod
   protected getUrl(): string {
     return this.adapter.getUrl('/patch-method', undefined)
   }
-  protected getRequestMethod(): HttpMethod {
+  protected getHttpMethod(): HttpMethod {
     return 'patch'
   }
   protected getRequestHeaders(): RawHttpHeaders {
@@ -146,7 +146,7 @@ export class PatchMethodOperation implements RunnableOperation<void, PatchMethod
   public async run(): Promise<PatchMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
-      method: this.getRequestMethod(),
+      method: this.getHttpMethod(),
       headers: this.getRequestHeaders(),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -167,7 +167,7 @@ export class PostMethodOperation implements RunnableOperation<void, PostMethodRe
   protected getUrl(): string {
     return this.adapter.getUrl('/post-method', undefined)
   }
-  protected getRequestMethod(): HttpMethod {
+  protected getHttpMethod(): HttpMethod {
     return 'post'
   }
   protected getRequestHeaders(): RawHttpHeaders {
@@ -190,7 +190,7 @@ export class PostMethodOperation implements RunnableOperation<void, PostMethodRe
   public async run(): Promise<PostMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
-      method: this.getRequestMethod(),
+      method: this.getHttpMethod(),
       headers: this.getRequestHeaders(),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -211,7 +211,7 @@ export class PutMethodOperation implements RunnableOperation<void, PutMethodResp
   protected getUrl(): string {
     return this.adapter.getUrl('/put-method', undefined)
   }
-  protected getRequestMethod(): HttpMethod {
+  protected getHttpMethod(): HttpMethod {
     return 'put'
   }
   protected getRequestHeaders(): RawHttpHeaders {
@@ -234,7 +234,7 @@ export class PutMethodOperation implements RunnableOperation<void, PutMethodResp
   public async run(): Promise<PutMethodResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
-      method: this.getRequestMethod(),
+      method: this.getHttpMethod(),
       headers: this.getRequestHeaders(),
     }
     const rawResponse = await this.adapter.request(rawRequest)

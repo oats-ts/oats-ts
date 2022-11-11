@@ -77,7 +77,7 @@ export class DeepObjectQueryParametersOperation
     const query = this.adapter.getQuery(request.query, deepObjectQueryParametersQuerySerializer)
     return this.adapter.getUrl('/deepObject-query-parameters', query)
   }
-  protected getRequestMethod(_request: DeepObjectQueryParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: DeepObjectQueryParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: DeepObjectQueryParametersRequest): _RawHttpHeaders {
@@ -100,7 +100,7 @@ export class DeepObjectQueryParametersOperation
   public async run(request: DeepObjectQueryParametersRequest): Promise<DeepObjectQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -126,7 +126,7 @@ export class FormCookieParametersOperation
   protected getUrl(_request: FormCookieParametersRequest): string {
     return this.adapter.getUrl('/form-cookie-parameters', undefined)
   }
-  protected getRequestMethod(_request: FormCookieParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: FormCookieParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(request: FormCookieParametersRequest): _RawHttpHeaders {
@@ -150,7 +150,7 @@ export class FormCookieParametersOperation
   public async run(request: FormCookieParametersRequest): Promise<FormCookieParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -177,7 +177,7 @@ export class FormQueryParametersOperation
     const query = this.adapter.getQuery(request.query, formQueryParametersQuerySerializer)
     return this.adapter.getUrl('/form-query-parameters', query)
   }
-  protected getRequestMethod(_request: FormQueryParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: FormQueryParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: FormQueryParametersRequest): _RawHttpHeaders {
@@ -200,7 +200,7 @@ export class FormQueryParametersOperation
   public async run(request: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -227,7 +227,7 @@ export class LabelPathParametersOperation
     const path = this.adapter.getPath(request.path, labelPathParametersPathSerializer)
     return this.adapter.getUrl(path, undefined)
   }
-  protected getRequestMethod(_request: LabelPathParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: LabelPathParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: LabelPathParametersRequest): _RawHttpHeaders {
@@ -250,7 +250,7 @@ export class LabelPathParametersOperation
   public async run(request: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -277,7 +277,7 @@ export class MatrixPathParametersOperation
     const path = this.adapter.getPath(request.path, matrixPathParametersPathSerializer)
     return this.adapter.getUrl(path, undefined)
   }
-  protected getRequestMethod(_request: MatrixPathParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: MatrixPathParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: MatrixPathParametersRequest): _RawHttpHeaders {
@@ -300,7 +300,7 @@ export class MatrixPathParametersOperation
   public async run(request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -327,7 +327,7 @@ export class PipeDelimitedQueryParametersOperation
     const query = this.adapter.getQuery(request.query, pipeDelimitedQueryParametersQuerySerializer)
     return this.adapter.getUrl('/pipeDelimited-query-parameters', query)
   }
-  protected getRequestMethod(_request: PipeDelimitedQueryParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: PipeDelimitedQueryParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: PipeDelimitedQueryParametersRequest): _RawHttpHeaders {
@@ -350,7 +350,7 @@ export class PipeDelimitedQueryParametersOperation
   public async run(request: PipeDelimitedQueryParametersRequest): Promise<PipeDelimitedQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -376,7 +376,7 @@ export class SimpleHeaderParametersOperation
   protected getUrl(_request: SimpleHeaderParametersRequest): string {
     return this.adapter.getUrl('/simple-header-parameters', undefined)
   }
-  protected getRequestMethod(_request: SimpleHeaderParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: SimpleHeaderParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(request: SimpleHeaderParametersRequest): _RawHttpHeaders {
@@ -404,7 +404,7 @@ export class SimpleHeaderParametersOperation
   public async run(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -431,7 +431,7 @@ export class SimplePathParametersOperation
     const path = this.adapter.getPath(request.path, simplePathParametersPathSerializer)
     return this.adapter.getUrl(path, undefined)
   }
-  protected getRequestMethod(_request: SimplePathParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: SimplePathParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: SimplePathParametersRequest): _RawHttpHeaders {
@@ -454,7 +454,7 @@ export class SimplePathParametersOperation
   public async run(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -480,20 +480,27 @@ export class SimpleResponseHeaderParametersOperation
   protected getUrl(_request: SimpleResponseHeaderParametersRequest): string {
     return this.adapter.getUrl('/simple-response-header-parameters', undefined)
   }
-  protected getRequestMethod(_request: SimpleResponseHeaderParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: SimpleResponseHeaderParametersRequest): _HttpMethod {
     return 'post'
-  }
-  protected getRequestBody(request: SimpleResponseHeaderParametersRequest): any {
-    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getRequestHeaders(request: SimpleResponseHeaderParametersRequest): _RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  protected getRequestBody(request: SimpleResponseHeaderParametersRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
   }
   protected getStatusCode(response: _RawHttpResponse): number | undefined {
     return this.adapter.getStatusCode(response)
+  }
+  protected getResponseHeaders(response: _RawHttpResponse): _RawHttpHeaders {
+    return this.adapter.getResponseHeaders(
+      response,
+      this.getStatusCode(response),
+      simpleResponseHeaderParametersResponseHeadersDeserializer,
+    )
   }
   protected getResponseBody(response: _RawHttpResponse): any {
     return this.adapter.getResponseBody(
@@ -503,19 +510,12 @@ export class SimpleResponseHeaderParametersOperation
       simpleResponseHeaderParametersResponseBodyValidator,
     )
   }
-  protected getResponseHeaders(response: _RawHttpResponse): _RawHttpHeaders {
-    return this.adapter.getResponseHeaders(
-      response,
-      this.getStatusCode(response),
-      simpleResponseHeaderParametersResponseHeadersDeserializer,
-    )
-  }
   public async run(request: SimpleResponseHeaderParametersRequest): Promise<SimpleResponseHeaderParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
-      body: this.getRequestBody(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
+      body: this.getRequestBody(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
     const typedResponse = {
@@ -542,7 +542,7 @@ export class SpaceDelimitedQueryParametersOperation
     const query = this.adapter.getQuery(request.query, spaceDelimitedQueryParametersQuerySerializer)
     return this.adapter.getUrl('/spaceDelimited-query-parameters', query)
   }
-  protected getRequestMethod(_request: SpaceDelimitedQueryParametersRequest): _HttpMethod {
+  protected getHttpMethod(_request: SpaceDelimitedQueryParametersRequest): _HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: SpaceDelimitedQueryParametersRequest): _RawHttpHeaders {
@@ -565,7 +565,7 @@ export class SpaceDelimitedQueryParametersOperation
   public async run(request: SpaceDelimitedQueryParametersRequest): Promise<SpaceDelimitedQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)

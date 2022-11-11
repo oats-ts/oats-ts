@@ -34,14 +34,14 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
   protected _local_getUrl(_local__request: CreatePetsRequest): string {
     return this._local_adapter.getUrl('/pets', undefined)
   }
-  protected _local_getRequestMethod(_local__request: CreatePetsRequest): HttpMethod {
+  protected _local_getHttpMethod(_local__request: CreatePetsRequest): HttpMethod {
     return 'post'
-  }
-  protected _local_getRequestBody(_local_request: CreatePetsRequest): any {
-    return this._local_adapter.getRequestBody(_local_request.mimeType, _local_request.body)
   }
   protected _local_getRequestHeaders(_local_request: CreatePetsRequest): RawHttpHeaders {
     return this._local_adapter.getRequestHeaders(undefined, _local_request.mimeType, undefined, undefined)
+  }
+  protected _local_getRequestBody(_local_request: CreatePetsRequest): any {
+    return this._local_adapter.getRequestBody(_local_request.mimeType, _local_request.body)
   }
   protected _local_getMimeType(_local_response: RawHttpResponse): string | undefined {
     return this._local_adapter.getMimeType(_local_response)
@@ -60,9 +60,9 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
   public async run(_local_request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const _local_rawRequest: RawHttpRequest = {
       url: this._local_getUrl(_local_request),
-      method: this._local_getRequestMethod(_local_request),
-      body: this._local_getRequestBody(_local_request),
+      method: this._local_getHttpMethod(_local_request),
       headers: this._local_getRequestHeaders(_local_request),
+      body: this._local_getRequestBody(_local_request),
     }
     const _local_rawResponse = await this._local_adapter.request(_local_rawRequest)
     const _local_typedResponse = {
@@ -86,7 +86,7 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     const _local_query = this._local_adapter.getQuery(_local_request.query, listPetsQuerySerializer)
     return this._local_adapter.getUrl('/pets', _local_query)
   }
-  protected _local_getRequestMethod(_local__request: ListPetsRequest): HttpMethod {
+  protected _local_getHttpMethod(_local__request: ListPetsRequest): HttpMethod {
     return 'get'
   }
   protected _local_getRequestHeaders(_local__request: ListPetsRequest): RawHttpHeaders {
@@ -98,6 +98,13 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
   protected _local_getStatusCode(_local_response: RawHttpResponse): number | undefined {
     return this._local_adapter.getStatusCode(_local_response)
   }
+  protected _local_getResponseHeaders(_local_response: RawHttpResponse): RawHttpHeaders {
+    return this._local_adapter.getResponseHeaders(
+      _local_response,
+      this._local_getStatusCode(_local_response),
+      listPetsResponseHeadersDeserializer,
+    )
+  }
   protected _local_getResponseBody(_local_response: RawHttpResponse): any {
     return this._local_adapter.getResponseBody(
       _local_response,
@@ -106,17 +113,10 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
       listPetsResponseBodyValidator,
     )
   }
-  protected _local_getResponseHeaders(_local_response: RawHttpResponse): RawHttpHeaders {
-    return this._local_adapter.getResponseHeaders(
-      _local_response,
-      this._local_getStatusCode(_local_response),
-      listPetsResponseHeadersDeserializer,
-    )
-  }
   public async run(_local_request: ListPetsRequest): Promise<ListPetsResponse> {
     const _local_rawRequest: RawHttpRequest = {
       url: this._local_getUrl(_local_request),
-      method: this._local_getRequestMethod(_local_request),
+      method: this._local_getHttpMethod(_local_request),
       headers: this._local_getRequestHeaders(_local_request),
     }
     const _local_rawResponse = await this._local_adapter.request(_local_rawRequest)
@@ -142,7 +142,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     const _local_path = this._local_adapter.getPath(_local_request.path, showPetByIdPathSerializer)
     return this._local_adapter.getUrl(_local_path, undefined)
   }
-  protected _local_getRequestMethod(_local__request: ShowPetByIdRequest): HttpMethod {
+  protected _local_getHttpMethod(_local__request: ShowPetByIdRequest): HttpMethod {
     return 'get'
   }
   protected _local_getRequestHeaders(_local__request: ShowPetByIdRequest): RawHttpHeaders {
@@ -165,7 +165,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
   public async run(_local_request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const _local_rawRequest: RawHttpRequest = {
       url: this._local_getUrl(_local_request),
-      method: this._local_getRequestMethod(_local_request),
+      method: this._local_getHttpMethod(_local_request),
       headers: this._local_getRequestHeaders(_local_request),
     }
     const _local_rawResponse = await this._local_adapter.request(_local_rawRequest)

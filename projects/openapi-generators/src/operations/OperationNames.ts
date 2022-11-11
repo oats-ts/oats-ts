@@ -28,7 +28,7 @@ export const OperationDefaultLocals = {
   typedResponse: 'typedResponse',
 
   getUrl: 'getUrl',
-  getRequestMethod: 'getRequestMethod',
+  getHttpMethod: 'getHttpMethod',
   getRequestBody: 'getRequestBody',
   getRequestHeaders: 'getRequestHeaders',
 

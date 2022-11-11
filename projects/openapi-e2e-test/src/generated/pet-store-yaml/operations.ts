@@ -34,14 +34,14 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
   protected getUrl(_request: CreatePetsRequest): string {
     return this.adapter.getUrl('/pets', undefined)
   }
-  protected getRequestMethod(_request: CreatePetsRequest): HttpMethod {
+  protected getHttpMethod(_request: CreatePetsRequest): HttpMethod {
     return 'post'
-  }
-  protected getRequestBody(request: CreatePetsRequest): any {
-    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getRequestHeaders(request: CreatePetsRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  protected getRequestBody(request: CreatePetsRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -60,9 +60,9 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
   public async run(request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
-      body: this.getRequestBody(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
+      body: this.getRequestBody(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
     const typedResponse = {
@@ -86,7 +86,7 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     const query = this.adapter.getQuery(request.query, listPetsQuerySerializer)
     return this.adapter.getUrl('/pets', query)
   }
-  protected getRequestMethod(_request: ListPetsRequest): HttpMethod {
+  protected getHttpMethod(_request: ListPetsRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: ListPetsRequest): RawHttpHeaders {
@@ -98,6 +98,9 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
   protected getStatusCode(response: RawHttpResponse): number | undefined {
     return this.adapter.getStatusCode(response)
   }
+  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
+    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeadersDeserializer)
+  }
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(
       response,
@@ -106,13 +109,10 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
       listPetsResponseBodyValidator,
     )
   }
-  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
-    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeadersDeserializer)
-  }
   public async run(request: ListPetsRequest): Promise<ListPetsResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -138,7 +138,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     const path = this.adapter.getPath(request.path, showPetByIdPathSerializer)
     return this.adapter.getUrl(path, undefined)
   }
-  protected getRequestMethod(_request: ShowPetByIdRequest): HttpMethod {
+  protected getHttpMethod(_request: ShowPetByIdRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: ShowPetByIdRequest): RawHttpHeaders {
@@ -161,7 +161,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
   public async run(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)

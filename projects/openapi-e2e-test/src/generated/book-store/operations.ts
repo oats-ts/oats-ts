@@ -35,14 +35,14 @@ export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBo
   protected getUrl(_request: AddBookRequest): string {
     return this.adapter.getUrl('/books', undefined)
   }
-  protected getRequestMethod(_request: AddBookRequest): HttpMethod {
+  protected getHttpMethod(_request: AddBookRequest): HttpMethod {
     return 'post'
-  }
-  protected getRequestBody(request: AddBookRequest): any {
-    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getRequestHeaders(request: AddBookRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  protected getRequestBody(request: AddBookRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -61,9 +61,9 @@ export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBo
   public async run(request: AddBookRequest): Promise<AddBookResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
-      body: this.getRequestBody(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
+      body: this.getRequestBody(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
     const typedResponse = {
@@ -87,7 +87,7 @@ export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBo
     const path = this.adapter.getPath(request.path, getBookPathSerializer)
     return this.adapter.getUrl(path, undefined)
   }
-  protected getRequestMethod(_request: GetBookRequest): HttpMethod {
+  protected getHttpMethod(_request: GetBookRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: GetBookRequest): RawHttpHeaders {
@@ -110,7 +110,7 @@ export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBo
   public async run(request: GetBookRequest): Promise<GetBookResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -135,7 +135,7 @@ export class GetBooksOperation implements RunnableOperation<GetBooksRequest, Get
     const query = this.adapter.getQuery(request.query, getBooksQuerySerializer)
     return this.adapter.getUrl('/books', query)
   }
-  protected getRequestMethod(_request: GetBooksRequest): HttpMethod {
+  protected getHttpMethod(_request: GetBooksRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(request: GetBooksRequest): RawHttpHeaders {
@@ -147,6 +147,9 @@ export class GetBooksOperation implements RunnableOperation<GetBooksRequest, Get
   protected getStatusCode(response: RawHttpResponse): number | undefined {
     return this.adapter.getStatusCode(response)
   }
+  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
+    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), getBooksResponseHeadersDeserializer)
+  }
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(
       response,
@@ -155,13 +158,10 @@ export class GetBooksOperation implements RunnableOperation<GetBooksRequest, Get
       getBooksResponseBodyValidator,
     )
   }
-  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
-    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), getBooksResponseHeadersDeserializer)
-  }
   public async run(request: GetBooksRequest): Promise<GetBooksResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)

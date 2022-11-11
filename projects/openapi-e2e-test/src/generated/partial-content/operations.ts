@@ -24,7 +24,7 @@ export class MissingBodyOperation implements RunnableOperation<void, MissingBody
   protected getUrl(): string {
     return this.adapter.getUrl('/missing-body', undefined)
   }
-  protected getRequestMethod(): HttpMethod {
+  protected getHttpMethod(): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(): RawHttpHeaders {
@@ -36,7 +36,7 @@ export class MissingBodyOperation implements RunnableOperation<void, MissingBody
   public async run(): Promise<MissingBodyResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(),
-      method: this.getRequestMethod(),
+      method: this.getHttpMethod(),
       headers: this.getRequestHeaders(),
     }
     const rawResponse = await this.adapter.request(rawRequest)
@@ -57,14 +57,14 @@ export class OptionalRequestBodyOperation
   protected getUrl(_request: OptionalRequestBodyRequest): string {
     return this.adapter.getUrl('/optional-request-body', undefined)
   }
-  protected getRequestMethod(_request: OptionalRequestBodyRequest): HttpMethod {
+  protected getHttpMethod(_request: OptionalRequestBodyRequest): HttpMethod {
     return 'post'
-  }
-  protected getRequestBody(request: OptionalRequestBodyRequest): any {
-    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getRequestHeaders(request: OptionalRequestBodyRequest): RawHttpHeaders {
     return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+  }
+  protected getRequestBody(request: OptionalRequestBodyRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -83,9 +83,9 @@ export class OptionalRequestBodyOperation
   public async run(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
-      method: this.getRequestMethod(request),
-      body: this.getRequestBody(request),
+      method: this.getHttpMethod(request),
       headers: this.getRequestHeaders(request),
+      body: this.getRequestBody(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
     const typedResponse = {
