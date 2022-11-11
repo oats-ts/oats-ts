@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-runtime",
-  "version": "0.0.44",
+  "version": "0.0.45",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://oats-ts.github.io/docs",
@@ -28,9 +28,9 @@
     "@types/node": "16.7.1"
   },
   "dependencies": {
-    "@oats-ts/openapi-http": "0.0.44",
-    "@oats-ts/openapi-parameter-serialization": "0.0.44",
-    "@oats-ts/try": "0.0.44",
-    "@oats-ts/validators": "0.0.44"
+    "@oats-ts/openapi-http": "0.0.45",
+    "@oats-ts/openapi-parameter-serialization": "0.0.45",
+    "@oats-ts/try": "0.0.45",
+    "@oats-ts/validators": "0.0.45"
   }
 }
