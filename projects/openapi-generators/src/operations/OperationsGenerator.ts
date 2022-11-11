@@ -21,17 +21,17 @@ import {
   ConstructorDeclaration,
   MethodDeclaration,
   ParameterDeclaration,
-  isTypeReferenceNode,
-  isIdentifier,
   ReturnStatement,
   Identifier,
 } from 'typescript'
 import {
   createSourceFile,
+  createUndefined,
   documentNode,
   getModelImports,
   getNamedImports,
   getPropertyChain,
+  isVoidType,
 } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
@@ -127,7 +127,8 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected getResponseTypeAst(data: EnhancedOperation): TypeNode {
-    return this.context().referenceOf<TypeReferenceNode>(data.operation, 'oats/response-type')
+    const responseType = this.context().referenceOf<TypeReferenceNode>(data.operation, 'oats/response-type')
+    return isNil(responseType) ? factory.createTypeReferenceNode('void') : responseType
   }
 
   protected getRequestTypeAst(data: EnhancedOperation): TypeNode {
@@ -215,15 +216,8 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
-  protected isVoid(type: TypeNode): boolean {
-    if (!isTypeReferenceNode(type) || !isIdentifier(type.typeName)) {
-      return false
-    }
-    return type.typeName.escapedText === 'void'
-  }
-
   protected needsRequestParameter(data: EnhancedOperation): boolean {
-    return !this.isVoid(this.getRequestTypeAst(data))
+    return !isVoidType(this.getRequestTypeAst(data))
   }
 
   protected getRequestParameterAst(data: EnhancedOperation, isUnused: boolean = false): ParameterDeclaration {
@@ -523,7 +517,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
             ? factory.createStringLiteral(data.url)
             : factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'path')),
           data.query.length === 0
-            ? factory.createIdentifier('undefined')
+            ? createUndefined()
             : factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'query')),
         ],
       ),
@@ -651,18 +645,18 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
             ? getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
                 TypedRequestFields.requestHeaders,
               ])
-            : factory.createIdentifier('undefined'),
+            : createUndefined(),
           hasRequestBody(data, this.context())
             ? getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
                 TypedRequestFields.mimeType,
               ])
-            : factory.createIdentifier('undefined'),
+            : createUndefined(),
           data.cookie.length > 0 && this.configuration().sendCookieHeader
             ? factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'cookies'))
-            : factory.createIdentifier('undefined'),
+            : createUndefined(),
           data.header.length > 0
             ? this.context().referenceOf(data.operation, 'oats/request-headers-serializer')
-            : factory.createIdentifier('undefined'),
+            : createUndefined(),
         ],
       ),
     )
@@ -709,7 +703,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       [responseParam],
       factory.createUnionTypeNode([
         factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
-        factory.createTypeReferenceNode('undefined'),
+        factory.createTypeReferenceNode(createUndefined()),
       ]),
       factory.createBlock([returnStatement], true),
     )
@@ -730,7 +724,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       [responseParam],
       factory.createUnionTypeNode([
         factory.createKeywordTypeNode(SyntaxKind.NumberKeyword),
-        factory.createTypeReferenceNode('undefined'),
+        factory.createTypeReferenceNode(createUndefined()),
       ]),
       factory.createBlock([returnStatement], true),
     )
@@ -746,7 +740,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         this.getMemberCallAst('getMimeType', [this.getLocalIdentifierAst('response')]),
         this.configuration().validate && hasResponses(data.operation, this.context())
           ? this.context().referenceOf<Identifier>(data.operation, 'oats/response-body-validator')
-          : factory.createIdentifier('undefined'),
+          : createUndefined(),
       ]),
     )
     return factory.createMethodDeclaration(
