@@ -30,7 +30,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/operation-class', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
+    return ['oats/operation', 'oats/request-type', 'oats/response-type', 'oats/sdk-type']
   }
 
   protected getDefaultLocals(): LocalNameDefaults {
@@ -59,17 +59,14 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
   protected getImportDeclarations(path: string, operations: EnhancedOperation[]): ImportDeclaration[] {
     return [
-      getNamedImports(this.httpPkg.name, [
-        this.httpPkg.imports.SyncClientAdapter,
-        this.httpPkg.imports.RunnableOperation,
-      ]),
+      getNamedImports(this.httpPkg.name, [this.httpPkg.imports.ClientAdapter, this.httpPkg.imports.RunnableOperation]),
       ...flatMap(operations, (data) => [
         ...this.context().dependenciesOf<ImportDeclaration>(path, data.operation, 'oats/request-type'),
         ...this.context().dependenciesOf<ImportDeclaration>(path, data.operation, 'oats/response-type'),
       ]),
       ...this.context().dependenciesOf<ImportDeclaration>(path, this.input.document, 'oats/sdk-type'),
       ...flatMap(operations, ({ operation }) =>
-        this.context().dependenciesOf<ImportDeclaration>(path, operation, 'oats/operation-class'),
+        this.context().dependenciesOf<ImportDeclaration>(path, operation, 'oats/operation'),
       ),
     ]
   }
@@ -80,7 +77,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [factory.createModifier(SyntaxKind.ProtectedKeyword), factory.createModifier(SyntaxKind.ReadonlyKeyword)],
       this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapterProperty'),
       undefined,
-      factory.createTypeReferenceNode(this.httpPkg.exports.SyncClientAdapter),
+      factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
       undefined,
     )
 
@@ -94,13 +91,13 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
           undefined,
           this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapterParameter'),
           undefined,
-          factory.createTypeReferenceNode(this.httpPkg.exports.SyncClientAdapter),
+          factory.createTypeReferenceNode(this.httpPkg.exports.ClientAdapter),
         ),
       ],
       factory.createBlock([
         factory.createExpressionStatement(
           factory.createBinaryExpression(
-            getPropertyChain(factory.createIdentifier('this'), [
+            getPropertyChain(factory.createThis(), [
               this.context().localNameOf<SdkImplLocals>(undefined, this.name(), 'adapterProperty'),
             ]),
             SyntaxKind.EqualsToken,
@@ -140,7 +137,7 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
 
     const returnStatement = factory.createReturnStatement(
       factory.createNewExpression(
-        factory.createIdentifier(this.context().nameOf(data.operation, 'oats/operation-class')),
+        factory.createIdentifier(this.context().nameOf(data.operation, 'oats/operation')),
         undefined,
         [
           getPropertyChain(factory.createThis(), [
@@ -159,8 +156,8 @@ export class SdkImplementationGenerator extends DocumentBasedCodeGenerator<SdkGe
       [],
       [],
       factory.createTypeReferenceNode(this.httpPkg.exports.RunnableOperation, [
-        isNil(requestType) ? factory.createTypeReferenceNode('never') : requestType,
-        isNil(responseType) ? factory.createTypeReferenceNode('never') : responseType,
+        isNil(requestType) ? factory.createTypeReferenceNode('void') : requestType,
+        isNil(responseType) ? factory.createTypeReferenceNode('void') : responseType,
       ]),
       factory.createBlock([returnStatement]),
     )

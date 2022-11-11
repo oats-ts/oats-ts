@@ -71,7 +71,7 @@ function clientConfig(config: OpenAPIClientPresetConfig = {}): OpenAPIPresetConf
     'oats/path-serializer': true,
     'oats/query-serializer': true,
     'oats/request-headers-serializer': true,
-    'oats/operation-class': {
+    'oats/operation': {
       ...(isNil(documentation) ? {} : { documentation: documentation }),
       ...(isNil(debugCookies) ? {} : { parseSetCookieHeaders: debugCookies, sendCookieHeader: debugCookies }),
       ...(isNil(validateResponses) ? {} : { validate: validateResponses }),

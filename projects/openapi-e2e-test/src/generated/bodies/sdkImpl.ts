@@ -19,7 +19,7 @@ import {
   PrimTupleOperation,
   StrArrOperation,
   StrOperation,
-} from './operationClasses'
+} from './operations'
 import {
   ArrObjRequest,
   BoolArrRequest,

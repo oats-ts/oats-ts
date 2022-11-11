@@ -5,7 +5,7 @@
  */
 
 import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
-import { AddBookOperation, GetBookOperation, GetBooksOperation } from './operationClasses'
+import { AddBookOperation, GetBookOperation, GetBooksOperation } from './operations'
 import { AddBookRequest, GetBookRequest, GetBooksRequest } from './requestTypes'
 import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTypes'
 import { BookStoreSdk } from './sdkType'

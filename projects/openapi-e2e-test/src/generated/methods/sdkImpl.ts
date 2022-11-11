@@ -11,7 +11,7 @@ import {
   PatchMethodOperation,
   PostMethodOperation,
   PutMethodOperation,
-} from './operationClasses'
+} from './operations'
 import {
   DeleteMethodResponse,
   GetMethodResponse,

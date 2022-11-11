@@ -16,7 +16,7 @@ import {
   SimplePathParametersOperation,
   SimpleResponseHeaderParametersOperation,
   SpaceDelimitedQueryParametersOperation,
-} from './operationClasses'
+} from './operations'
 import {
   DeepObjectQueryParametersRequest,
   FormCookieParametersRequest,

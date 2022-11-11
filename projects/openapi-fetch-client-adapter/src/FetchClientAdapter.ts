@@ -24,10 +24,10 @@ export class FetchClientAdapter implements ClientAdapter {
     this.config = config
   }
 
-  public async getCookies<C>(
+  public getCookies<C>(
     input?: C | undefined,
     serializer?: ((input: C) => Try<string>) | undefined,
-  ): Promise<string | undefined> {
+  ): string | undefined {
     if (input === null || input === undefined || serializer === null || serializer === undefined) {
       return undefined
     }
@@ -38,10 +38,10 @@ export class FetchClientAdapter implements ClientAdapter {
     return cookie.data
   }
 
-  public async getResponseCookies<C>(
+  public getResponseCookies<C>(
     response: RawHttpResponse,
     deserializer?: (cookie?: string) => Try<Cookies<C>>,
-  ): Promise<Cookies<C> | undefined> {
+  ): Cookies<C> | undefined {
     if (deserializer === null || deserializer === undefined) {
       return undefined
     }
@@ -68,7 +68,7 @@ export class FetchClientAdapter implements ClientAdapter {
     }
   }
 
-  protected async getParsedResponseBody(_response: any): Promise<any> {
+  protected getParsedResponseBody(_response: any): any {
     // So the Response type doesn't leak out into the definition
     const response = _response as Response
     if (typeof response.headers.get('content-type') !== 'string') {
@@ -88,7 +88,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return configure(validator, 'responseBody', DefaultConfig)
   }
 
-  public async getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string> {
+  public getPath<P>(input: P, serializer: (input: P) => Try<string>): string {
     const path = serializer(input)
     if (isFailure(path)) {
       throw new Error(`Failed to serialize path:\n${path.issues.map(stringify).join('\n')}`)
@@ -96,7 +96,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return path.data
   }
 
-  public async getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): Promise<string | undefined> {
+  public getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): string | undefined {
     if (input === undefined || input === null || serializer === undefined || serializer === null) {
       return undefined
     }
@@ -107,17 +107,17 @@ export class FetchClientAdapter implements ClientAdapter {
     return query.data
   }
 
-  public async getUrl(path: string, query?: string): Promise<string> {
+  public getUrl(path: string, query?: string): string {
     const { url } = this.config
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
 
-  public async getRequestHeaders<H>(
+  public getRequestHeaders<H>(
     input?: H,
     mimeType?: string,
     cookie?: string,
     serializer?: (input: any) => Try<RawHttpHeaders>,
-  ): Promise<RawHttpHeaders> {
+  ): RawHttpHeaders {
     const baseHeaders = {
       ...(typeof mimeType === 'string' ? { 'content-type': mimeType } : {}),
       ...(cookie === null || cookie === undefined ? {} : { cookie }),
@@ -134,7 +134,7 @@ export class FetchClientAdapter implements ClientAdapter {
       ...baseHeaders,
     }
   }
-  public async getRequestBody<B>(mimeType?: string, body?: B): Promise<any> {
+  public getRequestBody<B>(mimeType?: string, body?: B): any {
     switch (mimeType) {
       case 'application/json':
         return JSON.stringify(body)
@@ -143,20 +143,20 @@ export class FetchClientAdapter implements ClientAdapter {
     }
   }
 
-  public async getStatusCode(response: RawHttpResponse): Promise<number | undefined> {
+  public getStatusCode(response: RawHttpResponse): number | undefined {
     return response.statusCode
   }
 
-  public async getMimeType(response: RawHttpResponse): Promise<string | undefined> {
+  public getMimeType(response: RawHttpResponse): string | undefined {
     const mimeType = response.headers?.['content-type']
     return typeof mimeType === 'string' ? new MIMEType(mimeType).essence : undefined
   }
 
-  public async getResponseHeaders(
+  public getResponseHeaders(
     response: RawHttpResponse,
     statusCode?: number,
     deserializers?: ResponseHeadersDeserializers,
-  ): Promise<any> {
+  ): any {
     if (deserializers === null || deserializers === undefined) {
       return undefined
     }
@@ -178,12 +178,12 @@ export class FetchClientAdapter implements ClientAdapter {
     return headers.data
   }
 
-  public async getResponseBody(
+  public getResponseBody(
     response: RawHttpResponse,
     statusCode?: number,
     mimeType?: string,
     validators?: ResponseBodyValidators,
-  ): Promise<any> {
+  ): any {
     // If expectations not provided, return undefined, nothing to validate.
     if (validators === null || validators === undefined) {
       return undefined

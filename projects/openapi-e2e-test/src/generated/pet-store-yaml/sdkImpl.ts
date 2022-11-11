@@ -5,7 +5,7 @@
  */
 
 import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
-import { CreatePetsOperation, ListPetsOperation, ShowPetByIdOperation } from './operationClasses'
+import { CreatePetsOperation, ListPetsOperation, ShowPetByIdOperation } from './operations'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 import { SwaggerPetstoreSdk } from './sdkType'

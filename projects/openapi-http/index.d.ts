@@ -2,42 +2,10 @@ import type { Validator } from '@oats-ts/validators'
 import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
-  getPath<P>(input: P, serializer: (input: P) => Try<string>): Promise<string>
-  getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): Promise<string | undefined>
-  getUrl(path: string, query?: string): Promise<string>
-  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): Promise<string | undefined>
-  getRequestHeaders<H>(
-    input?: H,
-    mimeType?: string,
-    cookie?: string,
-    serializer?: (input: H) => Try<RawHttpHeaders>,
-  ): Promise<RawHttpHeaders>
-  getRequestBody<B>(mimeType?: string, input?: B): Promise<any>
-  request(request: RawHttpRequest): Promise<RawHttpResponse>
-  getMimeType(response: RawHttpResponse): Promise<string | undefined>
-  getStatusCode(response: RawHttpResponse): Promise<number | undefined>
-  getResponseCookies<C>(
-    response: RawHttpResponse,
-    deserializer?: (cookie?: string) => Try<Cookies<C>>,
-  ): Promise<Cookies<C> | undefined>
-  getResponseHeaders(
-    response: RawHttpResponse,
-    statusCode?: number,
-    deserializers?: ResponseHeadersDeserializers,
-  ): Promise<any>
-  getResponseBody(
-    response: RawHttpResponse,
-    statusCode?: number,
-    mimeType?: string,
-    validators?: ResponseBodyValidators,
-  ): Promise<any>
-}
-
-export type SyncClientAdapter = {
   getPath<P>(input: P, serializer: (input: P) => Try<string>): string
   getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string | undefined>): string | undefined
   getUrl(path: string, query?: string): string
-  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): string
+  getCookies<C>(input?: C, serializer?: (input: C) => Try<string>): string | undefined
   getRequestHeaders<H>(
     input?: H,
     mimeType?: string,

@@ -5,7 +5,7 @@
  */
 
 import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
-import { OptionalRequestBodyOperation } from './operationClasses'
+import { OptionalRequestBodyOperation } from './operations'
 import { OptionalRequestBodyRequest } from './requestTypes'
 import { OptionalRequestBodyResponse } from './responseTypes'
 import { OptionalBodiesSdk } from './sdkType'

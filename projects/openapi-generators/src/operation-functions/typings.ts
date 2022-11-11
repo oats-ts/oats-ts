@@ -1,6 +1,6 @@
-import { OperationDefaultLocals } from './OperationNames'
+import { OperationDefaultLocals } from './OperationFunctionNames'
 
-export type OperationsGeneratorConfig = {
+export type OperationFunctionsGeneratorConfig = {
   /**
    * If set to true, the summary, description and deprecated fields in OperationObjects will be used
    * to generate documentation for the generated methods. Otherwise docs will be omitted.
@@ -22,4 +22,4 @@ export type OperationsGeneratorConfig = {
   parseSetCookieHeaders: boolean
 }
 
-export type OperationLocals = keyof typeof OperationDefaultLocals
+export type OperationFunctionLocals = keyof typeof OperationDefaultLocals
