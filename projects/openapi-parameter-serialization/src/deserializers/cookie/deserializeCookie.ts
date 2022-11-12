@@ -1,8 +1,8 @@
+import { RawCookieValues } from '@oats-ts/openapi-http'
 import { failure, success, Try } from '@oats-ts/try'
-import { RawCookieParams } from '../../types'
 import { decode, has, isNil } from '../../utils'
 
-export function parseRawCookie(cookie: string | undefined, path: string): Try<RawCookieParams> {
+export function deserializeCookie(cookie: string | undefined, path: string): Try<RawCookieValues> {
   if (isNil(cookie) || cookie.length === 0) {
     return success({})
   }
@@ -13,12 +13,13 @@ export function parseRawCookie(cookie: string | undefined, path: string): Try<Ra
       .split('; ') // Split on semicolon
       .map((tuple) => tuple.split('=')) // Split key=value tuples on "="
 
-    const data = sliced.reduce((record: RawCookieParams, [rawKey, rawValue]) => {
+    const data = sliced.reduce((record: RawCookieValues, [rawKey, rawValue]) => {
       const key = decode(rawKey)
       if (!has(record, key)) {
-        record[key] = []
+        record[key] = [rawValue]
+      } else {
+        record[key].push(rawValue)
       }
-      record[key].push(rawValue)
       return record
     }, {})
 

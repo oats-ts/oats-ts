@@ -127,7 +127,7 @@ export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
  * Wraps a cookie value with all possible configuration.
  * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
  */
-export type CookieValue<T> = {
+export type SetCookieValue<T> = {
   value: T
   /**
    * The expiration date of the cookie in UTC date format.
@@ -161,8 +161,11 @@ export type CookieValue<T> = {
   sameSite?: 'Strict' | 'Lax' | 'None'
 }
 
+export type RawSetCookieValues = Record<string, [SetCookieValue<string>, ...SetCookieValue<string>[]]>
+export type RawCookieValues = Record<string, [string, ...string[]]>
+
 export type Cookies<T> = {
-  [K in keyof T]: CookieValue<T[K]>
+  [K in keyof T]: SetCookieValue<T[K]>
 }
 
 /** Http headers where key is the header name, value is the serialized header value. */

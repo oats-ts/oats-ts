@@ -3,7 +3,7 @@ import { CookieDslRoot, ParameterValue, CookieDeserializer, CookieParameterType 
 import { DefaultConfig, ValidatorConfig } from '@oats-ts/validators'
 import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
 import { createCookieDeserializers } from './createCookieDeserializers'
-import { parseRawCookie } from './deserializers/cookie/parseRawCookie'
+import { deserializeCookie } from './deserializers/cookie/deserializeCookie'
 
 export function createCookieDeserializer<T extends CookieParameterType>(root: CookieDslRoot<T>): CookieDeserializer<T> {
   const deserializers = createCookieDeserializers(root)
@@ -12,7 +12,7 @@ export function createCookieDeserializer<T extends CookieParameterType>(root: Co
     path: string = 'cookies',
     config: ValidatorConfig = DefaultConfig,
   ): Try<T> {
-    return fluent(parseRawCookie(input, path)).flatMap((rawData) => {
+    return fluent(deserializeCookie(input, path)).flatMap((rawData) => {
       const parsedData = Object.keys(deserializers).reduce((acc: Record<string, Try<ParameterValue>>, key: string) => {
         const values = rawData[key] ?? []
         switch (values.length) {

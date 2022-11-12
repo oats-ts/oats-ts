@@ -1,4 +1,4 @@
-import { Cookies, CookieValue } from '@oats-ts/openapi-http'
+import { Cookies } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
 
@@ -94,8 +94,6 @@ export type DslConfig = {
 export type RawHeaders = Record<string, string>
 export type RawPathParams = Record<string, string>
 export type RawQueryParams = Record<string, string[]>
-export type RawCookieParams = Record<string, string[]>
-export type RawSetCookieParams = Record<string, CookieValue<string>[]>
 
 export type Transform<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
 
