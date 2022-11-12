@@ -58,7 +58,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   public consumes(): OpenAPIGeneratorTarget[] {
     const validatorDep: OpenAPIGeneratorTarget[] = ['oats/response-body-validator']
     const cookieSerializerDep: OpenAPIGeneratorTarget[] = ['oats/cookie-serializer']
-    const cookieDeserializerDep: OpenAPIGeneratorTarget[] = ['oats/set-cookie-deserializer']
     const cookieTypeDep: OpenAPIGeneratorTarget[] = ['oats/cookies-type']
     const config = this.configuration()
     return [
@@ -72,9 +71,8 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       'oats/path-serializer',
       'oats/query-serializer',
       'oats/response-headers-deserializer',
-      ...(config.sendCookieHeader || config.parseSetCookieHeaders ? cookieTypeDep : []),
+      ...(config.sendCookieHeader ? cookieTypeDep : []),
       ...(config.sendCookieHeader ? cookieSerializerDep : []),
-      ...(config.parseSetCookieHeaders ? cookieDeserializerDep : []),
       ...(config.validate ? validatorDep : []),
     ]
   }
