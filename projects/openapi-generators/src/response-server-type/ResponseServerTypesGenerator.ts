@@ -1,13 +1,7 @@
-import { values } from 'lodash'
-import {
-  EnhancedOperation,
-  OpenAPIGeneratorTarget,
-  EnhancedResponse,
-  OpenAPIGeneratorContext,
-} from '@oats-ts/openapi-common'
-import { TypeNode, ImportDeclaration, factory, PropertySignature, SyntaxKind } from 'typescript'
-import { getModelImports, getNamedImports, safeName } from '@oats-ts/typescript-common'
-import { BaseResponseTypesGenerator, ResponsePropertyName } from '../utils/BaseResponseTypeGenerator'
+import { EnhancedOperation, OpenAPIGeneratorTarget, EnhancedResponse } from '@oats-ts/openapi-common'
+import { ImportDeclaration } from 'typescript'
+import { getNamedImports } from '@oats-ts/typescript-common'
+import { BaseResponseTypesGenerator } from '../utils/BaseResponseTypeGenerator'
 
 export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
   public name(): OpenAPIGeneratorTarget {
@@ -18,56 +12,20 @@ export class ResponseServerTypesGenerator extends BaseResponseTypesGenerator {
     return ['oats/type', 'oats/response-headers-type', 'oats/cookies-type']
   }
 
+  protected shouldAimForOptional(): boolean {
+    return true
+  }
+
+  protected needsCookiesProperty(): boolean {
+    return this.getItems().some((item) => item.cookie.length > 0)
+  }
+
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
     return [
       ...super.getImports(path, operation, responses),
       ...(operation.cookie.length > 0
-        ? [
-            getNamedImports(this.httpPkg.name, [this.httpPkg.imports.Cookies]),
-            ...getModelImports<OpenAPIGeneratorTarget>(path, 'oats/cookies-type', [operation.operation], this.context()),
-          ]
+        ? [getNamedImports(this.httpPkg.name, [this.httpPkg.imports.SetCookieValue])]
         : []),
     ]
-  }
-
-  protected createProperty(
-    name: ResponsePropertyName,
-    type: TypeNode,
-    operation: EnhancedOperation,
-    response: EnhancedResponse,
-    context: OpenAPIGeneratorContext,
-  ): PropertySignature {
-    const propName = safeName(name)
-    switch (name) {
-      case 'cookies': {
-        const isOptional = operation.cookie.every((cookie) => !cookie.required)
-        return factory.createPropertySignature(
-          undefined,
-          propName,
-          isOptional ? factory.createToken(SyntaxKind.QuestionToken) : undefined,
-          factory.createTypeReferenceNode(this.httpPkg.exports.Cookies, [type]),
-        )
-      }
-      case 'headers': {
-        const isOptional = values(response.headers)
-          .map((header) => context.dereference(header, true))
-          .every((header) => !header.required)
-        return factory.createPropertySignature(
-          undefined,
-          propName,
-          isOptional ? factory.createToken(SyntaxKind.QuestionToken) : undefined,
-          type,
-        )
-      }
-      case 'body': {
-        return factory.createPropertySignature(undefined, propName, undefined, type)
-      }
-      case 'mimeType': {
-        return factory.createPropertySignature(undefined, propName, undefined, type)
-      }
-      case 'statusCode': {
-        return factory.createPropertySignature(undefined, propName, undefined, type)
-      }
-    }
   }
 }

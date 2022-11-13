@@ -1,12 +1,12 @@
-import { RawSetCookieValues, SetCookieValue } from '@oats-ts/openapi-http'
+import { SetCookieValue } from '@oats-ts/openapi-http'
 import { failure, success, Try } from '@oats-ts/try'
-import { decode, has, isNil } from '../../utils'
+import { decode, isNil } from '../../utils'
 
-function deserializeSetCookieValue(cookieValue: string): [string, SetCookieValue<string>] {
+function deserializeSetCookieValue(cookieValue: string): SetCookieValue {
   const [firstPart, ...parts] = cookieValue.split('; ')
   const [rawName, rawValue] = firstPart.split('=')
   const name = decode(rawName)
-  const data: SetCookieValue<string> = { value: rawValue }
+  const data: SetCookieValue = { name, value: rawValue }
   for (let i = 0; i < parts.length; i += 1) {
     const part = parts[i]
     if (part === 'HttpOnly') {
@@ -17,7 +17,8 @@ function deserializeSetCookieValue(cookieValue: string): [string, SetCookieValue
       data.secure = true
       continue
     }
-    const [propName, propValue] = part.split('=')
+    const [propName, rawPropValue] = part.split('=')
+    const propValue = decode(rawPropValue)
     switch (propName.trim()) {
       case 'Expires': {
         data.expires = propValue
@@ -36,35 +37,25 @@ function deserializeSetCookieValue(cookieValue: string): [string, SetCookieValue
         break
       }
       case 'SameSite': {
-        data.sameSite = propValue as SetCookieValue<unknown>['sameSite']
+        data.sameSite = propValue as SetCookieValue['sameSite']
         break
       }
       default:
         throw new Error(`unknown cookie configuration: "${propName}"`)
     }
   }
-  return [name, data]
+  return data
 }
 
-export function deserializeSetCookie(cookie: string | undefined, path: string): Try<RawSetCookieValues> {
+export function deserializeSetCookie(cookie: string | undefined, path: string): Try<SetCookieValue[]> {
   if (isNil(cookie) || cookie.length === 0) {
-    return success({})
+    return success([])
   }
   try {
     const cookieValues = cookie
       .trim() // Remove any possible excess whitespace from beginning and end
       .split(', ') // Split on comma, this gives us the possibly merged header values
-
-    const data = cookieValues.reduce((record: RawSetCookieValues, cookieValue) => {
-      const [name, data] = deserializeSetCookieValue(cookieValue)
-      if (!has(record, name)) {
-        record[name] = [data]
-      } else {
-        record[name].push(data)
-      }
-      return record
-    }, {})
-    return success(data)
+    return success(cookieValues.map((cookieValue) => deserializeSetCookieValue(cookieValue)))
   } catch (e) {
     return failure({
       message: (e as Error)?.message,

@@ -50,7 +50,6 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       'oats/path-deserializer',
       'oats/query-deserializer',
       'oats/cookie-deserializer',
-      'oats/set-cookie-serializer',
       'oats/request-headers-deserializer',
       'oats/response-headers-serializer',
       'oats/request-body-validator',
@@ -118,12 +117,15 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
         'oats/response-headers-serializer',
       ),
       ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/cookie-deserializer'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/set-cookie-serializer'),
       ...(this.configuration().cors
         ? this.context().dependenciesOf<ImportDeclaration>(path, this.context().document(), 'oats/cors-configuration')
         : []),
       ...bodyTypesImports,
     ]
+  }
+
+  protected needsResponseCookies(data: EnhancedOperation): boolean {
+    return this.getItems().some((operation) => operation.cookie.length > 0)
   }
 
   protected getExpressRouterFactoryStatement(data: EnhancedOperation): Statement {
@@ -338,7 +340,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       this.getCookieParametersStatement(data),
       this.getMimeTypeStatement(data),
       this.getRequestBodyStatement(data),
-      this.getTypeRequestStatement(data),
+      this.getTypedRequestStatement(data),
       this.getCorsConfigurationStatement(data),
       this.getCorsHeadersStatement(data),
       this.getTypedResponseStatement(data),
@@ -589,7 +591,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     )
   }
 
-  protected getTypeRequestStatement(data: EnhancedOperation): Statement | undefined {
+  protected getTypedRequestStatement(data: EnhancedOperation): Statement | undefined {
     const hasPath = data.path.length > 0
     const hasQuery = data.query.length > 0
     const hasHeaders = data.header.length > 0
@@ -862,7 +864,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                     ),
                   ),
                 ),
-                ...(data.cookie.length > 0
+                ...(this.needsResponseCookies(data)
                   ? [
                       factory.createPropertyAssignment(
                         factory.createIdentifier(RawHttpResponseFields.cookies),
@@ -894,8 +896,6 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                                   'typedResponse',
                                 ),
                               ),
-                              this.context().referenceOf(data.operation, 'oats/set-cookie-serializer') ??
-                                factory.createIdentifier('undefined'),
                             ],
                           ),
                         ),

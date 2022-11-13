@@ -1,4 +1,3 @@
-import { Cookies } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
 
@@ -142,19 +141,6 @@ export type HeaderSerializers<T extends ParameterType> = {
 export type HeaderDeserializers<T extends ParameterType> = {
   [P in keyof T]: HeaderParameterDeserializer<T[P]>
 }
-
-// Cookie typings
-export type SetCookieDeserializer<O extends CookieParameterType> = (
-  input: string | undefined,
-  path?: string,
-  config?: ValidatorConfig,
-) => Try<Cookies<O>>
-
-export type SetCookieSerializer<I extends CookieParameterType> = (
-  input: Cookies<I>,
-  path?: string,
-  config?: ValidatorConfig,
-) => Try<Cookies<Record<string, string>>>
 
 export type CookieDeserializer<O extends CookieParameterType> = (
   input: string | undefined,

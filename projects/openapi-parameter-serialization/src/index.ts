@@ -8,8 +8,6 @@ export { createPathDeserializer } from './createPathDeserializer'
 export { createPathSerializer } from './createPathSerializer'
 export { createCookieSerializer } from './createCookieSerializer'
 export { createCookieDeserializer } from './createCookieDeserializer'
-export { createSetCookieSerializer } from './createSetCookieSerializer'
-export { createSetCookieDeserializer } from './createSetCookieDeserializer'
 
 export { createPathRegExp } from './createPathRegExp'
 export { parsePathToSegments } from './parsePathToSegments'

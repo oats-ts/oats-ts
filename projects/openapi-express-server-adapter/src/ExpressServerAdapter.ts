@@ -5,9 +5,9 @@ import {
   RequestBodyValidators,
   ResponseHeadersSerializer,
   ServerAdapter,
-  Cookies,
   HttpMethod,
   OperationCorsConfiguration,
+  SetCookieValue,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
@@ -222,19 +222,8 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     }
   }
 
-  public async getResponseCookies<C>(
-    _: ExpressToolkit,
-    resp: HttpResponse<any, any, any, any, C>,
-    serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
-  ): Promise<Cookies<Record<string, string>>> {
-    if (resp.cookies === null || resp.cookies === undefined || serializer === null || serializer === undefined) {
-      return {}
-    }
-    const cookies = serializer(resp.cookies)
-    if (isFailure(cookies)) {
-      throw new Error(`Failed to serialize response cookies:\n${cookies.issues.map(stringify).join('\n')}`)
-    }
-    return cookies.data
+  public async getResponseCookies(toolkit: ExpressToolkit, resp: HttpResponse): Promise<SetCookieValue[]> {
+    return resp.cookies ?? []
   }
 
   public async respond(toolkit: ExpressToolkit, rawResponse: RawHttpResponse): Promise<void> {
@@ -250,9 +239,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       }
     }
     if (rawResponse.cookies !== null && rawResponse.cookies !== undefined && !toolkit.response.headersSent) {
-      const cookies = Object.keys(rawResponse.cookies).map((cookieName) =>
-        serializeCookieValue(cookieName, rawResponse.cookies![cookieName]),
-      )
+      const cookies = (rawResponse.cookies ?? []).map((cookie) => serializeCookieValue(cookie))
       if (cookies.length > 0) {
         // Possibly multiple headers, have to use array parameter to set them all as individual headers
         toolkit.response.header('set-cookie', cookies)

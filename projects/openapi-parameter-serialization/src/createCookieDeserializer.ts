@@ -14,7 +14,7 @@ export function createCookieDeserializer<T extends CookieParameterType>(root: Co
   ): Try<T> {
     return fluent(deserializeCookie(input, path)).flatMap((rawData) => {
       const parsedData = Object.keys(deserializers).reduce((acc: Record<string, Try<ParameterValue>>, key: string) => {
-        const values = rawData[key] ?? []
+        const values = rawData.filter(({ name }) => name === key)
         switch (values.length) {
           case 0: {
             acc[key] = success(undefined)
@@ -22,7 +22,7 @@ export function createCookieDeserializer<T extends CookieParameterType>(root: Co
           }
           case 1: {
             const deserializer = deserializers?.[key]
-            acc[key] = deserializer(values[0], key, config.append(path, key), config)
+            acc[key] = deserializer(values[0].value, key, config.append(path, key), config)
             break
           }
           default: {

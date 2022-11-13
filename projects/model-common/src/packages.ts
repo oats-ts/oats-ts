@@ -48,6 +48,8 @@ const openApiHttpExports = {
   RawHttpResponse: 'RawHttpResponse',
   ResponseExpectation: 'ResponseExpectation',
   ResponseExpectations: 'ResponseExpectations',
+  TypedSetCookieValue: 'TypedSetCookieValue',
+  SetCookieValue: 'SetCookieValue',
   CookieValue: 'CookieValue',
   Cookies: 'Cookies',
   ClientAdapter: 'ClientAdapter',

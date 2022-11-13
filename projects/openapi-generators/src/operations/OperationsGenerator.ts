@@ -111,6 +111,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         this.httpPkg.imports.HttpMethod,
         this.httpPkg.imports.RunnableOperation,
         this.httpPkg.imports.ClientAdapter,
+        ...(this.needsResponseCookies(item) ? [this.httpPkg.imports.SetCookieValue] : []),
       ]),
       ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-type'),
       ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-type'),
@@ -135,6 +136,10 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   protected getRequestTypeAst(data: EnhancedOperation): TypeNode {
     const requestType = this.context().referenceOf<TypeReferenceNode>(data.operation, 'oats/request-type')
     return isNil(requestType) ? factory.createTypeReferenceNode('void') : requestType
+  }
+
+  protected needsRequestParameter(data: EnhancedOperation): boolean {
+    return !isVoidType(this.getRequestTypeAst(data))
   }
 
   protected needsUrl(data: EnhancedOperation): boolean {
@@ -165,6 +170,10 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     return getEnhancedResponses(data.operation, this.context()).some(
       (resp) => !isNil(resp.schema) && !isNil(resp.mediaType),
     )
+  }
+
+  protected needsResponseCookies(data: EnhancedOperation): boolean {
+    return this.configuration().parseSetCookieHeaders
   }
 
   protected needsStatusCode(data: EnhancedOperation): boolean {
@@ -251,10 +260,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
-  protected needsRequestParameter(data: EnhancedOperation): boolean {
-    return !isVoidType(this.getRequestTypeAst(data))
-  }
-
   protected getRequestParameterAst(data: EnhancedOperation, isUnused: boolean = false): ParameterDeclaration {
     return factory.createParameterDeclaration(
       undefined,
@@ -291,6 +296,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       this.getStatusCodeGetterAst(data),
       this.getResponseHeadersGetterAst(data),
       this.getResponseBodyGetterAst(data),
+      this.getResponseCookiesGetterAst(data),
       // Run
       this.getRunMethodAst(data),
     ]
@@ -399,6 +405,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       this.getStatusCodePropertyAssignment(data),
       this.getResponseHeadersPropertyAssignment(data),
       this.getResponseBodyPropertyAssignment(data),
+      this.getResponseCookiesPropertyAssignment(data),
     ]
   }
 
@@ -479,6 +486,12 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   protected getResponseBodyPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
     return this.needsResponseBody(data)
       ? this.getBasicResponsePropertyAssignmentAst(data, 'body', 'getResponseBody')
+      : undefined
+  }
+
+  protected getResponseCookiesPropertyAssignment(data: EnhancedOperation): PropertyAssignment | undefined {
+    return this.needsResponseCookies(data)
+      ? this.getBasicResponsePropertyAssignmentAst(data, 'cookies', 'getResponseCookies')
       : undefined
   }
 
@@ -873,6 +886,27 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       undefined,
       [responseParam],
       factory.createTypeReferenceNode(this.httpPkg.exports.RawHttpHeaders),
+      factory.createBlock([returnStatement], true),
+    )
+  }
+
+  protected getResponseCookiesGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
+    if (!this.needsResponseCookies(data)) {
+      return undefined
+    }
+    const responseParam = this.getRawResponseParameterAst(data)
+    const returnStatement = factory.createReturnStatement(
+      this.getAdapterCallAst('getResponseCookies', [this.getLocalIdentifierAst('response')]),
+    )
+    return factory.createMethodDeclaration(
+      undefined,
+      [factory.createModifier(SyntaxKind.ProtectedKeyword)],
+      undefined,
+      this.context().localNameOf<OperationLocals>(undefined, this.name(), 'getResponseCookies'),
+      undefined,
+      undefined,
+      [responseParam],
+      factory.createArrayTypeNode(factory.createTypeReferenceNode(this.httpPkg.exports.SetCookieValue)),
       factory.createBlock([returnStatement], true),
     )
   }

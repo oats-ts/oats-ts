@@ -11,6 +11,7 @@ import {
   RawHttpRequest as _RawHttpRequest,
   RawHttpResponse as _RawHttpResponse,
   RunnableOperation as _RunnableOperation,
+  SetCookieValue as _SetCookieValue,
 } from '@oats-ts/openapi-runtime'
 import { formCookieParametersCookieSerializer } from './cookieSerializers'
 import {
@@ -97,6 +98,9 @@ export class DeepObjectQueryParametersOperation
       deepObjectQueryParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: DeepObjectQueryParametersRequest): Promise<DeepObjectQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -108,6 +112,7 @@ export class DeepObjectQueryParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as DeepObjectQueryParametersResponse
   }
@@ -147,6 +152,9 @@ export class FormCookieParametersOperation
       formCookieParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: FormCookieParametersRequest): Promise<FormCookieParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -158,6 +166,7 @@ export class FormCookieParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as FormCookieParametersResponse
   }
@@ -197,6 +206,9 @@ export class FormQueryParametersOperation
       formQueryParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: FormQueryParametersRequest): Promise<FormQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -208,6 +220,7 @@ export class FormQueryParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as FormQueryParametersResponse
   }
@@ -247,6 +260,9 @@ export class LabelPathParametersOperation
       labelPathParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: LabelPathParametersRequest): Promise<LabelPathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -258,6 +274,7 @@ export class LabelPathParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as LabelPathParametersResponse
   }
@@ -297,6 +314,9 @@ export class MatrixPathParametersOperation
       matrixPathParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: MatrixPathParametersRequest): Promise<MatrixPathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -308,6 +328,7 @@ export class MatrixPathParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as MatrixPathParametersResponse
   }
@@ -347,6 +368,9 @@ export class PipeDelimitedQueryParametersOperation
       pipeDelimitedQueryParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: PipeDelimitedQueryParametersRequest): Promise<PipeDelimitedQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -358,6 +382,7 @@ export class PipeDelimitedQueryParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as PipeDelimitedQueryParametersResponse
   }
@@ -401,6 +426,9 @@ export class SimpleHeaderParametersOperation
       simpleHeaderParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: SimpleHeaderParametersRequest): Promise<SimpleHeaderParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -412,6 +440,7 @@ export class SimpleHeaderParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as SimpleHeaderParametersResponse
   }
@@ -451,6 +480,9 @@ export class SimplePathParametersOperation
       simplePathParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: SimplePathParametersRequest): Promise<SimplePathParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -462,6 +494,7 @@ export class SimplePathParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as SimplePathParametersResponse
   }
@@ -510,6 +543,9 @@ export class SimpleResponseHeaderParametersOperation
       simpleResponseHeaderParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: SimpleResponseHeaderParametersRequest): Promise<SimpleResponseHeaderParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -523,6 +559,7 @@ export class SimpleResponseHeaderParametersOperation
       statusCode: this.getStatusCode(rawResponse),
       headers: this.getResponseHeaders(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as SimpleResponseHeaderParametersResponse
   }
@@ -562,6 +599,9 @@ export class SpaceDelimitedQueryParametersOperation
       spaceDelimitedQueryParametersResponseBodyValidator,
     )
   }
+  protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: SpaceDelimitedQueryParametersRequest): Promise<SpaceDelimitedQueryParametersResponse> {
     const rawRequest: _RawHttpRequest = {
       url: this.getUrl(request),
@@ -573,6 +613,7 @@ export class SpaceDelimitedQueryParametersOperation
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as SpaceDelimitedQueryParametersResponse
   }

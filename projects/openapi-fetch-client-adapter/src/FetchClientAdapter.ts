@@ -7,10 +7,11 @@ import {
   ResponseHeadersDeserializers,
   ResponseBodyValidators,
   ClientAdapter,
-  Cookies,
+  SetCookieValue,
 } from '@oats-ts/openapi-http'
 import { isFailure, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
+import { deserializeSetCookie } from '@oats-ts/openapi-parameter-serialization'
 
 export type FetchClientAdapterConfig = {
   url?: string
@@ -38,20 +39,14 @@ export class FetchClientAdapter implements ClientAdapter {
     return cookie.data
   }
 
-  public getResponseCookies<C>(
-    response: RawHttpResponse,
-    deserializer?: (cookie?: string) => Try<Cookies<C>>,
-  ): Cookies<C> | undefined {
-    if (deserializer === null || deserializer === undefined) {
-      return undefined
-    }
+  public getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
     const header = response?.headers?.['set-cookie']
     if (header === undefined || header === null) {
-      return undefined
+      return []
     }
-    const cookie = deserializer(header)
+    const cookie = deserializeSetCookie(header, "headers['set-cookie']")
     if (isFailure(cookie)) {
-      throw new Error(`Failed to parse set-cookie:\n${cookie.issues.map(stringify).join('\n')}`)
+      throw new Error(`Failed to parse the set-cookie header:\n${cookie.issues.map(stringify).join('\n')}`)
     }
     return cookie.data
   }

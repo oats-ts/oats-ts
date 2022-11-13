@@ -42,7 +42,6 @@ import {
   SpaceDelimitedQueryParametersServerRequest,
 } from './requestServerTypes'
 import { simpleResponseHeaderParametersResponseHeadersSerializer } from './responseHeaderSerializers'
-import { formCookieParametersSetCookieSerializer } from './setCookieSerializers'
 import { SimpleResponseHeaderParameters } from './types'
 
 export function createDeepObjectQueryParametersRouter(router?: _IRouter | undefined): _IRouter {
@@ -64,6 +63,7 @@ export function createDeepObjectQueryParametersRouter(router?: _IRouter | undefi
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -92,7 +92,7 @@ export function createFormCookieParametersRouter(router?: _IRouter | undefined):
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
-          cookies: await adapter.getResponseCookies(toolkit, typedResponse, formCookieParametersSetCookieSerializer),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -121,6 +121,7 @@ export function createFormQueryParametersRouter(router?: _IRouter | undefined): 
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -152,6 +153,7 @@ export function createLabelPathParametersRouter(router?: _IRouter | undefined): 
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -183,6 +185,7 @@ export function createMatrixPathParametersRouter(router?: _IRouter | undefined):
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -211,6 +214,7 @@ export function createPipeDelimitedQueryParametersRouter(router?: _IRouter | und
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -239,6 +243,7 @@ export function createSimpleHeaderParametersRouter(router?: _IRouter | undefined
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -270,6 +275,7 @@ export function createSimplePathParametersRouter(router?: _IRouter | undefined):
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -310,6 +316,7 @@ export function createSimpleResponseHeaderParametersRouter(router?: _IRouter | u
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {
@@ -338,6 +345,7 @@ export function createSpaceDelimitedQueryParametersRouter(router?: _IRouter | un
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, corsHeaders),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
         }
         await adapter.respond(toolkit, rawResponse)
       } catch (error) {

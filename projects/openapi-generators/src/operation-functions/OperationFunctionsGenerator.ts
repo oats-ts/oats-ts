@@ -42,7 +42,6 @@ export class OperationFunctionsGenerator extends OperationBasedCodeGenerator<Ope
   public consumes(): OpenAPIGeneratorTarget[] {
     const validatorDep: OpenAPIGeneratorTarget[] = ['oats/response-body-validator']
     const cookieSerializerDep: OpenAPIGeneratorTarget[] = ['oats/cookie-serializer']
-    const cookieDeserializerDep: OpenAPIGeneratorTarget[] = ['oats/set-cookie-deserializer']
     const cookieTypeDep: OpenAPIGeneratorTarget[] = ['oats/cookies-type']
     const config = this.configuration()
     return [
@@ -58,7 +57,6 @@ export class OperationFunctionsGenerator extends OperationBasedCodeGenerator<Ope
       'oats/response-headers-deserializer',
       ...(config.sendCookieHeader || config.parseSetCookieHeaders ? cookieTypeDep : []),
       ...(config.sendCookieHeader ? cookieSerializerDep : []),
-      ...(config.parseSetCookieHeaders ? cookieDeserializerDep : []),
       ...(config.validate ? validatorDep : []),
     ]
   }
@@ -102,9 +100,6 @@ export class OperationFunctionsGenerator extends OperationBasedCodeGenerator<Ope
         : []),
       ...(this.configuration().sendCookieHeader
         ? [...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/cookie-serializer')]
-        : []),
-      ...(this.configuration().parseSetCookieHeaders
-        ? [...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/set-cookie-deserializer')]
         : []),
     ]
   }
@@ -287,7 +282,6 @@ export class OperationFunctionsGenerator extends OperationBasedCodeGenerator<Ope
                   factory.createIdentifier(
                     this.context().localNameOf<OperationFunctionLocals>(undefined, this.name(), 'rawResponse'),
                   ),
-                  this.context().referenceOf(data.operation, 'oats/set-cookie-deserializer'),
                 ],
               ),
             ),
