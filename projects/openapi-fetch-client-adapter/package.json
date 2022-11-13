@@ -34,6 +34,7 @@
     "typescript": "4.7.4"
   },
   "dependencies": {
+    "@oats-ts/openapi-parameter-serialization": "0.0.45",
     "@oats-ts/openapi-http": "0.0.45",
     "@oats-ts/try": "0.0.45",
     "@oats-ts/validators": "0.0.45",

@@ -1,19 +1,5 @@
-import { SchemaObject, DiscriminatorObject, ReferenceObject } from '@oats-ts/json-schema-model'
-import {
-  Issue,
-  object,
-  optional,
-  shape,
-  combine,
-  array,
-  items,
-  string,
-  literal,
-  record,
-  minLength,
-  ShapeInput,
-  restrictKeys,
-} from '@oats-ts/validators'
+import { SchemaObject, ReferenceObject } from '@oats-ts/json-schema-model'
+import { Issue } from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
 import { entries, isNil, flatMap } from 'lodash'
 import { objectSchemaObject } from './objectSchemaObject'
@@ -21,31 +7,7 @@ import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { getInferredType } from '@oats-ts/model-common'
-
-const discUnionShape: ShapeInput<SchemaObject> = {
-  type: optional(literal('object')),
-  description: optional(string()),
-  discriminator: object(
-    shape<DiscriminatorObject>({
-      propertyName: string(),
-      mapping: object(record(string(), string())),
-    }),
-  ),
-  oneOf: array(
-    combine(
-      items(
-        object(
-          shape<ReferenceObject>({
-            $ref: string(),
-          }),
-        ),
-      ),
-      minLength(1),
-    ),
-  ),
-}
-
-const validator = object(combine(shape<SchemaObject>(discUnionShape), restrictKeys(Object.keys(discUnionShape))))
+import { structural } from '../structural'
 
 export function discriminatedUnionSchemaObject(
   data: SchemaObject,
@@ -71,7 +33,7 @@ export function discriminatedUnionSchemaObject(
     const discriminatorValues = entries(discriminator?.mapping ?? {})
     const oneOfRefs = (oneOf || []) as ReferenceObject[]
 
-    return ordered(() => validator(data, context.uriOf(data), validatorConfig))(
+    return ordered(() => structural.discriminatedUnionSchemaObject(data, context.uriOf(data), validatorConfig))(
       () =>
         oneOfRefs
           .filter((ref) => !discriminatorValues.some(([, refTarget]) => ref.$ref === refTarget))

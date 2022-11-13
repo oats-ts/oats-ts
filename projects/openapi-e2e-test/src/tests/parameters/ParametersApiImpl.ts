@@ -1,5 +1,5 @@
 import { isFailure, Try } from '@oats-ts/try'
-import { Cookies, HttpResponse } from '@oats-ts/openapi-http'
+import { HttpResponse, SetCookieValue } from '@oats-ts/openapi-http'
 import { ParameterIssue } from '../../generated/parameters/types'
 import { ParametersApi } from '../../generated/parameters/apiType'
 import {
@@ -27,8 +27,6 @@ import {
   SimpleResponseHeaderParametersServerResponse,
 } from '../../generated/parameters/responseServerTypes'
 import { defaultCookies } from './parameters.testdata'
-import { FormCookieParametersCookieParameters } from '../../generated/parameters/cookieTypes'
-import { isNil } from 'lodash'
 import {
   DeepObjectQueryParametersQueryParameters,
   FormQueryParametersQueryParameters,
@@ -125,25 +123,28 @@ export class ParametersApiImpl implements ParametersApi {
       }
     }
     const { data } = request.cookies
-    const noClientCookies = isNil(data.optBool) && isNil(data.optNum) && isNil(data.optEnm) && isNil(data.optStr)
-    const defaultCookieCfg: Cookies<FormCookieParametersCookieParameters> = {
-      optBool: { value: defaultCookies.optBool },
-      optNum: { value: defaultCookies.optNum },
-      optEnm: { value: defaultCookies.optEnm },
-      optStr: { value: defaultCookies.optStr },
-    }
-    const clientCookieCfg: Cookies<FormCookieParametersCookieParameters> = {
-      optBool: { value: data.optBool ?? defaultCookies.optBool },
-      optNum: { value: data.optNum ?? defaultCookies.optNum, expires: new Date().toUTCString(), sameSite: 'Lax' },
-      optEnm: { value: data.optEnm ?? defaultCookies.optEnm, sameSite: 'Strict', path: '/foo' },
-      optStr: {
-        value: data.optStr ?? defaultCookies.optStr,
-        maxAge: 100,
-        domain: 'http://foo.com',
-        httpOnly: true,
+    const cookies: SetCookieValue[] = [
+      {
+        name: 'optBool',
+        value: (data.optBool ?? defaultCookies.optBool ?? true).toString(),
       },
-    }
-    const cookies = noClientCookies ? defaultCookieCfg : clientCookieCfg
+      {
+        name: 'optNum',
+        value: (data.optNum ?? defaultCookies.optNum ?? 42).toString(),
+        expires: new Date().toUTCString(),
+      },
+      {
+        name: 'optEnm',
+        value: (data.optEnm ?? defaultCookies.optEnm ?? 'A').toString(),
+        sameSite: 'Lax',
+      },
+      {
+        name: 'optStr',
+        value: (data.optStr ?? defaultCookies.optStr ?? 'default').toString(),
+        maxAge: 100,
+      },
+    ]
+
     return {
       body: data,
       mimeType: 'application/json',

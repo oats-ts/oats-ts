@@ -1,13 +1,12 @@
 import { ResponsesObject } from '@oats-ts/openapi-model'
-import { Issue, object, record, string } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
 import { entries, flatMap } from 'lodash'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
-
-const validator = object(record(string(), object()))
+import { structural } from '../structural'
 
 export function responsesObject(
   data: ResponsesObject,
@@ -18,7 +17,7 @@ export function responsesObject(
     context,
     data,
   )(() =>
-    ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
+    ordered(() => structural.responsesObject(data, context.uriOf(data), validatorConfig))(() =>
       flatMap(entries(data), ([statusCode, response]): Issue[] => {
         const issues: Issue[] = []
         if (

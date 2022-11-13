@@ -8,12 +8,12 @@ export { createPathDeserializer } from './createPathDeserializer'
 export { createPathSerializer } from './createPathSerializer'
 export { createCookieSerializer } from './createCookieSerializer'
 export { createCookieDeserializer } from './createCookieDeserializer'
-export { createSetCookieSerializer } from './createSetCookieSerializer'
-export { createSetCookieDeserializer } from './createSetCookieDeserializer'
 
 export { createPathRegExp } from './createPathRegExp'
 export { parsePathToSegments } from './parsePathToSegments'
 export { serializeCookieValue } from './serializeCookieValue'
+export { deserializeCookie } from './deserializers/cookie/deserializeCookie'
+export { deserializeSetCookie } from './deserializers/cookie/deserializeSetCookie'
 
 export * from './types'
 

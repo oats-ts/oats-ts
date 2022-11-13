@@ -1,17 +1,11 @@
 import { ResponseObject } from '@oats-ts/openapi-model'
-import { Issue, object, shape, combine, record, string, optional, ShapeInput, restrictKeys } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
 import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { isNil } from 'lodash'
-
-const responseShape: ShapeInput<ResponseObject> = {
-  content: optional(object(record(string(), object()))),
-  headers: optional(object(record(string(), object()))),
-  description: optional(string()),
-}
-const validator = object(combine(shape<ResponseObject>(responseShape), restrictKeys(Object.keys(responseShape))))
+import { structural } from '../structural'
 
 export function responseObject(
   data: ResponseObject,
@@ -22,7 +16,7 @@ export function responseObject(
     context,
     data,
   )(() =>
-    ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
+    ordered(() => structural.responseObject(data, context.uriOf(data), validatorConfig))(() =>
       isNil(data.content) ? [] : config.contentObject(data.content, context, config),
     ),
   )

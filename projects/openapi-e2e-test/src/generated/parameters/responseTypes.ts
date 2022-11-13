@@ -4,8 +4,7 @@
  * Generated from generated-schemas/parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { Cookies as _Cookies } from '@oats-ts/openapi-runtime'
-import { FormCookieParametersCookieParameters } from './cookieTypes'
+import { SetCookieValue as _SetCookieValue } from '@oats-ts/openapi-runtime'
 import { SimpleResponseHeaderParameters200ResponseHeaderParameters } from './responseHeaderTypes'
 import {
   DeepObjectQueryParameters,
@@ -25,11 +24,13 @@ export type DeepObjectQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: DeepObjectQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type FormCookieParametersResponse =
@@ -37,13 +38,13 @@ export type FormCookieParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: FormCookieParameters
-      cookies?: _Cookies<FormCookieParametersCookieParameters>
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
-      cookies?: _Cookies<FormCookieParametersCookieParameters>
+      cookies: _SetCookieValue[]
     }
 
 export type FormQueryParametersResponse =
@@ -51,11 +52,13 @@ export type FormQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: FormQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type LabelPathParametersResponse =
@@ -63,11 +66,13 @@ export type LabelPathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: LabelPathParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type MatrixPathParametersResponse =
@@ -75,11 +80,13 @@ export type MatrixPathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: MatrixPathParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type PipeDelimitedQueryParametersResponse =
@@ -87,11 +94,13 @@ export type PipeDelimitedQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: PipeDelimitedQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SimpleHeaderParametersResponse =
@@ -99,11 +108,13 @@ export type SimpleHeaderParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: SimpleHeaderParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SimplePathParametersResponse =
@@ -111,11 +122,13 @@ export type SimplePathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: SimplePathParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SimpleResponseHeaderParametersResponse =
@@ -126,11 +139,13 @@ export type SimpleResponseHeaderParametersResponse =
         ok: boolean
       }
       headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SpaceDelimitedQueryParametersResponse =
@@ -138,9 +153,11 @@ export type SpaceDelimitedQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: SpaceDelimitedQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }

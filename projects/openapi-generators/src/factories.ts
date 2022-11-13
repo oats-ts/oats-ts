@@ -28,8 +28,6 @@ import { sdkType } from './sdk-type'
 import { responseServerTypes } from './response-server-type'
 import { cookieSerializers } from './cookie-serializer'
 import { cookieDeserializers } from './cookie-deserializer'
-import { setCookieSerializers } from './set-cookie-serializer'
-import { setCookieDeserializers } from './set-cookie-deserializer'
 import { expressCorsRouterFactory } from './express-cors-router-factory'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 import { expressContextRouterFactory } from './express-context-router-factory'
@@ -50,8 +48,6 @@ export const factories = {
   pathTypes,
   cookieSerializers,
   cookieDeserializers,
-  setCookieSerializers,
-  setCookieDeserializers,
   cookiesTypes,
   queryDeserializers,
   querySerializers,

@@ -1,5 +1,5 @@
 import { OperationObject } from '@oats-ts/openapi-model'
-import { flatMap, head, isNil, keys } from 'lodash'
+import { flatMap, head, isNil, keys, values } from 'lodash'
 import {
   EnhancedOperation,
   hasResponses,
@@ -13,7 +13,6 @@ import {
   ImportDeclaration,
   factory,
   SourceFile,
-  TypeReferenceNode,
   TypeLiteralNode,
   PropertySignature,
   TypeAliasDeclaration,
@@ -23,18 +22,9 @@ import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
-
-export type ResponsePropertyName = 'mimeType' | 'statusCode' | 'body' | 'headers' | 'cookies'
+import { HttpResponseFields } from './OatsApiNames'
 
 export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedCodeGenerator<T> {
-  protected abstract createProperty(
-    name: ResponsePropertyName,
-    type: TypeNode,
-    operation: EnhancedOperation,
-    response: EnhancedResponse,
-    context: OpenAPIGeneratorContext,
-  ): PropertySignature | undefined
-
   public runtimeDependencies(): RuntimeDependency[] {
     return [{ name: this.httpPkg.name, version }]
   }
@@ -61,15 +51,28 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
     return hasResponses(input, this.context()) ? getModelImports(fromPath, this.name(), [input], this.context()) : []
   }
 
-  protected createDefaultStatusCodeType(knownStatusCodes: string[]): TypeReferenceNode {
-    const statusCodeTypeRef = factory.createTypeReferenceNode('number')
+  protected shouldAimForOptional() {
+    return false
+  }
 
-    const knownStatusCodesType = factory.createUnionTypeNode(
-      knownStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
-    )
-    return knownStatusCodes.length > 0
-      ? factory.createTypeReferenceNode('Exclude', [statusCodeTypeRef, knownStatusCodesType])
-      : statusCodeTypeRef
+  protected needsCookiesProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
+    return false
+  }
+
+  protected needsMimeTypeProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
+    return !isNil(response.mediaType) && !isNil(response.schema)
+  }
+
+  protected needsBodyProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
+    return !isNil(response.mediaType) && !isNil(response.schema)
+  }
+
+  protected needsStatusCodeProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
+    return true
+  }
+
+  protected needsHeadersProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
+    return keys(response.headers || {}).length > 0
   }
 
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
@@ -85,50 +88,102 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
     ]
   }
 
-  protected createResponseType(
-    knownStatusCodes: string[],
-    context: OpenAPIGeneratorContext,
+  protected getStatusCodeTypeAst(operation: EnhancedOperation, response: EnhancedResponse): TypeNode {
+    if (response.statusCode === 'default') {
+      const knownStatusCodes = getEnhancedResponses(operation.operation, this.context())
+        .map(({ statusCode }) => statusCode)
+        .filter((statusCode) => statusCode !== 'default')
+
+      const statusCodeTypeRef = factory.createTypeReferenceNode('number')
+
+      const knownStatusCodesType = factory.createUnionTypeNode(
+        knownStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
+      )
+      return knownStatusCodes.length > 0
+        ? factory.createTypeReferenceNode('Exclude', [statusCodeTypeRef, knownStatusCodesType])
+        : statusCodeTypeRef
+    }
+    return factory.createLiteralTypeNode(factory.createNumericLiteral(response.statusCode))
+  }
+
+  protected getStatusCodePropertyAst(
     operation: EnhancedOperation,
     response: EnhancedResponse,
-  ): TypeLiteralNode {
-    const { mediaType, schema, statusCode, headers } = response
-    const hasResponseHeaders = keys(headers || {}).length > 0
-    const hasCookies = operation.cookie.length > 0
-    const statusCodeType =
-      statusCode === 'default'
-        ? this.createDefaultStatusCodeType(knownStatusCodes)
-        : factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
-
-    const properties: (PropertySignature | undefined)[] = [
-      this.createProperty('statusCode', statusCodeType, operation, response, context),
-    ]
-
-    if (!isNil(mediaType) && !isNil(schema)) {
-      const mediaTypeType = factory.createLiteralTypeNode(factory.createStringLiteral(mediaType))
-      const bodyType = context.referenceOf<TypeNode>(schema, 'oats/type')
-      properties.push(this.createProperty('mimeType', mediaTypeType, operation, response, context))
-      properties.push(this.createProperty('body', bodyType, operation, response, context))
+  ): PropertySignature | undefined {
+    if (this.needsStatusCodeProperty(operation, response)) {
+      const statusCodeType = this.getStatusCodeTypeAst(operation, response)
+      return factory.createPropertySignature(undefined, HttpResponseFields.statusCode, undefined, statusCodeType)
     }
-    if (hasResponseHeaders) {
-      const headersType = factory.createTypeReferenceNode(
-        context.nameOf([operation.operation, statusCode], 'oats/response-headers-type'),
+    return undefined
+  }
+
+  protected getMimeTypePropertyAst(
+    operation: EnhancedOperation,
+    response: EnhancedResponse,
+  ): PropertySignature | undefined {
+    if (this.needsMimeTypeProperty(operation, response)) {
+      const type = factory.createLiteralTypeNode(factory.createStringLiteral(response.mediaType!))
+      return factory.createPropertySignature(undefined, HttpResponseFields.mimeType, undefined, type)
+    }
+    return undefined
+  }
+
+  protected getBodyPropertyAst(
+    operation: EnhancedOperation,
+    response: EnhancedResponse,
+  ): PropertySignature | undefined {
+    if (this.needsBodyProperty(operation, response)) {
+      const type = this.context().referenceOf<TypeNode>(response.schema, 'oats/type')
+      return factory.createPropertySignature(undefined, HttpResponseFields.body, undefined, type)
+    }
+    return undefined
+  }
+
+  protected getHeadersPropertyAst(
+    operation: EnhancedOperation,
+    response: EnhancedResponse,
+  ): PropertySignature | undefined {
+    if (this.needsHeadersProperty(operation, response)) {
+      const isOptional = values(response.headers)
+        .map((header) => this.context().dereference(header, true))
+        .every((header) => !header.required)
+      const type = factory.createTypeReferenceNode(
+        this.context().nameOf([operation.operation, response.statusCode], 'oats/response-headers-type'),
       )
-      properties.push(this.createProperty('headers', headersType, operation, response, context))
+      const questionToken =
+        isOptional && this.shouldAimForOptional() ? factory.createToken(SyntaxKind.QuestionToken) : undefined
+      return factory.createPropertySignature(undefined, HttpResponseFields.headers, questionToken, type)
     }
-    if (hasCookies) {
-      const cookiesType = factory.createTypeReferenceNode(context.nameOf(operation.operation, 'oats/cookies-type'))
-      properties.push(this.createProperty('cookies', cookiesType, operation, response, context))
+    return undefined
+  }
+
+  protected getCookiesPropertyAst(
+    operation: EnhancedOperation,
+    response: EnhancedResponse,
+  ): PropertySignature | undefined {
+    if (this.needsCookiesProperty(operation, response)) {
+      const type = factory.createArrayTypeNode(factory.createTypeReferenceNode(this.httpPkg.exports.SetCookieValue))
+      const questionToken = this.shouldAimForOptional() ? factory.createToken(SyntaxKind.QuestionToken) : undefined
+      return factory.createPropertySignature(undefined, HttpResponseFields.cookies, questionToken, type)
     }
+    return undefined
+  }
+
+  protected getResponseType(operation: EnhancedOperation, response: EnhancedResponse): TypeLiteralNode {
+    const properties = [
+      this.getStatusCodePropertyAst(operation, response),
+      this.getMimeTypePropertyAst(operation, response),
+      this.getBodyPropertyAst(operation, response),
+      this.getHeadersPropertyAst(operation, response),
+      this.getCookiesPropertyAst(operation, response),
+    ]
 
     return factory.createTypeLiteralNode(properties.filter((prop): prop is PropertySignature => !isNil(prop)))
   }
 
-  getResponseTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
+  protected getResponseTypeAst(data: EnhancedOperation, context: OpenAPIGeneratorContext): TypeAliasDeclaration {
     const responses = getEnhancedResponses(data.operation, context)
-    const knownStatusCodes = responses.map(({ statusCode }) => statusCode).filter((s) => s !== 'default')
-    const responseTypes = responses.map((response) =>
-      this.createResponseType(knownStatusCodes, context, data, response),
-    )
+    const responseTypes = responses.map((response) => this.getResponseType(data, response))
 
     return factory.createTypeAliasDeclaration(
       [],

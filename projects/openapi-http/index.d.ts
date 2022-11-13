@@ -16,10 +16,7 @@ export type ClientAdapter = {
   request(request: RawHttpRequest): Promise<RawHttpResponse>
   getMimeType(response: RawHttpResponse): string | undefined
   getStatusCode(response: RawHttpResponse): number | undefined
-  getResponseCookies<C>(
-    response: RawHttpResponse,
-    deserializer?: (cookie?: string) => Try<Cookies<C>>,
-  ): Cookies<C> | undefined
+  getResponseCookies(response: RawHttpResponse): SetCookieValue[]
   getResponseHeaders(response: RawHttpResponse, statusCode?: number, deserializers?: ResponseHeadersDeserializers): any
   getResponseBody(
     response: RawHttpResponse,
@@ -36,7 +33,7 @@ export type RunnableOperation<Request, Response> = {
 export type ServerAdapter<T> = {
   getPathParameters<P>(toolkit: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
   getQueryParameters<Q>(toolkit: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
-  getCookieParameters<C>(toolkit: T, deserializer: (input?: string) => Try<Partial<C>>): Promise<Try<Partial<C>>>
+  getCookieParameters<C>(toolkit: T, deserializer: (input?: string) => Try<C>): Promise<Try<C>>
   getRequestHeaders<H>(toolkit: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
   getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
@@ -61,11 +58,7 @@ export type ServerAdapter<T> = {
     serializer?: ResponseHeadersSerializer,
     corsHeaders?: RawHttpHeaders,
   ): Promise<RawHttpHeaders>
-  getResponseCookies<C>(
-    toolkit: T,
-    resp: HttpResponse<any, any, any, any, C>,
-    serializer?: (input: Cookies<C>) => Try<Cookies<Record<string, string>>>,
-  ): Promise<Cookies<Record<string, string>>>
+  getResponseCookies(toolkit: T, resp: HttpResponse): Promise<SetCookieValue[]>
 
   respond(toolkit: T, response: RawHttpResponse): Promise<void>
   handleError(toolkit: T, error: any): Promise<void>
@@ -110,7 +103,7 @@ export type ResponseBodyValidators = {
 export type HttpMethod = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch' | 'trace'
 
 /** Generic type representing a HTTP response */
-export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
+export type HttpResponse<B = any, S = any, M = any, H = any> = {
   /** The parsed response body */
   body?: B
   /** The response status code */
@@ -118,7 +111,7 @@ export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
   /** The mime type of the response */
   mimeType?: M
   /** The cookies in the response (Set-Cookie header) */
-  cookies?: Cookies<C>
+  cookies?: SetCookieValue[]
   /** The response headers */
   headers?: H
 }
@@ -127,8 +120,29 @@ export type HttpResponse<B = any, S = any, M = any, H = any, C = any> = {
  * Wraps a cookie value with all possible configuration.
  * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
  */
-export type CookieValue<T> = {
+export type SetCookieValue = CookieConfiguration & CookieValue
+
+/**
+ * Wraps a cookie value with all possible configuration.
+ * Docs: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes
+ */
+export type TypedSetCookieValue<T> = CookieConfiguration & {
+  /** The parsed value of the cookie */
   value: T
+}
+
+export type CookieValue = {
+  /** The name of the cookie */
+  name: string
+  /** The raw value of the cookie */
+  value: string
+}
+
+export type Cookies<T> = {
+  [K in keyof T]: TypedSetCookieValue<T[K]>
+}
+
+export type CookieConfiguration = {
   /**
    * The expiration date of the cookie in UTC date format.
    * Use Date#toUTCString() or Date#toGMTString() to serialize a Date object to this format.
@@ -161,10 +175,6 @@ export type CookieValue<T> = {
   sameSite?: 'Strict' | 'Lax' | 'None'
 }
 
-export type Cookies<T> = {
-  [K in keyof T]: CookieValue<T[K]>
-}
-
 /** Http headers where key is the header name, value is the serialized header value. */
 export type RawHttpHeaders = Record<string, string>
 
@@ -188,5 +198,5 @@ export type RawHttpResponse = {
   /** Headers, content-type will be filled by default */
   headers?: RawHttpHeaders
   /** Cookies with optional parameters, and serialized name & value */
-  cookies?: Cookies<Record<string, string>>
+  cookies?: SetCookieValue[]
 }

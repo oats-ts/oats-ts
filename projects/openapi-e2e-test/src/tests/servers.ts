@@ -22,6 +22,9 @@ import { Router } from 'express'
 import { createFormQueryParametersRouter } from '../generated/parameters/expressRouterFactories'
 import { createPartialContentContextRouter } from '../generated/partial-content/expressContextRouterFactory'
 import { createPartialContentAppRouter } from '../generated/partial-content/expressAppRouterFactory'
+import { CookiesApiImpl } from './parameters/CookiesApiImpl'
+import { createCookiesContextRouter } from '../generated/cookies/expressContextRouterFactory'
+import { createCookiesAppRouter } from '../generated/cookies/expressAppRouterFactory'
 
 export function testBookStoreServer() {
   testExpressServer({
@@ -94,6 +97,18 @@ export function testParametersServer() {
             createFormQueryParametersRouter: () => createFormQueryParametersRouter(),
           }),
         )
+    },
+  })
+}
+
+export function testCookiesServer() {
+  testExpressServer({
+    port: PORT,
+    runBeforeAndAfter: 'all',
+    attachHandlers: (router) => {
+      router.use(customBodyParsers.json())
+      createCookiesContextRouter(router, new CookiesApiImpl(), new ExpressServerAdapter())
+      createCookiesAppRouter(router)
     },
   })
 }

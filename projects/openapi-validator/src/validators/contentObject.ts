@@ -1,19 +1,12 @@
-import { ContentObject, MediaTypeObject } from '@oats-ts/openapi-model'
-import { Issue, object, shape, combine, record, string, ShapeInput, restrictKeys } from '@oats-ts/validators'
+import { ContentObject } from '@oats-ts/openapi-model'
+import { Issue } from '@oats-ts/validators'
 import { entries, flatMap } from 'lodash'
 import { validatorConfig } from '../utils/validatorConfig'
 import { ordered } from '../utils/ordered'
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { referenceable } from './referenceable'
-
-const medieTypeShape: ShapeInput<MediaTypeObject> = {
-  schema: object(),
-}
-
-const validator = object(
-  record(string(), object(combine(shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape))))),
-)
+import { structural } from '../structural'
 
 export function contentObject(
   data: ContentObject,
@@ -24,7 +17,7 @@ export function contentObject(
     context,
     data,
   )(() =>
-    ordered(() => validator(data, context.uriOf(data), validatorConfig))(() =>
+    ordered(() => structural.contentObject(data, context.uriOf(data), validatorConfig))(() =>
       flatMap(entries(data), ([contentType, mediaType]): Issue[] => {
         const issues: Issue[] = []
         if (contentType !== 'application/json') {
