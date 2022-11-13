@@ -28,6 +28,9 @@ export const presetOverrides: Record<string, Partial<OpenAPIFullStackPresetConfi
       },
     },
   },
+  'schemas/cookies.json': {
+    debugCookies: true,
+  },
   'schemas/ignored-schemas.json': {
     ignoreTypeGuard: (schema: any) => {
       return Boolean(schema?.['x-ignore'])

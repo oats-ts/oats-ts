@@ -7,23 +7,14 @@ import {
   randomCookieParameters,
   defaultCookies,
 } from './parameters.testdata'
-// import { has, range } from 'lodash'
 import { testParametersServer } from '../servers'
 import { parametersSdk } from '../sdks'
-// import { REPEATS } from '../constants'
-import crypto from 'crypto'
+import { range } from 'lodash'
+import { REPEATS } from '../constants'
 
 describe('Parameters', () => {
   testParametersServer()
-  const repeats = [1] //range(1, REPEATS + 1)
-
-  function hash(input: any): string {
-    return crypto.createHash('sha256').update(JSON.stringify(input)).digest('hex')
-  }
-
-  it('should create the same hash for referentially different inputs', () => {
-    expect(hash({ foo: 'bar' })).toBe(hash({ foo: 'bar' }))
-  })
+  const repeats = range(1, REPEATS + 1)
 
   describe('path', () => {
     describe('simple', () => {
