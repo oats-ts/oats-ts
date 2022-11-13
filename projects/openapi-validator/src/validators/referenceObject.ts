@@ -1,15 +1,12 @@
 import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from '../typings'
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from '@oats-ts/model-common'
-import { combine, Issue, object, restrictKeys, shape, ShapeInput, string } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
 import { ifNotValidated } from '../utils/ifNotValidated'
 import { ordered } from '../utils/ordered'
 import { validatorConfig } from '../utils/validatorConfig'
 import { isNil } from 'lodash'
-
-const refShape: ShapeInput<ReferenceObject> = { $ref: string() }
-
-const validator = object(combine(shape<ReferenceObject>(refShape), restrictKeys(Object.keys(refShape))))
+import { structural } from '../structural'
 
 function traverseReferences(
   input: ReferenceObject,
@@ -39,7 +36,7 @@ export function referenceObject(
     context,
     input,
   )(() =>
-    ordered(() => validator(input, context.uriOf(input), validatorConfig))(() =>
+    ordered(() => structural.referenceObject(input, context.uriOf(input), validatorConfig))(() =>
       ordered((): Issue[] => {
         if (isNil(context.dereference(input))) {
           return [

@@ -24,11 +24,13 @@ export type DeepObjectQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: DeepObjectQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type FormCookieParametersResponse =
@@ -50,11 +52,13 @@ export type FormQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: FormQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type LabelPathParametersResponse =
@@ -62,11 +66,13 @@ export type LabelPathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: LabelPathParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type MatrixPathParametersResponse =
@@ -74,11 +80,13 @@ export type MatrixPathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: MatrixPathParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type PipeDelimitedQueryParametersResponse =
@@ -86,11 +94,13 @@ export type PipeDelimitedQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: PipeDelimitedQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SimpleHeaderParametersResponse =
@@ -98,11 +108,13 @@ export type SimpleHeaderParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: SimpleHeaderParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SimplePathParametersResponse =
@@ -110,11 +122,13 @@ export type SimplePathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: SimplePathParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SimpleResponseHeaderParametersResponse =
@@ -125,11 +139,13 @@ export type SimpleResponseHeaderParametersResponse =
         ok: boolean
       }
       headers: SimpleResponseHeaderParameters200ResponseHeaderParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
 
 export type SpaceDelimitedQueryParametersResponse =
@@ -137,9 +153,11 @@ export type SpaceDelimitedQueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: SpaceDelimitedQueryParameters
+      cookies: _SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: _SetCookieValue[]
     }
