@@ -199,7 +199,7 @@ const factories = {
     const cookieParamShape: ShapeInput<ParameterObject> = {
       name: string(),
       in: literal('cookie'),
-      required: optional(literal(false)),
+      required: optional(boolean()),
       style: optional(literal('form')),
       explode: optional(literal(false)),
       description: optional(string()),

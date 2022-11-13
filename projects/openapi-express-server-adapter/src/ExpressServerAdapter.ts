@@ -33,8 +33,8 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
 
   public async getCookieParameters<C>(
     toolkit: ExpressToolkit,
-    deserializer: (input?: string) => Try<Partial<C>>,
-  ): Promise<Try<Partial<C>>> {
+    deserializer: (input?: string) => Try<C>,
+  ): Promise<Try<C>> {
     return deserializer(toolkit.request.header('cookie'))
   }
 

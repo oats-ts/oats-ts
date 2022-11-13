@@ -1,3 +1,4 @@
+import { CookieValue } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
 
@@ -155,7 +156,7 @@ export type CookieSerializer<I extends CookieParameterType> = (
 ) => Try<string>
 
 export type CookieParameterSerializer<T extends ParameterValue> = Transform<T, string | undefined>
-export type CookieParameterDeserializer<T extends ParameterValue> = Transform<string, T>
+export type CookieParameterDeserializer<T extends ParameterValue> = Transform<CookieValue[], T>
 export type CookieSerializers<T extends ParameterType> = {
   [P in keyof T]: CookieParameterSerializer<T[P]>
 }

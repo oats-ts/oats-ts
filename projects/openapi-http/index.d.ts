@@ -33,7 +33,7 @@ export type RunnableOperation<Request, Response> = {
 export type ServerAdapter<T> = {
   getPathParameters<P>(toolkit: T, deserializer: (input: string) => Try<P>): Promise<Try<P>>
   getQueryParameters<Q>(toolkit: T, deserializer: (input: string) => Try<Q>): Promise<Try<Q>>
-  getCookieParameters<C>(toolkit: T, deserializer: (input?: string) => Try<Partial<C>>): Promise<Try<Partial<C>>>
+  getCookieParameters<C>(toolkit: T, deserializer: (input?: string) => Try<C>): Promise<Try<C>>
   getRequestHeaders<H>(toolkit: T, deserializer: (input: RawHttpHeaders) => Try<H>): Promise<Try<H>>
   getMimeType<M extends string>(toolkit: T): Promise<M>
   getRequestBody<M extends string, B>(
