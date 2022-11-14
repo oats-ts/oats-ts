@@ -1,15 +1,16 @@
 import { ContentValidator, ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { OpenAPIValidatorConfig } from './typings'
-import { createOpenAPIValidatorConfig } from './createOpenAPIValidatorConfig'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
-import { tick } from './utils/tick'
-import { validateDocument } from './validateDocument'
+import { tick } from '@oats-ts/model-common'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { flatMap } from 'lodash'
 import { severityComparator } from './severityComparator'
 import { isOk } from '@oats-ts/validators'
+import { OpenAPIValidatorImpl } from './OpenAPIValidator'
+import { validateDocument } from './validateDocument'
+import { validatorConfig } from './validatorConfig'
 
 const name = '@oats-ts/openapi-validator'
 
@@ -27,10 +28,10 @@ export function validator(
 
     await tick()
 
-    const config = createOpenAPIValidatorConfig(configuration)
     const context = new OpenAPIValidatorContextImpl(data)
+    const validator = configuration.validator ?? new OpenAPIValidatorImpl(context, validatorConfig)
     const validationResult = await Promise.allSettled(
-      context.documents().map((document) => validateDocument(document, context, config, emitter)),
+      context.documents().map((document) => validateDocument(document, context, validator, emitter)),
     )
     const results = fluent(fromArray(validationResult.map(fromPromiseSettledResult))).map((data) =>
       flatMap(data).sort(severityComparator),

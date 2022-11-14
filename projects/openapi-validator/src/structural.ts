@@ -25,10 +25,36 @@ import {
   union,
   Validator,
   ShapeInput,
+  number,
+  any,
 } from '@oats-ts/validators'
 import { entries } from 'lodash'
 
-const factories = {
+export const factories = {
+  literalSchemaObject: () => {
+    const schemaShape: ShapeInput<SchemaObject> = {
+      type: optional(string()),
+      const: union({
+        string: string(),
+        number: number(),
+        boolean: boolean(),
+        object: object(),
+        array: array(),
+        nil: optional(any()),
+      }),
+      description: optional(string()),
+    }
+    return object(combine(shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))))
+  },
+  tupleSchemaObject: () => {
+    const schemaShape: ShapeInput<SchemaObject> = {
+      type: optional(literal('array')),
+      description: optional(string()),
+      minItems: optional(number()),
+      prefixItems: optional(array(items(object()))),
+    }
+    return object(combine(shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))))
+  },
   arraySchemaObject: () => {
     const schemaShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
@@ -96,8 +122,9 @@ const factories = {
     return object(combine(shape<SchemaObject>(nonDiscUnionShape), restrictKeys(Object.keys(nonDiscUnionShape))))
   },
   primitiveSchemaObject: () => {
-    const primitiveShape = {
+    const primitiveShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
+      format: optional(string()),
       type: union({
         string: literal('string'),
         boolean: literal('boolean'),
@@ -133,13 +160,11 @@ const factories = {
     )
   },
   contentObject: () => {
+    return object(record(string(), object()))
+  },
+  mediaTypeObject: () => {
     const medieTypeShape: ShapeInput<MediaTypeObject> = { schema: object() }
-    return object(
-      record(
-        string(),
-        object(combine(shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape)))),
-      ),
-    )
+    return object(combine(shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape))))
   },
   openApiObject: () => {
     return object(
@@ -256,7 +281,15 @@ const factories = {
     }
     return object(combine(shape<ParameterObject>(queryParamShape), restrictKeys(Object.keys(queryParamShape))))
   },
+  headersObject: () => {
+    return object(record(string(), object()))
+  },
+  headerObject: () => {
+    return object(/* TODO */)
+  },
 } as const
+
+export type StructuralValidators = Record<keyof typeof factories, () => Validator<any>>
 
 export const structural = entries(factories).reduce(
   (validatorsObject, [name, factory]) => ({ ...validatorsObject, [name]: factory() }),

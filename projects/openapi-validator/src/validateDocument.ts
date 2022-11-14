@@ -3,13 +3,13 @@ import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { failure, success } from '@oats-ts/try'
 import { isOk, Issue } from '@oats-ts/validators'
 import { severityComparator } from './severityComparator'
-import { OpenAPIValidatorConfig, OpenAPIValidatorContext } from './typings'
-import { tick } from './utils/tick'
+import { OpenAPIValidator, OpenAPIValidatorContext } from './typings'
+import { tick } from '@oats-ts/model-common'
 
 export async function validateDocument(
   document: OpenAPIObject,
   context: OpenAPIValidatorContext,
-  config: OpenAPIValidatorConfig,
+  validator: OpenAPIValidator,
   emitter: ValidatorEventEmitter<OpenAPIObject>,
 ): Promise<Issue[]> {
   emitter.emit('validate-file-started', {
@@ -19,8 +19,12 @@ export async function validateDocument(
   })
 
   await tick()
-
-  const issues = config.openApiObject(document, context, config).sort(severityComparator)
+  let issues: Issue[] = []
+  try {
+    issues = validator.validate(document).sort(severityComparator)
+  } catch (e) {
+    console.error(e)
+  }
   const hasNoCriticalIssue = isOk(issues)
   const result = hasNoCriticalIssue ? success(document) : failure(...issues)
 

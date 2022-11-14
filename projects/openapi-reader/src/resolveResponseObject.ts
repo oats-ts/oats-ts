@@ -22,10 +22,13 @@ export function resolveResponseObject(input: ReadInput<ResponseObject>, context:
   const parts: Try<any>[] = []
 
   if (!isNil(headers)) {
+    const headersUri = context.uri.append(uri, 'headers')
+    register({ data: headers, uri: headersUri }, context)
+    
     for (const [name, headerOrRef] of entries(headers)) {
       parts.push(
         context.ref.resolveReferenceable<HeaderObject>(
-          { data: headerOrRef, uri: context.uri.append(uri, 'headers', name) },
+          { data: headerOrRef, uri: context.uri.append(headersUri, name) },
           context,
           resolveHeaderObject,
         ),
