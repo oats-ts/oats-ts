@@ -8,7 +8,7 @@ import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { flatMap } from 'lodash'
 import { severityComparator } from './severityComparator'
 import { isOk } from '@oats-ts/validators'
-import { OpenAPIValidatorImpl } from './OpenAPIValidator'
+import { OpenAPIValidatorImpl } from './OpenAPIValidatorImpl'
 import { validateDocument } from './validateDocument'
 import { validatorConfig } from './validatorConfig'
 
