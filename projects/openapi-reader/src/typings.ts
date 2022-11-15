@@ -39,12 +39,10 @@ export type OpenAPIResolver = {
   resolve: (document: OpenAPIObject) => Try<OpenAPIObject>
 }
 
-export type ReferenceResolver2 = {
-  resolveReferenceable<T>(
-    data: Referenceable<T>,
-    uri: string,
-    resolveTarget: (data: T, uri: string) => Try<T>,
-  ): Try<Referenceable<T>>
+export type TargetResolver<T> = (data: T, uri: string) => Try<T>
+
+export type ReferenceResolver = {
+  resolveReferenceable<T>(data: Referenceable<T>, uri: string, resolveTarget: TargetResolver<T>): Try<Referenceable<T>>
   resolveReferenceUri(refUri: string, uri: string): Try<string>
 }
 

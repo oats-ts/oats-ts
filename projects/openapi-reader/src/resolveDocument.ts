@@ -4,9 +4,10 @@ import { OpenAPIReadOutput } from './typings'
 import { URIManipulator } from '@oats-ts/oats-ts'
 import { fluent, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { ReaderEventEmitter } from '@oats-ts/oats-ts'
-import { ReadRefResolver, VerifyRefResolver } from './referenceResolvers2'
-import { tick } from './utils/tick'
+import { ReadRefResolver } from './ReadRefResolver'
 import { OpenAPIResolverImpl } from './OpenAPIResolverImpl'
+import { tick } from '@oats-ts/model-common'
+import { VerifyRefResolver } from './VerifyRefResolver'
 
 async function defaultSanitizer(uri: string): Promise<Try<string>> {
   return success(uri)

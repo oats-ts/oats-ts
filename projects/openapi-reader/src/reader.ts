@@ -5,7 +5,7 @@ import { OpenAPIReadConfig, OpenAPIReadOutput } from './typings'
 import { fluent, Try } from '@oats-ts/try'
 import { createResolver } from './utils/createResolver'
 import { resolveDocument } from './resolveDocument'
-import { tick } from './utils/tick'
+import { tick } from '@oats-ts/model-common'
 
 const name = '@oats-ts/openapi-reader'
 

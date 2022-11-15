@@ -17,14 +17,15 @@ import { failure, fromArray, isFailure, isSuccess, success, Try } from '@oats-ts
 import { DefaultConfig, Validator } from '@oats-ts/validators'
 import { entries, isNil } from 'lodash'
 import { ReadContext } from './internalTypings'
+import { register } from './register'
 import { structural } from './structural'
-import { OpenAPIResolver, ReferenceResolver2 } from './typings'
+import { OpenAPIResolver, ReferenceResolver } from './typings'
 
 export class OpenAPIResolverImpl implements OpenAPIResolver {
   private readonly _context: ReadContext
-  private readonly _refResolver: ReferenceResolver2
+  private readonly _refResolver: ReferenceResolver
 
-  public constructor(context: ReadContext, resolver: ReferenceResolver2) {
+  public constructor(context: ReadContext, resolver: ReferenceResolver) {
     this._context = context
     this._refResolver = resolver
   }
@@ -33,7 +34,7 @@ export class OpenAPIResolverImpl implements OpenAPIResolver {
     return this.resolveOpenAPIObject(data, this.context().cache.objectToUri.get(data)!)
   }
 
-  protected resolver(): ReferenceResolver2 {
+  protected resolver(): ReferenceResolver {
     return this._refResolver
   }
 
@@ -42,9 +43,7 @@ export class OpenAPIResolverImpl implements OpenAPIResolver {
   }
 
   protected register<T>(data: T, uri: string): void {
-    this.context().cache.uriToObject.set(uri, data)
-    this.context().cache.objectToUri.set(data, uri)
-    this.context().cache.objectToHash.set(data, this.hash(JSON.stringify(data)))
+    register(data, uri, this.context())
   }
 
   protected registerNamed<T>(name: string, input: Referenceable<T>): void {
@@ -57,18 +56,6 @@ export class OpenAPIResolverImpl implements OpenAPIResolver {
     }
     const issues = validator(data, uri, { ...DefaultConfig, append: this.context().uri.append })
     return issues.length === 0 ? success(undefined) : failure(...issues)
-  }
-
-  /**
-   * Appropriated from this repo, as it's archived and unmaintained:
-   * https://github.com/darkskyapp/string-hash/blob/master/index.js
-   */
-  protected hash(input: string): number {
-    let hash = 5381
-    for (let i = 0; i < input.length; i += 1) {
-      hash = (hash * 33) ^ input.charCodeAt(i)
-    }
-    return hash >>> 0
   }
 
   protected resolveOpenAPIObject(data: OpenAPIObject, uri: string): Try<OpenAPIObject> {
