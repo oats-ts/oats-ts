@@ -1,3 +1,4 @@
+import { Referenceable } from '@oats-ts/json-schema-model'
 import { ContentReader } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
@@ -32,6 +33,19 @@ export type OpenAPIReadConfig = {
   read: ReadFn
   /** Parses the given string content into an in memory object tree. */
   parse: ParseFn
+}
+
+export type OpenAPIResolver = {
+  resolve: (document: OpenAPIObject) => Try<OpenAPIObject>
+}
+
+export type ReferenceResolver2 = {
+  resolveReferenceable<T>(
+    data: Referenceable<T>,
+    uri: string,
+    resolveTarget: (data: T, uri: string) => Try<T>,
+  ): Try<Referenceable<T>>
+  resolveReferenceUri(refUri: string, uri: string): Try<string>
 }
 
 export type OpenAPIReadOutput = {

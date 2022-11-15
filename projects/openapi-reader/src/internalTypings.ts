@@ -25,7 +25,7 @@ export type ReadCache = {
   readonly uriToObject: Map<string, any>
   readonly objectToUri: Map<any, string>
   readonly objectToName: Map<any, string>
-  readonly objectToHash: Map<OpenAPIObject, number>
+  readonly objectToHash: Map<any, number>
 }
 
 export type ReadInput<T> = {

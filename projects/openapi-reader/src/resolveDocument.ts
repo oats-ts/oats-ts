@@ -1,12 +1,12 @@
-import { resolveOpenAPIObject } from './resolveOpenAPIObject'
 import { ReadCache, ReadContext, ReadInput } from './internalTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from './typings'
 import { URIManipulator } from '@oats-ts/oats-ts'
 import { fluent, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { ReaderEventEmitter } from '@oats-ts/oats-ts'
-import { ReadRefResolver, VerifyRefResolver } from './referenceResolvers'
+import { ReadRefResolver, VerifyRefResolver } from './referenceResolvers2'
 import { tick } from './utils/tick'
+import { OpenAPIResolverImpl } from './OpenAPIResolverImpl'
 
 async function defaultSanitizer(uri: string): Promise<Try<string>> {
   return success(uri)
@@ -42,13 +42,11 @@ export async function resolveDocument(
     return sanitizedUri
   }
 
-  const { data: uri } = sanitizedUri
-
   const readContext: ReadContext = {
     resolve,
     cache,
     uri: new URIManipulator(),
-    ref: new ReadRefResolver(),
+    ref: undefined!,
     externalDocumentUris: new Set(),
   }
 
@@ -58,10 +56,13 @@ export async function resolveDocument(
   // Register the document in the cache so others have access to it
   if (isSuccess(rawDocument)) {
     cache.documents.set(sanitizedUri.data, rawDocument.data)
+    cache.objectToUri.set(rawDocument.data, sanitizedUri.data)
   }
 
   // Explore the document, resolve/validate what's inside the document already, collect unresolved external refs
-  let readResult = fluent(rawDocument).flatMap((data) => resolveOpenAPIObject({ data, uri }, readContext))
+  let readResult = fluent(rawDocument).flatMap((data) =>
+    new OpenAPIResolverImpl(readContext, new ReadRefResolver(readContext)).resolve(data),
+  )
 
   // If we have external references
   if (readContext.externalDocumentUris.size > 0) {
@@ -74,11 +75,13 @@ export async function resolveDocument(
     const resolveContext: ReadContext = {
       ...readContext,
       externalDocumentUris: new Set(),
-      ref: new VerifyRefResolver(),
+      ref: undefined!,
     }
 
     // Do a second pass on the document and resolve external references as well
-    readResult = fluent(readResult).flatMap((data) => resolveOpenAPIObject({ data, uri }, resolveContext))
+    readResult = fluent(readResult).flatMap((data) =>
+      new OpenAPIResolverImpl(resolveContext, new VerifyRefResolver(readContext)).resolve(data),
+    )
   }
 
   // Emit that we are finished with the file
@@ -86,13 +89,13 @@ export async function resolveDocument(
     type: 'read-file-completed',
     data: readResult.toTry(),
     issues: [],
-    path: uri,
+    path: sanitizedUri.data,
   })
 
   await tick()
 
   // Return the partial result
   return fluent(readResult)
-    .map((data) => ({ data, uri }))
+    .map((data) => ({ data, uri: sanitizedUri.data }))
     .toTry()
 }
