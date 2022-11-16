@@ -1,50 +1,9 @@
-import { ContentGenerator, toSimpleGeneratorResult, GeneratorEventEmitter } from '@oats-ts/oats-ts'
+import { ContentGenerator } from '@oats-ts/oats-ts'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { SourceFile } from 'typescript'
 import { RootGeneratorConfig } from './types'
-import { fluent, success, Try } from '@oats-ts/try'
-import { mergeSourceFiles } from '@oats-ts/typescript-common'
-import { OpenAPIGroupGenerator } from './group/OpenAPIGroupGenerator'
+import { OpenAPIGenerator } from './OpenAPIGenerator'
 
-const name = '@oats-ts/openapi-generators'
-
-export const generator =
-  (config: RootGeneratorConfig): ContentGenerator<OpenAPIReadOutput, SourceFile> =>
-  async (input: OpenAPIReadOutput, emitter: GeneratorEventEmitter<SourceFile>): Promise<Try<SourceFile[]>> => {
-    emitter.emit('generator-step-started', {
-      type: 'generator-step-started',
-      name,
-    })
-
-    const { name: generatorName, children, ...globalConfig } = config
-    const generator = new OpenAPIGroupGenerator(
-      generatorName ?? 'root',
-      Array.isArray(children) ? children : [children],
-    )
-
-    generator.initialize({
-      globalConfig,
-      emitter,
-      input,
-      dependencies: success([]),
-      parent: undefined,
-    })
-
-    const structure = await generator.generate()
-
-    const { data, issues } = toSimpleGeneratorResult<SourceFile>(structure)
-    const result = fluent(data)
-      .map((files) => mergeSourceFiles(files))
-      .toTry()
-
-    emitter.emit('generator-step-completed', {
-      type: 'generator-step-completed',
-      data: result,
-      structure,
-      dependencies: generator.runtimeDependencies(),
-      name,
-      issues,
-    })
-
-    return result
-  }
+export function generator(config: RootGeneratorConfig): ContentGenerator<OpenAPIReadOutput, SourceFile> {
+  return new OpenAPIGenerator(config)
+}
