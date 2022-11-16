@@ -11,7 +11,7 @@ export async function generate<P, R, G, O>(input: GeneratorInput<P, R, G, O>): P
   logger?.(emitter)
 
   // Read
-  const readResult = await reader(emitter)
+  const readResult = await reader.read(emitter)
   if (isFailure(readResult)) {
     return readResult
   }

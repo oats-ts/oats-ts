@@ -1,6 +1,6 @@
 import { isNil } from 'lodash'
 import { success, Try } from '@oats-ts/try'
-import { findByFragments } from '../findByFragments'
+import { findByFragments } from './utils/findByFragments'
 import { AbstractReferenceTraverser } from './AbstractReferenceTraverser'
 
 export class SecondPassReferenceTraverserImpl extends AbstractReferenceTraverser {

@@ -1,5 +1,5 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
-import { ContentReader } from '@oats-ts/oats-ts'
+import { ContentReader, URIManipulatorType } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
 
@@ -98,4 +98,18 @@ export type DefaultReaders = {
 export type Readers = DefaultReaders & {
   custom: (config: OpenAPIReadConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
   memory: MemoryReaders
+}
+
+export type ReadContext = {
+  readonly cache: ReadCache
+  readonly externalDocumentUris: Set<string>
+  readonly uri: URIManipulatorType
+}
+
+export type ReadCache = {
+  readonly documents: Map<string, OpenAPIObject>
+  readonly uriToObject: Map<string, any>
+  readonly objectToUri: Map<any, string>
+  readonly objectToName: Map<any, string>
+  readonly objectToHash: Map<any, number>
 }

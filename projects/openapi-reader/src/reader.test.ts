@@ -15,7 +15,7 @@ describe('reader', () => {
         read: httpsRead,
         sanitize: httpsUriSanitizer,
       })
-      const result = await readerInstance(new EventEmitter())
+      const result = await readerInstance.read(new EventEmitter())
       expect(isSuccess(result)).toBeTruthy()
     })
     it('should read schema with primitives only', async () => {
@@ -26,7 +26,7 @@ describe('reader', () => {
         read: httpsRead,
         sanitize: httpsUriSanitizer,
       })
-      const result = await readerInstance(new EventEmitter())
+      const result = await readerInstance.read(new EventEmitter())
       expect(isSuccess(result)).toBeTruthy()
     })
     it('should read kitchen sink schema', async () => {
@@ -37,7 +37,7 @@ describe('reader', () => {
         read: httpsRead,
         sanitize: httpsUriSanitizer,
       })
-      const result = await readerInstance(new EventEmitter())
+      const result = await readerInstance.read(new EventEmitter())
       expect(isSuccess(result)).toBeTruthy()
     })
   })
@@ -50,7 +50,7 @@ describe('reader', () => {
         read: httpsRead,
         sanitize: httpsUriSanitizer,
       })
-      const result = await readerInstance(new EventEmitter())
+      const result = await readerInstance.read(new EventEmitter())
       if (!isSuccess(result)) {
         fail()
       }
@@ -65,7 +65,7 @@ describe('reader', () => {
       read: httpsRead,
       sanitize: httpsUriSanitizer,
     })
-    const result = await readerInstance(new EventEmitter())
+    const result = await readerInstance.read(new EventEmitter())
     expect(isFailure(result)).toBeTruthy()
   })
 

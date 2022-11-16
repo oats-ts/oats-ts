@@ -1,5 +1,5 @@
 import { hash } from './hash'
-import { ReadContext } from './internalTypings'
+import { ReadContext } from '../typings'
 
 export function register(data: any, uri: string, context: ReadContext): void {
   context.cache.uriToObject.set(uri, data)

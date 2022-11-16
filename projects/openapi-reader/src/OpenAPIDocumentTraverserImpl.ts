@@ -16,12 +16,11 @@ import {
 import { failure, fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { DefaultConfig, Validator } from '@oats-ts/validators'
 import { entries, isNil } from 'lodash'
-import { ReadContext } from '../internalTypings'
-import { register } from '../register'
-import { structural } from '../structural'
-import { OpenAPIDocumentTraverser, ReferenceTraverser } from '../typings'
+import { register } from './utils/register'
+import { validators } from './validators'
+import { OpenAPIDocumentTraverser, ReadContext, ReferenceTraverser } from './typings'
 
-export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
+export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
   private readonly _context: ReadContext
   private readonly _refResolver: ReferenceTraverser
 
@@ -59,7 +58,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseOpenAPIObject(data: OpenAPIObject, uri: string): Try<OpenAPIObject> {
-    const validationResult = this.validate(data, uri, structural.openApiObject)
+    const validationResult = this.validate(data, uri, validators.openApiObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -81,7 +80,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseComponentsObject(data: ComponentsObject, uri: string): Try<ComponentsObject> {
-    const validationResult = this.validate(data, uri, structural.componentsObject)
+    const validationResult = this.validate(data, uri, validators.componentsObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -170,7 +169,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traversePathsObject(data: PathsObject, uri: string): Try<PathsObject> {
-    const validationResult = this.validate(data, uri, structural.pathsObject)
+    const validationResult = this.validate(data, uri, validators.pathsObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -189,7 +188,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traversePathItemObject(data: PathItemObject, uri: string): Try<PathItemObject> {
-    const validationResult = this.validate(data, uri, structural.pathItemObject)
+    const validationResult = this.validate(data, uri, validators.pathItemObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -242,7 +241,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseOperationObject(data: OperationObject, uri: string): Try<OperationObject> {
-    const validationResult = this.validate(data, uri, structural.operationObject)
+    const validationResult = this.validate(data, uri, validators.operationObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -329,15 +328,15 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseParameterObject(data: ParameterObject, uri: string): Try<ParameterObject> {
-    return this.traverseBaseParameter(structural.parameterObject, data, uri)
+    return this.traverseBaseParameter(validators.parameterObject, data, uri)
   }
 
   protected resolveHeaderObject(data: HeaderObject, uri: string): Try<HeaderObject> {
-    return this.traverseBaseParameter(structural.headerObject, data, uri)
+    return this.traverseBaseParameter(validators.headerObject, data, uri)
   }
 
   protected traverseMediaTypeObject(data: MediaTypeObject, uri: string): Try<MediaTypeObject> {
-    const validationResult = this.validate(data, uri, structural.mediaTypeObject)
+    const validationResult = this.validate(data, uri, validators.mediaTypeObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -366,7 +365,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseSchemaObject(data: SchemaObject, uri: string): Try<SchemaObject> {
-    const validationResult = this.validate(data, uri, structural.schemaObject)
+    const validationResult = this.validate(data, uri, validators.schemaObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -482,7 +481,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseDiscriminatorObject(data: DiscriminatorObject, uri: string): Try<DiscriminatorObject> {
-    const validationResult = this.validate(data, uri, structural.discriminatorObject)
+    const validationResult = this.validate(data, uri, validators.discriminatorObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -508,7 +507,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseResponseObject(data: ResponseObject, uri: string): Try<ResponseObject> {
-    const validationResult = this.validate(data, uri, structural.responseObject)
+    const validationResult = this.validate(data, uri, validators.responseObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -543,7 +542,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseRequestBodyObject(data: RequestBodyObject, uri: string): Try<RequestBodyObject> {
-    const validationResult = this.validate(data, uri, structural.requestBodyObject)
+    const validationResult = this.validate(data, uri, validators.requestBodyObject)
     if (isFailure(validationResult)) {
       return validationResult
     }
@@ -561,7 +560,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   }
 
   protected traverseContentObject(data: ContentObject, uri: string): Try<ContentObject> {
-    const validationResult = this.validate(data, uri, structural.contentObject)
+    const validationResult = this.validate(data, uri, validators.contentObject)
     if (isFailure(validationResult)) {
       return validationResult
     }

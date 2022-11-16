@@ -8,7 +8,9 @@ import {
 } from './events'
 import { SimpleGeneratorResult, CompositeGeneratorResult } from './GeneratorResult'
 
-export type ContentReader<P, R> = (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
+export type ContentReader<P, R> = {
+  read: (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
+}
 export type ContentValidator<P, R> = (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
 export type ContentGenerator<R, G> = (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G[]>>
 export type ContentWriter<G, O> = (data: G[], emitter: WriterEventEmitter<G, O>) => Promise<Try<O[]>>

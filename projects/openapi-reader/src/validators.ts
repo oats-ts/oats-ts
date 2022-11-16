@@ -53,7 +53,7 @@ const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any
   content: optional(object()),
 }
 
-export const structural = {
+export const validators = {
   openApiObject: object(
     shape<OpenAPIObject>({
       openapi: string(),
