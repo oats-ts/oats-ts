@@ -23,7 +23,7 @@ export async function generateFromOpenAPIDocument(
 ) {
   try {
     await generate({
-      plugins: [loggers.verbose()],
+      plugins: [loggers.simple()],
       validator: validator(),
       reader: readers[reader].mixed(url),
       generator: generator({

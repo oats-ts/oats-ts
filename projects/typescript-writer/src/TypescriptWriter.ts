@@ -5,8 +5,6 @@ import { createPrinter, factory, NewLineKind, NodeFlags, SourceFile, Statement, 
 import { CommentConfig, TypeScriptWriterConfig } from './typings'
 
 export class TypescriptWriter<O> implements ContentWriter<SourceFile, O> {
-  protected emitter: WriterEventEmitter<SourceFile, O> | undefined
-
   public constructor(private _config: TypeScriptWriterConfig) {}
 
   public name(): string {
@@ -14,19 +12,18 @@ export class TypescriptWriter<O> implements ContentWriter<SourceFile, O> {
   }
 
   public async write(files: SourceFile[], emitter: WriterEventEmitter<SourceFile, O>): Promise<Try<O[]>> {
-    this.emitter = emitter
-    this.emitter?.emit('writer-step-started', {
+    emitter.emit('writer-step-started', {
       type: 'writer-step-started',
       name: this.name(),
     })
 
     const output = fromArray(
-      (await Promise.allSettled(files.map((file) => this.writeSourceFileWithEvents(file))))
+      (await Promise.allSettled(files.map((file) => this.writeSourceFileWithEvents(file, emitter))))
         .map(fromPromiseSettledResult)
         .map((wrapped) => fluent(wrapped).flatMap((t) => t)),
     )
 
-    this.emitter?.emit('writer-step-completed', {
+    emitter.emit('writer-step-completed', {
       type: 'writer-step-completed',
       data: output,
       name: this.name(),
@@ -47,15 +44,18 @@ export class TypescriptWriter<O> implements ContentWriter<SourceFile, O> {
     return this.config().write(file.fileName, formattedSource, file)
   }
 
-  protected async writeSourceFileWithEvents(file: SourceFile): Promise<Try<O>> {
-    this.emitter?.emit('write-file-started', {
+  protected async writeSourceFileWithEvents(
+    file: SourceFile,
+    emitter: WriterEventEmitter<SourceFile, O>,
+  ): Promise<Try<O>> {
+    emitter.emit('write-file-started', {
       type: 'write-file-started',
       data: file,
     })
 
     const outputTry = fluent(await fromPromise(this.writeSourceFile(file))).flatMap((nested) => nested)
 
-    this.emitter?.emit('write-file-completed', {
+    emitter.emit('write-file-completed', {
       type: 'write-file-completed',
       data: outputTry,
       issues: [],

@@ -17,7 +17,6 @@ import { SecondPassReferenceTraverserImpl } from './SecondPassReferenceTraverser
 
 export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOutput> {
   private _cache: ReadCache
-  protected emitter: ReaderEventEmitter<OpenAPIObject, OpenAPIReadOutput> | undefined
 
   constructor(private _config: OpenAPIReadConfig) {
     this._cache = this.createReadCache()
@@ -69,9 +68,13 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
     return parse(uri, content.data)
   }
 
-  protected async readSingleDocument(path: string, sanitize: boolean): Promise<Try<[OpenAPIObject, string]>> {
+  protected async readSingleDocument(
+    path: string,
+    sanitize: boolean,
+    emitter: ReaderEventEmitter<OpenAPIObject, OpenAPIReadOutput>,
+  ): Promise<Try<[OpenAPIObject, string]>> {
     // Emit that we started work on the document
-    this.emitter?.emit('read-file-started', {
+    emitter.emit('read-file-started', {
       type: 'read-file-started',
       path,
     })
@@ -83,7 +86,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
 
     // Stop the process if sanitization failed
     if (isFailure(sanitizedUri)) {
-      this.emitter?.emit('read-file-completed', {
+      emitter.emit('read-file-completed', {
         type: 'read-file-completed',
         data: sanitizedUri,
         issues: [],
@@ -119,7 +122,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
     if (readContext.externalDocumentUris.size > 0) {
       // Resolve each external document
       await Promise.allSettled(
-        Array.from(readContext.externalDocumentUris).map((refUri) => this.readSingleDocument(refUri, false)),
+        Array.from(readContext.externalDocumentUris).map((refUri) => this.readSingleDocument(refUri, false, emitter)),
       )
 
       // Build a read-context, that will try to resolve both internal and external references
@@ -138,7 +141,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
     }
 
     // Emit that we are finished with the file
-    this.emitter?.emit('read-file-completed', {
+    emitter.emit('read-file-completed', {
       type: 'read-file-completed',
       data: readResult.toTry(),
       issues: [],
@@ -154,8 +157,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
   }
 
   public async read(emitter: ReaderEventEmitter<OpenAPIObject, OpenAPIReadOutput>): Promise<Try<OpenAPIReadOutput>> {
-    this.emitter = emitter
-    this.emitter?.emit('read-step-started', {
+    emitter.emit('read-step-started', {
       type: 'read-step-started',
       name: this.name(),
     })
@@ -164,7 +166,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
 
     const { path } = this.config()
 
-    const mainDocResult = await this.readSingleDocument(path, true)
+    const mainDocResult = await this.readSingleDocument(path, true, emitter)
 
     const result = fluent(mainDocResult).map(
       ([document, documentUri]): OpenAPIReadOutput => ({
@@ -174,7 +176,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
       }),
     )
 
-    this.emitter?.emit('read-step-completed', {
+    emitter.emit('read-step-completed', {
       type: 'read-step-completed',
       issues: [],
       name: this.name(),

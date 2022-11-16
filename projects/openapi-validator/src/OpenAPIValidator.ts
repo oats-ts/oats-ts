@@ -29,7 +29,6 @@ import { OpenAPIValidatorContext } from './typings'
 
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators
-  protected emitter: ValidatorEventEmitter<OpenAPIObject> | undefined
   private _context!: OpenAPIValidatorContext
   private _config!: ValidatorConfig
 
@@ -46,8 +45,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     data: OpenAPIReadOutput,
     emitter: ValidatorEventEmitter<OpenAPIObject>,
   ): Promise<Try<OpenAPIReadOutput>> {
-    this.emitter = emitter
-    this.emitter?.emit('validator-step-started', {
+    emitter.emit('validator-step-started', {
       type: 'validator-step-started',
       name: this.name(),
     })
@@ -60,7 +58,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     const validationResult = await Promise.allSettled(
       this.context()
         .documents()
-        .map((document) => this.validateDocument(document)),
+        .map((document) => this.validateDocument(document, emitter)),
     )
     const results = fluent(fromArray(validationResult.map(fromPromiseSettledResult))).map((data) =>
       flatMap(data).sort(severityComparator),
@@ -76,8 +74,8 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return hasNoCriticalIssues ? success(data) : failure(...allIssues)
   }
 
-  async validateDocument(document: OpenAPIObject): Promise<Issue[]> {
-    this.emitter?.emit('validate-file-started', {
+  async validateDocument(document: OpenAPIObject, emitter: ValidatorEventEmitter<OpenAPIObject>): Promise<Issue[]> {
+    emitter.emit('validate-file-started', {
       type: 'validate-file-started',
       path: this.context().uriOf(document),
       data: document,
@@ -95,7 +93,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
 
     await tick()
 
-    this.emitter?.emit('validate-file-completed', {
+    emitter.emit('validate-file-completed', {
       type: 'validate-file-completed',
       path: this.context().uriOf(document),
       data: result,
