@@ -8,14 +8,34 @@ import {
 } from './events'
 import { SimpleGeneratorResult, CompositeGeneratorResult } from './GeneratorResult'
 
-export type ContentReader<P, R> = (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
-export type ContentValidator<P, R> = (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
-export type ContentGenerator<R, G> = (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G[]>>
-export type ContentWriter<G, O> = (data: G[], emitter: WriterEventEmitter<G, O>) => Promise<Try<O[]>>
-export type Logger = (emitter: OatsEventEmitter) => void
+export type ContentReader<P, R> = {
+  name: () => string
+  read: (emitter: ReaderEventEmitter<P, R>) => Promise<Try<R>>
+}
+
+export type ContentGenerator<R, G> = {
+  name: () => string
+  generate: (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G[]>>
+}
+
+export type ContentValidator<P, R> = {
+  name: () => string
+  validate: (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
+}
+
+export type ContentWriter<G, O> = {
+  name: () => string
+  write: (data: G[], emitter: WriterEventEmitter<G, O>) => Promise<Try<O[]>>
+}
+
+export type OatsPlugin = {
+  name: () => string
+  addEventListeners: (emitter: OatsEventEmitter) => void
+  removeEventListeners: (emitter: OatsEventEmitter) => void
+}
 
 export type GeneratorInput<P, R, G, O> = {
-  logger?: Logger
+  plugins?: OatsPlugin[]
   validator?: ContentValidator<P, R>
   reader: ContentReader<P, R>
   generator: ContentGenerator<R, G>

@@ -1,6 +1,7 @@
+export { generator } from './generator'
+export { OpenAPIGenerator } from './OpenAPIGenerator'
 export { GroupGenerator } from '@oats-ts/oats-ts'
 export { RootGeneratorConfig } from './types'
-export { generator } from './generator'
 export { generators } from './generators'
 export { presets } from './presets/presets'
 export {

@@ -1,8 +1,8 @@
 import { sortBy } from 'lodash'
 import { getEnhancedOperations, OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
-import { OpenAPIGenerator } from './OpenAPIGenerator'
+import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 
-export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, EnhancedOperation[]> {
+export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPICodeGeneratorImpl<Cfg, EnhancedOperation[]> {
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 

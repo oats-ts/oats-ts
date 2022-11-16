@@ -1,5 +1,5 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { ResponseTypesGenerator } from './ResponseTypesGenerator'
 import { ResponseTypesGeneratorConfig } from './typings'
 
@@ -13,6 +13,6 @@ function defaultConfig({
   }
 }
 
-export function responseTypes(config: Partial<GeneratorConfig & ResponseTypesGeneratorConfig> = {}): OpenAPIGenerator {
+export function responseTypes(config: Partial<GeneratorConfig & ResponseTypesGeneratorConfig> = {}): OpenAPICodeGenerator {
   return new ResponseTypesGenerator(defaultConfig(config))
 }

@@ -6,7 +6,7 @@ export type Config<T = {}> = boolean | (Partial<GeneratorConfig> & Partial<T>)
 
 export type RootGeneratorConfig = GeneratorConfig & {
   name?: string
-  children: OpenAPIGenerator | OpenAPIGenerator[]
+  children: OpenAPICodeGenerator | OpenAPICodeGenerator[]
 }
 
-export type OpenAPIGenerator = CodeGenerator<OpenAPIReadOutput, SourceFile>
+export type OpenAPICodeGenerator = CodeGenerator<OpenAPIReadOutput, SourceFile>

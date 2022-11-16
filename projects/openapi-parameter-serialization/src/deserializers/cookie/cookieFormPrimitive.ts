@@ -1,5 +1,5 @@
 import { CookieValue } from '@oats-ts/openapi-http'
-import { Try, failure } from '@oats-ts/try'
+import { Try, failure, success } from '@oats-ts/try'
 import { ValidatorConfig } from '@oats-ts/validators'
 import { CookieParameterDeserializer, DslConfig, Primitive, ValueDeserializer } from '../../types'
 import { decode } from '../../utils'
@@ -12,7 +12,7 @@ export const cookieFormPrimitive =
   (data: CookieValue[], name: string, path: string, config: ValidatorConfig): Try<T> => {
     switch (data.length) {
       case 0: {
-        return parse(undefined, name, path, config)
+        return options.required ? parse(undefined, name, path, config) : success(undefined!)
       }
       case 1: {
         return parse(decode(data[0].value), name, path, config)

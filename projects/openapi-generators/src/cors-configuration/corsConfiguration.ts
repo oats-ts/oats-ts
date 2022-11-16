@@ -1,5 +1,5 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { CorsConfigurationGenerator } from './CorsConfigurationGenerator'
 import { CorsConfigurationGeneratorConfig } from './typings'
 
@@ -26,6 +26,6 @@ function defaultConfig({
 
 export function corsConfiguration(
   config: Partial<CorsConfigurationGeneratorConfig & GeneratorConfig> = {},
-): OpenAPIGenerator {
+): OpenAPICodeGenerator {
   return new CorsConfigurationGenerator(defaultConfig(config))
 }

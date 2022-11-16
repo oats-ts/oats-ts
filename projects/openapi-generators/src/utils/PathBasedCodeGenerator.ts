@@ -1,7 +1,7 @@
 import { OpenAPIGeneratorTarget, EnhancedPathItem, getEnhancedPathItems } from '@oats-ts/openapi-common'
-import { OpenAPIGenerator } from './OpenAPIGenerator'
+import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 
-export abstract class PathBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, EnhancedPathItem[]> {
+export abstract class PathBasedCodeGenerator<Cfg> extends OpenAPICodeGeneratorImpl<Cfg, EnhancedPathItem[]> {
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 

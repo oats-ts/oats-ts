@@ -5,9 +5,9 @@ import {
   EnhancedOperation,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { OpenAPIGenerator } from './OpenAPIGenerator'
+import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 
-export abstract class OperationBasedCodeGenerator<Cfg> extends OpenAPIGenerator<Cfg, EnhancedOperation> {
+export abstract class OperationBasedCodeGenerator<Cfg> extends OpenAPICodeGeneratorImpl<Cfg, EnhancedOperation> {
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 

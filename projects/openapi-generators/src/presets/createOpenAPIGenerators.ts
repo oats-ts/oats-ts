@@ -1,12 +1,12 @@
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { entries, isNil } from 'lodash'
 import { generatorFactoryMap } from '../generatorFactoryMap'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { OpenAPIPresetConfig } from './types'
 
-export function createOpenAPIGenerators(cfgs: Readonly<OpenAPIPresetConfig>): OpenAPIGenerator[] {
+export function createOpenAPIGenerators(cfgs: Readonly<OpenAPIPresetConfig>): OpenAPICodeGenerator[] {
   const targetsWithConfigs = entries(cfgs).sort(([t1], [t2]) => t1.localeCompare(t2)) as [OpenAPIGeneratorTarget, any][]
-  const generators: OpenAPIGenerator[] = []
+  const generators: OpenAPICodeGenerator[] = []
   for (const [target, generatorConfig] of targetsWithConfigs) {
     if (generatorConfig !== false && !isNil(generatorConfig)) {
       const factory = generatorFactoryMap[target]

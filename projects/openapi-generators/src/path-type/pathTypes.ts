@@ -1,5 +1,5 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { ParameterTypesGeneratorConfig } from '../utils/parameterTypings'
 import { PathTypesGenerator } from './PathTypesGenerator'
 
@@ -13,6 +13,6 @@ function defaultConfig({
   }
 }
 
-export function pathTypes(config: Partial<ParameterTypesGeneratorConfig & GeneratorConfig> = {}): OpenAPIGenerator {
+export function pathTypes(config: Partial<ParameterTypesGeneratorConfig & GeneratorConfig> = {}): OpenAPICodeGenerator {
   return new PathTypesGenerator(defaultConfig(config))
 }

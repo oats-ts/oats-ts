@@ -1,7 +1,7 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { ResponseBodyValidatorsGenerator } from './ResponseBodyValidatorsGenerator'
 
-export function responseBodyValidators(config: Partial<GeneratorConfig> = {}): OpenAPIGenerator {
+export function responseBodyValidators(config: Partial<GeneratorConfig> = {}): OpenAPICodeGenerator {
   return new ResponseBodyValidatorsGenerator(config)
 }

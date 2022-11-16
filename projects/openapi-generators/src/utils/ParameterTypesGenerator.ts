@@ -13,9 +13,9 @@ import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
 import { getReferencedNamedSchemas } from '@oats-ts/model-common'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { OpenAPIGenerator } from './OpenAPIGenerator'
+import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 
-export abstract class ParameterTypesGenerator<T> extends OpenAPIGenerator<ParameterTypesGeneratorConfig, T> {
+export abstract class ParameterTypesGenerator<T> extends OpenAPICodeGeneratorImpl<ParameterTypesGeneratorConfig, T> {
   public abstract name(): OpenAPIGeneratorTarget
   protected abstract getParameterObjects(data: T): (ParameterObject | HeaderObject)[]
   protected abstract getEnhancedOperation(data: T): EnhancedOperation

@@ -1,4 +1,5 @@
-import { ContentReader } from '@oats-ts/oats-ts'
+import { Referenceable } from '@oats-ts/json-schema-model'
+import { ContentReader, URIManipulatorType } from '@oats-ts/oats-ts'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
 
@@ -32,6 +33,17 @@ export type OpenAPIReadConfig = {
   read: ReadFn
   /** Parses the given string content into an in memory object tree. */
   parse: ParseFn
+}
+
+export type OpenAPIDocumentTraverser = {
+  traverse: (document: OpenAPIObject) => Try<OpenAPIObject>
+}
+
+export type TargetTraverser<T> = (data: T, uri: string) => Try<T>
+
+export type ReferenceTraverser = {
+  traverseReferenceable<T>(data: Referenceable<T>, uri: string, target: TargetTraverser<T>): Try<Referenceable<T>>
+  traverseReference(uri: string, fromUri: string): Try<string>
 }
 
 export type OpenAPIReadOutput = {
@@ -86,4 +98,18 @@ export type DefaultReaders = {
 export type Readers = DefaultReaders & {
   custom: (config: OpenAPIReadConfig) => ContentReader<OpenAPIObject, OpenAPIReadOutput>
   memory: MemoryReaders
+}
+
+export type ReadContext = {
+  readonly cache: ReadCache
+  readonly externalDocumentUris: Set<string>
+  readonly uri: URIManipulatorType
+}
+
+export type ReadCache = {
+  readonly documents: Map<string, OpenAPIObject>
+  readonly uriToObject: Map<string, any>
+  readonly objectToUri: Map<any, string>
+  readonly objectToName: Map<any, string>
+  readonly objectToHash: Map<any, number>
 }
