@@ -4,10 +4,10 @@ import { OpenAPIReadOutput } from './typings'
 import { URIManipulator } from '@oats-ts/oats-ts'
 import { fluent, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { ReaderEventEmitter } from '@oats-ts/oats-ts'
-import { ReadRefResolver } from './ReadRefResolver'
-import { OpenAPIResolverImpl } from './OpenAPIResolverImpl'
+import { FirstPassReferenceTraverserImpl } from './utils/FirstPassReferenceTraverserImpl'
+import { OpenAPIResolverImpl } from './utils/OpenAPIDocumentTraverserImpl'
 import { tick } from '@oats-ts/model-common'
-import { VerifyRefResolver } from './VerifyRefResolver'
+import { SecondPassReferenceTraverserImpl } from './utils/SecondPassReferenceTraverserImpl'
 
 async function defaultSanitizer(uri: string): Promise<Try<string>> {
   return success(uri)
@@ -61,7 +61,7 @@ export async function resolveDocument(
 
   // Explore the document, resolve/validate what's inside the document already, collect unresolved external refs
   let readResult = fluent(rawDocument).flatMap((data) =>
-    new OpenAPIResolverImpl(readContext, new ReadRefResolver(readContext)).traverse(data),
+    new OpenAPIResolverImpl(readContext, new FirstPassReferenceTraverserImpl(readContext)).traverse(data),
   )
 
   // If we have external references
@@ -79,7 +79,7 @@ export async function resolveDocument(
 
     // Do a second pass on the document and resolve external references as well
     readResult = fluent(readResult).flatMap((data) =>
-      new OpenAPIResolverImpl(resolveContext, new VerifyRefResolver(readContext)).traverse(data),
+      new OpenAPIResolverImpl(resolveContext, new SecondPassReferenceTraverserImpl(readContext)).traverse(data),
     )
   }
 

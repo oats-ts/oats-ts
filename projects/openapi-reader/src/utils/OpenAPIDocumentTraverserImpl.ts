@@ -16,16 +16,16 @@ import {
 import { failure, fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { DefaultConfig, Validator } from '@oats-ts/validators'
 import { entries, isNil } from 'lodash'
-import { ReadContext } from './internalTypings'
-import { register } from './register'
-import { structural } from './structural'
-import { OpenAPIDocumentTraverser, ReferenceResolver } from './typings'
+import { ReadContext } from '../internalTypings'
+import { register } from '../register'
+import { structural } from '../structural'
+import { OpenAPIDocumentTraverser, ReferenceTraverser } from '../typings'
 
 export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
   private readonly _context: ReadContext
-  private readonly _refResolver: ReferenceResolver
+  private readonly _refResolver: ReferenceTraverser
 
-  public constructor(context: ReadContext, refResolver: ReferenceResolver) {
+  public constructor(context: ReadContext, refResolver: ReferenceTraverser) {
     this._context = context
     this._refResolver = refResolver
   }
@@ -34,7 +34,7 @@ export class OpenAPIResolverImpl implements OpenAPIDocumentTraverser {
     return this.traverseOpenAPIObject(data, this.context().cache.objectToUri.get(data)!)
   }
 
-  protected referenceTraverser(): ReferenceResolver {
+  protected referenceTraverser(): ReferenceTraverser {
     return this._refResolver
   }
 

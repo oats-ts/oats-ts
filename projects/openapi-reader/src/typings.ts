@@ -41,7 +41,7 @@ export type OpenAPIDocumentTraverser = {
 
 export type TargetTraverser<T> = (data: T, uri: string) => Try<T>
 
-export type ReferenceResolver = {
+export type ReferenceTraverser = {
   traverseReferenceable<T>(data: Referenceable<T>, uri: string, target: TargetTraverser<T>): Try<Referenceable<T>>
   traverseReference(uri: string, fromUri: string): Try<string>
 }

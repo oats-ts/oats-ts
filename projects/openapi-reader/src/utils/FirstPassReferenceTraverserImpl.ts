@@ -1,7 +1,7 @@
 import { Success, success } from '@oats-ts/try'
-import { AbstractRefResolver } from './AbstractRefResolver'
+import { AbstractReferenceTraverser } from './AbstractReferenceTraverser'
 
-export class ReadRefResolver extends AbstractRefResolver {
+export class FirstPassReferenceTraverserImpl extends AbstractReferenceTraverser {
   public traverseReference(uri: string, fromUri: string): Success<string> {
     const fullUri = this.context.uri.resolve(uri!, fromUri)
     const documentUri = this.context.uri.document(fullUri)

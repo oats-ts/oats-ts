@@ -1,9 +1,9 @@
 import { isNil } from 'lodash'
 import { success, Try } from '@oats-ts/try'
-import { findByFragments } from './findByFragments'
-import { AbstractRefResolver } from './AbstractRefResolver'
+import { findByFragments } from '../findByFragments'
+import { AbstractReferenceTraverser } from './AbstractReferenceTraverser'
 
-export class VerifyRefResolver extends AbstractRefResolver {
+export class SecondPassReferenceTraverserImpl extends AbstractReferenceTraverser {
   // TODO add tests for this
   public traverseReference(uri: string, _fromUri: string): Try<string> {
     const specUri = this.context.uri.document(uri)
