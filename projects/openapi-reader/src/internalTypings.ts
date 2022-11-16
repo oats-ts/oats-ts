@@ -16,7 +16,6 @@ export type ReadContext = {
   readonly cache: ReadCache
   readonly externalDocumentUris: Set<string>
   readonly uri: URIManipulatorType
-  readonly ref: ReferenceResolver
   resolve(uri: string): Promise<Try<OpenAPIObject>>
 }
 

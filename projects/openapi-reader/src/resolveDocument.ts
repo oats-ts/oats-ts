@@ -47,7 +47,6 @@ export async function resolveDocument(
     resolve,
     cache,
     uri: new URIManipulator(),
-    ref: undefined!,
     externalDocumentUris: new Set(),
   }
 
@@ -62,7 +61,7 @@ export async function resolveDocument(
 
   // Explore the document, resolve/validate what's inside the document already, collect unresolved external refs
   let readResult = fluent(rawDocument).flatMap((data) =>
-    new OpenAPIResolverImpl(readContext, new ReadRefResolver(readContext)).resolve(data),
+    new OpenAPIResolverImpl(readContext, new ReadRefResolver(readContext)).traverse(data),
   )
 
   // If we have external references
@@ -76,12 +75,11 @@ export async function resolveDocument(
     const resolveContext: ReadContext = {
       ...readContext,
       externalDocumentUris: new Set(),
-      ref: undefined!,
     }
 
     // Do a second pass on the document and resolve external references as well
     readResult = fluent(readResult).flatMap((data) =>
-      new OpenAPIResolverImpl(resolveContext, new VerifyRefResolver(readContext)).resolve(data),
+      new OpenAPIResolverImpl(resolveContext, new VerifyRefResolver(readContext)).traverse(data),
     )
   }
 

@@ -35,15 +35,15 @@ export type OpenAPIReadConfig = {
   parse: ParseFn
 }
 
-export type OpenAPIResolver = {
-  resolve: (document: OpenAPIObject) => Try<OpenAPIObject>
+export type OpenAPIDocumentTraverser = {
+  traverse: (document: OpenAPIObject) => Try<OpenAPIObject>
 }
 
-export type TargetResolver<T> = (data: T, uri: string) => Try<T>
+export type TargetTraverser<T> = (data: T, uri: string) => Try<T>
 
 export type ReferenceResolver = {
-  resolveReferenceable<T>(data: Referenceable<T>, uri: string, resolveTarget: TargetResolver<T>): Try<Referenceable<T>>
-  resolveReferenceUri(refUri: string, uri: string): Try<string>
+  traverseReferenceable<T>(data: Referenceable<T>, uri: string, target: TargetTraverser<T>): Try<Referenceable<T>>
+  traverseReference(uri: string, fromUri: string): Try<string>
 }
 
 export type OpenAPIReadOutput = {
