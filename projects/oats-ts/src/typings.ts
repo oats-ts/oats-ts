@@ -13,7 +13,15 @@ export type ContentReader<P, R> = {
 }
 export type ContentValidator<P, R> = (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
 export type ContentGenerator<R, G> = (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G[]>>
-export type ContentWriter<G, O> = (data: G[], emitter: WriterEventEmitter<G, O>) => Promise<Try<O[]>>
+// export type ContentValidator<P, R> = {
+//   validate: (data: R, emitter: ValidatorEventEmitter<P>) => Promise<Try<R>>
+// }
+// export type ContentGenerator<R, G> = {
+//   generate: (data: R, emitter: GeneratorEventEmitter<G>) => Promise<Try<G[]>>
+// }
+export type ContentWriter<G, O> = {
+  write: (data: G[], emitter: WriterEventEmitter<G, O>) => Promise<Try<O[]>>
+}
 export type Logger = (emitter: OatsEventEmitter) => void
 
 export type GeneratorInput<P, R, G, O> = {

@@ -29,5 +29,5 @@ export async function generate<P, R, G, O>(input: GeneratorInput<P, R, G, O>): P
   }
 
   // Write
-  return writer(generatorResult.data, emitter)
+  return writer.write(generatorResult.data, emitter)
 }
