@@ -23,7 +23,7 @@ export async function generate<P, R, G, O>(input: GeneratorInput<P, R, G, O>): P
   }
 
   // Generate
-  const generatorResult = await generator(readResult.data, emitter)
+  const generatorResult = await generator.generate(readResult.data, emitter)
   if (isFailure(generatorResult)) {
     return generatorResult
   }

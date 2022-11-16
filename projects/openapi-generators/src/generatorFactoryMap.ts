@@ -1,8 +1,8 @@
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { factories } from './factories'
-import { OpenAPIGenerator } from './types'
+import { OpenAPICodeGenerator } from './types'
 
-export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPIGenerator> = {
+export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) => OpenAPICodeGenerator> = {
   'oats/type-guard': factories.typeGuards,
   'oats/type-validator': factories.typeValidators,
   'oats/type': factories.types,

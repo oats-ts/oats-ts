@@ -1,5 +1,5 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { ParameterTypesGeneratorConfig } from '../utils/parameterTypings'
 import { QueryTypesGenerator } from './QueryTypesGenerator'
 
@@ -13,6 +13,6 @@ function defaultConfig({
   }
 }
 
-export function queryTypes(config: Partial<ParameterTypesGeneratorConfig & GeneratorConfig> = {}): OpenAPIGenerator {
+export function queryTypes(config: Partial<ParameterTypesGeneratorConfig & GeneratorConfig> = {}): OpenAPICodeGenerator {
   return new QueryTypesGenerator(defaultConfig(config))
 }

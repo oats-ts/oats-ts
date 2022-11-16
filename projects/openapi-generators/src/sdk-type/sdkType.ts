@@ -1,5 +1,5 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { SdkTypeGenerator } from './SdkTypeGenerator'
 
@@ -13,6 +13,6 @@ function defaultConfig({
   }
 }
 
-export function sdkType(config: Partial<SdkGeneratorConfig & GeneratorConfig> = {}): OpenAPIGenerator {
+export function sdkType(config: Partial<SdkGeneratorConfig & GeneratorConfig> = {}): OpenAPICodeGenerator {
   return new SdkTypeGenerator(defaultConfig(config))
 }

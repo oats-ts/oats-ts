@@ -1,5 +1,5 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIGenerator } from '../types'
+import { OpenAPICodeGenerator } from '../types'
 import { ExpressRouterFactoriesGenerator } from './ExpressRouterFactoriesGenerator'
 import { ExpressRouterFactoriesGeneratorConfig as ExpressRouterFactoriesGeneratorConfig } from './typings'
 
@@ -16,6 +16,6 @@ function defaultConfig({
 
 export function expressRouterFactories(
   config: Partial<ExpressRouterFactoriesGeneratorConfig & GeneratorConfig> = {},
-): OpenAPIGenerator {
+): OpenAPICodeGenerator {
   return new ExpressRouterFactoriesGenerator(defaultConfig(config))
 }

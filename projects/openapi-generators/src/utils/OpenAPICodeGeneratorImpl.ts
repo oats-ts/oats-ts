@@ -15,7 +15,7 @@ import {
   LocalNameDefaults,
 } from '@oats-ts/model-common'
 
-export abstract class OpenAPIGenerator<Config, Items> extends BaseCodeGenerator<
+export abstract class OpenAPICodeGeneratorImpl<Config, Items> extends BaseCodeGenerator<
   OpenAPIReadOutput,
   SourceFile,
   Config,
