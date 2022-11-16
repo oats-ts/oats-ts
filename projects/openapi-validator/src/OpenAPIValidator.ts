@@ -1,5 +1,6 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, isReferenceObject } from '@oats-ts/model-common'
+import { getInferredType, isReferenceObject, tick } from '@oats-ts/model-common'
+import { ContentValidator, URIManipulator, ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import {
   ComponentsObject,
   ContentObject,
@@ -17,25 +18,116 @@ import {
   ResponsesObject,
 } from '@oats-ts/openapi-model'
 import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
-import { Issue, Validator, ValidatorConfig } from '@oats-ts/validators'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
+import { DefaultConfig, isOk, Issue, Validator, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
 import { entries, flatMap, isNil, values } from 'lodash'
+import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
+import { severityComparator } from './severityComparator'
 import { factories, StructuralValidators } from './structural'
-import { OpenAPIValidator, OpenAPIValidatorContext } from './typings'
+import { OpenAPIValidatorContext } from './typings'
 
-export class OpenAPIValidatorImpl implements OpenAPIValidator {
-  private readonly _context: OpenAPIValidatorContext
-  private readonly _config: ValidatorConfig
+export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators
+  protected emitter: ValidatorEventEmitter<OpenAPIObject> | undefined
+  private _context!: OpenAPIValidatorContext
+  private _config!: ValidatorConfig
 
-  public constructor(context: OpenAPIValidatorContext, config: ValidatorConfig) {
-    this._context = context
-    this._config = config
+  public constructor() {
     this._structural = factories
     this.init()
   }
 
-  public validate(input: OpenAPIObject): Issue[] {
-    return this.validateOpenApiObject(input)
+  public name(): string {
+    return '@oats-ts/openapi-validator'
+  }
+
+  public async validate(
+    data: OpenAPIReadOutput,
+    emitter: ValidatorEventEmitter<OpenAPIObject>,
+  ): Promise<Try<OpenAPIReadOutput>> {
+    this.emitter = emitter
+    this.emitter?.emit('validator-step-started', {
+      type: 'validator-step-started',
+      name: this.name(),
+    })
+
+    await tick()
+
+    this._context = this.createContext(data)
+    this._config = this.createValidatorConfig()
+
+    const validationResult = await Promise.allSettled(
+      this.context()
+        .documents()
+        .map((document) => this.validateDocument(document)),
+    )
+    const results = fluent(fromArray(validationResult.map(fromPromiseSettledResult))).map((data) =>
+      flatMap(data).sort(severityComparator),
+    )
+    const allIssues = Array.from(isSuccess(results) ? results.data : results.issues).sort(severityComparator)
+    const hasNoCriticalIssues = isOk(allIssues)
+    emitter.emit('validator-step-completed', {
+      type: 'validate-step-completed',
+      name: this.name(),
+      issues: allIssues,
+    })
+
+    return hasNoCriticalIssues ? success(data) : failure(...allIssues)
+  }
+
+  async validateDocument(document: OpenAPIObject): Promise<Issue[]> {
+    this.emitter?.emit('validate-file-started', {
+      type: 'validate-file-started',
+      path: this.context().uriOf(document),
+      data: document,
+    })
+
+    await tick()
+    let issues: Issue[] = []
+    try {
+      issues = this.validateOpenApiObject(document).sort(severityComparator)
+    } catch (e) {
+      console.error(e)
+    }
+    const hasNoCriticalIssue = isOk(issues)
+    const result = hasNoCriticalIssue ? success(document) : failure(...issues)
+
+    await tick()
+
+    this.emitter?.emit('validate-file-completed', {
+      type: 'validate-file-completed',
+      path: this.context().uriOf(document),
+      data: result,
+      issues,
+    })
+
+    await tick()
+
+    return issues
+  }
+
+  protected createContext(data: OpenAPIReadOutput): OpenAPIValidatorContext {
+    return new OpenAPIValidatorContextImpl(data)
+  }
+
+  protected createValidatorConfig(): ValidatorConfig {
+    return {
+      ...DefaultConfig,
+      append: new URIManipulator().append,
+      severity: (type: ValidatorType) => {
+        if (type === 'restrictKeys') {
+          return 'info'
+        }
+        return 'error'
+      },
+      message: (type: ValidatorType, path: string, data?: any) => {
+        if (type === 'restrictKeys') {
+          return 'unused field'
+        }
+        return DefaultConfig.message(type, path, data)
+      },
+    }
   }
 
   protected init() {

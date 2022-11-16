@@ -124,7 +124,6 @@ export const factories = {
   primitiveSchemaObject: () => {
     const primitiveShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
-      format: optional(string()),
       type: union({
         string: literal('string'),
         boolean: literal('boolean'),
