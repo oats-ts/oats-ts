@@ -23,7 +23,7 @@ export class OpenAPIReader implements ContentReader<OpenAPIObject, OpenAPIReadOu
     this._cache = this.createReadCache()
   }
 
-  protected name(): string {
+  public name(): string {
     return '@oats-ts/openapi-reader'
   }
 

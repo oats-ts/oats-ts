@@ -23,7 +23,7 @@ import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, succes
 import { DefaultConfig, isOk, Issue, Validator, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
 import { entries, flatMap, isNil, values } from 'lodash'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
-import { severityComparator } from './severityComparator'
+import { severityComparator } from '@oats-ts/validators'
 import { factories, StructuralValidators } from './structural'
 import { OpenAPIValidatorContext } from './typings'
 

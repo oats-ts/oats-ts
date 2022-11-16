@@ -1,4 +1,4 @@
-import { Issue, Severity } from '@oats-ts/validators'
+import { Issue, Severity } from './typings'
 
 const SeverityMap: Record<Severity, number> = {
   error: 0,
