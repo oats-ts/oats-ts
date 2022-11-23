@@ -80,6 +80,10 @@ export type QueryPrimitive = PrimitiveDsl<'query', QueryStyle>
 export type QueryArray = ArrayDsl<'query', QueryStyle>
 export type QueryObject = ObjectDsl<'query', QueryStyle>
 
+export type HeaderPrimitive = PrimitiveDsl<'header', HeaderStyle>
+export type HeaderArray = ArrayDsl<'header', HeaderStyle>
+export type HeaderObject = ObjectDsl<'header', HeaderStyle>
+
 export type PathDsl = Dsl<'path', PathStyle>
 export type QueryDsl = Dsl<'query', QueryStyle>
 export type HeaderDsl = Dsl<'header', HeaderStyle>
@@ -149,6 +153,10 @@ export type PathDeserializer<T> = {
 
 export type QueryDeserializer<T> = {
   deserialize(query: string): Try<T>
+}
+
+export type HeaderDeserializer<T> = {
+  deserialize(headers: RawHttpHeaders): Try<T>
 }
 
 export type RawPath = Record<string, string>

@@ -1,0 +1,185 @@
+import { RawHttpHeaders } from '@oats-ts/openapi-http'
+import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
+import { Issue } from '@oats-ts/validators'
+import { ValueDsl } from '../types'
+import { isNil } from '../utils'
+import { Base } from './Base'
+import { unexpectedStyle, unexpectedType } from './errors'
+import {
+  ParameterValue,
+  Primitive,
+  PrimitiveArray,
+  PrimitiveRecord,
+  RawPath,
+  ValueDeserializer,
+  HeaderDeserializer,
+  HeaderDslRoot,
+  HeaderDsl,
+  HeaderPrimitive,
+  HeaderArray,
+  HeaderObject,
+} from './types'
+import { mapRecord } from './utils'
+
+export class DefaultHeaderDeserializer<T> extends Base implements HeaderDeserializer<T> {
+  constructor(private dsl: HeaderDslRoot<T>, private values: ValueDeserializer) {
+    super()
+  }
+
+  public deserialize(input: RawHttpHeaders): Try<T> {
+    const deserialized = Object.keys(this.dsl.schema).reduce(
+      (acc: Record<string, Try<ParameterValue>>, _key: string) => {
+        const key = _key as string & keyof T
+        const deserializer = this.dsl.schema?.[key]
+        acc[key] = this.parameter(deserializer, key, input ?? {}, this.append(this.basePath(), key))
+        return acc
+      },
+      {},
+    )
+    return fromRecord(deserialized) as Try<T>
+  }
+
+  protected basePath(): string {
+    return 'headers'
+  }
+
+  protected parameter(dsl: HeaderDsl, name: string, value: RawPath, path: string): Try<ParameterValue> {
+    const { style, type } = dsl
+    switch (style) {
+      case 'simple': {
+        switch (type) {
+          case 'primitive':
+            return this.simplePrimitive(dsl, name, value, path)
+          case 'array':
+            return this.simpleArray(dsl, name, value, path)
+          case 'object':
+            return this.simpleObject(dsl, name, value, path)
+          default: {
+            throw unexpectedType(type)
+          }
+        }
+      }
+      default:
+        throw unexpectedStyle(style, ['simple', 'label', 'matrix'])
+    }
+  }
+
+  protected simplePrimitive(dsl: HeaderPrimitive, name: string, data: RawHttpHeaders, path: string): Try<Primitive> {
+    return fluent(this.getHeaderValue(name, path, data, dsl.required))
+      .flatMap((value) => (isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, value, name, path)))
+      .toTry()
+  }
+
+  protected simpleArray(dsl: HeaderArray, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveArray> {
+    return fluent(this.getHeaderValue(name, path, data))
+      .flatMap((pathValue) => this.deserializeArray(dsl.items, ',', pathValue, name, path))
+      .toTry()
+  }
+
+  protected simpleObject(dsl: HeaderObject, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveRecord> {
+    return fluent(this.getHeaderValue(name, path, data, dsl.required))
+      .flatMap((rawDataStr: string): Try<Record<string, string> | undefined> => {
+        if (isNil(rawDataStr)) {
+          return success(undefined)
+        }
+        return dsl.explode
+          ? this.keyValueToRecord(',', '=', rawDataStr, path)
+          : this.delimitedToRecord(',', rawDataStr, path)
+      })
+      .flatMap((rawRecord?: Record<string, string>) =>
+        isNil(rawRecord) ? success(undefined) : this.parseHeadersFromRecord(dsl, rawRecord, name, path),
+      )
+      .toTry()
+  }
+
+  protected getHeaderValue(name: string, path: string, raw: RawHttpHeaders, required?: boolean): Try<string> {
+    const value = raw[name] ?? raw[name.toLowerCase()]
+    if (isNil(value) && required) {
+      return failure({
+        message: `should not be ${value}`,
+        path,
+        severity: 'error',
+      })
+    }
+    return success(value)
+  }
+
+  protected delimitedToRecord(separator: string, value: string, path: string): Try<Record<string, string>> {
+    const parts = value.split(separator)
+    const issues: Issue[] = []
+    if (parts.length % 2 !== 0) {
+      issues.push({
+        message: `malformed parameter value "${value}"`,
+        path,
+        severity: 'error',
+      })
+    }
+    const record: Record<string, string> = {}
+    for (let i = 0; i < parts.length; i += 2) {
+      const key = parts[i]
+      const value = parts[i + 1]
+      record[key] = value
+    }
+    return issues.length === 0 ? success(record) : failure(...issues)
+  }
+
+  protected keyValueToRecord(
+    separator: string,
+    kvSeparator: string,
+    value: string,
+    path: string,
+  ): Try<Record<string, string>> {
+    const kvPairStrs = value.split(separator)
+    const record: Record<string, string> = {}
+    const issues: Issue[] = []
+    for (let i = 0; i < kvPairStrs.length; i += 1) {
+      const kvPairStr = kvPairStrs[i]
+      const pair = kvPairStr.split(kvSeparator)
+      if (pair.length !== 2) {
+        issues.push({
+          message: `unexpected content "${value}"`,
+          path,
+          severity: 'error',
+        })
+      }
+      const [rawKey, rawValue] = pair
+      record[rawKey] = rawValue
+    }
+    return issues.length === 0 ? success(record) : failure(...issues)
+  }
+
+  protected parseHeadersFromRecord(
+    dsl: HeaderObject,
+    paramData: Record<string, string>,
+    name: string,
+    path: string,
+  ): Try<PrimitiveRecord> {
+    const keys = Object.keys(dsl.properties)
+    const result = mapRecord(
+      keys,
+      (key): Try<Primitive> => {
+        const valueDsl = dsl.properties[key]
+        const value = paramData[key]
+        return this.values.deserialize(valueDsl, this.decode(value), name, this.append(path, key))
+      },
+      (key) => this.decode(key),
+    )
+    return result
+  }
+
+  protected deserializeArray(
+    dsl: ValueDsl,
+    separator: string,
+    value: string,
+    name: string,
+    path: string,
+  ): Try<Primitive[] | undefined> {
+    return isNil(value)
+      ? success(undefined)
+      : fromArray(
+          value
+            .split(separator)
+            .map((value, i) => this.values.deserialize(dsl, this.decode(value), name, this.append(path, i))),
+        )
+  }
+}
