@@ -12,7 +12,7 @@ export function createPathDeserializer<T extends ParameterType>(
   const deserializers = createPathDeserializers(root)
   return function pathDeserializer(
     input: string,
-    path: string = 'headers',
+    path: string = 'path',
     config: ValidatorConfig = DefaultConfig,
   ): Try<T> {
     return fluent(parseRawPath(parameterNames, regex, input, path))
