@@ -76,6 +76,10 @@ export type PathPrimitive = PrimitiveDsl<'path', PathStyle>
 export type PathArray = ArrayDsl<'path', PathStyle>
 export type PathObject = ObjectDsl<'path', PathStyle>
 
+export type QueryPrimitive = PrimitiveDsl<'query', QueryStyle>
+export type QueryArray = ArrayDsl<'query', QueryStyle>
+export type QueryObject = ObjectDsl<'query', QueryStyle>
+
 export type PathDsl = Dsl<'path', PathStyle>
 export type QueryDsl = Dsl<'query', QueryStyle>
 export type HeaderDsl = Dsl<'header', HeaderStyle>
@@ -120,7 +124,7 @@ export type QuerySerializer<T> = {
    * Serializes the given query parameters from a model object to a query string
    * @param params The query parameters
    */
-  serialize(params: T): Try<string>
+  serialize(params: T): Try<string | undefined>
 }
 
 export type HeadersSerializer<T> = {
@@ -143,7 +147,12 @@ export type PathDeserializer<T> = {
   deserialize(path: string): Try<T>
 }
 
+export type QueryDeserializer<T> = {
+  deserialize(query: string): Try<T>
+}
+
 export type RawPath = Record<string, string>
+export type RawQuery = Record<string, string[]>
 
 export type ParameterSegment = {
   type: 'parameter'
