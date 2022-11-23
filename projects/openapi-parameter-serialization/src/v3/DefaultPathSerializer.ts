@@ -1,5 +1,5 @@
 import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { Base } from './Base'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   PathArray,
@@ -13,8 +13,14 @@ import {
 } from './types'
 import { entries, isNil } from './utils'
 
-export class DefaultPathSerializer<T> implements PathSerializer<T> {
-  constructor(private dsl: PathDslRoot<T>, private config: ValidatorConfig, private path: string) {}
+export class DefaultPathSerializer<T> extends Base implements PathSerializer<T> {
+  constructor(private dsl: PathDslRoot<T>) {
+    super()
+  }
+
+  protected basePath(): string {
+    return 'path'
+  }
 
   public serialize(input: T): Try<string> {
     const serializedParts = fromRecord(
@@ -22,7 +28,7 @@ export class DefaultPathSerializer<T> implements PathSerializer<T> {
         const key = name as keyof T & string
         const dsl: PathDsl = this.dsl.schema[key]
         const value: any = input[key]
-        const path = this.config.append(this.path, key)
+        const path = this.append(this.basePath(), key)
         parts[name] = this.parameter(dsl, key, value, path)
         return parts
       }, {}),
@@ -171,21 +177,6 @@ export class DefaultPathSerializer<T> implements PathSerializer<T> {
         ),
       )
       .toTry()
-  }
-
-  protected decode(value: string): string
-
-  protected decode(value?: string): string | undefined {
-    return isNil(value) ? undefined : decodeURIComponent(value)
-  }
-
-  protected encode(value?: string): string {
-    return isNil(value)
-      ? ''
-      : encodeURIComponent(`${value}`).replace(
-          /[\.,;=!'()*]/g,
-          (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-        )
   }
 
   protected joinArrayItems(prefix: string, separator: string, items: ReadonlyArray<Primitive>): string {

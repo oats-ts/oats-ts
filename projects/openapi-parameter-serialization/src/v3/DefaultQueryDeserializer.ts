@@ -1,10 +1,11 @@
 import { failure, fluent, fromArray, fromRecord, isSuccess, success, Try } from '@oats-ts/try'
-import { Issue, ValidatorConfig } from '@oats-ts/validators'
-import { PrimitiveArray } from '../types'
+import { Issue } from '@oats-ts/validators'
+import { Base } from './Base'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
   Primitive,
+  PrimitiveArray,
   PrimitiveRecord,
   QueryArray,
   QueryDeserializer,
@@ -17,19 +18,20 @@ import {
 } from './types'
 import { has, isNil } from './utils'
 
-export class DefaultQueryDeserializer<T> implements QueryDeserializer<T> {
-  constructor(
-    private dsl: QueryDslRoot<T>,
-    private config: ValidatorConfig,
-    private path: string,
-    private values: ValueDeserializer,
-  ) {}
+export class DefaultQueryDeserializer<T> extends Base implements QueryDeserializer<T> {
+  constructor(private dsl: QueryDslRoot<T>, private values: ValueDeserializer) {
+    super()
+  }
+
+  protected basePath(): string {
+    return 'query'
+  }
 
   public deserialize(input: string): Try<T> {
-    const deserialized = fluent(this.parseRawQuery(input, this.path)).flatMap((raw) => {
+    const deserialized = fluent(this.parseRawQuery(input, this.basePath())).flatMap((raw) => {
       const parsed = Object.keys(this.dsl.schema).reduce((acc: Record<string, Try<ParameterValue>>, key: string) => {
         const paramDsl = this.dsl.schema[key as keyof T]
-        acc[key] = this.parameter(paramDsl, key, raw, this.config.append(this.path, key))
+        acc[key] = this.parameter(paramDsl, key, raw, this.append(this.basePath(), key))
         return acc
       }, {})
       return fromRecord(parsed)
@@ -137,7 +139,7 @@ export class DefaultQueryDeserializer<T> implements QueryDeserializer<T> {
         if (values.length > 1) {
           return failure({
             message: `should have a single value (found ${values.length})`,
-            path: this.config.append(path, key),
+            path: this.append(path, key),
             severity: 'error',
           })
         }
@@ -146,7 +148,7 @@ export class DefaultQueryDeserializer<T> implements QueryDeserializer<T> {
           hasKeys = true
         }
         const decodedValue = isNil(value) ? value : this.decode(value)
-        const parsedValue = this.values.deserialize(parser, decodedValue, key, this.config.append(path, key))
+        const parsedValue = this.values.deserialize(parser, decodedValue, key, this.append(path, key))
         return fluent(parsedValue)
           .map((valueForKey): [string, Primitive] => [key, valueForKey])
           .toTry()
@@ -211,7 +213,7 @@ export class DefaultQueryDeserializer<T> implements QueryDeserializer<T> {
           severity: 'error',
         })
       } else {
-        const parsed = this.values.deserialize(valueDsl, rawValue, name, this.config.append(path, key))
+        const parsed = this.values.deserialize(valueDsl, rawValue, name, this.append(path, key))
         if (isSuccess(parsed)) {
           output[key] = parsed.data
         } else {
@@ -251,27 +253,12 @@ export class DefaultQueryDeserializer<T> implements QueryDeserializer<T> {
         if (!isNil(rawValue)) {
           hasKeys = true
         }
-        acc[key] = this.values.deserialize(valueDsl, this.decode(rawValue), name, this.config.append(path, key))
+        acc[key] = this.values.deserialize(valueDsl, this.decode(rawValue), name, this.append(path, key))
       }
 
       return acc
     }, {})
     return !hasKeys && !dsl.required ? success(undefined) : fromRecord(parsed)
-  }
-
-  protected decode(value: string): string
-
-  protected decode(value?: string): string | undefined {
-    return isNil(value) ? undefined : decodeURIComponent(value)
-  }
-
-  protected encode(value?: string): string {
-    return isNil(value)
-      ? ''
-      : encodeURIComponent(`${value}`).replace(
-          /[\.,;=!'()*]/g,
-          (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-        )
   }
 
   protected getValues(dsl: QueryDsl, delimiter: string, name: string, path: string, data: RawQuery) {
@@ -297,7 +284,7 @@ export class DefaultQueryDeserializer<T> implements QueryDeserializer<T> {
         }
         return fromArray(
           values.map((value, index) =>
-            this.values.deserialize(dsl.items, this.decode(value), name, this.config.append(path, index)),
+            this.values.deserialize(dsl.items, this.decode(value), name, this.append(path, index)),
           ),
         )
       })

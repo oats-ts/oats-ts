@@ -1,5 +1,6 @@
 import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
-import { Issue, ValidatorConfig } from '@oats-ts/validators'
+import { Issue } from '@oats-ts/validators'
+import { Base } from './Base'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
@@ -19,21 +20,22 @@ import {
 } from './types'
 import { isNil, mapRecord } from './utils'
 
-export class DefaultPathDeserializer<T> implements PathDeserializer<T> {
-  constructor(
-    private dsl: PathDslRoot<T>,
-    private config: ValidatorConfig,
-    private path: string,
-    private values: ValueDeserializer,
-  ) {}
+export class DefaultPathDeserializer<T> extends Base implements PathDeserializer<T> {
+  constructor(private dsl: PathDslRoot<T>, private values: ValueDeserializer) {
+    super()
+  }
+
+  protected basePath(): string {
+    return 'path'
+  }
 
   public deserialize(input: string): Try<T> {
-    return fluent(this.parseRawPath(input, this.path))
+    return fluent(this.parseRawPath(input, this.basePath()))
       .flatMap((raw) => {
         const deserialized = Object.keys(this.dsl.schema).reduce(
           (acc: Record<string, Try<ParameterValue>>, key: string) => {
             const paramDsl = this.dsl.schema[key as keyof T]
-            acc[key] = this.parameter(paramDsl, key, raw, this.config.append(this.path, key))
+            acc[key] = this.parameter(paramDsl, key, raw, this.append(this.basePath(), key))
             return acc
           },
           {},
@@ -181,7 +183,7 @@ export class DefaultPathDeserializer<T> implements PathDeserializer<T> {
       .flatMap((rawString) => {
         const parsed = rawString.split(';').map((kvPair, index) => {
           const parts = kvPair.split('=')
-          const itemPath = this.config.append(path, index)
+          const itemPath = this.append(path, index)
           if (parts.length !== 2) {
             return failure({
               message: `malformed parameter value "${rawString}"`,
@@ -210,9 +212,7 @@ export class DefaultPathDeserializer<T> implements PathDeserializer<T> {
       .flatMap((rawValue) => {
         const tryValues = rawValue
           .split(',')
-          .map((value, index) =>
-            this.values.deserialize(dsl, this.decode(value), name, this.config.append(path, index)),
-          )
+          .map((value, index) => this.values.deserialize(dsl, this.decode(value), name, this.append(path, index)))
         return fromArray(tryValues)
       })
       .toTry()
@@ -227,21 +227,6 @@ export class DefaultPathDeserializer<T> implements PathDeserializer<T> {
       )
       .flatMap((rawRecord) => this.deserializeRecord(dsl, rawRecord, name, path))
       .toTry()
-  }
-
-  protected decode(value: string): string
-
-  protected decode(value?: string): string | undefined {
-    return isNil(value) ? undefined : decodeURIComponent(value)
-  }
-
-  protected encode(value?: string): string {
-    return isNil(value)
-      ? ''
-      : encodeURIComponent(`${value}`).replace(
-          /[\.,;=!'()*]/g,
-          (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-        )
   }
 
   protected getPathValue(name: string, path: string, raw: RawPath): Try<string> {
@@ -279,7 +264,7 @@ export class DefaultPathDeserializer<T> implements PathDeserializer<T> {
       : fromArray(
           value
             .split(separator)
-            .map((value, i) => this.values.deserialize(dsl, this.decode(value), name, this.config.append(path, i))),
+            .map((value, i) => this.values.deserialize(dsl, this.decode(value), name, this.append(path, i))),
         )
   }
 
@@ -294,7 +279,7 @@ export class DefaultPathDeserializer<T> implements PathDeserializer<T> {
       parserKeys,
       (key): Try<Primitive> => {
         const value = paramData[key]
-        return this.values.deserialize(dsl.properties[key], this.decode(value), name, this.config.append(path, key))
+        return this.values.deserialize(dsl.properties[key], this.decode(value), name, this.append(path, key))
       },
       (key) => this.decode(key),
     )

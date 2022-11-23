@@ -1,5 +1,5 @@
 import { failure, fluent, fromArray, success, Try } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
+import { Base } from './Base'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
@@ -15,8 +15,14 @@ import {
 } from './types'
 import { entries, isNil } from './utils'
 
-export class DefaultQuerySerializer<T> implements QuerySerializer<T> {
-  constructor(private dsl: QueryDslRoot<T>, private config: ValidatorConfig, private path: string) {}
+export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T> {
+  constructor(private dsl: QueryDslRoot<T>) {
+    super()
+  }
+
+  protected basePath(): string {
+    return 'query'
+  }
 
   public serialize(input: T): Try<string | undefined> {
     const serializedParts = fromArray(
@@ -24,7 +30,7 @@ export class DefaultQuerySerializer<T> implements QuerySerializer<T> {
         const key = name as keyof T & string
         const dsl: QueryDsl = this.dsl.schema[key]
         const value = input[key] as ParameterValue
-        const path = this.config.append(this.path, key)
+        const path = this.append(this.basePath(), key)
         return this.parameter(dsl, key, value, path)
       }, {}),
     )
@@ -173,21 +179,6 @@ export class DefaultQuerySerializer<T> implements QuerySerializer<T> {
         return [`${keyStr}=${value.map((item) => this.encode(item?.toString())).join(delimiter)}`]
       })
       .toTry()
-  }
-
-  protected decode(value: string): string
-
-  protected decode(value?: string): string | undefined {
-    return isNil(value) ? undefined : decodeURIComponent(value)
-  }
-
-  protected encode(value?: string): string {
-    return isNil(value)
-      ? ''
-      : encodeURIComponent(`${value}`).replace(
-          /[\.,;=!'()*]/g,
-          (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-        )
   }
 
   protected getQueryValue<T extends ParameterValue>(
