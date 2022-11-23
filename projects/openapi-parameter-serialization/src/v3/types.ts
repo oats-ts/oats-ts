@@ -84,6 +84,8 @@ export type HeaderPrimitive = PrimitiveDsl<'header', HeaderStyle>
 export type HeaderArray = ArrayDsl<'header', HeaderStyle>
 export type HeaderObject = ObjectDsl<'header', HeaderStyle>
 
+export type CookiePrimitive = PrimitiveDsl<'cookie', CookieStyle>
+
 export type PathDsl = Dsl<'path', PathStyle>
 export type QueryDsl = Dsl<'query', QueryStyle>
 export type HeaderDsl = Dsl<'header', HeaderStyle>
@@ -157,6 +159,10 @@ export type QueryDeserializer<T> = {
 
 export type HeaderDeserializer<T> = {
   deserialize(headers: RawHttpHeaders): Try<T>
+}
+
+export type CookieDeserializer<T> = {
+  deserialize(cookies: string): Try<T>
 }
 
 export type RawPath = Record<string, string>

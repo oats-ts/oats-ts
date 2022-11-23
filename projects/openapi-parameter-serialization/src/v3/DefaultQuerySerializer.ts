@@ -62,7 +62,7 @@ export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T
           case 'array':
             return this.pipeDelimitedArray(dsl, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType(type, ['array'])
         }
       }
       case 'spaceDelimited': {
@@ -70,7 +70,7 @@ export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T
           case 'array':
             return this.spaceDelimitedArray(dsl, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType(type, ['array'])
         }
       }
       case 'deepObject': {
@@ -78,7 +78,7 @@ export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T
           case 'object':
             return this.deepObjectObject(dsl, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType(type, ['object'])
         }
       }
       default:

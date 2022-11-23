@@ -60,7 +60,7 @@ export class DefaultQueryDeserializer<T> extends Base implements QueryDeserializ
           case 'array':
             return this.pipeDelimitedArray(dsl, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType(type, ['array'])
         }
       }
       case 'spaceDelimited': {
@@ -68,7 +68,7 @@ export class DefaultQueryDeserializer<T> extends Base implements QueryDeserializ
           case 'array':
             return this.spaceDelimitedArray(dsl, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType(type, ['array'])
         }
       }
       case 'deepObject': {
@@ -76,7 +76,7 @@ export class DefaultQueryDeserializer<T> extends Base implements QueryDeserializ
           case 'object':
             return this.deepObjectObject(dsl, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType(type, ['object'])
         }
       }
       default:
