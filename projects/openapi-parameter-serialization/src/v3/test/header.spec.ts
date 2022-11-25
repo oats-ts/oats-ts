@@ -4,6 +4,7 @@ import { HeaderTestCase } from './types'
 import { success } from '@oats-ts/try'
 import { DefaultHeaderSerializer } from '../DefaultHeaderSerializer'
 import { DefaultHeaderDeserializer } from '../DefaultHeaderDeserializer'
+import { RawHttpHeaders } from '@oats-ts/openapi-http'
 
 describe('header', () => {
   Object.values(headerTests).forEach((test: HeaderTestCase<any>) => {
@@ -17,7 +18,7 @@ describe('header', () => {
       for (const { from, to } of test.deserialize) {
         it(`Should deserialize ${JSON.stringify(from)} to ${JSON.stringify(to)}`, () => {
           const deserializer = new DefaultHeaderDeserializer({ schema: test.dsl })
-          expect(deserializer.deserialize(from)).toEqual(success(to))
+          expect(deserializer.deserialize(from as RawHttpHeaders)).toEqual(success(to))
         })
       }
       for (const serializerError of test.serializerErrors) {
@@ -29,7 +30,7 @@ describe('header', () => {
       for (const deserializerError of test.deserializerErrors) {
         it(`Should fail deserializing ${JSON.stringify(deserializerError)}`, () => {
           const deserializer = new DefaultHeaderDeserializer({ schema: test.dsl })
-          expect(deserializer.deserialize(deserializerError)).toHaveProperty('issues')
+          expect(deserializer.deserialize(deserializerError as RawHttpHeaders)).toHaveProperty('issues')
         })
       }
     })

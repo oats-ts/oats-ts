@@ -1,5 +1,5 @@
 import { failure, fluent, fromArray, success, Try } from '@oats-ts/try'
-import { Base } from './Base'
+import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
@@ -15,7 +15,7 @@ import {
 } from './types'
 import { entries, isNil } from './utils'
 
-export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T> {
+export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySerializer<T> {
   constructor(protected readonly dsl: QueryDslRoot<T>) {
     super()
   }
@@ -29,7 +29,7 @@ export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T
       Object.keys(this.dsl.schema).map((name: string) => {
         const key = name as keyof T & string
         const dsl: QueryDsl = this.dsl.schema[key]
-        const value = input[key] as ParameterValue
+        const value = input[key] as unknown as ParameterValue
         const path = this.append(this.basePath(), key)
         return this.parameter(dsl, key, value, path)
       }, {}),

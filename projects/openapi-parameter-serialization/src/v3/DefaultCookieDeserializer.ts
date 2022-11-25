@@ -16,7 +16,7 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
         (acc: Record<string, Try<ParameterValue>>, _key: string) => {
           const key = _key as keyof T & string
           const values = rawData.filter(({ name }) => name === key)
-          const paramDsl: CookieDsl = this.dsl.schema?.[key]
+          const paramDsl = this.dsl.schema[key]
           acc[key] = this.parameter(paramDsl, key, values, this.append(this.basePath(), key))
           return acc
         },

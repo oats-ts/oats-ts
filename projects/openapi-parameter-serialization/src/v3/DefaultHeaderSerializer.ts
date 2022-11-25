@@ -1,6 +1,6 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
-import { failure, fluent, fromRecord, isFailure, isSuccess, success, Try } from '@oats-ts/try'
-import { Base } from './Base'
+import { failure, fluent, fromArray, fromRecord, isFailure, isSuccess, success, Try } from '@oats-ts/try'
+import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   HeaderDslRoot,
@@ -16,7 +16,7 @@ import {
 } from './types'
 import { entries, isNil } from './utils'
 
-export class DefaultHeaderSerializer<T> extends Base implements HeadersSerializer<T> {
+export class DefaultHeaderSerializer<T> extends BaseSerializer implements HeadersSerializer<T> {
   constructor(protected readonly dsl: HeaderDslRoot<T>) {
     super()
   }
@@ -68,21 +68,29 @@ export class DefaultHeaderSerializer<T> extends Base implements HeadersSerialize
     path: string,
   ): Try<string | undefined> {
     return fluent(this.getHeaderValue(dsl, path, data))
-      .map((value) => (isNil(value) ? undefined : this.encode(value?.toString())))
+      .flatMap((value): Try<string | undefined> => {
+        return isNil(value)
+          ? success(undefined)
+          : fluent(this.values.serialize(dsl.value, value, name, path)).map((value) => this.encode(value))
+      })
       .toTry()
   }
 
   protected simpleArray(dsl: HeaderArray, name: string, data: PrimitiveArray, path: string): Try<string | undefined> {
     return fluent(this.getHeaderValue(dsl, path, data))
-      .map((value) => {
+      .flatMap((value): Try<string | undefined> => {
         if (isNil(value)) {
-          return undefined
+          return success(undefined)
         }
         // TODO do we need to encode here???
-        return value
-          .filter((item) => !isNil(item))
-          .map((item) => this.encode(item?.toString()))
-          .join(',')
+        const serializedValues = fromArray(
+          value
+            .filter((item) => !isNil(item))
+            .map((item) =>
+              fluent(this.values.serialize(dsl.items, item, name, path)).map((value) => this.encode(value)),
+            ),
+        )
+        return fluent(serializedValues).map((values) => values.join(','))
       })
       .toTry()
   }
@@ -94,17 +102,29 @@ export class DefaultHeaderSerializer<T> extends Base implements HeadersSerialize
     path: string,
   ): Try<string | undefined> {
     return fluent(this.getHeaderValue(dsl, path, data))
-      .map((value) => {
+      .flatMap((value): Try<string | undefined> => {
         if (isNil(value)) {
-          return undefined
+          return success(undefined)
         }
-        const kvPairs = entries(value)
-          .filter(([, value]) => !isNil(value))
-          .map(([key, value]): [string, string] => [this.encode(key), this.encode(value?.toString())])
+        const kvPairsTry = fluent(
+          fromRecord(
+            entries(dsl.properties)
+              .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+              .reduce((pairs, [key, valueDsl]) => {
+                const strKey = this.encode(key)
+                const strValue = fluent(this.values.serialize(valueDsl, value[key], key, this.append(path, key))).map(
+                  (value) => this.encode(value),
+                )
+                pairs[strKey] = strValue
+                return pairs
+              }, {} as Record<string, Try<string>>),
+          ),
+        ).map((pairs) => entries(pairs))
+
         if (dsl.explode) {
-          return kvPairs.map(([key, value]) => `${key}=${value}`).join(',')
+          return kvPairsTry.map((pairs) => pairs.map(([key, value]) => `${key}=${value}`).join(','))
         }
-        return kvPairs.map(([key, value]) => `${key},${value}`).join(',')
+        return kvPairsTry.map((pairs) => pairs.map(([key, value]) => `${key},${value}`).join(','))
       })
       .toTry()
   }

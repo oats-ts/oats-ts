@@ -1,5 +1,5 @@
 import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
-import { Base } from './Base'
+import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   PathArray,
@@ -13,7 +13,7 @@ import {
 } from './types'
 import { entries, isNil } from './utils'
 
-export class DefaultPathSerializer<T> extends Base implements PathSerializer<T> {
+export class DefaultPathSerializer<T> extends BaseSerializer implements PathSerializer<T> {
   constructor(protected readonly dsl: PathDslRoot<T>) {
     super()
   }

@@ -1,5 +1,6 @@
 import { dsl } from '../dsl'
-import { EnumType } from './model'
+import { obj } from './common'
+import { EnumType, ObjType } from './model'
 import { HeaderTestCase } from './types'
 
 export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> = {
@@ -155,4 +156,83 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
   ],
   deserializerErrors: [{ 'x-enum-field': 'X' }, { 'x-enum-field': '12' }],
   serializerErrors: [],
+}
+
+export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
+  name: 'required object headers',
+  dsl: {
+    'X-Obj-Field': dsl.header.simple.object(obj, { required: true }),
+  },
+  serialize: [
+    {
+      from: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b,true,e,dog,l,cat,n,12,s,A' },
+    },
+    {
+      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
+    },
+  ],
+  deserialize: [
+    {
+      from: { 'x-obj-field': 's,A,b,true,n,12,e,dog,l,cat' },
+      to: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+    },
+    {
+      from: { 'x-obj-field': 's,A%20B%20C,b,false,n,123%2E123,e,dog,l,cat' },
+      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+    },
+  ],
+  deserializerErrors: [
+    { 'x-obj-field': 'X' },
+    { 'x-obj-field': 's=12' },
+    { 'x-obj-field': '12' },
+    { 'x-obj-field': 's,A,n,12,e,dog,l,cat' },
+  ],
+  serializerErrors: [
+    null,
+    undefined,
+    {} as any,
+    { 'X-Object-Field': {} } as any,
+    { 'X-Object-Field': { s: 'foo' } } as any,
+    { 'X-Object-ield': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } } as any,
+  ],
+}
+
+export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> = {
+  name: 'optional object headers',
+  dsl: {
+    'X-Obj-Field': dsl.header.simple.object(obj, { required: false }),
+  },
+  serialize: [
+    {
+      from: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b,true,e,dog,l,cat,n,12,s,A' },
+    },
+    {
+      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
+    },
+  ],
+  deserialize: [
+    {
+      from: { 'x-obj-field': 's,A,b,true,n,12,e,dog,l,cat' },
+      to: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+    },
+    {
+      from: { 'x-obj-field': 's,A%20B%20C,b,false,n,123%2E123,e,dog,l,cat' },
+      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+    },
+  ],
+  deserializerErrors: [
+    { 'x-obj-field': 's,A,n,12,e,dog,l,cat' },
+    { 'x-obj-field': 'n,12,e,dog,' },
+    { 'x-obj-field': 's,A' },
+    { 'x-obj-field': 'n,12,e,dog' },
+  ],
+  serializerErrors: [
+    { 'X-Obj-Field': { s: 'foo', b: false } } as any,
+    { 'X-Obj-Field': { s: 'foo' } } as any,
+    { 'X-Obj-Field': {} } as any,
+  ],
 }

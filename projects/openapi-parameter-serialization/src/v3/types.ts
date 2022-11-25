@@ -5,6 +5,7 @@ export type Primitive = string | number | boolean | undefined
 export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
 export type PrimitiveRecord = Record<string, Primitive> | undefined
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
+export type ParameterType = Record<string, ParameterValue>
 
 export type DslType = 'primitive' | 'array' | 'object'
 export type DslLocation = 'query' | 'header' | 'path' | 'cookie'
@@ -120,6 +121,10 @@ export type CookieDslRoot<T> = {
 
 export type ValueDeserializer = {
   deserialize(dsl: ValueDsl, data: Primitive, name: string, path: string): Try<Primitive>
+}
+
+export type ValueSerializer = {
+  serialize(dsl: ValueDsl, data: Primitive, name: string, path: string): Try<string | undefined>
 }
 
 export type PathSerializer<T> = {

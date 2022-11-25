@@ -1,10 +1,10 @@
 import { failure, fluent, fromArray, success, Try } from '@oats-ts/try'
-import { Base } from './Base'
+import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import { ParameterValue, Primitive, CookieSerializer, CookieDslRoot, CookieDsl, CookiePrimitive } from './types'
 import { isNil } from './utils'
 
-export class DefaultCookieSerializer<T> extends Base implements CookieSerializer<T> {
+export class DefaultCookieSerializer<T> extends BaseSerializer implements CookieSerializer<T> {
   constructor(protected readonly dsl: CookieDslRoot<T>) {
     super()
   }
