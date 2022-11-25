@@ -112,14 +112,16 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
               .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
               .reduce((pairs, [key, valueDsl]) => {
                 const strKey = this.encode(key)
-                const strValue = fluent(this.values.serialize(valueDsl, value[key], key, this.append(path, key))).map(
-                  (value) => this.encode(value),
-                )
+                const strValue = this.values.serialize(valueDsl, value[key], key, this.append(path, key))
                 pairs[strKey] = strValue
                 return pairs
-              }, {} as Record<string, Try<string>>),
+              }, {} as Record<string, Try<string | undefined>>),
           ),
-        ).map((pairs) => entries(pairs))
+        ).map((pairs) =>
+          entries(pairs)
+            .filter(([, v]) => !isNil(v))
+            .map(([k, v]) => [k, this.encode(v)]),
+        )
 
         if (dsl.explode) {
           return kvPairsTry.map((pairs) => pairs.map(([key, value]) => `${key}=${value}`).join(','))

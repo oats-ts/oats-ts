@@ -64,7 +64,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
   }
 
   protected simplePrimitive(dsl: HeaderPrimitive, name: string, data: RawHttpHeaders, path: string): Try<Primitive> {
-    return fluent(this.getHeaderValue(name, path, data, dsl.required))
+    return fluent(this.getHeaderValue(dsl, name, path, data))
       .flatMap((value) =>
         isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), name, path),
       )
@@ -72,13 +72,13 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
   }
 
   protected simpleArray(dsl: HeaderArray, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveArray> {
-    return fluent(this.getHeaderValue(name, path, data))
+    return fluent(this.getHeaderValue(dsl, name, path, data))
       .flatMap((pathValue) => this.deserializeArray(dsl.items, ',', pathValue, name, path))
       .toTry()
   }
 
   protected simpleObject(dsl: HeaderObject, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveRecord> {
-    return fluent(this.getHeaderValue(name, path, data, dsl.required))
+    return fluent(this.getHeaderValue(dsl, name, path, data))
       .flatMap((rawDataStr: string): Try<Record<string, string> | undefined> => {
         if (isNil(rawDataStr)) {
           return success(undefined)
@@ -93,9 +93,9 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       .toTry()
   }
 
-  protected getHeaderValue(name: string, path: string, raw: RawHttpHeaders, required?: boolean): Try<string> {
+  protected getHeaderValue(dsl: HeaderDsl, name: string, path: string, raw: RawHttpHeaders): Try<string> {
     const value = raw[name] ?? raw[name.toLowerCase()]
-    if (isNil(value) && required) {
+    if (isNil(value) && dsl.required) {
       return failure({
         message: `should not be ${value}`,
         path,
@@ -108,7 +108,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
   protected delimitedToRecord(separator: string, value: string, path: string): Try<Record<string, string>> {
     const parts = value.split(separator)
     const issues: Issue[] = []
-    if (parts.length % 2 !== 0) {
+    if (value.length !== 0 && parts.length % 2 !== 0) {
       issues.push({
         message: `malformed parameter value "${value}"`,
         path,
@@ -138,7 +138,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       const pair = kvPairStr.split(kvSeparator)
       if (pair.length !== 2) {
         issues.push({
-          message: `unexpected content "${value}"`,
+          message: `unexpected content "${kvPairStr}"`,
           path,
           severity: 'error',
         })

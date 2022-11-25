@@ -10,6 +10,8 @@ export type SuccessValue<A, B> = {
 
 export type TestCase<A extends ParameterType, B, L extends DslLocation, S extends DslStyle> = {
   name: string
+  only?: boolean
+  ignore?: boolean
   dsl: DslRoot<A, L, S>
   serialize: SuccessValue<A, B>[]
   deserialize: SuccessValue<B, A>[]

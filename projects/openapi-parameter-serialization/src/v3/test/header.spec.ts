@@ -5,9 +5,10 @@ import { success } from '@oats-ts/try'
 import { DefaultHeaderSerializer } from '../DefaultHeaderSerializer'
 import { DefaultHeaderDeserializer } from '../DefaultHeaderDeserializer'
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
+import { testCases } from './common'
 
 describe('header', () => {
-  Object.values(headerTests).forEach((test: HeaderTestCase<any>) => {
+  testCases(headerTests).forEach((test: HeaderTestCase<any>) => {
     describe(test.name, () => {
       for (const { from, to } of test.serialize) {
         it(`Should serialize ${JSON.stringify(from)} to ${JSON.stringify(to)}`, () => {

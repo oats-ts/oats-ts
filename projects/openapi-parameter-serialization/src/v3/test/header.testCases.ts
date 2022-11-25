@@ -1,6 +1,6 @@
 import { dsl } from '../dsl'
-import { obj } from './common'
-import { EnumType, ObjType } from './model'
+import { obj, optObj } from './common'
+import { EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
 
 export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> = {
@@ -158,6 +158,42 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
   serializerErrors: [],
 }
 
+export const requiredNumberArrayHeader: HeaderTestCase<{ 'X-Arr-Field': number[] }> = {
+  name: 'required number array headers',
+  dsl: {
+    'X-Arr-Field': dsl.header.simple.array(dsl.value.number(), { required: true }),
+  },
+  serialize: [
+    {
+      from: { 'X-Arr-Field': [1, 2, 3] },
+      to: { 'x-arr-field': '1,2,3' },
+    },
+    {
+      from: { 'X-Arr-Field': [1.2, 6.12345] },
+      to: { 'x-arr-field': '1%2E2,6%2E12345' },
+    },
+    {
+      from: { 'X-Arr-Field': [] },
+      to: { 'x-arr-field': '' },
+    },
+  ],
+  deserialize: [],
+  deserializerErrors: [
+    { 'x-arr-field': 'X' },
+    { 'x-arr-field': 's=12' },
+    { 'x-arr-field': 'false' },
+    { 'x-arr-field': 'cat,dog' },
+  ],
+  serializerErrors: [
+    null,
+    undefined,
+    {} as any,
+    { 'X-Arr-Field': [false] } as any,
+    { 'X-Arr-Field': ['foo'] } as any,
+    { 'X-Arr-ield': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } } as any,
+  ],
+}
+
 export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
   name: 'required object headers',
   dsl: {
@@ -188,6 +224,48 @@ export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = 
     { 'x-obj-field': 's=12' },
     { 'x-obj-field': '12' },
     { 'x-obj-field': 's,A,n,12,e,dog,l,cat' },
+  ],
+  serializerErrors: [
+    null,
+    undefined,
+    {} as any,
+    { 'X-Object-Field': {} } as any,
+    { 'X-Object-Field': { s: 'foo' } } as any,
+    { 'X-Object-ield': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } } as any,
+  ],
+}
+
+export const requiredExplodeObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
+  name: 'required object headers',
+  dsl: {
+    'X-Obj-Field': dsl.header.simple.object(obj, { required: true, explode: true }),
+  },
+  serialize: [
+    {
+      from: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b=true,e=dog,l=cat,n=12,s=A' },
+    },
+    {
+      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b=false,e=dog,l=cat,n=123%2E123,s=A%20B%20C' },
+    },
+  ],
+  deserialize: [
+    {
+      from: { 'x-obj-field': 'b=true,l=cat,n=12,s=A,e=dog' },
+      to: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+    },
+    {
+      from: { 'x-obj-field': 'e=dog,b=false,l=cat,n=123%2E123,s=A%20B%20C' },
+      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+    },
+  ],
+  deserializerErrors: [
+    { 'x-obj-field': 'X' },
+    { 'x-obj-field': 's=12' },
+    { 'x-obj-field': '12' },
+    { 'x-obj-field': 'e=dog,b=false,l=cat,n=123%2E123' },
+    { 'x-obj-field': 'e=dog,b=false,l=cat' },
   ],
   serializerErrors: [
     null,
@@ -235,4 +313,60 @@ export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> =
     { 'X-Obj-Field': { s: 'foo' } } as any,
     { 'X-Obj-Field': {} } as any,
   ],
+}
+
+export const optionalFieldsObjectHeader: HeaderTestCase<{ 'X-Obj-Field': OptObjType }> = {
+  name: 'required object headers with optional fields',
+  dsl: {
+    'X-Obj-Field': dsl.header.simple.object(optObj, { required: true }),
+  },
+  serialize: [
+    {
+      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
+    },
+    {
+      from: { 'X-Obj-Field': { b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123' },
+    },
+    {
+      from: { 'X-Obj-Field': { b: false, n: 123.123 } },
+      to: { 'x-obj-field': 'b,false,n,123%2E123' },
+    },
+    {
+      from: { 'X-Obj-Field': { n: 123.123 } },
+      to: { 'x-obj-field': 'n,123%2E123' },
+    },
+    {
+      from: { 'X-Obj-Field': {} },
+      to: { 'x-obj-field': '' },
+    },
+  ],
+  deserialize: [
+    {
+      from: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
+      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+    },
+    {
+      from: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123' },
+      to: { 'X-Obj-Field': { b: false, n: 123.123, e: 'dog', l: 'cat' } },
+    },
+    {
+      from: { 'x-obj-field': 'b,false,n,123%2E123' },
+      to: { 'X-Obj-Field': { b: false, n: 123.123 } },
+    },
+    {
+      from: { 'x-obj-field': '' },
+      to: { 'X-Obj-Field': {} },
+    },
+  ],
+  deserializerErrors: [
+    null,
+    undefined,
+    {},
+    { 'x-obj-fiel': 's,A,n,12,e,dog,l,cat' },
+    { 'x-obj-field': 'hi' },
+    { 'x-obj-field': '6' },
+  ],
+  serializerErrors: [{ 'X-Obj-Field': undefined } as any],
 }
