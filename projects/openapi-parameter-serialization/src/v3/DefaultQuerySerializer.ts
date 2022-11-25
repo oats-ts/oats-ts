@@ -29,7 +29,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
       Object.keys(this.dsl.schema).map((name: string) => {
         const key = name as keyof T & string
         const dsl: QueryDsl = this.dsl.schema[key]
-        const value = input[key] as unknown as ParameterValue
+        const value = input?.[key] as unknown as ParameterValue
         const path = this.append(this.basePath(), key)
         return this.parameter(dsl, key, value, path)
       }, {}),

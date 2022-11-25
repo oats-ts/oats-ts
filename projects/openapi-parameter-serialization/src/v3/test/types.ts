@@ -1,5 +1,5 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
-import { DslLocation, DslRoot, DslStyle, HeaderStyle, ParameterType } from '../types'
+import { DslLocation, DslRoot, DslStyle, HeaderStyle, ParameterType, QueryStyle } from '../types'
 
 type Nullable<A> = A | undefined | null
 
@@ -19,4 +19,6 @@ export type TestCase<A extends ParameterType, B, L extends DslLocation, S extend
   deserializerErrors: Nullable<B>[]
 }
 
-export type HeaderTestCase<A extends ParameterType> = TestCase<A, RawHttpHeaders, 'header', HeaderStyle>
+export type HeaderTestCase<Type extends ParameterType> = TestCase<Type, RawHttpHeaders, 'header', HeaderStyle>
+
+export type QueryTestCase<Type extends ParameterType> = TestCase<Type, string, 'query', QueryStyle>
