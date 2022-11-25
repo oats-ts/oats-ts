@@ -1,6 +1,6 @@
 import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { Base } from './Base'
+import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
@@ -14,14 +14,13 @@ import {
   PrimitiveArray,
   PrimitiveRecord,
   RawPath,
-  ValueDeserializer,
   ValueDsl,
   ParameterSegment,
 } from './types'
 import { isNil, mapRecord } from './utils'
 
-export class DefaultPathDeserializer<T> extends Base implements PathDeserializer<T> {
-  constructor(private dsl: PathDslRoot<T>, private values: ValueDeserializer) {
+export class DefaultPathDeserializer<T> extends BaseDeserializer implements PathDeserializer<T> {
+  constructor(protected readonly dsl: PathDslRoot<T>) {
     super()
   }
 

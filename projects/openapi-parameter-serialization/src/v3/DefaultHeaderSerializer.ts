@@ -17,7 +17,7 @@ import {
 import { entries, isNil } from './utils'
 
 export class DefaultHeaderSerializer<T> extends Base implements HeadersSerializer<T> {
-  constructor(private dsl: HeaderDslRoot<T>) {
+  constructor(protected readonly dsl: HeaderDslRoot<T>) {
     super()
   }
 

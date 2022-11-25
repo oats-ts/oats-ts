@@ -3,7 +3,7 @@ import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/t
 import { Issue } from '@oats-ts/validators'
 import { ValueDsl } from '../types'
 import { isNil } from '../utils'
-import { Base } from './Base'
+import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
@@ -11,7 +11,6 @@ import {
   PrimitiveArray,
   PrimitiveRecord,
   RawPath,
-  ValueDeserializer,
   HeaderDeserializer,
   HeaderDslRoot,
   HeaderDsl,
@@ -21,8 +20,8 @@ import {
 } from './types'
 import { mapRecord } from './utils'
 
-export class DefaultHeaderDeserializer<T> extends Base implements HeaderDeserializer<T> {
-  constructor(private dsl: HeaderDslRoot<T>, private values: ValueDeserializer) {
+export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements HeaderDeserializer<T> {
+  constructor(protected readonly dsl: HeaderDslRoot<T>) {
     super()
   }
 
@@ -30,7 +29,7 @@ export class DefaultHeaderDeserializer<T> extends Base implements HeaderDeserial
     const deserialized = Object.keys(this.dsl.schema).reduce(
       (acc: Record<string, Try<ParameterValue>>, _key: string) => {
         const key = _key as string & keyof T
-        const deserializer = this.dsl.schema?.[key]
+        const deserializer = this.dsl.schema[key]
         acc[key] = this.parameter(deserializer, key, input ?? {}, this.append(this.basePath(), key))
         return acc
       },
@@ -66,7 +65,9 @@ export class DefaultHeaderDeserializer<T> extends Base implements HeaderDeserial
 
   protected simplePrimitive(dsl: HeaderPrimitive, name: string, data: RawHttpHeaders, path: string): Try<Primitive> {
     return fluent(this.getHeaderValue(name, path, data, dsl.required))
-      .flatMap((value) => (isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, value, name, path)))
+      .flatMap((value) =>
+        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), name, path),
+      )
       .toTry()
   }
 

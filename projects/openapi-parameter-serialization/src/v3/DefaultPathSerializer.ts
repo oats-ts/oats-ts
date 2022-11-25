@@ -14,7 +14,7 @@ import {
 import { entries, isNil } from './utils'
 
 export class DefaultPathSerializer<T> extends Base implements PathSerializer<T> {
-  constructor(private dsl: PathDslRoot<T>) {
+  constructor(protected readonly dsl: PathDslRoot<T>) {
     super()
   }
 

@@ -16,6 +16,11 @@ export type CookieStyle = 'form'
 
 export type DslStyle = QueryStyle | PathStyle | HeaderStyle | CookieStyle
 
+export type DslConfig = {
+  required: boolean
+  explode: boolean
+}
+
 export type EnumDsl = {
   type: 'enum'
   values: Primitive[]

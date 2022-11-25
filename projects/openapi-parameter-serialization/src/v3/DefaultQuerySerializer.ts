@@ -16,7 +16,7 @@ import {
 import { entries, isNil } from './utils'
 
 export class DefaultQuerySerializer<T> extends Base implements QuerySerializer<T> {
-  constructor(private dsl: QueryDslRoot<T>) {
+  constructor(protected readonly dsl: QueryDslRoot<T>) {
     super()
   }
 

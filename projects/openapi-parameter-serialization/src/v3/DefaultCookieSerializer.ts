@@ -5,7 +5,7 @@ import { ParameterValue, Primitive, CookieSerializer, CookieDslRoot, CookieDsl, 
 import { isNil } from './utils'
 
 export class DefaultCookieSerializer<T> extends Base implements CookieSerializer<T> {
-  constructor(private dsl: CookieDslRoot<T>) {
+  constructor(protected readonly dsl: CookieDslRoot<T>) {
     super()
   }
 

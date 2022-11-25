@@ -1,6 +1,6 @@
 import { failure, fluent, fromArray, fromRecord, isSuccess, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { Base } from './Base'
+import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   ParameterValue,
@@ -14,12 +14,11 @@ import {
   QueryObject,
   QueryPrimitive,
   RawQuery,
-  ValueDeserializer,
 } from './types'
 import { has, isNil } from './utils'
 
-export class DefaultQueryDeserializer<T> extends Base implements QueryDeserializer<T> {
-  constructor(private dsl: QueryDslRoot<T>, private values: ValueDeserializer) {
+export class DefaultQueryDeserializer<T> extends BaseDeserializer implements QueryDeserializer<T> {
+  constructor(protected readonly dsl: QueryDslRoot<T>) {
     super()
   }
 

@@ -1,20 +1,12 @@
 import { CookieValue } from '@oats-ts/openapi-http'
 import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
 import { isNil } from '../utils'
-import { Base } from './Base'
+import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
-import {
-  ParameterValue,
-  Primitive,
-  ValueDeserializer,
-  CookieDeserializer,
-  CookieDslRoot,
-  CookieDsl,
-  CookiePrimitive,
-} from './types'
+import { ParameterValue, Primitive, CookieDeserializer, CookieDslRoot, CookieDsl, CookiePrimitive } from './types'
 
-export class DefaultCookieDeserializer<T> extends Base implements CookieDeserializer<T> {
-  constructor(private dsl: CookieDslRoot<T>, private values: ValueDeserializer) {
+export class DefaultCookieDeserializer<T> extends BaseDeserializer implements CookieDeserializer<T> {
+  constructor(protected readonly dsl: CookieDslRoot<T>) {
     super()
   }
 
