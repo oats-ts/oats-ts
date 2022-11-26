@@ -105,18 +105,20 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
 
   protected formObject(dsl: QueryObject, name: string, data: PrimitiveRecord, path: string): Try<string[]> {
     return fluent(this.getQueryValue(dsl, path, data))
-      .map((value) => {
+      .flatMap((value): Try<string[]> => {
         if (isNil(value)) {
-          return []
+          return success([])
         }
-        const kvPairs = entries(value).filter(([, value]) => !isNil(value))
-        if (dsl.explode) {
-          return kvPairs.map(([key, value]) => `${this.encode(key)}=${this.encode(value?.toString())}`)
-        }
-        const valueStr = kvPairs
-          .map(([key, value]) => [this.encode(key), this.encode(value?.toString())].join(','))
-          .join(',')
-        return [`${this.encode(name)}=${valueStr}`]
+        return this.objectToKeyValuePairs(dsl.properties, value, path).map((kvPairs): string[] => {
+          if (kvPairs.length === 0) {
+            return []
+          }
+          if (dsl.explode) {
+            return kvPairs.map(([key, value]) => `${this.encode(key)}=${this.encode(value)}`)
+          }
+          const valStr = kvPairs.map(([key, value]) => [this.encode(key), this.encode(value)].join(',')).join(',')
+          return [`${this.encode(name)}=${valStr}`]
+        })
       })
       .toTry()
   }

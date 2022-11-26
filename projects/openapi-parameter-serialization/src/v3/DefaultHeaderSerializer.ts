@@ -106,27 +106,15 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
         if (isNil(value)) {
           return success(undefined)
         }
-        const kvPairsTry = fluent(
-          fromRecord(
-            entries(dsl.properties)
-              .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
-              .reduce((pairs, [key, valueDsl]) => {
-                const strKey = this.encode(key)
-                const strValue = this.values.serialize(valueDsl, value[key], key, this.append(path, key))
-                pairs[strKey] = strValue
-                return pairs
-              }, {} as Record<string, Try<string | undefined>>),
-          ),
-        ).map((pairs) =>
-          entries(pairs)
-            .filter(([, v]) => !isNil(v))
-            .map(([k, v]) => [k, this.encode(v)]),
-        )
-
-        if (dsl.explode) {
-          return kvPairsTry.map((pairs) => pairs.map(([key, value]) => `${key}=${value}`).join(','))
-        }
-        return kvPairsTry.map((pairs) => pairs.map(([key, value]) => `${key},${value}`).join(','))
+        return this.objectToKeyValuePairs(dsl.properties, value, path).map((pairs): string | undefined => {
+          if (pairs.length === 0) {
+            return ''
+          }
+          if (dsl.explode) {
+            return pairs.map(([key, value]) => `${this.encode(key)}=${this.encode(value)}`).join(',')
+          }
+          return pairs.map(([key, value]) => `${this.encode(key)},${this.encode(value)}`).join(',')
+        })
       })
       .toTry()
   }

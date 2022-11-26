@@ -277,9 +277,9 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     path: string,
   ): Try<PrimitiveArray> {
     return this.getValues(dsl, delimiter, name, path, data)
-      .flatMap((values) => {
+      .flatMap((values): Try<PrimitiveArray> => {
         if (isNil(values)) {
-          return success(undefined)
+          return success(dsl.required ? [] : undefined)
         }
         return fromArray(
           values.map((value, index) =>
