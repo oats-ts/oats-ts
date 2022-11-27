@@ -19,7 +19,7 @@ export const optObj: Record<keyof OptObjType, ValueDsl> = {
   e: dsl.value.optional(dsl.value.enum(['cat', 'dog', 'racoon'])),
 }
 
-export function testCases<L extends DslLocation, S extends DslStyle>(cases: Record<string, TestCase<any, any, L, S>>) {
+export function testCases(cases: Record<string, TestCase<any, any, any>>) {
   const vals = Object.values(cases)
   const only = vals.filter((c) => c.only)
   if (only.length > 0) {

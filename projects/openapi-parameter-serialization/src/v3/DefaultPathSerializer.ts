@@ -27,7 +27,7 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
       Object.keys(this.dsl.schema).reduce((parts: Record<string, Try<string>>, name: string) => {
         const key = name as keyof T & string
         const dsl: PathDsl = this.dsl.schema[key]
-        const value: any = input[key]
+        const value: any = input?.[key]
         const path = this.append(this.basePath(), key)
         parts[name] = this.parameter(dsl, key, value, path)
         return parts

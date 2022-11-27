@@ -73,7 +73,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
 
   protected simpleArray(dsl: HeaderArray, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveArray> {
     return fluent(this.getHeaderValue(dsl, name, path, data))
-      .flatMap((pathValue) => this.deserializeArray(dsl.items, ',', pathValue, name, path))
+      .flatMap((pathValue) => this.deserializeArray(dsl.items, ',', pathValue, path))
       .toTry()
   }
 
@@ -168,19 +168,15 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     return result
   }
 
-  protected deserializeArray(
-    dsl: ValueDsl,
-    separator: string,
-    value: string,
-    name: string,
-    path: string,
-  ): Try<Primitive[] | undefined> {
-    return isNil(value)
-      ? success(undefined)
-      : fromArray(
-          value
-            .split(separator)
-            .map((value, i) => this.values.deserialize(dsl, this.decode(value), this.append(path, i))),
-        )
+  protected deserializeArray(dsl: ValueDsl, separator: string, value: string, path: string): Try<PrimitiveArray> {
+    if (isNil(value)) {
+      return success(undefined)
+    }
+    if (value.length === 0) {
+      return success([])
+    }
+    return fromArray(
+      value.split(separator).map((value, i) => this.values.deserialize(dsl, this.decode(value), this.append(path, i))),
+    )
   }
 }

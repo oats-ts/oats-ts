@@ -6,15 +6,13 @@ import { HeaderTestCase } from './types'
 export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> = {
   name: 'required string headers',
   dsl: {
-    'X-String-Field': dsl.header.simple.primitive(dsl.value.string(), { required: true }),
+    schema: {
+      'X-String-Field': dsl.header.simple.primitive(dsl.value.string(), { required: true }),
+    },
   },
-  serialize: [
-    { from: { 'X-String-Field': 'string' }, to: { 'x-string-field': 'string' } },
-    { from: { 'X-String-Field': 'hello test' }, to: { 'x-string-field': 'hello%20test' } },
-  ],
-  deserialize: [
-    { from: { 'x-string-field': 'string' }, to: { 'X-String-Field': 'string' } },
-    { from: { 'x-string-field': 'hello%20test' }, to: { 'X-String-Field': 'hello test' } },
+  data: [
+    { model: { 'X-String-Field': 'string' }, serialized: { 'x-string-field': 'string' } },
+    { model: { 'X-String-Field': 'hello test' }, serialized: { 'x-string-field': 'hello%20test' } },
   ],
   deserializerErrors: [null, undefined, {}, { 'x-string-fiel': 'string' }],
   serializerErrors: [null, undefined, {} as any, { 'x-string-fiel': 'string' } as any],
@@ -23,14 +21,11 @@ export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> 
 export const optionalStringHeader: HeaderTestCase<{ 'X-String-Field'?: string }> = {
   name: 'optional string headers',
   dsl: {
-    'X-String-Field': dsl.header.simple.primitive(dsl.value.string(), { required: false }),
+    schema: {
+      'X-String-Field': dsl.header.simple.primitive(dsl.value.string(), { required: false }),
+    },
   },
-  serialize: [{ from: {}, to: {} }, ...requiredStringHeader.serialize],
-  deserialize: [
-    { from: {}, to: {} },
-    { from: { 'X-Extra-Header': 'hello' }, to: {} },
-    ...requiredStringHeader.deserialize,
-  ],
+  data: [{ model: {}, serialized: {} }, ...requiredStringHeader.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
@@ -38,15 +33,13 @@ export const optionalStringHeader: HeaderTestCase<{ 'X-String-Field'?: string }>
 export const requiredNumberHeader: HeaderTestCase<{ 'X-Number-Field': number }> = {
   name: 'required number headers',
   dsl: {
-    'X-Number-Field': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
+    schema: {
+      'X-Number-Field': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
+    },
   },
-  serialize: [
-    { from: { 'X-Number-Field': 12 }, to: { 'x-number-field': '12' } },
-    { from: { 'X-Number-Field': 1243.2 }, to: { 'x-number-field': '1243%2E2' } },
-  ],
-  deserialize: [
-    { from: { 'x-number-field': '12' }, to: { 'X-Number-Field': 12 } },
-    { from: { 'x-number-field': '1243%2E2' }, to: { 'X-Number-Field': 1243.2 } },
+  data: [
+    { model: { 'X-Number-Field': 12 }, serialized: { 'x-number-field': '12' } },
+    { model: { 'X-Number-Field': 1243.2 }, serialized: { 'x-number-field': '1243%2E2' } },
   ],
   deserializerErrors: [
     null,
@@ -62,14 +55,11 @@ export const requiredNumberHeader: HeaderTestCase<{ 'X-Number-Field': number }> 
 export const optionalNumberHeader: HeaderTestCase<{ 'X-Number-Field'?: number }> = {
   name: 'optional number headers',
   dsl: {
-    'X-Number-Field': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
+    schema: {
+      'X-Number-Field': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
+    },
   },
-  serialize: [{ from: {}, to: {} }, ...requiredNumberHeader.serialize],
-  deserialize: [
-    { from: {}, to: {} },
-    { from: { 'X-Extra-Header': 'hello' }, to: {} },
-    ...requiredNumberHeader.deserialize,
-  ],
+  data: [{ model: {}, serialized: {} }, ...requiredNumberHeader.data],
   deserializerErrors: [{ 'x-number-field': 'string' }, { 'x-number-field': 'false' }],
   serializerErrors: [],
 }
@@ -77,15 +67,13 @@ export const optionalNumberHeader: HeaderTestCase<{ 'X-Number-Field'?: number }>
 export const requiredBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field': boolean }> = {
   name: 'required boolean headers',
   dsl: {
-    'X-Boolean-Field': dsl.header.simple.primitive(dsl.value.boolean(), { required: true }),
+    schema: {
+      'X-Boolean-Field': dsl.header.simple.primitive(dsl.value.boolean(), { required: true }),
+    },
   },
-  serialize: [
-    { from: { 'X-Boolean-Field': false }, to: { 'x-boolean-field': 'false' } },
-    { from: { 'X-Boolean-Field': true }, to: { 'x-boolean-field': 'true' } },
-  ],
-  deserialize: [
-    { from: { 'x-boolean-field': 'false' }, to: { 'X-Boolean-Field': false } },
-    { from: { 'x-boolean-field': 'true' }, to: { 'X-Boolean-Field': true } },
+  data: [
+    { model: { 'X-Boolean-Field': false }, serialized: { 'x-boolean-field': 'false' } },
+    { model: { 'X-Boolean-Field': true }, serialized: { 'x-boolean-field': 'true' } },
   ],
   deserializerErrors: [
     null,
@@ -101,14 +89,11 @@ export const requiredBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field': boolean 
 export const optionalBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field'?: boolean }> = {
   name: 'optional boolean headers',
   dsl: {
-    'X-Boolean-Field': dsl.header.simple.primitive(dsl.value.boolean(), { required: false }),
+    schema: {
+      'X-Boolean-Field': dsl.header.simple.primitive(dsl.value.boolean(), { required: false }),
+    },
   },
-  serialize: [{ from: {}, to: {} }, ...requiredBooleanHeader.serialize],
-  deserialize: [
-    { from: {}, to: {} },
-    { from: { 'X-Extra-Header': 'hello' }, to: {} },
-    ...requiredBooleanHeader.deserialize,
-  ],
+  data: [{ model: {}, serialized: {} }, ...requiredBooleanHeader.data],
   deserializerErrors: [{ 'x-boolean-field': 'string' }, { 'x-boolean-field': '12' }],
   serializerErrors: [],
 }
@@ -116,19 +101,16 @@ export const optionalBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field'?: boolean
 export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = {
   name: 'required boolean headers',
   dsl: {
-    'X-Enum-Field': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon'])), {
-      required: true,
-    }),
+    schema: {
+      'X-Enum-Field': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon'])), {
+        required: true,
+      }),
+    },
   },
-  serialize: [
-    { from: { 'X-Enum-Field': 'cat' }, to: { 'x-enum-field': 'cat' } },
-    { from: { 'X-Enum-Field': 'dog' }, to: { 'x-enum-field': 'dog' } },
-    { from: { 'X-Enum-Field': 'racoon' }, to: { 'x-enum-field': 'racoon' } },
-  ],
-  deserialize: [
-    { from: { 'x-enum-field': 'cat' }, to: { 'X-Enum-Field': 'cat' } },
-    { from: { 'x-enum-field': 'dog' }, to: { 'X-Enum-Field': 'dog' } },
-    { from: { 'x-enum-field': 'racoon' }, to: { 'X-Enum-Field': 'racoon' } },
+  data: [
+    { model: { 'X-Enum-Field': 'cat' }, serialized: { 'x-enum-field': 'cat' } },
+    { model: { 'X-Enum-Field': 'dog' }, serialized: { 'x-enum-field': 'dog' } },
+    { model: { 'X-Enum-Field': 'racoon' }, serialized: { 'x-enum-field': 'racoon' } },
   ],
   deserializerErrors: [
     null,
@@ -144,16 +126,13 @@ export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = 
 export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> = {
   name: 'optional boolean headers',
   dsl: {
-    'X-Enum-Field': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon'])), {
-      required: false,
-    }),
+    schema: {
+      'X-Enum-Field': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon'])), {
+        required: false,
+      }),
+    },
   },
-  serialize: [{ from: {}, to: {} }, ...requiredEnumHeader.serialize],
-  deserialize: [
-    { from: {}, to: {} },
-    { from: { 'X-Extra-Header': 'hello' }, to: {} },
-    ...requiredEnumHeader.deserialize,
-  ],
+  data: [{ model: {}, serialized: {} }, ...requiredEnumHeader.data],
   deserializerErrors: [{ 'x-enum-field': 'X' }, { 'x-enum-field': '12' }],
   serializerErrors: [],
 }
@@ -161,23 +140,24 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
 export const requiredNumberArrayHeader: HeaderTestCase<{ 'X-Arr-Field': number[] }> = {
   name: 'required number array headers',
   dsl: {
-    'X-Arr-Field': dsl.header.simple.array(dsl.value.number(), { required: true }),
+    schema: {
+      'X-Arr-Field': dsl.header.simple.array(dsl.value.number(), { required: true }),
+    },
   },
-  serialize: [
+  data: [
     {
-      from: { 'X-Arr-Field': [1, 2, 3] },
-      to: { 'x-arr-field': '1,2,3' },
+      model: { 'X-Arr-Field': [1, 2, 3] },
+      serialized: { 'x-arr-field': '1,2,3' },
     },
     {
-      from: { 'X-Arr-Field': [1.2, 6.12345] },
-      to: { 'x-arr-field': '1%2E2,6%2E12345' },
+      model: { 'X-Arr-Field': [1.2, 6.12345] },
+      serialized: { 'x-arr-field': '1%2E2,6%2E12345' },
     },
     {
-      from: { 'X-Arr-Field': [] },
-      to: { 'x-arr-field': '' },
+      model: { 'X-Arr-Field': [] },
+      serialized: { 'x-arr-field': '' },
     },
   ],
-  deserialize: [],
   deserializerErrors: [
     { 'x-arr-field': 'X' },
     { 'x-arr-field': 's=12' },
@@ -197,26 +177,18 @@ export const requiredNumberArrayHeader: HeaderTestCase<{ 'X-Arr-Field': number[]
 export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
   name: 'required object headers',
   dsl: {
-    'X-Obj-Field': dsl.header.simple.object(obj, { required: true }),
+    schema: {
+      'X-Obj-Field': dsl.header.simple.object(obj, { required: true }),
+    },
   },
-  serialize: [
+  data: [
     {
-      from: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b,true,e,dog,l,cat,n,12,s,A' },
+      model: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b,true,e,dog,l,cat,n,12,s,A' },
     },
     {
-      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
-    },
-  ],
-  deserialize: [
-    {
-      from: { 'x-obj-field': 's,A,b,true,n,12,e,dog,l,cat' },
-      to: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
-    },
-    {
-      from: { 'x-obj-field': 's,A%20B%20C,b,false,n,123%2E123,e,dog,l,cat' },
-      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      model: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
     },
   ],
   deserializerErrors: [
@@ -238,26 +210,18 @@ export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = 
 export const requiredExplodeObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
   name: 'required object headers',
   dsl: {
-    'X-Obj-Field': dsl.header.simple.object(obj, { required: true, explode: true }),
+    schema: {
+      'X-Obj-Field': dsl.header.simple.object(obj, { required: true, explode: true }),
+    },
   },
-  serialize: [
+  data: [
     {
-      from: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b=true,e=dog,l=cat,n=12,s=A' },
+      model: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b=true,e=dog,l=cat,n=12,s=A' },
     },
     {
-      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b=false,e=dog,l=cat,n=123%2E123,s=A%20B%20C' },
-    },
-  ],
-  deserialize: [
-    {
-      from: { 'x-obj-field': 'b=true,l=cat,n=12,s=A,e=dog' },
-      to: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
-    },
-    {
-      from: { 'x-obj-field': 'e=dog,b=false,l=cat,n=123%2E123,s=A%20B%20C' },
-      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      model: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b=false,e=dog,l=cat,n=123%2E123,s=A%20B%20C' },
     },
   ],
   deserializerErrors: [
@@ -280,26 +244,18 @@ export const requiredExplodeObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjTyp
 export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> = {
   name: 'optional object headers',
   dsl: {
-    'X-Obj-Field': dsl.header.simple.object(obj, { required: false }),
+    schema: {
+      'X-Obj-Field': dsl.header.simple.object(obj, { required: false }),
+    },
   },
-  serialize: [
+  data: [
     {
-      from: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b,true,e,dog,l,cat,n,12,s,A' },
+      model: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b,true,e,dog,l,cat,n,12,s,A' },
     },
     {
-      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
-    },
-  ],
-  deserialize: [
-    {
-      from: { 'x-obj-field': 's,A,b,true,n,12,e,dog,l,cat' },
-      to: { 'X-Obj-Field': { s: 'A', b: true, n: 12, e: 'dog', l: 'cat' } },
-    },
-    {
-      from: { 'x-obj-field': 's,A%20B%20C,b,false,n,123%2E123,e,dog,l,cat' },
-      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      model: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
     },
   ],
   deserializerErrors: [
@@ -318,46 +274,30 @@ export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> =
 export const optionalFieldsObjectHeader: HeaderTestCase<{ 'X-Obj-Field': OptObjType }> = {
   name: 'required object headers with optional fields',
   dsl: {
-    'X-Obj-Field': dsl.header.simple.object(optObj, { required: true }),
+    schema: {
+      'X-Obj-Field': dsl.header.simple.object(optObj, { required: true }),
+    },
   },
-  serialize: [
+  data: [
     {
-      from: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
+      model: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
     },
     {
-      from: { 'X-Obj-Field': { b: false, n: 123.123, e: 'dog', l: 'cat' } },
-      to: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123' },
+      model: { 'X-Obj-Field': { b: false, n: 123.123, e: 'dog', l: 'cat' } },
+      serialized: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123' },
     },
     {
-      from: { 'X-Obj-Field': { b: false, n: 123.123 } },
-      to: { 'x-obj-field': 'b,false,n,123%2E123' },
+      model: { 'X-Obj-Field': { b: false, n: 123.123 } },
+      serialized: { 'x-obj-field': 'b,false,n,123%2E123' },
     },
     {
-      from: { 'X-Obj-Field': { n: 123.123 } },
-      to: { 'x-obj-field': 'n,123%2E123' },
+      model: { 'X-Obj-Field': { n: 123.123 } },
+      serialized: { 'x-obj-field': 'n,123%2E123' },
     },
     {
-      from: { 'X-Obj-Field': {} },
-      to: { 'x-obj-field': '' },
-    },
-  ],
-  deserialize: [
-    {
-      from: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123,s,A%20B%20C' },
-      to: { 'X-Obj-Field': { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' } },
-    },
-    {
-      from: { 'x-obj-field': 'b,false,e,dog,l,cat,n,123%2E123' },
-      to: { 'X-Obj-Field': { b: false, n: 123.123, e: 'dog', l: 'cat' } },
-    },
-    {
-      from: { 'x-obj-field': 'b,false,n,123%2E123' },
-      to: { 'X-Obj-Field': { b: false, n: 123.123 } },
-    },
-    {
-      from: { 'x-obj-field': '' },
-      to: { 'X-Obj-Field': {} },
+      model: { 'X-Obj-Field': {} },
+      serialized: { 'x-obj-field': '' },
     },
   ],
   deserializerErrors: [
