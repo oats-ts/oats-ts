@@ -1,8 +1,9 @@
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { Expression, factory } from 'typescript'
+import { pathToRegexp } from 'path-to-regexp'
 import { BaseDslGenerator } from '../utils/BaseDslGenerator'
-import { createPathRegExp, ParameterSegment, parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
+import { ParameterSegment, parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
 
 export class PathDeserializersGenerator extends BaseDslGenerator {
   public name(): OpenAPIGeneratorTarget {
@@ -36,7 +37,15 @@ export class PathDeserializersGenerator extends BaseDslGenerator {
       factory.createArrayLiteralExpression(
         this.getPathParameterNames(data.url).map((name) => factory.createStringLiteral(name)),
       ),
-      factory.createRegularExpressionLiteral(createPathRegExp(data.url).toString()),
+      factory.createRegularExpressionLiteral(this.createPathRegExp(data.url).toString()),
     ]
+  }
+
+  protected createPathRegExp(path: string): RegExp {
+    const segments = parsePathToSegments(path)
+    const regexpInput = segments
+      .map((segment) => (segment.type === 'text' ? segment.value : `:${segment.name}`))
+      .join('')
+    return pathToRegexp(regexpInput, [])
   }
 }
