@@ -115,7 +115,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   protected formPrimitive(dsl: QueryPrimitive, name: string, data: RawQuery, path: string): Try<Primitive> {
     return fluent(this.getQueryValue(dsl, name, path, data))
       .flatMap((value) =>
-        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), name, path),
+        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), path),
       )
       .toTry()
   }
@@ -147,7 +147,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
           hasKeys = true
         }
         const decodedValue = isNil(value) ? value : this.decode(value)
-        const parsedValue = this.values.deserialize(parser, decodedValue, key, this.append(path, key))
+        const parsedValue = this.values.deserialize(parser, decodedValue, this.append(path, key))
         return fluent(parsedValue)
           .map((valueForKey): [string, Primitive] => [key, valueForKey])
           .toTry()
@@ -212,7 +212,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
           severity: 'error',
         })
       } else {
-        const parsed = this.values.deserialize(valueDsl, rawValue, name, this.append(path, key))
+        const parsed = this.values.deserialize(valueDsl, rawValue, this.append(path, key))
         if (isSuccess(parsed)) {
           output[key] = parsed.data
         } else {
@@ -252,7 +252,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
         if (!isNil(rawValue)) {
           hasKeys = true
         }
-        acc[key] = this.values.deserialize(valueDsl, this.decode(rawValue), name, this.append(path, key))
+        acc[key] = this.values.deserialize(valueDsl, this.decode(rawValue), this.append(path, key))
       }
 
       return acc
@@ -283,7 +283,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
         }
         return fromArray(
           values.map((value, index) =>
-            this.values.deserialize(dsl.items, this.decode(value), name, this.append(path, index)),
+            this.values.deserialize(dsl.items, this.decode(value), this.append(path, index)),
           ),
         )
       })

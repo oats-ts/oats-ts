@@ -170,15 +170,20 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
     name: string,
   ): Try<string[]> {
     return fluent(this.getQueryValue(dsl, path, data))
-      .map((value) => {
+      .flatMap((value): Try<string[]> => {
         if (isNil(value)) {
-          return []
+          return success([])
         }
         const keyStr = this.encode(name)
+        const valuesTry = this.arrayToValues(dsl.items, value, path)
         if (dsl.explode) {
-          return value.length === 0 ? [] : value.map((item) => `${keyStr}=${this.encode(item?.toString())}`)
+          return valuesTry.map((values) =>
+            values.length === 0 ? [] : values.map((item) => `${keyStr}=${this.encode(item?.toString())}`),
+          )
         }
-        return [`${keyStr}=${value.map((item) => this.encode(item?.toString())).join(delimiter)}`]
+        return valuesTry.map((values) => [
+          `${keyStr}=${values.map((item) => this.encode(item?.toString())).join(delimiter)}`,
+        ])
       })
       .toTry()
   }

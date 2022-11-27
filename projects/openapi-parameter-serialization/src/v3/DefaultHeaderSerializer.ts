@@ -71,7 +71,7 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
       .flatMap((value): Try<string | undefined> => {
         return isNil(value)
           ? success(undefined)
-          : fluent(this.values.serialize(dsl.value, value, name, path)).map((value) => this.encode(value))
+          : fluent(this.values.serialize(dsl.value, value, path)).map((value) => this.encode(value))
       })
       .toTry()
   }
@@ -82,15 +82,9 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
         if (isNil(value)) {
           return success(undefined)
         }
-        // TODO do we need to encode here???
-        const serializedValues = fromArray(
-          value
-            .filter((item) => !isNil(item))
-            .map((item) =>
-              fluent(this.values.serialize(dsl.items, item, name, path)).map((value) => this.encode(value)),
-            ),
+        return this.arrayToValues(dsl.items, value, path).map((items) =>
+          items.map((item) => this.encode(item)).join(','),
         )
-        return fluent(serializedValues).map((values) => values.join(','))
       })
       .toTry()
   }

@@ -120,11 +120,11 @@ export type CookieDslRoot<T> = {
 }
 
 export type ValueDeserializer = {
-  deserialize(dsl: ValueDsl, data: Primitive, name: string, path: string): Try<Primitive>
+  deserialize(dsl: ValueDsl, data: Primitive, path: string): Try<Primitive>
 }
 
 export type ValueSerializer = {
-  serialize(dsl: ValueDsl, data: Primitive, name: string, path: string): Try<string | undefined>
+  serialize(dsl: ValueDsl, data: Primitive, path: string): Try<string | undefined>
 }
 
 export type PathSerializer<T> = {

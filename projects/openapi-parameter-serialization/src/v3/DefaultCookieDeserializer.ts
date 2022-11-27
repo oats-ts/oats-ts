@@ -50,10 +50,10 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
   protected formPrimitive(dsl: CookiePrimitive, name: string, data: CookieValue[], path: string): Try<Primitive> {
     switch (data.length) {
       case 0: {
-        return dsl.required ? this.values.deserialize(dsl.value, undefined, name, path) : success(undefined!)
+        return dsl.required ? this.values.deserialize(dsl.value, undefined, path) : success(undefined!)
       }
       case 1: {
-        return this.values.deserialize(dsl.value, this.decode(data[0].value), name, path)
+        return this.values.deserialize(dsl.value, this.decode(data[0].value), path)
       }
       default: {
         return failure({

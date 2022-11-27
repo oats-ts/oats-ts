@@ -120,7 +120,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
 
   protected simplePrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
-      .flatMap((pathValue) => this.values.deserialize(dsl.value, this.decode(pathValue), name, path))
+      .flatMap((pathValue) => this.values.deserialize(dsl.value, this.decode(pathValue), path))
       .toTry()
   }
 
@@ -142,7 +142,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   protected labelPrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
-      .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), name, path))
+      .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), path))
       .toTry()
   }
 
@@ -166,7 +166,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   protected matrixPrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
-      .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), name, path))
+      .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), path))
       .toTry()
   }
 
@@ -198,7 +198,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
               severity: 'error',
             })
           }
-          return this.values.deserialize(dsl, value, name, itemPath)
+          return this.values.deserialize(dsl, value, itemPath)
         })
         return fromArray(parsed)
       })
@@ -211,7 +211,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       .flatMap((rawValue) => {
         const tryValues = rawValue
           .split(',')
-          .map((value, index) => this.values.deserialize(dsl, this.decode(value), name, this.append(path, index)))
+          .map((value, index) => this.values.deserialize(dsl, this.decode(value), this.append(path, index)))
         return fromArray(tryValues)
       })
       .toTry()
@@ -263,7 +263,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       : fromArray(
           value
             .split(separator)
-            .map((value, i) => this.values.deserialize(dsl, this.decode(value), name, this.append(path, i))),
+            .map((value, i) => this.values.deserialize(dsl, this.decode(value), this.append(path, i))),
         )
   }
 
@@ -278,7 +278,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       parserKeys,
       (key): Try<Primitive> => {
         const value = paramData[key]
-        return this.values.deserialize(dsl.properties[key], this.decode(value), name, this.append(path, key))
+        return this.values.deserialize(dsl.properties[key], this.decode(value), this.append(path, key))
       },
       (key) => this.decode(key),
     )

@@ -66,7 +66,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
   protected simplePrimitive(dsl: HeaderPrimitive, name: string, data: RawHttpHeaders, path: string): Try<Primitive> {
     return fluent(this.getHeaderValue(dsl, name, path, data))
       .flatMap((value) =>
-        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), name, path),
+        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), path),
       )
       .toTry()
   }
@@ -161,7 +161,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       (key): Try<Primitive> => {
         const valueDsl = dsl.properties[key]
         const value = paramData[key]
-        return this.values.deserialize(valueDsl, this.decode(value), name, this.append(path, key))
+        return this.values.deserialize(valueDsl, this.decode(value), this.append(path, key))
       },
       (key) => this.decode(key),
     )
@@ -180,7 +180,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       : fromArray(
           value
             .split(separator)
-            .map((value, i) => this.values.deserialize(dsl, this.decode(value), name, this.append(path, i))),
+            .map((value, i) => this.values.deserialize(dsl, this.decode(value), this.append(path, i))),
         )
   }
 }

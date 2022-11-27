@@ -242,7 +242,6 @@ export const optionalFormObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
   serializerErrors: [],
 }
 
-// TODO order!
 export const requiredPartialFormObjectQuery: QueryTestCase<{ obj: OptObjType }> = {
   name: 'required partial form object query',
   dsl: {

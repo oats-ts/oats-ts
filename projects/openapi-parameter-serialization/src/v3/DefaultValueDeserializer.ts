@@ -13,24 +13,24 @@ import {
 import { isNil } from './utils'
 
 export class DefaultValueDeserializer implements ValueDeserializer {
-  public deserialize(dsl: ValueDsl, data: Primitive, name: string, path: string): Try<Primitive> {
+  public deserialize(dsl: ValueDsl, data: Primitive, path: string): Try<Primitive> {
     switch (dsl.type) {
       case 'boolean':
-        return this.boolean(dsl, data, name, path)
+        return this.boolean(dsl, data, path)
       case 'enum':
-        return this.enumeration(dsl, data, name, path)
+        return this.enumeration(dsl, data, path)
       case 'literal':
-        return this.literal(dsl, data, name, path)
+        return this.literal(dsl, data, path)
       case 'number':
-        return this.number(dsl, data, name, path)
+        return this.number(dsl, data, path)
       case 'optional':
-        return this.optional(dsl, data, name, path)
+        return this.optional(dsl, data, path)
       case 'string':
-        return this.string(dsl, data, name, path)
+        return this.string(dsl, data, path)
     }
   }
 
-  protected boolean(dsl: BooleanDsl, value: Primitive, name: string, path: string): Try<Primitive> {
+  protected boolean(dsl: BooleanDsl, value: Primitive, path: string): Try<Primitive> {
     if (value !== 'true' && value !== 'false') {
       return failure({
         message: `should be a boolean ("true" or "false")`,
@@ -39,10 +39,10 @@ export class DefaultValueDeserializer implements ValueDeserializer {
       })
     }
     const boolValue = value === 'true'
-    return isNil(dsl.dsl) ? success(boolValue) : this.deserialize(dsl.dsl, boolValue, name, path)
+    return isNil(dsl.dsl) ? success(boolValue) : this.deserialize(dsl.dsl, boolValue, path)
   }
 
-  protected enumeration(dsl: EnumDsl, value: Primitive, name: string, path: string): Try<Primitive> {
+  protected enumeration(dsl: EnumDsl, value: Primitive, path: string): Try<Primitive> {
     if (dsl.values.indexOf(value) < 0) {
       const valuesLiteral = dsl.values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
       return failure({
@@ -54,7 +54,7 @@ export class DefaultValueDeserializer implements ValueDeserializer {
     return success(value)
   }
 
-  protected literal(dsl: LiteralDsl, value: Primitive, name: string, path: string): Try<Primitive> {
+  protected literal(dsl: LiteralDsl, value: Primitive, path: string): Try<Primitive> {
     if (value !== dsl.value) {
       const strLiteral = typeof dsl.value === 'string' ? `"${dsl.value}"` : dsl.value
       return failure({
@@ -66,7 +66,7 @@ export class DefaultValueDeserializer implements ValueDeserializer {
     return success(value)
   }
 
-  protected number(dsl: NumberDsl, value: Primitive, name: string, path: string): Try<Primitive> {
+  protected number(dsl: NumberDsl, value: Primitive, path: string): Try<Primitive> {
     if (typeof value !== 'string') {
       return failure({
         message: `should not be ${value}`,
@@ -82,14 +82,14 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(numValue) : this.deserialize(dsl.dsl, numValue, name, path)
+    return isNil(dsl.dsl) ? success(numValue) : this.deserialize(dsl.dsl, numValue, path)
   }
 
-  protected optional(dsl: OptionalDsl, value: Primitive, name: string, path: string): Try<Primitive> {
-    return isNil(value) ? success(undefined) : this.deserialize(dsl.dsl, value, name, path)
+  protected optional(dsl: OptionalDsl, value: Primitive, path: string): Try<Primitive> {
+    return isNil(value) ? success(undefined) : this.deserialize(dsl.dsl, value, path)
   }
 
-  protected string(dsl: StringDsl, value: Primitive, name: string, path: string): Try<Primitive> {
+  protected string(dsl: StringDsl, value: Primitive, path: string): Try<Primitive> {
     if (typeof value !== 'string') {
       return failure({
         message: `should be a string.`,
@@ -97,6 +97,6 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(value) : this.deserialize(dsl.dsl, value, name, path)
+    return isNil(dsl.dsl) ? success(value) : this.deserialize(dsl.dsl, value, path)
   }
 }
