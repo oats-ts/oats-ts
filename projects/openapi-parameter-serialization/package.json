@@ -8,11 +8,7 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": [
-    "LICENSE.txt",
-    "lib",
-    "readme.md"
-  ],
+  "files": ["LICENSE.txt", "lib", "readme.md"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oats-ts/oats-ts.git"
@@ -28,8 +24,7 @@
   "dependencies": {
     "@oats-ts/openapi-http": "0.0.47",
     "@oats-ts/try": "0.0.47",
-    "@oats-ts/validators": "0.0.47",
-    "path-to-regexp": "6.2.1"
+    "@oats-ts/validators": "0.0.47"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
@@ -37,6 +32,7 @@
     "jest": "27.0.4",
     "rimraf": "3.0.2",
     "ts-jest": "27.0.2",
-    "typescript": "4.7.4"
+    "typescript": "4.7.4",
+    "path-to-regexp": "6.2.1"
   }
 }
