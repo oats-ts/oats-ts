@@ -9,10 +9,12 @@ export const requiredStringQuery: QueryTestCase<{ str: string }> = {
     str: dsl.query.form.primitive(dsl.value.string(), { required: true }),
   },
   serialize: [
+    { from: { str: '' }, to: '?str=' },
     { from: { str: 'string' }, to: '?str=string' },
     { from: { str: 'hello test' }, to: '?str=hello%20test' },
   ],
   deserialize: [
+    { to: { str: '' }, from: '?str=' },
     { from: '?str=string', to: { str: 'string' } },
     { from: '?str=hello%20test', to: { str: 'hello test' } },
   ],
@@ -202,6 +204,77 @@ export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<{ arr: number[
   serializerErrors: [],
 }
 
+export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<{ arr: string[] }> = {
+  name: 'required pipe-delimited string[] query',
+  dsl: {
+    arr: dsl.query.pipeDelimited.array(dsl.value.string(), { required: true }),
+  },
+  serialize: [
+    { from: { arr: ['foo', 'ab? ./'] }, to: '?arr=foo&arr=ab%3F%20%2E%2F' },
+    { from: { arr: [] }, to: undefined },
+  ],
+  deserialize: [
+    { to: { arr: ['foo', 'ab? ./'] }, from: '?arr=foo&arr=ab%3F%20%2E%2F' },
+    { to: { arr: [] }, from: undefined },
+  ],
+  deserializerErrors: [],
+  serializerErrors: [],
+}
+
+export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ arr: string[] }> = {
+  name: 'required pipe-delimited non-exploded string[] query',
+  dsl: {
+    arr: dsl.query.pipeDelimited.array(dsl.value.string(), { required: true, explode: false }),
+  },
+  serialize: [
+    { from: { arr: ['foo'] }, to: '?arr=foo' },
+    { from: { arr: ['foo', 'ab? ./'] }, to: '?arr=foo|ab%3F%20%2E%2F' },
+  ],
+  deserialize: [
+    { to: { arr: ['foo'] }, from: '?arr=foo' },
+    { to: { arr: ['foo', 'ab? ./'] }, from: '?arr=foo|ab%3F%20%2E%2F' },
+  ],
+  deserializerErrors: [],
+  serializerErrors: [],
+}
+
+export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<{ arr: boolean[] }> = {
+  name: 'required space-delimited boolean[] query',
+  dsl: {
+    arr: dsl.query.spaceDelimited.array(dsl.value.boolean(), { required: true }),
+  },
+  serialize: [
+    { from: { arr: [] }, to: undefined },
+    { from: { arr: [false] }, to: '?arr=false' },
+    { from: { arr: [true, false] }, to: '?arr=true&arr=false' },
+  ],
+  deserialize: [
+    { to: { arr: [] }, from: undefined },
+    { to: { arr: [false] }, from: '?arr=false' },
+    { to: { arr: [true, false] }, from: '?arr=true&arr=false' },
+  ],
+  deserializerErrors: [],
+  serializerErrors: [],
+}
+
+export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ arr: string[] }> = {
+  name: 'required space-delimited non-exploded string[] query',
+  dsl: {
+    arr: dsl.query.spaceDelimited.array(dsl.value.string(), { required: true, explode: false }),
+  },
+  serialize: [
+    { from: { arr: ['foo'] }, to: '?arr=foo' },
+    { from: { arr: ['foo', 'bar'] }, to: '?arr=foo%20bar' },
+    // { from: { arr: ['foo bar', 'bar foo'] }, to: '?arr=foo%20bar' },
+  ],
+  deserialize: [
+    { to: { arr: ['foo'] }, from: '?arr=foo' },
+    { to: { arr: ['foo', 'bar'] }, from: '?arr=foo%20bar' },
+  ],
+  deserializerErrors: [],
+  serializerErrors: [],
+}
+
 export const requiredFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
   name: 'required form object query',
   dsl: {
@@ -256,8 +329,70 @@ export const requiredPartialFormObjectQuery: QueryTestCase<{ obj: OptObjType }> 
       from: { obj: { s: 'foo', n: 42, e: 'dog', l: 'cat' } },
       to: '?e=dog&l=cat&n=42&s=foo',
     },
+    {
+      from: { obj: { n: 42, e: 'dog', l: 'cat' } },
+      to: '?e=dog&l=cat&n=42',
+    },
+    {
+      from: { obj: { l: 'cat' } },
+      to: '?l=cat',
+    },
+    {
+      from: { obj: {} },
+      to: undefined,
+    },
   ],
-  deserialize: [],
+  deserialize: [
+    {
+      to: { obj: { b: true, s: 'foo', n: 42, e: 'dog', l: 'cat' } },
+      from: '?b=true&e=dog&l=cat&n=42&s=foo',
+    },
+    {
+      to: { obj: { s: 'foo', n: 42, e: 'dog', l: 'cat' } },
+      from: '?e=dog&l=cat&n=42&s=foo',
+    },
+    {
+      to: { obj: { n: 42, e: 'dog', l: 'cat' } },
+      from: '?e=dog&l=cat&n=42',
+    },
+    {
+      to: { obj: { l: 'cat' } },
+      from: '?l=cat',
+    },
+    {
+      to: { obj: {} },
+      from: undefined,
+    },
+  ],
   deserializerErrors: [],
+  serializerErrors: [{ obj: undefined! }],
+}
+
+export const requiredDeepObjectQuery: QueryTestCase<{ obj: ObjType }> = {
+  name: 'required deepObject object query',
+  dsl: {
+    obj: dsl.query.deepObject.object(obj, { required: true }),
+  },
+  serialize: [
+    {
+      from: { obj: { b: true, s: 'foo', n: 42, e: 'dog', l: 'cat' } },
+      to: '?obj[b]=true&obj[s]=foo&obj[n]=42&obj[e]=dog&obj[l]=cat',
+    },
+    {
+      from: { obj: { b: false, s: 'a . c', n: 45.32, e: 'racoon', l: 'cat' } },
+      to: '?obj[b]=false&obj[s]=a%20%2E%20c&obj[n]=45%2E32&obj[e]=racoon&obj[l]=cat',
+    },
+  ],
+  deserialize: [
+    {
+      to: { obj: { b: true, s: 'foo', n: 42, e: 'dog', l: 'cat' } },
+      from: '?obj[b]=true&obj[s]=foo&obj[n]=42&obj[e]=dog&obj[l]=cat',
+    },
+    {
+      to: { obj: { b: false, s: 'a . c', n: 45.32, e: 'racoon', l: 'cat' } },
+      from: '?obj[b]=false&obj[s]=a%20%2E%20c&obj[n]=45%2E32&obj[e]=racoon&obj[l]=cat',
+    },
+  ],
+  deserializerErrors: [undefined, null],
   serializerErrors: [{ obj: undefined! }],
 }

@@ -128,7 +128,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   protected spaceDelimitedArray(dsl: QueryArray, name: string, data: PrimitiveArray, path: string): Try<string[]> {
-    return this.delimitedArray(dsl, ' ', path, data, name)
+    return this.delimitedArray(dsl, this.encode(' '), path, data, name)
   }
 
   protected deepObjectObject(dsl: QueryObject, name: string, data: PrimitiveRecord, path: string): Try<string[]> {
@@ -175,15 +175,12 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
           return success([])
         }
         const keyStr = this.encode(name)
-        const valuesTry = this.arrayToValues(dsl.items, value, path)
-        if (dsl.explode) {
-          return valuesTry.map((values) =>
-            values.length === 0 ? [] : values.map((item) => `${keyStr}=${this.encode(item?.toString())}`),
-          )
-        }
-        return valuesTry.map((values) => [
-          `${keyStr}=${values.map((item) => this.encode(item?.toString())).join(delimiter)}`,
-        ])
+        return this.arrayToValues(dsl.items, value, path).map((values) => {
+          if (dsl.explode) {
+            return values.length === 0 ? [] : values.map((item) => `${keyStr}=${this.encode(item?.toString())}`)
+          }
+          return [`${keyStr}=${values.map((item) => this.encode(item?.toString())).join(delimiter)}`]
+        })
       })
       .toTry()
   }
