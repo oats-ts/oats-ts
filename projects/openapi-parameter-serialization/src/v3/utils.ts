@@ -11,6 +11,17 @@ export function isNil(input: any): input is null | undefined {
   return input === null || input === undefined
 }
 
+export function chunks<T>(input: T[], chunkSize: 1): [T][]
+export function chunks<T>(input: T[], chunkSize: 2): [T, T][]
+export function chunks<T>(input: T[], chunkSize: 3): [T, T, T][]
+export function chunks<T>(input: T[], chunkSize: number): T[][] {
+  const output: T[][] = []
+  for (let i = 0; i < input.length; i += chunkSize) {
+    output.push(input.slice(i, i + chunkSize))
+  }
+  return output
+}
+
 export function decode(value: string): string
 
 export function decode(value?: string): string | undefined {
@@ -54,7 +65,7 @@ export function mapRecord<I, V, K extends string>(
     const result = valueTransform(item, i, input)
     if (isFailure(result)) {
       allIssues.push(...result.issues)
-    } else {
+    } else if (!isNil(result.data)) {
       output[key as K] = result.data
     }
   }

@@ -87,9 +87,12 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
           ? this.keyValueToRecord(',', '=', rawDataStr, path)
           : this.delimitedToRecord(',', rawDataStr, path)
       })
-      .flatMap((rawRecord?: Record<string, string>) =>
-        isNil(rawRecord) ? success(undefined) : this.parseHeadersFromRecord(dsl, rawRecord, name, path),
-      )
+      .flatMap((record?: Record<string, string>): Try<PrimitiveRecord> => {
+        if (isNil(record)) {
+          return success(undefined)
+        }
+        return this.keyValuePairsToObject(dsl.properties, record, path)
+      })
       .toTry()
   }
 
@@ -147,25 +150,6 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       record[rawKey] = rawValue
     }
     return issues.length === 0 ? success(record) : failure(...issues)
-  }
-
-  protected parseHeadersFromRecord(
-    dsl: HeaderObject,
-    paramData: Record<string, string>,
-    name: string,
-    path: string,
-  ): Try<PrimitiveRecord> {
-    const keys = Object.keys(dsl.properties)
-    const result = mapRecord(
-      keys,
-      (key): Try<Primitive> => {
-        const valueDsl = dsl.properties[key]
-        const value = paramData[key]
-        return this.values.deserialize(valueDsl, this.decode(value), this.append(path, key))
-      },
-      (key) => this.decode(key),
-    )
-    return result
   }
 
   protected deserializeArray(dsl: ValueDsl, separator: string, value: string, path: string): Try<PrimitiveArray> {

@@ -1,4 +1,4 @@
-import { failure, fluent, fromArray, fromRecord, isSuccess, success, Try } from '@oats-ts/try'
+import { Failure, failure, fluent, fromArray, fromRecord, isSuccess, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
@@ -15,7 +15,7 @@ import {
   QueryPrimitive,
   RawQuery,
 } from './types'
-import { has, isNil } from './utils'
+import { chunks, has, isNil } from './utils'
 
 export class DefaultQueryDeserializer<T> extends BaseDeserializer implements QueryDeserializer<T> {
   constructor(protected readonly dsl: QueryDslRoot<T>) {
@@ -129,61 +129,40 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   }
 
   protected formObjectExplode(dsl: QueryObject, name: string, data: RawQuery, path: string): Try<PrimitiveRecord> {
-    const parserKeys = Object.keys(dsl.properties)
-    let hasKeys = false
-    const keyValuePairsTry = fromArray(
-      parserKeys.map((key): Try<[string, Primitive]> => {
-        const parser = dsl.properties[key]
-        const values = data[key] || []
-        if (values.length > 1) {
-          return failure({
-            message: `should have a single value (found ${values.length})`,
-            path: this.append(path, key),
-            severity: 'error',
-          })
-        }
-        const [value] = values
-        if (!isNil(value)) {
-          hasKeys = true
-        }
-        const decodedValue = isNil(value) ? value : this.decode(value)
-        const parsedValue = this.values.deserialize(parser, decodedValue, this.append(path, key))
-        return fluent(parsedValue)
-          .map((valueForKey): [string, Primitive] => [key, valueForKey])
-          .toTry()
-      }),
-    )
+    const rawValues = Object.keys(dsl.properties).map((key): [string, string[]] => [key, data[key] ?? []])
 
-    if (!hasKeys && !dsl.required) {
-      return success(undefined!)
+    if (!dsl.required && rawValues.filter(([_, values]) => values.length > 0).length === 0) {
+      return success(undefined)
     }
 
-    return fluent(keyValuePairsTry).map((keyValuePairs) => {
-      const presentKvPairs = keyValuePairs.filter(([, v]) => v !== undefined)
+    const multiValueErrors = rawValues
+      .filter(([_, values]) => values.length > 1)
+      .map(([key, values]) =>
+        failure({
+          message: `should have a single value (found ${values.length})`,
+          path: this.append(path, key),
+          severity: 'error',
+        }),
+      )
 
-      const output: PrimitiveRecord = {}
-      for (let i = 0; i < presentKvPairs.length; i += 1) {
-        const [key, value] = presentKvPairs[i]
-        output[key] = value
-      }
-      return presentKvPairs.length === 0 ? {} : output
-    })
+    if (multiValueErrors.length > 0) {
+      return fromArray(multiValueErrors) as Failure
+    }
+
+    const record = rawValues.reduce(
+      (record, [key, [value]]) => ({ ...record, [key]: isNil(value) ? value : this.decode(value) }),
+      {} as Record<string, string | undefined>,
+    )
+
+    return this.keyValuePairsToObject(dsl.properties, record, path)
   }
 
   protected formObjectNoExplode(dsl: QueryObject, name: string, data: RawQuery, path: string): Try<PrimitiveRecord> {
-    const output: Record<string, Primitive> = {}
     const values = data[name] || []
 
-    // Early returns for obvious cases
     if (values.length === 0) {
-      return dsl.required
-        ? failure({
-            message: `should be present`,
-            path,
-            severity: 'error',
-          })
-        : success(undefined!)
-    } else if (values.length !== 1) {
+      return dsl.required ? failure({ message: `should be present`, path, severity: 'error' }) : success(undefined)
+    } else if (values.length > 1) {
       return failure({
         message: `should have a single value (found ${values.length})`,
         path,
@@ -200,27 +179,13 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
         severity: 'error',
       })
     }
-    const collectedIssues: Issue[] = []
-    for (let i = 0; i < parts.length; i += 2) {
-      const key = this.decode(parts[i])
-      const rawValue = this.decode(parts[i + 1])
-      const valueDsl = dsl.properties[key]
-      if (isNil(valueDsl)) {
-        collectedIssues.push({
-          message: `should not have "${key}"`,
-          path,
-          severity: 'error',
-        })
-      } else {
-        const parsed = this.values.deserialize(valueDsl, rawValue, this.append(path, key))
-        if (isSuccess(parsed)) {
-          output[key] = parsed.data
-        } else {
-          collectedIssues.push(...parsed.issues)
-        }
-      }
-    }
-    return collectedIssues.length === 0 ? success(output) : failure(...collectedIssues)
+
+    const record = chunks(parts, 2).reduce<Record<string, string>>((kvRecord, [key, value]) => {
+      kvRecord[this.decode(key)] = this.decode(value)
+      return kvRecord
+    }, {})
+
+    return this.keyValuePairsToObject(dsl.properties, record, path, false)
   }
 
   protected pipeDelimitedArray(dsl: QueryArray, name: string, data: RawQuery, path: string): Try<ParameterValue> {

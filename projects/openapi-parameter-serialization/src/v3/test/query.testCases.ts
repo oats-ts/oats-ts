@@ -273,7 +273,7 @@ export const requiredFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
 }
 
 export const optionalFormObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
-  name: 'required form object query',
+  name: 'optional form object query',
   dsl: {
     schema: {
       obj: dsl.query.form.object(obj, { required: false }),

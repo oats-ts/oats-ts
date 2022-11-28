@@ -135,7 +135,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       .flatMap((rawDataStr) =>
         dsl.explode ? this.keyValueToRecord('.', '=', rawDataStr, path) : this.delimitedToRecord(',', rawDataStr, path),
       )
-      .flatMap((rawRecord) => this.deserializeRecord(dsl, rawRecord as any, name, path))
+      .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record as any, path))
       .toTry()
   }
 
@@ -159,7 +159,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       .flatMap((rawDataStr) =>
         dsl.explode ? this.keyValueToRecord('.', '=', rawDataStr, path) : this.delimitedToRecord(',', rawDataStr, path),
       )
-      .flatMap((rawRecord) => this.deserializeRecord(dsl, rawRecord, name, path))
+      .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record, path))
       .toTry()
   }
 
@@ -224,7 +224,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       .flatMap((rawValue) =>
         dsl.explode ? this.keyValueToRecord(';', '=', rawValue, path) : this.delimitedToRecord(',', rawValue, path),
       )
-      .flatMap((rawRecord) => this.deserializeRecord(dsl, rawRecord, name, path))
+      .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record, path))
       .toTry()
   }
 
@@ -267,24 +267,6 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
         )
   }
 
-  protected deserializeRecord<T extends PrimitiveRecord>(
-    dsl: PathObject,
-    paramData: Record<string, string>,
-    name: string,
-    path: string,
-  ): Try<T> {
-    const parserKeys = Object.keys(dsl.properties)
-    const result = mapRecord(
-      parserKeys,
-      (key): Try<Primitive> => {
-        const value = paramData[key]
-        return this.values.deserialize(dsl.properties[key], this.decode(value), this.append(path, key))
-      },
-      (key) => this.decode(key),
-    )
-    return result as Try<T>
-  }
-
   protected delimitedToRecord(separator: string, value: string, path: string): Try<Record<string, string>> {
     const parts = value.split(separator)
     const issues: Issue[] = []
@@ -306,7 +288,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
 
   protected keyValueToRecord(
     separator: string,
-    kvSeparator: string,
+    keyValueSeparator: string,
     value: string,
     path: string,
   ): Try<Record<string, string>> {
@@ -315,7 +297,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
     const issues: Issue[] = []
     for (let i = 0; i < kvPairStrs.length; i += 1) {
       const kvPairStr = kvPairStrs[i]
-      const pair = kvPairStr.split(kvSeparator)
+      const pair = kvPairStr.split(keyValueSeparator)
       if (pair.length !== 2) {
         issues.push({
           message: `unexpected content "${value}"`,
