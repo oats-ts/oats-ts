@@ -1,5 +1,5 @@
 import { dsl } from '../dsl'
-import { obj, optObj } from './common'
+import { enm, lit, obj, optObj } from './common'
 import { EnumType, LiteralType, ObjType, OptObjType } from './model'
 import { QueryTestCase } from './types'
 
@@ -95,7 +95,7 @@ export const requiredLiteralQuery: QueryTestCase<{ lit: LiteralType }> = {
   name: 'required form literal query',
   dsl: {
     schema: {
-      lit: dsl.query.form.primitive(dsl.value.literal('cat'), { required: true }),
+      lit: dsl.query.form.primitive(lit, { required: true }),
     },
   },
   data: [{ model: { lit: 'cat' }, serialized: '?lit=cat' }],
@@ -107,7 +107,7 @@ export const optionalLiteralQuery: QueryTestCase<{ lit?: LiteralType }> = {
   name: 'optional form literal query',
   dsl: {
     schema: {
-      lit: dsl.query.form.primitive(dsl.value.literal('cat'), { required: false }),
+      lit: dsl.query.form.primitive(lit, { required: false }),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
@@ -119,7 +119,7 @@ export const requiredEnumQuery: QueryTestCase<{ enm: EnumType }> = {
   name: 'required form enum query',
   dsl: {
     schema: {
-      enm: dsl.query.form.primitive(dsl.value.enum(['cat', 'dog', 'racoon']), { required: true }),
+      enm: dsl.query.form.primitive(enm, { required: true }),
     },
   },
   data: [
@@ -135,7 +135,7 @@ export const optionalEnumQuery: QueryTestCase<{ enm?: EnumType }> = {
   name: 'optional form enum query',
   dsl: {
     schema: {
-      enm: dsl.query.form.primitive(dsl.value.enum(['cat', 'dog', 'racoon']), { required: false }),
+      enm: dsl.query.form.primitive(enm, { required: false }),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],

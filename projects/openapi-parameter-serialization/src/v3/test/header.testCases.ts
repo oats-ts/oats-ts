@@ -1,5 +1,5 @@
 import { dsl } from '../dsl'
-import { obj, optObj } from './common'
+import { enm, obj, optObj } from './common'
 import { EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
 
@@ -102,9 +102,7 @@ export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = 
   name: 'required boolean headers',
   dsl: {
     schema: {
-      'X-Enum-Field': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon'])), {
-        required: true,
-      }),
+      'X-Enum-Field': dsl.header.simple.primitive(enm, { required: true }),
     },
   },
   data: [
@@ -127,9 +125,7 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
   name: 'optional boolean headers',
   dsl: {
     schema: {
-      'X-Enum-Field': dsl.header.simple.primitive(dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon'])), {
-        required: false,
-      }),
+      'X-Enum-Field': dsl.header.simple.primitive(enm, { required: false }),
     },
   },
   data: [{ model: {}, serialized: {} }, ...requiredEnumHeader.data],
