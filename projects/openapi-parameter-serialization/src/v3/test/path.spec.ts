@@ -6,6 +6,8 @@ import { testCases } from './common'
 import { DefaultPathSerializer } from '../DefaultPathSerializer'
 import { DefaultPathDeserializer } from '../DefaultPathDeserializer'
 import { DslType, PathDsl, PathDslRoot, PathStyle } from '../types'
+import { pathToRegexp } from 'path-to-regexp'
+import { parsePathToSegments } from '../../parsePathToSegments'
 
 describe('path', () => {
   testCases(pathTestCases).forEach((test: PathTestCase<any>) => {
@@ -39,21 +41,25 @@ describe('path', () => {
 
   describe('Illegal construction', () => {
     const illegalSchemas: PathDslRoot<any>[] = [
-      { schema: { foo: { type: 'foo' as DslType, style: 'label' } as PathDsl }, pathSegments: [], matcher: undefined! },
+      {
+        schema: { foo: { type: 'foo' as DslType, style: 'label' } as PathDsl },
+        pathSegments: parsePathToSegments('/foo/{foo}'),
+        matcher: pathToRegexp('/foo/:foo'),
+      },
       {
         schema: { foo: { type: 'foo' as DslType, style: 'matrix' } as PathDsl },
-        pathSegments: [],
-        matcher: undefined!,
+        pathSegments: parsePathToSegments('/foo/{foo}'),
+        matcher: pathToRegexp('/foo/:foo'),
       },
       {
         schema: { foo: { type: 'foo' as DslType, style: 'simple' } as PathDsl },
-        pathSegments: [],
-        matcher: undefined!,
+        pathSegments: parsePathToSegments('/foo/{foo}'),
+        matcher: pathToRegexp('/foo/:foo'),
       },
       {
         schema: { foo: { type: 'object', style: 'fooo' as PathStyle } as PathDsl },
-        pathSegments: [],
-        matcher: undefined!,
+        pathSegments: parsePathToSegments('/foo/{foo}'),
+        matcher: pathToRegexp('/foo/:foo'),
       },
     ]
 
@@ -62,7 +68,7 @@ describe('path', () => {
         expect(() => new DefaultPathSerializer(schema).serialize({})).toThrowError()
       })
       it(`Should throw when trying to deserialize with ${JSON.stringify(schema)}`, () => {
-        expect(() => new DefaultPathDeserializer(schema).deserialize('')).toThrowError()
+        expect(() => new DefaultPathDeserializer(schema).deserialize('/foo/124')).toThrowError()
       })
     })
   })

@@ -1,7 +1,7 @@
 import { Failure, failure, fluent, FluentTry, fromArray, Try } from '@oats-ts/try'
 import { Base } from './Base'
 import { DefaultValueDeserializer } from './DefaultValueDeserializer'
-import { Primitive, PrimitiveRecord, ValueDeserializer, ValueDsl } from './types'
+import { Primitive, PrimitiveRecord, PrimitiveArray, ValueDeserializer, ValueDsl } from './types'
 import { mapRecord, isNil } from './utils'
 
 export abstract class BaseDeserializer extends Base {
@@ -20,22 +20,20 @@ export abstract class BaseDeserializer extends Base {
     properties: Record<string, ValueDsl>,
     record: Record<string, string | undefined>,
     path: string,
-    allowExtraKeys: boolean = true,
   ): FluentTry<PrimitiveRecord> {
     const keys = Object.keys(properties)
-    if (!allowExtraKeys) {
-      const extraKeyIssues = keys
-        .filter((key) => isNil(properties[key]))
-        .map(([key]) =>
-          failure({
-            message: `should not have "${key}"`,
-            path,
-            severity: 'error',
-          }),
-        )
-      if (extraKeyIssues.length > 0) {
-        return fluent(fromArray(extraKeyIssues) as Failure)
-      }
+    const recordKeys = Object.keys(record)
+    const extraKeyIssues = recordKeys
+      .filter((key) => isNil(properties[key]))
+      .map(([key]) =>
+        failure({
+          message: `should not have "${key}"`,
+          path,
+          severity: 'error',
+        }),
+      )
+    if (extraKeyIssues.length > 0) {
+      return fluent(fromArray(extraKeyIssues) as Failure)
     }
     return fluent(
       mapRecord(
@@ -50,7 +48,9 @@ export abstract class BaseDeserializer extends Base {
     )
   }
 
-  protected stringValuesToArray<T>(items: ValueDsl, value: string[], path: string): FluentTry<string[]> {
-    throw new TypeError('not implemented')
+  protected stringValuesToArray(items: ValueDsl, values: string[], path: string): FluentTry<PrimitiveArray> {
+    return fluent(
+      fromArray(values.map((value, i) => this.values.deserialize(items, this.decode(value), this.append(path, i)))),
+    )
   }
 }

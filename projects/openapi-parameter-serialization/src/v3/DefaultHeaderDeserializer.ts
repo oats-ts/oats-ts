@@ -109,9 +109,12 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
   }
 
   protected delimitedToRecord(separator: string, value: string, path: string): Try<Record<string, string>> {
+    if (value.length === 0) {
+      return success({})
+    }
     const parts = value.split(separator)
     const issues: Issue[] = []
-    if (value.length !== 0 && parts.length % 2 !== 0) {
+    if (parts.length % 2 !== 0) {
       issues.push({
         message: `malformed parameter value "${value}"`,
         path,

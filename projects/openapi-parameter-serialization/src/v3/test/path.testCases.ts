@@ -99,7 +99,7 @@ export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
   },
   data: [
     { model: { arr: ['a', 'b', 'c'] }, serialized: '/foo/a,b,c' },
-    { model: { arr: ['a b c'] }, serialized: '/foo/a%20b%20c' },
+    { model: { arr: ['a b c', 'c b a'] }, serialized: '/foo/a%20b%20c,c%20b%20a' },
     { model: { arr: ['this is a long param'] }, serialized: '/foo/this%20is%20a%20long%20param' },
   ],
   deserializerErrors: [null, undefined],
@@ -125,7 +125,7 @@ export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
       serialized: '/foo/s,some%20long%20str,b,false,n,123,e,dog,l,cat',
     },
   ],
-  deserializerErrors: [null, undefined],
+  deserializerErrors: [null, undefined, '/foo/s,str,b,false,n,123,e,racoon,l'],
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
@@ -148,7 +148,12 @@ export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
       serialized: '/foo/s=some%20long%20str,b=false,n=123,e=dog,l=cat',
     },
   ],
-  deserializerErrors: [null, undefined],
+  deserializerErrors: [
+    null,
+    undefined,
+    '/foo/s=str,b=false,n=123,e=racoon,l',
+    '/foo/s=str,b=false,n=123,e=racoon,l=cat,impostor=sus',
+  ],
   serializerErrors: [null, undefined],
 }
 
@@ -165,7 +170,7 @@ export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
     { model: { str: 'string' }, serialized: '/foo/.string' },
     { model: { str: 'hello test' }, serialized: '/foo/.hello%20test' },
   ],
-  deserializerErrors: [null, undefined],
+  deserializerErrors: [null, undefined, '/foo/wrongstart'],
   serializerErrors: [null, undefined, { str: '' }],
 }
 
@@ -296,7 +301,7 @@ export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] 
     { model: { arr: ['str', 'foo', 'bar'] }, serialized: '/foo/;arr=str;arr=foo;arr=bar' },
     { model: { arr: ['hello label', 'hello label 2'] }, serialized: '/foo/;arr=hello%20label;arr=hello%20label%202' },
   ],
-  deserializerErrors: [null, undefined],
+  deserializerErrors: [null, undefined, '/foo/;arr=str;arr=foo;arr', '/foo/;arr=str;arr=foo;foo=bar', '!obj=s'],
   serializerErrors: [null, undefined, { arr: [] }, { arr: [''] }],
 }
 
@@ -319,7 +324,7 @@ export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
       serialized: '/foo/;obj=s,some%20long%20str,b,false,n,123,e,dog,l,cat',
     },
   ],
-  deserializerErrors: [null, undefined],
+  deserializerErrors: [null, undefined, '!obj=s'],
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 

@@ -185,7 +185,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       return kvRecord
     }, {})
 
-    return this.keyValuePairsToObject(dsl.properties, record, path, false)
+    return this.keyValuePairsToObject(dsl.properties, record, path)
   }
 
   protected pipeDelimitedArray(dsl: QueryArray, name: string, data: RawQuery, path: string): Try<ParameterValue> {

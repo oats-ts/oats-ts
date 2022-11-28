@@ -156,7 +156,7 @@ export type CookieSerializer<T> = {
    * Serializes the given cookie parameters from a model object to a cookie string
    * @param params The cookie parameters
    */
-  serialize(params: T): Try<string>
+  serialize(params: T): Try<string | undefined>
 }
 
 export type PathDeserializer<T> = {

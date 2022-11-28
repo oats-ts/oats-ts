@@ -27,3 +27,5 @@ export type HeaderTestCase<Model extends ParameterType> = TestCase<Model, RawHtt
 export type QueryTestCase<Model extends ParameterType> = TestCase<Model, string, QueryDslRoot<Model>>
 
 export type PathTestCase<Model extends ParameterType> = TestCase<Model, string, PathDslRoot<Model>>
+
+export type CookieTestCase<Model extends ParameterType> = TestCase<Model, string, CookieDslRoot<Model>>

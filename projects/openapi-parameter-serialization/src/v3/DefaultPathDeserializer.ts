@@ -126,7 +126,10 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
 
   protected simpleArray(dsl: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
-      .flatMap((pathValue) => this.deserializeArray(dsl.items, ',', pathValue, name, path))
+      .flatMap((value): Try<PrimitiveArray> => {
+        const values = value.split(',').map((val) => this.decode(val))
+        return this.stringValuesToArray(dsl.items, values, path)
+      })
       .toTry()
   }
 
@@ -149,7 +152,10 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   protected labelArray(dsl: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
-      .flatMap((value) => this.deserializeArray(dsl.items, dsl.explode ? '.' : ',', value, name, path))
+      .flatMap((value): Try<PrimitiveArray> => {
+        const values = value.split(dsl.explode ? '.' : ',').map((val) => this.decode(val))
+        return this.stringValuesToArray(dsl.items, values, path)
+      })
       .toTry()
   }
 
@@ -179,28 +185,24 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   protected matrixArrayExplode(dsl: ValueDsl, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, ';'))
-      .flatMap((rawString) => {
-        const parsed = rawString.split(';').map((kvPair, index) => {
-          const parts = kvPair.split('=')
-          const itemPath = this.append(path, index)
-          if (parts.length !== 2) {
-            return failure({
-              message: `malformed parameter value "${rawString}"`,
-              path: itemPath,
-              severity: 'error',
-            })
-          }
-          const [key, value] = parts.map((part) => this.decode(part))
-          if (key !== name) {
-            return failure({
-              message: `malformed parameter value "${rawString}"`,
-              path: itemPath,
-              severity: 'error',
-            })
-          }
-          return this.values.deserialize(dsl, value, itemPath)
-        })
-        return fromArray(parsed)
+      .flatMap((rawString): Try<PrimitiveArray> => {
+        const split = rawString.split(';').map((kvPair) => kvPair.split('=') as [string, string])
+        const issues = split
+          .map((parts, index): Issue | undefined => {
+            const itemPath = this.append(path, index)
+            if (parts.length !== 2) {
+              return { message: `malformed value "${rawString}"`, path: itemPath, severity: 'error' }
+            }
+            if (parts[0] !== name) {
+              return { message: `should be ${name}=${parts[1]}`, path: itemPath, severity: 'error' }
+            }
+          })
+          .filter((issue): issue is Issue => !isNil(issue))
+        if (issues.length !== 0) {
+          return failure(...issues) as Try<PrimitiveArray>
+        }
+        const values = split.map(([_, value]) => this.decode(value))
+        return this.stringValuesToArray(dsl, values, path)
       })
       .toTry()
   }
@@ -209,10 +211,8 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, `;${this.encode(name)}=`))
       .flatMap((rawValue) => {
-        const tryValues = rawValue
-          .split(',')
-          .map((value, index) => this.values.deserialize(dsl, this.decode(value), this.append(path, index)))
-        return fromArray(tryValues)
+        const values = rawValue.split(',').map((val) => this.decode(val))
+        return this.stringValuesToArray(dsl, values, path)
       })
       .toTry()
   }
@@ -249,22 +249,6 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       })
     }
     return success(value.slice(prefix.length))
-  }
-
-  protected deserializeArray(
-    dsl: ValueDsl,
-    separator: string,
-    value: string,
-    name: string,
-    path: string,
-  ): Try<Primitive[] | undefined> {
-    return isNil(value)
-      ? success(undefined)
-      : fromArray(
-          value
-            .split(separator)
-            .map((value, i) => this.values.deserialize(dsl, this.decode(value), this.append(path, i))),
-        )
   }
 
   protected delimitedToRecord(separator: string, value: string, path: string): Try<Record<string, string>> {

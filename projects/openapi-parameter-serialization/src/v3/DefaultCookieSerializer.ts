@@ -13,7 +13,7 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
     return 'cookies'
   }
 
-  public serialize(input: T): Try<string> {
+  public serialize(input: T): Try<string | undefined> {
     const serializedParts = Object.keys(this.dsl.schema).map((_key: string): Try<[string, string | undefined]> => {
       const key = _key as string & keyof T
       const paramDsl = this.dsl.schema[key]
@@ -25,7 +25,7 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
       .map((cookies) =>
         cookies.filter(([, value]) => value !== undefined).map(([name, value]) => `${this.encode(name)}=${value}`),
       )
-      .map((values) => values.join('; '))
+      .map((values) => (values.length === 0 ? undefined : values.join('; ')))
   }
 
   protected parameter(dsl: CookieDsl, name: string, value: any, path: string): Try<string | undefined> {
@@ -47,7 +47,12 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
 
   protected formPrimitive(dsl: CookiePrimitive, name: string, data: Primitive, path: string): Try<string | undefined> {
     return fluent(this.getCookieValue(dsl, path, data))
-      .map((value) => (isNil(value) ? undefined : this.encode(value?.toString())))
+      .flatMap(
+        (value): Try<string | undefined> =>
+          isNil(value)
+            ? success(undefined)
+            : fluent(this.values.serialize(dsl.value, value, path)).map((value) => this.encode(value)),
+      )
       .toTry()
   }
 
