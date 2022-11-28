@@ -1,21 +1,17 @@
 import { DefaultConfig } from '@oats-ts/validators'
-import { isNil } from './utils'
+import { isNil, encode, decode } from './utils'
 
 export abstract class Base {
   protected abstract basePath(): string
 
   protected decode(value: string): string
   protected decode(value?: string): string | undefined {
-    return isNil(value) ? undefined : decodeURIComponent(value)
+    // TODO type checking doesn't recognize the decode overload for some reason
+    return decode(value!)
   }
 
   protected encode(value?: string): string {
-    return isNil(value)
-      ? ''
-      : encodeURIComponent(`${value}`).replace(
-          /[\.,;=!'()*]/g,
-          (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-        )
+    return encode(value!)
   }
 
   protected append(path: string, ...segments: (string | number)[]): string {

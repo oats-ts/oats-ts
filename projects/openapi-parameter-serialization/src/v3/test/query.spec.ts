@@ -2,12 +2,10 @@ import * as queryTestCases from './query.testCases'
 
 import { QueryTestCase } from './types'
 import { success } from '@oats-ts/try'
-import { DefaultHeaderSerializer } from '../DefaultHeaderSerializer'
-import { DefaultHeaderDeserializer } from '../DefaultHeaderDeserializer'
-import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { testCases } from './common'
 import { DefaultQuerySerializer } from '../DefaultQuerySerializer'
 import { DefaultQueryDeserializer } from '../DefaultQueryDeserializer'
+import { DslType, QueryDsl, QueryDslRoot, QueryStyle } from '../types'
 
 describe('query', () => {
   testCases(queryTestCases).forEach((test: QueryTestCase<any>) => {
@@ -36,6 +34,24 @@ describe('query', () => {
           expect(deserializer.deserialize(deserializerError!)).toHaveProperty('issues')
         })
       }
+    })
+  })
+  describe('Illegal construction', () => {
+    const illegalSchemas: QueryDslRoot<any>[] = [
+      { schema: { foo: { type: 'foo' as DslType, style: 'form' } as QueryDsl } },
+      { schema: { foo: { type: 'primitive', style: 'deepObject' } as QueryDsl } },
+      { schema: { foo: { type: 'primitive', style: 'pipeDelimited' } as QueryDsl } },
+      { schema: { foo: { type: 'object', style: 'spaceDelimited' } as QueryDsl } },
+      { schema: { foo: { type: 'object', style: 'fooo' as QueryStyle } as QueryDsl } },
+    ]
+
+    illegalSchemas.forEach((schema) => {
+      it(`Should throw when trying to serialize with ${JSON.stringify(schema)}`, () => {
+        expect(() => new DefaultQuerySerializer(schema).serialize({})).toThrowError()
+      })
+      it(`Should throw when trying to deserialize with ${JSON.stringify(schema)}`, () => {
+        expect(() => new DefaultQueryDeserializer(schema).deserialize('')).toThrowError()
+      })
     })
   })
 })

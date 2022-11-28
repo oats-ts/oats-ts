@@ -134,18 +134,9 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   protected deepObjectObject(dsl: QueryObject, name: string, data: PrimitiveRecord, path: string): Try<string[]> {
     return fluent(this.getQueryValue(dsl, path, data))
       .flatMap((value) => {
-        if (!dsl.explode) {
-          return failure({
-            message: `can only be serialized with explode=true`,
-            path,
-            severity: 'error',
-          })
-        }
-
         if (isNil(value)) {
           return success([])
         }
-
         const nameStr = this.encode(name)
         const kvPairs = entries(value)
 

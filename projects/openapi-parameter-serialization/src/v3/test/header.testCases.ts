@@ -1,5 +1,5 @@
 import { dsl } from '../dsl'
-import { enm, obj, optObj } from './common'
+import { enm, lit, obj, optObj } from './common'
 import { EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
 
@@ -118,7 +118,26 @@ export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = 
     { 'x-boolean-field': 'string' },
     { 'x-boolean-field': '12' },
   ],
-  serializerErrors: [null, undefined, {} as any, { 'x-number-fiel': 'string' } as any],
+  serializerErrors: [null, undefined, {} as any, { 'X-Enum-Field': 'foo' } as any],
+}
+
+export const requiredLiteralHeader: HeaderTestCase<{ 'X-Lit-Field': EnumType }> = {
+  name: 'required boolean headers',
+  dsl: {
+    schema: {
+      'X-Lit-Field': dsl.header.simple.primitive(lit, { required: true }),
+    },
+  },
+  data: [{ model: { 'X-Lit-Field': 'cat' }, serialized: { 'x-lit-field': 'cat' } }],
+  deserializerErrors: [
+    null,
+    undefined,
+    {},
+    { 'x-lit-field': 'string' },
+    { 'x-lit-field': '5' },
+    { 'x-unrelated-field': 'foo' },
+  ],
+  serializerErrors: [null, undefined, {} as any, { 'X-Lit-Field': 'foo' } as any],
 }
 
 export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> = {

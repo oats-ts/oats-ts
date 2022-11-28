@@ -5,6 +5,7 @@ import { success } from '@oats-ts/try'
 import { testCases } from './common'
 import { DefaultPathSerializer } from '../DefaultPathSerializer'
 import { DefaultPathDeserializer } from '../DefaultPathDeserializer'
+import { DslType, PathDsl, PathDslRoot, PathStyle } from '../types'
 
 describe('path', () => {
   testCases(pathTestCases).forEach((test: PathTestCase<any>) => {
@@ -33,6 +34,36 @@ describe('path', () => {
           expect(deserializer.deserialize(deserializerError!)).toHaveProperty('issues')
         })
       }
+    })
+  })
+
+  describe('Illegal construction', () => {
+    const illegalSchemas: PathDslRoot<any>[] = [
+      { schema: { foo: { type: 'foo' as DslType, style: 'label' } as PathDsl }, pathSegments: [], matcher: undefined! },
+      {
+        schema: { foo: { type: 'foo' as DslType, style: 'matrix' } as PathDsl },
+        pathSegments: [],
+        matcher: undefined!,
+      },
+      {
+        schema: { foo: { type: 'foo' as DslType, style: 'simple' } as PathDsl },
+        pathSegments: [],
+        matcher: undefined!,
+      },
+      {
+        schema: { foo: { type: 'object', style: 'fooo' as PathStyle } as PathDsl },
+        pathSegments: [],
+        matcher: undefined!,
+      },
+    ]
+
+    illegalSchemas.forEach((schema) => {
+      it(`Should throw when trying to serialize with ${JSON.stringify(schema)}`, () => {
+        expect(() => new DefaultPathSerializer(schema).serialize({})).toThrowError()
+      })
+      it(`Should throw when trying to deserialize with ${JSON.stringify(schema)}`, () => {
+        expect(() => new DefaultPathDeserializer(schema).deserialize('')).toThrowError()
+      })
     })
   })
 })

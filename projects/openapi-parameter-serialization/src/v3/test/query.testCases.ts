@@ -31,7 +31,7 @@ export const optionalStringQuery: QueryTestCase<{ str?: string }> = {
     { model: { str: 'hello test' }, serialized: '?str=hello%20test' },
     { model: {}, serialized: undefined },
   ],
-  deserializerErrors: [],
+  deserializerErrors: ['?str=string&str=foo'],
   serializerErrors: [],
 }
 
@@ -268,7 +268,29 @@ export const requiredFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
       serialized: '?b=false&e=racoon&l=cat&n=45%2E32&s=a%20%2E%20c',
     },
   ],
-  deserializerErrors: [undefined, null],
+  deserializerErrors: [undefined, null, '?b=false&e=racoon&l=cat&n=45%2E32&s=a%20%2E%20c&b=true'],
+  serializerErrors: [{ obj: undefined! }],
+}
+
+export const requiredNoExplodeFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
+  name: 'required non-exploded form object query',
+  dsl: {
+    schema: {
+      obj: dsl.query.form.object(obj, { required: true, explode: false }),
+    },
+  },
+  data: [
+    {
+      model: { obj: { b: true, s: 'foo', n: 42, e: 'dog', l: 'cat' } },
+      serialized: '?obj=b,true,e,dog,l,cat,n,42,s,foo',
+    },
+    {
+      model: { obj: { b: false, s: 'a . c', n: 45.32, e: 'racoon', l: 'cat' } },
+      serialized: '?obj=b,false,e,racoon,l,cat,n,45%2E32,s,a%20%2E%20c',
+    },
+  ],
+
+  deserializerErrors: [undefined, null, '?obj=b,true,e,dog,l,cat,n,42,s,foo&obj=boo', '?obj=b,true,e'],
   serializerErrors: [{ obj: undefined! }],
 }
 
@@ -334,6 +356,18 @@ export const requiredDeepObjectQuery: QueryTestCase<{ obj: ObjType }> = {
       serialized: '?obj[b]=false&obj[s]=a%20%2E%20c&obj[n]=45%2E32&obj[e]=racoon&obj[l]=cat',
     },
   ],
-  deserializerErrors: [undefined, null],
+  deserializerErrors: [undefined, null, '?obj[b]=true&obj[s]=foo&obj[n]=42&obj[e]=dog&obj[l]=cat&obj[b]=bar'],
   serializerErrors: [{ obj: undefined! }],
+}
+
+export const optionalDeepObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
+  name: 'optional deepObject object query',
+  dsl: {
+    schema: {
+      obj: dsl.query.deepObject.object(obj, { required: false }),
+    },
+  },
+  data: [...requiredDeepObjectQuery.data, { model: { obj: undefined }, serialized: undefined }],
+  deserializerErrors: [],
+  serializerErrors: [],
 }

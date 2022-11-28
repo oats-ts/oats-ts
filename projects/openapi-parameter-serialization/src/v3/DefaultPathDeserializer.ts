@@ -17,7 +17,7 @@ import {
   ValueDsl,
   ParameterSegment,
 } from './types'
-import { isNil, mapRecord } from './utils'
+import { isNil } from './utils'
 
 export class DefaultPathDeserializer<T> extends BaseDeserializer implements PathDeserializer<T> {
   constructor(protected readonly dsl: PathDslRoot<T>) {
@@ -133,7 +133,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   protected simpleObject(dsl: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((rawDataStr) =>
-        dsl.explode ? this.keyValueToRecord('.', '=', rawDataStr, path) : this.delimitedToRecord(',', rawDataStr, path),
+        dsl.explode ? this.keyValueToRecord(',', '=', rawDataStr, path) : this.delimitedToRecord(',', rawDataStr, path),
       )
       .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record as any, path))
       .toTry()
@@ -165,7 +165,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
 
   protected matrixPrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
-      .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
+      .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, `;${this.encode(name)}=`))
       .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), path))
       .toTry()
   }
