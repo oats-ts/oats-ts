@@ -1,4 +1,4 @@
-import { dsl } from '../dsl'
+import { parameter } from '../parameter'
 import { enm, lit, obj, optObj } from './common'
 import { EnumType, LiteralType, ObjType, OptObjType } from './model'
 import { QueryTestCase } from './types'
@@ -7,7 +7,7 @@ export const requiredStringQuery: QueryTestCase<{ str: string }> = {
   name: 'required form string query',
   dsl: {
     schema: {
-      str: dsl.query.form.primitive(dsl.value.string(), { required: true }),
+      str: parameter.query.form.exploded.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -23,7 +23,7 @@ export const optionalStringQuery: QueryTestCase<{ str?: string }> = {
   name: 'optional form string query',
   dsl: {
     schema: {
-      str: dsl.query.form.primitive(dsl.value.string(), { required: false }),
+      str: parameter.query.form.exploded.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -39,7 +39,7 @@ export const requiredNumberQuery: QueryTestCase<{ num: number }> = {
   name: 'required form number query',
   dsl: {
     schema: {
-      num: dsl.query.form.primitive(dsl.value.number(), { required: true }),
+      num: parameter.query.form.exploded.required.primitive(parameter.value.number()),
     },
   },
   data: [
@@ -56,7 +56,7 @@ export const optionalNumberQuery: QueryTestCase<{ num?: number }> = {
   name: 'optional form number query',
   dsl: {
     schema: {
-      num: dsl.query.form.primitive(dsl.value.number(), { required: false }),
+      num: parameter.query.form.exploded.primitive(parameter.value.number()),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredNumberQuery.data],
@@ -68,7 +68,7 @@ export const requiredBooleanQuery: QueryTestCase<{ bool: boolean }> = {
   name: 'required form boolean query',
   dsl: {
     schema: {
-      bool: dsl.query.form.primitive(dsl.value.boolean(), { required: true }),
+      bool: parameter.query.form.exploded.required.primitive(parameter.value.boolean()),
     },
   },
   data: [
@@ -83,7 +83,7 @@ export const optionalBooleanQuery: QueryTestCase<{ bool?: boolean }> = {
   name: 'optional form boolean query',
   dsl: {
     schema: {
-      bool: dsl.query.form.primitive(dsl.value.boolean(), { required: false }),
+      bool: parameter.query.form.exploded.primitive(parameter.value.boolean()),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredBooleanQuery.data],
@@ -95,7 +95,7 @@ export const requiredLiteralQuery: QueryTestCase<{ lit: LiteralType }> = {
   name: 'required form literal query',
   dsl: {
     schema: {
-      lit: dsl.query.form.primitive(lit, { required: true }),
+      lit: parameter.query.form.exploded.required.primitive(lit),
     },
   },
   data: [{ model: { lit: 'cat' }, serialized: '?lit=cat' }],
@@ -107,7 +107,7 @@ export const optionalLiteralQuery: QueryTestCase<{ lit?: LiteralType }> = {
   name: 'optional form literal query',
   dsl: {
     schema: {
-      lit: dsl.query.form.primitive(lit, { required: false }),
+      lit: parameter.query.form.exploded.primitive(lit),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
@@ -119,7 +119,7 @@ export const requiredEnumQuery: QueryTestCase<{ enm: EnumType }> = {
   name: 'required form enum query',
   dsl: {
     schema: {
-      enm: dsl.query.form.primitive(enm, { required: true }),
+      enm: parameter.query.form.exploded.required.primitive(enm),
     },
   },
   data: [
@@ -135,7 +135,7 @@ export const optionalEnumQuery: QueryTestCase<{ enm?: EnumType }> = {
   name: 'optional form enum query',
   dsl: {
     schema: {
-      enm: dsl.query.form.primitive(enm, { required: false }),
+      enm: parameter.query.form.exploded.primitive(enm),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],
@@ -147,7 +147,7 @@ export const requiredFormNumberArrayQuery: QueryTestCase<{ arr: number[] }> = {
   name: 'required form number[] query',
   dsl: {
     schema: {
-      arr: dsl.query.form.array(dsl.value.number(), { required: true }),
+      arr: parameter.query.form.exploded.required.array(parameter.value.number()),
     },
   },
   data: [
@@ -164,7 +164,7 @@ export const optionalFormNumberArrayQuery: QueryTestCase<{ arr?: number[] }> = {
   name: 'optional form number[] query',
   dsl: {
     schema: {
-      arr: dsl.query.form.array(dsl.value.number(), { required: false }),
+      arr: parameter.query.form.exploded.array(parameter.value.number()),
     },
   },
   data: [{ model: { arr: undefined }, serialized: undefined }, ...requiredFormNumberArrayQuery.data],
@@ -176,7 +176,7 @@ export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<{ arr: number[
   name: 'required non-exploded form number[] query',
   dsl: {
     schema: {
-      arr: dsl.query.form.array(dsl.value.number(), { required: true, explode: false }),
+      arr: parameter.query.form.required.array(parameter.value.number()),
     },
   },
   data: [
@@ -193,7 +193,7 @@ export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<{ arr: string[
   name: 'required pipe-delimited string[] query',
   dsl: {
     schema: {
-      arr: dsl.query.pipeDelimited.array(dsl.value.string(), { required: true }),
+      arr: parameter.query.pipeDelimited.exploded.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -208,7 +208,7 @@ export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ a
   name: 'required pipe-delimited non-exploded string[] query',
   dsl: {
     schema: {
-      arr: dsl.query.pipeDelimited.array(dsl.value.string(), { required: true, explode: false }),
+      arr: parameter.query.pipeDelimited.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -223,7 +223,7 @@ export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<{ arr: boole
   name: 'required space-delimited boolean[] query',
   dsl: {
     schema: {
-      arr: dsl.query.spaceDelimited.array(dsl.value.boolean(), { required: true }),
+      arr: parameter.query.spaceDelimited.exploded.required.array(parameter.value.boolean()),
     },
   },
   data: [
@@ -239,7 +239,7 @@ export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ 
   name: 'required space-delimited non-exploded string[] query',
   dsl: {
     schema: {
-      arr: dsl.query.spaceDelimited.array(dsl.value.string(), { required: true, explode: false }),
+      arr: parameter.query.spaceDelimited.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -255,7 +255,7 @@ export const requiredFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
   name: 'required form object query',
   dsl: {
     schema: {
-      obj: dsl.query.form.object(obj, { required: true }),
+      obj: parameter.query.form.exploded.required.object(obj),
     },
   },
   data: [
@@ -276,7 +276,7 @@ export const requiredNoExplodeFormObjectQuery: QueryTestCase<{ obj: ObjType }> =
   name: 'required non-exploded form object query',
   dsl: {
     schema: {
-      obj: dsl.query.form.object(obj, { required: true, explode: false }),
+      obj: parameter.query.form.required.object(obj),
     },
   },
   data: [
@@ -298,7 +298,7 @@ export const optionalFormObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
   name: 'optional form object query',
   dsl: {
     schema: {
-      obj: dsl.query.form.object(obj, { required: false }),
+      obj: parameter.query.form.exploded.object(obj),
     },
   },
   data: [{ model: { obj: undefined }, serialized: undefined }, ...requiredFormObjectQuery.data],
@@ -310,7 +310,7 @@ export const requiredPartialFormObjectQuery: QueryTestCase<{ obj: OptObjType }> 
   name: 'required partial form object query',
   dsl: {
     schema: {
-      obj: dsl.query.form.object(optObj, { required: true }),
+      obj: parameter.query.form.exploded.required.object(optObj),
     },
   },
   data: [
@@ -343,7 +343,7 @@ export const requiredDeepObjectQuery: QueryTestCase<{ obj: ObjType }> = {
   name: 'required deepObject object query',
   dsl: {
     schema: {
-      obj: dsl.query.deepObject.object(obj, { required: true }),
+      obj: parameter.query.deepObject.exploded.required.object(obj),
     },
   },
   data: [
@@ -364,7 +364,7 @@ export const optionalDeepObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
   name: 'optional deepObject object query',
   dsl: {
     schema: {
-      obj: dsl.query.deepObject.object(obj, { required: false }),
+      obj: parameter.query.deepObject.exploded.object(obj),
     },
   },
   data: [...requiredDeepObjectQuery.data, { model: { obj: undefined }, serialized: undefined }],

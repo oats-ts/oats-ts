@@ -1,26 +1,26 @@
-import { dsl } from '../dsl'
+import { parameter } from '../parameter'
 import { ValueDsl } from '../types'
 import { ObjType, OptObjType } from './model'
 import { TestCase } from './types'
 
-export const lit = dsl.value.string(dsl.value.literal('cat'))
+export const lit = parameter.value.string(parameter.value.literal('cat'))
 
-export const enm = dsl.value.string(dsl.value.enum(['cat', 'dog', 'racoon']))
+export const enm = parameter.value.string(parameter.value.enum(['cat', 'dog', 'racoon']))
 
 export const obj: Record<keyof ObjType, ValueDsl> = {
-  s: dsl.value.string(),
-  n: dsl.value.number(),
-  b: dsl.value.boolean(),
+  s: parameter.value.string(),
+  n: parameter.value.number(),
+  b: parameter.value.boolean(),
   l: lit,
   e: enm,
 }
 
 export const optObj: Record<keyof OptObjType, ValueDsl> = {
-  s: dsl.value.optional(dsl.value.string()),
-  n: dsl.value.optional(dsl.value.number()),
-  b: dsl.value.optional(dsl.value.boolean()),
-  l: dsl.value.optional(lit),
-  e: dsl.value.optional(enm),
+  s: parameter.value.optional(parameter.value.string()),
+  n: parameter.value.optional(parameter.value.number()),
+  b: parameter.value.optional(parameter.value.boolean()),
+  l: parameter.value.optional(lit),
+  e: parameter.value.optional(enm),
 }
 
 export function testCases(cases: Record<string, TestCase<any, any, any>>) {

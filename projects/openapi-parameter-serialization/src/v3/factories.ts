@@ -5,7 +5,6 @@ import {
   LiteralDsl,
   NumberDsl,
   ObjectDsl,
-  DslConfig,
   DslLocation,
   DslStyle,
   PrimitiveDsl,
@@ -16,33 +15,33 @@ import {
 } from './types'
 
 export const primitiveDsl =
-  <P extends DslLocation, S extends DslStyle>(location: P, style: S, defaultConfg: DslConfig) =>
-  (value: ValueDsl, config: Partial<DslConfig> = {}): PrimitiveDsl<P, S> => ({
-    ...defaultConfg,
-    ...config,
+  <P extends DslLocation, S extends DslStyle>(location: P, style: S, explode: boolean, required: boolean) =>
+  (value: ValueDsl): PrimitiveDsl<P, S> => ({
     type: 'primitive',
+    explode,
+    required,
     location,
     style,
     value,
   })
 
 export const arrayDsl =
-  <P extends DslLocation, S extends DslStyle>(location: P, style: S, defaultConfg: DslConfig) =>
-  (items: ValueDsl, config: Partial<DslConfig> = {}): ArrayDsl<P, S> => ({
-    ...defaultConfg,
-    ...config,
+  <P extends DslLocation, S extends DslStyle>(location: P, style: S, explode: boolean, required: boolean) =>
+  (items: ValueDsl): ArrayDsl<P, S> => ({
     type: 'array',
+    explode,
+    required,
     location,
     style,
     items,
   })
 
 export const objectDsl =
-  <P extends DslLocation, S extends DslStyle>(location: P, style: S, defaultConfg: DslConfig) =>
-  (properties: PropertiesDsl, config: Partial<DslConfig> = {}): ObjectDsl<P, S> => ({
-    ...defaultConfg,
-    ...config,
+  <P extends DslLocation, S extends DslStyle>(location: P, style: S, explode: boolean, required: boolean) =>
+  (properties: PropertiesDsl): ObjectDsl<P, S> => ({
     type: 'object',
+    explode,
+    required,
     location,
     style,
     properties,

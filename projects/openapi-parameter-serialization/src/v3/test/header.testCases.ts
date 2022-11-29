@@ -1,4 +1,4 @@
-import { dsl } from '../dsl'
+import { parameter } from '../parameter'
 import { enm, lit, obj, optObj } from './common'
 import { EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
@@ -7,7 +7,7 @@ export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> 
   name: 'required string headers',
   dsl: {
     schema: {
-      'X-String-Field': dsl.header.simple.primitive(dsl.value.string(), { required: true }),
+      'X-String-Field': parameter.header.simple.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -22,7 +22,7 @@ export const optionalStringHeader: HeaderTestCase<{ 'X-String-Field'?: string }>
   name: 'optional string headers',
   dsl: {
     schema: {
-      'X-String-Field': dsl.header.simple.primitive(dsl.value.string(), { required: false }),
+      'X-String-Field': parameter.header.simple.primitive(parameter.value.string()),
     },
   },
   data: [{ model: {}, serialized: {} }, ...requiredStringHeader.data],
@@ -34,7 +34,7 @@ export const requiredNumberHeader: HeaderTestCase<{ 'X-Number-Field': number }> 
   name: 'required number headers',
   dsl: {
     schema: {
-      'X-Number-Field': dsl.header.simple.primitive(dsl.value.number(), { required: true }),
+      'X-Number-Field': parameter.header.simple.required.primitive(parameter.value.number()),
     },
   },
   data: [
@@ -56,7 +56,7 @@ export const optionalNumberHeader: HeaderTestCase<{ 'X-Number-Field'?: number }>
   name: 'optional number headers',
   dsl: {
     schema: {
-      'X-Number-Field': dsl.header.simple.primitive(dsl.value.number(), { required: false }),
+      'X-Number-Field': parameter.header.simple.primitive(parameter.value.number()),
     },
   },
   data: [{ model: {}, serialized: {} }, ...requiredNumberHeader.data],
@@ -68,7 +68,7 @@ export const requiredBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field': boolean 
   name: 'required boolean headers',
   dsl: {
     schema: {
-      'X-Boolean-Field': dsl.header.simple.primitive(dsl.value.boolean(), { required: true }),
+      'X-Boolean-Field': parameter.header.simple.required.primitive(parameter.value.boolean()),
     },
   },
   data: [
@@ -90,7 +90,7 @@ export const optionalBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field'?: boolean
   name: 'optional boolean headers',
   dsl: {
     schema: {
-      'X-Boolean-Field': dsl.header.simple.primitive(dsl.value.boolean(), { required: false }),
+      'X-Boolean-Field': parameter.header.simple.primitive(parameter.value.boolean()),
     },
   },
   data: [{ model: {}, serialized: {} }, ...requiredBooleanHeader.data],
@@ -102,7 +102,7 @@ export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = 
   name: 'required boolean headers',
   dsl: {
     schema: {
-      'X-Enum-Field': dsl.header.simple.primitive(enm, { required: true }),
+      'X-Enum-Field': parameter.header.simple.required.primitive(enm),
     },
   },
   data: [
@@ -125,7 +125,7 @@ export const requiredLiteralHeader: HeaderTestCase<{ 'X-Lit-Field': EnumType }> 
   name: 'required boolean headers',
   dsl: {
     schema: {
-      'X-Lit-Field': dsl.header.simple.primitive(lit, { required: true }),
+      'X-Lit-Field': parameter.header.simple.required.primitive(lit),
     },
   },
   data: [{ model: { 'X-Lit-Field': 'cat' }, serialized: { 'x-lit-field': 'cat' } }],
@@ -144,7 +144,7 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
   name: 'optional boolean headers',
   dsl: {
     schema: {
-      'X-Enum-Field': dsl.header.simple.primitive(enm, { required: false }),
+      'X-Enum-Field': parameter.header.simple.primitive(enm),
     },
   },
   data: [{ model: {}, serialized: {} }, ...requiredEnumHeader.data],
@@ -156,7 +156,7 @@ export const requiredNumberArrayHeader: HeaderTestCase<{ 'X-Arr-Field': number[]
   name: 'required number array headers',
   dsl: {
     schema: {
-      'X-Arr-Field': dsl.header.simple.array(dsl.value.number(), { required: true }),
+      'X-Arr-Field': parameter.header.simple.required.array(parameter.value.number()),
     },
   },
   data: [
@@ -193,7 +193,7 @@ export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = 
   name: 'required object headers',
   dsl: {
     schema: {
-      'X-Obj-Field': dsl.header.simple.object(obj, { required: true }),
+      'X-Obj-Field': parameter.header.simple.required.object(obj),
     },
   },
   data: [
@@ -226,7 +226,7 @@ export const requiredExplodeObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjTyp
   name: 'required object headers',
   dsl: {
     schema: {
-      'X-Obj-Field': dsl.header.simple.object(obj, { required: true, explode: true }),
+      'X-Obj-Field': parameter.header.simple.exploded.required.object(obj),
     },
   },
   data: [
@@ -260,7 +260,7 @@ export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> =
   name: 'optional object headers',
   dsl: {
     schema: {
-      'X-Obj-Field': dsl.header.simple.object(obj, { required: false }),
+      'X-Obj-Field': parameter.header.simple.object(obj),
     },
   },
   data: [
@@ -290,7 +290,7 @@ export const optionalFieldsObjectHeader: HeaderTestCase<{ 'X-Obj-Field': OptObjT
   name: 'required object headers with optional fields',
   dsl: {
     schema: {
-      'X-Obj-Field': dsl.header.simple.object(optObj, { required: true }),
+      'X-Obj-Field': parameter.header.simple.required.object(optObj),
     },
   },
   data: [

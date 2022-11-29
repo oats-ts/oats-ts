@@ -1,4 +1,4 @@
-import { dsl } from '../dsl'
+import { parameter } from '../parameter'
 import { enm, lit } from './common'
 import { EnumType, LiteralType } from './model'
 import { CookieTestCase } from './types'
@@ -8,7 +8,7 @@ export const requiredStringQuery: CookieTestCase<{ str: string }> = {
 
   dsl: {
     schema: {
-      str: dsl.cookie.form.primitive(dsl.value.string(), { required: true }),
+      str: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -24,7 +24,7 @@ export const optionalStringQuery: CookieTestCase<{ str?: string }> = {
   name: 'optional form string cookie',
   dsl: {
     schema: {
-      str: dsl.cookie.form.primitive(dsl.value.string(), { required: false }),
+      str: parameter.cookie.form.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -40,7 +40,7 @@ export const requiredNumberQuery: CookieTestCase<{ num: number }> = {
   name: 'required form number cookie',
   dsl: {
     schema: {
-      num: dsl.cookie.form.primitive(dsl.value.number(), { required: true }),
+      num: parameter.cookie.form.required.primitive(parameter.value.number()),
     },
   },
   data: [
@@ -49,7 +49,7 @@ export const requiredNumberQuery: CookieTestCase<{ num: number }> = {
     { model: { num: -123 }, serialized: 'num=-123' },
     { model: { num: 0 }, serialized: 'num=0' },
   ],
-  deserializerErrors: [],
+  deserializerErrors: [undefined, null],
   serializerErrors: [],
 }
 
@@ -57,7 +57,7 @@ export const optionalNumberQuery: CookieTestCase<{ num?: number }> = {
   name: 'optional form number cookie',
   dsl: {
     schema: {
-      num: dsl.cookie.form.primitive(dsl.value.number(), { required: false }),
+      num: parameter.cookie.form.primitive(parameter.value.number()),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredNumberQuery.data],
@@ -69,14 +69,14 @@ export const requiredBooleanQuery: CookieTestCase<{ bool: boolean }> = {
   name: 'required form boolean cookie',
   dsl: {
     schema: {
-      bool: dsl.cookie.form.primitive(dsl.value.boolean(), { required: true }),
+      bool: parameter.cookie.form.required.primitive(parameter.value.boolean()),
     },
   },
   data: [
     { model: { bool: true }, serialized: 'bool=true' },
     { model: { bool: false }, serialized: 'bool=false' },
   ],
-  deserializerErrors: [],
+  deserializerErrors: [undefined, null],
   serializerErrors: [],
 }
 
@@ -84,7 +84,7 @@ export const optionalBooleanQuery: CookieTestCase<{ bool?: boolean }> = {
   name: 'optional form boolean cookie',
   dsl: {
     schema: {
-      bool: dsl.cookie.form.primitive(dsl.value.boolean(), { required: false }),
+      bool: parameter.cookie.form.primitive(parameter.value.boolean()),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredBooleanQuery.data],
@@ -96,11 +96,11 @@ export const requiredLiteralQuery: CookieTestCase<{ lit: LiteralType }> = {
   name: 'required form literal cookie',
   dsl: {
     schema: {
-      lit: dsl.cookie.form.primitive(lit, { required: true }),
+      lit: parameter.cookie.form.required.primitive(lit),
     },
   },
   data: [{ model: { lit: 'cat' }, serialized: 'lit=cat' }],
-  deserializerErrors: [],
+  deserializerErrors: [undefined, null],
   serializerErrors: [],
 }
 
@@ -108,7 +108,7 @@ export const optionalLiteralQuery: CookieTestCase<{ lit?: LiteralType }> = {
   name: 'optional form literal cookie',
   dsl: {
     schema: {
-      lit: dsl.cookie.form.primitive(lit, { required: false }),
+      lit: parameter.cookie.form.primitive(lit),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
@@ -120,7 +120,7 @@ export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
   name: 'required form enum cookie',
   dsl: {
     schema: {
-      enm: dsl.cookie.form.primitive(enm, { required: true }),
+      enm: parameter.cookie.form.required.primitive(enm),
     },
   },
   data: [
@@ -128,7 +128,7 @@ export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
     { model: { enm: 'dog' }, serialized: 'enm=dog' },
     { model: { enm: 'racoon' }, serialized: 'enm=racoon' },
   ],
-  deserializerErrors: [],
+  deserializerErrors: [undefined, null],
   serializerErrors: [],
 }
 
@@ -136,7 +136,7 @@ export const optionalEnumQuery: CookieTestCase<{ enm?: EnumType }> = {
   name: 'optional form enum cookie',
   dsl: {
     schema: {
-      enm: dsl.cookie.form.primitive(enm, { required: false }),
+      enm: parameter.cookie.form.primitive(enm),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],

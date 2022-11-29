@@ -2,7 +2,7 @@ import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { ValueDsl } from '../types'
-import { isNil } from '../utils'
+import { isNil } from './utils'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {

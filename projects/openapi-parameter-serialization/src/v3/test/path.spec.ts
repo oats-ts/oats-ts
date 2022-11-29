@@ -7,7 +7,7 @@ import { DefaultPathSerializer } from '../DefaultPathSerializer'
 import { DefaultPathDeserializer } from '../DefaultPathDeserializer'
 import { DslType, PathDsl, PathDslRoot, PathStyle } from '../types'
 import { pathToRegexp } from 'path-to-regexp'
-import { parsePathToSegments } from '../../parsePathToSegments'
+import { parsePathToSegments } from '../parsePathToSegments'
 
 describe('path', () => {
   testCases(pathTestCases).forEach((test: PathTestCase<any>) => {

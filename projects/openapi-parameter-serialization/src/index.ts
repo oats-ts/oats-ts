@@ -14,7 +14,16 @@ export { serializeCookieValue } from './serializeCookieValue'
 export { deserializeCookie } from './deserializers/cookie/deserializeCookie'
 export { deserializeSetCookie } from './deserializers/cookie/deserializeSetCookie'
 
-export * from './types'
+export { DefaultCookieDeserializer } from './v3/DefaultCookieDeserializer'
+export { DefaultCookieSerializer } from './v3/DefaultCookieSerializer'
+export { DefaultHeaderDeserializer } from './v3/DefaultHeaderDeserializer'
+export { DefaultHeaderSerializer } from './v3/DefaultHeaderSerializer'
+export { DefaultPathDeserializer } from './v3/DefaultPathDeserializer'
+export { DefaultPathSerializer } from './v3/DefaultPathSerializer'
+export { DefaultQueryDeserializer } from './v3/DefaultQueryDeserializer'
+export { DefaultQuerySerializer } from './v3/DefaultQuerySerializer'
+
+export * from './v3/types'
 
 export { serializers } from './serializers'
 export { deserializers } from './deserializers'

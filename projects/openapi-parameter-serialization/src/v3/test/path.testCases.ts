@@ -1,9 +1,9 @@
 import { pathToRegexp } from 'path-to-regexp'
-import { parsePathToSegments } from '../../parsePathToSegments'
-import { dsl } from '../dsl'
+import { parsePathToSegments } from '../parsePathToSegments'
 import { enm, lit, obj } from './common'
 import { EnumType, LiteralType, ObjType } from './model'
 import { PathTestCase } from './types'
+import { parameter } from '../parameter'
 
 export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
   name: 'required simple path string',
@@ -11,7 +11,7 @@ export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
     schema: {
-      str: dsl.path.simple.primitive(dsl.value.string(), { required: true }),
+      str: parameter.path.simple.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -28,7 +28,7 @@ export const requiredSimpleNumberPath: PathTestCase<{ num: number }> = {
     matcher: pathToRegexp('/foo/:num'),
     pathSegments: parsePathToSegments('/foo/{num}'),
     schema: {
-      num: dsl.path.simple.primitive(dsl.value.number(), { required: true }),
+      num: parameter.path.simple.required.primitive(parameter.value.number()),
     },
   },
   data: [
@@ -45,7 +45,7 @@ export const requiredSimpleBooleanPath: PathTestCase<{ bool: boolean }> = {
     matcher: pathToRegexp('/foo/:bool'),
     pathSegments: parsePathToSegments('/foo/{bool}'),
     schema: {
-      bool: dsl.path.simple.primitive(dsl.value.boolean(), { required: true }),
+      bool: parameter.path.simple.required.primitive(parameter.value.boolean()),
     },
   },
   data: [
@@ -62,7 +62,7 @@ export const requiredSimpleLiteralPath: PathTestCase<{ lit: LiteralType }> = {
     matcher: pathToRegexp('/foo/:lit'),
     pathSegments: parsePathToSegments('/foo/{lit}'),
     schema: {
-      lit: dsl.path.simple.primitive(lit, { required: true }),
+      lit: parameter.path.simple.required.primitive(lit),
     },
   },
   data: [{ model: { lit: 'cat' }, serialized: '/foo/cat' }],
@@ -76,7 +76,7 @@ export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
     matcher: pathToRegexp('/foo/:enm'),
     pathSegments: parsePathToSegments('/foo/{enm}'),
     schema: {
-      enm: dsl.path.simple.primitive(enm, { required: true }),
+      enm: parameter.path.simple.required.primitive(enm),
     },
   },
   data: [
@@ -94,7 +94,7 @@ export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
     schema: {
-      arr: dsl.path.simple.array(dsl.value.string(), { required: true }),
+      arr: parameter.path.simple.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -112,7 +112,7 @@ export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
     schema: {
-      obj: dsl.path.simple.object(obj, { required: true }),
+      obj: parameter.path.simple.required.object(obj),
     },
   },
   data: [
@@ -135,7 +135,7 @@ export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
     schema: {
-      obj: dsl.path.simple.object(obj, { required: true, explode: true }),
+      obj: parameter.path.simple.exploded.required.object(obj),
     },
   },
   data: [
@@ -163,7 +163,7 @@ export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
     schema: {
-      str: dsl.path.label.primitive(dsl.value.string(), { required: true }),
+      str: parameter.path.label.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -180,7 +180,7 @@ export const requiredLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
     schema: {
-      arr: dsl.path.label.array(dsl.value.string(), { required: true }),
+      arr: parameter.path.label.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -197,7 +197,7 @@ export const requiredExplodeLabelStringArrayPath: PathTestCase<{ arr: string[] }
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
     schema: {
-      arr: dsl.path.label.array(dsl.value.string(), { required: true, explode: true }),
+      arr: parameter.path.label.exploded.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -214,7 +214,7 @@ export const requiredLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
     schema: {
-      obj: dsl.path.label.object(obj, { required: true }),
+      obj: parameter.path.label.required.object(obj),
     },
   },
   data: [
@@ -237,7 +237,7 @@ export const requiredExplodeLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
     schema: {
-      obj: dsl.path.label.object(obj, { required: true, explode: true }),
+      obj: parameter.path.label.exploded.required.object(obj),
     },
   },
   data: [
@@ -260,7 +260,7 @@ export const requiredMatrixStringPath: PathTestCase<{ str: string }> = {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
     schema: {
-      str: dsl.path.matrix.primitive(dsl.value.string(), { required: true }),
+      str: parameter.path.matrix.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -277,7 +277,7 @@ export const requiredMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
     schema: {
-      arr: dsl.path.matrix.array(dsl.value.string(), { required: true }),
+      arr: parameter.path.matrix.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -294,7 +294,7 @@ export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] 
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
     schema: {
-      arr: dsl.path.matrix.array(dsl.value.string(), { required: true, explode: true }),
+      arr: parameter.path.matrix.exploded.required.array(parameter.value.string()),
     },
   },
   data: [
@@ -311,7 +311,7 @@ export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
     schema: {
-      obj: dsl.path.matrix.object(obj, { required: true }),
+      obj: parameter.path.matrix.required.object(obj),
     },
   },
   data: [
@@ -334,7 +334,7 @@ export const requiredExplodedMatrixObjectPath: PathTestCase<{ obj: ObjType }> = 
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
     schema: {
-      obj: dsl.path.matrix.object(obj, { required: true, explode: true }),
+      obj: parameter.path.matrix.exploded.required.object(obj),
     },
   },
   data: [

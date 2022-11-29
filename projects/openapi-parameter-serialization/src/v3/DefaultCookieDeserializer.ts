@@ -1,6 +1,6 @@
 import { CookieValue } from '@oats-ts/openapi-http'
 import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
-import { isNil } from '../utils'
+import { isNil } from './utils'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import { ParameterValue, Primitive, CookieDeserializer, CookieDslRoot, CookieDsl, CookiePrimitive } from './types'
