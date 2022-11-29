@@ -82,6 +82,11 @@ const defaultDelegates: DelegatingNameProviderInput = {
     prepend('create'),
     append('ContextRouter'),
   ),
+  'oats/cookie-parameters': _delegating(operationId, toCamelCase, append('CookieParameters')),
+  'oats/path-parameters': _delegating(operationId, toCamelCase, append('PathParameters')),
+  'oats/query-parameters': _delegating(operationId, toCamelCase, append('QueryParameters')),
+  'oats/request-header-parameters': _delegating(operationId, toCamelCase, append('ResponseHeaderParameters')),
+  'oats/response-header-parameters': _delegating(operationId, toCamelCase, append('ResponseHeaderParameters')),
 }
 
 export const nameProviders = {

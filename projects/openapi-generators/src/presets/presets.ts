@@ -33,6 +33,10 @@ function commonConfig(config: OpenAPICommonPresetConfig): OpenAPIPresetConfig {
     'oats/request-headers-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/response-headers-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/cookies-type': isNil(documentation) ? true : { documentation: documentation },
+    'oats/cookie-parameters': true,
+    'oats/path-parameters': true,
+    'oats/query-parameters': true,
+    'oats/request-header-parameters': true,
   }
 }
 

@@ -32,6 +32,10 @@ import { expressCorsRouterFactory } from './express-cors-router-factory'
 import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 import { expressContextRouterFactory } from './express-context-router-factory'
 import { corsConfiguration } from './cors-configuration'
+import { cookieParameters } from './cookie-parameters'
+import { pathParameters } from './path-parameters'
+import { queryParameters } from './query-parameters'
+import { requestHeaderParameters } from './request-header-parameters'
 
 export const factories = {
   typeGuards,
@@ -70,4 +74,8 @@ export const factories = {
   expressContextRouterFactory,
   corsConfiguration,
   operationClasses,
+  cookieParameters,
+  pathParameters,
+  queryParameters,
+  requestHeaderParameters,
 } as const

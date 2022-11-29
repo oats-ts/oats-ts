@@ -39,6 +39,11 @@ const fileNameByTarget: NameByTarget = {
   'oats/express-cors-router-factory': 'expressCorsRouterFactory.ts',
   'oats/cors-configuration': 'corsConfiguration.ts',
   'oats/express-context-router-factory': 'expressContextRouterFactory.ts',
+  'oats/cookie-parameters': 'cookieParameters.ts',
+  'oats/path-parameters': 'pathParameters.ts',
+  'oats/query-parameters': 'queryParameters.ts',
+  'oats/request-header-parameters': 'responseHeaderParameters.ts',
+  'oats/response-header-parameters': 'responseHeaderParameters.ts',
 }
 
 const delegate =
@@ -80,6 +85,12 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/path-type': parameters,
     'oats/query-type': parameters,
     'oats/cookies-type': parameters,
+
+    'oats/request-header-parameters': parameters,
+    'oats/response-header-parameters': parameters,
+    'oats/path-parameters': parameters,
+    'oats/query-parameters': parameters,
+    'oats/cookie-parameters': parameters,
 
     'oats/request-headers-serializer': serializers,
     'oats/query-serializer': serializers,

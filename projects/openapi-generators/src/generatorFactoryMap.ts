@@ -38,4 +38,9 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/express-cors-router-factory': factories.expressCorsRouterFactory,
   'oats/express-context-router-factory': factories.expressContextRouterFactory,
   'oats/cors-configuration': factories.corsConfiguration,
+  'oats/cookie-parameters': factories.cookieParameters,
+  'oats/path-parameters': factories.pathParameters,
+  'oats/query-parameters': factories.queryParameters,
+  'oats/request-header-parameters': factories.requestHeaderParameters,
+  'oats/response-header-parameters': undefined!,
 }

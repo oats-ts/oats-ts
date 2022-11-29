@@ -75,11 +75,16 @@ const openApiParameterSerializationExports = {
   createCookieDeserializer: 'createCookieDeserializer',
   createSetCookieDeserializer: 'createSetCookieDeserializer',
   deserializers: 'deserializers',
+  parameter: 'parameter',
   dsl: 'dsl',
   HeaderDsl: 'HeaderDsl',
   CookieDsl: 'CookieDsl',
   PathDsl: 'PathDsl',
   QueryDsl: 'QueryDsl',
+  QueryParameters: 'QueryParameters',
+  PathParameters: 'PathParameters',
+  HeaderParameters: 'HeaderParameters',
+  CookieParameters: 'CookieParameters',
 }
 
 const openApiParameterSerializationContent = {

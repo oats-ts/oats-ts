@@ -29,11 +29,11 @@ export type OpenAPIGeneratorTarget =
   | 'oats/path-type'
   | 'oats/cookies-type'
   | 'oats/request-headers-type'
+  | 'oats/response-headers-type'
   | 'oats/response-type'
   | 'oats/response-server-type'
   | 'oats/request-type'
   | 'oats/request-server-type'
-  | 'oats/response-headers-type'
   | 'oats/request-headers-serializer'
   | 'oats/response-headers-serializer'
   | 'oats/query-serializer'
@@ -55,6 +55,11 @@ export type OpenAPIGeneratorTarget =
   | 'oats/express-app-router-factory'
   | 'oats/express-cors-router-factory'
   | 'oats/express-context-router-factory'
+  | 'oats/request-header-parameters'
+  | 'oats/response-header-parameters'
+  | 'oats/query-parameters'
+  | 'oats/path-parameters'
+  | 'oats/cookie-parameters'
 
 export type OpenAPIGeneratorContext = JsonSchemaBasedGeneratorContext<OpenAPIObject, OpenAPIGeneratorTarget>
 
