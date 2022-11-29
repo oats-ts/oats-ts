@@ -3,8 +3,8 @@ import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
   PathArray,
-  PathDsl,
-  PathDslRoot,
+  PathParameterDescriptor,
+  PathParameters,
   PathObject,
   PathPrimitive,
   PathSerializer,
@@ -14,7 +14,7 @@ import {
 import { entries, isNil } from './utils'
 
 export class DefaultPathSerializer<T> extends BaseSerializer implements PathSerializer<T> {
-  constructor(protected readonly dsl: PathDslRoot<T>) {
+  constructor(protected readonly parameters: PathParameters<T>) {
     super()
   }
 
@@ -24,19 +24,19 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
 
   public serialize(input: T): Try<string> {
     const serializedParts = fromRecord(
-      Object.keys(this.dsl.schema).reduce((parts: Record<string, Try<string>>, name: string) => {
+      Object.keys(this.parameters.descriptor).reduce((parts: Record<string, Try<string>>, name: string) => {
         const key = name as keyof T & string
-        const dsl: PathDsl = this.dsl.schema[key]
+        const descriptor: PathParameterDescriptor = this.parameters.descriptor[key]
         const value: any = input?.[key]
         const path = this.append(this.basePath(), key)
-        parts[name] = this.parameter(dsl, key, value, path)
+        parts[name] = this.parameter(descriptor, key, value, path)
         return parts
       }, {}),
     )
 
     return fluent(serializedParts)
       .map((serialized) => {
-        return this.dsl.pathSegments
+        return this.parameters.pathSegments
           .map((segment) => {
             switch (segment.type) {
               case 'parameter':
@@ -50,17 +50,17 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
       .toTry()
   }
 
-  protected parameter(dsl: PathDsl, name: string, value: any, path: string): Try<string> {
-    const { style, type } = dsl
+  protected parameter(descriptor: PathParameterDescriptor, name: string, value: any, path: string): Try<string> {
+    const { style, type } = descriptor
     switch (style) {
       case 'simple': {
         switch (type) {
           case 'primitive':
-            return this.simplePrimitive(dsl, name, value, path)
+            return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
-            return this.simpleArray(dsl, name, value, path)
+            return this.simpleArray(descriptor, name, value, path)
           case 'object':
-            return this.simpleObject(dsl, name, value, path)
+            return this.simpleObject(descriptor, name, value, path)
           default: {
             throw unexpectedType(type)
           }
@@ -69,23 +69,23 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
       case 'label': {
         switch (type) {
           case 'primitive':
-            return this.labelPrimitive(dsl, name, value, path)
+            return this.labelPrimitive(descriptor, name, value, path)
           case 'array':
-            return this.labelArray(dsl, name, value, path)
+            return this.labelArray(descriptor, name, value, path)
           case 'object':
-            return this.labelObject(dsl, name, value, path)
+            return this.labelObject(descriptor, name, value, path)
           default:
             throw unexpectedType(type)
         }
       }
       case 'matrix': {
-        switch (dsl.type) {
+        switch (descriptor.type) {
           case 'primitive':
-            return this.matrixPrimitive(dsl, name, value, path)
+            return this.matrixPrimitive(descriptor, name, value, path)
           case 'array':
-            return this.matrixArray(dsl, name, value, path)
+            return this.matrixArray(descriptor, name, value, path)
           case 'object':
-            return this.matrixObject(dsl, name, value, path)
+            return this.matrixObject(descriptor, name, value, path)
           default:
             throw unexpectedType(type)
         }
@@ -95,53 +95,53 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
     }
   }
 
-  protected simplePrimitive(dsl: PathPrimitive, name: string, data: any, path: string): Try<string> {
+  protected simplePrimitive(descriptor: PathPrimitive, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathPrimitive(path, value))
       .map((value) => this.encode(value?.toString()))
       .toTry()
   }
 
-  protected simpleArray(dsl: PathArray, name: string, data: any, path: string): Try<string> {
+  protected simpleArray(descriptor: PathArray, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathArray(path, value ?? []))
       .map((value) => this.joinArrayItems('', ',', value))
       .toTry()
   }
 
-  protected simpleObject(dsl: PathObject, name: string, data: any, path: string): Try<string> {
+  protected simpleObject(descriptor: PathObject, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathObject(path, value))
-      .map((value) => this.joinKeyValuePairs('', dsl.explode ? '=' : ',', ',', entries(value!)))
+      .map((value) => this.joinKeyValuePairs('', descriptor.explode ? '=' : ',', ',', entries(value!)))
       .toTry()
   }
 
-  protected labelPrimitive(dsl: PathPrimitive, name: string, data: any, path: string): Try<string> {
+  protected labelPrimitive(descriptor: PathPrimitive, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathPrimitive(path, value))
       .map((value) => `.${this.encode(value?.toString())}`)
       .toTry()
   }
 
-  protected labelArray(dsl: PathArray, name: string, data: any, path: string): Try<string> {
+  protected labelArray(descriptor: PathArray, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((pathValue) => this.validatePathArray(path, pathValue!))
-      .map((value): string => this.joinArrayItems('.', dsl.explode ? '.' : ',', value!))
+      .map((value): string => this.joinArrayItems('.', descriptor.explode ? '.' : ',', value!))
       .toTry()
   }
 
-  protected labelObject(dsl: PathObject, name: string, data: any, path: string): Try<string> {
+  protected labelObject(descriptor: PathObject, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathObject(path, value))
       .map((value) => {
-        const kvSeparator = dsl.explode ? '=' : ','
-        const separator = dsl.explode ? '.' : ','
+        const kvSeparator = descriptor.explode ? '=' : ','
+        const separator = descriptor.explode ? '.' : ','
         return this.joinKeyValuePairs('.', kvSeparator, separator, entries(value!))
       })
       .toTry()
   }
 
-  protected matrixPrimitive(dsl: PathPrimitive, name: string, data: any, path: string): Try<string> {
+  protected matrixPrimitive(descriptor: PathPrimitive, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathPrimitive(path, value))
       .map((value) => {
@@ -152,11 +152,11 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
       .toTry()
   }
 
-  protected matrixArray(dsl: PathArray, name: string, data: any, path: string): Try<string> {
+  protected matrixArray(descriptor: PathArray, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathArray(path, value!))
       .map((value) => {
-        if (!dsl.explode) {
+        if (!descriptor.explode) {
           return this.joinArrayItems(`;${this.encode(name)}=`, ',', value!)
         }
         const kvPairs = value!.map((v): [string, Primitive] => [name, v])
@@ -165,14 +165,14 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
       .toTry()
   }
 
-  protected matrixObject(dsl: PathObject, name: string, data: any, path: string): Try<string> {
+  protected matrixObject(descriptor: PathObject, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
       .flatMap((value) => this.validatePathObject(path, value))
       .map((value) =>
         this.joinKeyValuePairs(
-          dsl.explode ? ';' : `;${this.encode(name)}=`,
-          dsl.explode ? '=' : ',',
-          dsl.explode ? ';' : ',',
+          descriptor.explode ? ';' : `;${this.encode(name)}=`,
+          descriptor.explode ? '=' : ',',
+          descriptor.explode ? ';' : ',',
           entries(value!),
         ),
       )

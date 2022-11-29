@@ -6,8 +6,8 @@ import { CookieTestCase } from './types'
 export const requiredStringQuery: CookieTestCase<{ str: string }> = {
   name: 'required form string cookie',
 
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       str: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
   },
@@ -22,8 +22,8 @@ export const requiredStringQuery: CookieTestCase<{ str: string }> = {
 
 export const optionalStringQuery: CookieTestCase<{ str?: string }> = {
   name: 'optional form string cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       str: parameter.cookie.form.primitive(parameter.value.string()),
     },
   },
@@ -38,8 +38,8 @@ export const optionalStringQuery: CookieTestCase<{ str?: string }> = {
 
 export const requiredNumberQuery: CookieTestCase<{ num: number }> = {
   name: 'required form number cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       num: parameter.cookie.form.required.primitive(parameter.value.number()),
     },
   },
@@ -55,8 +55,8 @@ export const requiredNumberQuery: CookieTestCase<{ num: number }> = {
 
 export const optionalNumberQuery: CookieTestCase<{ num?: number }> = {
   name: 'optional form number cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       num: parameter.cookie.form.primitive(parameter.value.number()),
     },
   },
@@ -67,8 +67,8 @@ export const optionalNumberQuery: CookieTestCase<{ num?: number }> = {
 
 export const requiredBooleanQuery: CookieTestCase<{ bool: boolean }> = {
   name: 'required form boolean cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       bool: parameter.cookie.form.required.primitive(parameter.value.boolean()),
     },
   },
@@ -82,8 +82,8 @@ export const requiredBooleanQuery: CookieTestCase<{ bool: boolean }> = {
 
 export const optionalBooleanQuery: CookieTestCase<{ bool?: boolean }> = {
   name: 'optional form boolean cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       bool: parameter.cookie.form.primitive(parameter.value.boolean()),
     },
   },
@@ -94,8 +94,8 @@ export const optionalBooleanQuery: CookieTestCase<{ bool?: boolean }> = {
 
 export const requiredLiteralQuery: CookieTestCase<{ lit: LiteralType }> = {
   name: 'required form literal cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       lit: parameter.cookie.form.required.primitive(lit),
     },
   },
@@ -106,8 +106,8 @@ export const requiredLiteralQuery: CookieTestCase<{ lit: LiteralType }> = {
 
 export const optionalLiteralQuery: CookieTestCase<{ lit?: LiteralType }> = {
   name: 'optional form literal cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       lit: parameter.cookie.form.primitive(lit),
     },
   },
@@ -118,8 +118,8 @@ export const optionalLiteralQuery: CookieTestCase<{ lit?: LiteralType }> = {
 
 export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
   name: 'required form enum cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       enm: parameter.cookie.form.required.primitive(enm),
     },
   },
@@ -134,8 +134,8 @@ export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
 
 export const optionalEnumQuery: CookieTestCase<{ enm?: EnumType }> = {
   name: 'optional form enum cookie',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       enm: parameter.cookie.form.primitive(enm),
     },
   },

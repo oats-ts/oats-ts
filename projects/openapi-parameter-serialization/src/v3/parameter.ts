@@ -1,75 +1,75 @@
 import {
-  arrayDsl,
-  booleanDsl,
-  enumDsl,
-  literalDsl,
-  numberDsl,
-  objectDsl,
-  optionalDsl,
-  primitiveDsl,
-  stringDsl,
+  arrayDescriptor,
+  booleanDescriptor,
+  enumDescriptor,
+  literalDescriptor,
+  numberDescriptor,
+  objectDescriptor,
+  optionalDescriptor,
+  primitiveDescriptor,
+  stringDescriptor,
 } from './factories'
 
 export const parameter = {
   value: {
-    optional: optionalDsl,
-    string: stringDsl,
-    number: numberDsl,
-    boolean: booleanDsl,
-    literal: literalDsl,
-    enum: enumDsl,
+    optional: optionalDescriptor,
+    string: stringDescriptor,
+    number: numberDescriptor,
+    boolean: booleanDescriptor,
+    literal: literalDescriptor,
+    enum: enumDescriptor,
   },
   query: {
     form: {
       exploded: {
         required: {
-          primitive: primitiveDsl('query', 'form', true, true),
-          array: arrayDsl('query', 'form', true, true),
-          object: objectDsl('query', 'form', true, true),
+          primitive: primitiveDescriptor('query', 'form', true, true),
+          array: arrayDescriptor('query', 'form', true, true),
+          object: objectDescriptor('query', 'form', true, true),
         },
-        primitive: primitiveDsl('query', 'form', true, false),
-        array: arrayDsl('query', 'form', true, false),
-        object: objectDsl('query', 'form', true, false),
+        primitive: primitiveDescriptor('query', 'form', true, false),
+        array: arrayDescriptor('query', 'form', true, false),
+        object: objectDescriptor('query', 'form', true, false),
       },
       required: {
-        primitive: primitiveDsl('query', 'form', false, true),
-        array: arrayDsl('query', 'form', false, true),
-        object: objectDsl('query', 'form', false, true),
+        primitive: primitiveDescriptor('query', 'form', false, true),
+        array: arrayDescriptor('query', 'form', false, true),
+        object: objectDescriptor('query', 'form', false, true),
       },
-      primitive: primitiveDsl('query', 'form', false, false),
-      array: arrayDsl('query', 'form', false, false),
-      object: objectDsl('query', 'form', false, false),
+      primitive: primitiveDescriptor('query', 'form', false, false),
+      array: arrayDescriptor('query', 'form', false, false),
+      object: objectDescriptor('query', 'form', false, false),
     },
     spaceDelimited: {
       exploded: {
         required: {
-          array: arrayDsl('query', 'spaceDelimited', true, true),
+          array: arrayDescriptor('query', 'spaceDelimited', true, true),
         },
-        array: arrayDsl('query', 'spaceDelimited', true, false),
+        array: arrayDescriptor('query', 'spaceDelimited', true, false),
       },
       required: {
-        array: arrayDsl('query', 'spaceDelimited', false, true),
+        array: arrayDescriptor('query', 'spaceDelimited', false, true),
       },
-      array: arrayDsl('query', 'spaceDelimited', false, false),
+      array: arrayDescriptor('query', 'spaceDelimited', false, false),
     },
     pipeDelimited: {
       exploded: {
         required: {
-          array: arrayDsl('query', 'pipeDelimited', true, true),
+          array: arrayDescriptor('query', 'pipeDelimited', true, true),
         },
-        array: arrayDsl('query', 'pipeDelimited', true, false),
+        array: arrayDescriptor('query', 'pipeDelimited', true, false),
       },
       required: {
-        array: arrayDsl('query', 'pipeDelimited', false, true),
+        array: arrayDescriptor('query', 'pipeDelimited', false, true),
       },
-      array: arrayDsl('query', 'pipeDelimited', false, false),
+      array: arrayDescriptor('query', 'pipeDelimited', false, false),
     },
     deepObject: {
       exploded: {
         required: {
-          object: objectDsl('query', 'deepObject', true, true),
+          object: objectDescriptor('query', 'deepObject', true, true),
         },
-        object: objectDsl('query', 'deepObject', true, false),
+        object: objectDescriptor('query', 'deepObject', true, false),
       },
     },
   },
@@ -77,43 +77,43 @@ export const parameter = {
     simple: {
       exploded: {
         required: {
-          primitive: primitiveDsl('path', 'simple', true, true),
-          array: arrayDsl('path', 'simple', true, true),
-          object: objectDsl('path', 'simple', true, true),
+          primitive: primitiveDescriptor('path', 'simple', true, true),
+          array: arrayDescriptor('path', 'simple', true, true),
+          object: objectDescriptor('path', 'simple', true, true),
         },
       },
       required: {
-        primitive: primitiveDsl('path', 'simple', false, true),
-        array: arrayDsl('path', 'simple', false, true),
-        object: objectDsl('path', 'simple', false, true),
+        primitive: primitiveDescriptor('path', 'simple', false, true),
+        array: arrayDescriptor('path', 'simple', false, true),
+        object: objectDescriptor('path', 'simple', false, true),
       },
     },
     label: {
       exploded: {
         required: {
-          primitive: primitiveDsl('path', 'label', true, true),
-          array: arrayDsl('path', 'label', true, true),
-          object: objectDsl('path', 'label', true, true),
+          primitive: primitiveDescriptor('path', 'label', true, true),
+          array: arrayDescriptor('path', 'label', true, true),
+          object: objectDescriptor('path', 'label', true, true),
         },
       },
       required: {
-        primitive: primitiveDsl('path', 'label', false, true),
-        array: arrayDsl('path', 'label', false, true),
-        object: objectDsl('path', 'label', false, true),
+        primitive: primitiveDescriptor('path', 'label', false, true),
+        array: arrayDescriptor('path', 'label', false, true),
+        object: objectDescriptor('path', 'label', false, true),
       },
     },
     matrix: {
       exploded: {
         required: {
-          primitive: primitiveDsl('path', 'matrix', true, true),
-          array: arrayDsl('path', 'matrix', true, true),
-          object: objectDsl('path', 'matrix', true, true),
+          primitive: primitiveDescriptor('path', 'matrix', true, true),
+          array: arrayDescriptor('path', 'matrix', true, true),
+          object: objectDescriptor('path', 'matrix', true, true),
         },
       },
       required: {
-        primitive: primitiveDsl('path', 'matrix', false, true),
-        array: arrayDsl('path', 'matrix', false, true),
-        object: objectDsl('path', 'matrix', false, true),
+        primitive: primitiveDescriptor('path', 'matrix', false, true),
+        array: arrayDescriptor('path', 'matrix', false, true),
+        object: objectDescriptor('path', 'matrix', false, true),
       },
     },
   },
@@ -121,36 +121,36 @@ export const parameter = {
     simple: {
       exploded: {
         required: {
-          primitive: primitiveDsl('header', 'simple', true, true),
-          array: arrayDsl('header', 'simple', true, true),
-          object: objectDsl('header', 'simple', true, true),
+          primitive: primitiveDescriptor('header', 'simple', true, true),
+          array: arrayDescriptor('header', 'simple', true, true),
+          object: objectDescriptor('header', 'simple', true, true),
         },
-        primitive: primitiveDsl('header', 'simple', true, false),
-        array: arrayDsl('header', 'simple', true, false),
-        object: objectDsl('header', 'simple', true, false),
+        primitive: primitiveDescriptor('header', 'simple', true, false),
+        array: arrayDescriptor('header', 'simple', true, false),
+        object: objectDescriptor('header', 'simple', true, false),
       },
       required: {
-        primitive: primitiveDsl('header', 'simple', false, true),
-        array: arrayDsl('header', 'simple', false, true),
-        object: objectDsl('header', 'simple', false, true),
+        primitive: primitiveDescriptor('header', 'simple', false, true),
+        array: arrayDescriptor('header', 'simple', false, true),
+        object: objectDescriptor('header', 'simple', false, true),
       },
-      primitive: primitiveDsl('header', 'simple', false, false),
-      array: arrayDsl('header', 'simple', false, false),
-      object: objectDsl('header', 'simple', false, false),
+      primitive: primitiveDescriptor('header', 'simple', false, false),
+      array: arrayDescriptor('header', 'simple', false, false),
+      object: objectDescriptor('header', 'simple', false, false),
     },
   },
   cookie: {
     form: {
       exploded: {
         required: {
-          primitive: primitiveDsl('cookie', 'form', true, true),
+          primitive: primitiveDescriptor('cookie', 'form', true, true),
         },
-        primitive: primitiveDsl('cookie', 'form', true, false),
+        primitive: primitiveDescriptor('cookie', 'form', true, false),
       },
       required: {
-        primitive: primitiveDsl('cookie', 'form', false, true),
+        primitive: primitiveDescriptor('cookie', 'form', false, true),
       },
-      primitive: primitiveDsl('cookie', 'form', false, false),
+      primitive: primitiveDescriptor('cookie', 'form', false, false),
     },
   },
 }

@@ -1,36 +1,36 @@
 import { failure, success, Try } from '@oats-ts/try'
 import {
-  BooleanDsl,
-  EnumDsl,
-  LiteralDsl,
-  NumberDsl,
-  OptionalDsl,
+  BooleanDescriptor,
+  EnumDescriptor,
+  LiteralDescriptor,
+  NumberDescriptor,
+  OptionalDescriptor,
   Primitive,
-  StringDsl,
+  StringDescriptor,
   ValueDeserializer,
-  ValueDsl,
+  ValueDescriptor,
 } from './types'
 import { isNil } from './utils'
 
 export class DefaultValueDeserializer implements ValueDeserializer {
-  public deserialize(dsl: ValueDsl, data: Primitive, path: string): Try<Primitive> {
-    switch (dsl.type) {
+  public deserialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<Primitive> {
+    switch (descriptor.type) {
       case 'boolean':
-        return this.boolean(dsl, data, path)
+        return this.boolean(descriptor, data, path)
       case 'enum':
-        return this.enumeration(dsl, data, path)
+        return this.enumeration(descriptor, data, path)
       case 'literal':
-        return this.literal(dsl, data, path)
+        return this.literal(descriptor, data, path)
       case 'number':
-        return this.number(dsl, data, path)
+        return this.number(descriptor, data, path)
       case 'optional':
-        return this.optional(dsl, data, path)
+        return this.optional(descriptor, data, path)
       case 'string':
-        return this.string(dsl, data, path)
+        return this.string(descriptor, data, path)
     }
   }
 
-  protected boolean(dsl: BooleanDsl, value: Primitive, path: string): Try<Primitive> {
+  protected boolean(descriptor: BooleanDescriptor, value: Primitive, path: string): Try<Primitive> {
     if (value !== 'true' && value !== 'false') {
       return failure({
         message: `should be a boolean ("true" or "false")`,
@@ -39,12 +39,12 @@ export class DefaultValueDeserializer implements ValueDeserializer {
       })
     }
     const boolValue = value === 'true'
-    return isNil(dsl.dsl) ? success(boolValue) : this.deserialize(dsl.dsl, boolValue, path)
+    return isNil(descriptor.value) ? success(boolValue) : this.deserialize(descriptor.value, boolValue, path)
   }
 
-  protected enumeration(dsl: EnumDsl, value: Primitive, path: string): Try<Primitive> {
-    if (dsl.values.indexOf(value) < 0) {
-      const valuesLiteral = dsl.values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
+  protected enumeration(descriptor: EnumDescriptor, value: Primitive, path: string): Try<Primitive> {
+    if (descriptor.values.indexOf(value) < 0) {
+      const valuesLiteral = descriptor.values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
       return failure({
         message: `should be one of ${valuesLiteral}.`,
         path,
@@ -54,9 +54,9 @@ export class DefaultValueDeserializer implements ValueDeserializer {
     return success(value)
   }
 
-  protected literal(dsl: LiteralDsl, value: Primitive, path: string): Try<Primitive> {
-    if (value !== dsl.value) {
-      const strLiteral = typeof dsl.value === 'string' ? `"${dsl.value}"` : dsl.value
+  protected literal(descriptor: LiteralDescriptor, value: Primitive, path: string): Try<Primitive> {
+    if (value !== descriptor.value) {
+      const strLiteral = typeof descriptor.value === 'string' ? `"${descriptor.value}"` : descriptor.value
       return failure({
         message: `should be ${strLiteral}.`,
         path,
@@ -66,7 +66,7 @@ export class DefaultValueDeserializer implements ValueDeserializer {
     return success(value)
   }
 
-  protected number(dsl: NumberDsl, value: Primitive, path: string): Try<Primitive> {
+  protected number(descriptor: NumberDescriptor, value: Primitive, path: string): Try<Primitive> {
     if (typeof value !== 'string') {
       return failure({
         message: `should not be ${value}`,
@@ -82,14 +82,14 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(numValue) : this.deserialize(dsl.dsl, numValue, path)
+    return isNil(descriptor.value) ? success(numValue) : this.deserialize(descriptor.value, numValue, path)
   }
 
-  protected optional(dsl: OptionalDsl, value: Primitive, path: string): Try<Primitive> {
-    return isNil(value) ? success(undefined) : this.deserialize(dsl.dsl, value, path)
+  protected optional(descriptor: OptionalDescriptor, value: Primitive, path: string): Try<Primitive> {
+    return isNil(value) ? success(undefined) : this.deserialize(descriptor.value, value, path)
   }
 
-  protected string(dsl: StringDsl, value: Primitive, path: string): Try<Primitive> {
+  protected string(descriptor: StringDescriptor, value: Primitive, path: string): Try<Primitive> {
     if (typeof value !== 'string') {
       return failure({
         message: `should be a string.`,
@@ -97,6 +97,6 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(value) : this.deserialize(dsl.dsl, value, path)
+    return isNil(descriptor.value) ? success(value) : this.deserialize(descriptor.value, value, path)
   }
 }

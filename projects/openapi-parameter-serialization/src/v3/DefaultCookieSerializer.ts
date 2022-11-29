@@ -1,11 +1,18 @@
 import { failure, fluent, fromArray, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
-import { ParameterValue, Primitive, CookieSerializer, CookieDslRoot, CookieDsl, CookiePrimitive } from './types'
+import {
+  ParameterValue,
+  Primitive,
+  CookieSerializer,
+  CookieParameters,
+  CookieParameterDescriptor,
+  CookiePrimitive,
+} from './types'
 import { isNil } from './utils'
 
 export class DefaultCookieSerializer<T> extends BaseSerializer implements CookieSerializer<T> {
-  constructor(protected readonly dsl: CookieDslRoot<T>) {
+  constructor(protected readonly parameters: CookieParameters<T>) {
     super()
   }
 
@@ -14,13 +21,15 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
   }
 
   public serialize(input: T): Try<string | undefined> {
-    const serializedParts = Object.keys(this.dsl.schema).map((_key: string): Try<[string, string | undefined]> => {
-      const key = _key as string & keyof T
-      const paramDsl = this.dsl.schema[key]
-      const cookieValue = input?.[key]
-      const serialized = this.parameter(paramDsl, key, cookieValue, this.append(this.basePath(), key))
-      return fluent(serialized).map((value) => [key, value])
-    })
+    const serializedParts = Object.keys(this.parameters.descriptor).map(
+      (_key: string): Try<[string, string | undefined]> => {
+        const key = _key as string & keyof T
+        const paramDescriptor = this.parameters.descriptor[key]
+        const cookieValue = input?.[key]
+        const serialized = this.serializeParameter(paramDescriptor, key, cookieValue, this.append(this.basePath(), key))
+        return fluent(serialized).map((value) => [key, value])
+      },
+    )
     return fluent(fromArray(serializedParts))
       .map((cookies) =>
         cookies.filter(([, value]) => value !== undefined).map(([name, value]) => `${this.encode(name)}=${value}`),
@@ -28,13 +37,18 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
       .map((values) => (values.length === 0 ? undefined : values.join('; ')))
   }
 
-  protected parameter(dsl: CookieDsl, name: string, value: any, path: string): Try<string | undefined> {
-    const { style, type } = dsl
+  protected serializeParameter(
+    descriptor: CookieParameterDescriptor,
+    name: string,
+    value: any,
+    path: string,
+  ): Try<string | undefined> {
+    const { style, type } = descriptor
     switch (style) {
       case 'form': {
         switch (type) {
           case 'primitive':
-            return this.formPrimitive(dsl, name, value, path)
+            return this.formPrimitive(descriptor, name, value, path)
           default: {
             throw unexpectedType(type, ['primitive'])
           }
@@ -45,22 +59,31 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
     }
   }
 
-  protected formPrimitive(dsl: CookiePrimitive, name: string, data: Primitive, path: string): Try<string | undefined> {
-    return fluent(this.getCookieValue(dsl, path, data))
+  protected formPrimitive(
+    descriptor: CookiePrimitive,
+    name: string,
+    data: Primitive,
+    path: string,
+  ): Try<string | undefined> {
+    return fluent(this.getCookieValue(descriptor, path, data))
       .flatMap(
         (value): Try<string | undefined> =>
           isNil(value)
             ? success(undefined)
-            : fluent(this.values.serialize(dsl.value, value, path)).map((value) => this.encode(value)),
+            : fluent(this.values.serialize(descriptor.value, value, path)).map((value) => this.encode(value)),
       )
       .toTry()
   }
 
-  protected getCookieValue<T extends ParameterValue>(dsl: CookieDsl, path: string, value: T | undefined): Try<T> {
+  protected getCookieValue<T extends ParameterValue>(
+    descriptor: CookieParameterDescriptor,
+    path: string,
+    value: T | undefined,
+  ): Try<T> {
     if (!isNil(value)) {
       return success(value)
     }
-    if (!dsl.required) {
+    if (!descriptor.required) {
       return success(undefined as unknown as T)
     }
     return failure({

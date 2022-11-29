@@ -7,54 +7,55 @@ export type PrimitiveRecord = Record<string, Primitive> | undefined
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 export type ParameterType = Record<string, ParameterValue>
 
-export type DslType = 'primitive' | 'array' | 'object'
-export type DslLocation = 'query' | 'header' | 'path' | 'cookie'
+export type Type = 'primitive' | 'array' | 'object'
+export type Location = 'query' | 'header' | 'path' | 'cookie'
 
 export type QueryStyle = 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
 export type PathStyle = 'simple' | 'label' | 'matrix'
 export type HeaderStyle = 'simple'
 export type CookieStyle = 'form'
 
-export type DslStyle = QueryStyle | PathStyle | HeaderStyle | CookieStyle
+export type Style = QueryStyle | PathStyle | HeaderStyle | CookieStyle
 
-export type DslConfig = {
-  required: boolean
-  explode: boolean
-}
-
-export type EnumDsl = {
+export type EnumDescriptor = {
   type: 'enum'
   values: Primitive[]
 }
 
-export type LiteralDsl = {
+export type LiteralDescriptor = {
   type: 'literal'
   value: Primitive
 }
 
-export type OptionalDsl = {
+export type OptionalDescriptor = {
   type: 'optional'
-  dsl: ValueDsl
+  value: ValueDescriptor
 }
 
-export type StringDsl = {
+export type StringDescriptor = {
   type: 'string'
-  dsl?: ValueDsl
+  value?: ValueDescriptor
 }
 
-export type NumberDsl = {
+export type NumberDescriptor = {
   type: 'number'
-  dsl?: ValueDsl
+  value?: ValueDescriptor
 }
 
-export type BooleanDsl = {
+export type BooleanDescriptor = {
   type: 'boolean'
-  dsl?: ValueDsl
+  value?: ValueDescriptor
 }
 
-export type ValueDsl = StringDsl | NumberDsl | BooleanDsl | EnumDsl | OptionalDsl | LiteralDsl
+export type ValueDescriptor =
+  | StringDescriptor
+  | NumberDescriptor
+  | BooleanDescriptor
+  | EnumDescriptor
+  | OptionalDescriptor
+  | LiteralDescriptor
 
-export type DslCommon<T extends DslType, L extends DslLocation, S extends DslStyle> = {
+export type DescriptorCommon<T extends Type, L extends Location, S extends Style> = {
   type: T
   location: L
   style: S
@@ -62,100 +63,102 @@ export type DslCommon<T extends DslType, L extends DslLocation, S extends DslSty
   explode: boolean
 }
 
-export type PrimitiveDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'primitive', L, S> & {
-  value: ValueDsl
+export type PrimitiveDescriptor<L extends Location, S extends Style> = DescriptorCommon<'primitive', L, S> & {
+  value: ValueDescriptor
 }
 
-export type ArrayDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'array', L, S> & {
-  items: ValueDsl
+export type ArrayDescriptor<L extends Location, S extends Style> = DescriptorCommon<'array', L, S> & {
+  items: ValueDescriptor
 }
 
-export type PropertiesDsl = Record<string, ValueDsl>
+export type PropertyDescriptors = Record<string, ValueDescriptor>
 
-export type ObjectDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'object', L, S> & {
-  properties: PropertiesDsl
+export type ObjectDescriptor<L extends Location, S extends Style> = DescriptorCommon<'object', L, S> & {
+  properties: PropertyDescriptors
 }
 
-export type Dsl<L extends DslLocation, S extends DslStyle> = PrimitiveDsl<L, S> | ArrayDsl<L, S> | ObjectDsl<L, S>
+export type ParameterDescriptor<L extends Location, S extends Style> =
+  | PrimitiveDescriptor<L, S>
+  | ArrayDescriptor<L, S>
+  | ObjectDescriptor<L, S>
 
-export type PathPrimitive = PrimitiveDsl<'path', PathStyle>
-export type PathArray = ArrayDsl<'path', PathStyle>
-export type PathObject = ObjectDsl<'path', PathStyle>
+export type PathPrimitive = PrimitiveDescriptor<'path', PathStyle>
+export type PathArray = ArrayDescriptor<'path', PathStyle>
+export type PathObject = ObjectDescriptor<'path', PathStyle>
 
-export type QueryPrimitive = PrimitiveDsl<'query', QueryStyle>
-export type QueryArray = ArrayDsl<'query', QueryStyle>
-export type QueryObject = ObjectDsl<'query', QueryStyle>
+export type QueryPrimitive = PrimitiveDescriptor<'query', QueryStyle>
+export type QueryArray = ArrayDescriptor<'query', QueryStyle>
+export type QueryObject = ObjectDescriptor<'query', QueryStyle>
 
-export type HeaderPrimitive = PrimitiveDsl<'header', HeaderStyle>
-export type HeaderArray = ArrayDsl<'header', HeaderStyle>
-export type HeaderObject = ObjectDsl<'header', HeaderStyle>
+export type HeaderPrimitive = PrimitiveDescriptor<'header', HeaderStyle>
+export type HeaderArray = ArrayDescriptor<'header', HeaderStyle>
+export type HeaderObject = ObjectDescriptor<'header', HeaderStyle>
 
-export type CookiePrimitive = PrimitiveDsl<'cookie', CookieStyle>
+export type CookiePrimitive = PrimitiveDescriptor<'cookie', CookieStyle>
 
-export type PathDsl = Dsl<'path', PathStyle>
-export type QueryDsl = Dsl<'query', QueryStyle>
-export type HeaderDsl = Dsl<'header', HeaderStyle>
-export type CookieDsl = Dsl<'cookie', CookieStyle>
+export type PathParameterDescriptor = ParameterDescriptor<'path', PathStyle>
+export type QueryParameterDescriptor = ParameterDescriptor<'query', QueryStyle>
+export type HeaderParameterDescriptor = ParameterDescriptor<'header', HeaderStyle>
+export type CookieParameterDescriptor = ParameterDescriptor<'cookie', CookieStyle>
 
-export type DslRoot<T, L extends DslLocation, S extends DslStyle> = {
-  [P in keyof T]: Dsl<L, S>
+export type ParameterDescriptors<T, L extends Location, S extends Style> = {
+  [P in keyof T]: ParameterDescriptor<L, S>
 }
 
-export type QueryDslRoot<T> = {
-  schema: DslRoot<T, 'query', QueryStyle>
+export type QueryParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'query', QueryStyle>
 }
 
-export type PathDslRoot<T> = {
-  schema: DslRoot<T, 'path', PathStyle>
+export type PathParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'path', PathStyle>
   pathSegments: PathSegment[]
   matcher: RegExp
 }
 
-export type HeaderDslRoot<T> = {
-  schema: DslRoot<T, 'header', HeaderStyle>
+export type HeaderParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'header', HeaderStyle>
 }
 
-export type CookieDslRoot<T> = {
-  schema: DslRoot<T, 'cookie', CookieStyle>
+export type CookieParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'cookie', CookieStyle>
 }
+
+export type RawPath = Record<string, string>
+export type RawQuery = Record<string, string[]>
+
+export type ParameterSegment = {
+  type: 'parameter'
+  name: string
+}
+
+export type TextSegment = {
+  type: 'text'
+  value: string
+}
+
+export type PathSegment = ParameterSegment | TextSegment
 
 export type ValueDeserializer = {
-  deserialize(dsl: ValueDsl, data: Primitive, path: string): Try<Primitive>
+  deserialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<Primitive>
 }
 
 export type ValueSerializer = {
-  serialize(dsl: ValueDsl, data: Primitive, path: string): Try<string | undefined>
+  serialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<string | undefined>
 }
 
 export type PathSerializer<T> = {
-  /**
-   * Serializes the given path parameters from a model object to a path string
-   * @param params The path parameters
-   */
   serialize(params: T): Try<string>
 }
 
 export type QuerySerializer<T> = {
-  /**
-   * Serializes the given query parameters from a model object to a query string
-   * @param params The query parameters
-   */
   serialize(params: T): Try<string | undefined>
 }
 
 export type HeadersSerializer<T> = {
-  /**
-   * Serializes the given header parameters from a model object to a raw header object
-   * @param params The header parameters
-   */
   serialize(params: T): Try<RawHttpHeaders>
 }
 
 export type CookieSerializer<T> = {
-  /**
-   * Serializes the given cookie parameters from a model object to a cookie string
-   * @param params The cookie parameters
-   */
   serialize(params: T): Try<string | undefined>
 }
 
@@ -174,18 +177,3 @@ export type HeaderDeserializer<T> = {
 export type CookieDeserializer<T> = {
   deserialize(cookies: string): Try<T>
 }
-
-export type RawPath = Record<string, string>
-export type RawQuery = Record<string, string[]>
-
-export type ParameterSegment = {
-  type: 'parameter'
-  name: string
-}
-
-export type TextSegment = {
-  type: 'text'
-  value: string
-}
-
-export type PathSegment = ParameterSegment | TextSegment

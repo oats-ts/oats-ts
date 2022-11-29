@@ -5,8 +5,8 @@ import { HeaderTestCase } from './types'
 
 export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> = {
   name: 'required string headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-String-Field': parameter.header.simple.required.primitive(parameter.value.string()),
     },
   },
@@ -20,8 +20,8 @@ export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> 
 
 export const optionalStringHeader: HeaderTestCase<{ 'X-String-Field'?: string }> = {
   name: 'optional string headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-String-Field': parameter.header.simple.primitive(parameter.value.string()),
     },
   },
@@ -32,8 +32,8 @@ export const optionalStringHeader: HeaderTestCase<{ 'X-String-Field'?: string }>
 
 export const requiredNumberHeader: HeaderTestCase<{ 'X-Number-Field': number }> = {
   name: 'required number headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Number-Field': parameter.header.simple.required.primitive(parameter.value.number()),
     },
   },
@@ -54,8 +54,8 @@ export const requiredNumberHeader: HeaderTestCase<{ 'X-Number-Field': number }> 
 
 export const optionalNumberHeader: HeaderTestCase<{ 'X-Number-Field'?: number }> = {
   name: 'optional number headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Number-Field': parameter.header.simple.primitive(parameter.value.number()),
     },
   },
@@ -66,8 +66,8 @@ export const optionalNumberHeader: HeaderTestCase<{ 'X-Number-Field'?: number }>
 
 export const requiredBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field': boolean }> = {
   name: 'required boolean headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Boolean-Field': parameter.header.simple.required.primitive(parameter.value.boolean()),
     },
   },
@@ -88,8 +88,8 @@ export const requiredBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field': boolean 
 
 export const optionalBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field'?: boolean }> = {
   name: 'optional boolean headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Boolean-Field': parameter.header.simple.primitive(parameter.value.boolean()),
     },
   },
@@ -100,8 +100,8 @@ export const optionalBooleanHeader: HeaderTestCase<{ 'X-Boolean-Field'?: boolean
 
 export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = {
   name: 'required boolean headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Enum-Field': parameter.header.simple.required.primitive(enm),
     },
   },
@@ -123,8 +123,8 @@ export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = 
 
 export const requiredLiteralHeader: HeaderTestCase<{ 'X-Lit-Field': EnumType }> = {
   name: 'required boolean headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Lit-Field': parameter.header.simple.required.primitive(lit),
     },
   },
@@ -142,8 +142,8 @@ export const requiredLiteralHeader: HeaderTestCase<{ 'X-Lit-Field': EnumType }> 
 
 export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> = {
   name: 'optional boolean headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Enum-Field': parameter.header.simple.primitive(enm),
     },
   },
@@ -154,8 +154,8 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
 
 export const requiredNumberArrayHeader: HeaderTestCase<{ 'X-Arr-Field': number[] }> = {
   name: 'required number array headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Arr-Field': parameter.header.simple.required.array(parameter.value.number()),
     },
   },
@@ -191,8 +191,8 @@ export const requiredNumberArrayHeader: HeaderTestCase<{ 'X-Arr-Field': number[]
 
 export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
   name: 'required object headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Obj-Field': parameter.header.simple.required.object(obj),
     },
   },
@@ -224,8 +224,8 @@ export const requiredObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = 
 
 export const requiredExplodeObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjType }> = {
   name: 'required object headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Obj-Field': parameter.header.simple.exploded.required.object(obj),
     },
   },
@@ -258,8 +258,8 @@ export const requiredExplodeObjectHeader: HeaderTestCase<{ 'X-Obj-Field': ObjTyp
 
 export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> = {
   name: 'optional object headers',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Obj-Field': parameter.header.simple.object(obj),
     },
   },
@@ -288,8 +288,8 @@ export const optionalObjectHeader: HeaderTestCase<{ 'X-Obj-Field'?: ObjType }> =
 
 export const optionalFieldsObjectHeader: HeaderTestCase<{ 'X-Obj-Field': OptObjType }> = {
   name: 'required object headers with optional fields',
-  dsl: {
-    schema: {
+  descriptor: {
+    descriptor: {
       'X-Obj-Field': parameter.header.simple.required.object(optObj),
     },
   },

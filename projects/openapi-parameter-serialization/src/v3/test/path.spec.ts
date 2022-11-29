@@ -5,7 +5,7 @@ import { success } from '@oats-ts/try'
 import { testCases } from './common'
 import { DefaultPathSerializer } from '../DefaultPathSerializer'
 import { DefaultPathDeserializer } from '../DefaultPathDeserializer'
-import { DslType, PathDsl, PathDslRoot, PathStyle } from '../types'
+import { Type, PathParameterDescriptor, PathParameters, PathStyle } from '../types'
 import { pathToRegexp } from 'path-to-regexp'
 import { parsePathToSegments } from '../parsePathToSegments'
 
@@ -14,25 +14,25 @@ describe('path', () => {
     describe(test.name, () => {
       for (const { model, serialized } of test.data) {
         it(`Should serialize ${JSON.stringify(model)} to ${JSON.stringify(serialized)}`, () => {
-          const serializer = new DefaultPathSerializer(test.dsl)
+          const serializer = new DefaultPathSerializer(test.descriptor)
           expect(serializer.serialize(model)).toEqual(success(serialized))
         })
       }
       for (const { model, serialized } of test.data) {
         it(`Should deserialize ${JSON.stringify(serialized)} to ${JSON.stringify(model)}`, () => {
-          const deserializer = new DefaultPathDeserializer(test.dsl)
+          const deserializer = new DefaultPathDeserializer(test.descriptor)
           expect(deserializer.deserialize(serialized!)).toEqual(success(model))
         })
       }
       for (const serializerError of test.serializerErrors) {
         it(`Should fail serializing ${JSON.stringify(serializerError)}`, () => {
-          const serializer = new DefaultPathSerializer(test.dsl)
+          const serializer = new DefaultPathSerializer(test.descriptor)
           expect(serializer.serialize(serializerError)).toHaveProperty('issues')
         })
       }
       for (const deserializerError of test.deserializerErrors) {
         it(`Should fail deserializing ${JSON.stringify(deserializerError)}`, () => {
-          const deserializer = new DefaultPathDeserializer(test.dsl)
+          const deserializer = new DefaultPathDeserializer(test.descriptor)
           expect(deserializer.deserialize(deserializerError!)).toHaveProperty('issues')
         })
       }
@@ -40,24 +40,24 @@ describe('path', () => {
   })
 
   describe('Illegal construction', () => {
-    const illegalSchemas: PathDslRoot<any>[] = [
+    const illegalSchemas: PathParameters<any>[] = [
       {
-        schema: { foo: { type: 'foo' as DslType, style: 'label' } as PathDsl },
+        descriptor: { foo: { type: 'foo' as Type, style: 'label' } as PathParameterDescriptor },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
       },
       {
-        schema: { foo: { type: 'foo' as DslType, style: 'matrix' } as PathDsl },
+        descriptor: { foo: { type: 'foo' as Type, style: 'matrix' } as PathParameterDescriptor },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
       },
       {
-        schema: { foo: { type: 'foo' as DslType, style: 'simple' } as PathDsl },
+        descriptor: { foo: { type: 'foo' as Type, style: 'simple' } as PathParameterDescriptor },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
       },
       {
-        schema: { foo: { type: 'object', style: 'fooo' as PathStyle } as PathDsl },
+        descriptor: { foo: { type: 'object', style: 'fooo' as PathStyle } as PathParameterDescriptor },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
       },

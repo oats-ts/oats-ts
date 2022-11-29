@@ -7,10 +7,10 @@ import { parameter } from '../parameter'
 
 export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
   name: 'required simple path string',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
-    schema: {
+    descriptor: {
       str: parameter.path.simple.required.primitive(parameter.value.string()),
     },
   },
@@ -24,10 +24,10 @@ export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
 
 export const requiredSimpleNumberPath: PathTestCase<{ num: number }> = {
   name: 'required simple path number',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:num'),
     pathSegments: parsePathToSegments('/foo/{num}'),
-    schema: {
+    descriptor: {
       num: parameter.path.simple.required.primitive(parameter.value.number()),
     },
   },
@@ -41,10 +41,10 @@ export const requiredSimpleNumberPath: PathTestCase<{ num: number }> = {
 
 export const requiredSimpleBooleanPath: PathTestCase<{ bool: boolean }> = {
   name: 'required simple path boolean',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:bool'),
     pathSegments: parsePathToSegments('/foo/{bool}'),
-    schema: {
+    descriptor: {
       bool: parameter.path.simple.required.primitive(parameter.value.boolean()),
     },
   },
@@ -58,10 +58,10 @@ export const requiredSimpleBooleanPath: PathTestCase<{ bool: boolean }> = {
 
 export const requiredSimpleLiteralPath: PathTestCase<{ lit: LiteralType }> = {
   name: 'required simple path literal',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:lit'),
     pathSegments: parsePathToSegments('/foo/{lit}'),
-    schema: {
+    descriptor: {
       lit: parameter.path.simple.required.primitive(lit),
     },
   },
@@ -72,10 +72,10 @@ export const requiredSimpleLiteralPath: PathTestCase<{ lit: LiteralType }> = {
 
 export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
   name: 'required simple path enum',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:enm'),
     pathSegments: parsePathToSegments('/foo/{enm}'),
-    schema: {
+    descriptor: {
       enm: parameter.path.simple.required.primitive(enm),
     },
   },
@@ -90,10 +90,10 @@ export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
 
 export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
   name: 'required simple path string[]',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    schema: {
+    descriptor: {
       arr: parameter.path.simple.required.array(parameter.value.string()),
     },
   },
@@ -108,10 +108,10 @@ export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
 
 export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
   name: 'required simple path object',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    schema: {
+    descriptor: {
       obj: parameter.path.simple.required.object(obj),
     },
   },
@@ -131,10 +131,10 @@ export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
 
 export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
   name: 'required exploded simple path object',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    schema: {
+    descriptor: {
       obj: parameter.path.simple.exploded.required.object(obj),
     },
   },
@@ -159,10 +159,10 @@ export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
 
 export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
   name: 'required label path string',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
-    schema: {
+    descriptor: {
       str: parameter.path.label.required.primitive(parameter.value.string()),
     },
   },
@@ -176,10 +176,10 @@ export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
 
 export const requiredLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
   name: 'required label path string[]',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    schema: {
+    descriptor: {
       arr: parameter.path.label.required.array(parameter.value.string()),
     },
   },
@@ -193,10 +193,10 @@ export const requiredLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
 
 export const requiredExplodeLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
   name: 'required exploded label path string[]',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    schema: {
+    descriptor: {
       arr: parameter.path.label.exploded.required.array(parameter.value.string()),
     },
   },
@@ -210,10 +210,10 @@ export const requiredExplodeLabelStringArrayPath: PathTestCase<{ arr: string[] }
 
 export const requiredLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
   name: 'required label path object',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    schema: {
+    descriptor: {
       obj: parameter.path.label.required.object(obj),
     },
   },
@@ -233,10 +233,10 @@ export const requiredLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
 
 export const requiredExplodeLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
   name: 'required exploded label path object',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    schema: {
+    descriptor: {
       obj: parameter.path.label.exploded.required.object(obj),
     },
   },
@@ -256,10 +256,10 @@ export const requiredExplodeLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
 
 export const requiredMatrixStringPath: PathTestCase<{ str: string }> = {
   name: 'required matrix path string',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
-    schema: {
+    descriptor: {
       str: parameter.path.matrix.required.primitive(parameter.value.string()),
     },
   },
@@ -273,10 +273,10 @@ export const requiredMatrixStringPath: PathTestCase<{ str: string }> = {
 
 export const requiredMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
   name: 'required matrix path string[]',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    schema: {
+    descriptor: {
       arr: parameter.path.matrix.required.array(parameter.value.string()),
     },
   },
@@ -290,10 +290,10 @@ export const requiredMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
 
 export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
   name: 'required exploded matrix path string[]',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    schema: {
+    descriptor: {
       arr: parameter.path.matrix.exploded.required.array(parameter.value.string()),
     },
   },
@@ -307,10 +307,10 @@ export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] 
 
 export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
   name: 'required matrix path object',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    schema: {
+    descriptor: {
       obj: parameter.path.matrix.required.object(obj),
     },
   },
@@ -330,10 +330,10 @@ export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
 
 export const requiredExplodedMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
   name: 'required exploded matrix path object',
-  dsl: {
+  descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    schema: {
+    descriptor: {
       obj: parameter.path.matrix.exploded.required.object(obj),
     },
   },

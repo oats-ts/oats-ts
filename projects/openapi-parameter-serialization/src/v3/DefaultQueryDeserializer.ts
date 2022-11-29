@@ -9,8 +9,8 @@ import {
   PrimitiveRecord,
   QueryArray,
   QueryDeserializer,
-  QueryDsl,
-  QueryDslRoot,
+  QueryParameterDescriptor,
+  QueryParameters,
   QueryObject,
   QueryPrimitive,
   RawQuery,
@@ -18,7 +18,7 @@ import {
 import { chunks, has, isNil } from './utils'
 
 export class DefaultQueryDeserializer<T> extends BaseDeserializer implements QueryDeserializer<T> {
-  constructor(protected readonly dsl: QueryDslRoot<T>) {
+  constructor(protected readonly parameters: QueryParameters<T>) {
     super()
   }
 
@@ -28,27 +28,35 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
 
   public deserialize(input: string): Try<T> {
     const deserialized = fluent(this.parseRawQuery(input, this.basePath())).flatMap((raw) => {
-      const parsed = Object.keys(this.dsl.schema).reduce((acc: Record<string, Try<ParameterValue>>, key: string) => {
-        const paramDsl = this.dsl.schema[key as keyof T]
-        acc[key] = this.parameter(paramDsl, key, raw, this.append(this.basePath(), key))
-        return acc
-      }, {})
+      const parsed = Object.keys(this.parameters.descriptor).reduce(
+        (acc: Record<string, Try<ParameterValue>>, key: string) => {
+          const descriptor = this.parameters.descriptor[key as keyof T]
+          acc[key] = this.parameter(descriptor, key, raw, this.append(this.basePath(), key))
+          return acc
+        },
+        {},
+      )
       return fromRecord(parsed)
     })
     return deserialized.toTry() as Try<T>
   }
 
-  protected parameter(dsl: QueryDsl, name: string, value: RawQuery, path: string): Try<ParameterValue> {
-    const { style, type } = dsl
+  protected parameter(
+    descriptor: QueryParameterDescriptor,
+    name: string,
+    value: RawQuery,
+    path: string,
+  ): Try<ParameterValue> {
+    const { style, type } = descriptor
     switch (style) {
       case 'form': {
         switch (type) {
           case 'primitive':
-            return this.formPrimitive(dsl, name, value, path)
+            return this.formPrimitive(descriptor, name, value, path)
           case 'array':
-            return this.formArray(dsl, name, value, path)
+            return this.formArray(descriptor, name, value, path)
           case 'object':
-            return this.formObject(dsl, name, value, path)
+            return this.formObject(descriptor, name, value, path)
           default: {
             throw unexpectedType(type)
           }
@@ -57,7 +65,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       case 'pipeDelimited': {
         switch (type) {
           case 'array':
-            return this.pipeDelimitedArray(dsl, name, value, path)
+            return this.pipeDelimitedArray(descriptor, name, value, path)
           default:
             throw unexpectedType(type, ['array'])
         }
@@ -65,7 +73,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       case 'spaceDelimited': {
         switch (type) {
           case 'array':
-            return this.spaceDelimitedArray(dsl, name, value, path)
+            return this.spaceDelimitedArray(descriptor, name, value, path)
           default:
             throw unexpectedType(type, ['array'])
         }
@@ -73,7 +81,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       case 'deepObject': {
         switch (type) {
           case 'object':
-            return this.deepObjectObject(dsl, name, value, path)
+            return this.deepObjectObject(descriptor, name, value, path)
           default:
             throw unexpectedType(type, ['object'])
         }
@@ -112,26 +120,33 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     }
   }
 
-  protected formPrimitive(dsl: QueryPrimitive, name: string, data: RawQuery, path: string): Try<Primitive> {
-    return fluent(this.getQueryValue(dsl, name, path, data))
+  protected formPrimitive(descriptor: QueryPrimitive, name: string, data: RawQuery, path: string): Try<Primitive> {
+    return fluent(this.getQueryValue(descriptor, name, path, data))
       .flatMap((value) =>
-        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), path),
+        isNil(value) ? success(undefined) : this.values.deserialize(descriptor.value, this.decode(value), path),
       )
       .toTry()
   }
 
-  protected formArray(dsl: QueryArray, name: string, data: RawQuery, path: string): Try<PrimitiveArray> {
-    return this.delimitedArray(',', dsl, name, data, path)
+  protected formArray(descriptor: QueryArray, name: string, data: RawQuery, path: string): Try<PrimitiveArray> {
+    return this.delimitedArray(',', descriptor, name, data, path)
   }
 
-  protected formObject(dsl: QueryObject, name: string, data: RawQuery, path: string): Try<ParameterValue> {
-    return dsl.explode ? this.formObjectExplode(dsl, name, data, path) : this.formObjectNoExplode(dsl, name, data, path)
+  protected formObject(descriptor: QueryObject, name: string, data: RawQuery, path: string): Try<ParameterValue> {
+    return descriptor.explode
+      ? this.formObjectExplode(descriptor, name, data, path)
+      : this.formObjectNoExplode(descriptor, name, data, path)
   }
 
-  protected formObjectExplode(dsl: QueryObject, name: string, data: RawQuery, path: string): Try<PrimitiveRecord> {
-    const rawValues = Object.keys(dsl.properties).map((key): [string, string[]] => [key, data[key] ?? []])
+  protected formObjectExplode(
+    descriptor: QueryObject,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<PrimitiveRecord> {
+    const rawValues = Object.keys(descriptor.properties).map((key): [string, string[]] => [key, data[key] ?? []])
 
-    if (!dsl.required && rawValues.filter(([_, values]) => values.length > 0).length === 0) {
+    if (!descriptor.required && rawValues.filter(([_, values]) => values.length > 0).length === 0) {
       return success(undefined)
     }
 
@@ -154,14 +169,21 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       {} as Record<string, string | undefined>,
     )
 
-    return this.keyValuePairsToObject(dsl.properties, record, path)
+    return this.keyValuePairsToObject(descriptor.properties, record, path)
   }
 
-  protected formObjectNoExplode(dsl: QueryObject, name: string, data: RawQuery, path: string): Try<PrimitiveRecord> {
+  protected formObjectNoExplode(
+    descriptor: QueryObject,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<PrimitiveRecord> {
     const values = data[name] || []
 
     if (values.length === 0) {
-      return dsl.required ? failure({ message: `should be present`, path, severity: 'error' }) : success(undefined)
+      return descriptor.required
+        ? failure({ message: `should be present`, path, severity: 'error' })
+        : success(undefined)
     } else if (values.length > 1) {
       return failure({
         message: `should have a single value (found ${values.length})`,
@@ -185,25 +207,35 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       return kvRecord
     }, {})
 
-    return this.keyValuePairsToObject(dsl.properties, record, path)
+    return this.keyValuePairsToObject(descriptor.properties, record, path)
   }
 
-  protected pipeDelimitedArray(dsl: QueryArray, name: string, data: RawQuery, path: string): Try<ParameterValue> {
-    return this.delimitedArray('|', dsl, name, data, path)
+  protected pipeDelimitedArray(
+    descriptor: QueryArray,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<ParameterValue> {
+    return this.delimitedArray('|', descriptor, name, data, path)
   }
 
-  protected spaceDelimitedArray(dsl: QueryArray, name: string, data: RawQuery, path: string): Try<ParameterValue> {
-    return this.delimitedArray(this.encode(' '), dsl, name, data, path)
+  protected spaceDelimitedArray(
+    descriptor: QueryArray,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<ParameterValue> {
+    return this.delimitedArray(this.encode(' '), descriptor, name, data, path)
   }
 
-  protected deepObjectObject(dsl: QueryObject, name: string, data: RawQuery, path: string): Try<ParameterValue> {
-    const parserKeys = Object.keys(dsl.properties)
+  protected deepObjectObject(descriptor: QueryObject, name: string, data: RawQuery, path: string): Try<ParameterValue> {
+    const parserKeys = Object.keys(descriptor.properties)
     if (parserKeys.length === 0) {
       return success({})
     }
     let hasKeys: boolean = false
     const parsed = parserKeys.reduce((acc: Record<string, Try<Primitive>>, key: string) => {
-      const valueDsl = dsl.properties[key]
+      const valueDescriptor = descriptor.properties[key]
       const queryKey = `${this.encode(name)}[${this.encode(key)}]`
       const values = data[queryKey] || []
       if (values.length > 1) {
@@ -217,49 +249,60 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
         if (!isNil(rawValue)) {
           hasKeys = true
         }
-        acc[key] = this.values.deserialize(valueDsl, this.decode(rawValue), this.append(path, key))
+        acc[key] = this.values.deserialize(valueDescriptor, this.decode(rawValue), this.append(path, key))
       }
 
       return acc
     }, {})
-    return !hasKeys && !dsl.required ? success(undefined) : fromRecord(parsed)
+    return !hasKeys && !descriptor.required ? success(undefined) : fromRecord(parsed)
   }
 
-  protected getValues(dsl: QueryDsl, delimiter: string, name: string, path: string, data: RawQuery) {
-    if (dsl.explode) {
+  protected getValues(
+    descriptor: QueryParameterDescriptor,
+    delimiter: string,
+    name: string,
+    path: string,
+    data: RawQuery,
+  ) {
+    if (descriptor.explode) {
       return fluent(success(data[name] ?? undefined))
     }
-    return fluent(this.getQueryValue(dsl, name, path, data)).flatMap((value) =>
+    return fluent(this.getQueryValue(descriptor, name, path, data)).flatMap((value) =>
       success(isNil(value) ? undefined : value.split(delimiter)),
     )
   }
 
   protected delimitedArray(
     delimiter: string,
-    dsl: QueryArray,
+    descriptor: QueryArray,
     name: string,
     data: RawQuery,
     path: string,
   ): Try<PrimitiveArray> {
-    return this.getValues(dsl, delimiter, name, path, data)
+    return this.getValues(descriptor, delimiter, name, path, data)
       .flatMap((values): Try<PrimitiveArray> => {
         if (isNil(values)) {
-          return success(dsl.required ? [] : undefined)
+          return success(descriptor.required ? [] : undefined)
         }
         return fromArray(
           values.map((value, index) =>
-            this.values.deserialize(dsl.items, this.decode(value), this.append(path, index)),
+            this.values.deserialize(descriptor.items, this.decode(value), this.append(path, index)),
           ),
         )
       })
       .toTry()
   }
 
-  protected getQueryValue(dsl: QueryDsl, name: string, path: string, params: RawQuery): Try<string | undefined> {
+  protected getQueryValue(
+    descriptor: QueryParameterDescriptor,
+    name: string,
+    path: string,
+    params: RawQuery,
+  ): Try<string | undefined> {
     const values = params[name] || []
     switch (values.length) {
       case 0: {
-        if (dsl.required) {
+        if (descriptor.required) {
           return failure({
             message: 'should occur once (found 0 times)',
             path,

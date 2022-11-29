@@ -1,7 +1,6 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
-import { ValueDsl } from '../types'
 import { isNil } from './utils'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
@@ -12,25 +11,26 @@ import {
   PrimitiveRecord,
   RawPath,
   HeaderDeserializer,
-  HeaderDslRoot,
-  HeaderDsl,
+  HeaderParameters,
+  HeaderParameterDescriptor,
   HeaderPrimitive,
   HeaderArray,
   HeaderObject,
+  ValueDescriptor,
 } from './types'
 import { mapRecord } from './utils'
 
 export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements HeaderDeserializer<T> {
-  constructor(protected readonly dsl: HeaderDslRoot<T>) {
+  constructor(protected readonly parameters: HeaderParameters<T>) {
     super()
   }
 
   public deserialize(input: RawHttpHeaders): Try<T> {
-    const deserialized = Object.keys(this.dsl.schema).reduce(
+    const deserialized = Object.keys(this.parameters.descriptor).reduce(
       (acc: Record<string, Try<ParameterValue>>, _key: string) => {
         const key = _key as string & keyof T
-        const deserializer = this.dsl.schema[key]
-        acc[key] = this.parameter(deserializer, key, input ?? {}, this.append(this.basePath(), key))
+        const descriptor = this.parameters.descriptor[key]
+        acc[key] = this.parameter(descriptor, key, input ?? {}, this.append(this.basePath(), key))
         return acc
       },
       {},
@@ -42,17 +42,22 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     return 'headers'
   }
 
-  protected parameter(dsl: HeaderDsl, name: string, value: RawPath, path: string): Try<ParameterValue> {
-    const { style, type } = dsl
+  protected parameter(
+    descriptor: HeaderParameterDescriptor,
+    name: string,
+    value: RawPath,
+    path: string,
+  ): Try<ParameterValue> {
+    const { style, type } = descriptor
     switch (style) {
       case 'simple': {
         switch (type) {
           case 'primitive':
-            return this.simplePrimitive(dsl, name, value, path)
+            return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
-            return this.simpleArray(dsl, name, value, path)
+            return this.simpleArray(descriptor, name, value, path)
           case 'object':
-            return this.simpleObject(dsl, name, value, path)
+            return this.simpleObject(descriptor, name, value, path)
           default: {
             throw unexpectedType(type)
           }
@@ -63,27 +68,42 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     }
   }
 
-  protected simplePrimitive(dsl: HeaderPrimitive, name: string, data: RawHttpHeaders, path: string): Try<Primitive> {
-    return fluent(this.getHeaderValue(dsl, name, path, data))
+  protected simplePrimitive(
+    descriptor: HeaderPrimitive,
+    name: string,
+    data: RawHttpHeaders,
+    path: string,
+  ): Try<Primitive> {
+    return fluent(this.getHeaderValue(descriptor, name, path, data))
       .flatMap((value) =>
-        isNil(value) ? success(undefined) : this.values.deserialize(dsl.value, this.decode(value), path),
+        isNil(value) ? success(undefined) : this.values.deserialize(descriptor.value, this.decode(value), path),
       )
       .toTry()
   }
 
-  protected simpleArray(dsl: HeaderArray, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveArray> {
-    return fluent(this.getHeaderValue(dsl, name, path, data))
-      .flatMap((pathValue) => this.deserializeArray(dsl.items, ',', pathValue, path))
+  protected simpleArray(
+    descriptor: HeaderArray,
+    name: string,
+    data: RawHttpHeaders,
+    path: string,
+  ): Try<PrimitiveArray> {
+    return fluent(this.getHeaderValue(descriptor, name, path, data))
+      .flatMap((pathValue) => this.deserializeArray(descriptor.items, ',', pathValue, path))
       .toTry()
   }
 
-  protected simpleObject(dsl: HeaderObject, name: string, data: RawHttpHeaders, path: string): Try<PrimitiveRecord> {
-    return fluent(this.getHeaderValue(dsl, name, path, data))
+  protected simpleObject(
+    descriptor: HeaderObject,
+    name: string,
+    data: RawHttpHeaders,
+    path: string,
+  ): Try<PrimitiveRecord> {
+    return fluent(this.getHeaderValue(descriptor, name, path, data))
       .flatMap((rawDataStr: string): Try<Record<string, string> | undefined> => {
         if (isNil(rawDataStr)) {
           return success(undefined)
         }
-        return dsl.explode
+        return descriptor.explode
           ? this.keyValueToRecord(',', '=', rawDataStr, path)
           : this.delimitedToRecord(',', rawDataStr, path)
       })
@@ -91,14 +111,19 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
         if (isNil(record)) {
           return success(undefined)
         }
-        return this.keyValuePairsToObject(dsl.properties, record, path)
+        return this.keyValuePairsToObject(descriptor.properties, record, path)
       })
       .toTry()
   }
 
-  protected getHeaderValue(dsl: HeaderDsl, name: string, path: string, raw: RawHttpHeaders): Try<string> {
+  protected getHeaderValue(
+    descriptor: HeaderParameterDescriptor,
+    name: string,
+    path: string,
+    raw: RawHttpHeaders,
+  ): Try<string> {
     const value = raw[name] ?? raw[name.toLowerCase()]
-    if (isNil(value) && dsl.required) {
+    if (isNil(value) && descriptor.required) {
       return failure({
         message: `should not be ${value}`,
         path,
@@ -155,7 +180,12 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     return issues.length === 0 ? success(record) : failure(...issues)
   }
 
-  protected deserializeArray(dsl: ValueDsl, separator: string, value: string, path: string): Try<PrimitiveArray> {
+  protected deserializeArray(
+    descriptor: ValueDescriptor,
+    separator: string,
+    value: string,
+    path: string,
+  ): Try<PrimitiveArray> {
     if (isNil(value)) {
       return success(undefined)
     }
@@ -163,7 +193,9 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       return success([])
     }
     return fromArray(
-      value.split(separator).map((value, i) => this.values.deserialize(dsl, this.decode(value), this.append(path, i))),
+      value
+        .split(separator)
+        .map((value, i) => this.values.deserialize(descriptor, this.decode(value), this.append(path, i))),
     )
   }
 }

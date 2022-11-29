@@ -1,7 +1,7 @@
 import { fluent, FluentTry, fromArray, fromRecord, success, Try } from '@oats-ts/try'
 import { Base } from './Base'
 import { DefaultValueSerializer } from './DefaultValueSerializer'
-import { PrimitiveArray, PrimitiveRecord, ValueDsl, ValueSerializer } from './types'
+import { PrimitiveArray, PrimitiveRecord, ValueDescriptor, ValueSerializer } from './types'
 import { entries, isNil } from './utils'
 
 export abstract class BaseSerializer extends Base {
@@ -17,7 +17,7 @@ export abstract class BaseSerializer extends Base {
   }
 
   protected objectToKeyValuePairs(
-    properties: Record<string, ValueDsl>,
+    properties: Record<string, ValueDescriptor>,
     value: Exclude<PrimitiveRecord, undefined>,
     path: string,
   ): FluentTry<[string, string][]> {
@@ -25,8 +25,8 @@ export abstract class BaseSerializer extends Base {
       fromRecord(
         entries(properties)
           .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
-          .reduce((pairs, [key, valueDsl]) => {
-            pairs[key] = this.values.serialize(valueDsl, value?.[key], this.append(path, key))
+          .reduce((pairs, [key, valueDescriptor]) => {
+            pairs[key] = this.values.serialize(valueDescriptor, value?.[key], this.append(path, key))
             return pairs
           }, {} as Record<string, Try<string | undefined>>),
       ),
@@ -34,7 +34,7 @@ export abstract class BaseSerializer extends Base {
   }
 
   protected arrayToValues(
-    items: ValueDsl,
+    items: ValueDescriptor,
     value: Exclude<PrimitiveArray, undefined>,
     path: string,
   ): FluentTry<string[]> {

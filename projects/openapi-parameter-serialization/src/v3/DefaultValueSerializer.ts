@@ -1,37 +1,37 @@
 import { failure, success, Try } from '@oats-ts/try'
 import {
-  BooleanDsl,
-  EnumDsl,
-  LiteralDsl,
-  NumberDsl,
-  OptionalDsl,
+  BooleanDescriptor,
+  EnumDescriptor,
+  LiteralDescriptor,
+  NumberDescriptor,
+  OptionalDescriptor,
   Primitive,
-  StringDsl,
+  StringDescriptor,
   ValueDeserializer,
-  ValueDsl,
+  ValueDescriptor,
   ValueSerializer,
 } from './types'
 import { isNil } from './utils'
 
 export class DefaultValueSerializer implements ValueSerializer {
-  public serialize(dsl: ValueDsl, data: Primitive, path: string): Try<string | undefined> {
-    switch (dsl.type) {
+  public serialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<string | undefined> {
+    switch (descriptor.type) {
       case 'boolean':
-        return this.boolean(dsl, data, path)
+        return this.boolean(descriptor, data, path)
       case 'enum':
-        return this.enumeration(dsl, data, path)
+        return this.enumeration(descriptor, data, path)
       case 'literal':
-        return this.literal(dsl, data, path)
+        return this.literal(descriptor, data, path)
       case 'number':
-        return this.number(dsl, data, path)
+        return this.number(descriptor, data, path)
       case 'optional':
-        return this.optional(dsl, data, path)
+        return this.optional(descriptor, data, path)
       case 'string':
-        return this.string(dsl, data, path)
+        return this.string(descriptor, data, path)
     }
   }
 
-  protected boolean(dsl: BooleanDsl, value: Primitive, path: string): Try<string | undefined> {
+  protected boolean(descriptor: BooleanDescriptor, value: Primitive, path: string): Try<string | undefined> {
     if (typeof value !== 'boolean') {
       return failure({
         message: `should be a boolean (true or false)`,
@@ -39,12 +39,12 @@ export class DefaultValueSerializer implements ValueSerializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(this.stringify(value)) : this.serialize(dsl.dsl, value, path)
+    return isNil(descriptor.value) ? success(this.stringify(value)) : this.serialize(descriptor.value, value, path)
   }
 
-  protected enumeration(dsl: EnumDsl, value: Primitive, path: string): Try<string | undefined> {
-    if (dsl.values.indexOf(value) < 0) {
-      const valuesLiteral = dsl.values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
+  protected enumeration(descriptor: EnumDescriptor, value: Primitive, path: string): Try<string | undefined> {
+    if (descriptor.values.indexOf(value) < 0) {
+      const valuesLiteral = descriptor.values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
       return failure({
         message: `should be one of ${valuesLiteral}.`,
         path,
@@ -54,9 +54,9 @@ export class DefaultValueSerializer implements ValueSerializer {
     return success(this.stringify(value))
   }
 
-  protected literal(dsl: LiteralDsl, value: Primitive, path: string): Try<string | undefined> {
-    if (value !== dsl.value) {
-      const strLiteral = typeof dsl.value === 'string' ? `"${dsl.value}"` : dsl.value
+  protected literal(descriptor: LiteralDescriptor, value: Primitive, path: string): Try<string | undefined> {
+    if (value !== descriptor.value) {
+      const strLiteral = typeof descriptor.value === 'string' ? `"${descriptor.value}"` : descriptor.value
       return failure({
         message: `should be ${strLiteral}.`,
         path,
@@ -66,7 +66,7 @@ export class DefaultValueSerializer implements ValueSerializer {
     return success(this.stringify(value))
   }
 
-  protected number(dsl: NumberDsl, value: Primitive, path: string): Try<string | undefined> {
+  protected number(descriptor: NumberDescriptor, value: Primitive, path: string): Try<string | undefined> {
     if (typeof value !== 'number') {
       return failure({
         message: `should be a number`,
@@ -74,14 +74,14 @@ export class DefaultValueSerializer implements ValueSerializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(this.stringify(value)) : this.serialize(dsl.dsl, value, path)
+    return isNil(descriptor.value) ? success(this.stringify(value)) : this.serialize(descriptor.value, value, path)
   }
 
-  protected optional(dsl: OptionalDsl, value: Primitive, path: string): Try<string | undefined> {
-    return isNil(value) ? success(undefined) : this.serialize(dsl.dsl, value, path)
+  protected optional(descriptor: OptionalDescriptor, value: Primitive, path: string): Try<string | undefined> {
+    return isNil(value) ? success(undefined) : this.serialize(descriptor.value, value, path)
   }
 
-  protected string(dsl: StringDsl, value: Primitive, path: string): Try<string | undefined> {
+  protected string(descriptor: StringDescriptor, value: Primitive, path: string): Try<string | undefined> {
     if (typeof value !== 'string') {
       return failure({
         message: `should be a string.`,
@@ -89,7 +89,7 @@ export class DefaultValueSerializer implements ValueSerializer {
         severity: 'error',
       })
     }
-    return isNil(dsl.dsl) ? success(value) : this.serialize(dsl.dsl, value, path)
+    return isNil(descriptor.value) ? success(value) : this.serialize(descriptor.value, value, path)
   }
 
   protected stringify(value: Primitive): string {

@@ -1,4 +1,4 @@
-import { failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
+import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
 import { Issue } from '@oats-ts/validators'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
@@ -6,21 +6,21 @@ import {
   ParameterValue,
   PathArray,
   PathDeserializer,
-  PathDsl,
-  PathDslRoot,
+  PathParameterDescriptor,
+  PathParameters,
   PathObject,
   PathPrimitive,
   Primitive,
   PrimitiveArray,
   PrimitiveRecord,
   RawPath,
-  ValueDsl,
+  ValueDescriptor,
   ParameterSegment,
 } from './types'
 import { isNil } from './utils'
 
 export class DefaultPathDeserializer<T> extends BaseDeserializer implements PathDeserializer<T> {
-  constructor(protected readonly dsl: PathDslRoot<T>) {
+  constructor(protected readonly parameters: PathParameters<T>) {
     super()
   }
 
@@ -31,10 +31,10 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   public deserialize(input: string): Try<T> {
     return fluent(this.parseRawPath(input, this.basePath()))
       .flatMap((raw) => {
-        const deserialized = Object.keys(this.dsl.schema).reduce(
+        const deserialized = Object.keys(this.parameters.descriptor).reduce(
           (acc: Record<string, Try<ParameterValue>>, key: string) => {
-            const paramDsl = this.dsl.schema[key as keyof T]
-            acc[key] = this.parameter(paramDsl, key, raw, this.append(this.basePath(), key))
+            const descriptor = this.parameters.descriptor[key as keyof T]
+            acc[key] = this.parameter(descriptor, key, raw, this.append(this.basePath(), key))
             return acc
           },
           {},
@@ -44,17 +44,22 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       .toTry()
   }
 
-  protected parameter(dsl: PathDsl, name: string, value: RawPath, path: string): Try<ParameterValue> {
-    const { style, type } = dsl
+  protected parameter(
+    descriptor: PathParameterDescriptor,
+    name: string,
+    value: RawPath,
+    path: string,
+  ): Try<ParameterValue> {
+    const { style, type } = descriptor
     switch (style) {
       case 'simple': {
         switch (type) {
           case 'primitive':
-            return this.simplePrimitive(dsl, name, value, path)
+            return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
-            return this.simpleArray(dsl, name, value, path)
+            return this.simpleArray(descriptor, name, value, path)
           case 'object':
-            return this.simpleObject(dsl, name, value, path)
+            return this.simpleObject(descriptor, name, value, path)
           default: {
             throw unexpectedType(type)
           }
@@ -63,23 +68,23 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       case 'label': {
         switch (type) {
           case 'primitive':
-            return this.labelPrimitive(dsl, name, value, path)
+            return this.labelPrimitive(descriptor, name, value, path)
           case 'array':
-            return this.labelArray(dsl, name, value, path)
+            return this.labelArray(descriptor, name, value, path)
           case 'object':
-            return this.labelObject(dsl, name, value, path)
+            return this.labelObject(descriptor, name, value, path)
           default:
             throw unexpectedType(type)
         }
       }
       case 'matrix': {
-        switch (dsl.type) {
+        switch (descriptor.type) {
           case 'primitive':
-            return this.matrixPrimitive(dsl, name, value, path)
+            return this.matrixPrimitive(descriptor, name, value, path)
           case 'array':
-            return this.matrixArray(dsl, name, value, path)
+            return this.matrixArray(descriptor, name, value, path)
           case 'object':
-            return this.matrixObject(dsl, name, value, path)
+            return this.matrixObject(descriptor, name, value, path)
           default:
             throw unexpectedType(type)
         }
@@ -90,14 +95,14 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
   }
 
   protected parseRawPath(pathValue: string, path: string): Try<RawPath> {
-    const parameterNames = this.dsl.pathSegments
+    const parameterNames = this.parameters.pathSegments
       .filter((segment): segment is ParameterSegment => segment.type === 'parameter')
       .map((segment) => segment.name)
 
     // Regex reset just in case before
-    this.dsl.matcher.lastIndex = 0
+    this.parameters.matcher.lastIndex = 0
 
-    const values = this.dsl.matcher.exec(pathValue)
+    const values = this.parameters.matcher.exec(pathValue)
     if (isNil(values) || values.length !== parameterNames.length + 1) {
       return failure({
         message: `should have parameters ${parameterNames.map((p) => `"${p}"`).join(', ')}`,
@@ -114,75 +119,84 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       result[name] = value
     }
     // Regex reset after, as it can be stateful with the global flag
-    this.dsl.matcher.lastIndex = 0
+    this.parameters.matcher.lastIndex = 0
     return success(result)
   }
 
-  protected simplePrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
+  protected simplePrimitive(descriptor: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
-      .flatMap((pathValue) => this.values.deserialize(dsl.value, this.decode(pathValue), path))
+      .flatMap((pathValue) => this.values.deserialize(descriptor.value, this.decode(pathValue), path))
       .toTry()
   }
 
-  protected simpleArray(dsl: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
+  protected simpleArray(descriptor: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((value): Try<PrimitiveArray> => {
         const values = value.split(',').map((val) => this.decode(val))
-        return this.stringValuesToArray(dsl.items, values, path)
+        return this.stringValuesToArray(descriptor.items, values, path)
       })
       .toTry()
   }
 
-  protected simpleObject(dsl: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
+  protected simpleObject(descriptor: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((rawDataStr) =>
-        dsl.explode ? this.keyValueToRecord(',', '=', rawDataStr, path) : this.delimitedToRecord(',', rawDataStr, path),
+        descriptor.explode
+          ? this.keyValueToRecord(',', '=', rawDataStr, path)
+          : this.delimitedToRecord(',', rawDataStr, path),
       )
-      .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record as any, path))
+      .flatMap((record) => this.keyValuePairsToObject(descriptor.properties, record as any, path))
       .toTry()
   }
 
-  protected labelPrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
+  protected labelPrimitive(descriptor: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
-      .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), path))
+      .flatMap((rawValue) => this.values.deserialize(descriptor.value, this.decode(rawValue), path))
       .toTry()
   }
 
-  protected labelArray(dsl: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
+  protected labelArray(descriptor: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
       .flatMap((value): Try<PrimitiveArray> => {
-        const values = value.split(dsl.explode ? '.' : ',').map((val) => this.decode(val))
-        return this.stringValuesToArray(dsl.items, values, path)
+        const values = value.split(descriptor.explode ? '.' : ',').map((val) => this.decode(val))
+        return this.stringValuesToArray(descriptor.items, values, path)
       })
       .toTry()
   }
 
-  protected labelObject(dsl: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
+  protected labelObject(descriptor: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, '.'))
       .flatMap((rawDataStr) =>
-        dsl.explode ? this.keyValueToRecord('.', '=', rawDataStr, path) : this.delimitedToRecord(',', rawDataStr, path),
+        descriptor.explode
+          ? this.keyValueToRecord('.', '=', rawDataStr, path)
+          : this.delimitedToRecord(',', rawDataStr, path),
       )
-      .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record, path))
+      .flatMap((record) => this.keyValuePairsToObject(descriptor.properties, record, path))
       .toTry()
   }
 
-  protected matrixPrimitive(dsl: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
+  protected matrixPrimitive(descriptor: PathPrimitive, name: string, data: RawPath, path: string): Try<Primitive> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, `;${this.encode(name)}=`))
-      .flatMap((rawValue) => this.values.deserialize(dsl.value, this.decode(rawValue), path))
+      .flatMap((rawValue) => this.values.deserialize(descriptor.value, this.decode(rawValue), path))
       .toTry()
   }
 
-  protected matrixArray(dsl: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
-    return dsl.explode
-      ? this.matrixArrayExplode(dsl.items, name, data, path)
-      : this.matrixArrayNoExplode(dsl.items, name, data, path)
+  protected matrixArray(descriptor: PathArray, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
+    return descriptor.explode
+      ? this.matrixArrayExplode(descriptor.items, name, data, path)
+      : this.matrixArrayNoExplode(descriptor.items, name, data, path)
   }
 
-  protected matrixArrayExplode(dsl: ValueDsl, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
+  protected matrixArrayExplode(
+    descriptor: ValueDescriptor,
+    name: string,
+    data: RawPath,
+    path: string,
+  ): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, ';'))
       .flatMap((rawString): Try<PrimitiveArray> => {
@@ -202,29 +216,36 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
           return failure(...issues) as Try<PrimitiveArray>
         }
         const values = split.map(([_, value]) => this.decode(value))
-        return this.stringValuesToArray(dsl, values, path)
+        return this.stringValuesToArray(descriptor, values, path)
       })
       .toTry()
   }
 
-  protected matrixArrayNoExplode(dsl: ValueDsl, name: string, data: RawPath, path: string): Try<PrimitiveArray> {
+  protected matrixArrayNoExplode(
+    descriptor: ValueDescriptor,
+    name: string,
+    data: RawPath,
+    path: string,
+  ): Try<PrimitiveArray> {
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, `;${this.encode(name)}=`))
       .flatMap((rawValue) => {
         const values = rawValue.split(',').map((val) => this.decode(val))
-        return this.stringValuesToArray(dsl, values, path)
+        return this.stringValuesToArray(descriptor, values, path)
       })
       .toTry()
   }
 
-  protected matrixObject(dsl: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
-    const prefix = dsl.explode ? ';' : `;${this.encode(name)}=`
+  protected matrixObject(descriptor: PathObject, name: string, data: RawPath, path: string): Try<PrimitiveRecord> {
+    const prefix = descriptor.explode ? ';' : `;${this.encode(name)}=`
     return fluent(this.getPathValue(name, path, data))
       .flatMap((pathValue) => this.getPrefixedValue(path, pathValue, prefix))
       .flatMap((rawValue) =>
-        dsl.explode ? this.keyValueToRecord(';', '=', rawValue, path) : this.delimitedToRecord(',', rawValue, path),
+        descriptor.explode
+          ? this.keyValueToRecord(';', '=', rawValue, path)
+          : this.delimitedToRecord(',', rawValue, path),
       )
-      .flatMap((record) => this.keyValuePairsToObject(dsl.properties, record, path))
+      .flatMap((record) => this.keyValuePairsToObject(descriptor.properties, record, path))
       .toTry()
   }
 

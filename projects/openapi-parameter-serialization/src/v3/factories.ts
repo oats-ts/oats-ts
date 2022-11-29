@@ -1,22 +1,22 @@
 import {
-  ArrayDsl,
-  BooleanDsl,
-  EnumDsl,
-  LiteralDsl,
-  NumberDsl,
-  ObjectDsl,
-  DslLocation,
-  DslStyle,
-  PrimitiveDsl,
-  StringDsl,
-  ValueDsl,
-  PropertiesDsl,
-  OptionalDsl,
+  ArrayDescriptor,
+  BooleanDescriptor,
+  EnumDescriptor,
+  LiteralDescriptor,
+  NumberDescriptor,
+  ObjectDescriptor,
+  Location,
+  Style,
+  PrimitiveDescriptor,
+  StringDescriptor,
+  ValueDescriptor,
+  PropertyDescriptors,
+  OptionalDescriptor,
 } from './types'
 
-export const primitiveDsl =
-  <P extends DslLocation, S extends DslStyle>(location: P, style: S, explode: boolean, required: boolean) =>
-  (value: ValueDsl): PrimitiveDsl<P, S> => ({
+export const primitiveDescriptor =
+  <P extends Location, S extends Style>(location: P, style: S, explode: boolean, required: boolean) =>
+  (value: ValueDescriptor): PrimitiveDescriptor<P, S> => ({
     type: 'primitive',
     explode,
     required,
@@ -25,9 +25,9 @@ export const primitiveDsl =
     value,
   })
 
-export const arrayDsl =
-  <P extends DslLocation, S extends DslStyle>(location: P, style: S, explode: boolean, required: boolean) =>
-  (items: ValueDsl): ArrayDsl<P, S> => ({
+export const arrayDescriptor =
+  <P extends Location, S extends Style>(location: P, style: S, explode: boolean, required: boolean) =>
+  (items: ValueDescriptor): ArrayDescriptor<P, S> => ({
     type: 'array',
     explode,
     required,
@@ -36,9 +36,9 @@ export const arrayDsl =
     items,
   })
 
-export const objectDsl =
-  <P extends DslLocation, S extends DslStyle>(location: P, style: S, explode: boolean, required: boolean) =>
-  (properties: PropertiesDsl): ObjectDsl<P, S> => ({
+export const objectDescriptor =
+  <P extends Location, S extends Style>(location: P, style: S, explode: boolean, required: boolean) =>
+  (properties: PropertyDescriptors): ObjectDescriptor<P, S> => ({
     type: 'object',
     explode,
     required,
@@ -47,42 +47,42 @@ export const objectDsl =
     properties,
   })
 
-export function optionalDsl(validator: ValueDsl): OptionalDsl {
+export function optionalDescriptor(value: ValueDescriptor): OptionalDescriptor {
   return {
     type: 'optional',
-    dsl: validator,
+    value,
   }
 }
 
-export function stringDsl(validator?: ValueDsl): StringDsl {
+export function stringDescriptor(value?: ValueDescriptor): StringDescriptor {
   return {
     type: 'string',
-    dsl: validator,
+    value,
   }
 }
 
-export function numberDsl(validator?: ValueDsl): NumberDsl {
+export function numberDescriptor(value?: ValueDescriptor): NumberDescriptor {
   return {
     type: 'number',
-    dsl: validator,
+    value,
   }
 }
 
-export function booleanDsl(validator?: ValueDsl): BooleanDsl {
+export function booleanDescriptor(value?: ValueDescriptor): BooleanDescriptor {
   return {
     type: 'boolean',
-    dsl: validator,
+    value,
   }
 }
 
-export function enumDsl(values: any[]): EnumDsl {
+export function enumDescriptor(values: any[]): EnumDescriptor {
   return {
     type: 'enum',
     values,
   }
 }
 
-export function literalDsl(value: any): LiteralDsl {
+export function literalDescriptor(value: any): LiteralDescriptor {
   return {
     type: 'literal',
     value,

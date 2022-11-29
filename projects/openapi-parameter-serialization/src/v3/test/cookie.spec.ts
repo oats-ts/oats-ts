@@ -3,7 +3,7 @@ import * as cookieTestCases from './cookie.testCases'
 import { CookieTestCase } from './types'
 import { success } from '@oats-ts/try'
 import { testCases } from './common'
-import { CookieDsl, CookieDslRoot, CookieStyle, DslType } from '../types'
+import { CookieParameterDescriptor, CookieParameters, CookieStyle, Type } from '../types'
 import { DefaultCookieSerializer } from '../DefaultCookieSerializer'
 import { DefaultCookieDeserializer } from '../DefaultCookieDeserializer'
 
@@ -12,34 +12,34 @@ describe('cookie', () => {
     describe(test.name, () => {
       for (const { model, serialized } of test.data) {
         it(`Should serialize ${JSON.stringify(model)} to ${JSON.stringify(serialized)}`, () => {
-          const serializer = new DefaultCookieSerializer(test.dsl)
+          const serializer = new DefaultCookieSerializer(test.descriptor)
           expect(serializer.serialize(model)).toEqual(success(serialized))
         })
       }
       for (const { model, serialized } of test.data) {
         it(`Should deserialize ${JSON.stringify(serialized)} to ${JSON.stringify(model)}`, () => {
-          const deserializer = new DefaultCookieDeserializer(test.dsl)
+          const deserializer = new DefaultCookieDeserializer(test.descriptor)
           expect(deserializer.deserialize(serialized!)).toEqual(success(model))
         })
       }
       for (const serializerError of test.serializerErrors) {
         it(`Should fail serializing ${JSON.stringify(serializerError)}`, () => {
-          const serializer = new DefaultCookieSerializer(test.dsl)
+          const serializer = new DefaultCookieSerializer(test.descriptor)
           expect(serializer.serialize(serializerError)).toHaveProperty('issues')
         })
       }
       for (const deserializerError of test.deserializerErrors) {
         it(`Should fail deserializing ${JSON.stringify(deserializerError)}`, () => {
-          const deserializer = new DefaultCookieDeserializer(test.dsl)
+          const deserializer = new DefaultCookieDeserializer(test.descriptor)
           expect(deserializer.deserialize(deserializerError!)).toHaveProperty('issues')
         })
       }
     })
   })
   describe('Illegal construction', () => {
-    const illegalSchemas: CookieDslRoot<any>[] = [
-      { schema: { foo: { type: 'foo' as DslType, style: 'form' } as CookieDsl } },
-      { schema: { foo: { type: 'object', style: 'fooo' as CookieStyle } as CookieDsl } },
+    const illegalSchemas: CookieParameters<any>[] = [
+      { descriptor: { foo: { type: 'foo' as Type, style: 'form' } as CookieParameterDescriptor } },
+      { descriptor: { foo: { type: 'object', style: 'fooo' as CookieStyle } as CookieParameterDescriptor } },
     ]
 
     illegalSchemas.forEach((schema) => {

@@ -1,5 +1,5 @@
 import { parameter } from '../parameter'
-import { ValueDsl } from '../types'
+import { ValueDescriptor } from '../types'
 import { ObjType, OptObjType } from './model'
 import { TestCase } from './types'
 
@@ -7,7 +7,7 @@ export const lit = parameter.value.string(parameter.value.literal('cat'))
 
 export const enm = parameter.value.string(parameter.value.enum(['cat', 'dog', 'racoon']))
 
-export const obj: Record<keyof ObjType, ValueDsl> = {
+export const obj: Record<keyof ObjType, ValueDescriptor> = {
   s: parameter.value.string(),
   n: parameter.value.number(),
   b: parameter.value.boolean(),
@@ -15,7 +15,7 @@ export const obj: Record<keyof ObjType, ValueDsl> = {
   e: enm,
 }
 
-export const optObj: Record<keyof OptObjType, ValueDsl> = {
+export const optObj: Record<keyof OptObjType, ValueDescriptor> = {
   s: parameter.value.optional(parameter.value.string()),
   n: parameter.value.optional(parameter.value.number()),
   b: parameter.value.optional(parameter.value.boolean()),

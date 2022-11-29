@@ -1,8 +1,8 @@
-import { DslStyle, DslType } from './types'
+import { Style, Type } from './types'
 
-const dslTypes: DslType[] = ['primitive', 'array', 'object']
+const types: Type[] = ['primitive', 'array', 'object']
 
-export function unexpectedType(type: any, expectedTypes: DslType[] = dslTypes): TypeError {
+export function unexpectedType(type: any, expectedTypes: Type[] = types): TypeError {
   return new TypeError(
     `Unexpected type "${type}". Expected${expectedTypes.length > 1 ? ' one of' : ''} ${expectedTypes
       .map((type) => `"${type}"`)
@@ -10,7 +10,7 @@ export function unexpectedType(type: any, expectedTypes: DslType[] = dslTypes): 
   )
 }
 
-export function unexpectedStyle(style: any, expectedStyles: DslStyle[]): TypeError {
+export function unexpectedStyle(style: any, expectedStyles: Style[]): TypeError {
   return new TypeError(
     `Unexpected style "${style}". Expected${expectedStyles.length > 1 ? ' one of' : ''} ${expectedStyles
       .map((type) => `"${type}"`)
