@@ -2,6 +2,7 @@ export * from './types'
 
 export { deserializeSetCookie } from './deserializeSetCookie'
 export { parsePathToSegments } from './parsePathToSegments'
+export { parsePathToMatcher } from './parsePathToMatcher'
 
 export { parameter } from './parameter'
 

@@ -1,24 +1,11 @@
-import { Referenceable, SchemaObject, SchemaObjectType } from '@oats-ts/json-schema-model'
-import { getInferredType } from '@oats-ts/model-common'
+import { Referenceable } from '@oats-ts/json-schema-model'
 import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
-import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import {
-  OpenAPIGeneratorTarget,
-  EnhancedOperation,
-  getParameterName,
-  ParameterKind,
-  getParameterKind,
-} from '@oats-ts/openapi-common'
-import { BaseParameterObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
+import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
+import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
+import { BaseParameterObject } from '@oats-ts/openapi-model'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
-import {
-  createSourceFile,
-  getLiteralAst,
-  getNamedImports,
-  getPropertyChain,
-  isIdentifier,
-} from '@oats-ts/typescript-common'
-import { entries, isNil } from 'lodash'
+import { createSourceFile, getNamedImports } from '@oats-ts/typescript-common'
 import {
   Expression,
   factory,
@@ -30,10 +17,13 @@ import {
   SyntaxKind,
   TypeReferenceNode,
 } from 'typescript'
-import { ParameterFactoryFields, ParametersFields } from './OatsApiNames'
+import { ParameterDescriptorsGenerator } from './internalTypes'
+import { ParametersFields } from './OatsApiNames'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
 
 export abstract class BaseParameterGenerators extends OperationBasedCodeGenerator<{}> {
+  protected descriptorsGenerator!: ParameterDescriptorsGenerator
+
   public abstract name(): OpenAPIGeneratorTarget
 
   public abstract consumes(): OpenAPIGeneratorTarget[]
@@ -44,16 +34,11 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
 
   protected abstract getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[]
 
-  protected abstract getDefaultStyle(): ParameterStyle
+  protected abstract createParameterDescriptorsGenerator(): ParameterDescriptorsGenerator
 
-  protected abstract getLocation(): ParameterLocation
-
-  protected abstract getDefaultRequired(): boolean
-
-  protected abstract getDefaultExplode(): boolean
-
-  protected getKind(param: BaseParameterObject): ParameterKind {
-    return isNil(param.schema) ? 'unknown' : getParameterKind(this.context().dereference(param.schema, true))
+  public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
+    super.initialize(init)
+    this.descriptorsGenerator = this.createParameterDescriptorsGenerator()
   }
 
   public referenceOf(input: any) {
@@ -106,141 +91,18 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
     )
   }
 
+  protected getParameterDescriptorAssignment(item: EnhancedOperation): PropertyAssignment {
+    return factory.createPropertyAssignment(
+      ParametersFields.descriptor,
+      this.descriptorsGenerator.getParameterDescriptorAst(this.getParameters(item)),
+    )
+  }
+
+  protected getPropertyAssignments(item: EnhancedOperation): PropertyAssignment[] {
+    return [this.getParameterDescriptorAssignment(item)]
+  }
+
   protected getParametersExpressionAst(item: EnhancedOperation): Expression {
-    return factory.createObjectLiteralExpression([
-      factory.createPropertyAssignment(ParametersFields.descriptor, this.getDescriptorAst(item)),
-    ])
-  }
-
-  protected getDescriptorAst(item: EnhancedOperation): Expression {
-    return factory.createObjectLiteralExpression(
-      this.getParameters(item)
-        .map((param) => this.getParameterDescriptorPropertyAst(param))
-        .filter((prop): prop is PropertyAssignment => !isNil(prop)),
-    )
-  }
-
-  protected getParameterDescriptorPropertyAst(
-    param: Referenceable<BaseParameterObject>,
-  ): PropertyAssignment | undefined {
-    const name = getParameterName(param, this.context())
-    const parameter = this.context().dereference(param, true)
-    const schema = this.context().dereference(parameter.schema)
-
-    if (isNil(schema) || isNil(name)) {
-      return undefined
-    }
-
-    const valueAst = factory.createCallExpression(
-      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-        this.getLocation(),
-        parameter.style ?? this.getDefaultStyle(),
-        ...(parameter.explode ?? this.getDefaultExplode() ? [ParameterFactoryFields.exploded] : []),
-        ...(parameter.required ?? this.getDefaultRequired() ? [ParameterFactoryFields.required] : []),
-        this.getKind(parameter),
-      ]),
-      [],
-      [this.getValueDescriptor(schema)],
-    )
-
-    return factory.createPropertyAssignment(isIdentifier(name) ? name : factory.createStringLiteral(name), valueAst)
-  }
-
-  protected narrowLiteralType(type: SchemaObjectType | string): 'string' | 'number' | 'boolean' {
-    switch (type) {
-      case 'string':
-        return 'string'
-      case 'number':
-      case 'integer':
-        return 'number'
-      case 'boolean':
-        return 'boolean'
-      default:
-        throw new TypeError(`Unexpected enum type: "${type}"`)
-    }
-  }
-
-  protected getLiteralType(schema: SchemaObject): 'string' | 'number' | 'boolean' {
-    const narrowedType = isNil(schema.type) ? undefined : this.narrowLiteralType(schema.type)
-    if (!isNil(narrowedType)) {
-      return narrowedType
-    }
-    const types = Array.from(new Set((schema.enum ?? []).map((value) => typeof value)))
-    switch (types.length) {
-      case 0:
-        throw new TypeError(`Can't infer enum type`)
-      case 1:
-        return this.narrowLiteralType(types[0])
-      default:
-        throw new TypeError(`Enum must be of same type`)
-    }
-  }
-
-  protected getValueDescriptor(schemaOrRef: Referenceable<SchemaObject> | undefined): Expression {
-    const schema = this.context().dereference(schemaOrRef, true)
-    if (isNil(schema)) {
-      return factory.createIdentifier('undefined')
-    }
-    const inferredType = getInferredType(schema)
-    switch (inferredType) {
-      case 'string':
-      case 'number':
-      case 'boolean': {
-        return factory.createCallExpression(
-          getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-            ParameterFactoryFields.value,
-            inferredType,
-          ]),
-          [],
-          [],
-        )
-      }
-      case 'enum': {
-        return factory.createCallExpression(
-          getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-            ParameterFactoryFields.value,
-            this.getLiteralType(schema),
-          ]),
-          [],
-          [
-            factory.createCallExpression(
-              getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-                ParameterFactoryFields.value,
-                ParameterFactoryFields.enum,
-              ]),
-              [],
-              [factory.createArrayLiteralExpression((schema.enum ?? []).map((v) => getLiteralAst(v)))],
-            ),
-          ],
-        )
-      }
-      case 'array': {
-        // TODO is this ok?
-        return this.getValueDescriptor(typeof schema.items === 'boolean' ? { type: 'string' } : schema.items)
-      }
-      case 'object': {
-        const properties = entries(schema.properties).map(([name, propSchema]) => {
-          const isRequired = (schema.required || []).indexOf(name) >= 0
-          const requiredValueDesc = this.getValueDescriptor(propSchema)
-          const valueDesc = isRequired
-            ? requiredValueDesc
-            : factory.createCallExpression(
-                getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-                  ParameterFactoryFields.value,
-                  ParameterFactoryFields.optional,
-                ]),
-                [],
-                [requiredValueDesc],
-              )
-          return factory.createPropertyAssignment(
-            isIdentifier(name) ? name : factory.createStringLiteral(name),
-            valueDesc,
-          )
-        })
-        return factory.createObjectLiteralExpression(properties)
-      }
-      default:
-        return factory.createIdentifier('undefined')
-    }
+    return factory.createObjectLiteralExpression(this.getPropertyAssignments(item))
   }
 }

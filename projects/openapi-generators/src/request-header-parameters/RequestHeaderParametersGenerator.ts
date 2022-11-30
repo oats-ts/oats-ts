@@ -1,8 +1,10 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
 import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { BaseParameterObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
+import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { BaseParameterGenerators } from '../utils/BaseParametersGenerator'
+import { ParameterDescriptorsGenerator } from '../utils/internalTypes'
+import { ParameterDescriptorsGeneratorImpl } from '../utils/ParameterDescriptorsGeneratorImpl'
 
 export class RequestHeaderParametersGenerator extends BaseParameterGenerators {
   public name(): OpenAPIGeneratorTarget {
@@ -20,16 +22,7 @@ export class RequestHeaderParametersGenerator extends BaseParameterGenerators {
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.header
   }
-  protected getDefaultStyle(): ParameterStyle {
-    return 'simple'
-  }
-  protected getLocation(): ParameterLocation {
-    return 'header'
-  }
-  protected getDefaultRequired(): boolean {
-    return false
-  }
-  protected getDefaultExplode(): boolean {
-    return true
+  protected createParameterDescriptorsGenerator(): ParameterDescriptorsGenerator {
+    return new ParameterDescriptorsGeneratorImpl(this.context(), this.paramsPkg, 'header', 'simple', false, false)
   }
 }

@@ -1,5 +1,5 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
-import { failure, fluent, fromArray, fromRecord, isFailure, isSuccess, success, Try } from '@oats-ts/try'
+import { failure, fluent, fromRecord, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {

@@ -1,4 +1,4 @@
-import { fluent, FluentTry, fromArray, fromRecord, success, Try } from '@oats-ts/try'
+import { fluent, FluentTry, fromArray, fromRecord, Try } from '@oats-ts/try'
 import { Base } from './Base'
 import { DefaultValueSerializer } from './DefaultValueSerializer'
 import { PrimitiveArray, PrimitiveRecord, ValueDescriptor, ValueSerializer } from './types'

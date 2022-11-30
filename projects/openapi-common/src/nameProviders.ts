@@ -85,7 +85,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/cookie-parameters': _delegating(operationId, toCamelCase, append('CookieParameters')),
   'oats/path-parameters': _delegating(operationId, toCamelCase, append('PathParameters')),
   'oats/query-parameters': _delegating(operationId, toCamelCase, append('QueryParameters')),
-  'oats/request-header-parameters': _delegating(operationId, toCamelCase, append('ResponseHeaderParameters')),
+  'oats/request-header-parameters': _delegating(operationId, toCamelCase, append('RequestHeaderParameters')),
   'oats/response-header-parameters': _delegating(operationId, toCamelCase, append('ResponseHeaderParameters')),
 }
 

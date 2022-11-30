@@ -85,6 +85,8 @@ const openApiParameterSerializationExports = {
   PathParameters: 'PathParameters',
   HeaderParameters: 'HeaderParameters',
   CookieParameters: 'CookieParameters',
+  parsePathToMatcher: 'parsePathToMatcher',
+  parsePathToSegments: 'parsePathToSegments',
 }
 
 const openApiParameterSerializationContent = {

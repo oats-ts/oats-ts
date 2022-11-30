@@ -1,5 +1,5 @@
 import { DefaultConfig } from '@oats-ts/validators'
-import { isNil, encode, decode } from './utils'
+import { encode, decode } from './utils'
 
 export abstract class Base {
   protected abstract basePath(): string

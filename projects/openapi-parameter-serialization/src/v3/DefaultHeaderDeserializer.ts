@@ -18,7 +18,6 @@ import {
   HeaderObject,
   ValueDescriptor,
 } from './types'
-import { mapRecord } from './utils'
 
 export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements HeaderDeserializer<T> {
   constructor(protected readonly parameters: HeaderParameters<T>) {

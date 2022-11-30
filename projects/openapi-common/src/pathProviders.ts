@@ -42,7 +42,7 @@ const fileNameByTarget: NameByTarget = {
   'oats/cookie-parameters': 'cookieParameters.ts',
   'oats/path-parameters': 'pathParameters.ts',
   'oats/query-parameters': 'queryParameters.ts',
-  'oats/request-header-parameters': 'responseHeaderParameters.ts',
+  'oats/request-header-parameters': 'requestHeaderParameters.ts',
   'oats/response-header-parameters': 'responseHeaderParameters.ts',
 }
 

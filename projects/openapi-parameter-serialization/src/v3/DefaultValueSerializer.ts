@@ -7,7 +7,6 @@ import {
   OptionalDescriptor,
   Primitive,
   StringDescriptor,
-  ValueDeserializer,
   ValueDescriptor,
   ValueSerializer,
 } from './types'
