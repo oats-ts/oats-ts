@@ -1,5 +1,4 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
-import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { BaseParameterGenerators } from '../utils/BaseParametersGenerator'
@@ -13,16 +12,19 @@ export class CookieParametersGenerator extends BaseParameterGenerators {
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/cookies-type']
   }
-  protected getTypeGeneratorTarget(): OpenAPIGeneratorTarget {
-    return 'oats/cookies-type'
-  }
-  protected getParametersType(): keyof OpenApiParameterSerializationExports {
-    return 'CookieParameters'
-  }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.cookie
   }
   protected createParameterDescriptorsGenerator(): ParameterDescriptorsGenerator {
-    return new ParameterDescriptorsGeneratorImpl(this.context(), this.paramsPkg, 'cookie', 'form', true, false)
+    return new ParameterDescriptorsGeneratorImpl(
+      this.context(),
+      this.paramsPkg,
+      'oats/cookies-type',
+      'CookieParameters',
+      'cookie',
+      'form',
+      true,
+      false,
+    )
   }
 }

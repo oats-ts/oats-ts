@@ -1,21 +1,20 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
-import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
-import { BaseParameterObject } from '@oats-ts/openapi-model'
+import { BaseParameterObject, OperationObject } from '@oats-ts/openapi-model'
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
-import { createSourceFile, getNamedImports } from '@oats-ts/typescript-common'
+import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import {
   Expression,
   factory,
+  Identifier,
   ImportDeclaration,
   NodeFlags,
   PropertyAssignment,
   SourceFile,
   Statement,
   SyntaxKind,
-  TypeReferenceNode,
 } from 'typescript'
 import { ParameterDescriptorsGenerator } from './internalTypes'
 import { ParametersFields } from './OatsApiNames'
@@ -26,12 +25,6 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
 
   public abstract name(): OpenAPIGeneratorTarget
 
-  public abstract consumes(): OpenAPIGeneratorTarget[]
-
-  protected abstract getTypeGeneratorTarget(): OpenAPIGeneratorTarget
-
-  protected abstract getParametersType(): keyof OpenApiParameterSerializationExports
-
   protected abstract getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[]
 
   protected abstract createParameterDescriptorsGenerator(): ParameterDescriptorsGenerator
@@ -41,12 +34,16 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
     this.descriptorsGenerator = this.createParameterDescriptorsGenerator()
   }
 
-  public referenceOf(input: any) {
-    throw new Error('Method not implemented.')
+  public referenceOf(input: OperationObject): Identifier | undefined {
+    return this.shouldGenerate(this.enhanced(input))
+      ? factory.createIdentifier(this.context().nameOf(input, this.name()))
+      : undefined
   }
 
-  public dependenciesOf(fromPath: string, input: any): any[] {
-    throw new Error('Method not implemented.')
+  public dependenciesOf(fromPath: string, input: OperationObject): ImportDeclaration[] {
+    return this.shouldGenerate(this.enhanced(input))
+      ? getModelImports(fromPath, this.name(), [input], this.context())
+      : []
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -63,18 +60,10 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
   }
 
   protected getImports(path: string, data: EnhancedOperation): ImportDeclaration[] {
-    return [
-      getNamedImports(this.paramsPkg.name, [
-        this.paramsPkg.imports.parameter,
-        this.paramsPkg.imports[this.getParametersType()],
-      ]),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, data.operation, this.getTypeGeneratorTarget()),
-    ]
+    return this.descriptorsGenerator.getImports(path, data.operation)
   }
 
   protected getParametersStatementAst(item: EnhancedOperation): Statement {
-    const parametersTypeName = this.paramsPkg.exports[this.getParametersType()]
-    const parameterType = this.context().referenceOf<TypeReferenceNode>(item.operation, this.getTypeGeneratorTarget())
     return factory.createVariableStatement(
       [factory.createModifier(SyntaxKind.ExportKeyword)],
       factory.createVariableDeclarationList(
@@ -82,7 +71,7 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
           factory.createVariableDeclaration(
             factory.createIdentifier(this.context().nameOf(item.operation, this.name())),
             undefined,
-            factory.createTypeReferenceNode(factory.createIdentifier(parametersTypeName), [parameterType]),
+            this.descriptorsGenerator.getParametersTypeAst(item.operation),
             this.getParametersExpressionAst(item),
           ),
         ],

@@ -36,6 +36,7 @@ import { cookieParameters } from './cookie-parameters'
 import { pathParameters } from './path-parameters'
 import { queryParameters } from './query-parameters'
 import { requestHeaderParameters } from './request-header-parameters'
+import { responseHeaderParameters } from './response-header-parameters'
 
 export const factories = {
   typeGuards,
@@ -78,4 +79,5 @@ export const factories = {
   pathParameters,
   queryParameters,
   requestHeaderParameters,
+  responseHeaderParameters,
 } as const

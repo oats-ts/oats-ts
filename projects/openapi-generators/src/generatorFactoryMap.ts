@@ -42,5 +42,5 @@ export const generatorFactoryMap: Record<OpenAPIGeneratorTarget, (config?: any) 
   'oats/path-parameters': factories.pathParameters,
   'oats/query-parameters': factories.queryParameters,
   'oats/request-header-parameters': factories.requestHeaderParameters,
-  'oats/response-header-parameters': undefined!,
+  'oats/response-header-parameters': factories.responseHeaderParameters,
 }

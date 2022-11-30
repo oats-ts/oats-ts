@@ -1,5 +1,4 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
-import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { BaseParameterGenerators } from '../utils/BaseParametersGenerator'
@@ -13,16 +12,19 @@ export class RequestHeaderParametersGenerator extends BaseParameterGenerators {
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/request-headers-type']
   }
-  protected getTypeGeneratorTarget(): OpenAPIGeneratorTarget {
-    return 'oats/request-headers-type'
-  }
-  protected getParametersType(): keyof OpenApiParameterSerializationExports {
-    return 'HeaderParameters'
-  }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.header
   }
   protected createParameterDescriptorsGenerator(): ParameterDescriptorsGenerator {
-    return new ParameterDescriptorsGeneratorImpl(this.context(), this.paramsPkg, 'header', 'simple', false, false)
+    return new ParameterDescriptorsGeneratorImpl(
+      this.context(),
+      this.paramsPkg,
+      'oats/request-headers-type',
+      'HeaderParameters',
+      'header',
+      'simple',
+      false,
+      false,
+    )
   }
 }

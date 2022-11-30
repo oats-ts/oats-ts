@@ -1,5 +1,4 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
-import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
 import { getNamedImports } from '@oats-ts/typescript-common'
@@ -15,12 +14,6 @@ export class PathParametersGenerator extends BaseParameterGenerators {
   }
   public consumes(): OpenAPIGeneratorTarget[] {
     return ['oats/path-type']
-  }
-  protected getTypeGeneratorTarget(): OpenAPIGeneratorTarget {
-    return 'oats/path-type'
-  }
-  protected getParametersType(): keyof OpenApiParameterSerializationExports {
-    return 'PathParameters'
   }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.path
@@ -62,6 +55,15 @@ export class PathParametersGenerator extends BaseParameterGenerators {
     ]
   }
   protected createParameterDescriptorsGenerator(): ParameterDescriptorsGenerator {
-    return new ParameterDescriptorsGeneratorImpl(this.context(), this.paramsPkg, 'path', 'simple', false, true)
+    return new ParameterDescriptorsGeneratorImpl(
+      this.context(),
+      this.paramsPkg,
+      'oats/path-type',
+      'PathParameters',
+      'path',
+      'simple',
+      false,
+      true,
+    )
   }
 }
