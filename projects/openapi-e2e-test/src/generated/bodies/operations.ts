@@ -70,7 +70,10 @@ export class ArrObjOperation implements RunnableOperation<ArrObjRequest, ArrObjR
     return 'post'
   }
   protected getRequestHeaders(request: ArrObjRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: ArrObjRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -82,12 +85,7 @@ export class ArrObjOperation implements RunnableOperation<ArrObjRequest, ArrObjR
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      arrObjResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, arrObjResponseBodyValidator)
   }
   public async run(request: ArrObjRequest): Promise<ArrObjResponse> {
     const rawRequest: RawHttpRequest = {
@@ -118,7 +116,10 @@ export class BoolArrOperation implements RunnableOperation<BoolArrRequest, BoolA
     return 'post'
   }
   protected getRequestHeaders(request: BoolArrRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: BoolArrRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -130,12 +131,7 @@ export class BoolArrOperation implements RunnableOperation<BoolArrRequest, BoolA
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      boolArrResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, boolArrResponseBodyValidator)
   }
   public async run(request: BoolArrRequest): Promise<BoolArrResponse> {
     const rawRequest: RawHttpRequest = {
@@ -166,7 +162,10 @@ export class BoolOperation implements RunnableOperation<BoolRequest, BoolRespons
     return 'post'
   }
   protected getRequestHeaders(request: BoolRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: BoolRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -178,12 +177,7 @@ export class BoolOperation implements RunnableOperation<BoolRequest, BoolRespons
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      boolResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, boolResponseBodyValidator)
   }
   public async run(request: BoolRequest): Promise<BoolResponse> {
     const rawRequest: RawHttpRequest = {
@@ -214,7 +208,10 @@ export class EnmArrOperation implements RunnableOperation<EnmArrRequest, EnmArrR
     return 'post'
   }
   protected getRequestHeaders(request: EnmArrRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: EnmArrRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -226,12 +223,7 @@ export class EnmArrOperation implements RunnableOperation<EnmArrRequest, EnmArrR
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      enmArrResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, enmArrResponseBodyValidator)
   }
   public async run(request: EnmArrRequest): Promise<EnmArrResponse> {
     const rawRequest: RawHttpRequest = {
@@ -262,7 +254,10 @@ export class EnmOperation implements RunnableOperation<EnmRequest, EnmResponse> 
     return 'post'
   }
   protected getRequestHeaders(request: EnmRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: EnmRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -274,12 +269,7 @@ export class EnmOperation implements RunnableOperation<EnmRequest, EnmResponse> 
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      enmResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, enmResponseBodyValidator)
   }
   public async run(request: EnmRequest): Promise<EnmResponse> {
     const rawRequest: RawHttpRequest = {
@@ -310,7 +300,10 @@ export class NestedObjOperation implements RunnableOperation<NestedObjRequest, N
     return 'post'
   }
   protected getRequestHeaders(request: NestedObjRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: NestedObjRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -322,12 +315,7 @@ export class NestedObjOperation implements RunnableOperation<NestedObjRequest, N
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      nestedObjResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, nestedObjResponseBodyValidator)
   }
   public async run(request: NestedObjRequest): Promise<NestedObjResponse> {
     const rawRequest: RawHttpRequest = {
@@ -358,7 +346,10 @@ export class NumArrOperation implements RunnableOperation<NumArrRequest, NumArrR
     return 'post'
   }
   protected getRequestHeaders(request: NumArrRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: NumArrRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -370,12 +361,7 @@ export class NumArrOperation implements RunnableOperation<NumArrRequest, NumArrR
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      numArrResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, numArrResponseBodyValidator)
   }
   public async run(request: NumArrRequest): Promise<NumArrResponse> {
     const rawRequest: RawHttpRequest = {
@@ -406,7 +392,10 @@ export class NumOperation implements RunnableOperation<NumRequest, NumResponse> 
     return 'post'
   }
   protected getRequestHeaders(request: NumRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: NumRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -418,12 +407,7 @@ export class NumOperation implements RunnableOperation<NumRequest, NumResponse> 
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      numResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, numResponseBodyValidator)
   }
   public async run(request: NumRequest): Promise<NumResponse> {
     const rawRequest: RawHttpRequest = {
@@ -454,7 +438,10 @@ export class OptPrimTupleOperation implements RunnableOperation<OptPrimTupleRequ
     return 'post'
   }
   protected getRequestHeaders(request: OptPrimTupleRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: OptPrimTupleRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -466,12 +453,7 @@ export class OptPrimTupleOperation implements RunnableOperation<OptPrimTupleRequ
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      optPrimTupleResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, optPrimTupleResponseBodyValidator)
   }
   public async run(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse> {
     const rawRequest: RawHttpRequest = {
@@ -502,7 +484,10 @@ export class PrimObjOperation implements RunnableOperation<PrimObjRequest, PrimO
     return 'post'
   }
   protected getRequestHeaders(request: PrimObjRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: PrimObjRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -514,12 +499,7 @@ export class PrimObjOperation implements RunnableOperation<PrimObjRequest, PrimO
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      primObjResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, primObjResponseBodyValidator)
   }
   public async run(request: PrimObjRequest): Promise<PrimObjResponse> {
     const rawRequest: RawHttpRequest = {
@@ -550,7 +530,10 @@ export class PrimTupleOperation implements RunnableOperation<PrimTupleRequest, P
     return 'post'
   }
   protected getRequestHeaders(request: PrimTupleRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: PrimTupleRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -562,12 +545,7 @@ export class PrimTupleOperation implements RunnableOperation<PrimTupleRequest, P
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      primTupleResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, primTupleResponseBodyValidator)
   }
   public async run(request: PrimTupleRequest): Promise<PrimTupleResponse> {
     const rawRequest: RawHttpRequest = {
@@ -598,7 +576,10 @@ export class StrArrOperation implements RunnableOperation<StrArrRequest, StrArrR
     return 'post'
   }
   protected getRequestHeaders(request: StrArrRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: StrArrRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -610,12 +591,7 @@ export class StrArrOperation implements RunnableOperation<StrArrRequest, StrArrR
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      strArrResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, strArrResponseBodyValidator)
   }
   public async run(request: StrArrRequest): Promise<StrArrResponse> {
     const rawRequest: RawHttpRequest = {
@@ -646,7 +622,10 @@ export class StrOperation implements RunnableOperation<StrRequest, StrResponse> 
     return 'post'
   }
   protected getRequestHeaders(request: StrRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: StrRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -658,12 +637,7 @@ export class StrOperation implements RunnableOperation<StrRequest, StrResponse> 
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      strResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, strResponseBodyValidator)
   }
   public async run(request: StrRequest): Promise<StrResponse> {
     const rawRequest: RawHttpRequest = {

@@ -40,7 +40,10 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
     return 'post'
   }
   protected getRequestHeaders(request: CreatePetsRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: CreatePetsRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -52,12 +55,7 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      createPetsResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, createPetsResponseBodyValidator)
   }
   public async run(request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const rawRequest: RawHttpRequest = {
@@ -85,14 +83,14 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     this.adapter = adapter
   }
   protected getUrl(request: ListPetsRequest): string {
-    const query = this.adapter.getQuery<ListPetsQueryParameters>(request.query, listPetsQueryParameters)
+    const query = this.adapter.getQuery<ListPetsQueryParameters | undefined>(request.query, listPetsQueryParameters)
     return this.adapter.getUrl('/pets', query)
   }
   protected getHttpMethod(_request: ListPetsRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: ListPetsRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -101,15 +99,10 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     return this.adapter.getStatusCode(response)
   }
   protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
-    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeaderParameters)
+    return this.adapter.getResponseHeaders(response, listPetsResponseHeaderParameters)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      listPetsResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, listPetsResponseBodyValidator)
   }
   public async run(request: ListPetsRequest): Promise<ListPetsResponse> {
     const rawRequest: RawHttpRequest = {
@@ -144,7 +137,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     return 'get'
   }
   protected getRequestHeaders(_request: ShowPetByIdRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -153,12 +146,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      showPetByIdResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, showPetByIdResponseBodyValidator)
   }
   public async run(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const rawRequest: RawHttpRequest = {

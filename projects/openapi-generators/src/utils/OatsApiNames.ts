@@ -31,8 +31,6 @@ export const ClientAdapterMethods: Record<keyof ClientAdapter, keyof ClientAdapt
   getPath: 'getPath',
   getQuery: 'getQuery',
   getUrl: 'getUrl',
-  getCookies: 'getCookies',
-  getRequestHeaders: 'getRequestHeaders',
   getRequestBody: 'getRequestBody',
   request: 'request',
   getMimeType: 'getMimeType',
@@ -40,6 +38,10 @@ export const ClientAdapterMethods: Record<keyof ClientAdapter, keyof ClientAdapt
   getResponseCookies: 'getResponseCookies',
   getResponseHeaders: 'getResponseHeaders',
   getResponseBody: 'getResponseBody',
+  getCookieBasedRequestHeaders: 'getCookieBasedRequestHeaders',
+  getParameterBasedRequestHeaders: 'getParameterBasedRequestHeaders',
+  getMimeTypeBasedRequestHeaders: 'getMimeTypeBasedRequestHeaders',
+  getAuxiliaryRequestHeaders: 'getAuxiliaryRequestHeaders',
 }
 
 export const RawHttpRequestFields: Record<keyof RawHttpRequest, keyof RawHttpRequest> = {

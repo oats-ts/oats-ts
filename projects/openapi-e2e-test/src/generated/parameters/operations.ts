@@ -98,7 +98,7 @@ export class DeepObjectQueryParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: DeepObjectQueryParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -107,12 +107,7 @@ export class DeepObjectQueryParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      deepObjectQueryParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, deepObjectQueryParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -151,11 +146,13 @@ export class FormCookieParametersOperation
     return 'get'
   }
   protected getRequestHeaders(request: FormCookieParametersRequest): _RawHttpHeaders {
-    const cookies = this.adapter.getCookies<FormCookieParametersCookieParameters>(
-      request.cookies,
-      formCookieParametersCookieParameters,
-    )
-    return this.adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
+    return {
+      ...this.adapter.getCookieBasedRequestHeaders<FormCookieParametersCookieParameters | undefined>(
+        request.cookies,
+        formCookieParametersCookieParameters,
+      ),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -164,12 +161,7 @@ export class FormCookieParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      formCookieParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, formCookieParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -212,7 +204,7 @@ export class FormQueryParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: FormQueryParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -221,12 +213,7 @@ export class FormQueryParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      formQueryParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, formQueryParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -269,7 +256,7 @@ export class LabelPathParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: LabelPathParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -278,12 +265,7 @@ export class LabelPathParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      labelPathParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, labelPathParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -326,7 +308,7 @@ export class MatrixPathParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: MatrixPathParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -335,12 +317,7 @@ export class MatrixPathParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      matrixPathParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, matrixPathParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -383,7 +360,7 @@ export class PipeDelimitedQueryParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: PipeDelimitedQueryParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -392,12 +369,7 @@ export class PipeDelimitedQueryParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      pipeDelimitedQueryParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, pipeDelimitedQueryParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -436,12 +408,13 @@ export class SimpleHeaderParametersOperation
     return 'get'
   }
   protected getRequestHeaders(request: SimpleHeaderParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders<SimpleHeaderParametersRequestHeaderParameters>(
-      request.headers,
-      undefined,
-      undefined,
-      simpleHeaderParametersRequestHeaderParameters,
-    )
+    return {
+      ...this.adapter.getParameterBasedRequestHeaders<SimpleHeaderParametersRequestHeaderParameters>(
+        request.headers,
+        simpleHeaderParametersRequestHeaderParameters,
+      ),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -450,12 +423,7 @@ export class SimpleHeaderParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      simpleHeaderParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, simpleHeaderParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -498,7 +466,7 @@ export class SimplePathParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: SimplePathParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -507,12 +475,7 @@ export class SimplePathParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      simplePathParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, simplePathParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -551,7 +514,10 @@ export class SimpleResponseHeaderParametersOperation
     return 'post'
   }
   protected getRequestHeaders(request: SimpleResponseHeaderParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: SimpleResponseHeaderParametersRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -563,19 +529,10 @@ export class SimpleResponseHeaderParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseHeaders(response: _RawHttpResponse): _RawHttpHeaders {
-    return this.adapter.getResponseHeaders(
-      response,
-      this.getStatusCode(response),
-      simpleResponseHeaderParametersResponseHeaderParameters,
-    )
+    return this.adapter.getResponseHeaders(response, simpleResponseHeaderParametersResponseHeaderParameters)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      simpleResponseHeaderParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, simpleResponseHeaderParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)
@@ -620,7 +577,7 @@ export class SpaceDelimitedQueryParametersOperation
     return 'get'
   }
   protected getRequestHeaders(_request: SpaceDelimitedQueryParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -629,12 +586,7 @@ export class SpaceDelimitedQueryParametersOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: _RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      spaceDelimitedQueryParametersResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, spaceDelimitedQueryParametersResponseBodyValidator)
   }
   protected getResponseCookies(response: _RawHttpResponse): _SetCookieValue[] {
     return this.adapter.getResponseCookies(response)

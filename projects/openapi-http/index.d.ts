@@ -3,22 +3,19 @@ import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
   getPath<P>(input: P, descriptor: any): string
-  getQuery<Q>(input?: Q, descriptor?: any): string | undefined
+  getQuery<Q>(input: Q, descriptor: any): string | undefined
   getUrl(path: string, query?: string): string
-  getCookies<C>(input?: C, descriptor?: any): string | undefined
-  getRequestHeaders<H>(input?: H, mimeType?: string, cookie?: string, descriptor?: any): RawHttpHeaders
+  getCookieBasedRequestHeaders<C>(input?: C, descriptor?: any): RawHttpHeaders
+  getParameterBasedRequestHeaders<H>(input: H, descriptor: any): RawHttpHeaders
+  getMimeTypeBasedRequestHeaders(mimeType?: string): RawHttpHeaders
+  getAuxiliaryRequestHeaders(): RawHttpHeaders
   getRequestBody<B>(mimeType?: string, input?: B): any
   request(request: RawHttpRequest): Promise<RawHttpResponse>
   getMimeType(response: RawHttpResponse): string | undefined
   getStatusCode(response: RawHttpResponse): number | undefined
   getResponseCookies(response: RawHttpResponse): SetCookieValue[]
-  getResponseHeaders(response: RawHttpResponse, statusCode?: number, descriptors?: ResponseHeadersParameters): any
-  getResponseBody(
-    response: RawHttpResponse,
-    statusCode?: number,
-    mimeType?: string,
-    validators?: ResponseBodyValidators,
-  ): any
+  getResponseHeaders(response: RawHttpResponse, descriptors?: ResponseHeadersParameters): any
+  getResponseBody(response: RawHttpResponse, validators?: ResponseBodyValidators): any
 }
 
 export type RunnableOperation<Request, Response> = {

@@ -1,4 +1,4 @@
-import { OperationObject } from '@oats-ts/openapi-model'
+import { OperationObject, ParameterObject } from '@oats-ts/openapi-model'
 import { OperationLocals, OperationsGeneratorConfig } from './typings'
 import {
   EnhancedOperation,
@@ -557,7 +557,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                 this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
                 ClientAdapterMethods.getQuery,
               ]),
-              [this.context().referenceOf(data.operation, 'oats/query-type')],
+              [this.getGenericParameterType(data.operation, data.query, 'oats/query-type')],
               [
                 getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
                   TypedRequestFields.query,
@@ -690,7 +690,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
         !hasRequestBody(data, this.context()) &&
         (data.cookie.length === 0 || !this.configuration().sendCookieHeader),
     )
-    const statements = [this.getCookiesStatement(data), this.getRequestHeadersReturnStatement(data)].filter(
+    const statements = [this.getRequestHeadersReturnStatement(data)].filter(
       (statement): statement is Statement => !isNil(statement),
     )
     return factory.createMethodDeclaration(
@@ -706,66 +706,91 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     )
   }
 
-  protected getCookiesStatement(data: EnhancedOperation): Statement | undefined {
+  protected getCookieBasedRequestHeadersExpression(data: EnhancedOperation): Expression | undefined {
     if (data.cookie.length === 0 || !this.configuration().sendCookieHeader) {
       return undefined
     }
-    return factory.createVariableStatement(
-      undefined,
-      factory.createVariableDeclarationList(
-        [
-          factory.createVariableDeclaration(
-            factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'cookies')),
-            undefined,
-            undefined,
-            factory.createCallExpression(
-              getPropertyChain(factory.createThis(), [
-                this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
-                ClientAdapterMethods.getCookies,
-              ]),
-              [this.context().referenceOf(data.operation, 'oats/cookies-type')],
-              [
-                getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
-                  TypedRequestFields.cookies,
-                ]),
-                this.context().referenceOf(data.operation, 'oats/cookie-parameters'),
-              ],
-            ),
-          ),
-        ],
-        NodeFlags.Const,
-      ),
+    return factory.createCallExpression(
+      getPropertyChain(factory.createThis(), [
+        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
+        ClientAdapterMethods.getCookieBasedRequestHeaders,
+      ]),
+      [this.getGenericParameterType(data.operation, data.cookie, 'oats/cookies-type')],
+      [
+        getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
+          TypedRequestFields.cookies,
+        ]),
+        this.context().referenceOf(data.operation, 'oats/cookie-parameters'),
+      ],
+    )
+  }
+
+  protected getMimeTypeBasedRequestHeadersExpression(data: EnhancedOperation): Expression | undefined {
+    if (!this.needsRequestBody(data)) {
+      return undefined
+    }
+    return factory.createCallExpression(
+      getPropertyChain(factory.createThis(), [
+        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
+        ClientAdapterMethods.getMimeTypeBasedRequestHeaders,
+      ]),
+      [],
+      [
+        getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
+          TypedRequestFields.mimeType,
+        ]),
+      ],
+    )
+  }
+
+  protected getParameterBasedRequestHeadersExpression(data: EnhancedOperation): Expression | undefined {
+    if (data.header.length === 0) {
+      return undefined
+    }
+    return factory.createCallExpression(
+      getPropertyChain(factory.createThis(), [
+        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
+        ClientAdapterMethods.getParameterBasedRequestHeaders,
+      ]),
+      [this.getGenericParameterType(data.operation, data.header, 'oats/request-headers-type')],
+      [
+        getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
+          TypedRequestFields.requestHeaders,
+        ]),
+        this.context().referenceOf(data.operation, 'oats/request-header-parameters'),
+      ],
+    )
+  }
+
+  protected getAuxiliaryRequestHeadersExpression(data: EnhancedOperation): Expression | undefined {
+    return factory.createCallExpression(
+      getPropertyChain(factory.createThis(), [
+        this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
+        ClientAdapterMethods.getAuxiliaryRequestHeaders,
+      ]),
+      [],
+      [],
     )
   }
 
   protected getRequestHeadersReturnStatement(data: EnhancedOperation): Statement {
-    return factory.createReturnStatement(
-      factory.createCallExpression(
-        getPropertyChain(factory.createThis(), [
-          this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
-          ClientAdapterMethods.getRequestHeaders,
-        ]),
-        data.header.length > 0 ? [this.context().referenceOf(data.operation, 'oats/request-headers-type')] : [],
-        [
-          data.header.length > 0
-            ? getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
-                TypedRequestFields.requestHeaders,
-              ])
-            : createUndefined(),
-          hasRequestBody(data, this.context())
-            ? getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
-                TypedRequestFields.mimeType,
-              ])
-            : createUndefined(),
-          data.cookie.length > 0 && this.configuration().sendCookieHeader
-            ? factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'cookies'))
-            : createUndefined(),
-          data.header.length > 0
-            ? this.context().referenceOf(data.operation, 'oats/request-header-parameters')
-            : createUndefined(),
-        ],
-      ),
-    )
+    const headersAsts = [
+      this.getParameterBasedRequestHeadersExpression(data),
+      this.getCookieBasedRequestHeadersExpression(data),
+      this.getMimeTypeBasedRequestHeadersExpression(data),
+      this.getAuxiliaryRequestHeadersExpression(data),
+    ].filter((expr): expr is Expression => !isNil(expr))
+
+    switch (headersAsts.length) {
+      case 0:
+        return factory.createReturnStatement(factory.createObjectLiteralExpression())
+      case 1:
+        return factory.createReturnStatement(headersAsts[0])
+      default:
+        return factory.createReturnStatement(
+          factory.createObjectLiteralExpression(headersAsts.map((expr) => factory.createSpreadAssignment(expr))),
+        )
+    }
   }
 
   protected getLocalIdentifierAst(local: OperationLocals): Identifier {
@@ -791,6 +816,18 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       undefined,
       params,
     )
+  }
+
+  protected getGenericParameterType(
+    operation: OperationObject,
+    parameters: ParameterObject[],
+    type: OpenAPIGeneratorTarget,
+  ): TypeNode {
+    const baseType = this.context().referenceOf<TypeNode>(operation, type)
+    if (parameters.every((param) => !param.required && param.in !== 'path')) {
+      return factory.createUnionTypeNode([baseType, factory.createTypeReferenceNode(createUndefined())])
+    }
+    return baseType
   }
 
   protected getMimeTypeGetterAst(data: EnhancedOperation): MethodDeclaration | undefined {
@@ -850,8 +887,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     const returnStatement = factory.createReturnStatement(
       this.getAdapterCallAst('getResponseBody', [
         this.getLocalIdentifierAst('response'),
-        this.getMemberCallAst('getStatusCode', [this.getLocalIdentifierAst('response')]),
-        this.getMemberCallAst('getMimeType', [this.getLocalIdentifierAst('response')]),
         this.configuration().validate && hasResponses(data.operation, this.context())
           ? this.context().referenceOf<Identifier>(data.operation, 'oats/response-body-validator')
           : createUndefined(),
@@ -879,7 +914,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     const returnStatement = factory.createReturnStatement(
       this.getAdapterCallAst('getResponseHeaders', [
         this.getLocalIdentifierAst('response'),
-        this.getMemberCallAst('getStatusCode', [this.getLocalIdentifierAst('response')]),
         this.context().referenceOf<Identifier>(data.operation, 'oats/response-header-parameters'),
       ]),
     )

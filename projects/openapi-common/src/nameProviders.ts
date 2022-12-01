@@ -42,7 +42,6 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/type': _delegating(key, toPascalCase),
   'oats/type-guard': _delegating(key, prepend('is-'), toCamelCase),
   'oats/type-validator': _delegating(key, toCamelCase, append('TypeValidator')),
-  'oats/operation-function': _delegating(operationId, toCamelCase),
   'oats/operation': _delegating(operationId, toPascalCase, append('Operation')),
   'oats/query-type': _delegating(operationId, toPascalCase, append('QueryParameters')),
   'oats/path-type': _delegating(operationId, toPascalCase, append('PathParameters')),

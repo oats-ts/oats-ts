@@ -3,7 +3,6 @@ import { expressRouterFactories } from './express-router-factory'
 import { expressAppRouterFactory } from './express-app-router-factory'
 import { expressRoutersFactoriesType } from './express-router-factories-type'
 import { group } from './group'
-import { operations } from './operation-functions'
 import { operations as operationClasses } from './operations'
 import { pathDeserializers } from './path-deserializer'
 import { pathSerializers } from './path-serializer'
@@ -47,7 +46,6 @@ export const factories = {
   expressAppRouterFactory,
   expressRoutersFactoriesType,
   group,
-  operations,
   pathDeserializers,
   pathSerializers,
   pathTypes,
