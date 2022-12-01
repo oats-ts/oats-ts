@@ -13,19 +13,32 @@ import {
   RunnableOperation as _RunnableOperation,
   SetCookieValue as _SetCookieValue,
 } from '@oats-ts/openapi-runtime'
-import { formCookieParametersCookieSerializer } from './cookieSerializers'
+import { formCookieParametersCookieParameters } from './cookieParameters'
+import { FormCookieParametersCookieParameters } from './cookieTypes'
 import {
-  labelPathParametersPathSerializer,
-  matrixPathParametersPathSerializer,
-  simplePathParametersPathSerializer,
-} from './pathSerializers'
+  labelPathParametersPathParameters,
+  matrixPathParametersPathParameters,
+  simplePathParametersPathParameters,
+} from './pathParameters'
 import {
-  deepObjectQueryParametersQuerySerializer,
-  formQueryParametersQuerySerializer,
-  pipeDelimitedQueryParametersQuerySerializer,
-  spaceDelimitedQueryParametersQuerySerializer,
-} from './querySerializers'
-import { simpleHeaderParametersRequestHeadersSerializer } from './requestHeaderSerializers'
+  LabelPathParametersPathParameters,
+  MatrixPathParametersPathParameters,
+  SimplePathParametersPathParameters,
+} from './pathTypes'
+import {
+  deepObjectQueryParametersQueryParameters,
+  formQueryParametersQueryParameters,
+  pipeDelimitedQueryParametersQueryParameters,
+  spaceDelimitedQueryParametersQueryParameters,
+} from './queryParameters'
+import {
+  DeepObjectQueryParametersQueryParameters,
+  FormQueryParametersQueryParameters,
+  PipeDelimitedQueryParametersQueryParameters,
+  SpaceDelimitedQueryParametersQueryParameters,
+} from './queryTypes'
+import { simpleHeaderParametersRequestHeaderParameters } from './requestHeaderParameters'
+import { SimpleHeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
 import {
   DeepObjectQueryParametersRequest,
   FormCookieParametersRequest,
@@ -50,7 +63,7 @@ import {
   simpleResponseHeaderParametersResponseBodyValidator,
   spaceDelimitedQueryParametersResponseBodyValidator,
 } from './responseBodyValidators'
-import { simpleResponseHeaderParametersResponseHeadersDeserializer } from './responseHeaderDeserializers'
+import { simpleResponseHeaderParametersResponseHeaderParameters } from './responseHeaderParameters'
 import {
   DeepObjectQueryParametersResponse,
   FormCookieParametersResponse,
@@ -75,7 +88,10 @@ export class DeepObjectQueryParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: DeepObjectQueryParametersRequest): string {
-    const query = this.adapter.getQuery(request.query, deepObjectQueryParametersQuerySerializer)
+    const query = this.adapter.getQuery<DeepObjectQueryParametersQueryParameters>(
+      request.query,
+      deepObjectQueryParametersQueryParameters,
+    )
     return this.adapter.getUrl('/deepObject-query-parameters', query)
   }
   protected getHttpMethod(_request: DeepObjectQueryParametersRequest): _HttpMethod {
@@ -135,7 +151,10 @@ export class FormCookieParametersOperation
     return 'get'
   }
   protected getRequestHeaders(request: FormCookieParametersRequest): _RawHttpHeaders {
-    const cookies = this.adapter.getCookies(request.cookies, formCookieParametersCookieSerializer)
+    const cookies = this.adapter.getCookies<FormCookieParametersCookieParameters>(
+      request.cookies,
+      formCookieParametersCookieParameters,
+    )
     return this.adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
@@ -183,7 +202,10 @@ export class FormQueryParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: FormQueryParametersRequest): string {
-    const query = this.adapter.getQuery(request.query, formQueryParametersQuerySerializer)
+    const query = this.adapter.getQuery<FormQueryParametersQueryParameters>(
+      request.query,
+      formQueryParametersQueryParameters,
+    )
     return this.adapter.getUrl('/form-query-parameters', query)
   }
   protected getHttpMethod(_request: FormQueryParametersRequest): _HttpMethod {
@@ -237,7 +259,10 @@ export class LabelPathParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: LabelPathParametersRequest): string {
-    const path = this.adapter.getPath(request.path, labelPathParametersPathSerializer)
+    const path = this.adapter.getPath<LabelPathParametersPathParameters>(
+      request.path,
+      labelPathParametersPathParameters,
+    )
     return this.adapter.getUrl(path, undefined)
   }
   protected getHttpMethod(_request: LabelPathParametersRequest): _HttpMethod {
@@ -291,7 +316,10 @@ export class MatrixPathParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: MatrixPathParametersRequest): string {
-    const path = this.adapter.getPath(request.path, matrixPathParametersPathSerializer)
+    const path = this.adapter.getPath<MatrixPathParametersPathParameters>(
+      request.path,
+      matrixPathParametersPathParameters,
+    )
     return this.adapter.getUrl(path, undefined)
   }
   protected getHttpMethod(_request: MatrixPathParametersRequest): _HttpMethod {
@@ -345,7 +373,10 @@ export class PipeDelimitedQueryParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: PipeDelimitedQueryParametersRequest): string {
-    const query = this.adapter.getQuery(request.query, pipeDelimitedQueryParametersQuerySerializer)
+    const query = this.adapter.getQuery<PipeDelimitedQueryParametersQueryParameters>(
+      request.query,
+      pipeDelimitedQueryParametersQueryParameters,
+    )
     return this.adapter.getUrl('/pipeDelimited-query-parameters', query)
   }
   protected getHttpMethod(_request: PipeDelimitedQueryParametersRequest): _HttpMethod {
@@ -405,11 +436,11 @@ export class SimpleHeaderParametersOperation
     return 'get'
   }
   protected getRequestHeaders(request: SimpleHeaderParametersRequest): _RawHttpHeaders {
-    return this.adapter.getRequestHeaders(
+    return this.adapter.getRequestHeaders<SimpleHeaderParametersRequestHeaderParameters>(
       request.headers,
       undefined,
       undefined,
-      simpleHeaderParametersRequestHeadersSerializer,
+      simpleHeaderParametersRequestHeaderParameters,
     )
   }
   protected getMimeType(response: _RawHttpResponse): string | undefined {
@@ -457,7 +488,10 @@ export class SimplePathParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: SimplePathParametersRequest): string {
-    const path = this.adapter.getPath(request.path, simplePathParametersPathSerializer)
+    const path = this.adapter.getPath<SimplePathParametersPathParameters>(
+      request.path,
+      simplePathParametersPathParameters,
+    )
     return this.adapter.getUrl(path, undefined)
   }
   protected getHttpMethod(_request: SimplePathParametersRequest): _HttpMethod {
@@ -532,7 +566,7 @@ export class SimpleResponseHeaderParametersOperation
     return this.adapter.getResponseHeaders(
       response,
       this.getStatusCode(response),
-      simpleResponseHeaderParametersResponseHeadersDeserializer,
+      simpleResponseHeaderParametersResponseHeaderParameters,
     )
   }
   protected getResponseBody(response: _RawHttpResponse): any {
@@ -576,7 +610,10 @@ export class SpaceDelimitedQueryParametersOperation
     this.adapter = adapter
   }
   protected getUrl(request: SpaceDelimitedQueryParametersRequest): string {
-    const query = this.adapter.getQuery(request.query, spaceDelimitedQueryParametersQuerySerializer)
+    const query = this.adapter.getQuery<SpaceDelimitedQueryParametersQueryParameters>(
+      request.query,
+      spaceDelimitedQueryParametersQueryParameters,
+    )
     return this.adapter.getUrl('/spaceDelimited-query-parameters', query)
   }
   protected getHttpMethod(_request: SpaceDelimitedQueryParametersRequest): _HttpMethod {

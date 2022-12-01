@@ -9,12 +9,15 @@ import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { BookStoreApi } from './apiType'
 import { bookStoreCorsConfiguration } from './corsConfiguration'
-import { getBookPathDeserializer } from './pathDeserializers'
-import { getBooksQueryDeserializer } from './queryDeserializers'
+import { getBookPathParameters } from './pathParameters'
+import { GetBookPathParameters } from './pathTypes'
+import { getBooksQueryParameters } from './queryParameters'
+import { GetBooksQueryParameters } from './queryTypes'
 import { addBookRequestBodyValidator } from './requestBodyValidators'
-import { getBooksRequestHeadersDeserializer } from './requestHeaderDeserializers'
+import { getBooksRequestHeaderParameters } from './requestHeaderParameters'
+import { GetBooksRequestHeaderParameters } from './requestHeaderTypes'
 import { AddBookServerRequest, GetBookServerRequest, GetBooksServerRequest } from './requestServerTypes'
-import { getBooksResponseHeadersSerializer } from './responseHeaderSerializers'
+import { getBooksResponseHeaderParameters } from './responseHeaderParameters'
 import { Book } from './types'
 
 export function createAddBookRouter(router?: IRouter | undefined): IRouter {
@@ -60,7 +63,7 @@ export function createGetBookRouter(router?: IRouter | undefined): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
       const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
       try {
-        const path = await adapter.getPathParameters(toolkit, getBookPathDeserializer)
+        const path = await adapter.getPathParameters<GetBookPathParameters>(toolkit, getBookPathParameters)
         const typedRequest: GetBookServerRequest = {
           path,
         }
@@ -88,8 +91,11 @@ export function createGetBooksRouter(router?: IRouter | undefined): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
       const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
       try {
-        const query = await adapter.getQueryParameters(toolkit, getBooksQueryDeserializer)
-        const headers = await adapter.getRequestHeaders(toolkit, getBooksRequestHeadersDeserializer)
+        const query = await adapter.getQueryParameters<GetBooksQueryParameters>(toolkit, getBooksQueryParameters)
+        const headers = await adapter.getRequestHeaders<GetBooksRequestHeaderParameters>(
+          toolkit,
+          getBooksRequestHeaderParameters,
+        )
         const typedRequest: GetBooksServerRequest = {
           query,
           headers,
@@ -101,7 +107,7 @@ export function createGetBooksRouter(router?: IRouter | undefined): IRouter {
           headers: await adapter.getResponseHeaders(
             toolkit,
             typedResponse,
-            getBooksResponseHeadersSerializer,
+            getBooksResponseHeaderParameters,
             corsHeaders,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),

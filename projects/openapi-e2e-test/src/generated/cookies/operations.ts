@@ -13,7 +13,8 @@ import {
   RunnableOperation,
   SetCookieValue,
 } from '@oats-ts/openapi-runtime'
-import { protectedPathCookieSerializer } from './cookieSerializers'
+import { protectedPathCookieParameters } from './cookieParameters'
+import { ProtectedPathCookieParameters } from './cookieTypes'
 import { LoginRequest, ProtectedPathRequest } from './requestTypes'
 import { protectedPathResponseBodyValidator } from './responseBodyValidators'
 import { LoginResponse, ProtectedPathResponse } from './responseTypes'
@@ -72,7 +73,10 @@ export class ProtectedPathOperation implements RunnableOperation<ProtectedPathRe
     return 'get'
   }
   protected getRequestHeaders(request: ProtectedPathRequest): RawHttpHeaders {
-    const cookies = this.adapter.getCookies(request.cookies, protectedPathCookieSerializer)
+    const cookies = this.adapter.getCookies<ProtectedPathCookieParameters>(
+      request.cookies,
+      protectedPathCookieParameters,
+    )
     return this.adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {

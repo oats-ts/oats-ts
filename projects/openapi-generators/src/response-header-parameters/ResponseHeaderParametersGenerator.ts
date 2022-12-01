@@ -21,6 +21,7 @@ import {
   SyntaxKind,
 } from 'typescript'
 import { ParameterDescriptorsGenerator } from '../utils/internalTypes'
+import { ParametersFields } from '../utils/OatsApiNames'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
 import { ParameterDescriptorsGeneratorImpl } from '../utils/ParameterDescriptorsGeneratorImpl'
 
@@ -91,7 +92,12 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
       .map(([status, headers]): PropertyAssignment => {
         return factory.createPropertyAssignment(
           status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
-          this.descriptorsGenerator.getParameterDescriptorAst(values(headers)),
+          factory.createObjectLiteralExpression([
+            factory.createPropertyAssignment(
+              ParametersFields.descriptor,
+              this.descriptorsGenerator.getParameterDescriptorAst(values(headers)),
+            ),
+          ]),
         )
       })
 

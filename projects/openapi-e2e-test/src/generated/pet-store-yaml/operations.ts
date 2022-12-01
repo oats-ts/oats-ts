@@ -12,15 +12,17 @@ import {
   RawHttpResponse,
   RunnableOperation,
 } from '@oats-ts/openapi-runtime'
-import { showPetByIdPathSerializer } from './pathSerializers'
-import { listPetsQuerySerializer } from './querySerializers'
+import { showPetByIdPathParameters } from './pathParameters'
+import { ShowPetByIdPathParameters } from './pathTypes'
+import { listPetsQueryParameters } from './queryParameters'
+import { ListPetsQueryParameters } from './queryTypes'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import {
   createPetsResponseBodyValidator,
   listPetsResponseBodyValidator,
   showPetByIdResponseBodyValidator,
 } from './responseBodyValidators'
-import { listPetsResponseHeadersDeserializer } from './responseHeaderDeserializers'
+import { listPetsResponseHeaderParameters } from './responseHeaderParameters'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 
 /**
@@ -83,7 +85,7 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     this.adapter = adapter
   }
   protected getUrl(request: ListPetsRequest): string {
-    const query = this.adapter.getQuery(request.query, listPetsQuerySerializer)
+    const query = this.adapter.getQuery<ListPetsQueryParameters>(request.query, listPetsQueryParameters)
     return this.adapter.getUrl('/pets', query)
   }
   protected getHttpMethod(_request: ListPetsRequest): HttpMethod {
@@ -99,7 +101,7 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     return this.adapter.getStatusCode(response)
   }
   protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
-    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeadersDeserializer)
+    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeaderParameters)
   }
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(
@@ -135,7 +137,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     this.adapter = adapter
   }
   protected getUrl(request: ShowPetByIdRequest): string {
-    const path = this.adapter.getPath(request.path, showPetByIdPathSerializer)
+    const path = this.adapter.getPath<ShowPetByIdPathParameters>(request.path, showPetByIdPathParameters)
     return this.adapter.getUrl(path, undefined)
   }
   protected getHttpMethod(_request: ShowPetByIdRequest): HttpMethod {

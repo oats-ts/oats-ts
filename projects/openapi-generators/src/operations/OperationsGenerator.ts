@@ -57,8 +57,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
 
   public consumes(): OpenAPIGeneratorTarget[] {
     const validatorDep: OpenAPIGeneratorTarget[] = ['oats/response-body-validator']
-    const cookieSerializerDep: OpenAPIGeneratorTarget[] = ['oats/cookie-serializer']
-    const cookieTypeDep: OpenAPIGeneratorTarget[] = ['oats/cookies-type']
+    const cookieDeps: OpenAPIGeneratorTarget[] = ['oats/cookies-type', 'oats/cookie-parameters']
     const config = this.configuration()
     return [
       'oats/type',
@@ -67,12 +66,12 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       'oats/path-type',
       'oats/response-type',
       'oats/request-type',
-      'oats/request-headers-serializer',
-      'oats/path-serializer',
-      'oats/query-serializer',
-      'oats/response-headers-deserializer',
-      ...(config.sendCookieHeader ? cookieTypeDep : []),
-      ...(config.sendCookieHeader ? cookieSerializerDep : []),
+      'oats/response-headers-type',
+      'oats/request-header-parameters',
+      'oats/response-header-parameters',
+      'oats/path-parameters',
+      'oats/query-parameters',
+      ...(config.sendCookieHeader ? cookieDeps : []),
       ...(config.validate ? validatorDep : []),
     ]
   }
@@ -115,15 +114,22 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       ]),
       ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-type'),
       ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-type'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/path-serializer'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/query-serializer'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-headers-serializer'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-headers-deserializer'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/path-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/query-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-header-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-header-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/path-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/query-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/request-headers-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-headers-type'),
       ...(this.configuration().validate
         ? this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/response-body-validator')
         : []),
-      ...(this.configuration().sendCookieHeader
-        ? [...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/cookie-serializer')]
+      ...(this.configuration().sendCookieHeader && item.cookie.length > 0
+        ? [
+            ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/cookie-parameters'),
+            ...this.context().dependenciesOf<ImportDeclaration>(path, item.operation, 'oats/cookies-type'),
+          ]
         : []),
     ]
   }
@@ -551,12 +557,12 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                 this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
                 ClientAdapterMethods.getQuery,
               ]),
-              undefined,
+              [this.context().referenceOf(data.operation, 'oats/query-type')],
               [
                 getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
                   TypedRequestFields.query,
                 ]),
-                this.context().referenceOf(data.operation, 'oats/query-serializer'),
+                this.context().referenceOf(data.operation, 'oats/query-parameters'),
               ],
             ),
           ),
@@ -583,12 +589,12 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                 this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
                 ClientAdapterMethods.getPath,
               ]),
-              undefined,
+              [this.context().referenceOf(data.operation, 'oats/path-type')],
               [
                 getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
                   TypedRequestFields.path,
                 ]),
-                this.context().referenceOf(data.operation, 'oats/path-serializer'),
+                this.context().referenceOf(data.operation, 'oats/path-parameters'),
               ],
             ),
           ),
@@ -717,12 +723,12 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
                 this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
                 ClientAdapterMethods.getCookies,
               ]),
-              undefined,
+              [this.context().referenceOf(data.operation, 'oats/cookies-type')],
               [
                 getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
                   TypedRequestFields.cookies,
                 ]),
-                this.context().referenceOf(data.operation, 'oats/cookie-serializer'),
+                this.context().referenceOf(data.operation, 'oats/cookie-parameters'),
               ],
             ),
           ),
@@ -739,7 +745,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
           this.context().localNameOf<OperationLocals>(undefined, this.name(), 'adapterProperty'),
           ClientAdapterMethods.getRequestHeaders,
         ]),
-        undefined,
+        data.header.length > 0 ? [this.context().referenceOf(data.operation, 'oats/request-headers-type')] : [],
         [
           data.header.length > 0
             ? getPropertyChain(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'request'), [
@@ -755,7 +761,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
             ? factory.createIdentifier(this.context().localNameOf<OperationLocals>(undefined, this.name(), 'cookies'))
             : createUndefined(),
           data.header.length > 0
-            ? this.context().referenceOf(data.operation, 'oats/request-headers-serializer')
+            ? this.context().referenceOf(data.operation, 'oats/request-header-parameters')
             : createUndefined(),
         ],
       ),
@@ -874,7 +880,7 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
       this.getAdapterCallAst('getResponseHeaders', [
         this.getLocalIdentifierAst('response'),
         this.getMemberCallAst('getStatusCode', [this.getLocalIdentifierAst('response')]),
-        this.context().referenceOf<Identifier>(data.operation, 'oats/response-headers-deserializer'),
+        this.context().referenceOf<Identifier>(data.operation, 'oats/response-header-parameters'),
       ]),
     )
     return factory.createMethodDeclaration(

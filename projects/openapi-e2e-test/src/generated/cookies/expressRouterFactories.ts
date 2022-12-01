@@ -8,7 +8,8 @@ import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { CookiesApi } from './apiType'
-import { protectedPathCookieDeserializer } from './cookieDeserializers'
+import { protectedPathCookieParameters } from './cookieParameters'
+import { ProtectedPathCookieParameters } from './cookieTypes'
 import { loginRequestBodyValidator } from './requestBodyValidators'
 import { LoginServerRequest, ProtectedPathServerRequest } from './requestServerTypes'
 
@@ -54,7 +55,10 @@ export function createProtectedPathRouter(router?: IRouter | undefined): IRouter
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_ny4wur']
       const api: CookiesApi = response.locals['__oats_api_ny4wur']
       try {
-        const cookies = await adapter.getCookieParameters(toolkit, protectedPathCookieDeserializer)
+        const cookies = await adapter.getCookieParameters<ProtectedPathCookieParameters>(
+          toolkit,
+          protectedPathCookieParameters,
+        )
         const typedRequest: ProtectedPathServerRequest = {
           cookies,
         }

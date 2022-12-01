@@ -7,5 +7,5 @@
 import { parameter } from '@oats-ts/openapi-runtime'
 
 export const getBooksResponseHeaderParameters = {
-  200: { 'x-length': parameter.header.simple.required.primitive(parameter.value.number()) },
+  200: { descriptor: { 'x-length': parameter.header.simple.required.primitive(parameter.value.number()) } },
 } as const

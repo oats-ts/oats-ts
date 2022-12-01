@@ -7,5 +7,5 @@
 import { parameter } from '@oats-ts/openapi-runtime'
 
 export const listPetsResponseHeaderParameters = {
-  200: { 'x-next': parameter.header.simple.primitive(parameter.value.string()) },
+  200: { descriptor: { 'x-next': parameter.header.simple.primitive(parameter.value.string()) } },
 } as const

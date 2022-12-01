@@ -9,11 +9,13 @@ import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
 import { SwaggerPetstoreApi } from './apiType'
 import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
-import { showPetByIdPathDeserializer } from './pathDeserializers'
-import { listPetsQueryDeserializer } from './queryDeserializers'
+import { showPetByIdPathParameters } from './pathParameters'
+import { ShowPetByIdPathParameters } from './pathTypes'
+import { listPetsQueryParameters } from './queryParameters'
+import { ListPetsQueryParameters } from './queryTypes'
 import { createPetsRequestBodyValidator } from './requestBodyValidators'
 import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerRequest } from './requestServerTypes'
-import { listPetsResponseHeadersSerializer } from './responseHeaderSerializers'
+import { listPetsResponseHeaderParameters } from './responseHeaderParameters'
 import { Pet } from './types'
 
 export function createCreatePetsRouter(router?: IRouter | undefined): IRouter {
@@ -59,7 +61,7 @@ export function createListPetsRouter(router?: IRouter | undefined): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
       const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
-        const query = await adapter.getQueryParameters(toolkit, listPetsQueryDeserializer)
+        const query = await adapter.getQueryParameters<ListPetsQueryParameters>(toolkit, listPetsQueryParameters)
         const typedRequest: ListPetsServerRequest = {
           query,
         }
@@ -70,7 +72,7 @@ export function createListPetsRouter(router?: IRouter | undefined): IRouter {
           headers: await adapter.getResponseHeaders(
             toolkit,
             typedResponse,
-            listPetsResponseHeadersSerializer,
+            listPetsResponseHeaderParameters,
             corsHeaders,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -92,7 +94,7 @@ export function createShowPetByIdRouter(router?: IRouter | undefined): IRouter {
       const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
       const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
       try {
-        const path = await adapter.getPathParameters(toolkit, showPetByIdPathDeserializer)
+        const path = await adapter.getPathParameters<ShowPetByIdPathParameters>(toolkit, showPetByIdPathParameters)
         const typedRequest: ShowPetByIdServerRequest = {
           path,
         }

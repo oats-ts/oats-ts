@@ -18,6 +18,7 @@ import {
   ParameterDeclaration,
   Block,
   NodeFlags,
+  TypeReferenceNode,
 } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
@@ -47,12 +48,17 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       'oats/type',
       'oats/request-server-type',
       'oats/api-type',
-      'oats/path-deserializer',
-      'oats/query-deserializer',
-      'oats/cookie-deserializer',
-      'oats/request-headers-deserializer',
-      'oats/response-headers-serializer',
       'oats/request-body-validator',
+      'oats/path-parameters',
+      'oats/query-parameters',
+      'oats/cookie-parameters',
+      'oats/request-header-parameters',
+      'oats/response-header-parameters',
+      'oats/path-type',
+      'oats/query-type',
+      'oats/cookies-type',
+      'oats/request-headers-type',
+      'oats/response-headers-type',
       ...(this.configuration().cors ? cors : []),
     ]
   }
@@ -102,21 +108,18 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
         this.expressPkg.imports.NextFunction,
       ]),
       ...this.context().dependenciesOf<ImportDeclaration>(path, this.context().document(), 'oats/api-type'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/path-deserializer'),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/query-deserializer'),
-      ...this.context().dependenciesOf<ImportDeclaration>(
-        path,
-        operation.operation,
-        'oats/request-headers-deserializer',
-      ),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/path-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/query-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/cookie-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/request-header-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/response-header-parameters'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/path-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/query-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/cookies-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/request-headers-type'),
+      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/response-headers-type'),
       ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/request-body-validator'),
       ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/request-server-type'),
-      ...this.context().dependenciesOf<ImportDeclaration>(
-        path,
-        operation.operation,
-        'oats/response-headers-serializer',
-      ),
-      ...this.context().dependenciesOf<ImportDeclaration>(path, operation.operation, 'oats/cookie-deserializer'),
       ...(this.configuration().cors
         ? this.context().dependenciesOf<ImportDeclaration>(path, this.context().document(), 'oats/cors-configuration')
         : []),
@@ -392,6 +395,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
     data: EnhancedOperation,
     name: string,
     getterName: keyof typeof ServerAdapterMethods,
+    type: OpenAPIGeneratorTarget,
     deserializer: OpenAPIGeneratorTarget,
   ): Statement {
     return factory.createVariableStatement(
@@ -410,7 +414,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                   ),
                   factory.createIdentifier(getterName),
                 ),
-                undefined,
+                [this.context().referenceOf<TypeReferenceNode>(data.operation, type)],
                 [
                   factory.createIdentifier(
                     this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'toolkit'),
@@ -434,7 +438,8 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       data,
       this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'query'),
       ServerAdapterMethods.getQueryParameters,
-      'oats/query-deserializer',
+      'oats/query-type',
+      'oats/query-parameters',
     )
   }
 
@@ -446,7 +451,8 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       data,
       this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'path'),
       ServerAdapterMethods.getPathParameters,
-      'oats/path-deserializer',
+      'oats/path-type',
+      'oats/path-parameters',
     )
   }
 
@@ -458,7 +464,8 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       data,
       this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'requestHeaders'),
       ServerAdapterMethods.getRequestHeaders,
-      'oats/request-headers-deserializer',
+      'oats/request-headers-type',
+      'oats/request-header-parameters',
     )
   }
 
@@ -470,7 +477,8 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
       data,
       this.context().localNameOf<ExpressRouterFactoriesLocals>(undefined, this.name(), 'cookies'),
       ServerAdapterMethods.getCookieParameters,
-      'oats/cookie-deserializer',
+      'oats/cookies-type',
+      'oats/cookie-parameters',
     )
   }
 
@@ -797,7 +805,7 @@ export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator
                             'typedResponse',
                           ),
                         ),
-                        this.context().referenceOf(data.operation, 'oats/response-headers-serializer') ??
+                        this.context().referenceOf(data.operation, 'oats/response-header-parameters') ??
                           factory.createIdentifier('undefined'),
                         this.configuration().cors
                           ? factory.createIdentifier(

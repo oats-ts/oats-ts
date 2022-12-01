@@ -12,15 +12,17 @@ import {
   RawHttpResponse,
   RunnableOperation,
 } from '@oats-ts/openapi-runtime'
-import { showPetByIdPathSerializer } from './pathSerializers'
-import { listPetsQuerySerializer } from './querySerializers'
+import { showPetByIdPathParameters } from './pathParameters'
+import { ShowPetByIdPathParameters } from './pathTypes'
+import { listPetsQueryParameters } from './queryParameters'
+import { ListPetsQueryParameters } from './queryTypes'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import {
   createPetsResponseBodyValidator,
   listPetsResponseBodyValidator,
   showPetByIdResponseBodyValidator,
 } from './responseBodyValidators'
-import { listPetsResponseHeadersDeserializer } from './responseHeaderDeserializers'
+import { listPetsResponseHeaderParameters } from './responseHeaderParameters'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 
 /**
@@ -83,7 +85,10 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local_request: ListPetsRequest): string {
-    const _local_query = this._local_adapter.getQuery(_local_request.query, listPetsQuerySerializer)
+    const _local_query = this._local_adapter.getQuery<ListPetsQueryParameters>(
+      _local_request.query,
+      listPetsQueryParameters,
+    )
     return this._local_adapter.getUrl('/pets', _local_query)
   }
   protected _local_getHttpMethod(_local__request: ListPetsRequest): HttpMethod {
@@ -102,7 +107,7 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     return this._local_adapter.getResponseHeaders(
       _local_response,
       this._local_getStatusCode(_local_response),
-      listPetsResponseHeadersDeserializer,
+      listPetsResponseHeaderParameters,
     )
   }
   protected _local_getResponseBody(_local_response: RawHttpResponse): any {
@@ -139,7 +144,10 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local_request: ShowPetByIdRequest): string {
-    const _local_path = this._local_adapter.getPath(_local_request.path, showPetByIdPathSerializer)
+    const _local_path = this._local_adapter.getPath<ShowPetByIdPathParameters>(
+      _local_request.path,
+      showPetByIdPathParameters,
+    )
     return this._local_adapter.getUrl(_local_path, undefined)
   }
   protected _local_getHttpMethod(_local__request: ShowPetByIdRequest): HttpMethod {

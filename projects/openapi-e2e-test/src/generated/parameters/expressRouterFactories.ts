@@ -14,21 +14,34 @@ import {
   Router as _Router,
 } from 'express'
 import { ParametersApi } from './apiType'
-import { formCookieParametersCookieDeserializer } from './cookieDeserializers'
+import { formCookieParametersCookieParameters } from './cookieParameters'
+import { FormCookieParametersCookieParameters } from './cookieTypes'
 import { parametersCorsConfiguration } from './corsConfiguration'
 import {
-  labelPathParametersPathDeserializer,
-  matrixPathParametersPathDeserializer,
-  simplePathParametersPathDeserializer,
-} from './pathDeserializers'
+  labelPathParametersPathParameters,
+  matrixPathParametersPathParameters,
+  simplePathParametersPathParameters,
+} from './pathParameters'
 import {
-  deepObjectQueryParametersQueryDeserializer,
-  formQueryParametersQueryDeserializer,
-  pipeDelimitedQueryParametersQueryDeserializer,
-  spaceDelimitedQueryParametersQueryDeserializer,
-} from './queryDeserializers'
+  LabelPathParametersPathParameters,
+  MatrixPathParametersPathParameters,
+  SimplePathParametersPathParameters,
+} from './pathTypes'
+import {
+  deepObjectQueryParametersQueryParameters,
+  formQueryParametersQueryParameters,
+  pipeDelimitedQueryParametersQueryParameters,
+  spaceDelimitedQueryParametersQueryParameters,
+} from './queryParameters'
+import {
+  DeepObjectQueryParametersQueryParameters,
+  FormQueryParametersQueryParameters,
+  PipeDelimitedQueryParametersQueryParameters,
+  SpaceDelimitedQueryParametersQueryParameters,
+} from './queryTypes'
 import { simpleResponseHeaderParametersRequestBodyValidator } from './requestBodyValidators'
-import { simpleHeaderParametersRequestHeadersDeserializer } from './requestHeaderDeserializers'
+import { simpleHeaderParametersRequestHeaderParameters } from './requestHeaderParameters'
+import { SimpleHeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
 import {
   DeepObjectQueryParametersServerRequest,
   FormCookieParametersServerRequest,
@@ -41,7 +54,7 @@ import {
   SimpleResponseHeaderParametersServerRequest,
   SpaceDelimitedQueryParametersServerRequest,
 } from './requestServerTypes'
-import { simpleResponseHeaderParametersResponseHeadersSerializer } from './responseHeaderSerializers'
+import { simpleResponseHeaderParametersResponseHeaderParameters } from './responseHeaderParameters'
 import { SimpleResponseHeaderParameters } from './types'
 
 export function createDeepObjectQueryParametersRouter(router?: _IRouter | undefined): _IRouter {
@@ -52,7 +65,10 @@ export function createDeepObjectQueryParametersRouter(router?: _IRouter | undefi
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const query = await adapter.getQueryParameters(toolkit, deepObjectQueryParametersQueryDeserializer)
+        const query = await adapter.getQueryParameters<DeepObjectQueryParametersQueryParameters>(
+          toolkit,
+          deepObjectQueryParametersQueryParameters,
+        )
         const typedRequest: DeepObjectQueryParametersServerRequest = {
           query,
         }
@@ -81,7 +97,10 @@ export function createFormCookieParametersRouter(router?: _IRouter | undefined):
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const cookies = await adapter.getCookieParameters(toolkit, formCookieParametersCookieDeserializer)
+        const cookies = await adapter.getCookieParameters<FormCookieParametersCookieParameters>(
+          toolkit,
+          formCookieParametersCookieParameters,
+        )
         const typedRequest: FormCookieParametersServerRequest = {
           cookies,
         }
@@ -110,7 +129,10 @@ export function createFormQueryParametersRouter(router?: _IRouter | undefined): 
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const query = await adapter.getQueryParameters(toolkit, formQueryParametersQueryDeserializer)
+        const query = await adapter.getQueryParameters<FormQueryParametersQueryParameters>(
+          toolkit,
+          formQueryParametersQueryParameters,
+        )
         const typedRequest: FormQueryParametersServerRequest = {
           query,
         }
@@ -139,7 +161,10 @@ export function createLabelPathParametersRouter(router?: _IRouter | undefined): 
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const path = await adapter.getPathParameters(toolkit, labelPathParametersPathDeserializer)
+        const path = await adapter.getPathParameters<LabelPathParametersPathParameters>(
+          toolkit,
+          labelPathParametersPathParameters,
+        )
         const typedRequest: LabelPathParametersServerRequest = {
           path,
         }
@@ -171,7 +196,10 @@ export function createMatrixPathParametersRouter(router?: _IRouter | undefined):
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const path = await adapter.getPathParameters(toolkit, matrixPathParametersPathDeserializer)
+        const path = await adapter.getPathParameters<MatrixPathParametersPathParameters>(
+          toolkit,
+          matrixPathParametersPathParameters,
+        )
         const typedRequest: MatrixPathParametersServerRequest = {
           path,
         }
@@ -203,7 +231,10 @@ export function createPipeDelimitedQueryParametersRouter(router?: _IRouter | und
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const query = await adapter.getQueryParameters(toolkit, pipeDelimitedQueryParametersQueryDeserializer)
+        const query = await adapter.getQueryParameters<PipeDelimitedQueryParametersQueryParameters>(
+          toolkit,
+          pipeDelimitedQueryParametersQueryParameters,
+        )
         const typedRequest: PipeDelimitedQueryParametersServerRequest = {
           query,
         }
@@ -232,7 +263,10 @@ export function createSimpleHeaderParametersRouter(router?: _IRouter | undefined
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const headers = await adapter.getRequestHeaders(toolkit, simpleHeaderParametersRequestHeadersDeserializer)
+        const headers = await adapter.getRequestHeaders<SimpleHeaderParametersRequestHeaderParameters>(
+          toolkit,
+          simpleHeaderParametersRequestHeaderParameters,
+        )
         const typedRequest: SimpleHeaderParametersServerRequest = {
           headers,
         }
@@ -261,7 +295,10 @@ export function createSimplePathParametersRouter(router?: _IRouter | undefined):
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const path = await adapter.getPathParameters(toolkit, simplePathParametersPathDeserializer)
+        const path = await adapter.getPathParameters<SimplePathParametersPathParameters>(
+          toolkit,
+          simplePathParametersPathParameters,
+        )
         const typedRequest: SimplePathParametersServerRequest = {
           path,
         }
@@ -311,7 +348,7 @@ export function createSimpleResponseHeaderParametersRouter(router?: _IRouter | u
           headers: await adapter.getResponseHeaders(
             toolkit,
             typedResponse,
-            simpleResponseHeaderParametersResponseHeadersSerializer,
+            simpleResponseHeaderParametersResponseHeaderParameters,
             corsHeaders,
           ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
@@ -334,7 +371,10 @@ export function createSpaceDelimitedQueryParametersRouter(router?: _IRouter | un
       const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
       const api: ParametersApi = response.locals['__oats_api_7xzhoe']
       try {
-        const query = await adapter.getQueryParameters(toolkit, spaceDelimitedQueryParametersQueryDeserializer)
+        const query = await adapter.getQueryParameters<SpaceDelimitedQueryParametersQueryParameters>(
+          toolkit,
+          spaceDelimitedQueryParametersQueryParameters,
+        )
         const typedRequest: SpaceDelimitedQueryParametersServerRequest = {
           query,
         }

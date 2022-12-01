@@ -3,15 +3,22 @@ import {
   HttpResponse,
   RawHttpResponse,
   RequestBodyValidators,
-  ResponseHeadersSerializer,
   ServerAdapter,
   HttpMethod,
   OperationCorsConfiguration,
   SetCookieValue,
+  ResponseHeadersParameters,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
-import { serializeCookieValue } from '@oats-ts/openapi-parameter-serialization'
+import {
+  DefaultCookieDeserializer,
+  DefaultHeaderDeserializer,
+  DefaultHeaderSerializer,
+  DefaultPathDeserializer,
+  DefaultQueryDeserializer,
+  serializeCookieValue,
+} from '@oats-ts/openapi-parameter-serialization'
 import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
 
@@ -20,29 +27,22 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     return configure(validator, 'requestBody', DefaultConfig)
   }
 
-  public async getPathParameters<P>(toolkit: ExpressToolkit, deserializer: (input: string) => Try<P>): Promise<Try<P>> {
-    return deserializer(toolkit.request.url)
+  public async getPathParameters<P>(toolkit: ExpressToolkit, descriptor: any): Promise<Try<P>> {
+    return new DefaultPathDeserializer<P>(descriptor).deserialize(toolkit.request.url)
   }
 
-  public async getQueryParameters<Q>(
-    toolkit: ExpressToolkit,
-    deserializer: (input: string) => Try<Q>,
-  ): Promise<Try<Q>> {
-    return deserializer(new URL(toolkit.request.url, 'http://test.com').search)
+  public async getQueryParameters<Q>(toolkit: ExpressToolkit, descriptor: any): Promise<Try<Q>> {
+    return new DefaultQueryDeserializer<Q>(descriptor).deserialize(
+      new URL(toolkit.request.url, 'http://test.com').search,
+    )
   }
 
-  public async getCookieParameters<C>(
-    toolkit: ExpressToolkit,
-    deserializer: (input?: string) => Try<C>,
-  ): Promise<Try<C>> {
-    return deserializer(toolkit.request.header('cookie'))
+  public async getCookieParameters<C>(toolkit: ExpressToolkit, descriptor: any): Promise<Try<C>> {
+    return new DefaultCookieDeserializer<C>(descriptor).deserialize(toolkit.request.header('cookie') ?? '')
   }
 
-  public async getRequestHeaders<H>(
-    toolkit: ExpressToolkit,
-    deserializer: (input: RawHttpHeaders) => Try<H>,
-  ): Promise<Try<H>> {
-    return deserializer(toolkit.request.headers as RawHttpHeaders)
+  public async getRequestHeaders<H>(toolkit: ExpressToolkit, descriptor: any): Promise<Try<H>> {
+    return new DefaultHeaderDeserializer<H>(descriptor).deserialize(toolkit.request.headers as RawHttpHeaders)
   }
 
   public async getMimeType<M extends string>(toolkit: ExpressToolkit): Promise<M> {
@@ -195,9 +195,9 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
   }
 
   public async getResponseHeaders(
-    input: ExpressToolkit,
+    _toolkit: ExpressToolkit,
     response: HttpResponse,
-    serializers?: ResponseHeadersSerializer,
+    descriptors?: ResponseHeadersParameters,
     corsHeaders?: RawHttpHeaders,
   ): Promise<RawHttpHeaders> {
     const baseHeaders: RawHttpHeaders = {
@@ -205,14 +205,14 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       ...(response.mimeType === null || response.mimeType === undefined ? {} : { 'content-type': response.mimeType }),
     }
 
-    if (serializers === null || serializers === undefined) {
+    if (descriptors === null || descriptors === undefined) {
       return baseHeaders
     }
-    const serializer = serializers[response.statusCode]
-    if (serializer === null || serializer === undefined) {
+    const descriptor = descriptors[response.statusCode]
+    if (descriptor === null || descriptor === undefined) {
       return baseHeaders
     }
-    const headers = serializer(response.headers)
+    const headers = new DefaultHeaderSerializer(descriptor).serialize(response.headers)
     if (isFailure(headers)) {
       throw new Error(`Failed to serialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
     }
