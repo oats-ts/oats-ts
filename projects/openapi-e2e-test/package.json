@@ -22,7 +22,8 @@
     "methods": "node src/methods.js",
     "serve": "ts-node src/serve.ts",
     "test": "cross-env jest --runInBand",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "apiguru": "ts-node src/apiguru/generate.ts E:\\code\\apiguru-openapi-schemas"
   },
   "dependencies": {
     "@oats-ts/oats-ts": "0.0.48",
