@@ -1,5 +1,5 @@
 {
   "preset": "ts-jest",
-  "testRegex": ".*\\.(spec)\\.ts$",
+  "testRegex": ".*\\.(test)\\.ts$",
   "collectCoverage": true
 }
