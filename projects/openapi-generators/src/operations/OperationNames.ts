@@ -6,7 +6,6 @@ export const OperationDefaultLocals = {
   query: 'query',
   headers: 'headers',
   body: 'body',
-  cookies: 'cookies',
   method: 'method',
   mimeType: 'mimeType',
   statusCode: 'statusCode',

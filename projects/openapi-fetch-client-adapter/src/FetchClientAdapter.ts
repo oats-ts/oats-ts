@@ -4,14 +4,21 @@ import {
   RawHttpHeaders,
   RawHttpRequest,
   RawHttpResponse,
-  ResponseHeadersDeserializers,
   ResponseBodyValidators,
   ClientAdapter,
   SetCookieValue,
+  ResponseHeadersParameters,
 } from '@oats-ts/openapi-http'
-import { isFailure, Try } from '@oats-ts/try'
+import { isFailure } from '@oats-ts/try'
 import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
-import { deserializeSetCookie } from '@oats-ts/openapi-parameter-serialization'
+import {
+  DefaultCookieSerializer,
+  DefaultHeaderDeserializer,
+  DefaultHeaderSerializer,
+  DefaultPathSerializer,
+  DefaultQuerySerializer,
+  deserializeSetCookie,
+} from '@oats-ts/openapi-parameter-serialization'
 
 export type FetchClientAdapterConfig = {
   url?: string
@@ -23,32 +30,6 @@ export class FetchClientAdapter implements ClientAdapter {
 
   public constructor(config: FetchClientAdapterConfig = {}) {
     this.config = config
-  }
-
-  public getCookies<C>(
-    input?: C | undefined,
-    serializer?: ((input: C) => Try<string>) | undefined,
-  ): string | undefined {
-    if (input === null || input === undefined || serializer === null || serializer === undefined) {
-      return undefined
-    }
-    const cookie = serializer(input)
-    if (isFailure(cookie)) {
-      throw new Error(`Failed to serialize cookie:\n${cookie.issues.map(stringify).join('\n')}`)
-    }
-    return cookie.data
-  }
-
-  public getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
-    const header = response?.headers?.['set-cookie']
-    if (header === undefined || header === null) {
-      return []
-    }
-    const cookie = deserializeSetCookie(header, "headers['set-cookie']")
-    if (isFailure(cookie)) {
-      throw new Error(`Failed to parse the set-cookie header:\n${cookie.issues.map(stringify).join('\n')}`)
-    }
-    return cookie.data
   }
 
   public async request(request: RawHttpRequest): Promise<RawHttpResponse> {
@@ -63,39 +44,19 @@ export class FetchClientAdapter implements ClientAdapter {
     }
   }
 
-  protected getParsedResponseBody(_response: any): any {
-    // So the Response type doesn't leak out into the definition
-    const response = _response as Response
-    if (typeof response.headers.get('content-type') !== 'string') {
-      return undefined
-    }
-    const mimeType = response.headers.get('content-type') as string
-    if (mimeType?.indexOf('application/json') >= 0) {
-      return response.json()
-    }
-    if (mimeType?.indexOf('text/plain') >= 0) {
-      return response.text()
-    }
-    return response.blob()
-  }
-
-  protected configureResponseBodyValidator(validator: Validator<any>): ConfiguredValidator<any> {
-    return configure(validator, 'responseBody', DefaultConfig)
-  }
-
-  public getPath<P>(input: P, serializer: (input: P) => Try<string>): string {
-    const path = serializer(input)
+  public getPath<P>(input: P, descriptor: any): string {
+    const path = new DefaultPathSerializer(descriptor).serialize(input)
     if (isFailure(path)) {
       throw new Error(`Failed to serialize path:\n${path.issues.map(stringify).join('\n')}`)
     }
     return path.data
   }
 
-  public getQuery<Q>(input?: Q, serializer?: (input: Q) => Try<string>): string | undefined {
-    if (input === undefined || input === null || serializer === undefined || serializer === null) {
+  public getQuery<Q>(input?: Q, descriptor?: any): string | undefined {
+    if (input === undefined || input === null || descriptor === undefined || descriptor === null) {
       return undefined
     }
-    const query = serializer(input)
+    const query = new DefaultQuerySerializer(descriptor).serialize(input)
     if (isFailure(query)) {
       throw new Error(`Failed to serialize query:\n${query.issues.map(stringify).join('\n')}`)
     }
@@ -107,28 +68,33 @@ export class FetchClientAdapter implements ClientAdapter {
     return [typeof url !== 'string' ? '' : url, path, typeof query !== 'string' ? '' : query].join('')
   }
 
-  public getRequestHeaders<H>(
-    input?: H,
-    mimeType?: string,
-    cookie?: string,
-    serializer?: (input: any) => Try<RawHttpHeaders>,
-  ): RawHttpHeaders {
-    const baseHeaders = {
-      ...(typeof mimeType === 'string' ? { 'content-type': mimeType } : {}),
-      ...(cookie === null || cookie === undefined ? {} : { cookie }),
+  public getCookieBasedRequestHeaders<C>(input: C, serializer: any): RawHttpHeaders {
+    const cookie = new DefaultCookieSerializer(serializer).serialize(input)
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to serialize cookie:\n${cookie.issues.map(stringify).join('\n')}`)
     }
-    if (serializer === undefined || serializer === null || input === undefined || input === null) {
-      return baseHeaders
-    }
-    const headers = serializer(input)
+    return cookie.data === undefined || cookie.data === null ? {} : { cookie: cookie.data }
+  }
+
+  public getParameterBasedRequestHeaders<H>(input: H, descriptor: any): RawHttpHeaders {
+    const headers = new DefaultHeaderSerializer(descriptor).serialize(input)
     if (isFailure(headers)) {
       throw new Error(`Failed to serialize request headers:\n${headers.issues.map(stringify).join('\n')}`)
     }
-    return {
-      ...headers.data,
-      ...baseHeaders,
-    }
+    return headers.data
   }
+
+  public getMimeTypeBasedRequestHeaders(mimeType?: string): RawHttpHeaders {
+    if (mimeType === undefined || mimeType === null) {
+      return {}
+    }
+    return { 'content-type': mimeType }
+  }
+
+  public getAuxiliaryRequestHeaders(): RawHttpHeaders {
+    return {}
+  }
+
   public getRequestBody<B>(mimeType?: string, body?: B): any {
     switch (mimeType) {
       case 'application/json':
@@ -147,42 +113,71 @@ export class FetchClientAdapter implements ClientAdapter {
     return typeof mimeType === 'string' ? new MIMEType(mimeType).essence : undefined
   }
 
-  public getResponseHeaders(
-    response: RawHttpResponse,
-    statusCode?: number,
-    deserializers?: ResponseHeadersDeserializers,
-  ): any {
-    if (deserializers === null || deserializers === undefined) {
+  protected getParsedResponseBody(_response: any): any {
+    // So the Response type doesn't leak out into the definition
+    const response = _response as Response
+    if (typeof response.headers.get('content-type') !== 'string') {
       return undefined
     }
-    if (typeof statusCode !== 'number' || typeof deserializers[statusCode] !== 'function') {
-      const statusCodes = Object.keys(deserializers)
+    const mimeType = response.headers.get('content-type') as string
+    if (mimeType?.indexOf('application/json') >= 0) {
+      return response.json()
+    }
+    // TODO this will try to turn binary to text too, might need to consider common binary mime types.
+    return response.text()
+  }
+
+  protected configureResponseBodyValidator(validator: Validator<any>): ConfiguredValidator<any> {
+    return configure(validator, 'responseBody', DefaultConfig)
+  }
+
+  public getResponseHeaders(response: RawHttpResponse, descriptors?: ResponseHeadersParameters): any {
+    if (descriptors === null || descriptors === undefined) {
+      return undefined
+    }
+    const { statusCode } = response
+    if (statusCode === null || statusCode === undefined) {
+      throw new Error(`Status code should not be ${statusCode}`)
+    }
+
+    const descriptor = descriptors[statusCode]
+    if (descriptor === undefined || descriptor === null) {
+      const statusCodes = Object.keys(descriptors)
       const mimeTypesHint =
         statusCodes.length === 1
           ? `Expected "${statusCodes[0]}".`
-          : `Expected one of ${statusCodes.map((type) => `"${type}"`).join(',')}`
-      throw new Error(`Unexpected status code : ${statusCode}. ${mimeTypesHint}`)
+          : `Expected one of ${statusCodes.map((type) => `${type}`).join(',')}`
+      throw new Error(`Unexpected status code: ${statusCode}. ${mimeTypesHint} (body: ${response.body})`)
     }
     if (response.headers === null || response.headers === undefined) {
-      throw new Error(`Response headers should not be ${response.headers}`)
+      throw new Error(`Response headers should not be ${response.headers} (body: ${response.body})`)
     }
-    const headers = deserializers[statusCode](response.headers)
+    const headers = new DefaultHeaderDeserializer(descriptor).deserialize(response.headers)
     if (isFailure(headers)) {
       throw new Error(`Failed to deserialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
     }
     return headers.data
   }
 
-  public getResponseBody(
-    response: RawHttpResponse,
-    statusCode?: number,
-    mimeType?: string,
-    validators?: ResponseBodyValidators,
-  ): any {
+  public getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
+    const header = response?.headers?.['set-cookie']
+    if (header === undefined || header === null) {
+      return []
+    }
+    const cookie = deserializeSetCookie(header, "headers['set-cookie']")
+    if (isFailure(cookie)) {
+      throw new Error(`Failed to parse the set-cookie header:\n${cookie.issues.map(stringify).join('\n')}`)
+    }
+    return cookie.data
+  }
+
+  public getResponseBody(response: RawHttpResponse, validators?: ResponseBodyValidators): any {
     // If expectations not provided, return undefined, nothing to validate.
     if (validators === null || validators === undefined) {
       return undefined
     }
+    const { statusCode } = response
+    const mimeType = this.getMimeType(response)
 
     if (typeof statusCode !== 'number') {
       throw new Error(`Status code should not be ${statusCode}`)
@@ -190,7 +185,7 @@ export class FetchClientAdapter implements ClientAdapter {
     const { skipResponseValidation } = this.config
 
     if (!skipResponseValidation) {
-      const validatorsForStatus = validators[statusCode] || validators.default
+      const validatorsForStatus = validators[statusCode] ?? validators.default
 
       // In case the status code returned by the server was not found among the expectations, throw.
       if (validatorsForStatus === undefined || validatorsForStatus === null) {
@@ -198,8 +193,8 @@ export class FetchClientAdapter implements ClientAdapter {
         const statusCodesHint =
           statusCodes.length === 1
             ? `Expected "${statusCodes[0]}".`
-            : `Expected one of ${statusCodes.map((code) => `"${code}"`).join(',')}`
-        throw new Error(`Unexpected status code: "${statusCode}". ${statusCodesHint}`)
+            : `Expected one of ${statusCodes.map((code) => `${code}`).join(',')}`
+        throw new Error(`Unexpected status code: "${statusCode}". ${statusCodesHint} (body: ${response.body})`)
       }
 
       // In case the mime type returned by the server was not found amount expectations, throw.
@@ -209,7 +204,7 @@ export class FetchClientAdapter implements ClientAdapter {
           mimeTypes.length === 1
             ? `Expected "${mimeTypes[0]}".`
             : `Expected one of ${mimeTypes.map((type) => `"${type}"`).join(',')}`
-        throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint}`)
+        throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint} (body: ${response.body})`)
       }
 
       const validator = this.configureResponseBodyValidator(validatorsForStatus[mimeType])

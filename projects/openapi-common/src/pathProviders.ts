@@ -6,7 +6,6 @@ import { OpenAPIGeneratorTarget, NameByTarget, DelegatingPathProviderInput, Path
 const fileNameByTarget: NameByTarget = {
   'oats/type': 'types.ts',
   'oats/type-guard': 'typeGuards.ts',
-  'oats/operation-function': 'operationFunctions.ts',
   'oats/operation': 'operations.ts',
   'oats/query-type': 'queryTypes.ts',
   'oats/cookies-type': 'cookieTypes.ts',
@@ -17,14 +16,6 @@ const fileNameByTarget: NameByTarget = {
   'oats/response-server-type': 'responseServerTypes.ts',
   'oats/request-type': 'requestTypes.ts',
   'oats/request-server-type': 'requestServerTypes.ts',
-  'oats/path-serializer': 'pathSerializers.ts',
-  'oats/query-serializer': 'querySerializers.ts',
-  'oats/request-headers-serializer': 'requestHeaderSerializers.ts',
-  'oats/response-headers-serializer': 'responseHeaderSerializers.ts',
-  'oats/path-deserializer': 'pathDeserializers.ts',
-  'oats/query-deserializer': 'queryDeserializers.ts',
-  'oats/request-headers-deserializer': 'requestHeaderDeserializers.ts',
-  'oats/response-headers-deserializer': 'responseHeaderDeserializers.ts',
   'oats/type-validator': 'typeValidators.ts',
   'oats/request-body-validator': 'requestBodyValidators.ts',
   'oats/response-body-validator': 'responseBodyValidators.ts',
@@ -34,11 +25,14 @@ const fileNameByTarget: NameByTarget = {
   'oats/api-type': 'apiType.ts',
   'oats/sdk-impl': 'sdkImpl.ts',
   'oats/sdk-type': 'sdkType.ts',
-  'oats/cookie-serializer': 'cookieSerializers.ts',
-  'oats/cookie-deserializer': 'cookieDeserializers.ts',
   'oats/express-cors-router-factory': 'expressCorsRouterFactory.ts',
   'oats/cors-configuration': 'corsConfiguration.ts',
   'oats/express-context-router-factory': 'expressContextRouterFactory.ts',
+  'oats/cookie-parameters': 'cookieParameters.ts',
+  'oats/path-parameters': 'pathParameters.ts',
+  'oats/query-parameters': 'queryParameters.ts',
+  'oats/request-header-parameters': 'requestHeaderParameters.ts',
+  'oats/response-header-parameters': 'responseHeaderParameters.ts',
 }
 
 const delegate =
@@ -52,7 +46,6 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
   const types = delegate('types')
   const routers = delegate('routers')
   const parameters = delegate('parameters')
-  const serializers = delegate('serializers')
   const validators = delegate('validators')
   const responses = delegate('responses')
   const requests = delegate('requests')
@@ -81,19 +74,12 @@ const fullStackDelegate: DelegatingPathProviderInput = ((): DelegatingPathProvid
     'oats/query-type': parameters,
     'oats/cookies-type': parameters,
 
-    'oats/request-headers-serializer': serializers,
-    'oats/query-serializer': serializers,
-    'oats/path-serializer': serializers,
-    'oats/response-headers-serializer': serializers,
-    'oats/cookie-serializer': serializers,
+    'oats/request-header-parameters': parameters,
+    'oats/response-header-parameters': parameters,
+    'oats/path-parameters': parameters,
+    'oats/query-parameters': parameters,
+    'oats/cookie-parameters': parameters,
 
-    'oats/response-headers-deserializer': serializers,
-    'oats/request-headers-deserializer': serializers,
-    'oats/query-deserializer': serializers,
-    'oats/path-deserializer': serializers,
-    'oats/cookie-deserializer': serializers,
-
-    'oats/operation-function': operations,
     'oats/operation': operations,
 
     'oats/cors-configuration': routers,

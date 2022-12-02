@@ -12,16 +12,19 @@ import {
   RawHttpResponse,
   RunnableOperation,
 } from '@oats-ts/openapi-runtime'
-import { getBookPathSerializer } from './pathSerializers'
-import { getBooksQuerySerializer } from './querySerializers'
-import { getBooksRequestHeadersSerializer } from './requestHeaderSerializers'
+import { getBookPathParameters } from './pathParameters'
+import { GetBookPathParameters } from './pathTypes'
+import { getBooksQueryParameters } from './queryParameters'
+import { GetBooksQueryParameters } from './queryTypes'
+import { getBooksRequestHeaderParameters } from './requestHeaderParameters'
+import { GetBooksRequestHeaderParameters } from './requestHeaderTypes'
 import { AddBookRequest, GetBookRequest, GetBooksRequest } from './requestTypes'
 import {
   addBookResponseBodyValidator,
   getBookResponseBodyValidator,
   getBooksResponseBodyValidator,
 } from './responseBodyValidators'
-import { getBooksResponseHeadersDeserializer } from './responseHeaderDeserializers'
+import { getBooksResponseHeaderParameters } from './responseHeaderParameters'
 import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTypes'
 
 /**
@@ -39,7 +42,10 @@ export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBo
     return 'post'
   }
   protected getRequestHeaders(request: AddBookRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: AddBookRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -51,12 +57,7 @@ export class AddBookOperation implements RunnableOperation<AddBookRequest, AddBo
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      addBookResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, addBookResponseBodyValidator)
   }
   public async run(request: AddBookRequest): Promise<AddBookResponse> {
     const rawRequest: RawHttpRequest = {
@@ -84,14 +85,14 @@ export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBo
     this.adapter = adapter
   }
   protected getUrl(request: GetBookRequest): string {
-    const path = this.adapter.getPath(request.path, getBookPathSerializer)
+    const path = this.adapter.getPath<GetBookPathParameters>(request.path, getBookPathParameters)
     return this.adapter.getUrl(path, undefined)
   }
   protected getHttpMethod(_request: GetBookRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: GetBookRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -100,12 +101,7 @@ export class GetBookOperation implements RunnableOperation<GetBookRequest, GetBo
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      getBookResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, getBookResponseBodyValidator)
   }
   public async run(request: GetBookRequest): Promise<GetBookResponse> {
     const rawRequest: RawHttpRequest = {
@@ -132,14 +128,20 @@ export class GetBooksOperation implements RunnableOperation<GetBooksRequest, Get
     this.adapter = adapter
   }
   protected getUrl(request: GetBooksRequest): string {
-    const query = this.adapter.getQuery(request.query, getBooksQuerySerializer)
+    const query = this.adapter.getQuery<GetBooksQueryParameters | undefined>(request.query, getBooksQueryParameters)
     return this.adapter.getUrl('/books', query)
   }
   protected getHttpMethod(_request: GetBooksRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(request: GetBooksRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(request.headers, undefined, undefined, getBooksRequestHeadersSerializer)
+    return {
+      ...this.adapter.getParameterBasedRequestHeaders<GetBooksRequestHeaderParameters | undefined>(
+        request.headers,
+        getBooksRequestHeaderParameters,
+      ),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -148,15 +150,10 @@ export class GetBooksOperation implements RunnableOperation<GetBooksRequest, Get
     return this.adapter.getStatusCode(response)
   }
   protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
-    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), getBooksResponseHeadersDeserializer)
+    return this.adapter.getResponseHeaders(response, getBooksResponseHeaderParameters)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      getBooksResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, getBooksResponseBodyValidator)
   }
   public async run(request: GetBooksRequest): Promise<GetBooksResponse> {
     const rawRequest: RawHttpRequest = {

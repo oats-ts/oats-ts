@@ -12,15 +12,17 @@ import {
   RawHttpResponse,
   RunnableOperation,
 } from '@oats-ts/openapi-runtime'
-import { showPetByIdPathSerializer } from './pathSerializers'
-import { listPetsQuerySerializer } from './querySerializers'
+import { showPetByIdPathParameters } from './pathParameters'
+import { ShowPetByIdPathParameters } from './pathTypes'
+import { listPetsQueryParameters } from './queryParameters'
+import { ListPetsQueryParameters } from './queryTypes'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import {
   createPetsResponseBodyValidator,
   listPetsResponseBodyValidator,
   showPetByIdResponseBodyValidator,
 } from './responseBodyValidators'
-import { listPetsResponseHeadersDeserializer } from './responseHeaderDeserializers'
+import { listPetsResponseHeaderParameters } from './responseHeaderParameters'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 
 /**
@@ -38,7 +40,10 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
     return 'post'
   }
   protected getRequestHeaders(request: CreatePetsRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: CreatePetsRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -50,12 +55,7 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      createPetsResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, createPetsResponseBodyValidator)
   }
   public async run(request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const rawRequest: RawHttpRequest = {
@@ -83,14 +83,14 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     this.adapter = adapter
   }
   protected getUrl(request: ListPetsRequest): string {
-    const query = this.adapter.getQuery(request.query, listPetsQuerySerializer)
+    const query = this.adapter.getQuery<ListPetsQueryParameters | undefined>(request.query, listPetsQueryParameters)
     return this.adapter.getUrl('/pets', query)
   }
   protected getHttpMethod(_request: ListPetsRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: ListPetsRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -99,15 +99,10 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     return this.adapter.getStatusCode(response)
   }
   protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
-    return this.adapter.getResponseHeaders(response, this.getStatusCode(response), listPetsResponseHeadersDeserializer)
+    return this.adapter.getResponseHeaders(response, listPetsResponseHeaderParameters)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      listPetsResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, listPetsResponseBodyValidator)
   }
   public async run(request: ListPetsRequest): Promise<ListPetsResponse> {
     const rawRequest: RawHttpRequest = {
@@ -135,14 +130,14 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     this.adapter = adapter
   }
   protected getUrl(request: ShowPetByIdRequest): string {
-    const path = this.adapter.getPath(request.path, showPetByIdPathSerializer)
+    const path = this.adapter.getPath<ShowPetByIdPathParameters>(request.path, showPetByIdPathParameters)
     return this.adapter.getUrl(path, undefined)
   }
   protected getHttpMethod(_request: ShowPetByIdRequest): HttpMethod {
     return 'get'
   }
   protected getRequestHeaders(_request: ShowPetByIdRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -151,12 +146,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      showPetByIdResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, showPetByIdResponseBodyValidator)
   }
   public async run(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const rawRequest: RawHttpRequest = {

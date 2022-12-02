@@ -7,7 +7,6 @@ import {
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { ApiTypeGeneratorConfig } from '../api-type'
 import { ExpressRouterFactoriesGeneratorConfig } from '../express-router-factory'
-import { OperationsGeneratorConfig } from '../operation-functions'
 import { ParameterTypesGeneratorConfig } from '../utils/parameterTypings'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { Config } from '../types'
@@ -15,10 +14,10 @@ import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
 import { CorsConfigurationGeneratorConfig } from '../cors-configuration'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
+import { OperationsGeneratorConfig } from '../operations'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig
-  'oats/operation-function': OperationsGeneratorConfig
   'oats/operation': OperationsGeneratorConfig
   'oats/path-type': ParameterTypesGeneratorConfig
   'oats/query-type': ParameterTypesGeneratorConfig

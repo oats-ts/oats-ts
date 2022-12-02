@@ -1,168 +1,130 @@
-import { CookieValue } from '@oats-ts/openapi-http'
+import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
-import { ValidatorConfig } from '@oats-ts/validators'
 
 export type Primitive = string | number | boolean | undefined
 export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
 export type PrimitiveRecord = Record<string, Primitive> | undefined
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 export type ParameterType = Record<string, ParameterValue>
-export type CookieParameterType = Record<string, Primitive>
 
-export type DslType = 'primitive' | 'array' | 'object'
-export type DslLocation = 'query' | 'header' | 'path' | 'cookie'
-export type DslStyle = 'matrix' | 'label' | 'form' | 'simple' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
+export type Type = 'primitive' | 'array' | 'object'
+export type Location = 'query' | 'header' | 'path' | 'cookie'
 
 export type QueryStyle = 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
 export type PathStyle = 'simple' | 'label' | 'matrix'
 export type HeaderStyle = 'simple'
 export type CookieStyle = 'form'
 
-export type EnumDsl = {
+export type Style = QueryStyle | PathStyle | HeaderStyle | CookieStyle
+
+export type EnumDescriptor = {
   type: 'enum'
-  values: any[]
+  values: Primitive[]
 }
 
-export type LiteralDsl = {
+export type LiteralDescriptor = {
   type: 'literal'
-  value: any
+  value: Primitive
 }
 
-export type OptionalDsl = {
+export type OptionalDescriptor = {
   type: 'optional'
-  dsl: ValueDsl
+  value: ValueDescriptor
 }
 
-export type StringDsl = {
+export type StringDescriptor = {
   type: 'string'
-  dsl?: ValueDsl
+  value?: ValueDescriptor
 }
 
-export type NumberDsl = {
+export type NumberDescriptor = {
   type: 'number'
-  dsl?: ValueDsl
+  value?: ValueDescriptor
 }
 
-export type BooleanDsl = {
+export type BooleanDescriptor = {
   type: 'boolean'
-  dsl?: ValueDsl
+  value?: ValueDescriptor
 }
 
-export type ValueDsl = StringDsl | NumberDsl | BooleanDsl | EnumDsl | OptionalDsl | LiteralDsl
+export type ValueDescriptor =
+  | StringDescriptor
+  | NumberDescriptor
+  | BooleanDescriptor
+  | EnumDescriptor
+  | OptionalDescriptor
+  | LiteralDescriptor
 
-export type DslCommon<D extends DslType, L extends DslLocation, S extends DslStyle> = {
-  type: D
+export type DescriptorCommon<T extends Type, L extends Location, S extends Style> = {
+  type: T
   location: L
   style: S
   required: boolean
   explode: boolean
 }
 
-export type PrimitiveDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'primitive', L, S> & {
-  value: ValueDsl
+export type PrimitiveDescriptor<L extends Location, S extends Style> = DescriptorCommon<'primitive', L, S> & {
+  value: ValueDescriptor
 }
 
-export type ArrayDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'array', L, S> & {
-  items: ValueDsl
+export type ArrayDescriptor<L extends Location, S extends Style> = DescriptorCommon<'array', L, S> & {
+  items: ValueDescriptor
 }
 
-export type PropertiesDsl = Record<string, ValueDsl>
+export type PropertyDescriptors = Record<string, ValueDescriptor>
 
-export type ObjectDsl<L extends DslLocation, S extends DslStyle> = DslCommon<'object', L, S> & {
-  properties: PropertiesDsl
+export type ObjectDescriptor<L extends Location, S extends Style> = DescriptorCommon<'object', L, S> & {
+  properties: PropertyDescriptors
 }
 
-export type Dsl<L extends DslLocation, S extends DslStyle> = PrimitiveDsl<L, S> | ArrayDsl<L, S> | ObjectDsl<L, S>
+export type ParameterDescriptor<L extends Location, S extends Style> =
+  | PrimitiveDescriptor<L, S>
+  | ArrayDescriptor<L, S>
+  | ObjectDescriptor<L, S>
 
-export type DslRoot<T, L extends DslLocation, S extends DslStyle> = {
-  [P in keyof T]: Dsl<L, S>
+export type PathPrimitive = PrimitiveDescriptor<'path', PathStyle>
+export type PathArray = ArrayDescriptor<'path', PathStyle>
+export type PathObject = ObjectDescriptor<'path', PathStyle>
+
+export type QueryPrimitive = PrimitiveDescriptor<'query', QueryStyle>
+export type QueryArray = ArrayDescriptor<'query', QueryStyle>
+export type QueryObject = ObjectDescriptor<'query', QueryStyle>
+
+export type HeaderPrimitive = PrimitiveDescriptor<'header', HeaderStyle>
+export type HeaderArray = ArrayDescriptor<'header', HeaderStyle>
+export type HeaderObject = ObjectDescriptor<'header', HeaderStyle>
+
+export type CookiePrimitive = PrimitiveDescriptor<'cookie', CookieStyle>
+
+export type PathParameterDescriptor = ParameterDescriptor<'path', PathStyle>
+export type QueryParameterDescriptor = ParameterDescriptor<'query', QueryStyle>
+export type HeaderParameterDescriptor = ParameterDescriptor<'header', HeaderStyle>
+export type CookieParameterDescriptor = ParameterDescriptor<'cookie', CookieStyle>
+
+export type ParameterDescriptors<T, L extends Location, S extends Style> = {
+  [P in keyof T]: ParameterDescriptor<L, S>
 }
 
-export type QueryDslRoot<T> = DslRoot<T, 'query', QueryStyle>
-
-export type PathDslRoot<T> = DslRoot<T, 'path', PathStyle>
-
-export type HeaderDslRoot<T> = DslRoot<T, 'header', HeaderStyle>
-
-export type CookieDslRoot<T> = DslRoot<T, 'cookie', CookieStyle>
-
-export type DslConfig = {
-  required: boolean
-  explode: boolean
+export type QueryParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'query', QueryStyle>
 }
 
-export type RawHeaders = Record<string, string>
-export type RawPathParams = Record<string, string>
-export type RawQueryParams = Record<string, string[]>
-
-export type Transform<I, O> = (input: I, name: string, path: string, config: ValidatorConfig) => Try<O>
-
-export type ValueDeserializer<I extends Primitive, O extends Primitive = I> = Transform<I | undefined, O>
-
-export type FieldValueDeserializers<T extends PrimitiveRecord> = {
-  // TODO T[P] does not compile, why?
-  [P in keyof Exclude<T, undefined>]: ValueDeserializer<string, any>
+export type PathParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'path', PathStyle>
+  pathSegments: PathSegment[]
+  matcher: RegExp
 }
 
-export type Deserializer<I, O extends ParameterType> = (input: I, path?: string, config?: ValidatorConfig) => Try<O>
-export type Serializer<I extends ParameterType, O> = (input: I, path?: string, config?: ValidatorConfig) => Try<O>
-
-// Query typings
-export type QuerySerializer<T extends ParameterType> = Serializer<T, string | undefined>
-export type QueryDeserializer<T extends ParameterType> = Deserializer<string, T>
-export type QueryParameterSerializer<T extends ParameterValue> = Transform<T, string[]>
-export type QueryParameterDeserializer<T extends ParameterValue> = Transform<RawQueryParams, T>
-export type QuerySerializers<T extends ParameterType> = {
-  [P in keyof T]: QueryParameterSerializer<T[P]>
-}
-export type QueryDeserializers<T extends ParameterType> = {
-  [P in keyof T]: QueryParameterDeserializer<T[P]>
+export type HeaderParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'header', HeaderStyle>
 }
 
-// Path typings
-export type PathSerializer<T extends ParameterType> = Serializer<T, string>
-export type PathDeserializer<T extends ParameterType> = Deserializer<string, T>
-export type PathParameterSerializer<T extends ParameterValue> = Transform<T, string>
-export type PathParameterDeserializer<T extends ParameterValue> = Transform<RawHeaders, T>
-export type PathSerializers<T extends ParameterType> = {
-  [P in keyof T]: PathParameterSerializer<T[P]>
-}
-export type PathDeserializers<T extends ParameterType> = {
-  [P in keyof T]: PathParameterDeserializer<T[P]>
+export type CookieParameters<T> = {
+  descriptor: ParameterDescriptors<T, 'cookie', CookieStyle>
 }
 
-// Header typings
-export type HeaderSerializer<T extends ParameterType> = Serializer<T, RawHeaders>
-export type HeaderDeserializer<T extends ParameterType> = Deserializer<RawHeaders, T>
-export type HeaderParameterSerializer<T extends ParameterValue> = Transform<T, string | undefined>
-export type HeaderParameterDeserializer<T extends ParameterValue> = Transform<RawHeaders, T>
-export type HeaderSerializers<T extends ParameterType> = {
-  [P in keyof T]: HeaderParameterSerializer<T[P]>
-}
-export type HeaderDeserializers<T extends ParameterType> = {
-  [P in keyof T]: HeaderParameterDeserializer<T[P]>
-}
-
-export type CookieDeserializer<O extends CookieParameterType> = (
-  input: string | undefined,
-  path?: string,
-  config?: ValidatorConfig,
-) => Try<O>
-
-export type CookieSerializer<I extends CookieParameterType> = (
-  input: I,
-  path?: string,
-  config?: ValidatorConfig,
-) => Try<string>
-
-export type CookieParameterSerializer<T extends ParameterValue> = Transform<T, string | undefined>
-export type CookieParameterDeserializer<T extends ParameterValue> = Transform<CookieValue[], T>
-export type CookieSerializers<T extends ParameterType> = {
-  [P in keyof T]: CookieParameterSerializer<T[P]>
-}
-export type CookieDeserializers<T extends ParameterType> = {
-  [P in keyof T]: CookieParameterDeserializer<T[P]>
-}
+export type RawPath = Record<string, string>
+export type RawQuery = Record<string, string[]>
 
 export type ParameterSegment = {
   type: 'parameter'
@@ -175,3 +137,43 @@ export type TextSegment = {
 }
 
 export type PathSegment = ParameterSegment | TextSegment
+
+export type ValueDeserializer = {
+  deserialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<Primitive>
+}
+
+export type ValueSerializer = {
+  serialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<string | undefined>
+}
+
+export type PathSerializer<T> = {
+  serialize(params: T): Try<string>
+}
+
+export type QuerySerializer<T> = {
+  serialize(params: T): Try<string | undefined>
+}
+
+export type HeadersSerializer<T> = {
+  serialize(params: T): Try<RawHttpHeaders>
+}
+
+export type CookieSerializer<T> = {
+  serialize(params: T): Try<string | undefined>
+}
+
+export type PathDeserializer<T> = {
+  deserialize(path: string): Try<T>
+}
+
+export type QueryDeserializer<T> = {
+  deserialize(query: string): Try<T>
+}
+
+export type HeaderDeserializer<T> = {
+  deserialize(headers: RawHttpHeaders): Try<T>
+}
+
+export type CookieDeserializer<T> = {
+  deserialize(cookies: string): Try<T>
+}

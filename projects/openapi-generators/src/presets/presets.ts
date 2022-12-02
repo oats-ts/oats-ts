@@ -33,6 +33,11 @@ function commonConfig(config: OpenAPICommonPresetConfig): OpenAPIPresetConfig {
     'oats/request-headers-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/response-headers-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/cookies-type': isNil(documentation) ? true : { documentation: documentation },
+    'oats/cookie-parameters': true,
+    'oats/path-parameters': true,
+    'oats/query-parameters': true,
+    'oats/request-header-parameters': true,
+    'oats/response-header-parameters': true,
   }
 }
 
@@ -43,11 +48,6 @@ function serverConfig(config: OpenAPIServerPresetConfig): OpenAPIPresetConfig {
     'oats/request-server-type': true,
     'oats/response-server-type': true,
     'oats/request-body-validator': true,
-    'oats/cookie-deserializer': true,
-    'oats/response-headers-serializer': true,
-    'oats/path-deserializer': true,
-    'oats/query-deserializer': true,
-    'oats/request-headers-deserializer': true,
     'oats/api-type': isNil(documentation) ? true : { documentation: documentation },
     'oats/express-router-factory': { cors: shouldGenerateCors },
     'oats/express-router-factories-type': true,
@@ -64,11 +64,6 @@ function clientConfig(config: OpenAPIClientPresetConfig = {}): OpenAPIPresetConf
     'oats/request-type': isNil(debugCookies) ? true : { cookies: debugCookies },
     'oats/response-type': isNil(debugCookies) ? true : { cookies: debugCookies },
     'oats/response-body-validator': true,
-    'oats/cookie-serializer': true,
-    'oats/response-headers-deserializer': true,
-    'oats/path-serializer': true,
-    'oats/query-serializer': true,
-    'oats/request-headers-serializer': true,
     'oats/operation': {
       ...(isNil(documentation) ? {} : { documentation: documentation }),
       ...(isNil(debugCookies) ? {} : { parseSetCookieHeaders: debugCookies, sendCookieHeader: debugCookies }),

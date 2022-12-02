@@ -39,7 +39,7 @@ export class DeleteMethodOperation implements RunnableOperation<void, DeleteMeth
     return 'delete'
   }
   protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -48,12 +48,7 @@ export class DeleteMethodOperation implements RunnableOperation<void, DeleteMeth
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      deleteMethodResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, deleteMethodResponseBodyValidator)
   }
   public async run(): Promise<DeleteMethodResponse> {
     const rawRequest: RawHttpRequest = {
@@ -83,7 +78,7 @@ export class GetMethodOperation implements RunnableOperation<void, GetMethodResp
     return 'get'
   }
   protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -92,12 +87,7 @@ export class GetMethodOperation implements RunnableOperation<void, GetMethodResp
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      getMethodResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, getMethodResponseBodyValidator)
   }
   public async run(): Promise<GetMethodResponse> {
     const rawRequest: RawHttpRequest = {
@@ -127,7 +117,7 @@ export class PatchMethodOperation implements RunnableOperation<void, PatchMethod
     return 'patch'
   }
   protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -136,12 +126,7 @@ export class PatchMethodOperation implements RunnableOperation<void, PatchMethod
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      patchMethodResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, patchMethodResponseBodyValidator)
   }
   public async run(): Promise<PatchMethodResponse> {
     const rawRequest: RawHttpRequest = {
@@ -171,7 +156,7 @@ export class PostMethodOperation implements RunnableOperation<void, PostMethodRe
     return 'post'
   }
   protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -180,12 +165,7 @@ export class PostMethodOperation implements RunnableOperation<void, PostMethodRe
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      postMethodResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, postMethodResponseBodyValidator)
   }
   public async run(): Promise<PostMethodResponse> {
     const rawRequest: RawHttpRequest = {
@@ -215,7 +195,7 @@ export class PutMethodOperation implements RunnableOperation<void, PutMethodResp
     return 'put'
   }
   protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -224,12 +204,7 @@ export class PutMethodOperation implements RunnableOperation<void, PutMethodResp
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      putMethodResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, putMethodResponseBodyValidator)
   }
   public async run(): Promise<PutMethodResponse> {
     const rawRequest: RawHttpRequest = {

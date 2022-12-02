@@ -13,7 +13,8 @@ import {
   RunnableOperation,
   SetCookieValue,
 } from '@oats-ts/openapi-runtime'
-import { protectedPathCookieSerializer } from './cookieSerializers'
+import { protectedPathCookieParameters } from './cookieParameters'
+import { ProtectedPathCookieParameters } from './cookieTypes'
 import { LoginRequest, ProtectedPathRequest } from './requestTypes'
 import { protectedPathResponseBodyValidator } from './responseBodyValidators'
 import { LoginResponse, ProtectedPathResponse } from './responseTypes'
@@ -33,7 +34,10 @@ export class LoginOperation implements RunnableOperation<LoginRequest, LoginResp
     return 'post'
   }
   protected getRequestHeaders(request: LoginRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: LoginRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -72,8 +76,13 @@ export class ProtectedPathOperation implements RunnableOperation<ProtectedPathRe
     return 'get'
   }
   protected getRequestHeaders(request: ProtectedPathRequest): RawHttpHeaders {
-    const cookies = this.adapter.getCookies(request.cookies, protectedPathCookieSerializer)
-    return this.adapter.getRequestHeaders(undefined, undefined, cookies, undefined)
+    return {
+      ...this.adapter.getCookieBasedRequestHeaders<ProtectedPathCookieParameters>(
+        request.cookies,
+        protectedPathCookieParameters,
+      ),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -82,12 +91,7 @@ export class ProtectedPathOperation implements RunnableOperation<ProtectedPathRe
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      protectedPathResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, protectedPathResponseBodyValidator)
   }
   protected getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
     return this.adapter.getResponseCookies(response)

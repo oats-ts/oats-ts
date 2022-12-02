@@ -28,7 +28,7 @@ export class MissingBodyOperation implements RunnableOperation<void, MissingBody
     return 'get'
   }
   protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this.adapter.getAuxiliaryRequestHeaders()
   }
   protected getStatusCode(response: RawHttpResponse): number | undefined {
     return this.adapter.getStatusCode(response)
@@ -61,7 +61,10 @@ export class OptionalRequestBodyOperation
     return 'post'
   }
   protected getRequestHeaders(request: OptionalRequestBodyRequest): RawHttpHeaders {
-    return this.adapter.getRequestHeaders(undefined, request.mimeType, undefined, undefined)
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getRequestBody(request: OptionalRequestBodyRequest): any {
     return this.adapter.getRequestBody(request.mimeType, request.body)
@@ -73,12 +76,7 @@ export class OptionalRequestBodyOperation
     return this.adapter.getStatusCode(response)
   }
   protected getResponseBody(response: RawHttpResponse): any {
-    return this.adapter.getResponseBody(
-      response,
-      this.getStatusCode(response),
-      this.getMimeType(response),
-      optionalRequestBodyResponseBodyValidator,
-    )
+    return this.adapter.getResponseBody(response, optionalRequestBodyResponseBodyValidator)
   }
   public async run(request: OptionalRequestBodyRequest): Promise<OptionalRequestBodyResponse> {
     const rawRequest: RawHttpRequest = {

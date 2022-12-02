@@ -12,15 +12,17 @@ import {
   RawHttpResponse,
   RunnableOperation,
 } from '@oats-ts/openapi-runtime'
-import { showPetByIdPathSerializer } from './pathSerializers'
-import { listPetsQuerySerializer } from './querySerializers'
+import { showPetByIdPathParameters } from './pathParameters'
+import { ShowPetByIdPathParameters } from './pathTypes'
+import { listPetsQueryParameters } from './queryParameters'
+import { ListPetsQueryParameters } from './queryTypes'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import {
   createPetsResponseBodyValidator,
   listPetsResponseBodyValidator,
   showPetByIdResponseBodyValidator,
 } from './responseBodyValidators'
-import { listPetsResponseHeadersDeserializer } from './responseHeaderDeserializers'
+import { listPetsResponseHeaderParameters } from './responseHeaderParameters'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
 
 /**
@@ -38,7 +40,10 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
     return 'post'
   }
   protected _local_getRequestHeaders(_local_request: CreatePetsRequest): RawHttpHeaders {
-    return this._local_adapter.getRequestHeaders(undefined, _local_request.mimeType, undefined, undefined)
+    return {
+      ...this._local_adapter.getMimeTypeBasedRequestHeaders(_local_request.mimeType),
+      ...this._local_adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected _local_getRequestBody(_local_request: CreatePetsRequest): any {
     return this._local_adapter.getRequestBody(_local_request.mimeType, _local_request.body)
@@ -50,12 +55,7 @@ export class CreatePetsOperation implements RunnableOperation<CreatePetsRequest,
     return this._local_adapter.getStatusCode(_local_response)
   }
   protected _local_getResponseBody(_local_response: RawHttpResponse): any {
-    return this._local_adapter.getResponseBody(
-      _local_response,
-      this._local_getStatusCode(_local_response),
-      this._local_getMimeType(_local_response),
-      createPetsResponseBodyValidator,
-    )
+    return this._local_adapter.getResponseBody(_local_response, createPetsResponseBodyValidator)
   }
   public async run(_local_request: CreatePetsRequest): Promise<CreatePetsResponse> {
     const _local_rawRequest: RawHttpRequest = {
@@ -83,14 +83,17 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local_request: ListPetsRequest): string {
-    const _local_query = this._local_adapter.getQuery(_local_request.query, listPetsQuerySerializer)
+    const _local_query = this._local_adapter.getQuery<ListPetsQueryParameters | undefined>(
+      _local_request.query,
+      listPetsQueryParameters,
+    )
     return this._local_adapter.getUrl('/pets', _local_query)
   }
   protected _local_getHttpMethod(_local__request: ListPetsRequest): HttpMethod {
     return 'get'
   }
   protected _local_getRequestHeaders(_local__request: ListPetsRequest): RawHttpHeaders {
-    return this._local_adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this._local_adapter.getAuxiliaryRequestHeaders()
   }
   protected _local_getMimeType(_local_response: RawHttpResponse): string | undefined {
     return this._local_adapter.getMimeType(_local_response)
@@ -99,19 +102,10 @@ export class ListPetsOperation implements RunnableOperation<ListPetsRequest, Lis
     return this._local_adapter.getStatusCode(_local_response)
   }
   protected _local_getResponseHeaders(_local_response: RawHttpResponse): RawHttpHeaders {
-    return this._local_adapter.getResponseHeaders(
-      _local_response,
-      this._local_getStatusCode(_local_response),
-      listPetsResponseHeadersDeserializer,
-    )
+    return this._local_adapter.getResponseHeaders(_local_response, listPetsResponseHeaderParameters)
   }
   protected _local_getResponseBody(_local_response: RawHttpResponse): any {
-    return this._local_adapter.getResponseBody(
-      _local_response,
-      this._local_getStatusCode(_local_response),
-      this._local_getMimeType(_local_response),
-      listPetsResponseBodyValidator,
-    )
+    return this._local_adapter.getResponseBody(_local_response, listPetsResponseBodyValidator)
   }
   public async run(_local_request: ListPetsRequest): Promise<ListPetsResponse> {
     const _local_rawRequest: RawHttpRequest = {
@@ -139,14 +133,17 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     this._local_adapter = _local_adapter
   }
   protected _local_getUrl(_local_request: ShowPetByIdRequest): string {
-    const _local_path = this._local_adapter.getPath(_local_request.path, showPetByIdPathSerializer)
+    const _local_path = this._local_adapter.getPath<ShowPetByIdPathParameters>(
+      _local_request.path,
+      showPetByIdPathParameters,
+    )
     return this._local_adapter.getUrl(_local_path, undefined)
   }
   protected _local_getHttpMethod(_local__request: ShowPetByIdRequest): HttpMethod {
     return 'get'
   }
   protected _local_getRequestHeaders(_local__request: ShowPetByIdRequest): RawHttpHeaders {
-    return this._local_adapter.getRequestHeaders(undefined, undefined, undefined, undefined)
+    return this._local_adapter.getAuxiliaryRequestHeaders()
   }
   protected _local_getMimeType(_local_response: RawHttpResponse): string | undefined {
     return this._local_adapter.getMimeType(_local_response)
@@ -155,12 +152,7 @@ export class ShowPetByIdOperation implements RunnableOperation<ShowPetByIdReques
     return this._local_adapter.getStatusCode(_local_response)
   }
   protected _local_getResponseBody(_local_response: RawHttpResponse): any {
-    return this._local_adapter.getResponseBody(
-      _local_response,
-      this._local_getStatusCode(_local_response),
-      this._local_getMimeType(_local_response),
-      showPetByIdResponseBodyValidator,
-    )
+    return this._local_adapter.getResponseBody(_local_response, showPetByIdResponseBodyValidator)
   }
   public async run(_local_request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     const _local_rawRequest: RawHttpRequest = {

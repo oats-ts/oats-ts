@@ -7,6 +7,7 @@ import {
   RunnableOperation,
   HttpResponse,
 } from '@oats-ts/openapi-http'
+import { PathParameters } from '@oats-ts/openapi-parameter-serialization'
 
 export const ServerAdapterMethods: Record<keyof ServerAdapter<any>, keyof ServerAdapter<any>> = {
   getPathParameters: 'getPathParameters',
@@ -30,8 +31,6 @@ export const ClientAdapterMethods: Record<keyof ClientAdapter, keyof ClientAdapt
   getPath: 'getPath',
   getQuery: 'getQuery',
   getUrl: 'getUrl',
-  getCookies: 'getCookies',
-  getRequestHeaders: 'getRequestHeaders',
   getRequestBody: 'getRequestBody',
   request: 'request',
   getMimeType: 'getMimeType',
@@ -39,6 +38,10 @@ export const ClientAdapterMethods: Record<keyof ClientAdapter, keyof ClientAdapt
   getResponseCookies: 'getResponseCookies',
   getResponseHeaders: 'getResponseHeaders',
   getResponseBody: 'getResponseBody',
+  getCookieBasedRequestHeaders: 'getCookieBasedRequestHeaders',
+  getParameterBasedRequestHeaders: 'getParameterBasedRequestHeaders',
+  getMimeTypeBasedRequestHeaders: 'getMimeTypeBasedRequestHeaders',
+  getAuxiliaryRequestHeaders: 'getAuxiliaryRequestHeaders',
 }
 
 export const RawHttpRequestFields: Record<keyof RawHttpRequest, keyof RawHttpRequest> = {
@@ -97,3 +100,17 @@ export const OperationCorsConfigurationFields: Record<
 export const RunnableOperationMethods: Record<keyof RunnableOperation<any, any>, keyof RunnableOperation<any, any>> = {
   run: 'run',
 }
+
+export const ParametersFields: Record<keyof PathParameters<any>, keyof PathParameters<any>> = {
+  descriptor: 'descriptor',
+  matcher: 'matcher',
+  pathSegments: 'pathSegments',
+}
+
+export const ParameterFactoryFields = {
+  exploded: 'exploded',
+  required: 'required',
+  value: 'value',
+  enum: 'enum',
+  optional: 'optional',
+} as const
