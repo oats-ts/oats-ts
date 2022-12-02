@@ -1,5 +1,5 @@
 import { FetchClientAdapter } from '@oats-ts/openapi-fetch-client-adapter'
-import YAML from 'yamljs'
+import { parse, stringify } from 'yaml'
 import { PartialContentSdkImpl } from '../generated/partial-content/sdkImpl'
 import { BodiesSdkImpl } from '../generated/bodies/sdkImpl'
 import { PATH } from './constants'
@@ -10,10 +10,10 @@ import { CookiesSdkImpl } from '../generated/cookies/sdkImpl'
 
 class YamlFetchClientAdapter extends FetchClientAdapter {
   override async getParsedResponseBody(response: any): Promise<any> {
-    return YAML.parse(await response.text())
+    return parse(await response.text())
   }
   override async getRequestBody(_mimeType: string, body: any): Promise<any> {
-    return YAML.stringify(body)
+    return stringify(body)
   }
 }
 

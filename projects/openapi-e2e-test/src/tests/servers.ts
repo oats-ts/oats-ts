@@ -1,6 +1,6 @@
 import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { HttpResponse } from '@oats-ts/openapi-http'
-import YAML from 'yamljs'
+import { stringify } from 'yaml'
 import { BodiesApiImpl } from './bodies/BodiesApiImpl'
 import { PartialContentApiImpl } from './bodies/PartialContentApiImpl'
 import { BookStoreApiImpl } from './bookStore/BookStoreApiImpl'
@@ -53,7 +53,7 @@ export function testPartialContentServer() {
 export function testBodiesServer(mimeType: 'application/json' | 'application/yaml') {
   class YamlExpressServerAdapter extends ExpressServerAdapter {
     override async getResponseBody(_: ExpressToolkit, { body }: HttpResponse) {
-      return YAML.stringify(body)
+      return stringify(body)
     }
   }
 

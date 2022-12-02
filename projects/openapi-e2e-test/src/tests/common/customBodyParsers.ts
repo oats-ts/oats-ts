@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Handler } from 'express'
 import { isNil } from 'lodash'
 import { Writable } from 'stream'
-import YAML from 'yamljs'
+import { parse } from 'yaml'
 
 export const stringBasedBodyParser =
   (accept: (mimeType: string) => boolean, parse: (input: string) => any): Handler =>
@@ -38,7 +38,7 @@ const json = () =>
 const yaml = () =>
   stringBasedBodyParser(
     (mimeType) => mimeType.indexOf('yaml') >= 0,
-    (input: string) => YAML.parse(input),
+    (input: string) => parse(input),
   )
 
 export const customBodyParsers = {
