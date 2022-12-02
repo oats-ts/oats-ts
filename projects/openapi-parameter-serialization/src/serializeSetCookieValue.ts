@@ -1,7 +1,7 @@
 import { SetCookieValue } from '@oats-ts/openapi-http'
 import { encode, isNil } from './utils'
 
-export function serializeCookieValue(cookie: SetCookieValue): string {
+export function serializeSetCookieValue(cookie: SetCookieValue): string {
   const parts: string[] = [`${cookie.name}=${cookie.value}`]
   if (!isNil(cookie.expires)) {
     parts.push(`Expires=${encode(cookie.expires)}`)

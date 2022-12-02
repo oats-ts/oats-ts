@@ -63,18 +63,6 @@ const openApiExpressServerAdapterExports = {
 }
 
 const openApiParameterSerializationExports = {
-  createHeaderSerializer: 'createHeaderSerializer',
-  createPathSerializer: 'createPathSerializer',
-  createQuerySerializer: 'createQuerySerializer',
-  createCookieSerializer: 'createCookieSerializer',
-  createSetCookieSerializer: 'createSetCookieSerializer',
-  serializers: 'serializers',
-  createQueryDeserializer: 'createQueryDeserializer',
-  createPathDeserializer: 'createPathDeserializer',
-  createHeaderDeserializer: 'createHeaderDeserializer',
-  createCookieDeserializer: 'createCookieDeserializer',
-  createSetCookieDeserializer: 'createSetCookieDeserializer',
-  deserializers: 'deserializers',
   parameter: 'parameter',
   dsl: 'dsl',
   HeaderDsl: 'HeaderDsl',
@@ -87,50 +75,6 @@ const openApiParameterSerializationExports = {
   CookieParameters: 'CookieParameters',
   parsePathToMatcher: 'parsePathToMatcher',
   parsePathToSegments: 'parsePathToSegments',
-}
-
-const openApiParameterSerializationContent = {
-  serializers: {
-    createHeaderSerializer: 'createHeaderSerializer',
-    createPathSerializer: 'createPathSerializer',
-    createQuerySerializer: 'createQuerySerializer',
-    createCookieSerializer: 'createCookieSerializer',
-    createSetCookieSerializer: 'createSetCookieSerializer',
-  },
-  deserializers: {
-    createQueryDeserializer: 'createQueryDeserializer',
-    createPathDeserializer: 'createPathDeserializer',
-    createHeaderDeserializer: 'createHeaderDeserializer',
-    createCookieDeserializer: 'createCookieDeserializer',
-    createSetCookieDeserializer: 'createSetCookieDeserializer',
-  },
-  dsl: {
-    value: {
-      optional: 'optional',
-      string: 'string',
-      number: 'number',
-      boolean: 'boolean',
-      literal: 'literal',
-      enum: 'enum',
-    },
-    path: {
-      simple: { primitive: 'primitive', array: 'array', object: 'object' },
-      label: { primitive: 'primitive', array: 'array', object: 'object' },
-      matrix: { primitive: 'primitive', array: 'array', object: 'object' },
-    },
-    query: {
-      form: { primitive: 'primitive', array: 'array', object: 'object' },
-      spaceDelimited: { array: 'array' },
-      pipeDelimited: { array: 'array' },
-      deepObject: { object: 'object' },
-    },
-    header: {
-      simple: { primitive: 'primitive', array: 'array', object: 'object' },
-    },
-    cookie: {
-      form: { primitive: 'primitive' },
-    },
-  },
 }
 
 const expressExports = {
@@ -154,11 +98,7 @@ export type OpenApiHttpExports = typeof openApiHttpExports
 export type OpenApiHttpPackage = RuntimePackage<OpenApiHttpExports, {}>
 
 export type OpenApiParameterSerializationExports = typeof openApiParameterSerializationExports
-export type OpenApiParameterSerializationContent = typeof openApiParameterSerializationContent
-export type OpenApiParameterSerializationPackage = RuntimePackage<
-  OpenApiParameterSerializationExports,
-  OpenApiParameterSerializationContent
->
+export type OpenApiParameterSerializationPackage = RuntimePackage<OpenApiParameterSerializationExports, {}>
 
 export type OpenApiExpressServerAdapterExports = typeof openApiExpressServerAdapterExports
 export type OpenApiExpressServerAdapterPackage = RuntimePackage<OpenApiExpressServerAdapterExports, {}>
@@ -170,7 +110,7 @@ export type OpenAPIRuntimeExports = ValidatorsExports &
   TryExports &
   OpenApiHttpExports &
   OpenApiParameterSerializationExports
-export type OpenAPIRuntimeContent = ValidatorsContent & OpenApiParameterSerializationContent
+export type OpenAPIRuntimeContent = ValidatorsContent
 export type OpenAPIRuntimePackage = RuntimePackage<OpenAPIRuntimeExports, OpenAPIRuntimeContent>
 
 const validators = {
@@ -200,7 +140,7 @@ const openApiExpressServerAdapter = {
 const openApiParameterSerialization = {
   name: '@oats-ts/openapi-parameter-serialization',
   exports: openApiParameterSerializationExports,
-  content: openApiParameterSerializationContent,
+  content: {},
 }
 
 const express = {
@@ -219,7 +159,6 @@ const openApiRuntime = {
   },
   content: {
     ...validatorsContent,
-    ...openApiParameterSerializationContent,
   },
 }
 

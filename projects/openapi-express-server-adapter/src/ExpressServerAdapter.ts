@@ -17,7 +17,7 @@ import {
   DefaultHeaderSerializer,
   DefaultPathDeserializer,
   DefaultQueryDeserializer,
-  serializeCookieValue,
+  serializeSetCookieValue,
 } from '@oats-ts/openapi-parameter-serialization'
 import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
@@ -239,7 +239,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
       }
     }
     if (rawResponse.cookies !== null && rawResponse.cookies !== undefined && !toolkit.response.headersSent) {
-      const cookies = (rawResponse.cookies ?? []).map((cookie) => serializeCookieValue(cookie))
+      const cookies = (rawResponse.cookies ?? []).map((cookie) => serializeSetCookieValue(cookie))
       if (cookies.length > 0) {
         // Possibly multiple headers, have to use array parameter to set them all as individual headers
         toolkit.response.header('set-cookie', cookies)
