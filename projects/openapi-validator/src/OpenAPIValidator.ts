@@ -121,7 +121,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       },
       message: (type: ValidatorType, path: string, data?: any) => {
         if (type === 'restrictKeys') {
-          return 'unused field'
+          return 'excess unused field'
         }
         return DefaultConfig.message(type, path, data)
       },
@@ -367,7 +367,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
 
   protected validateObjectSchemaObject(data: SchemaObject, properties?: (data: SchemaObject) => Issue[]): Issue[] {
     return [
-      ...flatMap(values(data.properties), (schema) =>
+      ...flatMap(values(data.properties ?? {}), (schema) =>
         this.validateReferenceable(schema, true, properties ?? ((schema) => this.validateSchemaObject(schema))),
       ),
     ]

@@ -136,7 +136,7 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
   }
 
   protected getObjectTypeAst(data: SchemaObject): TypeNode {
-    const discriminators = getDiscriminators(data, this.context()) || {}
+    const discriminators = getDiscriminators(data, this.context()) ?? {}
     const config = this.configuration()
     const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(
       ([name, value]): PropertySignature => {
@@ -149,10 +149,10 @@ export class JsonSchemaTypesGenerator<T extends JsonSchemaReadOutput> extends Sc
       },
     )
 
-    const properties = sortBy(entries(data.properties || {}), ([name]) => name)
+    const properties = sortBy(entries(data.properties ?? {}), ([name]) => name)
       .filter(([name]) => !has(discriminators, name))
       .map(([name, schemaOrRef]): PropertySignature => {
-        const isOptional = (data.required || []).indexOf(name) < 0
+        const isOptional = (data.required ?? []).indexOf(name) < 0
         const node = factory.createPropertySignature(
           undefined,
           safeName(name),

@@ -86,7 +86,7 @@ function getTypeDsl(
       return factory.createIdentifier('undefined')
     }
     case 'object': {
-      const properties = entries(schema.properties).map(([name, propSchema]) => {
+      const properties = entries(schema.properties ?? {}).map(([name, propSchema]) => {
         const isRequired = (schema.required || []).indexOf(name) >= 0
         const typeDsl = getTypeDsl(propSchema, context, paramsPkg)
         return factory.createPropertyAssignment(

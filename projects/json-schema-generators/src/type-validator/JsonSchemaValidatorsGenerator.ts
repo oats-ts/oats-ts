@@ -256,7 +256,7 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
   }
 
   protected getObjectTypeValidatorAst(data: SchemaObject): Expression {
-    const discriminators = getDiscriminators(data, this.context()) || {}
+    const discriminators = getDiscriminators(data, this.context()) ?? {}
     const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
       factory.createPropertyAssignment(
         safeName(name),
@@ -264,10 +264,10 @@ export class JsonSchemaValidatorsGenerator<T extends JsonSchemaReadOutput> exten
       ),
     )
 
-    const basicProperties = sortBy(entries(data.properties || {}), ([name]) => name)
+    const basicProperties = sortBy(entries(data.properties ?? {}), ([name]) => name)
       .filter(([name]) => !has(discriminators, name))
       .map(([name, schema]) => {
-        const isOptional = (data.required || []).indexOf(name) < 0
+        const isOptional = (data.required ?? []).indexOf(name) < 0
         const rhs = this.getRightHandSideValidatorAst(schema)
         const value = isOptional ? factory.createCallExpression(this.getValidatorAst('optional'), [], [rhs]) : rhs
         return factory.createPropertyAssignment(safeName(name), value)

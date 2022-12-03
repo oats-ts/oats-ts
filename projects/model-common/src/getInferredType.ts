@@ -40,11 +40,11 @@ export function getInferredType(data: Referenceable<SchemaObject>): InferredType
     return 'boolean'
   }
 
-  if (!isNil(data.additionalProperties)) {
+  if (!isNil(data.additionalProperties) && data.additionalProperties !== true && data.additionalProperties !== false) {
     return 'record'
   }
 
-  if (!isNil(data.properties) || data.type === 'object') {
+  if ((!isNil(data.properties) || data.type === 'object') && data.additionalProperties !== true) {
     return 'object'
   }
 

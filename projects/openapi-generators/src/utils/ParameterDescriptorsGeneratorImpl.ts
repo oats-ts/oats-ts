@@ -157,7 +157,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         return this.getValueDescriptor(typeof schema.items === 'boolean' ? { type: 'string' } : schema.items)
       }
       case 'object': {
-        const properties = entries(schema.properties).map(([name, propSchema]) => {
+        const properties = entries(schema.properties ?? {}).map(([name, propSchema]) => {
           const isRequired = (schema.required || []).indexOf(name) >= 0
           const requiredValueDesc = this.getValueDescriptor(propSchema)
           const valueDesc = isRequired

@@ -9,7 +9,10 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import {
+import { Validator, ShapeInput, validators } from '@oats-ts/validators'
+import { entries } from 'lodash'
+
+const {
   object,
   optional,
   shape,
@@ -23,12 +26,9 @@ import {
   minLength,
   boolean,
   union,
-  Validator,
-  ShapeInput,
   number,
   any,
-} from '@oats-ts/validators'
-import { entries } from 'lodash'
+} = validators
 
 export const factories = {
   literalSchemaObject: () => {
@@ -101,8 +101,9 @@ export const factories = {
     const objectSchemaShape: ShapeInput<SchemaObject> = {
       type: optional(literal('object')),
       required: optional(array(items(string()))),
-      properties: object(),
+      properties: optional(object()),
       description: optional(string()),
+      additionalProperties: optional(literal(false)),
     }
     return object(combine(shape<SchemaObject>(objectSchemaShape), restrictKeys(Object.keys(objectSchemaShape))))
   },
@@ -137,10 +138,7 @@ export const factories = {
     const recordShape: ShapeInput<SchemaObject> = {
       type: optional(literal('object')),
       description: optional(string()),
-      additionalProperties: union({
-        false: literal(false),
-        schema: object(),
-      }),
+      additionalProperties: object(),
     }
     return object(combine(shape<SchemaObject>(recordShape), restrictKeys(Object.keys(recordShape))))
   },

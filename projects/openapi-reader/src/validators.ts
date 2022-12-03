@@ -11,21 +11,9 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import {
-  shape,
-  object,
-  optional,
-  record,
-  string,
-  array,
-  items,
-  boolean,
-  any,
-  Validator,
-  literal,
-  union,
-  number,
-} from '@oats-ts/validators'
+import { Validator, validators as v } from '@oats-ts/validators'
+
+const { shape, object, optional, record, string, array, items, boolean, any, literal, union, number } = v
 
 const recordOfObjects = object(record(string(), object()))
 
@@ -189,7 +177,7 @@ export const validators = {
       additionalProperties: optional(
         union({
           schema: object(),
-          false: literal(false),
+          boolean: boolean(),
         }),
       ),
       default: optional(any()),

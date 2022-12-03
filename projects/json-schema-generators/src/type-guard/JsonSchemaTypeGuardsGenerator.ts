@@ -318,7 +318,7 @@ export class JsonSchemaTypeGuardsGenerator<T extends JsonSchemaReadOutput> exten
         factory.createStringLiteral(value),
       )
     })
-    const propertyAssertions = sortBy(entries(data.properties || {}), ([name]) => name)
+    const propertyAssertions = sortBy(entries(data.properties ?? {}), ([name]) => name)
       .filter(([name]) => !has(discriminators, name))
       .map(([name, schemaOrRef]) => {
         const memberVar = safeMemberAccess(variable, name)
