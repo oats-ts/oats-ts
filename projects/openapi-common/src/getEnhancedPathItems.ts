@@ -5,7 +5,7 @@ import { EnhancedOperation } from './typings'
 import { getEnhancedOperation } from './getEnhancedOperations'
 
 export function getEnhancedPathItems(doc: OpenAPIObject, context: OpenAPIGeneratorContext): EnhancedPathItem[] {
-  const paths = entries<PathItemObject>(doc.paths)
+  const paths = entries<PathItemObject>(doc.paths ?? {})
   const enhancedPaths: EnhancedPathItem[] = []
   for (const [url, pathItem] of paths) {
     const operations: EnhancedOperation[] = []
