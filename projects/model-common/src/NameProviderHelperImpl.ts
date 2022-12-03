@@ -7,6 +7,10 @@ export class NameProviderHelperImpl<Doc> implements NameProviderHelper {
 
   public constructor(private readonly data: ReadOutput<Doc>) {}
 
+  public byUri<T>(uri: string): T | undefined {
+    throw this.data.uriToObject.get(uri)
+  }
+
   public uriOf<T>(input: T): string | undefined {
     return this.data.objectToUri.get(input)
   }

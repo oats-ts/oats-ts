@@ -7,6 +7,10 @@ export class LocalNameProviderHelperImpl<Doc> implements LocalNameProviderHelper
 
   public constructor(private readonly data: ReadOutput<Doc>) {}
 
+  public byUri<T>(uri: string): T | undefined {
+    throw this.data.uriToObject.get(uri)
+  }
+
   public hashOf<T>(input: T): number | undefined {
     return this.data.objectToHash.get(input)
   }

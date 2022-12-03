@@ -99,7 +99,7 @@ export const validators = {
       summary: optional(string()),
       description: optional(string()),
       externalDocs: optional(object()),
-      operationId: string(),
+      operationId: optional(string()),
       parameters: optional(array(items(object()))),
       requestBody: optional(object()),
       responses: optional(object()),

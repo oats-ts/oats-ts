@@ -4,6 +4,8 @@ import { isNil } from 'lodash'
 import { NameProvider, NameProviderHelper } from '@oats-ts/oats-ts'
 import { DelegatingNameProviderInput, OpenAPIGeneratorTarget } from './typings'
 import { OpenAPIObject, OperationObject } from '@oats-ts/openapi-model'
+import { getOperationName as _getOperationName } from './getOperationName'
+import { getSanitizedName } from './getSanitizedName'
 
 type NameProviderDelegate = (name: string, input: any, target: string, helper: NameProviderHelper) => string
 
@@ -20,7 +22,9 @@ const key: NameProvider = (input, target, helper) => {
   return name
 }
 
-const operationId: NameProvider = (operation: OperationObject) => operation.operationId!
+const operationId: NameProvider = (operation: OperationObject, _target: string, helper: NameProviderHelper) => {
+  return _getOperationName(operation, helper)
+}
 
 const documentTitle: NameProvider = (doc: OpenAPIObject) => pascalCase(doc.info?.title || '')
 
@@ -39,17 +43,17 @@ const prepend =
     `${prefix}${name}`
 
 const defaultDelegates: DelegatingNameProviderInput = {
-  'oats/type': _delegating(key, toPascalCase),
-  'oats/type-guard': _delegating(key, prepend('is-'), toCamelCase),
-  'oats/type-validator': _delegating(key, toCamelCase, append('TypeValidator')),
+  'oats/type': _delegating(key, getSanitizedName, toPascalCase),
+  'oats/type-guard': _delegating(key, getSanitizedName, prepend('is-'), toCamelCase),
+  'oats/type-validator': _delegating(key, getSanitizedName, toCamelCase, append('TypeValidator')),
   'oats/operation': _delegating(operationId, toPascalCase, append('Operation')),
   'oats/query-type': _delegating(operationId, toPascalCase, append('QueryParameters')),
   'oats/path-type': _delegating(operationId, toPascalCase, append('PathParameters')),
   'oats/cookies-type': _delegating(operationId, toPascalCase, append('CookieParameters')),
   'oats/request-headers-type': _delegating(operationId, toPascalCase, append('RequestHeaderParameters')),
-  'oats/response-headers-type': (input: [OperationObject, string]) => {
+  'oats/response-headers-type': (input: [OperationObject, string], target: string, helper: NameProviderHelper) => {
     const [operation, status] = input
-    return pascalCase(`${operation.operationId}${pascalCase(status)}ResponseHeaderParameters`)
+    return pascalCase(`${operationId(operation, target, helper)}${pascalCase(status)}ResponseHeaderParameters`)
   },
   'oats/response-type': _delegating(operationId, toPascalCase, append('Response')),
   'oats/response-server-type': _delegating(operationId, toPascalCase, append('ServerResponse')),
@@ -58,13 +62,30 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/request-body-validator': _delegating(operationId, toCamelCase, append('RequestBodyValidator')),
   'oats/response-body-validator': _delegating(operationId, toCamelCase, append('ResponseBodyValidator')),
   'oats/express-router-factory': _delegating(operationId, toPascalCase, prepend('create'), append('Router')),
-  'oats/sdk-type': _delegating(documentTitle, toPascalCase, append('Sdk')),
-  'oats/sdk-impl': _delegating(documentTitle, toPascalCase, append('SdkImpl')),
-  'oats/api-type': _delegating(documentTitle, toPascalCase, append('Api')),
-  'oats/cors-configuration': _delegating(documentTitle, toCamelCase, append('CorsConfiguration')),
-  'oats/express-app-router-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('AppRouter')),
-  'oats/express-router-factories-type': _delegating(documentTitle, toPascalCase, append('RouterFactories')),
-  'oats/express-cors-router-factory': _delegating(documentTitle, toPascalCase, prepend('create'), append('CorsRouter')),
+  'oats/sdk-type': _delegating(documentTitle, getSanitizedName, toPascalCase, append('Sdk')),
+  'oats/sdk-impl': _delegating(documentTitle, getSanitizedName, toPascalCase, append('SdkImpl')),
+  'oats/api-type': _delegating(documentTitle, getSanitizedName, toPascalCase, append('Api')),
+  'oats/cors-configuration': _delegating(documentTitle, getSanitizedName, toCamelCase, append('CorsConfiguration')),
+  'oats/express-app-router-factory': _delegating(
+    documentTitle,
+    getSanitizedName,
+    toPascalCase,
+    prepend('create'),
+    append('AppRouter'),
+  ),
+  'oats/express-router-factories-type': _delegating(
+    documentTitle,
+    getSanitizedName,
+    toPascalCase,
+    append('RouterFactories'),
+  ),
+  'oats/express-cors-router-factory': _delegating(
+    documentTitle,
+    getSanitizedName,
+    toPascalCase,
+    prepend('create'),
+    append('CorsRouter'),
+  ),
   'oats/express-context-router-factory': _delegating(
     documentTitle,
     toPascalCase,

@@ -11,6 +11,7 @@ export type {
 export { getEnhancedOperations } from './getEnhancedOperations'
 export { getEnhancedPathItems } from './getEnhancedPathItems'
 export { getEnhancedResponses } from './getEnhancedResponses'
+export { getOperationName } from './getOperationName'
 export { getParameterKind } from './getParameterKind'
 export { getParameterStyle } from './getParameterStyle'
 export { getParameterName } from './getParameterName'

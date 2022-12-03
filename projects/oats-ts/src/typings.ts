@@ -119,25 +119,22 @@ export type GeneratorConfig = {
   noEmit?: boolean
 }
 
-export type NameProviderHelper = {
+export type BaseHelper = {
+  byUri<T>(uri: string): T | undefined
   uriOf<T>(input: T): string | undefined
   parent<T, P>(input: T): P | undefined
+  hashOf<T>(input: T): number | undefined
+}
+
+export type NameProviderHelper = BaseHelper & {
   nameOf<T>(input: T): string | undefined
-  hashOf<T>(input: T): number | undefined
 }
 
-export type PathProviderHelper = {
-  uriOf<T>(input: T): string | undefined
-  parent<T, P>(input: T): P | undefined
+export type PathProviderHelper = BaseHelper & {
   nameOf<T>(input: T, target: string): string
-  hashOf<T>(input: T): number | undefined
 }
 
-export type LocalNameProviderHelper = {
-  uriOf<T>(input: T): string | undefined
-  parent<T, P>(input: T): P | undefined
-  hashOf<T>(input: T): number | undefined
-}
+export type LocalNameProviderHelper = BaseHelper & {}
 
 export type NameProvider = (input: any, target: string, helper: NameProviderHelper) => string
 

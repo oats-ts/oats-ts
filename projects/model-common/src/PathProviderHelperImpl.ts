@@ -11,6 +11,10 @@ export class PathProviderHelperImpl<Doc> implements PathProviderHelper {
     private readonly nameProviderHelper: NameProviderHelper,
   ) {}
 
+  public byUri<T>(uri: string): T | undefined {
+    throw this.data.uriToObject.get(uri)
+  }
+
   public hashOf<T>(input: T): number | undefined {
     return this.data.objectToHash.get(input)
   }
