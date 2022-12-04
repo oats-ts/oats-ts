@@ -31,9 +31,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {
-    return getEnhancedResponses(item.operation, this.context()).some(
-      (resp) => !isNil(resp.mediaType) && !isNil(resp.schema),
-    )
+    return getEnhancedResponses(item.operation, this.context()).some((resp) => !isNil(resp.mediaType))
   }
 
   public referenceOf(input: OperationObject): TypeNode | Expression | undefined {

@@ -160,7 +160,7 @@ export const factories = {
     return object(record(string(), object()))
   },
   mediaTypeObject: () => {
-    const medieTypeShape: ShapeInput<MediaTypeObject> = { schema: object() }
+    const medieTypeShape: ShapeInput<MediaTypeObject> = { schema: optional(object()) }
     return object(combine(shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape))))
   },
   openApiObject: () => {
@@ -201,7 +201,7 @@ export const factories = {
   requestBodyObject: () => {
     const requestBodyShape: ShapeInput<RequestBodyObject> = {
       description: optional(string()),
-      content: object(record(string(), object())),
+      content: optional(object(record(string(), object()))),
       required: optional(boolean()),
     }
     return object(combine(shape<RequestBodyObject>(requestBodyShape), restrictKeys(Object.keys(requestBodyShape))))

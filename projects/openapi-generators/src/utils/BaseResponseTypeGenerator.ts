@@ -71,11 +71,11 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   }
 
   protected needsMimeTypeProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
-    return !isNil(response.mediaType) && !isNil(response.schema)
+    return !isNil(response.mediaType)
   }
 
   protected needsBodyProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
-    return !isNil(response.mediaType) && !isNil(response.schema)
+    return !isNil(response.mediaType)
   }
 
   protected needsStatusCodeProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
@@ -169,7 +169,9 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
     response: EnhancedResponse,
   ): PropertySignature | undefined {
     if (this.needsBodyProperty(operation, response)) {
-      const type = this.context().referenceOf<TypeNode>(response.schema, 'oats/type')
+      const type = isNil(response.schema)
+        ? factory.createTypeReferenceNode('any')
+        : this.context().referenceOf<TypeNode>(response.schema, 'oats/type')
       return factory.createPropertySignature(undefined, HttpResponseFields.body, undefined, type)
     }
     return undefined

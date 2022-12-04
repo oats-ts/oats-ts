@@ -619,6 +619,15 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   }
 
   protected validateMediaTypeObject(data: MediaTypeObject): Issue[] {
+    if (isNil(data.schema)) {
+      return [
+        {
+          message: 'missing schema (strict typing is impossible without it)',
+          path: this.config().append(this.context().uriOf(data), 'schema'),
+          severity: 'warning',
+        },
+      ]
+    }
     return [...this.validateReferenceable(data.schema!, false, (schema) => this.validateSchemaObject(schema))]
   }
 

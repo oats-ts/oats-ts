@@ -132,7 +132,7 @@ export const validators = {
   requestBodyObject: object(
     shape<RequestBodyObject>({
       description: optional(string()),
-      content: object(),
+      content: optional(object()),
       required: optional(boolean()),
     }),
   ),
