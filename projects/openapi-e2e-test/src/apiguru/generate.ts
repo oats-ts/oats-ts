@@ -42,12 +42,18 @@ export async function generateSingleDocument(inputPath: string, ouptutPath: stri
 }
 
 async function generateChunk(files: string[], index: number): Promise<number> {
-  const output = await Promise.all(files.map((file) => generateSingleDocument(file, resolve('test.ts'))))
-  const content = output
-    .map(([data]) => data)
-    .join('\n\n')
-    .concat('\n\n')
-  await writeFile(OUTPUT_FILE, content, { flag: 'a+', encoding: 'utf-8' })
+  const output = (await Promise.all(files.map((file) => generateSingleDocument(file, resolve('test.ts'))))).filter(
+    ([, type]) => type !== 'ok',
+  )
+
+  if (output.length > 0) {
+    const content = output
+      .map(([data]) => data)
+      .join('\n\n')
+      .concat('\n\n')
+    await writeFile(OUTPUT_FILE, content, { flag: 'a+', encoding: 'utf-8' })
+  }
+
   const issues = output
     .map(([, result]) => result)
     .filter((result) => result !== 'ok')
