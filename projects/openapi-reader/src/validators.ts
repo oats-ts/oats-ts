@@ -36,7 +36,7 @@ const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any
   explode: optional(boolean()),
   allowReserved: optional(boolean()),
   schema: optional(object()),
-  examples: optional(object()),
+  examples: optional(any()),
   example: optional(any()),
   content: optional(object()),
 }
@@ -76,8 +76,8 @@ export const validators = {
   mediaTypeObject: object(
     shape<MediaTypeObject>({
       schema: optional(object()),
-      examples: optional(object()),
-      example: optional(object()),
+      examples: optional(any()),
+      example: optional(any()),
       encoding: optional(object()),
     }),
   ),
@@ -181,7 +181,7 @@ export const validators = {
         }),
       ),
       default: optional(any()),
-      examples: optional(array()),
+      examples: optional(any()),
       externalDocs: optional(object()),
       maxProperties: optional(number()),
       minProperties: optional(number()),

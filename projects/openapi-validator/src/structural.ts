@@ -202,7 +202,7 @@ export const factories = {
     const requestBodyShape: ShapeInput<RequestBodyObject> = {
       description: optional(string()),
       content: object(record(string(), object())),
-      required: optional(literal(true)),
+      required: optional(boolean()),
     }
     return object(combine(shape<RequestBodyObject>(requestBodyShape), restrictKeys(Object.keys(requestBodyShape))))
   },
