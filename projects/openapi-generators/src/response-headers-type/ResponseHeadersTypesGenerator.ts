@@ -65,7 +65,7 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
   }
 
   private hasResponsesHeaders([operation, status]: ResponseParameterInput) {
-    const responseOrRef = (operation.responses ?? EmptyResponsesObject)[status]
+    const responseOrRef = (operation.responses ?? EmptyResponsesObject)[status as keyof ResponsesObject]
     if (isNil(responseOrRef)) {
       return false
     }

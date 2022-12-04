@@ -148,10 +148,11 @@ export type EncodingPropertyObject = {
   allowReserved?: boolean
 }
 
-export type ResponsesObject = {
-  default: Referenceable<ResponseObject> | undefined
-  [statuscode: string]: Referenceable<ResponseObject> | undefined
-}
+export type StatusCodeRange = '1XX' | '2XX' | '3XX' | '4XX' | '5XX'
+
+export type ResponsesObject = Partial<
+  Record<number | StatusCodeRange | 'default', Referenceable<ResponseObject> | undefined>
+>
 
 export type ResponseObject = {
   description: string

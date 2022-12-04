@@ -207,7 +207,27 @@ export const factories = {
     return object(combine(shape<RequestBodyObject>(requestBodyShape), restrictKeys(Object.keys(requestBodyShape))))
   },
   responsesObject: () => {
-    return object(record(string(), object()))
+    const responsesKey = union({
+      default: literal('default'),
+      '1XX': literal('1XX'),
+      '2XX': literal('2XX'),
+      '3XX': literal('3XX'),
+      '4XX': literal('4XX'),
+      '5XX': literal('5XX'),
+      integer: string((input, path, config) => {
+        if (input.length > 0 && `${Number(input)}` === input && Number.isInteger(parseInt(input, 10))) {
+          return []
+        }
+        return [
+          {
+            path,
+            severity: 'error',
+            message: config.message('integer', path),
+          },
+        ]
+      }),
+    })
+    return object(record(responsesKey, object()))
   },
   responseObject: () => {
     const responseShape: ShapeInput<ResponseObject> = {

@@ -624,42 +624,10 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
 
   protected validateResponsesObject(data: ResponsesObject): Issue[] {
     return [
-      ...flatMap(entries(data), ([statusCode, response]): Issue[] => {
-        return [
-          ...(isNil(response) ? [] : this.validateResponseStatusCode(response, statusCode)),
-          ...this.validateReferenceable(response!, false, (res) => this.validateResponseObject(res)),
-        ]
+      ...flatMap(entries(data), ([, response]): Issue[] => {
+        return [...this.validateReferenceable(response!, false, (res) => this.validateResponseObject(res))]
       }),
     ]
-  }
-
-  protected validateResponseStatusCode(data: Referenceable<ResponseObject>, statusCode: string): Issue[] {
-    if (statusCode === 'default') {
-      return []
-    }
-    const numberStatusCode = Number(statusCode)
-
-    if (Number.isNaN(numberStatusCode)) {
-      return [
-        {
-          message: `should be "default" or integer`,
-          path: this.context().uriOf(data),
-          severity: 'error',
-        },
-      ]
-    }
-
-    if (numberStatusCode < 100 && numberStatusCode > 599) {
-      return [
-        {
-          message: `should be a valid status code in either of the 1xx, 2xx, 3xx, 4xx or 5xx range`,
-          path: this.context().uriOf(data),
-          severity: 'error',
-        },
-      ]
-    }
-
-    return []
   }
 
   protected validateResponseObject(data: ResponseObject): Issue[] {

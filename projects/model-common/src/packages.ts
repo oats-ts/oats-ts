@@ -56,6 +56,11 @@ const openApiHttpExports = {
   RunnableOperation: 'RunnableOperation',
   ServerAdapter: 'ServerAdapter',
   CorsConfiguration: 'CorsConfiguration',
+  StatusCode1XX: 'StatusCode1XX',
+  StatusCode2XX: 'StatusCode2XX',
+  StatusCode3XX: 'StatusCode3XX',
+  StatusCode4XX: 'StatusCode4XX',
+  StatusCode5XX: 'StatusCode5XX',
 }
 
 const openApiExpressServerAdapterExports = {

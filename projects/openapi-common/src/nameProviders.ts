@@ -1,4 +1,3 @@
-import pascalCase from 'pascalcase'
 import camelCase from 'camelcase'
 import { isNil } from 'lodash'
 import { NameProvider, NameProviderHelper } from '@oats-ts/oats-ts'
@@ -26,9 +25,17 @@ const operationId: NameProvider = (operation: OperationObject, _target: string, 
   return _getOperationName(operation, helper)
 }
 
-const documentTitle: NameProvider = (doc: OpenAPIObject) => pascalCase(doc.info?.title || '')
+const responseHeadersName: NameProvider = (
+  [operation, status]: [OperationObject, string],
+  target: string,
+  helper: NameProviderHelper,
+) => {
+  return `${operationId(operation, target, helper)}-${status}`
+}
 
-const toPascalCase: NameProviderDelegate = (name: string) => pascalCase(name)
+const documentTitle: NameProvider = (doc: OpenAPIObject) => camelCase(doc.info?.title ?? '', { pascalCase: true })
+
+const toPascalCase: NameProviderDelegate = (name: string) => camelCase(name, { pascalCase: true })
 
 const toCamelCase: NameProviderDelegate = (name: string) => camelCase(name)
 
@@ -51,10 +58,7 @@ const defaultDelegates: DelegatingNameProviderInput = {
   'oats/path-type': _delegating(operationId, toPascalCase, append('PathParameters')),
   'oats/cookies-type': _delegating(operationId, toPascalCase, append('CookieParameters')),
   'oats/request-headers-type': _delegating(operationId, toPascalCase, append('RequestHeaderParameters')),
-  'oats/response-headers-type': (input: [OperationObject, string], target: string, helper: NameProviderHelper) => {
-    const [operation, status] = input
-    return pascalCase(`${operationId(operation, target, helper)}${pascalCase(status)}ResponseHeaderParameters`)
-  },
+  'oats/response-headers-type': _delegating(responseHeadersName, toPascalCase, append('ResponseHeaderParameters')),
   'oats/response-type': _delegating(operationId, toPascalCase, append('Response')),
   'oats/response-server-type': _delegating(operationId, toPascalCase, append('ServerResponse')),
   'oats/request-type': _delegating(operationId, toPascalCase, append('Request')),
