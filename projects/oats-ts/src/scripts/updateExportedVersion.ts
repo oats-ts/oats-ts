@@ -15,7 +15,7 @@ import {
 
 const INDEX_TS_LOCATION = resolve('src', 'index.ts')
 const PACKAGE_JSON_LOCATION = resolve('package.json')
-const PRETTIER_CONFIG_LOCATION = resolve('../', '../', '.prettierrc')
+const PRETTIER_CONFIG_LOCATION = resolve('../', '../', '.prettierrc.json')
 const VERSION_NAME = 'version'
 
 const indexTsContent = readFileSync(INDEX_TS_LOCATION, 'utf-8')

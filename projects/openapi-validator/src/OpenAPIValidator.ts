@@ -1,6 +1,6 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { getInferredType, isReferenceObject, tick } from '@oats-ts/model-common'
-import { ContentValidator, URIManipulator, ValidatorEventEmitter } from '@oats-ts/oats-ts'
+import { ContentValidator, URIManipulator, URIManipulatorType, ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import {
   ComponentsObject,
   ContentObject,
@@ -31,6 +31,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   private readonly _structural: StructuralValidators
   private _context!: OpenAPIValidatorContext
   private _config!: ValidatorConfig
+  private _uri!: URIManipulatorType
 
   public constructor() {
     this._structural = factories
@@ -53,6 +54,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     await tick()
 
     this._context = this.createContext(data)
+    this._uri = this.createURIManipulator()
     this._config = this.createValidatorConfig()
 
     const validationResult = await Promise.allSettled(
@@ -109,10 +111,16 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return new OpenAPIValidatorContextImpl(data)
   }
 
+  protected createURIManipulator(): URIManipulatorType {
+    return new URIManipulator()
+  }
+
   protected createValidatorConfig(): ValidatorConfig {
     return {
       ...DefaultConfig,
-      append: new URIManipulator().append,
+      append: (uri: string, ...pieces: (string | number)[]): string => {
+        return this._uri.append(uri, ...pieces)
+      },
       severity: (type: ValidatorType) => {
         if (type === 'restrictKeys') {
           return 'info'
