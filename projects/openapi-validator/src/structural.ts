@@ -191,7 +191,7 @@ export const factories = {
     const operationShape: ShapeInput<OperationObject> = {
       description: optional(string()),
       summary: optional(string()),
-      operationId: optional(string(minLength(1))),
+      operationId: optional(string()),
       parameters: optional(array()),
       requestBody: optional(object()),
       responses: object(record(string(), object())),

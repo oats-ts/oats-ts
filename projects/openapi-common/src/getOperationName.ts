@@ -1,11 +1,11 @@
 import { BaseHelper } from '@oats-ts/oats-ts'
 import { OperationObject, PathItemObject, PathsObject } from '@oats-ts/openapi-model'
-import { entries, isNil } from 'lodash'
+import { entries, isEmpty, isNil } from 'lodash'
 import { getSanitizedName } from './getSanitizedName'
 
 export function getOperationName(operation: OperationObject, helper: BaseHelper): string {
-  if (!isNil(operation.operationId)) {
-    return getSanitizedName(operation.operationId)
+  if (!isEmpty(operation.operationId)) {
+    return getSanitizedName(operation.operationId!)
   }
 
   const pathItem = helper.parent<OperationObject, PathItemObject>(operation)

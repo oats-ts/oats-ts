@@ -21,7 +21,7 @@ import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/ope
 import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
 import { DefaultConfig, isOk, Issue, Validator, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
-import { entries, flatMap, isNil, values } from 'lodash'
+import { entries, flatMap, isEmpty, isNil, values } from 'lodash'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
 import { factories, StructuralValidators } from './structural'
@@ -565,7 +565,15 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   }
 
   protected validateOperationObject(data: OperationObject): Issue[] {
+    const emptyOperationId: Issue[] = [
+      {
+        message: `should be a non-empty string`,
+        path: this.config().append(this.context().uriOf(data), 'operationId'),
+        severity: 'warning',
+      },
+    ]
     return [
+      ...(isEmpty(data.operationId) ? emptyOperationId : []),
       ...flatMap(data.parameters ?? [], (parameter) =>
         this.validateReferenceable(parameter, true, (param) => this.validateParameterObject(param)),
       ),
