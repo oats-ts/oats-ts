@@ -178,6 +178,18 @@ export type URIManipulatorType = {
    * @param fragments
    */
   setFragments(uri: string, fragments: string[]): string
+
+  /**
+   * Encodes the given fragment piece
+   * @param piece
+   */
+  encode(piece: string): string
+
+  /**
+   * Decodes the given fragment piece
+   * @param piece
+   */
+  decode(piece: string): string
 }
 
 export type GeneratorContext<D = any, Target extends string = string> = {

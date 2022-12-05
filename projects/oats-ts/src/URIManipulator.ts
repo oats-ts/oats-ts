@@ -5,7 +5,7 @@ import { drop, isEmpty } from 'lodash'
 /** Default implementation of URIManipulator. Extensible class. */
 export class URIManipulator implements URIManipulatorType {
   public setFragments(uri: string, fragments: string[]): string {
-    const fragment = fragments.length > 0 ? `/${fragments.map(encode).join('/')}` : null
+    const fragment = fragments.length > 0 ? `/${fragments.map((piece) => this.encode(piece)).join('/')}` : null
     return new URI(uri).fragment(fragment!).valueOf()
   }
   /**
@@ -51,6 +51,14 @@ export class URIManipulator implements URIManipulatorType {
     if (fragment[0] !== '/') {
       throw new TypeError(`Malformed URI: ${uri}.`)
     }
-    return drop(fragment.split('/')).map(decode)
+    return drop(fragment.split('/')).map((piece) => this.decode(piece))
+  }
+
+  public encode(piece: string): string {
+    return encode(piece.replace(/~/g, '~0').replace(/\//g, '~1'))
+  }
+
+  public decode(piece: string): string {
+    return decode(piece.replace(/~0/g, '~').replace(/~1/g, '/'))
   }
 }
