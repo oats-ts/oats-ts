@@ -41,6 +41,32 @@ const data: [string, PathSegment[]][] = [
       { type: 'text', value: '/bar/' },
     ],
   ],
+
+  // Query parameters
+  [
+    '/foo/{a}?foo=bar',
+    [
+      { type: 'text', value: '/foo/' },
+      { type: 'parameter', name: 'a' },
+      { type: 'query', value: '?foo=bar' },
+    ],
+  ],
+  [
+    '/foo/{a}?foo={bar}',
+    [
+      { type: 'text', value: '/foo/' },
+      { type: 'parameter', name: 'a' },
+      { type: 'query', value: '?foo={bar}' },
+    ],
+  ],
+  [
+    '/foo/{a}?foo={bar}&bar=foo',
+    [
+      { type: 'text', value: '/foo/' },
+      { type: 'parameter', name: 'a' },
+      { type: 'query', value: '?foo={bar}&bar=foo' },
+    ],
+  ],
 ]
 
 const error: string[] = ['/{', '/{foo}{', '/{}{', '/{}bar{']

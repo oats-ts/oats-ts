@@ -540,7 +540,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     const pathSegments = segments.filter(({ type }) => type === 'parameter') as ParameterSegment[]
     const commonPathParams = this.getParamsByLocation(data.parameters ?? [], 'path')
     const operations = this.getOperations(data)
-    return flatMap(operations, (operation): Issue[] => {
+    const parameterIssues = flatMap(operations, (operation): Issue[] => {
       const params = commonPathParams.concat(this.getParamsByLocation(operation.parameters ?? [], 'path'))
       const missing = pathSegments
         .filter((segment) => !params.some((param) => param.name === segment.name))
@@ -562,6 +562,16 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
         )
       return [...missing, ...extra]
     })
+    const queryIssues: Issue[] = segments.some((seg) => seg.type === 'query')
+      ? [
+          {
+            message: 'query parameters should not be included in the path',
+            path: this.context().uriOf(data),
+            severity: 'warning',
+          },
+        ]
+      : []
+    return [...queryIssues, ...parameterIssues]
   }
 
   protected validateOperationObject(data: OperationObject): Issue[] {

@@ -8,6 +8,7 @@ import { PatchFooParam1BarParam2Request, PutFooParam1BarParam2Request } from './
 import {
   Delete123Response,
   DeleteResponse,
+  GetEmptyResponse,
   GetFooResponse,
   PatchFooParam1BarParam2Response,
   PostFooResponse,
@@ -21,4 +22,5 @@ export type NoOperationIdsSdk = {
   postFoo(): Promise<PostFooResponse>
   putFooParam1BarParam2(request: PutFooParam1BarParam2Request): Promise<PutFooParam1BarParam2Response>
   patchFooParam1BarParam2(request: PatchFooParam1BarParam2Request): Promise<PatchFooParam1BarParam2Response>
+  getEmpty(): Promise<GetEmptyResponse>
 }

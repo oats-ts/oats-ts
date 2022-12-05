@@ -8,6 +8,7 @@ import { PatchFooParam1BarParam2ServerRequest, PutFooParam1BarParam2ServerReques
 import {
   Delete123ServerResponse,
   DeleteServerResponse,
+  GetEmptyServerResponse,
   GetFooServerResponse,
   PatchFooParam1BarParam2ServerResponse,
   PostFooServerResponse,
@@ -21,4 +22,5 @@ export type NoOperationIdsApi = {
   postFoo(): Promise<PostFooServerResponse>
   putFooParam1BarParam2(request: PutFooParam1BarParam2ServerRequest): Promise<PutFooParam1BarParam2ServerResponse>
   patchFooParam1BarParam2(request: PatchFooParam1BarParam2ServerRequest): Promise<PatchFooParam1BarParam2ServerResponse>
+  getEmpty(): Promise<GetEmptyServerResponse>
 }

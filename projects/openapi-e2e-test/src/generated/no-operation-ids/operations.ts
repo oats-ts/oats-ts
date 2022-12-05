@@ -18,6 +18,7 @@ import { PatchFooParam1BarParam2Request, PutFooParam1BarParam2Request } from './
 import {
   Delete123Response,
   DeleteResponse,
+  GetEmptyResponse,
   GetFooResponse,
   PatchFooParam1BarParam2Response,
   PostFooResponse,
@@ -83,6 +84,37 @@ export class DeleteOperation implements RunnableOperation<void, DeleteResponse> 
       statusCode: this.getStatusCode(rawResponse),
     }
     return typedResponse as DeleteResponse
+  }
+}
+
+export class GetEmptyOperation implements RunnableOperation<void, GetEmptyResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(): string {
+    return this.adapter.getUrl('/empty', undefined)
+  }
+  protected getHttpMethod(): HttpMethod {
+    return 'get'
+  }
+  protected getRequestHeaders(): RawHttpHeaders {
+    return this.adapter.getAuxiliaryRequestHeaders()
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  public async run(): Promise<GetEmptyResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(),
+      method: this.getHttpMethod(),
+      headers: this.getRequestHeaders(),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      statusCode: this.getStatusCode(rawResponse),
+    }
+    return typedResponse as GetEmptyResponse
   }
 }
 

@@ -26,7 +26,6 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { ExpressRouterFactoriesDefaultLocals } from './ExpressRouterFactoriesDefaultLocals'
 import { flatMap, isEqual, isNil, keys, uniqWith, values } from 'lodash'
-import { getPathTemplate } from '../utils/getPathTemplate'
 import { LocalNameDefaults } from '@oats-ts/model-common'
 import {
   ExpressFields,
@@ -36,6 +35,7 @@ import {
   TypedRequestFields,
 } from '../utils/OatsApiNames'
 import { ApiTypeLocals } from '../api-type/typings'
+import { getPathTemplate } from '@oats-ts/openapi-parameter-serialization'
 
 export class ExpressRouterFactoriesGenerator extends OperationBasedCodeGenerator<ExpressRouterFactoriesGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {

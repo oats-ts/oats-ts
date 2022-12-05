@@ -13,4 +13,5 @@ export type NoOperationIdsRouterFactories = {
   createPostFooRouter: (router?: IRouter | undefined) => IRouter
   createPutFooParam1BarParam2Router: (router?: IRouter | undefined) => IRouter
   createPatchFooParam1BarParam2Router: (router?: IRouter | undefined) => IRouter
+  createGetEmptyRouter: (router?: IRouter | undefined) => IRouter
 }

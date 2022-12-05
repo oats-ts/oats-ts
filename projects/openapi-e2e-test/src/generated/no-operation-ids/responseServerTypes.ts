@@ -12,6 +12,10 @@ export type DeleteServerResponse = {
   statusCode: 200
 }
 
+export type GetEmptyServerResponse = {
+  statusCode: 200
+}
+
 export type GetFooServerResponse = {
   statusCode: 200
 }

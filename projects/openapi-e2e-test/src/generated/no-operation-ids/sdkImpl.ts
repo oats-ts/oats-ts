@@ -8,6 +8,7 @@ import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import {
   Delete123Operation,
   DeleteOperation,
+  GetEmptyOperation,
   GetFooOperation,
   PatchFooParam1BarParam2Operation,
   PostFooOperation,
@@ -17,6 +18,7 @@ import { PatchFooParam1BarParam2Request, PutFooParam1BarParam2Request } from './
 import {
   Delete123Response,
   DeleteResponse,
+  GetEmptyResponse,
   GetFooResponse,
   PatchFooParam1BarParam2Response,
   PostFooResponse,
@@ -49,6 +51,9 @@ export class NoOperationIdsSdkImpl implements NoOperationIdsSdk {
   ): Promise<PatchFooParam1BarParam2Response> {
     return this.createPatchFooParam1BarParam2Operation().run(request)
   }
+  public async getEmpty(): Promise<GetEmptyResponse> {
+    return this.createGetEmptyOperation().run()
+  }
   protected createDeleteOperation(): RunnableOperation<void, DeleteResponse> {
     return new DeleteOperation(this.adapter)
   }
@@ -72,5 +77,8 @@ export class NoOperationIdsSdkImpl implements NoOperationIdsSdk {
     PatchFooParam1BarParam2Response
   > {
     return new PatchFooParam1BarParam2Operation(this.adapter)
+  }
+  protected createGetEmptyOperation(): RunnableOperation<void, GetEmptyResponse> {
+    return new GetEmptyOperation(this.adapter)
   }
 }

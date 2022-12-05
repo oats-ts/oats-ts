@@ -131,12 +131,17 @@ export type ParameterSegment = {
   name: string
 }
 
+export type QuerySegment = {
+  type: 'query'
+  value: string
+}
+
 export type TextSegment = {
   type: 'text'
   value: string
 }
 
-export type PathSegment = ParameterSegment | TextSegment
+export type PathSegment = ParameterSegment | TextSegment | QuerySegment
 
 export type ValueDeserializer = {
   deserialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<Primitive>

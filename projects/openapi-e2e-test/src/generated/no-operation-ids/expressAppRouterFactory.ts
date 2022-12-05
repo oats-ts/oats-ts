@@ -8,6 +8,7 @@ import { IRouter, Router } from 'express'
 import {
   createDelete123Router,
   createDeleteRouter,
+  createGetEmptyRouter,
   createGetFooRouter,
   createPatchFooParam1BarParam2Router,
   createPostFooRouter,
@@ -27,6 +28,7 @@ export function createNoOperationIdsAppRouter(
     overrides.createPostFooRouter ?? createPostFooRouter,
     overrides.createPutFooParam1BarParam2Router ?? createPutFooParam1BarParam2Router,
     overrides.createPatchFooParam1BarParam2Router ?? createPatchFooParam1BarParam2Router,
+    overrides.createGetEmptyRouter ?? createGetEmptyRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

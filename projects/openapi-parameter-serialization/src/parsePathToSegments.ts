@@ -7,13 +7,15 @@ export function parsePathToSegments(path: string): PathSegment[] {
   }
 
   let isParameterSegment: boolean = false
+  let isQuerySegment: boolean = false
   let segment: string = ''
 
   const segments: PathSegment[] = []
 
   for (let i = 0; i < path.length; i += 1) {
     const char = path[i]
-    if (!isParameterSegment && char === '{') {
+
+    if (!isParameterSegment && !isQuerySegment && char === '{') {
       isParameterSegment = true
       if (segment.length > 0) {
         segments.push({ type: 'text', value: segment })
@@ -26,6 +28,12 @@ export function parsePathToSegments(path: string): PathSegment[] {
       }
       segments.push({ type: 'parameter', name: segment })
       segment = ''
+    } else if (!isParameterSegment && !isQuerySegment && char === '?') {
+      if (segment.length > 0) {
+        segments.push({ type: 'text', value: segment })
+      }
+      isQuerySegment = true
+      segment = char
     } else {
       segment += char
     }
@@ -36,7 +44,7 @@ export function parsePathToSegments(path: string): PathSegment[] {
   }
 
   if (segment.length > 0) {
-    segments.push({ type: 'text', value: segment })
+    segments.push({ type: isQuerySegment ? 'query' : 'text', value: segment })
   }
 
   return segments
