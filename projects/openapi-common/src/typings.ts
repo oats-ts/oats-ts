@@ -1,4 +1,16 @@
-import { HeadersObject, OpenAPIObject, OperationObject, ParameterObject, PathItemObject } from '@oats-ts/openapi-model'
+import {
+  HeadersObject,
+  OpenAPIObject,
+  OperationObject,
+  ParameterObject,
+  PathItemObject,
+  ContentObject,
+  MediaTypeObject,
+  RequestBodyObject,
+  ResponseObject,
+  ComponentsObject,
+  HeaderObject,
+} from '@oats-ts/openapi-model'
 import { JsonSchemaBasedGeneratorContext } from '@oats-ts/model-common'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { NameProvider, PathProviderHelper } from '@oats-ts/oats-ts'
@@ -81,3 +93,18 @@ export type EnhancedResponse = {
 }
 
 export type ParameterKind = 'primitive' | 'object' | 'array' | 'unknown'
+
+export type OpenAPIVisitor<I> = {
+  visitOpenAPIObject(data: OpenAPIObject, input: I): boolean
+  visitComponentsObject(data: ComponentsObject, input: I): boolean
+  visitPathItemObject(data: PathItemObject, input: I): boolean
+  visitOperationObject(data: OperationObject, input: I): boolean
+  visitResponseObject(data: ResponseObject, input: I): boolean
+  visitParameterObject(data: ParameterObject, input: I): boolean
+  visitHeaderObject(data: HeaderObject, input: I): boolean
+  visitRequestBodyObject(data: RequestBodyObject, input: I): boolean
+  visitContentObject(data: ContentObject, input: I): boolean
+  visitMediaTypeObject(data: MediaTypeObject, input: I): boolean
+  visitSchemaObject(data: SchemaObject, input: I): boolean
+  visitReferenceObject(data: ReferenceObject, input: I): boolean
+}

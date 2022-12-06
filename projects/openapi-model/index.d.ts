@@ -127,7 +127,7 @@ export type ParameterObject = BaseParameterObject & {
 
 export type RequestBodyObject = {
   description?: string
-  content: ContentObject
+  content?: ContentObject
   required?: boolean
 }
 

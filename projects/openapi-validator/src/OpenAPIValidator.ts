@@ -624,7 +624,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   }
 
   protected validateRequestBodyObject(data: RequestBodyObject): Issue[] {
-    return [...this.validateContentObject(data.content)]
+    return [...(isNil(data.content) ? [] : this.validateContentObject(data.content))]
   }
 
   protected validateContentObject(data: ContentObject): Issue[] {

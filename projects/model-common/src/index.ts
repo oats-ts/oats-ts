@@ -6,6 +6,7 @@ export { getNamedSchemas } from './getNamedSchemas'
 export { getPrimitiveType } from './getPrimitiveType'
 export { getReferencedNamedSchemas } from './getReferencedNamedSchemas'
 export { isReferenceObject } from './isReferenceObject'
+export { isReferenceTarget } from './isReferenceTarget'
 export { PrimitiveTypes, PrimitiveType } from './primitiveTypes'
 export { tick } from './tick'
 export type {
