@@ -18,7 +18,7 @@ import { OpenAPIVisitor } from './typings'
 export class OpenAPITraverser<I> {
   constructor(public readonly input: I, private readonly visitor: Partial<OpenAPIVisitor<I>>) {}
   traverseOpenAPIObject(data: OpenAPIObject): void {
-    if (!this.visitor?.visitOpenAPIObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitOpenAPIObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.paths)) {
@@ -29,7 +29,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseComponentsObject(data: ComponentsObject): void {
-    if (!this.visitor?.visitComponentsObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitComponentsObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.headers)) {
@@ -57,7 +57,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traversePathItemObject(data: PathItemObject): void {
-    if (!this.visitor?.visitPathItemObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitPathItemObject?.(data, this.input) ?? true)) {
       return
     }
     const operations = [data.delete, data.get, data.head, data.options, data.patch, data.post, data.put].filter(
@@ -70,7 +70,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseOperationObject(data: OperationObject): void {
-    if (!this.visitor?.visitOperationObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitOperationObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.parameters)) {
@@ -92,7 +92,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseResponseObject(data: ResponseObject): void {
-    if (!this.visitor?.visitResponseObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitResponseObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.content)) {
@@ -105,7 +105,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseParameterObject(data: ParameterObject): void {
-    if (!this.visitor?.visitParameterObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitParameterObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.schema)) {
@@ -113,7 +113,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseRequestBodyObject(data: RequestBodyObject): void {
-    if (!this.visitor?.visitRequestBodyObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitRequestBodyObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.content)) {
@@ -121,14 +121,14 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseContentObject(data: ContentObject): void {
-    if (!this.visitor?.visitContentObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitContentObject?.(data, this.input) ?? true)) {
       return
     }
 
     values(data).forEach((mediaTypeObj) => this.traverseMediaTypeObject(mediaTypeObj))
   }
   traverseMediaTypeObject(data: MediaTypeObject): void {
-    if (!this.visitor?.visitMediaTypeObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitMediaTypeObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.schema)) {
@@ -136,7 +136,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseHeaderObject(data: HeaderObject): void {
-    if (!this.visitor?.visitHeaderObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitHeaderObject?.(data, this.input) ?? true)) {
       return
     }
     if (!isNil(data.schema)) {
@@ -144,7 +144,7 @@ export class OpenAPITraverser<I> {
     }
   }
   traverseSchemaObject(data: SchemaObject): void {
-    if (!this.visitor?.visitSchemaObject?.(data, this.input) ?? true) {
+    if (!(this.visitor?.visitSchemaObject?.(data, this.input) ?? true)) {
       return
     }
 

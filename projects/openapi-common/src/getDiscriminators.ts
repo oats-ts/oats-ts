@@ -41,6 +41,5 @@ export function getDiscriminators(
       }
     }
   }
-
   return discriminators
 }

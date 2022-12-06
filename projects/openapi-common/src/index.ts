@@ -24,6 +24,7 @@ export { getRequestBodyContent } from './getRequestBodyContent'
 export { createOpenAPIGeneratorContext } from './createOpenAPIGeneratorContext'
 export { isStatusCodeRange } from './isStatusCodeRange'
 export { isNumericStatusCode } from './isNumericStatusCode'
+export { getDiscriminators } from './getDiscriminators'
 
 export { nameProviders } from './nameProviders'
 export { pathProviders } from './pathProviders'
