@@ -1,20 +1,17 @@
-import {
-  TraversalHelper,
-  TypeGuardGeneratorConfig,
-  TypesGeneratorConfig,
-  ValidatorsGeneratorConfig,
-} from '@oats-ts/json-schema-generators'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { ApiTypeGeneratorConfig } from '../api-type'
 import { ExpressRouterFactoriesGeneratorConfig } from '../express-router-factory'
 import { ParameterTypesGeneratorConfig } from '../utils/parameterTypings'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
-import { Config } from '../types'
+import { Config, TraversalHelper } from '../types'
 import { RequestTypesGeneratorConfig } from '../request-type/typings'
 import { ResponseTypesGeneratorConfig } from '../response-type'
 import { CorsConfigurationGeneratorConfig } from '../cors-configuration'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { OperationsGeneratorConfig } from '../operations'
+import { TypesGeneratorConfig } from '../type'
+import { TypeGuardGeneratorConfig } from '../type-guard'
+import { ValidatorsGeneratorConfig } from '../type-validator'
 
 type GeneratorConfigs = {
   'oats/api-type': ApiTypeGeneratorConfig

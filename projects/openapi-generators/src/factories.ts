@@ -18,7 +18,6 @@ import { sdkImpl } from './sdk-impl'
 import { sdkType } from './sdk-type'
 import { responseServerTypes } from './response-server-type'
 import { expressCorsRouterFactory } from './express-cors-router-factory'
-import { typeGuards, types, typeValidators } from '@oats-ts/json-schema-generators'
 import { expressContextRouterFactory } from './express-context-router-factory'
 import { corsConfiguration } from './cors-configuration'
 import { cookieParameters } from './cookie-parameters'
@@ -26,6 +25,9 @@ import { pathParameters } from './path-parameters'
 import { queryParameters } from './query-parameters'
 import { requestHeaderParameters } from './request-header-parameters'
 import { responseHeaderParameters } from './response-header-parameters'
+import { types } from './type'
+import { typeGuards } from './type-guard'
+import { typeValidators } from './type-validator'
 
 export const factories = {
   typeGuards,
