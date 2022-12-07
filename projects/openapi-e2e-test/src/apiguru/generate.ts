@@ -4,11 +4,43 @@ import { isSuccess, stringify } from '@oats-ts/openapi-runtime'
 import { readdir, writeFile } from 'fs/promises'
 import { join, resolve } from 'path'
 import { chunk } from 'lodash'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 
 const CHUNK_SIZE = 10
 const OUTPUT_FILE = resolve('.apiguru.txt')
 
 type ResultType = 'ok' | 'error' | 'thrown'
+
+type CliArgs = {
+  _: string[]
+  dir: string
+  file: string
+  clear: boolean
+}
+
+const cliArgs = yargs(hideBin(process.argv))
+  .command('run', 'Runs the generator', {
+    dir: {
+      alias: 'd',
+      // TODO
+      default: 'E:\\code\\apiguru-openapi-schemas',
+      string: true,
+      implies: 'clear',
+    },
+    file: {
+      alias: 'f',
+      string: true,
+      default: undefined,
+    },
+    clear: {
+      alias: 'c',
+      boolean: true,
+      default: false,
+    },
+  })
+  .demandCommand()
+  .parseSync() as unknown as CliArgs
 
 export async function generateSingleDocument(inputPath: string, ouptutPath: string): Promise<[string, ResultType]> {
   try {
@@ -63,19 +95,24 @@ async function generateChunk(files: string[], index: number): Promise<number> {
   return issues
 }
 
-async function generateAll() {
-  const args = process.argv.slice(2)
-  if (args.length === 0) {
-    throw new Error('Path is necessary as first argument')
+async function getFiles(): Promise<string[]> {
+  if (cliArgs.file) {
+    return [cliArgs.file]
+  } else {
+    const items = await readdir(cliArgs.dir, { withFileTypes: true })
+    return items.filter((item) => item.isFile()).map((item) => join(cliArgs.dir, item.name))
   }
-  const root = resolve(args[0]!)
-  const items = await readdir(root, { withFileTypes: true })
-  const files = items.filter((item) => item.isFile()).map((item) => join(root, item.name))
-  const filesInChunks = chunk(files, CHUNK_SIZE)
+}
 
-  await writeFile(OUTPUT_FILE, '', 'utf-8')
+async function generateAll() {
+  if (cliArgs.clear) {
+    await writeFile(OUTPUT_FILE, '', 'utf-8')
+  }
 
   let failures = 0
+
+  const files = await getFiles()
+  const filesInChunks = chunk(files, CHUNK_SIZE)
 
   for (let i = 0; i < filesInChunks.length; i += 1) {
     const f = filesInChunks[i]!
