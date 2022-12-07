@@ -8,6 +8,6 @@ import { MissingRequestBodySchemaRequest } from './requestTypes'
 import { MissingRequestBodySchemaResponse, MissingResponseSchemaResponse } from './responseTypes'
 
 export type MissingContentSchemaSdk = {
-  missingResponseSchema(): Promise<MissingResponseSchemaResponse>
   missingRequestBodySchema(request: MissingRequestBodySchemaRequest): Promise<MissingRequestBodySchemaResponse>
+  missingResponseSchema(): Promise<MissingResponseSchemaResponse>
 }

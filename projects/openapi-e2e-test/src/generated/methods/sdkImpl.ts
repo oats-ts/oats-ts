@@ -26,8 +26,14 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
+  public async deleteMethod(): Promise<DeleteMethodResponse> {
+    return this.createDeleteMethodOperation().run()
+  }
   public async getMethod(): Promise<GetMethodResponse> {
     return this.createGetMethodOperation().run()
+  }
+  public async patchMethod(): Promise<PatchMethodResponse> {
+    return this.createPatchMethodOperation().run()
   }
   public async postMethod(): Promise<PostMethodResponse> {
     return this.createPostMethodOperation().run()
@@ -35,25 +41,19 @@ export class HttpMethodsSdkImpl implements HttpMethodsSdk {
   public async putMethod(): Promise<PutMethodResponse> {
     return this.createPutMethodOperation().run()
   }
-  public async patchMethod(): Promise<PatchMethodResponse> {
-    return this.createPatchMethodOperation().run()
-  }
-  public async deleteMethod(): Promise<DeleteMethodResponse> {
-    return this.createDeleteMethodOperation().run()
+  protected createDeleteMethodOperation(): RunnableOperation<void, DeleteMethodResponse> {
+    return new DeleteMethodOperation(this.adapter)
   }
   protected createGetMethodOperation(): RunnableOperation<void, GetMethodResponse> {
     return new GetMethodOperation(this.adapter)
+  }
+  protected createPatchMethodOperation(): RunnableOperation<void, PatchMethodResponse> {
+    return new PatchMethodOperation(this.adapter)
   }
   protected createPostMethodOperation(): RunnableOperation<void, PostMethodResponse> {
     return new PostMethodOperation(this.adapter)
   }
   protected createPutMethodOperation(): RunnableOperation<void, PutMethodResponse> {
     return new PutMethodOperation(this.adapter)
-  }
-  protected createPatchMethodOperation(): RunnableOperation<void, PatchMethodResponse> {
-    return new PatchMethodOperation(this.adapter)
-  }
-  protected createDeleteMethodOperation(): RunnableOperation<void, DeleteMethodResponse> {
-    return new DeleteMethodOperation(this.adapter)
   }
 }

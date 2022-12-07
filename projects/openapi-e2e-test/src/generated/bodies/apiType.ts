@@ -36,17 +36,17 @@ import {
 } from './responseServerTypes'
 
 export type BodiesApi = {
-  str(request: StrServerRequest): Promise<StrServerResponse>
-  num(request: NumServerRequest): Promise<NumServerResponse>
-  enm(request: EnmServerRequest): Promise<EnmServerResponse>
-  bool(request: BoolServerRequest): Promise<BoolServerResponse>
-  primTuple(request: PrimTupleServerRequest): Promise<PrimTupleServerResponse>
-  optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleServerResponse>
-  strArr(request: StrArrServerRequest): Promise<StrArrServerResponse>
-  numArr(request: NumArrServerRequest): Promise<NumArrServerResponse>
-  enmArr(request: EnmArrServerRequest): Promise<EnmArrServerResponse>
-  boolArr(request: BoolArrServerRequest): Promise<BoolArrServerResponse>
-  primObj(request: PrimObjServerRequest): Promise<PrimObjServerResponse>
   arrObj(request: ArrObjServerRequest): Promise<ArrObjServerResponse>
+  bool(request: BoolServerRequest): Promise<BoolServerResponse>
+  boolArr(request: BoolArrServerRequest): Promise<BoolArrServerResponse>
+  enm(request: EnmServerRequest): Promise<EnmServerResponse>
+  enmArr(request: EnmArrServerRequest): Promise<EnmArrServerResponse>
   nestedObj(request: NestedObjServerRequest): Promise<NestedObjServerResponse>
+  num(request: NumServerRequest): Promise<NumServerResponse>
+  numArr(request: NumArrServerRequest): Promise<NumArrServerResponse>
+  optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleServerResponse>
+  primObj(request: PrimObjServerRequest): Promise<PrimObjServerResponse>
+  primTuple(request: PrimTupleServerRequest): Promise<PrimTupleServerResponse>
+  str(request: StrServerRequest): Promise<StrServerResponse>
+  strArr(request: StrArrServerRequest): Promise<StrArrServerResponse>
 }

@@ -7,6 +7,6 @@
 import { IRouter } from 'express'
 
 export type MissingContentSchemaRouterFactories = {
-  createMissingResponseSchemaRouter: (router?: IRouter | undefined) => IRouter
   createMissingRequestBodySchemaRouter: (router?: IRouter | undefined) => IRouter
+  createMissingResponseSchemaRouter: (router?: IRouter | undefined) => IRouter
 }

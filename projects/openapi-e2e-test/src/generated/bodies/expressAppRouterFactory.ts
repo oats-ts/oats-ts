@@ -28,19 +28,19 @@ export function createBodiesAppRouter(
 ): IRouter {
   const root = router ?? Router()
   const factories = [
-    overrides.createStrRouter ?? createStrRouter,
-    overrides.createNumRouter ?? createNumRouter,
-    overrides.createEnmRouter ?? createEnmRouter,
-    overrides.createBoolRouter ?? createBoolRouter,
-    overrides.createPrimTupleRouter ?? createPrimTupleRouter,
-    overrides.createOptPrimTupleRouter ?? createOptPrimTupleRouter,
-    overrides.createStrArrRouter ?? createStrArrRouter,
-    overrides.createNumArrRouter ?? createNumArrRouter,
-    overrides.createEnmArrRouter ?? createEnmArrRouter,
-    overrides.createBoolArrRouter ?? createBoolArrRouter,
-    overrides.createPrimObjRouter ?? createPrimObjRouter,
     overrides.createArrObjRouter ?? createArrObjRouter,
+    overrides.createBoolRouter ?? createBoolRouter,
+    overrides.createBoolArrRouter ?? createBoolArrRouter,
+    overrides.createEnmRouter ?? createEnmRouter,
+    overrides.createEnmArrRouter ?? createEnmArrRouter,
     overrides.createNestedObjRouter ?? createNestedObjRouter,
+    overrides.createNumRouter ?? createNumRouter,
+    overrides.createNumArrRouter ?? createNumArrRouter,
+    overrides.createOptPrimTupleRouter ?? createOptPrimTupleRouter,
+    overrides.createPrimObjRouter ?? createPrimObjRouter,
+    overrides.createPrimTupleRouter ?? createPrimTupleRouter,
+    overrides.createStrRouter ?? createStrRouter,
+    overrides.createStrArrRouter ?? createStrArrRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

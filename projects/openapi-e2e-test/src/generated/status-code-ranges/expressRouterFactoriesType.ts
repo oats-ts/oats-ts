@@ -7,10 +7,10 @@
 import { IRouter } from 'express'
 
 export type StatusCodeRangesRouterFactories = {
-  createWithNormalStatusesRouter: (router?: IRouter | undefined) => IRouter
   createRange1XxRouter: (router?: IRouter | undefined) => IRouter
   createRange2XxRouter: (router?: IRouter | undefined) => IRouter
   createRange3XxRouter: (router?: IRouter | undefined) => IRouter
   createRange4XxRouter: (router?: IRouter | undefined) => IRouter
   createRange5XxRouter: (router?: IRouter | undefined) => IRouter
+  createWithNormalStatusesRouter: (router?: IRouter | undefined) => IRouter
 }

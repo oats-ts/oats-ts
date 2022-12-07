@@ -14,10 +14,10 @@ import {
 } from './responseServerTypes'
 
 export type StatusCodeRangesApi = {
-  withNormalStatuses(): Promise<WithNormalStatusesServerResponse>
   range1Xx(): Promise<Range1XxServerResponse>
   range2Xx(): Promise<Range2XxServerResponse>
   range3Xx(): Promise<Range3XxServerResponse>
   range4Xx(): Promise<Range4XxServerResponse>
   range5Xx(): Promise<Range5XxServerResponse>
+  withNormalStatuses(): Promise<WithNormalStatusesServerResponse>
 }

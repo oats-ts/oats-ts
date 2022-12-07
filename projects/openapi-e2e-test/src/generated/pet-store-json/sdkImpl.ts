@@ -15,20 +15,20 @@ export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
   public constructor(_local_adapter: ClientAdapter) {
     this._local_adapter = _local_adapter
   }
-  public async _local_listPets(_local_request: ListPetsRequest): Promise<ListPetsResponse> {
-    return this._local_createListPetsOperation().run(_local_request)
-  }
   public async _local_createPets(_local_request: CreatePetsRequest): Promise<CreatePetsResponse> {
     return this._local_createCreatePetsOperation().run(_local_request)
+  }
+  public async _local_listPets(_local_request: ListPetsRequest): Promise<ListPetsResponse> {
+    return this._local_createListPetsOperation().run(_local_request)
   }
   public async _local_showPetById(_local_request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     return this._local_createShowPetByIdOperation().run(_local_request)
   }
-  protected _local_createListPetsOperation(): RunnableOperation<ListPetsRequest, ListPetsResponse> {
-    return new ListPetsOperation(this._local_adapter)
-  }
   protected _local_createCreatePetsOperation(): RunnableOperation<CreatePetsRequest, CreatePetsResponse> {
     return new CreatePetsOperation(this._local_adapter)
+  }
+  protected _local_createListPetsOperation(): RunnableOperation<ListPetsRequest, ListPetsResponse> {
+    return new ListPetsOperation(this._local_adapter)
   }
   protected _local_createShowPetByIdOperation(): RunnableOperation<ShowPetByIdRequest, ShowPetByIdResponse> {
     return new ShowPetByIdOperation(this._local_adapter)

@@ -9,10 +9,6 @@ import { AddBookServerResponse, GetBookServerResponse, GetBooksServerResponse } 
 
 export type BookStoreApi = {
   /**
-   * Returns a list of books, can be paginated
-   */
-  getBooks(request: GetBooksServerRequest): Promise<GetBooksServerResponse>
-  /**
    * Creates a new book based on the request body.
    */
   addBook(request: AddBookServerRequest): Promise<AddBookServerResponse>
@@ -20,4 +16,8 @@ export type BookStoreApi = {
    * Returns the book associated with the given bookId
    */
   getBook(request: GetBookServerRequest): Promise<GetBookServerResponse>
+  /**
+   * Returns a list of books, can be paginated
+   */
+  getBooks(request: GetBooksServerRequest): Promise<GetBooksServerResponse>
 }

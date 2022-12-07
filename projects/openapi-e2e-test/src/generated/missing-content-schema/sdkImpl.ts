@@ -15,21 +15,21 @@ export class MissingContentSchemaSdkImpl implements MissingContentSchemaSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async missingResponseSchema(): Promise<MissingResponseSchemaResponse> {
-    return this.createMissingResponseSchemaOperation().run()
-  }
   public async missingRequestBodySchema(
     request: MissingRequestBodySchemaRequest,
   ): Promise<MissingRequestBodySchemaResponse> {
     return this.createMissingRequestBodySchemaOperation().run(request)
   }
-  protected createMissingResponseSchemaOperation(): RunnableOperation<void, MissingResponseSchemaResponse> {
-    return new MissingResponseSchemaOperation(this.adapter)
+  public async missingResponseSchema(): Promise<MissingResponseSchemaResponse> {
+    return this.createMissingResponseSchemaOperation().run()
   }
   protected createMissingRequestBodySchemaOperation(): RunnableOperation<
     MissingRequestBodySchemaRequest,
     MissingRequestBodySchemaResponse
   > {
     return new MissingRequestBodySchemaOperation(this.adapter)
+  }
+  protected createMissingResponseSchemaOperation(): RunnableOperation<void, MissingResponseSchemaResponse> {
+    return new MissingResponseSchemaOperation(this.adapter)
   }
 }

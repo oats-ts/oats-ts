@@ -22,13 +22,13 @@ export function createNoOperationIdsAppRouter(
 ): IRouter {
   const root = router ?? Router()
   const factories = [
+    overrides.createGetEmptyRouter ?? createGetEmptyRouter,
     overrides.createDeleteRouter ?? createDeleteRouter,
     overrides.createDelete123Router ?? createDelete123Router,
     overrides.createGetFooRouter ?? createGetFooRouter,
+    overrides.createPatchFooParam1BarParam2Router ?? createPatchFooParam1BarParam2Router,
     overrides.createPostFooRouter ?? createPostFooRouter,
     overrides.createPutFooParam1BarParam2Router ?? createPutFooParam1BarParam2Router,
-    overrides.createPatchFooParam1BarParam2Router ?? createPatchFooParam1BarParam2Router,
-    overrides.createGetEmptyRouter ?? createGetEmptyRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

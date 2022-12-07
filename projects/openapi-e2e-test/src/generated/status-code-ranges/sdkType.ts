@@ -14,10 +14,10 @@ import {
 } from './responseTypes'
 
 export type StatusCodeRangesSdk = {
-  withNormalStatuses(): Promise<WithNormalStatusesResponse>
   range1Xx(): Promise<Range1XxResponse>
   range2Xx(): Promise<Range2XxResponse>
   range3Xx(): Promise<Range3XxResponse>
   range4Xx(): Promise<Range4XxResponse>
   range5Xx(): Promise<Range5XxResponse>
+  withNormalStatuses(): Promise<WithNormalStatusesResponse>
 }

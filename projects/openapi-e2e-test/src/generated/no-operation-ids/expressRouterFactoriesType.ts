@@ -7,11 +7,11 @@
 import { IRouter } from 'express'
 
 export type NoOperationIdsRouterFactories = {
+  createGetEmptyRouter: (router?: IRouter | undefined) => IRouter
   createDeleteRouter: (router?: IRouter | undefined) => IRouter
   createDelete123Router: (router?: IRouter | undefined) => IRouter
   createGetFooRouter: (router?: IRouter | undefined) => IRouter
+  createPatchFooParam1BarParam2Router: (router?: IRouter | undefined) => IRouter
   createPostFooRouter: (router?: IRouter | undefined) => IRouter
   createPutFooParam1BarParam2Router: (router?: IRouter | undefined) => IRouter
-  createPatchFooParam1BarParam2Router: (router?: IRouter | undefined) => IRouter
-  createGetEmptyRouter: (router?: IRouter | undefined) => IRouter
 }

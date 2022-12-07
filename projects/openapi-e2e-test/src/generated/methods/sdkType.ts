@@ -13,9 +13,9 @@ import {
 } from './responseTypes'
 
 export type HttpMethodsSdk = {
+  deleteMethod(): Promise<DeleteMethodResponse>
   getMethod(): Promise<GetMethodResponse>
+  patchMethod(): Promise<PatchMethodResponse>
   postMethod(): Promise<PostMethodResponse>
   putMethod(): Promise<PutMethodResponse>
-  patchMethod(): Promise<PatchMethodResponse>
-  deleteMethod(): Promise<DeleteMethodResponse>
 }

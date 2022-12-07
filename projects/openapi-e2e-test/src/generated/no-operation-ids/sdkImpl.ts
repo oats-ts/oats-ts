@@ -31,6 +31,9 @@ export class NoOperationIdsSdkImpl implements NoOperationIdsSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
+  public async getEmpty(): Promise<GetEmptyResponse> {
+    return this.createGetEmptyOperation().run()
+  }
   public async delete(): Promise<DeleteResponse> {
     return this.createDeleteOperation().run()
   }
@@ -40,19 +43,19 @@ export class NoOperationIdsSdkImpl implements NoOperationIdsSdk {
   public async getFoo(): Promise<GetFooResponse> {
     return this.createGetFooOperation().run()
   }
+  public async patchFooParam1BarParam2(
+    request: PatchFooParam1BarParam2Request,
+  ): Promise<PatchFooParam1BarParam2Response> {
+    return this.createPatchFooParam1BarParam2Operation().run(request)
+  }
   public async postFoo(): Promise<PostFooResponse> {
     return this.createPostFooOperation().run()
   }
   public async putFooParam1BarParam2(request: PutFooParam1BarParam2Request): Promise<PutFooParam1BarParam2Response> {
     return this.createPutFooParam1BarParam2Operation().run(request)
   }
-  public async patchFooParam1BarParam2(
-    request: PatchFooParam1BarParam2Request,
-  ): Promise<PatchFooParam1BarParam2Response> {
-    return this.createPatchFooParam1BarParam2Operation().run(request)
-  }
-  public async getEmpty(): Promise<GetEmptyResponse> {
-    return this.createGetEmptyOperation().run()
+  protected createGetEmptyOperation(): RunnableOperation<void, GetEmptyResponse> {
+    return new GetEmptyOperation(this.adapter)
   }
   protected createDeleteOperation(): RunnableOperation<void, DeleteResponse> {
     return new DeleteOperation(this.adapter)
@@ -63,6 +66,12 @@ export class NoOperationIdsSdkImpl implements NoOperationIdsSdk {
   protected createGetFooOperation(): RunnableOperation<void, GetFooResponse> {
     return new GetFooOperation(this.adapter)
   }
+  protected createPatchFooParam1BarParam2Operation(): RunnableOperation<
+    PatchFooParam1BarParam2Request,
+    PatchFooParam1BarParam2Response
+  > {
+    return new PatchFooParam1BarParam2Operation(this.adapter)
+  }
   protected createPostFooOperation(): RunnableOperation<void, PostFooResponse> {
     return new PostFooOperation(this.adapter)
   }
@@ -71,14 +80,5 @@ export class NoOperationIdsSdkImpl implements NoOperationIdsSdk {
     PutFooParam1BarParam2Response
   > {
     return new PutFooParam1BarParam2Operation(this.adapter)
-  }
-  protected createPatchFooParam1BarParam2Operation(): RunnableOperation<
-    PatchFooParam1BarParam2Request,
-    PatchFooParam1BarParam2Response
-  > {
-    return new PatchFooParam1BarParam2Operation(this.adapter)
-  }
-  protected createGetEmptyOperation(): RunnableOperation<void, GetEmptyResponse> {
-    return new GetEmptyOperation(this.adapter)
   }
 }

@@ -4,26 +4,6 @@
  * Generated from edge-cases/status-code-ranges.json (originating from oats-ts/oats-schemas)
  */
 
-export type WithNormalStatuses400ResponseHeaderParameters = {
-  'X-Foo'?: string
-}
-
-export type WithNormalStatuses401ResponseHeaderParameters = {
-  'X-Foo'?: string
-}
-
-export type WithNormalStatuses403ResponseHeaderParameters = {
-  'X-Foo'?: string
-}
-
-export type WithNormalStatuses500ResponseHeaderParameters = {
-  'X-Foo'?: string
-}
-
-export type WithNormalStatuses4XxResponseHeaderParameters = {
-  'X-Foo'?: string
-}
-
 export type Range1Xx1XxResponseHeaderParameters = {
   'X-Foo'?: string
 }
@@ -41,5 +21,25 @@ export type Range4Xx4XxResponseHeaderParameters = {
 }
 
 export type Range5Xx5XxResponseHeaderParameters = {
+  'X-Foo'?: string
+}
+
+export type WithNormalStatuses400ResponseHeaderParameters = {
+  'X-Foo'?: string
+}
+
+export type WithNormalStatuses401ResponseHeaderParameters = {
+  'X-Foo'?: string
+}
+
+export type WithNormalStatuses403ResponseHeaderParameters = {
+  'X-Foo'?: string
+}
+
+export type WithNormalStatuses500ResponseHeaderParameters = {
+  'X-Foo'?: string
+}
+
+export type WithNormalStatuses4XxResponseHeaderParameters = {
   'X-Foo'?: string
 }

@@ -16,11 +16,11 @@ import {
 } from './responseTypes'
 
 export type NoOperationIdsSdk = {
+  getEmpty(): Promise<GetEmptyResponse>
   delete(): Promise<DeleteResponse>
   delete123(): Promise<Delete123Response>
   getFoo(): Promise<GetFooResponse>
+  patchFooParam1BarParam2(request: PatchFooParam1BarParam2Request): Promise<PatchFooParam1BarParam2Response>
   postFoo(): Promise<PostFooResponse>
   putFooParam1BarParam2(request: PutFooParam1BarParam2Request): Promise<PutFooParam1BarParam2Response>
-  patchFooParam1BarParam2(request: PatchFooParam1BarParam2Request): Promise<PatchFooParam1BarParam2Response>
-  getEmpty(): Promise<GetEmptyResponse>
 }

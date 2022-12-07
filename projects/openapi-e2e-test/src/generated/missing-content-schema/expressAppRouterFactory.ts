@@ -14,8 +14,8 @@ export function createMissingContentSchemaAppRouter(
 ): IRouter {
   const root = router ?? Router()
   const factories = [
-    overrides.createMissingResponseSchemaRouter ?? createMissingResponseSchemaRouter,
     overrides.createMissingRequestBodySchemaRouter ?? createMissingRequestBodySchemaRouter,
+    overrides.createMissingResponseSchemaRouter ?? createMissingResponseSchemaRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

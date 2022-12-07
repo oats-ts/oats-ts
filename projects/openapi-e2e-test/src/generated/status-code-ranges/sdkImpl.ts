@@ -28,9 +28,6 @@ export class StatusCodeRangesSdkImpl implements StatusCodeRangesSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async withNormalStatuses(): Promise<WithNormalStatusesResponse> {
-    return this.createWithNormalStatusesOperation().run()
-  }
   public async range1Xx(): Promise<Range1XxResponse> {
     return this.createRange1XxOperation().run()
   }
@@ -46,8 +43,8 @@ export class StatusCodeRangesSdkImpl implements StatusCodeRangesSdk {
   public async range5Xx(): Promise<Range5XxResponse> {
     return this.createRange5XxOperation().run()
   }
-  protected createWithNormalStatusesOperation(): RunnableOperation<void, WithNormalStatusesResponse> {
-    return new WithNormalStatusesOperation(this.adapter)
+  public async withNormalStatuses(): Promise<WithNormalStatusesResponse> {
+    return this.createWithNormalStatusesOperation().run()
   }
   protected createRange1XxOperation(): RunnableOperation<void, Range1XxResponse> {
     return new Range1XxOperation(this.adapter)
@@ -63,5 +60,8 @@ export class StatusCodeRangesSdkImpl implements StatusCodeRangesSdk {
   }
   protected createRange5XxOperation(): RunnableOperation<void, Range5XxResponse> {
     return new Range5XxOperation(this.adapter)
+  }
+  protected createWithNormalStatusesOperation(): RunnableOperation<void, WithNormalStatusesResponse> {
+    return new WithNormalStatusesOperation(this.adapter)
   }
 }

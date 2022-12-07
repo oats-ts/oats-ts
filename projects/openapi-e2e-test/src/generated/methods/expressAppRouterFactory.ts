@@ -20,11 +20,11 @@ export function createHttpMethodsAppRouter(
 ): IRouter {
   const root = router ?? Router()
   const factories = [
+    overrides.createDeleteMethodRouter ?? createDeleteMethodRouter,
     overrides.createGetMethodRouter ?? createGetMethodRouter,
+    overrides.createPatchMethodRouter ?? createPatchMethodRouter,
     overrides.createPostMethodRouter ?? createPostMethodRouter,
     overrides.createPutMethodRouter ?? createPutMethodRouter,
-    overrides.createPatchMethodRouter ?? createPatchMethodRouter,
-    overrides.createDeleteMethodRouter ?? createDeleteMethodRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

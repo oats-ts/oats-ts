@@ -21,12 +21,12 @@ export function createStatusCodeRangesAppRouter(
 ): IRouter {
   const root = router ?? Router()
   const factories = [
-    overrides.createWithNormalStatusesRouter ?? createWithNormalStatusesRouter,
     overrides.createRange1XxRouter ?? createRange1XxRouter,
     overrides.createRange2XxRouter ?? createRange2XxRouter,
     overrides.createRange3XxRouter ?? createRange3XxRouter,
     overrides.createRange4XxRouter ?? createRange4XxRouter,
     overrides.createRange5XxRouter ?? createRange5XxRouter,
+    overrides.createWithNormalStatusesRouter ?? createWithNormalStatusesRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

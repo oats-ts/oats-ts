@@ -16,11 +16,11 @@ import {
 } from './responseServerTypes'
 
 export type NoOperationIdsApi = {
+  getEmpty(): Promise<GetEmptyServerResponse>
   delete(): Promise<DeleteServerResponse>
   delete123(): Promise<Delete123ServerResponse>
   getFoo(): Promise<GetFooServerResponse>
+  patchFooParam1BarParam2(request: PatchFooParam1BarParam2ServerRequest): Promise<PatchFooParam1BarParam2ServerResponse>
   postFoo(): Promise<PostFooServerResponse>
   putFooParam1BarParam2(request: PutFooParam1BarParam2ServerRequest): Promise<PutFooParam1BarParam2ServerResponse>
-  patchFooParam1BarParam2(request: PatchFooParam1BarParam2ServerRequest): Promise<PatchFooParam1BarParam2ServerResponse>
-  getEmpty(): Promise<GetEmptyServerResponse>
 }
