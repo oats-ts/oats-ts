@@ -419,6 +419,8 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
         return this.validateObjectSchemaObject(schema)
       case 'union':
         return this.validateDiscriminatedUnionSchemaObject(schema)
+      case 'intersection':
+        return this.validateDiscriminatedIntersectionSchemaObject(schema)
       default:
         return [
           {
@@ -428,6 +430,13 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
           },
         ]
     }
+  }
+
+  protected validateDiscriminatedIntersectionSchemaObject(data: SchemaObject): Issue[] {
+    return [
+      ...this.validateIntersectionSchemaObject(data),
+      ...flatMap(data.allOf ?? [], (schema) => this.validateDiscriminatedUnionAlternative(schema)),
+    ]
   }
 
   protected validateDiscriminatedUnionSchemaObject(data: SchemaObject): Issue[] {
@@ -442,7 +451,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
           (ref): Issue => ({
             message: `"discriminator" is missing "${ref.$ref}"`,
             path: this.context().uriOf(discriminator),
-            severity: 'error',
+            severity: 'warning',
           }),
         ),
       ...discriminatorValues

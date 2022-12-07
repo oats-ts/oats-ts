@@ -230,7 +230,26 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
   }
 
   protected getIntersectionTypeValidatorAst(data: SchemaObject): Expression {
-    const parameters = (data.allOf || []).map((item) => this.getRightHandSideValidatorAst(item))
+    const discriminators = getDiscriminators(data, this.context()) ?? {}
+    const discriminatorProperties = this.getDiscriminatorPropertyAsts(discriminators)
+    const parameters = [
+      ...(data.allOf || []).map((item) => this.getRightHandSideValidatorAst(item)),
+      ...(discriminatorProperties.length > 0
+        ? [
+            factory.createCallExpression(
+              this.getValidatorAst('object'),
+              [],
+              [
+                factory.createCallExpression(
+                  this.getValidatorAst('shape'),
+                  [],
+                  [factory.createObjectLiteralExpression(discriminatorProperties, discriminatorProperties.length > 1)],
+                ),
+              ],
+            ),
+          ]
+        : []),
+    ]
     return factory.createCallExpression(this.getValidatorAst('combine'), [], parameters)
   }
 
@@ -255,12 +274,7 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
 
   protected getObjectTypeValidatorAst(data: SchemaObject): Expression {
     const discriminators = getDiscriminators(data, this.context()) ?? {}
-    const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
-      factory.createPropertyAssignment(
-        safeName(name),
-        factory.createCallExpression(this.getValidatorAst('literal'), [], [factory.createStringLiteral(value)]),
-      ),
-    )
+    const discriminatorProperties = this.getDiscriminatorPropertyAsts(discriminators)
 
     const basicProperties = sortBy(entries(data.properties ?? {}), ([name]) => name)
       .filter(([name]) => !has(discriminators, name))
@@ -283,6 +297,15 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
           [factory.createObjectLiteralExpression(properties, properties.length > 1)],
         ),
       ],
+    )
+  }
+
+  protected getDiscriminatorPropertyAsts(discriminators: Record<string, string>) {
+    return sortBy(entries(discriminators), ([name]) => name).map(([name, value]) =>
+      factory.createPropertyAssignment(
+        safeName(name),
+        factory.createCallExpression(this.getValidatorAst('literal'), [], [factory.createStringLiteral(value)]),
+      ),
     )
   }
 

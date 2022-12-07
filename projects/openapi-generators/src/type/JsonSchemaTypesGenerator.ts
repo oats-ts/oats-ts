@@ -135,16 +135,7 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
   protected getObjectTypeAst(data: SchemaObject): TypeNode {
     const discriminators = getDiscriminators(data, this.context()) ?? {}
     const config = this.configuration()
-    const discriminatorProperties = sortBy(entries(discriminators), ([name]) => name).map(
-      ([name, value]): PropertySignature => {
-        return factory.createPropertySignature(
-          undefined,
-          safeName(name),
-          undefined,
-          factory.createLiteralTypeNode(factory.createStringLiteral(value)),
-        )
-      },
-    )
+    const discriminatorProperties = this.getDiscriminatorPropertyAsts(discriminators)
 
     const properties = sortBy(entries(data.properties ?? {}), ([name]) => name)
       .filter(([name]) => !has(discriminators, name))
@@ -162,6 +153,17 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
     return factory.createTypeLiteralNode(discriminatorProperties.concat(properties))
   }
 
+  protected getDiscriminatorPropertyAsts(discriminators: Record<string, string>): PropertySignature[] {
+    return sortBy(entries(discriminators), ([name]) => name).map(([name, value]): PropertySignature => {
+      return factory.createPropertySignature(
+        undefined,
+        safeName(name),
+        undefined,
+        factory.createLiteralTypeNode(factory.createStringLiteral(value)),
+      )
+    })
+  }
+
   protected getRecordTypeAst(data: SchemaObject): TypeNode {
     const { additionalProperties } = data
     const schema = typeof additionalProperties === 'boolean' ? undefined : additionalProperties
@@ -176,9 +178,15 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
   }
 
   protected getIntersectionTypeAst(data: SchemaObject): TypeNode {
-    const types = (data.allOf ?? [])
-      .map((type) => this.getTypeReferenceAst(type))
-      .filter((ast) => ast.kind !== SyntaxKind.AnyKeyword)
+    const discriminators = getDiscriminators(data, this.context()) ?? {}
+    const discriminatorProperties = this.getDiscriminatorPropertyAsts(discriminators)
+    const types = [
+      ...(data.allOf ?? [])
+        .map((type) => this.getTypeReferenceAst(type))
+        .filter((ast) => ast.kind !== SyntaxKind.AnyKeyword),
+      ...(discriminatorProperties.length > 0 ? [factory.createTypeLiteralNode(discriminatorProperties)] : []),
+    ]
+
     return types.length > 0 ? factory.createIntersectionTypeNode(types) : this.getUnknownTypeAst(data)
   }
 

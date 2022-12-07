@@ -226,8 +226,10 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
   }
 
   protected getIntersectionTypeAssertionAst(data: SchemaObject, variable: Expression): Expression {
-    const { allOf = [] } = data
-    const expressions = allOf.map((item) => this.getTypeAssertionAst(item, variable))
+    const expressions = [
+      ...(data.allOf ?? []).map((item) => this.getTypeAssertionAst(item, variable)),
+      ...this.getDiscriminatorAssertionAsts(getDiscriminators(data, this.context()) ?? {}, variable),
+    ]
     return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
   }
 
@@ -306,14 +308,8 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
   }
 
   protected getObjectTypeAssertionAst(data: SchemaObject, variable: Expression): Expression {
-    const discriminators = getDiscriminators(data, this.context()) || {}
-    const discriminatorAssertions = sortBy(entries(discriminators), ([name]) => name).map(([name, value]) => {
-      return factory.createBinaryExpression(
-        safeMemberAccess(variable, name),
-        SyntaxKind.EqualsEqualsEqualsToken,
-        factory.createStringLiteral(value),
-      )
-    })
+    const discriminators = getDiscriminators(data, this.context()) ?? {}
+    const discriminatorAssertions = this.getDiscriminatorAssertionAsts(discriminators, variable)
     const propertyAssertions = sortBy(entries(data.properties ?? {}), ([name]) => name)
       .filter(([name]) => !has(discriminators, name))
       .map(([name, schemaOrRef]) => {
@@ -322,7 +318,7 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
         if (assertion.kind === SyntaxKind.TrueKeyword) {
           return assertion
         }
-        const isOptional: boolean = (data.required || []).indexOf(name) < 0
+        const isOptional: boolean = (data.required ?? []).indexOf(name) < 0
         return isOptional
           ? getLogicalExpression(SyntaxKind.BarBarToken, [
               factory.createBinaryExpression(memberVar, SyntaxKind.EqualsEqualsEqualsToken, factory.createNull()),
@@ -348,6 +344,16 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
     ]
 
     return reduceLogicalExpressions(SyntaxKind.AmpersandAmpersandToken, expressions)
+  }
+
+  protected getDiscriminatorAssertionAsts(discriminators: Record<string, string>, variable: Expression) {
+    return sortBy(entries(discriminators), ([name]) => name).map(([name, value]) => {
+      return factory.createBinaryExpression(
+        safeMemberAccess(variable, name),
+        SyntaxKind.EqualsEqualsEqualsToken,
+        factory.createStringLiteral(value),
+      )
+    })
   }
 
   protected getArrayTypeAssertionAst(data: SchemaObject, variable: Expression): Expression {
