@@ -4,7 +4,7 @@ import { SchemaObject, Referenceable, ReferenceObject } from '@oats-ts/json-sche
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, safeName } from '@oats-ts/typescript-common'
 import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { entries, has, isNil, sortBy } from 'lodash'
+import { entries, has, sortBy } from 'lodash'
 import { ValidatorImportProviderImpl } from './ValidatorImportProviderImpl'
 import { ExternalRefValidatorImportProviderImpl } from './ExternalRefValidatorImportProviderImpl'
 import { SchemaBasedCodeGenerator } from '../utils/SchemaBasedCodeGenerator'
@@ -131,9 +131,8 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
 
   protected getReferenceTypeValidatorAst(data: ReferenceObject): Expression {
     const resolved = this.context().dereference(data)
-    const name = this.context().nameOf(resolved, this.name())
-    if (!isNil(name)) {
-      const validator = factory.createIdentifier(name)
+    if (this.context().hasName(resolved, this.name())) {
+      const validator = factory.createIdentifier(this.context().nameOf(resolved, this.name()))
       return factory.createCallExpression(this.getValidatorAst('lazy'), undefined, [
         factory.createArrowFunction([], [], [], undefined, undefined, validator),
       ])

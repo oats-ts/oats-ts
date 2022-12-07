@@ -10,15 +10,13 @@ type NameProviderDelegate = (name: string, input: any, target: string, helper: N
 
 const _delegating =
   (provider: NameProvider, ...delegates: NameProviderDelegate[]): NameProvider =>
-  (input, target, helper) =>
-    delegates.reduce((name, delegate) => delegate(name, input, target, helper), provider(input, target, helper))
+  (input, target, helper) => {
+    const base = provider(input, target, helper)
+    return isNil(base) ? undefined : delegates.reduce((name, delegate) => delegate(name, input, target, helper), base)
+  }
 
 const key: NameProvider = (input, target, helper) => {
-  const name = helper.nameOf(input)
-  if (isNil(name)) {
-    throw new Error(`input has no name: ${JSON.stringify(input)}`)
-  }
-  return name
+  return helper.nameOf(input)
 }
 
 const operationId: NameProvider = (operation: OperationObject, _target: string, helper: NameProviderHelper) => {
@@ -33,7 +31,7 @@ const responseHeadersName: NameProvider = (
   return `${operationId(operation, target, helper)}-${status}`
 }
 
-const documentTitle: NameProvider = (doc: OpenAPIObject) => camelCase(doc.info?.title ?? '', { pascalCase: true })
+const documentTitle: NameProvider = (doc: OpenAPIObject) => camelCase(doc.info?.title ?? '', { pascalCase: true }) ?? ''
 
 const toPascalCase: NameProviderDelegate = (name: string) => camelCase(name, { pascalCase: true })
 
@@ -118,7 +116,7 @@ export const nameProviders = {
    * @returns The name provider
    */
   delegating(delegates: DelegatingNameProviderInput): NameProvider {
-    return (input: any, target: string, helper: NameProviderHelper): string => {
+    return (input, target, helper) => {
       const delegate = delegates[target as OpenAPIGeneratorTarget]
       if (isNil(delegate)) {
         throw new Error(`No name provider delegate found for "${target}}"`)

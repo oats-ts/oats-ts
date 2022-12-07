@@ -1,9 +1,5 @@
 import { isNil, sortBy } from 'lodash'
-import {
-  getEnhancedOperations,
-  OpenAPIGeneratorTarget,
-  EnhancedOperation,
-} from '@oats-ts/openapi-common'
+import { getEnhancedOperations, OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
 import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 

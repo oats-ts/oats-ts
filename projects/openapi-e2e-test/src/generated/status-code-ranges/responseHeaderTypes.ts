@@ -36,10 +36,10 @@ export type WithNormalStatuses403ResponseHeaderParameters = {
   'X-Foo'?: string
 }
 
-export type WithNormalStatuses500ResponseHeaderParameters = {
+export type WithNormalStatuses4XxResponseHeaderParameters = {
   'X-Foo'?: string
 }
 
-export type WithNormalStatuses4XxResponseHeaderParameters = {
+export type WithNormalStatuses500ResponseHeaderParameters = {
   'X-Foo'?: string
 }

@@ -27,7 +27,7 @@ export class PathProviderHelperImpl<Doc> implements PathProviderHelper {
     return getParentObject(input, this.uri, this.data)
   }
 
-  public nameOf<T>(input: T, target: string): string {
+  public nameOf<T>(input: T, target: string): string | undefined {
     return this.nameProvider(input, target, this.nameProviderHelper)
   }
 }

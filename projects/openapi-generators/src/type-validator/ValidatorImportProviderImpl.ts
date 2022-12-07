@@ -17,7 +17,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
 
   protected collectReferenceTypeImports(data: ReferenceObject, d: ValidatorImportProviderData): void {
     const schema = this.context.dereference(data)
-    if (!isNil(this.context.nameOf(schema, 'oats/type-validator'))) {
+    if (this.context.hasName(schema, 'oats/type-validator')) {
       d.needsValidatorImport = true
       d.referenceImports.add(data.$ref)
     } else {

@@ -28,10 +28,8 @@ export function getDiscriminators(
       continue
     }
 
-    const name = context.nameOf(input)
-
-    if (!isNil(name)) {
-      discriminators[propertyName] = name
+    if (context.hasName(input)) {
+      discriminators[propertyName] = context.nameOf(input)
     }
 
     const mappingEntries = entries(mapping ?? {})

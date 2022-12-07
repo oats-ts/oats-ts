@@ -85,10 +85,21 @@ export class OpenAPIGeneratorContextImpl<Cfg extends GeneratorConfig> implements
     return input
   }
 
+  public hasName(input: any, target?: OpenAPIGeneratorTarget | undefined): boolean {
+    return !isNil(
+      isNil(target)
+        ? this.data.objectToName.get(input)
+        : this.config.nameProvider(input, target, this.nameProviderHelper),
+    )
+  }
+
   public nameOf(input: any, target?: OpenAPIGeneratorTarget): string {
     const originalName = this.data.objectToName.get(input)
     if (isNil(target)) {
-      return originalName!
+      if (isNil(originalName)) {
+        throw new TypeError(`Value is not named: ${JSON.stringify(input)}`)
+      }
+      return originalName
     }
     const name = this.config.nameProvider(input, target, this.nameProviderHelper)
     if (isNil(name)) {

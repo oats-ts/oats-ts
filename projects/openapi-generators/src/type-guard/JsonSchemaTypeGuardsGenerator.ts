@@ -28,9 +28,9 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
   }
 
   public referenceOf(input: any) {
-    return isNil(this.context().nameOf(input))
-      ? undefined
-      : factory.createIdentifier(this.context().nameOf(input, this.name()))
+    return this.context().hasName(input)
+      ? factory.createIdentifier(this.context().nameOf(input, this.name()))
+      : undefined
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {

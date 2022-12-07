@@ -81,7 +81,7 @@ export type GeneratorConfig = {
    * @param helper A helper object for simplifying object traversal
    * @returns The desired name based on the parameters.
    */
-  nameProvider: (input: any, target: string, helper: NameProviderHelper) => string
+  nameProvider: (input: any, target: string, helper: NameProviderHelper) => string | undefined
   /**
    * @param input The named object (schema, operation, parameter, etc).
    * @param target The generator target (type definition, operation, etc).
@@ -131,21 +131,16 @@ export type NameProviderHelper = BaseHelper & {
 }
 
 export type PathProviderHelper = BaseHelper & {
-  nameOf<T>(input: T, target: string): string
+  nameOf<T>(input: T, target: string): string | undefined
 }
 
 export type LocalNameProviderHelper = BaseHelper & {}
 
-export type NameProvider = (input: any, target: string, helper: NameProviderHelper) => string
+export type NameProvider = GeneratorConfig['nameProvider']
 
-export type LocalNameProvider = (
-  input: any | undefined,
-  target: string,
-  local: string,
-  helper: NameProviderHelper,
-) => string | undefined
+export type LocalNameProvider = NonNullable<GeneratorConfig['localNameProvider']>
 
-export type PathProvider = (input: any, target: string, helper: PathProviderHelper) => string
+export type PathProvider = GeneratorConfig['pathProvider']
 
 /** Globaly used utility to work with URIs found in OpenAPI refs and discriminators. */
 export type URIManipulatorType = {
@@ -198,13 +193,19 @@ export type GeneratorContext<D = any, Target extends string = string> = {
   /** Returns the root and all referenced documents */
   documents(): D[]
 
-  nameOf(input: any): string | undefined
+  nameOf(input: any): string
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).
    * @returns The name of the value.
    */
   nameOf(input: any, target: Target): string
+  /**
+   * @param input The possibly named value
+   * @param target The generator target (type, operation, etc).
+   * @returns true if the item has an intristic name (most likely from outer object key), false otherwise.
+   */
+  hasName(input: any, target?: Target): boolean
   /**
    * @param input The named value
    * @param target The generator target (type, operation, etc).

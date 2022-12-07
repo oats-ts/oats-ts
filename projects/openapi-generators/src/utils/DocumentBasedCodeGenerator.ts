@@ -1,6 +1,6 @@
-import { sortBy } from 'lodash'
-import { getEnhancedOperations, OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation, getEnhancedOperations } from '@oats-ts/openapi-common'
 import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
+import { isNil, sortBy } from 'lodash'
 
 export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPICodeGeneratorImpl<Cfg, EnhancedOperation[]> {
   public abstract name(): OpenAPIGeneratorTarget
@@ -11,8 +11,9 @@ export abstract class DocumentBasedCodeGenerator<Cfg> extends OpenAPICodeGenerat
   }
 
   protected getItems(): [] | [EnhancedOperation[]] {
-    const operations = sortBy(getEnhancedOperations(this.input.document, this.context()), ({ operation }) =>
-      this.context().nameOf(operation),
+    const operations = sortBy(
+      getEnhancedOperations(this.input.document, this.context()),
+      ({ operation, method, url }) => (isNil(operation.operationId) ? `${method}-${url}` : operation.operationId),
     )
     return this.shouldGenerate(operations) ? [operations] : []
   }

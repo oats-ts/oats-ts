@@ -24,7 +24,7 @@ function collectInChildren(input: SchemaObject, context: OpenAPIGeneratorContext
 
 function collect(input: Referenceable<SchemaObject>, context: OpenAPIGeneratorContext, schemas: SchemaObject[]): void {
   const schema = context.dereference(input)
-  if (!isNil(context.nameOf(schema))) {
+  if (context.hasName(schema)) {
     schemas.push(schema)
   } else {
     if (isReferenceObject(schema)) {

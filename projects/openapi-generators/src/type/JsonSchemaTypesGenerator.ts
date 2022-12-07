@@ -23,8 +23,9 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
   }
 
   public referenceOf(input: Referenceable<SchemaObject>): TypeNode {
-    const typeName = this.context().nameOf(input)
-    return isNil(typeName) ? this.getTypeReferenceAst(input) : factory.createTypeReferenceNode(typeName)
+    return this.context().hasName(input)
+      ? factory.createTypeReferenceNode(this.context().nameOf(input))
+      : this.getTypeReferenceAst(input)
   }
 
   public dependenciesOf(fromPath: string, input: Referenceable<SchemaObject>): ImportDeclaration[] {
@@ -84,11 +85,10 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
     if (isNil(schema)) {
       return this.getUnknownTypeAst(data)
     }
-    const name = this.context().nameOf(schema)
-    if (isNil(name)) {
+    if (!this.context().hasName(schema)) {
       return this.getRighthandSideTypeAst(schema)
     }
-    return factory.createTypeReferenceNode(name)
+    return factory.createTypeReferenceNode(this.context().nameOf(schema))
   }
 
   protected getArrayTypeAst(data: SchemaObject): TypeNode {
@@ -212,8 +212,7 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
     schema: Referenceable<SchemaObject>,
     referenceOnly: boolean,
   ): ImportDeclaration[] {
-    const name = this.context().nameOf(schema)
-    if (referenceOnly && !isNil(name)) {
+    if (referenceOnly && this.context().hasName(schema)) {
       return getModelImports<OpenAPIGeneratorTarget>(fromPath, this.name(), [schema], this.context())
     }
     const refSchemas = getReferencedNamedSchemas(schema, this.context())

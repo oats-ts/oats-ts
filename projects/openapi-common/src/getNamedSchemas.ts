@@ -19,7 +19,7 @@ function collectNamedTypesForSchema(
     return
   }
 
-  if (!isNil(context.nameOf(schema))) {
+  if (context.hasName(schema)) {
     schemas.add(schema)
   }
 
@@ -59,7 +59,7 @@ function collectNamedTypesForSchema(
 
   processed.add(input)
 
-  if (!isNil(context.nameOf(input))) {
+  if (context.hasName(input)) {
     schemas.add(input)
   }
 }
