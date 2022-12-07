@@ -1,12 +1,9 @@
-import { JsonSchemaBasedGeneratorContextImpl } from '@oats-ts/model-common'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIObject } from '@oats-ts/openapi-model'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { OpenAPIGeneratorContextImpl, OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { OpenAPIValidatorContext } from './typings'
 
 export class OpenAPIValidatorContextImpl
-  extends JsonSchemaBasedGeneratorContextImpl<OpenAPIObject, GeneratorConfig, OpenAPIGeneratorTarget>
+  extends OpenAPIGeneratorContextImpl<GeneratorConfig>
   implements OpenAPIValidatorContext
 {
   readonly validated: Set<any> = new Set()

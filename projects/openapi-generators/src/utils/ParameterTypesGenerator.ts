@@ -4,6 +4,7 @@ import { flatMap, isNil } from 'lodash'
 import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
+  getReferencedNamedSchemas,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
@@ -11,7 +12,6 @@ import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind, PropertyS
 import { ParameterTypesGeneratorConfig } from './parameterTypings'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
-import { getReferencedNamedSchemas } from '@oats-ts/model-common'
 import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 

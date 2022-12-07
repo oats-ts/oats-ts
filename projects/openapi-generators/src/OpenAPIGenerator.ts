@@ -1,5 +1,5 @@
 import { ContentGenerator, GeneratorEventEmitter, toSimpleGeneratorResult } from '@oats-ts/oats-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { fluent, success, Try } from '@oats-ts/try'
 import { mergeSourceFiles } from '@oats-ts/typescript-common'
 import { SourceFile } from 'typescript'

@@ -4,6 +4,7 @@ import {
   getRequestBodyContent,
   hasRequestBody,
   hasInput,
+  LocalNameDefaults,
 } from '@oats-ts/openapi-common'
 import { ExpressRouterFactoriesGeneratorConfig, ExpressRouterFactoriesLocals } from './typings'
 import { OperationObject } from '@oats-ts/openapi-model'
@@ -26,7 +27,6 @@ import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerato
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { ExpressRouterFactoriesDefaultLocals } from './ExpressRouterFactoriesDefaultLocals'
 import { flatMap, isEqual, isNil, keys, uniqWith, values } from 'lodash'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import {
   ExpressFields,
   ExpressToolkitFields,

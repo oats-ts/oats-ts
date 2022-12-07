@@ -6,6 +6,11 @@ export type {
   EnhancedPathItem,
   OpenAPIGeneratorTarget,
   PathProvider,
+  ReadOutput,
+  HasSchemas,
+  RuntimePackage,
+  LocalNameDefaults,
+  OpenAPIReadOutput,
 } from './typings'
 
 export { getEnhancedOperations } from './getEnhancedOperations'
@@ -25,6 +30,35 @@ export { createOpenAPIGeneratorContext } from './createOpenAPIGeneratorContext'
 export { isStatusCodeRange } from './isStatusCodeRange'
 export { isNumericStatusCode } from './isNumericStatusCode'
 export { getDiscriminators } from './getDiscriminators'
+export { OpenAPIGeneratorContextImpl } from './OpenAPIGeneratorContextImpl'
 
 export { nameProviders } from './nameProviders'
 export { pathProviders } from './pathProviders'
+
+export { getInferredType } from './getInferredType'
+export { getNamedSchemas } from './getNamedSchemas'
+export { getPrimitiveType } from './getPrimitiveType'
+export { getReferencedNamedSchemas } from './getReferencedNamedSchemas'
+export { isReferenceObject } from './isReferenceObject'
+export { isReferenceTarget } from './isReferenceTarget'
+export { PrimitiveTypes, PrimitiveType } from './primitiveTypes'
+export { tick } from './tick'
+export {
+  packages,
+  TryPackage,
+  ExpressPackage,
+  ValidatorsPackage,
+  OpenApiHttpPackage,
+  OpenAPIRuntimePackage,
+  OpenApiExpressServerAdapterPackage,
+  OpenApiParameterSerializationPackage,
+  ExpressExports,
+  OpenAPIRuntimeContent,
+  OpenAPIRuntimeExports,
+  OpenApiExpressServerAdapterExports,
+  OpenApiHttpExports,
+  OpenApiParameterSerializationExports,
+  TryExports,
+  ValidatorsContent,
+  ValidatorsExports,
+} from './packages'

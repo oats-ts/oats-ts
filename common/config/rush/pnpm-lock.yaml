@@ -1,9 +1,8 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@rush-temp/json-schema-generators': file:./projects/json-schema-generators.tgz
+  '@oats-ts/model-common': 0.0.48
   '@rush-temp/json-schema-model': file:./projects/json-schema-model.tgz
-  '@rush-temp/model-common': file:./projects/model-common.tgz
   '@rush-temp/oats-ts': file:./projects/oats-ts.tgz
   '@rush-temp/openapi': file:./projects/openapi.tgz
   '@rush-temp/openapi-common': file:./projects/openapi-common.tgz
@@ -71,9 +70,8 @@ specifiers:
   yargs: 17.6.2
 
 dependencies:
-  '@rush-temp/json-schema-generators': file:projects/json-schema-generators.tgz_ts-node@10.8.2
+  '@oats-ts/model-common': 0.0.48
   '@rush-temp/json-schema-model': file:projects/json-schema-model.tgz
-  '@rush-temp/model-common': file:projects/model-common.tgz
   '@rush-temp/oats-ts': file:projects/oats-ts.tgz
   '@rush-temp/openapi': file:projects/openapi.tgz_ts-node@10.8.2+typescript@4.7.4
   '@rush-temp/openapi-common': file:projects/openapi-common.tgz_ts-node@10.8.2
@@ -746,6 +744,42 @@ packages:
 
   /@leichtgewicht/ip-codec/2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
+    dev: false
+
+  /@oats-ts/json-schema-model/0.0.48:
+    resolution: {integrity: sha512-1KRk9p5yX6CTJ/xJmYk+jp1RgzbJWCNkl8In1zQJEEVMyl+QSj1hDuIU9D7bdofH7GoBirMa//qAM3KTBGGLKw==}
+    dev: false
+
+  /@oats-ts/model-common/0.0.48:
+    resolution: {integrity: sha512-9wSZbOCKhBBoKOLKhKbTlidygrY0zQ8Ac3gqPB9/EWtbs5ekGjDwpTFeMAOzAewnJTo+jRKKX4f1chS8p8RXGQ==}
+    dependencies:
+      '@oats-ts/json-schema-model': 0.0.48
+      '@oats-ts/oats-ts': 0.0.48
+      '@oats-ts/try': 0.0.48
+      lodash: 4.17.21
+      typescript: 4.7.4
+    dev: false
+
+  /@oats-ts/oats-ts/0.0.48:
+    resolution: {integrity: sha512-fqV0wQSEHhX6pbguyI7uxAJ8c38RUmGiCga9K9z2ME6o1U2PH9hrDbi6TlV7pdj5Mt1/NpAD3SL/OX96VsFyag==}
+    dependencies:
+      '@oats-ts/try': 0.0.48
+      '@oats-ts/validators': 0.0.48
+      eventemitter3: 4.0.7
+      lodash: 4.17.21
+      nanoid: 3.3.4
+      typescript: 4.7.4
+      urijs: 1.19.11
+    dev: false
+
+  /@oats-ts/try/0.0.48:
+    resolution: {integrity: sha512-GaBm7mHnzskZMsV25E4KpZx1k3+OtoeHtiG4fyGCIROOkZLUrWgATY7zcNKn32sxhbPR6BP5OKOJv3q9x9S3Gw==}
+    dependencies:
+      '@oats-ts/validators': 0.0.48
+    dev: false
+
+  /@oats-ts/validators/0.0.48:
+    resolution: {integrity: sha512-b/8uzpaOmhaHdzz/QfsvyaNRu1vjwHfuPaclHtU26/MavDHAx2ULjJkuumYpgSoTAKSEgbncdzvzgcNqDmw6XA==}
     dev: false
 
   /@sinonjs/commons/1.8.6:
@@ -7262,45 +7296,11 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  file:projects/json-schema-generators.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-uowa6t1BKThykRTGgaZSeCGDAH/5XsEgB/BKUZcafc2SNlJoRMajR/oYH96AcB/D3f/dGmJkFfVxd9ouoczxVQ==, tarball: file:projects/json-schema-generators.tgz}
-    id: file:projects/json-schema-generators.tgz
-    name: '@rush-temp/json-schema-generators'
-    version: 0.0.0
-    dependencies:
-      '@types/jest': 26.0.23
-      '@types/lodash': 4.14.182
-      '@types/node': 16.7.1
-      jest: 27.0.4_ts-node@10.8.2
-      lodash: 4.17.21
-      rimraf: 3.0.2
-      ts-jest: 27.0.2_jest@27.0.4+typescript@4.7.4
-      typescript: 4.7.4
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
-    dev: false
-
   file:projects/json-schema-model.tgz:
     resolution: {integrity: sha512-+4LRubaYzEDOGGjQ+kqJh4P5iYez+Ke+AADG066tb4NB36A+mva58X7cWKuJMSUOWc9Upo13tlMjOkEVjEH3gw==, tarball: file:projects/json-schema-model.tgz}
     name: '@rush-temp/json-schema-model'
     version: 0.0.0
     dependencies:
-      typescript: 4.7.4
-    dev: false
-
-  file:projects/model-common.tgz:
-    resolution: {integrity: sha512-C5ng4IqwJA4O4STP7bmUJqp+m6pyvb9oZUXMtMB0kCuavtWuZNcbN8JFrVZJltD6/iO898jvEcOODcqh7TBPUA==, tarball: file:projects/model-common.tgz}
-    name: '@rush-temp/model-common'
-    version: 0.0.0
-    dependencies:
-      '@types/lodash': 4.14.182
-      lodash: 4.17.21
-      rimraf: 3.0.2
       typescript: 4.7.4
     dev: false
 
@@ -7335,11 +7335,12 @@ packages:
     dev: false
 
   file:projects/openapi-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-KjRBazb6v3bWVCB/OzibCcy9k+u0n1VeT+CmwL9samVAgb8dMs/lBOvWTT6RYEMUjER1zdBOF8wanIyywd7aow==, tarball: file:projects/openapi-common.tgz}
+    resolution: {integrity: sha512-vVGeJjzuNLWdJd9AhguOVdN0hV0X/FfezeKftjy2ktBwXK3NQ/3dueaYP9e/qbYNxVURa6IAOBzrmxCZ2GAhyA==, tarball: file:projects/openapi-common.tgz}
     id: file:projects/openapi-common.tgz
     name: '@rush-temp/openapi-common'
     version: 0.0.0
     dependencies:
+      '@oats-ts/model-common': 0.0.48
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.182
       '@types/node': 16.7.1
@@ -7472,11 +7473,12 @@ packages:
     dev: false
 
   file:projects/openapi-generators.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-qv/vtEt1gZsFZcHev3BIrrYz09H4RR/KCS2B42J55IXrKvYTUDcOZb688avQIcHozFN3tqTEQitVQryg50UYQw==, tarball: file:projects/openapi-generators.tgz}
+    resolution: {integrity: sha512-4SDJE36iGB0M5ZO19btlaMVZKx1RF292+8QZ5JuenXZlt4w8Jd7Sow58kPv2V6YygzGO/QyykFyOnHhjHTK7oA==, tarball: file:projects/openapi-generators.tgz}
     id: file:projects/openapi-generators.tgz
     name: '@rush-temp/openapi-generators'
     version: 0.0.0
     dependencies:
+      '@oats-ts/model-common': 0.0.48
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.182
       '@types/node': 16.7.1
@@ -7570,11 +7572,12 @@ packages:
     dev: false
 
   file:projects/openapi-reader.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-XbOHv4ilIZgcO5S/389aLMhUGqJavRUdSSn6oXO1zpaDO6aqmatKz7Z9R50kUAOP3H8Qrby2gSBZRA/lmOxgEA==, tarball: file:projects/openapi-reader.tgz}
+    resolution: {integrity: sha512-JibeFUwH/CAzwTvFYdfy8+LM3RFllOkEQiEQljkc+UzlG1YbZsEjurfqpeFz1I2TRxRPGaLTLdFBYdwwZ0vcew==, tarball: file:projects/openapi-reader.tgz}
     id: file:projects/openapi-reader.tgz
     name: '@rush-temp/openapi-reader'
     version: 0.0.0
     dependencies:
+      '@oats-ts/model-common': 0.0.48
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.182
       '@types/node': 16.7.1
@@ -7609,11 +7612,12 @@ packages:
     dev: false
 
   file:projects/openapi-validator.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-H7OHEVcdC+GNo8JEAuoug8af5L9nISipgDYuv5Pu0yGb3SnG371BbbLW1NRrAd0wxCoVu8qut/YVkjJ09WUNhw==, tarball: file:projects/openapi-validator.tgz}
+    resolution: {integrity: sha512-j7aM6Kp7Z9P2LdcVqjIB+YewxUzKUxQxaKrZyJB3d2mU8Yixur8YL4JbHtAEAAjFgshk+suHB+HPrfQJg5JHHg==, tarball: file:projects/openapi-validator.tgz}
     id: file:projects/openapi-validator.tgz
     name: '@rush-temp/openapi-validator'
     version: 0.0.0
     dependencies:
+      '@oats-ts/model-common': 0.0.48
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.182
       '@types/node': 16.7.1
@@ -7678,11 +7682,12 @@ packages:
     dev: false
 
   file:projects/typescript-common.tgz_ts-node@10.8.2:
-    resolution: {integrity: sha512-+QzrP7GOFVz2qGoLdnQU8jhsWs5+/B2W4W3k4JwjqD4+K8f7hivlUkmVSwiYMDv4fRf+VOKqrlkQM7JJvBfDZw==, tarball: file:projects/typescript-common.tgz}
+    resolution: {integrity: sha512-XOP+9o1I74RKxsxCNSDSFxVFHojMb4e+1GZTbUeSqJ2H0GchUcmBl+eDG+5ncB4yCbsJO+YfWxeI4hNKyEMWCQ==, tarball: file:projects/typescript-common.tgz}
     id: file:projects/typescript-common.tgz
     name: '@rush-temp/typescript-common'
     version: 0.0.0
     dependencies:
+      '@oats-ts/model-common': 0.0.48
       '@types/jest': 26.0.23
       '@types/lodash': 4.14.182
       '@types/node': 16.7.1

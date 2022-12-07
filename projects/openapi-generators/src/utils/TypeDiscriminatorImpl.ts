@@ -1,5 +1,5 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, isReferenceObject } from '@oats-ts/model-common'
+import { getInferredType, isReferenceObject } from '@oats-ts/openapi-common'
 import { TypeDiscriminator } from '../types'
 
 export class TypeDiscriminatorImpl implements TypeDiscriminator {

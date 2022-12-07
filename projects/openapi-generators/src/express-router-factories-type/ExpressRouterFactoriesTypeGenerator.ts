@@ -1,11 +1,10 @@
-import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { EnhancedOperation, LocalNameDefaults, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { TypeNode, Expression, factory, ImportDeclaration, SourceFile, SyntaxKind, Statement } from 'typescript'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { ExpressRouterFactoriesTypeDefaultLocals } from './ExpressRouterFactoriesTypeDefaultLocals'
 import { ExpressRouterFactoriesTypeLocals } from './typings'
 

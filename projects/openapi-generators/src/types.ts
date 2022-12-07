@@ -1,6 +1,6 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { CodeGenerator, GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { SourceFile } from 'typescript'
 
 export type Config<T = {}> = boolean | (Partial<GeneratorConfig> & Partial<T>)

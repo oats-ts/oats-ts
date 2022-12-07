@@ -1,15 +1,8 @@
-import { tick } from '@oats-ts/model-common'
 import { ContentReader, ReaderEventEmitter, URIManipulator } from '@oats-ts/oats-ts'
+import { OpenAPIReadOutput, tick } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { fluent, isFailure, isSuccess, success, Try } from '@oats-ts/try'
-import {
-  OpenAPIDocumentTraverser,
-  OpenAPIReadConfig,
-  OpenAPIReadOutput,
-  ReadCache,
-  ReadContext,
-  ReferenceTraverser,
-} from './typings'
+import { OpenAPIDocumentTraverser, OpenAPIReadConfig, ReadCache, ReadContext, ReferenceTraverser } from './typings'
 
 import { OpenAPIDocumentTraverserImpl } from './OpenAPIDocumentTraverserImpl'
 import { FirstPassReferenceTraverserImpl } from './FirstPassReferenceTraverserImpl'

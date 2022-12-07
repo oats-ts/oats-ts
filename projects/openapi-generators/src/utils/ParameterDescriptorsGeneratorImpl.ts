@@ -1,13 +1,15 @@
 import { Referenceable, SchemaObject, SchemaObjectType } from '@oats-ts/json-schema-model'
-import { getInferredType, OpenApiParameterSerializationPackage } from '@oats-ts/model-common'
-import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import {
   getParameterKind,
   getParameterName,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  OpenApiParameterSerializationPackage,
+  OpenApiParameterSerializationExports,
   ParameterKind,
+  getInferredType,
 } from '@oats-ts/openapi-common'
+import {} from '@oats-ts/openapi-common'
 import { BaseParameterObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
 import { getLiteralAst, getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
 import { entries, isNil } from 'lodash'

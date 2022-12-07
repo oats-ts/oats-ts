@@ -1,5 +1,4 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { isReferenceObject, isReferenceTarget } from '@oats-ts/model-common'
 import {
   ComponentsObject,
   ContentObject,
@@ -13,6 +12,8 @@ import {
   ResponseObject,
 } from '@oats-ts/openapi-model'
 import { isNil, values } from 'lodash'
+import { isReferenceObject } from './isReferenceObject'
+import { isReferenceTarget } from './isReferenceTarget'
 import { OpenAPIVisitor } from './typings'
 
 export class OpenAPITraverser<I> {

@@ -13,10 +13,6 @@
       "path": "projects/json-schema-model"
     },
     {
-      "name": "model-common",
-      "path": "projects/model-common"
-    },
-    {
       "name": "oats-ts",
       "path": "projects/oats-ts"
     },

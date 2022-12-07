@@ -8,23 +8,22 @@ import {
 import { ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
 import { isReferenceObject } from './isReferenceObject'
-import { JsonSchemaBasedGeneratorContext, LocalNameDefaults, ReadOutput } from './types'
+import { LocalNameDefaults, OpenAPIGeneratorContext, OpenAPIGeneratorTarget, ReadOutput } from './typings'
 import { NameProviderHelperImpl } from './NameProviderHelperImpl'
 import { PathProviderHelperImpl } from './PathProviderHelperImpl'
 import { LocalNameProviderHelperImpl } from './LocalNameProviderHelperImpl'
+import { OpenAPIObject } from '@oats-ts/openapi-model'
 
-export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfig, Target extends string>
-  implements JsonSchemaBasedGeneratorContext<Doc, Target>
-{
-  public readonly _document: Doc
-  public readonly _documents: Doc[]
+export class OpenAPIGeneratorContextImpl<Cfg extends GeneratorConfig> implements OpenAPIGeneratorContext {
+  public readonly _document: OpenAPIObject
+  public readonly _documents: OpenAPIObject[]
   protected readonly nameProviderHelper: NameProviderHelper
   protected readonly pathProviderHelper: PathProviderHelper
   protected readonly localNameProviderHelper: LocalNameProviderHelper
 
   public constructor(
     protected owner: CodeGenerator<any, any>,
-    protected data: ReadOutput<Doc>,
+    protected data: ReadOutput<OpenAPIObject>,
     readonly config: Cfg,
     readonly generators: CodeGenerator<any, any>[],
     readonly locals: LocalNameDefaults,
@@ -36,15 +35,15 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     this.localNameProviderHelper = new LocalNameProviderHelperImpl(data)
   }
 
-  public document(): Doc {
+  public document(): OpenAPIObject {
     return this._document
   }
 
-  public documents(): Doc[] {
+  public documents(): OpenAPIObject[] {
     return this._documents
   }
 
-  private getDefaultName(input: any | undefined, target: Target, local: string) {
+  private getDefaultName(input: any | undefined, target: OpenAPIGeneratorTarget, local: string) {
     const defaultName = this.locals[local]
     if (isNil(defaultName)) {
       throw new TypeError(
@@ -57,7 +56,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     }
   }
 
-  public localNameOf<L extends string>(input: any | undefined, target: Target, local: L): string {
+  public localNameOf<L extends string>(input: any | undefined, target: OpenAPIGeneratorTarget, local: L): string {
     if (target !== this.owner.name()) {
       const generator = this.owner.resolve(target)
       if (isNil(generator)) {
@@ -86,7 +85,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     return input
   }
 
-  public nameOf(input: any, target?: Target): string {
+  public nameOf(input: any, target?: OpenAPIGeneratorTarget): string {
     const originalName = this.data.objectToName.get(input)
     if (isNil(target)) {
       return originalName!
@@ -98,7 +97,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     return name
   }
 
-  public pathOf(input: any, target: Target): string {
+  public pathOf(input: any, target: OpenAPIGeneratorTarget): string {
     const path = this.config.pathProvider(input, target, this.pathProviderHelper)
     if (isNil(path)) {
       throw new TypeError(`Path provider returned ${path} for "${target}" with input ${JSON.stringify(input)}`)
@@ -130,7 +129,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     return hash
   }
 
-  public dependenciesOf<T>(fromPath: string, input: any, target: Target): T[] {
+  public dependenciesOf<T>(fromPath: string, input: any, target: OpenAPIGeneratorTarget): T[] {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.dependenciesOf(fromPath, input) ?? []
@@ -139,7 +138,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     throw this.wrongTargetError(target, 'dependencies')
   }
 
-  public referenceOf<T>(input: any, target: Target): T {
+  public referenceOf<T>(input: any, target: OpenAPIGeneratorTarget): T {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.referenceOf(input)
@@ -148,7 +147,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     throw this.wrongTargetError(target, 'reference')
   }
 
-  public configurationOf<T>(target: Target): T {
+  public configurationOf<T>(target: OpenAPIGeneratorTarget): T {
     for (const generator of this.generators) {
       if (generator.name() === target) {
         return generator.configuration() as T
@@ -162,7 +161,7 @@ export class JsonSchemaBasedGeneratorContextImpl<Doc, Cfg extends GeneratorConfi
     return isNil(importReplacer) ? exportName : importReplacer(packageName, exportName) ?? exportName
   }
 
-  private wrongTargetError(target: Target, requested: string): Error {
+  private wrongTargetError(target: OpenAPIGeneratorTarget, requested: string): Error {
     const { owner } = this
     const deps = owner
       .consumes()

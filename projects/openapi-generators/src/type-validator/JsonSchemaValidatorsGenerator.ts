@@ -1,4 +1,3 @@
-import { getDiscriminators, packages, ValidatorsPackage } from '@oats-ts/model-common'
 import { ValidatorImportProvider, ValidatorsGeneratorConfig } from './typings'
 import { Expression, factory, ImportDeclaration, NodeFlags, SourceFile, Statement, SyntaxKind } from 'typescript'
 import { SchemaObject, Referenceable, ReferenceObject } from '@oats-ts/json-schema-model'
@@ -9,13 +8,16 @@ import { entries, has, isNil, sortBy } from 'lodash'
 import { ValidatorImportProviderImpl } from './ValidatorImportProviderImpl'
 import { ExternalRefValidatorImportProviderImpl } from './ExternalRefValidatorImportProviderImpl'
 import { SchemaBasedCodeGenerator } from '../utils/SchemaBasedCodeGenerator'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import {
+  getDiscriminators,
+  OpenAPIGeneratorTarget,
+  OpenAPIReadOutput,
+  ValidatorsPackage,
+} from '@oats-ts/openapi-common'
 
 export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<ValidatorsGeneratorConfig> {
   protected importProvider!: ValidatorImportProvider
   protected externalRefImportProvider!: ValidatorImportProvider
-  protected validatorsPkg!: ValidatorsPackage
 
   public name(): OpenAPIGeneratorTarget {
     return 'oats/type-validator'
@@ -31,7 +33,6 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
 
   public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
     super.initialize(init)
-    this.validatorsPkg = this.getValidatorPackage()
     this.importProvider = new ValidatorImportProviderImpl(
       this.context(),
       this.configuration(),
@@ -321,9 +322,5 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
       factory.createIdentifier(pkg.exports.validators),
       pkg.content.validators[type],
     )
-  }
-
-  protected getValidatorPackage(): ValidatorsPackage {
-    return packages.openApiRuntime(this.context())
   }
 }

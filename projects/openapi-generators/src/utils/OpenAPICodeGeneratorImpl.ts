@@ -1,5 +1,9 @@
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
-import { OpenAPIGeneratorContext, createOpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import {
+  OpenAPIGeneratorContext,
+  createOpenAPIGeneratorContext,
+  OpenAPIGeneratorTarget,
+  OpenAPIReadOutput,
+} from '@oats-ts/openapi-common'
 import { BaseCodeGenerator, GeneratorInit } from '@oats-ts/oats-ts'
 import { SourceFile } from 'typescript'
 import {
@@ -13,7 +17,7 @@ import {
   RuntimePackage,
   packages,
   LocalNameDefaults,
-} from '@oats-ts/model-common'
+} from '@oats-ts/openapi-common'
 
 export abstract class OpenAPICodeGeneratorImpl<Config, Items> extends BaseCodeGenerator<
   OpenAPIReadOutput,

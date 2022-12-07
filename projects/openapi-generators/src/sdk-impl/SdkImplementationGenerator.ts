@@ -1,5 +1,5 @@
 import { flatMap, isNil } from 'lodash'
-import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation, LocalNameDefaults } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
@@ -18,7 +18,6 @@ import { createSourceFile, getModelImports, getNamedImports, getPropertyChain } 
 import { Try, success } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { SdkImplDefaultLocals } from './SdkImplDefaultLocals'
 import { SdkImplLocals } from './typings'
 import { SdkTypeLocals } from '../sdk-type/typings'

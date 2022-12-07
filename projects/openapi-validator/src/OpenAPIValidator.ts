@@ -1,5 +1,4 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, isReferenceObject, tick } from '@oats-ts/model-common'
 import { ContentValidator, URIManipulator, URIManipulatorType, ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import {
   ComponentsObject,
@@ -18,7 +17,6 @@ import {
   ResponsesObject,
 } from '@oats-ts/openapi-model'
 import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
 import { DefaultConfig, isOk, Issue, Validator, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
 import { entries, flatMap, isEmpty, isNil, values } from 'lodash'
@@ -26,6 +24,7 @@ import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
 import { factories, StructuralValidators } from './structural'
 import { OpenAPIValidatorContext } from './typings'
+import { getInferredType, isReferenceObject, OpenAPIReadOutput, tick } from '@oats-ts/openapi-common'
 
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators

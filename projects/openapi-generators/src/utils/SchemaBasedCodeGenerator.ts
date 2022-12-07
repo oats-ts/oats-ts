@@ -2,13 +2,11 @@ import { sortBy } from 'lodash'
 import { GeneratorInit } from '@oats-ts/oats-ts'
 import { SourceFile } from 'typescript'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
-import { getNamedSchemas } from '@oats-ts/model-common'
 import { TraversalHelperImpl } from './TraversalHelperImpl'
 import { TypeDiscriminatorImpl } from './TypeDiscriminatorImpl'
 import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 import { TypeDiscriminator, TraversalHelper } from '../types'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { getNamedSchemas, OpenAPIGeneratorTarget, OpenAPIReadOutput } from '@oats-ts/openapi-common'
 
 export abstract class SchemaBasedCodeGenerator<Cfg> extends OpenAPICodeGeneratorImpl<Cfg, Referenceable<SchemaObject>> {
   protected helper!: TraversalHelper

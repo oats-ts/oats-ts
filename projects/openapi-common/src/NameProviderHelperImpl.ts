@@ -1,8 +1,8 @@
-import { LocalNameProviderHelper, URIManipulator } from '@oats-ts/oats-ts'
+import { NameProviderHelper, URIManipulator } from '@oats-ts/oats-ts'
 import { getParentObject } from './getParentObject'
-import { ReadOutput } from './types'
+import { ReadOutput } from './typings'
 
-export class LocalNameProviderHelperImpl<Doc> implements LocalNameProviderHelper {
+export class NameProviderHelperImpl<Doc> implements NameProviderHelper {
   private readonly uri = new URIManipulator()
 
   public constructor(private readonly data: ReadOutput<Doc>) {}
@@ -11,15 +11,19 @@ export class LocalNameProviderHelperImpl<Doc> implements LocalNameProviderHelper
     throw this.data.uriToObject.get(uri)
   }
 
-  public hashOf<T>(input: T): number | undefined {
-    return this.data.objectToHash.get(input)
-  }
-
   public uriOf<T>(input: T): string | undefined {
     return this.data.objectToUri.get(input)
   }
 
   public parent<T, P>(input: T): P | undefined {
     return getParentObject(input, this.uri, this.data)
+  }
+
+  public nameOf<T>(input: T): string | undefined {
+    return this.data.objectToName.get(input)
+  }
+
+  public hashOf<T>(input: T): number | undefined {
+    return this.data.objectToHash.get(input)
   }
 }

@@ -5,9 +5,9 @@ import {
   hasResponseHeaders,
   isStatusCodeRange,
   OpenAPIGeneratorTarget,
+  OpenAPIReadOutput,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { entries, values } from 'lodash'

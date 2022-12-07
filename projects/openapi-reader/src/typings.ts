@@ -1,5 +1,6 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
 import { ContentReader, URIManipulatorType } from '@oats-ts/oats-ts'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { Try } from '@oats-ts/try'
 
@@ -44,23 +45,6 @@ export type TargetTraverser<T> = (data: T, uri: string) => Try<T>
 export type ReferenceTraverser = {
   traverseReferenceable<T>(data: Referenceable<T>, uri: string, target: TargetTraverser<T>): Try<Referenceable<T>>
   traverseReference(uri: string, fromUri: string): Try<string>
-}
-
-export type OpenAPIReadOutput = {
-  /** The full URI of the root document */
-  readonly documentUri: string
-  /** The root OpenAPI document */
-  readonly document: OpenAPIObject
-  /** An URI -> OpenAPI document map. Contains all referenced documents fully resolved. */
-  readonly documents: Map<string, OpenAPIObject>
-  /** An object -> URI mapping for all the objects the resolution traversed */
-  readonly objectToUri: Map<any, string>
-  /** An URI -> object mapping for all the objects the resolution traversed */
-  readonly uriToObject: Map<string, any>
-  /** An object -> name mapping for entites that don't encapsulate their names, eg.: schemas. */
-  readonly objectToName: Map<any, string>
-  /** An object -> hash mapping for entites. Helpful for unique identifiers, as JS doesn't provide an alternative. */
-  readonly objectToHash: Map<OpenAPIObject, number>
 }
 
 export type SchemeConfig = {

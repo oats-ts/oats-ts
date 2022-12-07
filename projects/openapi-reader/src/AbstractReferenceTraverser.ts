@@ -1,9 +1,9 @@
 import { Referenceable, ReferenceObject } from '@oats-ts/json-schema-model'
 import { isNil } from 'lodash'
 import { Failure, failure, isSuccess, success, Try } from '@oats-ts/try'
-import { isReferenceObject } from '@oats-ts/model-common'
 import { ReadContext, ReferenceTraverser, TargetTraverser } from './typings'
 import { register } from './utils/register'
+import { isReferenceObject } from '@oats-ts/openapi-common'
 
 export abstract class AbstractReferenceTraverser implements ReferenceTraverser {
   constructor(protected readonly context: ReadContext) {}

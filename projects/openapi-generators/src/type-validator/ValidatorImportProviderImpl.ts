@@ -1,6 +1,5 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { ValidatorsPackage } from '@oats-ts/model-common'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget, ValidatorsPackage } from '@oats-ts/openapi-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { entries, isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'

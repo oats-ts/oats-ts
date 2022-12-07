@@ -1,6 +1,6 @@
 import { NameProvider, NameProviderHelper, PathProviderHelper, URIManipulator } from '@oats-ts/oats-ts'
 import { getParentObject } from './getParentObject'
-import { ReadOutput } from './types'
+import { ReadOutput } from './typings'
 
 export class PathProviderHelperImpl<Doc> implements PathProviderHelper {
   private readonly uri = new URIManipulator()

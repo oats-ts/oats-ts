@@ -8,7 +8,6 @@ export { OpenAPIReader } from './OpenAPIReader'
 
 export type {
   OpenAPIReadConfig,
-  OpenAPIReadOutput,
   DefaultReaders,
   MemoryReadContent,
   MemoryReaderFactory,

@@ -11,9 +11,8 @@ import {
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
 import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { getDiscriminators } from '@oats-ts/model-common'
 import { SchemaBasedCodeGenerator } from '../utils/SchemaBasedCodeGenerator'
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { getDiscriminators, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 
 export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<TypeGuardGeneratorConfig> {
   public name(): OpenAPIGeneratorTarget {

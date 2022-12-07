@@ -34,9 +34,9 @@
   },
   "dependencies": {
     "@oats-ts/json-schema-model": "0.0.48",
-    "@oats-ts/model-common": "0.0.48",
     "@oats-ts/oats-ts": "0.0.48",
     "@oats-ts/openapi-model": "0.0.48",
+    "@oats-ts/openapi-common": "0.0.48",
     "@oats-ts/try": "0.0.48",
     "@oats-ts/validators": "0.0.48",
     "@types/urijs": "1.19.19",

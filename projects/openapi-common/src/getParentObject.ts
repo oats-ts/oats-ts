@@ -1,6 +1,6 @@
 import { URIManipulatorType } from '@oats-ts/oats-ts'
 import { isNil } from 'lodash'
-import { ReadOutput } from './types'
+import { ReadOutput } from './typings'
 
 export function getParentObject(input: any, uriManipulator: URIManipulatorType, data: ReadOutput<any>): any {
   const uri = data.objectToUri.get(input)

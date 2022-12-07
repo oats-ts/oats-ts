@@ -25,7 +25,7 @@ import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
 import { HttpResponseFields } from './OatsApiNames'
-import { OpenApiHttpExports } from '@oats-ts/model-common/lib/packages'
+import { OpenApiHttpExports } from '@oats-ts/openapi-common/lib/packages'
 
 const rangeTypes: Record<StatusCodeRange, keyof OpenApiHttpExports> = {
   '1XX': 'StatusCode1XX',

@@ -1,4 +1,4 @@
-import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { LocalNameDefaults, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   TypeNode,
@@ -15,7 +15,6 @@ import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typ
 import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { ExpressContextRouterFactoryDefaultLocals } from './ExpressContextRouterFactoryDefaultLocals'
 import { ExpressContextRouterFactoryLocals } from './typings'
 import { ExpressFields } from '../utils/OatsApiNames'

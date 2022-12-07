@@ -1,9 +1,9 @@
 import { entries, isNil } from 'lodash'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { isReferenceObject } from './isReferenceObject'
-import { JsonSchemaBasedGeneratorContext } from './types'
+import { OpenAPIGeneratorContext } from './typings'
 
-function collectInChildren(input: SchemaObject, context: JsonSchemaBasedGeneratorContext, schemas: SchemaObject[]) {
+function collectInChildren(input: SchemaObject, context: OpenAPIGeneratorContext, schemas: SchemaObject[]) {
   const { items, additionalProperties, properties, oneOf, prefixItems } = input ?? {}
   if (!isNil(prefixItems)) {
     return prefixItems.forEach((item) => collect(item, context, schemas))
@@ -22,11 +22,7 @@ function collectInChildren(input: SchemaObject, context: JsonSchemaBasedGenerato
   }
 }
 
-function collect(
-  input: Referenceable<SchemaObject>,
-  context: JsonSchemaBasedGeneratorContext,
-  schemas: SchemaObject[],
-): void {
+function collect(input: Referenceable<SchemaObject>, context: OpenAPIGeneratorContext, schemas: SchemaObject[]): void {
   const schema = context.dereference(input)
   if (!isNil(context.nameOf(schema))) {
     schemas.push(schema)
@@ -41,7 +37,7 @@ function collect(
 
 export function getReferencedNamedSchemas(
   schema: Referenceable<SchemaObject>,
-  context: JsonSchemaBasedGeneratorContext,
+  context: OpenAPIGeneratorContext,
 ): SchemaObject[] {
   const schemas: SchemaObject[] = []
   if (isReferenceObject(schema)) {

@@ -6,6 +6,7 @@ import {
   hasRequestBody,
   hasResponseHeaders,
   hasResponses,
+  LocalNameDefaults,
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import {
@@ -46,7 +47,6 @@ import {
   RunnableOperationMethods,
   TypedRequestFields,
 } from '../utils/OatsApiNames'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { OperationDefaultLocals } from './OperationNames'
 import { HttpResponse, RawHttpRequest } from '@oats-ts/openapi-http'
 
