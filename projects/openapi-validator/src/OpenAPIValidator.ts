@@ -413,18 +413,25 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     ]
   }
 
-  protected validateDiscriminatedUnionSchemaObject(data: SchemaObject): Issue[] {
-    const name = this.context().nameOf(data)
-    if (isNil(name)) {
-      return [
-        {
-          message: `only named schemas can have the "discriminator" field`,
-          path: this.context().uriOf(data),
-          severity: 'error',
-        },
-      ]
+  protected validateDiscriminatedUnionAlternative(data: Referenceable<SchemaObject>): Issue[] {
+    const schema = this.context().dereference(data, true)
+    switch (getInferredType(schema)) {
+      case 'object':
+        return this.validateObjectSchemaObject(schema)
+      case 'union':
+        return this.validateDiscriminatedUnionSchemaObject(schema)
+      default:
+        return [
+          {
+            message: `should reference either an "object" typed schema, with fixed properties ("oneOf" and "allOf" are allowed)`,
+            path: this.context().uriOf(data),
+            severity: 'error',
+          },
+        ]
     }
+  }
 
+  protected validateDiscriminatedUnionSchemaObject(data: SchemaObject): Issue[] {
     const { discriminator, oneOf } = data
     const discriminatorValues = entries(discriminator?.mapping ?? {})
     const oneOfRefs = (oneOf ?? []) as ReferenceObject[]
@@ -448,23 +455,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
             severity: 'error',
           }),
         ),
-      ...flatMap(oneOf, (ref): Issue[] => {
-        const schema = this.context().dereference(ref)
-        switch (getInferredType(schema)) {
-          case 'object':
-            return this.validateObjectSchemaObject(schema)
-          case 'union':
-            return this.validateDiscriminatedUnionSchemaObject(schema)
-          default:
-            return [
-              {
-                message: `should reference either an "object" schema or another schema with "discriminator"`,
-                path: this.context().uriOf(ref),
-                severity: 'error',
-              },
-            ]
-        }
-      }),
+      ...flatMap(oneOf, (ref): Issue[] => this.validateDiscriminatedUnionAlternative(ref)),
     ]
   }
 
