@@ -6,18 +6,18 @@ const data: [string, PathSegment[]][] = [
   ['', []],
 
   // Just text
-  ['/', [{ type: 'text', value: '/' }]],
-  ['/test/foo/bar', [{ type: 'text', value: '/test/foo/bar' }]],
-  ['/test/}}', [{ type: 'text', value: '/test/}}' }]],
+  ['/', [{ type: 'text', value: '/', location: 'path' }]],
+  ['/test/foo/bar', [{ type: 'text', value: '/test/foo/bar', location: 'path' }]],
+  ['/test/}}', [{ type: 'text', value: '/test/}}', location: 'path' }]],
 
   // Just parameters
-  ['{a}', [{ type: 'parameter', name: 'a' }]],
+  ['{a}', [{ type: 'parameter', name: 'a', location: 'path' }]],
   [
     '{a}{b}{c}',
     [
-      { type: 'parameter', name: 'a' },
-      { type: 'parameter', name: 'b' },
-      { type: 'parameter', name: 'c' },
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'parameter', name: 'b', location: 'path' },
+      { type: 'parameter', name: 'c', location: 'path' },
     ],
   ],
 
@@ -25,46 +25,76 @@ const data: [string, PathSegment[]][] = [
   [
     'foo/{a}/{bar}',
     [
-      { type: 'text', value: 'foo/' },
-      { type: 'parameter', name: 'a' },
-      { type: 'text', value: '/' },
-      { type: 'parameter', name: 'bar' },
+      { type: 'text', value: 'foo/', location: 'path' },
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'text', value: '/', location: 'path' },
+      { type: 'parameter', name: 'bar', location: 'path' },
     ],
   ],
   [
     '/foo/{a}{foo}{c}/bar/',
     [
-      { type: 'text', value: '/foo/' },
-      { type: 'parameter', name: 'a' },
-      { type: 'parameter', name: 'foo' },
-      { type: 'parameter', name: 'c' },
-      { type: 'text', value: '/bar/' },
+      { type: 'text', value: '/foo/', location: 'path' },
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'parameter', name: 'foo', location: 'path' },
+      { type: 'parameter', name: 'c', location: 'path' },
+      { type: 'text', value: '/bar/', location: 'path' },
     ],
   ],
 
   // Query parameters
   [
+    '/foo?foo',
+    [
+      { type: 'text', value: '/foo', location: 'path' },
+      { type: 'text', value: '?foo', location: 'query' },
+    ],
+  ],
+  [
+    '/foo?{x}',
+    [
+      { type: 'text', value: '/foo', location: 'path' },
+      { type: 'text', value: '?', location: 'query' },
+      { type: 'parameter', name: 'x', location: 'query' },
+    ],
+  ],
+  [
     '/foo/{a}?foo=bar',
     [
-      { type: 'text', value: '/foo/' },
-      { type: 'parameter', name: 'a' },
-      { type: 'query', value: '?foo=bar' },
+      { type: 'text', value: '/foo/', location: 'path' },
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'text', value: '?foo=bar', location: 'query' },
     ],
   ],
   [
     '/foo/{a}?foo={bar}',
     [
-      { type: 'text', value: '/foo/' },
-      { type: 'parameter', name: 'a' },
-      { type: 'query', value: '?foo={bar}' },
+      { type: 'text', value: '/foo/', location: 'path' },
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'text', value: '?foo=', location: 'query' },
+      { type: 'parameter', name: 'bar', location: 'query' },
     ],
   ],
   [
     '/foo/{a}?foo={bar}&bar=foo',
     [
-      { type: 'text', value: '/foo/' },
-      { type: 'parameter', name: 'a' },
-      { type: 'query', value: '?foo={bar}&bar=foo' },
+      { type: 'text', value: '/foo/', location: 'path' },
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'text', value: '?foo=', location: 'query' },
+      { type: 'parameter', name: 'bar', location: 'query' },
+      { type: 'text', value: '&bar=foo', location: 'query' },
+    ],
+  ],
+  [
+    '{a}{b}{c}?{e}{f}{g}',
+    [
+      { type: 'parameter', name: 'a', location: 'path' },
+      { type: 'parameter', name: 'b', location: 'path' },
+      { type: 'parameter', name: 'c', location: 'path' },
+      { type: 'text', value: '?', location: 'query' },
+      { type: 'parameter', name: 'e', location: 'query' },
+      { type: 'parameter', name: 'f', location: 'query' },
+      { type: 'parameter', name: 'g', location: 'query' },
     ],
   ],
 ]

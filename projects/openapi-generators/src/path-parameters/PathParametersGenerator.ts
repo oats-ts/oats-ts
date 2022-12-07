@@ -1,7 +1,7 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
-import { ParameterSegment, parsePathToSegments, TextSegment } from '@oats-ts/openapi-parameter-serialization'
+import { parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { factory, ImportDeclaration, PropertyAssignment } from 'typescript'
 import { BaseParameterGenerators } from '../utils/BaseParametersGenerator'
@@ -30,7 +30,7 @@ export class PathParametersGenerator extends BaseParameterGenerators {
   }
   protected removeQuerySegments(path: string): string {
     return parsePathToSegments(path)
-      .filter((seg): seg is ParameterSegment | TextSegment => seg.type !== 'query')
+      .filter((seg) => seg.location === 'path')
       .map((seg) => (seg.type === 'parameter' ? `{${seg.name}}` : seg.value))
       .join('')
   }

@@ -528,16 +528,26 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
         },
       ]
     }
-    const pathSegments = segments.filter(({ type }) => type === 'parameter') as ParameterSegment[]
+    const pathSegments = segments.filter((seg): seg is ParameterSegment => seg.type === 'parameter')
+    const inPathSegments = pathSegments.filter(({ location }) => location === 'path')
     const commonPathParams = this.getParamsByLocation(data.parameters ?? [], 'path')
     const operations = this.getOperations(data)
     const parameterIssues = flatMap(operations, (operation): Issue[] => {
       const params = commonPathParams.concat(this.getParamsByLocation(operation.parameters ?? [], 'path'))
-      const missing = pathSegments
+      const missing = inPathSegments
         .filter((segment) => !params.some((param) => param.name === segment.name))
         .map(
           (segment): Issue => ({
-            message: `parameter "${segment.name}" is missing`,
+            message: `path parameter "${segment.name}" is missing`,
+            path: this.context().uriOf(operation),
+            severity: 'error',
+          }),
+        )
+      const inQuery = params
+        .filter((param) => pathSegments.some((segment) => segment.name === param.name && segment.location === 'query'))
+        .map(
+          (param): Issue => ({
+            message: `parameter "${param.name}" is listed as a path parameter, but appears in the query`,
             path: this.context().uriOf(operation),
             severity: 'error',
           }),
@@ -551,12 +561,12 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
             severity: 'error',
           }),
         )
-      return [...missing, ...extra]
+      return [...missing, ...extra, ...inQuery]
     })
-    const queryIssues: Issue[] = segments.some((seg) => seg.type === 'query')
+    const queryIssues: Issue[] = segments.some((seg) => seg.location === 'query')
       ? [
           {
-            message: 'query parameters should not be included in the path',
+            message: 'query part should not be included in the path',
             path: this.context().uriOf(data),
             severity: 'warning',
           },

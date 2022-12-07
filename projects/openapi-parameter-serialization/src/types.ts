@@ -126,22 +126,21 @@ export type CookieParameters<T> = {
 export type RawPath = Record<string, string>
 export type RawQuery = Record<string, string[]>
 
+export type SegmentLocation = 'path' | 'query'
+
 export type ParameterSegment = {
   type: 'parameter'
   name: string
-}
-
-export type QuerySegment = {
-  type: 'query'
-  value: string
+  location: SegmentLocation
 }
 
 export type TextSegment = {
   type: 'text'
   value: string
+  location: SegmentLocation
 }
 
-export type PathSegment = ParameterSegment | TextSegment | QuerySegment
+export type PathSegment = ParameterSegment | TextSegment
 
 export type ValueDeserializer = {
   deserialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<Primitive>
