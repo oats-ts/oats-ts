@@ -1,11 +1,12 @@
 import { generate } from '@oats-ts/oats-ts'
 import { validator, readers, writers, presets, nameProviders, pathProviders, generator } from '@oats-ts/openapi'
 import { isSuccess, stringify } from '@oats-ts/openapi-runtime'
-import { readdir, writeFile } from 'fs/promises'
-import { join, resolve } from 'path'
-import { chunk } from 'lodash'
+import { writeFile } from 'fs/promises'
+import { resolve } from 'path'
+import { chunk, isNil } from 'lodash'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import { getApiGuruSchemaPaths } from './getApiGuruSchemaPaths'
 
 const CHUNK_SIZE = 10
 const OUTPUT_FILE = resolve('.apiguru.txt')
@@ -24,7 +25,7 @@ const cliArgs = yargs(hideBin(process.argv))
     dir: {
       alias: 'd',
       // TODO
-      default: 'E:\\code\\apiguru-openapi-schemas',
+      default: '../../../openapi-directory/APIs',
       string: true,
       implies: 'clear',
     },
@@ -36,7 +37,7 @@ const cliArgs = yargs(hideBin(process.argv))
     clear: {
       alias: 'c',
       boolean: true,
-      default: false,
+      default: true,
     },
   })
   .demandCommand()
@@ -95,28 +96,22 @@ async function generateChunk(files: string[], index: number): Promise<number> {
   return issues
 }
 
-async function getFiles(): Promise<string[]> {
-  if (cliArgs.file) {
-    return [cliArgs.file]
-  } else {
-    const items = await readdir(cliArgs.dir, { withFileTypes: true })
-    return items.filter((item) => item.isFile()).map((item) => join(cliArgs.dir, item.name))
-  }
-}
-
 async function generateAll() {
   if (cliArgs.clear) {
-    await writeFile(OUTPUT_FILE, '', 'utf-8')
+    console.log(`Clearing ${resolve(OUTPUT_FILE)}...`)
+    await writeFile(resolve(OUTPUT_FILE), '', 'utf-8')
   }
 
   let failures = 0
 
-  const files = await getFiles()
+  console.log(`Discovering OpenAPI files in ${resolve(cliArgs.dir)}...`)
+  const files = isNil(cliArgs.file) ? await getApiGuruSchemaPaths(cliArgs.dir) : [resolve(cliArgs.file)]
+  console.log(`Discovered ${files.length} OpenAPI files in ${resolve(cliArgs.dir)}`)
   const filesInChunks = chunk(files, CHUNK_SIZE)
+  console.log(`Files split into ${filesInChunks.length} chunks of ${CHUNK_SIZE} files`)
 
   for (let i = 0; i < filesInChunks.length; i += 1) {
-    const f = filesInChunks[i]!
-    failures += await generateChunk(f, i)
+    failures += await generateChunk(filesInChunks[i]!, i)
   }
 
   console.log()

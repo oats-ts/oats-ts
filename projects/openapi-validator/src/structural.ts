@@ -111,13 +111,11 @@ export const factories = {
       enum: array(
         combine(
           minLength(1),
-          items(
-            union({
-              number: number(),
-              string: string(),
-              boolean: boolean(),
-            }),
-          ),
+          union({
+            'number[]': items(number()),
+            'string[]': items(string()),
+            'boolean[]': items(boolean()),
+          }),
         ),
       ),
     }
