@@ -19,11 +19,7 @@ import {
   DefaultQuerySerializer,
   deserializeSetCookie,
 } from '@oats-ts/openapi-parameter-serialization'
-
-export type FetchClientAdapterConfig = {
-  url?: string
-  skipResponseValidation?: boolean
-}
+import { FetchClientAdapterConfig } from './typings'
 
 export class FetchClientAdapter implements ClientAdapter {
   private readonly config: FetchClientAdapterConfig
