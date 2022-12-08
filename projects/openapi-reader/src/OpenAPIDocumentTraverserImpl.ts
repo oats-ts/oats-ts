@@ -53,7 +53,12 @@ export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
     if (this.context().cache.uriToObject.has(uri)) {
       return success(undefined)
     }
-    const issues = validator(data, uri, { ...DefaultConfig, append: this.context().uri.append })
+    const issues = validator(data, uri, {
+      ...DefaultConfig,
+      append: (uri: string, ...pieces: (string | number)[]): string => {
+        return this.context().uri.append(uri, ...pieces)
+      },
+    })
     return issues.length === 0 ? success(undefined) : failure(...issues)
   }
 

@@ -1,4 +1,4 @@
-import { PathSegment } from './types'
+import { PathSegment, SegmentLocation } from './types'
 import { isNil } from './utils'
 
 export function parsePathToSegments(path: string): PathSegment[] {
@@ -7,16 +7,18 @@ export function parsePathToSegments(path: string): PathSegment[] {
   }
 
   let isParameterSegment: boolean = false
+  let location: SegmentLocation = 'path'
   let segment: string = ''
 
   const segments: PathSegment[] = []
 
   for (let i = 0; i < path.length; i += 1) {
     const char = path[i]
+
     if (!isParameterSegment && char === '{') {
       isParameterSegment = true
       if (segment.length > 0) {
-        segments.push({ type: 'text', value: segment })
+        segments.push({ type: 'text', value: segment, location })
       }
       segment = ''
     } else if (isParameterSegment && char === '}') {
@@ -24,8 +26,14 @@ export function parsePathToSegments(path: string): PathSegment[] {
       if (segment.length === 0) {
         throw new Error(`Empty parameter segment "{}" in ${path}`)
       }
-      segments.push({ type: 'parameter', name: segment })
+      segments.push({ type: 'parameter', name: segment, location })
       segment = ''
+    } else if (!isParameterSegment && location === 'path' && char === '?') {
+      if (segment.length > 0) {
+        segments.push({ type: 'text', value: segment, location })
+      }
+      location = 'query'
+      segment = char
     } else {
       segment += char
     }
@@ -36,7 +44,7 @@ export function parsePathToSegments(path: string): PathSegment[] {
   }
 
   if (segment.length > 0) {
-    segments.push({ type: 'text', value: segment })
+    segments.push({ type: 'text', value: segment, location })
   }
 
   return segments

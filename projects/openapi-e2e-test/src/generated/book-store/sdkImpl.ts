@@ -15,22 +15,22 @@ export class BookStoreSdkImpl implements BookStoreSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
-    return this.createGetBooksOperation().run(request)
-  }
   public async addBook(request: AddBookRequest): Promise<AddBookResponse> {
     return this.createAddBookOperation().run(request)
   }
   public async getBook(request: GetBookRequest): Promise<GetBookResponse> {
     return this.createGetBookOperation().run(request)
   }
-  protected createGetBooksOperation(): RunnableOperation<GetBooksRequest, GetBooksResponse> {
-    return new GetBooksOperation(this.adapter)
+  public async getBooks(request: GetBooksRequest): Promise<GetBooksResponse> {
+    return this.createGetBooksOperation().run(request)
   }
   protected createAddBookOperation(): RunnableOperation<AddBookRequest, AddBookResponse> {
     return new AddBookOperation(this.adapter)
   }
   protected createGetBookOperation(): RunnableOperation<GetBookRequest, GetBookResponse> {
     return new GetBookOperation(this.adapter)
+  }
+  protected createGetBooksOperation(): RunnableOperation<GetBooksRequest, GetBooksResponse> {
+    return new GetBooksOperation(this.adapter)
   }
 }

@@ -11,21 +11,9 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import {
-  shape,
-  object,
-  optional,
-  record,
-  string,
-  array,
-  items,
-  boolean,
-  any,
-  Validator,
-  literal,
-  union,
-  number,
-} from '@oats-ts/validators'
+import { Validator, validators as v } from '@oats-ts/validators'
+
+const { shape, object, optional, record, string, array, items, boolean, any, literal, union, number } = v
 
 const recordOfObjects = object(record(string(), object()))
 
@@ -48,7 +36,7 @@ const baseParameterObjectFileds: Record<keyof BaseParameterObject, Validator<any
   explode: optional(boolean()),
   allowReserved: optional(boolean()),
   schema: optional(object()),
-  examples: optional(object()),
+  examples: optional(any()),
   example: optional(any()),
   content: optional(object()),
 }
@@ -59,7 +47,7 @@ export const validators = {
       openapi: string(),
       info: object(),
       servers: optional(array(items(object()))),
-      paths: object(),
+      paths: optional(object()),
       components: optional(object()),
       security: optional(array(items(object()))),
       tags: optional(array(items(object()))),
@@ -71,7 +59,7 @@ export const validators = {
       schemas: optional(recordOfObjects),
       responses: optional(recordOfObjects),
       parameters: optional(recordOfObjects),
-      examples: optional(recordOfObjects),
+      examples: optional(any()),
       requestBodies: optional(recordOfObjects),
       headers: optional(recordOfObjects),
       securitySchemes: optional(recordOfObjects),
@@ -88,8 +76,8 @@ export const validators = {
   mediaTypeObject: object(
     shape<MediaTypeObject>({
       schema: optional(object()),
-      examples: optional(object()),
-      example: optional(object()),
+      examples: optional(any()),
+      example: optional(any()),
       encoding: optional(object()),
     }),
   ),
@@ -99,7 +87,7 @@ export const validators = {
       summary: optional(string()),
       description: optional(string()),
       externalDocs: optional(object()),
-      operationId: string(),
+      operationId: optional(string()),
       parameters: optional(array(items(object()))),
       requestBody: optional(object()),
       responses: optional(object()),
@@ -144,7 +132,7 @@ export const validators = {
   requestBodyObject: object(
     shape<RequestBodyObject>({
       description: optional(string()),
-      content: object(),
+      content: optional(object()),
       required: optional(boolean()),
     }),
   ),
@@ -189,11 +177,11 @@ export const validators = {
       additionalProperties: optional(
         union({
           schema: object(),
-          false: literal(false),
+          boolean: boolean(),
         }),
       ),
       default: optional(any()),
-      examples: optional(array()),
+      examples: optional(any()),
       externalDocs: optional(object()),
       maxProperties: optional(number()),
       minProperties: optional(number()),

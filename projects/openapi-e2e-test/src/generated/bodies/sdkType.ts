@@ -36,17 +36,17 @@ import {
 } from './responseTypes'
 
 export type BodiesSdk = {
-  str(request: StrRequest): Promise<StrResponse>
-  num(request: NumRequest): Promise<NumResponse>
-  enm(request: EnmRequest): Promise<EnmResponse>
-  bool(request: BoolRequest): Promise<BoolResponse>
-  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
-  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
-  strArr(request: StrArrRequest): Promise<StrArrResponse>
-  numArr(request: NumArrRequest): Promise<NumArrResponse>
-  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
-  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
-  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
   arrObj(request: ArrObjRequest): Promise<ArrObjResponse>
+  bool(request: BoolRequest): Promise<BoolResponse>
+  boolArr(request: BoolArrRequest): Promise<BoolArrResponse>
+  enm(request: EnmRequest): Promise<EnmResponse>
+  enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
   nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
+  num(request: NumRequest): Promise<NumResponse>
+  numArr(request: NumArrRequest): Promise<NumArrResponse>
+  optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>
+  primObj(request: PrimObjRequest): Promise<PrimObjResponse>
+  primTuple(request: PrimTupleRequest): Promise<PrimTupleResponse>
+  str(request: StrRequest): Promise<StrResponse>
+  strArr(request: StrArrRequest): Promise<StrArrResponse>
 }

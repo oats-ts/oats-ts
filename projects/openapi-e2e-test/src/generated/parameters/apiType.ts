@@ -31,9 +31,19 @@ import {
 
 export type ParametersApi = {
   /**
-   * Endpoint for testing path parameters with simple serialization
+   * Endpoint for testing query parameters with deepObject serialization
    */
-  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse>
+  deepObjectQueryParameters(
+    request: DeepObjectQueryParametersServerRequest,
+  ): Promise<DeepObjectQueryParametersServerResponse>
+  /**
+   * Endpoint for testing cookie parameters with form serialization
+   */
+  formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse>
+  /**
+   * Endpoint for testing query parameters with form serialization
+   */
+  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse>
   /**
    * Endpoint for testing path parameters with label serialization
    */
@@ -43,39 +53,29 @@ export type ParametersApi = {
    */
   matrixPathParameters(request: MatrixPathParametersServerRequest): Promise<MatrixPathParametersServerResponse>
   /**
-   * Endpoint for testing query parameters with form serialization
-   */
-  formQueryParameters(request: FormQueryParametersServerRequest): Promise<FormQueryParametersServerResponse>
-  /**
-   * Endpoint for testing query parameters with spaceDelimited serialization
-   */
-  spaceDelimitedQueryParameters(
-    request: SpaceDelimitedQueryParametersServerRequest,
-  ): Promise<SpaceDelimitedQueryParametersServerResponse>
-  /**
    * Endpoint for testing query parameters with pipeDelimited serialization
    */
   pipeDelimitedQueryParameters(
     request: PipeDelimitedQueryParametersServerRequest,
   ): Promise<PipeDelimitedQueryParametersServerResponse>
   /**
-   * Endpoint for testing query parameters with deepObject serialization
-   */
-  deepObjectQueryParameters(
-    request: DeepObjectQueryParametersServerRequest,
-  ): Promise<DeepObjectQueryParametersServerResponse>
-  /**
    * Endpoint for testing header parameters with simple serialization
    */
   simpleHeaderParameters(request: SimpleHeaderParametersServerRequest): Promise<SimpleHeaderParametersServerResponse>
   /**
-   * Endpoint for testing cookie parameters with form serialization
+   * Endpoint for testing path parameters with simple serialization
    */
-  formCookieParameters(request: FormCookieParametersServerRequest): Promise<FormCookieParametersServerResponse>
+  simplePathParameters(request: SimplePathParametersServerRequest): Promise<SimplePathParametersServerResponse>
   /**
    * Endpoint for testing response-header parameters with simple serialization
    */
   simpleResponseHeaderParameters(
     request: SimpleResponseHeaderParametersServerRequest,
   ): Promise<SimpleResponseHeaderParametersServerResponse>
+  /**
+   * Endpoint for testing query parameters with spaceDelimited serialization
+   */
+  spaceDelimitedQueryParameters(
+    request: SpaceDelimitedQueryParametersServerRequest,
+  ): Promise<SpaceDelimitedQueryParametersServerResponse>
 }

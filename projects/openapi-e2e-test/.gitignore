@@ -1,2 +1,4 @@
 dist
 .schemas
+.apiguru.txt
+.apiguru_stable.txt

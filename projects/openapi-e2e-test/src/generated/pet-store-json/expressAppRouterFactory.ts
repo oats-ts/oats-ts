@@ -14,8 +14,8 @@ export function createSwaggerPetstoreAppRouter(
 ): IRouter {
   const _local_root = _local_router ?? Router()
   const _local_factories = [
-    _local_overrides.createListPetsRouter ?? createListPetsRouter,
     _local_overrides.createCreatePetsRouter ?? createCreatePetsRouter,
+    _local_overrides.createListPetsRouter ?? createListPetsRouter,
     _local_overrides.createShowPetByIdRouter ?? createShowPetByIdRouter,
   ]
   const _local_uniqueRouters = _local_factories

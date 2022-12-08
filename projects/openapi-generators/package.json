@@ -30,15 +30,12 @@
     "ts-jest": "27.0.2"
   },
   "dependencies": {
-    "@oats-ts/json-schema-generators": "0.0.48",
     "@oats-ts/json-schema-model": "0.0.48",
-    "@oats-ts/model-common": "0.0.48",
     "@oats-ts/oats-ts": "0.0.48",
     "@oats-ts/openapi-common": "0.0.48",
     "@oats-ts/openapi-http": "0.0.48",
     "@oats-ts/openapi-model": "0.0.48",
     "@oats-ts/openapi-parameter-serialization": "0.0.48",
-    "@oats-ts/openapi-reader": "0.0.48",
     "@oats-ts/try": "0.0.48",
     "@oats-ts/typescript-common": "0.0.48",
     "@oats-ts/validators": "0.0.48",

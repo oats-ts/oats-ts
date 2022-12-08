@@ -1,13 +1,15 @@
 import { Referenceable, SchemaObject, SchemaObjectType } from '@oats-ts/json-schema-model'
-import { getInferredType, OpenApiParameterSerializationPackage } from '@oats-ts/model-common'
-import { OpenApiParameterSerializationExports } from '@oats-ts/model-common/lib/packages'
 import {
   getParameterKind,
   getParameterName,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
+  OpenApiParameterSerializationPackage,
+  OpenApiParameterSerializationExports,
   ParameterKind,
+  getInferredType,
 } from '@oats-ts/openapi-common'
+import {} from '@oats-ts/openapi-common'
 import { BaseParameterObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
 import { getLiteralAst, getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
 import { entries, isNil } from 'lodash'
@@ -84,7 +86,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     return factory.createPropertyAssignment(isIdentifier(name) ? name : factory.createStringLiteral(name), valueAst)
   }
 
-  protected narrowLiteralType(type: SchemaObjectType | string): 'string' | 'number' | 'boolean' {
+  protected narrowLiteralType(type: SchemaObjectType | string, schema: SchemaObject): 'string' | 'number' | 'boolean' {
     switch (type) {
       case 'string':
         return 'string'
@@ -94,23 +96,23 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
       case 'boolean':
         return 'boolean'
       default:
-        throw new TypeError(`Unexpected enum type: "${type}"`)
+        throw new TypeError(`Unexpected enum type: "${type}" in ${this.context.uriOf(schema)}`)
     }
   }
 
   protected getLiteralType(schema: SchemaObject): 'string' | 'number' | 'boolean' {
-    const narrowedType = isNil(schema.type) ? undefined : this.narrowLiteralType(schema.type)
+    const narrowedType = isNil(schema.type) ? undefined : this.narrowLiteralType(schema.type, schema)
     if (!isNil(narrowedType)) {
       return narrowedType
     }
     const types = Array.from(new Set((schema.enum ?? []).map((value) => typeof value)))
     switch (types.length) {
       case 0:
-        throw new TypeError(`Can't infer enum type`)
+        throw new TypeError(`Can't infer enum type in ${this.context.uriOf(schema)}`)
       case 1:
-        return this.narrowLiteralType(types[0])
+        return this.narrowLiteralType(types[0], schema)
       default:
-        throw new TypeError(`Enum must be of same type`)
+        throw new TypeError(`Enum must be of same type in ${this.context.uriOf(schema)}`)
     }
   }
 
@@ -157,7 +159,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         return this.getValueDescriptor(typeof schema.items === 'boolean' ? { type: 'string' } : schema.items)
       }
       case 'object': {
-        const properties = entries(schema.properties).map(([name, propSchema]) => {
+        const properties = entries(schema.properties ?? {}).map(([name, propSchema]) => {
           const isRequired = (schema.required || []).indexOf(name) >= 0
           const requiredValueDesc = this.getValueDescriptor(propSchema)
           const valueDesc = isRequired

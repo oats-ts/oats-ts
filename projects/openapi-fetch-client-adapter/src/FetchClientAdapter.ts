@@ -19,11 +19,7 @@ import {
   DefaultQuerySerializer,
   deserializeSetCookie,
 } from '@oats-ts/openapi-parameter-serialization'
-
-export type FetchClientAdapterConfig = {
-  url?: string
-  skipResponseValidation?: boolean
-}
+import { FetchClientAdapterConfig } from './typings'
 
 export class FetchClientAdapter implements ClientAdapter {
   private readonly config: FetchClientAdapterConfig
@@ -131,34 +127,6 @@ export class FetchClientAdapter implements ClientAdapter {
     return configure(validator, 'responseBody', DefaultConfig)
   }
 
-  public getResponseHeaders(response: RawHttpResponse, descriptors?: ResponseHeadersParameters): any {
-    if (descriptors === null || descriptors === undefined) {
-      return undefined
-    }
-    const { statusCode } = response
-    if (statusCode === null || statusCode === undefined) {
-      throw new Error(`Status code should not be ${statusCode}`)
-    }
-
-    const descriptor = descriptors[statusCode]
-    if (descriptor === undefined || descriptor === null) {
-      const statusCodes = Object.keys(descriptors)
-      const mimeTypesHint =
-        statusCodes.length === 1
-          ? `Expected "${statusCodes[0]}".`
-          : `Expected one of ${statusCodes.map((type) => `${type}`).join(',')}`
-      throw new Error(`Unexpected status code: ${statusCode}. ${mimeTypesHint} (body: ${response.body})`)
-    }
-    if (response.headers === null || response.headers === undefined) {
-      throw new Error(`Response headers should not be ${response.headers} (body: ${response.body})`)
-    }
-    const headers = new DefaultHeaderDeserializer(descriptor).deserialize(response.headers)
-    if (isFailure(headers)) {
-      throw new Error(`Failed to deserialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
-    }
-    return headers.data
-  }
-
   public getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
     const header = response?.headers?.['set-cookie']
     if (header === undefined || header === null) {
@@ -185,7 +153,8 @@ export class FetchClientAdapter implements ClientAdapter {
     const { skipResponseValidation } = this.config
 
     if (!skipResponseValidation) {
-      const validatorsForStatus = validators[statusCode] ?? validators.default
+      const validatorsForStatus =
+        validators[statusCode] ?? validators[this.getStatusCodeRange(statusCode)] ?? validators.default
 
       // In case the status code returned by the server was not found among the expectations, throw.
       if (validatorsForStatus === undefined || validatorsForStatus === null) {
@@ -215,6 +184,40 @@ export class FetchClientAdapter implements ClientAdapter {
     }
 
     return response.body
+  }
+
+  protected getStatusCodeRange(statusCode: number): string {
+    const str = statusCode.toString(10)
+    return `${str[0]}XX`
+  }
+
+  public getResponseHeaders(response: RawHttpResponse, descriptors?: ResponseHeadersParameters): any {
+    if (descriptors === null || descriptors === undefined) {
+      return undefined
+    }
+    const { statusCode } = response
+    if (statusCode === null || statusCode === undefined) {
+      throw new Error(`Status code should not be ${statusCode}`)
+    }
+
+    const descriptor =
+      descriptors[statusCode] ?? descriptors[this.getStatusCodeRange(statusCode)] ?? descriptors.default
+    if (descriptor === undefined || descriptor === null) {
+      const statusCodes = Object.keys(descriptors)
+      const mimeTypesHint =
+        statusCodes.length === 1
+          ? `Expected "${statusCodes[0]}".`
+          : `Expected one of ${statusCodes.map((type) => `${type}`).join(',')}`
+      throw new Error(`Unexpected status code: ${statusCode}. ${mimeTypesHint} (body: ${response.body})`)
+    }
+    if (response.headers === null || response.headers === undefined) {
+      throw new Error(`Response headers should not be ${response.headers} (body: ${response.body})`)
+    }
+    const headers = new DefaultHeaderDeserializer(descriptor).deserialize(response.headers)
+    if (isFailure(headers)) {
+      throw new Error(`Failed to deserialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
+    }
+    return headers.data
   }
 
   protected getRequestInit(request: RawHttpRequest): any | undefined {

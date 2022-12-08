@@ -13,9 +13,9 @@ import {
 } from './responseServerTypes'
 
 export type HttpMethodsApi = {
+  deleteMethod(): Promise<DeleteMethodServerResponse>
   getMethod(): Promise<GetMethodServerResponse>
+  patchMethod(): Promise<PatchMethodServerResponse>
   postMethod(): Promise<PostMethodServerResponse>
   putMethod(): Promise<PutMethodServerResponse>
-  patchMethod(): Promise<PatchMethodServerResponse>
-  deleteMethod(): Promise<DeleteMethodServerResponse>
 }

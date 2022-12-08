@@ -9,13 +9,13 @@ import { CreatePetsServerResponse, ListPetsServerResponse, ShowPetByIdServerResp
 
 export type SwaggerPetstoreApi = {
   /**
-   * List all pets
-   */
-  listPets(request: ListPetsServerRequest): Promise<ListPetsServerResponse>
-  /**
    * Create a pet
    */
   createPets(request: CreatePetsServerRequest): Promise<CreatePetsServerResponse>
+  /**
+   * List all pets
+   */
+  listPets(request: ListPetsServerRequest): Promise<ListPetsServerResponse>
   /**
    * Info for a specific pet
    */

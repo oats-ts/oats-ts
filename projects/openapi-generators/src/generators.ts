@@ -1,10 +1,5 @@
 import { ApiTypeGeneratorConfig } from './api-type'
 
-import {
-  TypeGuardGeneratorConfig,
-  TypesGeneratorConfig,
-  ValidatorsGeneratorConfig,
-} from '@oats-ts/json-schema-generators'
 import { Config, OpenAPICodeGenerator } from './types'
 import { OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { isNil } from 'lodash'
@@ -16,6 +11,9 @@ import { ResponseTypesGeneratorConfig } from './response-type'
 import { ExpressRouterFactoriesGeneratorConfig } from './express-router-factory'
 import { CorsConfigurationGeneratorConfig } from './cors-configuration'
 import { OperationsGeneratorConfig } from './operations'
+import { TypesGeneratorConfig } from './type'
+import { TypeGuardGeneratorConfig } from './type-guard'
+import { ValidatorsGeneratorConfig } from './type-validator'
 
 function create(name: 'oats/type', config?: Config<TypesGeneratorConfig>): OpenAPICodeGenerator
 function create(name: 'oats/type-guard', config?: Config<TypeGuardGeneratorConfig>): OpenAPICodeGenerator

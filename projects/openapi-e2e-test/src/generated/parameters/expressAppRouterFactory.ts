@@ -25,16 +25,16 @@ export function createParametersAppRouter(
 ): _IRouter {
   const root = router ?? _Router()
   const factories = [
-    overrides.createSimplePathParametersRouter ?? createSimplePathParametersRouter,
+    overrides.createDeepObjectQueryParametersRouter ?? createDeepObjectQueryParametersRouter,
+    overrides.createFormCookieParametersRouter ?? createFormCookieParametersRouter,
+    overrides.createFormQueryParametersRouter ?? createFormQueryParametersRouter,
     overrides.createLabelPathParametersRouter ?? createLabelPathParametersRouter,
     overrides.createMatrixPathParametersRouter ?? createMatrixPathParametersRouter,
-    overrides.createFormQueryParametersRouter ?? createFormQueryParametersRouter,
-    overrides.createSpaceDelimitedQueryParametersRouter ?? createSpaceDelimitedQueryParametersRouter,
     overrides.createPipeDelimitedQueryParametersRouter ?? createPipeDelimitedQueryParametersRouter,
-    overrides.createDeepObjectQueryParametersRouter ?? createDeepObjectQueryParametersRouter,
     overrides.createSimpleHeaderParametersRouter ?? createSimpleHeaderParametersRouter,
-    overrides.createFormCookieParametersRouter ?? createFormCookieParametersRouter,
+    overrides.createSimplePathParametersRouter ?? createSimplePathParametersRouter,
     overrides.createSimpleResponseHeaderParametersRouter ?? createSimpleResponseHeaderParametersRouter,
+    overrides.createSpaceDelimitedQueryParametersRouter ?? createSpaceDelimitedQueryParametersRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

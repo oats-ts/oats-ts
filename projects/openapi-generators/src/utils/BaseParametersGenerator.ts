@@ -1,8 +1,7 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
 import { GeneratorInit, RuntimeDependency, version } from '@oats-ts/oats-ts'
-import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation, OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { BaseParameterObject, OperationObject } from '@oats-ts/openapi-model'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
 import {

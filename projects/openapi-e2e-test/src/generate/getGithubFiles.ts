@@ -10,7 +10,9 @@ export type FileDescriptor = {
   url: string
 }
 
-export async function getGithubFiles(folders: string[] = ['schemas', 'generated-schemas']): Promise<string[]> {
+const DEFAULT_FOLDERS = ['schemas', 'generated-schemas', 'edge-cases']
+
+export async function getGithubFiles(folders: string[] = DEFAULT_FOLDERS): Promise<string[]> {
   const response = await fetch(`https://api.github.com/repos/${REPO}/git/trees/master?recursive=true`)
   const tree = ((await response.json()) as any).tree as FileDescriptor[]
   return tree

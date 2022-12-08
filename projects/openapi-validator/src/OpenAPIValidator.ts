@@ -1,6 +1,5 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { getInferredType, isReferenceObject, tick } from '@oats-ts/model-common'
-import { ContentValidator, URIManipulator, ValidatorEventEmitter } from '@oats-ts/oats-ts'
+import { ContentValidator, URIManipulator, URIManipulatorType, ValidatorEventEmitter } from '@oats-ts/oats-ts'
 import {
   ComponentsObject,
   ContentObject,
@@ -18,19 +17,20 @@ import {
   ResponsesObject,
 } from '@oats-ts/openapi-model'
 import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
 import { DefaultConfig, isOk, Issue, Validator, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
-import { entries, flatMap, isNil, values } from 'lodash'
+import { entries, flatMap, isEmpty, isNil, values } from 'lodash'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
 import { factories, StructuralValidators } from './structural'
 import { OpenAPIValidatorContext } from './typings'
+import { getInferredType, isReferenceObject, OpenAPIReadOutput, tick } from '@oats-ts/openapi-common'
 
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators
   private _context!: OpenAPIValidatorContext
   private _config!: ValidatorConfig
+  private _uri!: URIManipulatorType
 
   public constructor() {
     this._structural = factories
@@ -53,6 +53,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     await tick()
 
     this._context = this.createContext(data)
+    this._uri = this.createURIManipulator()
     this._config = this.createValidatorConfig()
 
     const validationResult = await Promise.allSettled(
@@ -109,10 +110,16 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return new OpenAPIValidatorContextImpl(data)
   }
 
+  protected createURIManipulator(): URIManipulatorType {
+    return new URIManipulator()
+  }
+
   protected createValidatorConfig(): ValidatorConfig {
     return {
       ...DefaultConfig,
-      append: new URIManipulator().append,
+      append: (uri: string, ...pieces: (string | number)[]): string => {
+        return this._uri.append(uri, ...pieces)
+      },
       severity: (type: ValidatorType) => {
         if (type === 'restrictKeys') {
           return 'info'
@@ -121,7 +128,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       },
       message: (type: ValidatorType, path: string, data?: any) => {
         if (type === 'restrictKeys') {
-          return 'unused field'
+          return 'excess unused field'
         }
         return DefaultConfig.message(type, path, data)
       },
@@ -182,6 +189,10 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     this.validateHeaderParameterObject = this.fn(
       this.validateHeaderParameterObject,
       this.structural().headerParameterObject(),
+    )
+    this.validateParameterEnumSchemaObject = this.fn(
+      this.validateParameterEnumSchemaObject,
+      this.structural().parameterEnumSchemaObject(),
     )
   }
 
@@ -357,6 +368,10 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return []
   }
 
+  protected validateParameterEnumSchemaObject(data: SchemaObject): Issue[] {
+    return []
+  }
+
   protected validateEnumSchemaObject(data: SchemaObject): Issue[] {
     return []
   }
@@ -367,7 +382,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
 
   protected validateObjectSchemaObject(data: SchemaObject, properties?: (data: SchemaObject) => Issue[]): Issue[] {
     return [
-      ...flatMap(values(data.properties), (schema) =>
+      ...flatMap(values(data.properties ?? {}), (schema) =>
         this.validateReferenceable(schema, true, properties ?? ((schema) => this.validateSchemaObject(schema))),
       ),
     ]
@@ -405,18 +420,34 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     ]
   }
 
-  protected validateDiscriminatedUnionSchemaObject(data: SchemaObject): Issue[] {
-    const name = this.context().nameOf(data)
-    if (isNil(name)) {
-      return [
-        {
-          message: `only named schemas can have the "discriminator" field`,
-          path: this.context().uriOf(data),
-          severity: 'error',
-        },
-      ]
+  protected validateDiscriminatedUnionAlternative(data: Referenceable<SchemaObject>): Issue[] {
+    const schema = this.context().dereference(data, true)
+    switch (getInferredType(schema)) {
+      case 'object':
+        return this.validateObjectSchemaObject(schema)
+      case 'union':
+        return this.validateDiscriminatedUnionSchemaObject(schema)
+      case 'intersection':
+        return this.validateDiscriminatedIntersectionSchemaObject(schema)
+      default:
+        return [
+          {
+            message: `should reference an "object" typed schema, with fixed "properties" or "oneOf" / "allOf")`,
+            path: this.context().uriOf(data),
+            severity: 'error',
+          },
+        ]
     }
+  }
 
+  protected validateDiscriminatedIntersectionSchemaObject(data: SchemaObject): Issue[] {
+    return [
+      ...this.validateIntersectionSchemaObject(data),
+      ...flatMap(data.allOf ?? [], (schema) => this.validateDiscriminatedUnionAlternative(schema)),
+    ]
+  }
+
+  protected validateDiscriminatedUnionSchemaObject(data: SchemaObject): Issue[] {
     const { discriminator, oneOf } = data
     const discriminatorValues = entries(discriminator?.mapping ?? {})
     const oneOfRefs = (oneOf ?? []) as ReferenceObject[]
@@ -428,7 +459,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
           (ref): Issue => ({
             message: `"discriminator" is missing "${ref.$ref}"`,
             path: this.context().uriOf(discriminator),
-            severity: 'error',
+            severity: 'warning',
           }),
         ),
       ...discriminatorValues
@@ -440,23 +471,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
             severity: 'error',
           }),
         ),
-      ...flatMap(oneOf, (ref): Issue[] => {
-        const schema = this.context().dereference(ref)
-        switch (getInferredType(schema)) {
-          case 'object':
-            return this.validateObjectSchemaObject(schema)
-          case 'union':
-            return this.validateDiscriminatedUnionSchemaObject(schema)
-          default:
-            return [
-              {
-                message: `should reference either an "object" schema or another schema with "discriminator"`,
-                path: this.context().uriOf(ref),
-                severity: 'error',
-              },
-            ]
-        }
-      }),
+      ...flatMap(oneOf, (ref): Issue[] => this.validateDiscriminatedUnionAlternative(ref)),
     ]
   }
 
@@ -482,7 +497,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       case 'boolean':
         return this.validatePrimitiveSchemaObject(data)
       case 'enum':
-        return this.validateEnumSchemaObject(data)
+        return this.validateParameterEnumSchemaObject(data)
       default:
         return [
           {
@@ -529,16 +544,26 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
         },
       ]
     }
-    const pathSegments = segments.filter(({ type }) => type === 'parameter') as ParameterSegment[]
+    const pathSegments = segments.filter((seg): seg is ParameterSegment => seg.type === 'parameter')
+    const inPathSegments = pathSegments.filter(({ location }) => location === 'path')
     const commonPathParams = this.getParamsByLocation(data.parameters ?? [], 'path')
     const operations = this.getOperations(data)
-    return flatMap(operations, (operation): Issue[] => {
+    const parameterIssues = flatMap(operations, (operation): Issue[] => {
       const params = commonPathParams.concat(this.getParamsByLocation(operation.parameters ?? [], 'path'))
-      const missing = pathSegments
+      const missing = inPathSegments
         .filter((segment) => !params.some((param) => param.name === segment.name))
         .map(
           (segment): Issue => ({
-            message: `parameter "${segment.name}" is missing`,
+            message: `path parameter "${segment.name}" is missing`,
+            path: this.context().uriOf(operation),
+            severity: 'error',
+          }),
+        )
+      const inQuery = params
+        .filter((param) => pathSegments.some((segment) => segment.name === param.name && segment.location === 'query'))
+        .map(
+          (param): Issue => ({
+            message: `parameter "${param.name}" is listed as a path parameter, but appears in the query`,
             path: this.context().uriOf(operation),
             severity: 'error',
           }),
@@ -552,12 +577,30 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
             severity: 'error',
           }),
         )
-      return [...missing, ...extra]
+      return [...missing, ...extra, ...inQuery]
     })
+    const queryIssues: Issue[] = segments.some((seg) => seg.location === 'query')
+      ? [
+          {
+            message: 'query part should not be included in the path',
+            path: this.context().uriOf(data),
+            severity: 'warning',
+          },
+        ]
+      : []
+    return [...queryIssues, ...parameterIssues]
   }
 
   protected validateOperationObject(data: OperationObject): Issue[] {
+    const emptyOperationId: Issue[] = [
+      {
+        message: `should be a non-empty string`,
+        path: this.config().append(this.context().uriOf(data), 'operationId'),
+        severity: 'warning',
+      },
+    ]
     return [
+      ...(isEmpty(data.operationId) ? emptyOperationId : []),
       ...flatMap(data.parameters ?? [], (parameter) =>
         this.validateReferenceable(parameter, true, (param) => this.validateParameterObject(param)),
       ),
@@ -598,7 +641,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   }
 
   protected validateRequestBodyObject(data: RequestBodyObject): Issue[] {
-    return [...this.validateContentObject(data.content)]
+    return [...(isNil(data.content) ? [] : this.validateContentObject(data.content))]
   }
 
   protected validateContentObject(data: ContentObject): Issue[] {
@@ -619,47 +662,24 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   }
 
   protected validateMediaTypeObject(data: MediaTypeObject): Issue[] {
+    if (isNil(data.schema)) {
+      return [
+        {
+          message: 'missing schema (strict typing is impossible without it)',
+          path: this.config().append(this.context().uriOf(data), 'schema'),
+          severity: 'warning',
+        },
+      ]
+    }
     return [...this.validateReferenceable(data.schema!, false, (schema) => this.validateSchemaObject(schema))]
   }
 
   protected validateResponsesObject(data: ResponsesObject): Issue[] {
     return [
-      ...flatMap(entries(data), ([statusCode, response]): Issue[] => {
-        return [
-          ...(isNil(response) ? [] : this.validateResponseStatusCode(response, statusCode)),
-          ...this.validateReferenceable(response!, false, (res) => this.validateResponseObject(res)),
-        ]
+      ...flatMap(entries(data), ([, response]): Issue[] => {
+        return [...this.validateReferenceable(response!, false, (res) => this.validateResponseObject(res))]
       }),
     ]
-  }
-
-  protected validateResponseStatusCode(data: Referenceable<ResponseObject>, statusCode: string): Issue[] {
-    if (statusCode === 'default') {
-      return []
-    }
-    const numberStatusCode = Number(statusCode)
-
-    if (Number.isNaN(numberStatusCode)) {
-      return [
-        {
-          message: `should be "default" or integer`,
-          path: this.context().uriOf(data),
-          severity: 'error',
-        },
-      ]
-    }
-
-    if (numberStatusCode < 100 && numberStatusCode > 599) {
-      return [
-        {
-          message: `should be a valid status code in either of the 1xx, 2xx, 3xx, 4xx or 5xx range`,
-          path: this.context().uriOf(data),
-          severity: 'error',
-        },
-      ]
-    }
-
-    return []
   }
 
   protected validateResponseObject(data: ResponseObject): Issue[] {

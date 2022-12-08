@@ -1,4 +1,4 @@
-import { EnhancedPathItem, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
+import { EnhancedPathItem, LocalNameDefaults, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
   Block,
@@ -17,11 +17,10 @@ import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { PathBasedCodeGenerator } from '../utils/PathBasedCodeGenerator'
 import { isNil } from 'lodash'
-import { getPathTemplate } from '../utils/getPathTemplate'
 import { ExpressFields, ExpressToolkitFields, RawHttpResponseFields, ServerAdapterMethods } from '../utils/OatsApiNames'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { ExpressCorsRouterFactoryDefaultLocals } from './ExpressCorsRouterFactoryDefaultLocals'
 import { ExpressCorsRouterFactoryLocals } from './typings'
+import { getPathTemplate } from '@oats-ts/openapi-parameter-serialization'
 
 export class ExpressCorsRouterFactoryGenerator extends PathBasedCodeGenerator<{}> {
   public name(): OpenAPIGeneratorTarget {

@@ -33,7 +33,7 @@ export function getEnhancedOperation(
 
 export function getEnhancedOperations(doc: OpenAPIObject, context: OpenAPIGeneratorContext): EnhancedOperation[] {
   const operations: EnhancedOperation[] = []
-  const paths = entries<PathItemObject>(doc.paths)
+  const paths = entries<PathItemObject>(doc.paths ?? {})
   for (const [url, pathItem] of paths) {
     const { get, post, put, patch, trace, options, head, delete: _delete, parameters = [] } = pathItem
     operations.push(...getEnhancedOperation(url, 'get', get, parameters, context, pathItem))

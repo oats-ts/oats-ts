@@ -22,17 +22,20 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
   }
 
   protected getItems(): ResponseParameterInputInternal[] {
-    const operations = sortBy(getEnhancedOperations(this.input.document, this.context()), ({ operation }) =>
-      this.context().nameOf(operation),
+    return sortBy(
+      flatMap(
+        getEnhancedOperations(this.input.document, this.context()),
+        (operation: EnhancedOperation): ResponseParameterInputInternal[] => {
+          if (!hasResponseHeaders(operation.operation, this.context())) {
+            return []
+          }
+          return keys(getResponseHeaders(operation.operation, this.context())).map(
+            (status): ResponseParameterInputInternal => [operation, status],
+          )
+        },
+      ),
+      ([{ operation }, status]) => this.context().nameOf([operation, status], this.name()),
     )
-    return flatMap(operations, (operation: EnhancedOperation): ResponseParameterInputInternal[] => {
-      if (!hasResponseHeaders(operation.operation, this.context())) {
-        return []
-      }
-      return keys(getResponseHeaders(operation.operation, this.context())).map(
-        (status): ResponseParameterInputInternal => [operation, status],
-      )
-    })
   }
 
   public referenceOf(input: ResponseParameterInput): TypeNode | undefined {
@@ -65,7 +68,7 @@ export class ResponseHeadersTypesGenerator extends ParameterTypesGenerator<Respo
   }
 
   private hasResponsesHeaders([operation, status]: ResponseParameterInput) {
-    const responseOrRef = (operation.responses ?? EmptyResponsesObject)[status]
+    const responseOrRef = (operation.responses ?? EmptyResponsesObject)[status as keyof ResponsesObject]
     if (isNil(responseOrRef)) {
       return false
     }

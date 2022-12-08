@@ -9,7 +9,10 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import {
+import { Validator, ShapeInput, validators } from '@oats-ts/validators'
+import { entries } from 'lodash'
+
+const {
   object,
   optional,
   shape,
@@ -23,12 +26,9 @@ import {
   minLength,
   boolean,
   union,
-  Validator,
-  ShapeInput,
   number,
   any,
-} from '@oats-ts/validators'
-import { entries } from 'lodash'
+} = validators
 
 export const factories = {
   literalSchemaObject: () => {
@@ -70,7 +70,7 @@ export const factories = {
       discriminator: object(
         shape<DiscriminatorObject>({
           propertyName: string(),
-          mapping: object(record(string(), string())),
+          mapping: optional(object(record(string(), string()))),
         }),
       ),
       oneOf: array(
@@ -97,12 +97,39 @@ export const factories = {
     }
     return object(combine(shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))))
   },
+  parameterEnumSchemaObject: () => {
+    const enumShape: ShapeInput<SchemaObject> = {
+      description: optional(string()),
+      type: optional(
+        union({
+          integer: literal('integer'),
+          number: literal('number'),
+          string: literal('string'),
+          boolean: literal('boolean'),
+        }),
+      ),
+      enum: array(
+        combine(
+          minLength(1),
+          items(
+            union({
+              number: number(),
+              string: string(),
+              boolean: boolean(),
+            }),
+          ),
+        ),
+      ),
+    }
+    return object(combine(shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))))
+  },
   objectSchemaObject: () => {
     const objectSchemaShape: ShapeInput<SchemaObject> = {
       type: optional(literal('object')),
       required: optional(array(items(string()))),
-      properties: object(),
+      properties: optional(object()),
       description: optional(string()),
+      additionalProperties: optional(literal(false)),
     }
     return object(combine(shape<SchemaObject>(objectSchemaShape), restrictKeys(Object.keys(objectSchemaShape))))
   },
@@ -137,10 +164,7 @@ export const factories = {
     const recordShape: ShapeInput<SchemaObject> = {
       type: optional(literal('object')),
       description: optional(string()),
-      additionalProperties: union({
-        false: literal(false),
-        schema: object(),
-      }),
+      additionalProperties: object(),
     }
     return object(combine(shape<SchemaObject>(recordShape), restrictKeys(Object.keys(recordShape))))
   },
@@ -162,7 +186,7 @@ export const factories = {
     return object(record(string(), object()))
   },
   mediaTypeObject: () => {
-    const medieTypeShape: ShapeInput<MediaTypeObject> = { schema: object() }
+    const medieTypeShape: ShapeInput<MediaTypeObject> = { schema: optional(object()) }
     return object(combine(shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape))))
   },
   openApiObject: () => {
@@ -193,7 +217,7 @@ export const factories = {
     const operationShape: ShapeInput<OperationObject> = {
       description: optional(string()),
       summary: optional(string()),
-      operationId: string(minLength(1)),
+      operationId: optional(string()),
       parameters: optional(array()),
       requestBody: optional(object()),
       responses: object(record(string(), object())),
@@ -203,13 +227,33 @@ export const factories = {
   requestBodyObject: () => {
     const requestBodyShape: ShapeInput<RequestBodyObject> = {
       description: optional(string()),
-      content: object(record(string(), object())),
-      required: optional(literal(true)),
+      content: optional(object(record(string(), object()))),
+      required: optional(boolean()),
     }
     return object(combine(shape<RequestBodyObject>(requestBodyShape), restrictKeys(Object.keys(requestBodyShape))))
   },
   responsesObject: () => {
-    return object(record(string(), object()))
+    const responsesKey = union({
+      default: literal('default'),
+      '1XX': literal('1XX'),
+      '2XX': literal('2XX'),
+      '3XX': literal('3XX'),
+      '4XX': literal('4XX'),
+      '5XX': literal('5XX'),
+      integer: string((input, path, config) => {
+        if (input.length > 0 && `${Number(input)}` === input && Number.isInteger(parseInt(input, 10))) {
+          return []
+        }
+        return [
+          {
+            path,
+            severity: 'error',
+            message: config.message('integer', path),
+          },
+        ]
+      }),
+    })
+    return object(record(responsesKey, object()))
   },
   responseObject: () => {
     const responseShape: ShapeInput<ResponseObject> = {

@@ -6,6 +6,7 @@ import {
   hasRequestBody,
   hasResponseHeaders,
   hasResponses,
+  LocalNameDefaults,
   OpenAPIGeneratorTarget,
 } from '@oats-ts/openapi-common'
 import {
@@ -46,7 +47,6 @@ import {
   RunnableOperationMethods,
   TypedRequestFields,
 } from '../utils/OatsApiNames'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { OperationDefaultLocals } from './OperationNames'
 import { HttpResponse, RawHttpRequest } from '@oats-ts/openapi-http'
 
@@ -60,7 +60,6 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
     const cookieDeps: OpenAPIGeneratorTarget[] = ['oats/cookies-type', 'oats/cookie-parameters']
     const config = this.configuration()
     return [
-      'oats/type',
       'oats/request-headers-type',
       'oats/query-type',
       'oats/path-type',
@@ -169,13 +168,11 @@ export class OperationsGenerator extends OperationBasedCodeGenerator<OperationsG
   }
 
   protected needsMimeType(data: EnhancedOperation): boolean {
-    return this.needsResponseBody(data)
+    return getEnhancedResponses(data.operation, this.context()).some((resp) => !isNil(resp.mediaType))
   }
 
   protected needsResponseBody(data: EnhancedOperation): boolean {
-    return getEnhancedResponses(data.operation, this.context()).some(
-      (resp) => !isNil(resp.schema) && !isNil(resp.mediaType),
-    )
+    return this.needsMimeType(data)
   }
 
   protected needsResponseCookies(data: EnhancedOperation): boolean {

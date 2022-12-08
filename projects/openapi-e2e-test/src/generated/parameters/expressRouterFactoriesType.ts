@@ -7,14 +7,14 @@
 import { IRouter as _IRouter } from 'express'
 
 export type ParametersRouterFactories = {
-  createSimplePathParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createDeepObjectQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createFormCookieParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createFormQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
   createLabelPathParametersRouter: (router?: _IRouter | undefined) => _IRouter
   createMatrixPathParametersRouter: (router?: _IRouter | undefined) => _IRouter
-  createFormQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
-  createSpaceDelimitedQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
   createPipeDelimitedQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
-  createDeepObjectQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
   createSimpleHeaderParametersRouter: (router?: _IRouter | undefined) => _IRouter
-  createFormCookieParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createSimplePathParametersRouter: (router?: _IRouter | undefined) => _IRouter
   createSimpleResponseHeaderParametersRouter: (router?: _IRouter | undefined) => _IRouter
+  createSpaceDelimitedQueryParametersRouter: (router?: _IRouter | undefined) => _IRouter
 }

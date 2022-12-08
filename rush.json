@@ -19,20 +19,8 @@
   "telemetryEnabled": false,
   "projects": [
     {
-      "packageName": "@oats-ts/json-schema-generators",
-      "projectFolder": "projects/json-schema-generators",
-      "shouldPublish": true,
-      "versionPolicyName": "oats"
-    },
-    {
       "packageName": "@oats-ts/json-schema-model",
       "projectFolder": "projects/json-schema-model",
-      "shouldPublish": true,
-      "versionPolicyName": "oats"
-    },
-    {
-      "packageName": "@oats-ts/model-common",
-      "projectFolder": "projects/model-common",
       "shouldPublish": true,
       "versionPolicyName": "oats"
     },

@@ -4,7 +4,7 @@ export type OpenAPIObject = {
   openapi: string
   info: InfoObject
   servers?: ServerObject[]
-  paths: PathsObject
+  paths?: PathsObject
   components?: ComponentsObject
   security?: SecurityRequirementObject[]
   tags?: TagObject[]
@@ -127,7 +127,7 @@ export type ParameterObject = BaseParameterObject & {
 
 export type RequestBodyObject = {
   description?: string
-  content: ContentObject
+  content?: ContentObject
   required?: boolean
 }
 
@@ -148,10 +148,11 @@ export type EncodingPropertyObject = {
   allowReserved?: boolean
 }
 
-export type ResponsesObject = {
-  default: Referenceable<ResponseObject> | undefined
-  [statuscode: string]: Referenceable<ResponseObject> | undefined
-}
+export type StatusCodeRange = '1XX' | '2XX' | '3XX' | '4XX' | '5XX'
+
+export type ResponsesObject = Partial<
+  Record<number | StatusCodeRange | 'default', Referenceable<ResponseObject> | undefined>
+>
 
 export type ResponseObject = {
   description: string

@@ -1,5 +1,5 @@
 import { ContentObject, OperationObject } from '@oats-ts/openapi-model'
-import { entries, flatMap } from 'lodash'
+import { entries, flatMap, isNil } from 'lodash'
 import {
   EnhancedOperation,
   hasRequestBody,
@@ -17,7 +17,7 @@ import {
   SyntaxKind,
   Statement,
 } from 'typescript'
-import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
+import { createSourceFile, getModelImports, getNamedImports, getPropertyChain } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { OperationBasedCodeGenerator } from '../utils/OperationBasedCodeGenerator'
@@ -89,17 +89,29 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
 
   protected getContentTypeBasedValidatorsAst(required: boolean, content: ContentObject): PropertyAssignment[] {
     return entries(content || {}).map(([contentType, mediaTypeObj]) => {
-      const expression: Expression = this.context().referenceOf(mediaTypeObj.schema, 'oats/type-validator')
-      const validatorExpr = required
-        ? expression
-        : factory.createCallExpression(
+      let validatorExpr: Expression = undefined!
+
+      if (isNil(mediaTypeObj.schema)) {
+        validatorExpr = factory.createCallExpression(
+          getPropertyChain(factory.createIdentifier(this.validatorsPkg.exports.validators), [
+            this.validatorsPkg.content.validators.any,
+          ]),
+          [],
+          [],
+        )
+      } else {
+        validatorExpr = this.context().referenceOf(mediaTypeObj.schema, 'oats/type-validator')
+        if (!required) {
+          validatorExpr = factory.createCallExpression(
             factory.createPropertyAccessExpression(
               factory.createIdentifier(this.validatorsPkg.exports.validators),
               this.validatorsPkg.content.validators.optional,
             ),
             [],
-            [expression],
+            [validatorExpr],
           )
+        }
+      }
       return factory.createPropertyAssignment(factory.createStringLiteral(contentType), validatorExpr)
     })
   }

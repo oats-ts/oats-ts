@@ -1,4 +1,4 @@
-import { OpenAPIGeneratorTarget, EnhancedOperation } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorTarget, EnhancedOperation, LocalNameDefaults } from '@oats-ts/openapi-common'
 import { SdkGeneratorConfig } from '../utils/sdkTypings'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import {
@@ -18,7 +18,6 @@ import { success, Try } from '@oats-ts/try'
 import { DocumentBasedCodeGenerator } from '../utils/DocumentBasedCodeGenerator'
 import { RuntimeDependency } from '@oats-ts/oats-ts'
 import { flatMap, isNil } from 'lodash'
-import { LocalNameDefaults } from '@oats-ts/model-common'
 import { SdkTypeDefaultLocals } from './SdkTypeDefaultLocals'
 import { SdkTypeLocals } from './typings'
 

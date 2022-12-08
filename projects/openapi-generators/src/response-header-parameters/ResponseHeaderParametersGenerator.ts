@@ -3,10 +3,11 @@ import {
   EnhancedOperation,
   getResponseHeaders,
   hasResponseHeaders,
+  isStatusCodeRange,
   OpenAPIGeneratorTarget,
+  OpenAPIReadOutput,
 } from '@oats-ts/openapi-common'
 import { OperationObject } from '@oats-ts/openapi-model'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { entries, values } from 'lodash'
@@ -91,7 +92,9 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
       .filter(([, headers]) => values(headers).length > 0)
       .map(([status, headers]): PropertyAssignment => {
         return factory.createPropertyAssignment(
-          status === 'default' ? factory.createStringLiteral(status) : factory.createNumericLiteral(status),
+          status === 'default' || isStatusCodeRange(status)
+            ? factory.createStringLiteral(status)
+            : factory.createNumericLiteral(status),
           factory.createObjectLiteralExpression([
             factory.createPropertyAssignment(
               ParametersFields.descriptor,

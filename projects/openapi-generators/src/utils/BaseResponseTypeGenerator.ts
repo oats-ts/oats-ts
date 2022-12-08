@@ -1,4 +1,4 @@
-import { OperationObject } from '@oats-ts/openapi-model'
+import { OperationObject, StatusCodeRange } from '@oats-ts/openapi-model'
 import { flatMap, head, isNil, keys, values } from 'lodash'
 import {
   EnhancedOperation,
@@ -6,6 +6,8 @@ import {
   getEnhancedResponses,
   OpenAPIGeneratorContext,
   EnhancedResponse,
+  isNumericStatusCode,
+  isStatusCodeRange,
 } from '@oats-ts/openapi-common'
 import {
   Expression,
@@ -18,11 +20,20 @@ import {
   TypeAliasDeclaration,
   SyntaxKind,
 } from 'typescript'
-import { createSourceFile, getModelImports } from '@oats-ts/typescript-common'
+import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { success, Try } from '@oats-ts/try'
 import { RuntimeDependency, version } from '@oats-ts/oats-ts'
 import { OperationBasedCodeGenerator } from './OperationBasedCodeGenerator'
 import { HttpResponseFields } from './OatsApiNames'
+import { OpenApiHttpExports } from '@oats-ts/openapi-common/lib/packages'
+
+const rangeTypes: Record<StatusCodeRange, keyof OpenApiHttpExports> = {
+  '1XX': 'StatusCode1XX',
+  '2XX': 'StatusCode2XX',
+  '3XX': 'StatusCode3XX',
+  '4XX': 'StatusCode4XX',
+  '5XX': 'StatusCode5XX',
+}
 
 export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedCodeGenerator<T> {
   public runtimeDependencies(): RuntimeDependency[] {
@@ -60,11 +71,11 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   }
 
   protected needsMimeTypeProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
-    return !isNil(response.mediaType) && !isNil(response.schema)
+    return !isNil(response.mediaType)
   }
 
   protected needsBodyProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
-    return !isNil(response.mediaType) && !isNil(response.schema)
+    return !isNil(response.mediaType)
   }
 
   protected needsStatusCodeProperty(operation: EnhancedOperation, response: EnhancedResponse): boolean {
@@ -76,7 +87,13 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   }
 
   protected getImports(path: string, operation: EnhancedOperation, responses: EnhancedResponse[]): ImportDeclaration[] {
+    const ranges = responses
+      .map((res) => res.statusCode)
+      .filter((code): code is StatusCodeRange => isStatusCodeRange(code))
+      .map((code) => this.httpPkg.imports[rangeTypes[code]])
+
     return [
+      ...(ranges.length > 0 ? [getNamedImports(this.paramsPkg.name, ranges)] : []),
       ...flatMap(responses, ({ schema, statusCode }) => [
         ...this.context().dependenciesOf<ImportDeclaration>(path, schema, 'oats/type'),
         ...this.context().dependenciesOf<ImportDeclaration>(
@@ -89,21 +106,40 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
   }
 
   protected getStatusCodeTypeAst(operation: EnhancedOperation, response: EnhancedResponse): TypeNode {
-    if (response.statusCode === 'default') {
-      const knownStatusCodes = getEnhancedResponses(operation.operation, this.context())
-        .map(({ statusCode }) => statusCode)
-        .filter((statusCode) => statusCode !== 'default')
+    const { statusCode } = response
 
-      const statusCodeTypeRef = factory.createTypeReferenceNode('number')
+    // Normal case, status code was a proper number
+    if (isNumericStatusCode(statusCode)) {
+      return factory.createLiteralTypeNode(factory.createNumericLiteral(statusCode))
+    }
+
+    const numericStatusCodes = getEnhancedResponses(operation.operation, this.context())
+      .map(({ statusCode }) => statusCode)
+      .filter((code) => isNumericStatusCode(code))
+
+    // Default status code
+    if (statusCode === 'default') {
+      const numberType = factory.createTypeReferenceNode('number')
 
       const knownStatusCodesType = factory.createUnionTypeNode(
-        knownStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
+        numericStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
       )
-      return knownStatusCodes.length > 0
-        ? factory.createTypeReferenceNode('Exclude', [statusCodeTypeRef, knownStatusCodesType])
-        : statusCodeTypeRef
+      return numericStatusCodes.length > 0
+        ? factory.createTypeReferenceNode('Exclude', [numberType, knownStatusCodesType])
+        : numberType
     }
-    return factory.createLiteralTypeNode(factory.createNumericLiteral(response.statusCode))
+    // Status code ranges
+    if (isStatusCodeRange(statusCode)) {
+      const inRangeNumericStatusCodes = numericStatusCodes.filter((code) => code[0] === statusCode[0])
+      const rangeTypeRef = factory.createTypeReferenceNode(this.httpPkg.exports[rangeTypes[statusCode]])
+      const knownStatusCodesType = factory.createUnionTypeNode(
+        inRangeNumericStatusCodes.map((status) => factory.createLiteralTypeNode(factory.createNumericLiteral(status))),
+      )
+      return inRangeNumericStatusCodes.length > 0
+        ? factory.createTypeReferenceNode('Exclude', [rangeTypeRef, knownStatusCodesType])
+        : rangeTypeRef
+    }
+    throw new TypeError(`Unexpected status code ${statusCode}!`)
   }
 
   protected getStatusCodePropertyAst(
@@ -133,7 +169,9 @@ export abstract class BaseResponseTypesGenerator<T = {}> extends OperationBasedC
     response: EnhancedResponse,
   ): PropertySignature | undefined {
     if (this.needsBodyProperty(operation, response)) {
-      const type = this.context().referenceOf<TypeNode>(response.schema, 'oats/type')
+      const type = isNil(response.schema)
+        ? factory.createTypeReferenceNode('any')
+        : this.context().referenceOf<TypeNode>(response.schema, 'oats/type')
       return factory.createPropertySignature(undefined, HttpResponseFields.body, undefined, type)
     }
     return undefined

@@ -9,10 +9,6 @@ import { AddBookResponse, GetBookResponse, GetBooksResponse } from './responseTy
 
 export type BookStoreSdk = {
   /**
-   * Returns a list of books, can be paginated
-   */
-  getBooks(request: GetBooksRequest): Promise<GetBooksResponse>
-  /**
    * Creates a new book based on the request body.
    */
   addBook(request: AddBookRequest): Promise<AddBookResponse>
@@ -20,4 +16,8 @@ export type BookStoreSdk = {
    * Returns the book associated with the given bookId
    */
   getBook(request: GetBookRequest): Promise<GetBookResponse>
+  /**
+   * Returns a list of books, can be paginated
+   */
+  getBooks(request: GetBooksRequest): Promise<GetBooksResponse>
 }

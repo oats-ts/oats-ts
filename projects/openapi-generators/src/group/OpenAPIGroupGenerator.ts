@@ -1,6 +1,5 @@
-import { createJsonSchemaBasedGeneratorContext } from '@oats-ts/model-common'
 import { GeneratorContext, GeneratorInit, GroupGenerator } from '@oats-ts/oats-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { createOpenAPIGeneratorContext, OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { SourceFile } from 'typescript'
 
 export class OpenAPIGroupGenerator extends GroupGenerator<OpenAPIReadOutput, SourceFile, GeneratorContext> {
@@ -8,7 +7,7 @@ export class OpenAPIGroupGenerator extends GroupGenerator<OpenAPIReadOutput, Sou
 
   initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
     super.initialize(init)
-    this._context = createJsonSchemaBasedGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
+    this._context = createOpenAPIGeneratorContext(this, this.input, this.globalConfig, this.dependencies)
   }
 
   context(): GeneratorContext {

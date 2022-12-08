@@ -14,8 +14,8 @@ export function createSwaggerPetstoreAppRouter(
 ): IRouter {
   const root = router ?? Router()
   const factories = [
-    overrides.createListPetsRouter ?? createListPetsRouter,
     overrides.createCreatePetsRouter ?? createCreatePetsRouter,
+    overrides.createListPetsRouter ?? createListPetsRouter,
     overrides.createShowPetByIdRouter ?? createShowPetByIdRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)

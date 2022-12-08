@@ -9,13 +9,13 @@ import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './res
 
 export type SwaggerPetstoreSdk = {
   /**
-   * List all pets
-   */
-  _local_listPets(request: ListPetsRequest): Promise<ListPetsResponse>
-  /**
    * Create a pet
    */
   _local_createPets(request: CreatePetsRequest): Promise<CreatePetsResponse>
+  /**
+   * List all pets
+   */
+  _local_listPets(request: ListPetsRequest): Promise<ListPetsResponse>
   /**
    * Info for a specific pet
    */

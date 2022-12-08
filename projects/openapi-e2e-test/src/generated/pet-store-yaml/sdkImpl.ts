@@ -15,20 +15,20 @@ export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
-    return this.createListPetsOperation().run(request)
-  }
   public async createPets(request: CreatePetsRequest): Promise<CreatePetsResponse> {
     return this.createCreatePetsOperation().run(request)
+  }
+  public async listPets(request: ListPetsRequest): Promise<ListPetsResponse> {
+    return this.createListPetsOperation().run(request)
   }
   public async showPetById(request: ShowPetByIdRequest): Promise<ShowPetByIdResponse> {
     return this.createShowPetByIdOperation().run(request)
   }
-  protected createListPetsOperation(): RunnableOperation<ListPetsRequest, ListPetsResponse> {
-    return new ListPetsOperation(this.adapter)
-  }
   protected createCreatePetsOperation(): RunnableOperation<CreatePetsRequest, CreatePetsResponse> {
     return new CreatePetsOperation(this.adapter)
+  }
+  protected createListPetsOperation(): RunnableOperation<ListPetsRequest, ListPetsResponse> {
+    return new ListPetsOperation(this.adapter)
   }
   protected createShowPetByIdOperation(): RunnableOperation<ShowPetByIdRequest, ShowPetByIdResponse> {
     return new ShowPetByIdOperation(this.adapter)

@@ -1,5 +1,5 @@
 import { ContentValidator } from '@oats-ts/oats-ts'
-import { OpenAPIReadOutput } from '@oats-ts/openapi-reader'
+import { OpenAPIReadOutput } from '@oats-ts/openapi-common'
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { OpenAPIValidator } from './OpenAPIValidator'
 

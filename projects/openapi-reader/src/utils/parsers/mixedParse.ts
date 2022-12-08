@@ -1,13 +1,13 @@
 import { OpenAPIObject } from '@oats-ts/openapi-model'
 import { failure, success, Try } from '@oats-ts/try'
-import YAML from 'yamljs'
+import { parse } from 'yaml'
 
 export function mixedParse(uri: string, input: string): Promise<Try<OpenAPIObject>> {
   try {
     return Promise.resolve(success(JSON.parse(input)))
   } catch (jsonError) {
     try {
-      return Promise.resolve(success(YAML.parse(input)))
+      return Promise.resolve(success(parse(input)))
     } catch (yamlError) {
       return Promise.resolve(
         failure(

@@ -1,6 +1,7 @@
 import { Referenceable } from '@oats-ts/json-schema-model'
 import { EnhancedOperation, OpenAPIGeneratorTarget } from '@oats-ts/openapi-common'
 import { BaseParameterObject } from '@oats-ts/openapi-model'
+import { parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
 import { getNamedImports } from '@oats-ts/typescript-common'
 import { factory, ImportDeclaration, PropertyAssignment } from 'typescript'
 import { BaseParameterGenerators } from '../utils/BaseParametersGenerator'
@@ -27,13 +28,19 @@ export class PathParametersGenerator extends BaseParameterGenerators {
       ]),
     ]
   }
+  protected removeQuerySegments(path: string): string {
+    return parsePathToSegments(path)
+      .filter((seg) => seg.location === 'path')
+      .map((seg) => (seg.type === 'parameter' ? `{${seg.name}}` : seg.value))
+      .join('')
+  }
   protected getMatcherPropertyAssignment(item: EnhancedOperation): PropertyAssignment {
     return factory.createPropertyAssignment(
       ParametersFields.matcher,
       factory.createCallExpression(
         factory.createIdentifier(this.paramsPkg.exports.parsePathToMatcher),
         [],
-        [factory.createStringLiteral(item.url)],
+        [factory.createStringLiteral(this.removeQuerySegments(item.url))],
       ),
     )
   }
@@ -43,7 +50,7 @@ export class PathParametersGenerator extends BaseParameterGenerators {
       factory.createCallExpression(
         factory.createIdentifier(this.paramsPkg.exports.parsePathToSegments),
         [],
-        [factory.createStringLiteral(item.url)],
+        [factory.createStringLiteral(this.removeQuerySegments(item.url))],
       ),
     )
   }
