@@ -1,6 +1,6 @@
 {
   "name": "@oats-ts/openapi-reader",
-  "version": "0.0.48",
+  "version": "0.0.49",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
   "homepage": "https://oats-ts.github.io/docs",
@@ -33,12 +33,12 @@
     "ts-jest": "27.0.2"
   },
   "dependencies": {
-    "@oats-ts/json-schema-model": "0.0.48",
-    "@oats-ts/oats-ts": "0.0.48",
-    "@oats-ts/openapi-model": "0.0.48",
-    "@oats-ts/openapi-common": "0.0.48",
-    "@oats-ts/try": "0.0.48",
-    "@oats-ts/validators": "0.0.48",
+    "@oats-ts/json-schema-model": "0.0.49",
+    "@oats-ts/oats-ts": "0.0.49",
+    "@oats-ts/openapi-model": "0.0.49",
+    "@oats-ts/openapi-common": "0.0.49",
+    "@oats-ts/try": "0.0.49",
+    "@oats-ts/validators": "0.0.49",
     "@types/urijs": "1.19.19",
     "@types/valid-url": "1.0.3",
     "browser-or-node": "2.0.0",
