@@ -70,7 +70,7 @@ export const factories = {
       discriminator: object(
         shape<DiscriminatorObject>({
           propertyName: string(),
-          mapping: object(record(string(), string())),
+          mapping: optional(object(record(string(), string()))),
         }),
       ),
       oneOf: array(
@@ -94,6 +94,32 @@ export const factories = {
       description: optional(string()),
       type: optional(string()),
       enum: array(minLength(1)),
+    }
+    return object(combine(shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))))
+  },
+  parameterEnumSchemaObject: () => {
+    const enumShape: ShapeInput<SchemaObject> = {
+      description: optional(string()),
+      type: optional(
+        union({
+          integer: literal('integer'),
+          number: literal('number'),
+          string: literal('string'),
+          boolean: literal('boolean'),
+        }),
+      ),
+      enum: array(
+        combine(
+          minLength(1),
+          items(
+            union({
+              number: number(),
+              string: string(),
+              boolean: boolean(),
+            }),
+          ),
+        ),
+      ),
     }
     return object(combine(shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))))
   },

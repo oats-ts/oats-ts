@@ -153,13 +153,18 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
 
   protected getUnionValidatorKey(data: Referenceable<SchemaObject>, schemaIndex: number): string {
     if (this.type.isReferenceObject(data)) {
-      return this.context().nameOf(this.context().dereference(data), 'oats/type')
-    } else if (this.type.isStringSchema(data)) {
-      return 'string'
-    } else if (this.type.isNumberSchema(data)) {
-      return 'number'
-    } else if (this.type.isBooleanSchema(data)) {
-      return 'boolean'
+      const schema = this.context().dereference(data)
+      if (this.context().hasName(schema, 'oats/type')) {
+        return this.context().nameOf(schema, 'oats/type')
+      }
+    } else {
+      if (this.type.isStringSchema(data)) {
+        return 'string'
+      } else if (this.type.isNumberSchema(data)) {
+        return 'number'
+      } else if (this.type.isBooleanSchema(data)) {
+        return 'boolean'
+      }
     }
     return `_${schemaIndex}`
   }

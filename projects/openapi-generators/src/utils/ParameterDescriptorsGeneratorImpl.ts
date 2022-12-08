@@ -86,7 +86,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     return factory.createPropertyAssignment(isIdentifier(name) ? name : factory.createStringLiteral(name), valueAst)
   }
 
-  protected narrowLiteralType(type: SchemaObjectType | string): 'string' | 'number' | 'boolean' {
+  protected narrowLiteralType(type: SchemaObjectType | string, schema: SchemaObject): 'string' | 'number' | 'boolean' {
     switch (type) {
       case 'string':
         return 'string'
@@ -96,23 +96,23 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
       case 'boolean':
         return 'boolean'
       default:
-        throw new TypeError(`Unexpected enum type: "${type}"`)
+        throw new TypeError(`Unexpected enum type: "${type}" in ${this.context.uriOf(schema)}`)
     }
   }
 
   protected getLiteralType(schema: SchemaObject): 'string' | 'number' | 'boolean' {
-    const narrowedType = isNil(schema.type) ? undefined : this.narrowLiteralType(schema.type)
+    const narrowedType = isNil(schema.type) ? undefined : this.narrowLiteralType(schema.type, schema)
     if (!isNil(narrowedType)) {
       return narrowedType
     }
     const types = Array.from(new Set((schema.enum ?? []).map((value) => typeof value)))
     switch (types.length) {
       case 0:
-        throw new TypeError(`Can't infer enum type`)
+        throw new TypeError(`Can't infer enum type in ${this.context.uriOf(schema)}`)
       case 1:
-        return this.narrowLiteralType(types[0])
+        return this.narrowLiteralType(types[0], schema)
       default:
-        throw new TypeError(`Enum must be of same type`)
+        throw new TypeError(`Enum must be of same type in ${this.context.uriOf(schema)}`)
     }
   }
 

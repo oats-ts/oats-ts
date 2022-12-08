@@ -190,6 +190,10 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       this.validateHeaderParameterObject,
       this.structural().headerParameterObject(),
     )
+    this.validateParameterEnumSchemaObject = this.fn(
+      this.validateParameterEnumSchemaObject,
+      this.structural().parameterEnumSchemaObject(),
+    )
   }
 
   protected context(): OpenAPIValidatorContext {
@@ -364,6 +368,10 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return []
   }
 
+  protected validateParameterEnumSchemaObject(data: SchemaObject): Issue[] {
+    return []
+  }
+
   protected validateEnumSchemaObject(data: SchemaObject): Issue[] {
     return []
   }
@@ -424,7 +432,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       default:
         return [
           {
-            message: `should reference either an "object" typed schema, with fixed properties ("oneOf" and "allOf" are allowed)`,
+            message: `should reference an "object" typed schema, with fixed "properties" or "oneOf" / "allOf")`,
             path: this.context().uriOf(data),
             severity: 'error',
           },
@@ -489,7 +497,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       case 'boolean':
         return this.validatePrimitiveSchemaObject(data)
       case 'enum':
-        return this.validateEnumSchemaObject(data)
+        return this.validateParameterEnumSchemaObject(data)
       default:
         return [
           {

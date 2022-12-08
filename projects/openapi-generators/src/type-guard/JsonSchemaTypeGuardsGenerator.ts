@@ -124,15 +124,17 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
 
   protected getReferenceAssertionAst(data: ReferenceObject, variable: Expression): Expression {
     const refTarget = this.context().dereference(data)
-    const name = this.context().nameOf(refTarget, this.name())
-    if (isNil(name)) {
-      // Not increasing level here so named refs can be validated.
-      return this.getTypeAssertionAst(refTarget, variable)
+    if (this.context().hasName(refTarget, this.name())) {
+      return factory.createAsExpression(
+        factory.createCallExpression(
+          factory.createIdentifier(this.context().nameOf(refTarget, this.name())),
+          [],
+          [variable],
+        ),
+        factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword),
+      )
     }
-    return factory.createAsExpression(
-      factory.createCallExpression(factory.createIdentifier(name), [], [variable]),
-      factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword),
-    )
+    return this.getTypeAssertionAst(refTarget, variable)
   }
 
   protected getUnionTypeAssertionAst(data: SchemaObject, variable: Expression): Expression {
@@ -450,11 +452,10 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
     }
     if (this.type.isReferenceObject(data)) {
       const refTarget = this.context().dereference(data)
-      const name = this.context().nameOf(refTarget, this.name())
-      if (isNil(name)) {
-        this.collectImportedTypeGuardRefs(refTarget, refs)
-      } else {
+      if (this.context().hasName(refTarget, this.name())) {
         refs.add(data)
+      } else {
+        this.collectImportedTypeGuardRefs(refTarget, refs)
       }
       return
     }
