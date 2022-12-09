@@ -1,5 +1,6 @@
 import { encode, decode } from './utils'
-import { appendPath } from '@oats-ts/validators'
+import { appendPath, isOk, Schema, Validator } from '@oats-ts/validators'
+import { failure, success, Try } from '@oats-ts/try'
 
 export abstract class Base {
   protected abstract basePath(): string
@@ -16,5 +17,14 @@ export abstract class Base {
 
   protected append(path: string, segment: string | number): string {
     return appendPath(path, segment)
+  }
+
+  protected validate<T>(schema: Schema, value: any): Try<T> {
+    const validator = new Validator(schema, this.basePath())
+    const issues = validator.validate(value)
+    if (isOk(issues)) {
+      return success(value)
+    }
+    return failure(...issues)
   }
 }

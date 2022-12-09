@@ -79,7 +79,10 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
   }
 
   protected schema(descriptor: CookieSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
-    throw new Error('implement me')
+    return fluent(this.getCookieValue(descriptor, path, data))
+      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.schemaSerialize(descriptor, value, path))
+      .map((value) => this.encode(value))
   }
 
   protected getCookieValue<T extends ParameterValue>(

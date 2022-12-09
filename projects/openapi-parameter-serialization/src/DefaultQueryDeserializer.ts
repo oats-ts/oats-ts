@@ -259,8 +259,11 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     return !hasKeys && !descriptor.required ? success(undefined) : fromRecord(parsed)
   }
 
-  protected schema(descriptor: QuerySchema, name: string, data: RawQuery, path: string): Try<ParameterValue> {
-    throw new Error('implement me')
+  protected schema(descriptor: QuerySchema, name: string, data: RawQuery, path: string): Try<any> {
+    return fluent(this.getQueryValue(descriptor, name, path, data))
+      .map((value) => (isNil(value) ? value : this.decode(value)))
+      .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
+      .flatMap((value) => this.validate(descriptor.schema, value))
   }
 
   protected getValues(

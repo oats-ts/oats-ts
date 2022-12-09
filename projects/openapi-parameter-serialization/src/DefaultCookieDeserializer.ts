@@ -35,7 +35,7 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
   }
 
   protected basePath(): string {
-    return 'headers'
+    return 'cookies'
   }
 
   protected deserializeParameter(
@@ -68,25 +68,19 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
     data: CookieValue[],
     path: string,
   ): Try<Primitive> {
-    switch (data.length) {
-      case 0: {
-        return descriptor.required ? this.values.deserialize(descriptor.value, undefined, path) : success(undefined!)
+    return fluent(this.getCookieValue(descriptor, data, path)).flatMap((value) => {
+      if (!descriptor.required && isNil(value)) {
+        return success(undefined)
       }
-      case 1: {
-        return this.values.deserialize(descriptor.value, this.decode(data[0].value), path)
-      }
-      default: {
-        return failure({
-          message: `duplicate cookie, should occur maximum once (found ${data.length} times)`,
-          path,
-          severity: 'error',
-        })
-      }
-    }
+      return this.values.deserialize(descriptor.value, isNil(value) ? value : this.decode(value), path)
+    })
   }
 
   protected schema(descriptor: CookieSchema, name: string, data: CookieValue[], path: string): Try<any> {
-    throw new Error('implement me')
+    return fluent(this.getCookieValue(descriptor, data, path))
+      .map((value) => (isNil(value) ? value : this.decode(value)))
+      .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
+      .flatMap((value) => this.validate(descriptor.schema, value))
   }
 
   protected deserializeCookie(cookie: string | undefined, path: string): Try<CookieValue[]> {
@@ -107,6 +101,30 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
         path,
         severity: 'error',
       })
+    }
+  }
+
+  protected getCookieValue(
+    descriptor: CookieParameterDescriptor,
+    data: CookieValue[],
+    path: string,
+  ): Try<string | undefined> {
+    switch (data.length) {
+      case 0: {
+        return descriptor.required
+          ? failure({ message: `missing cookie`, path, severity: 'error' })
+          : success(undefined)
+      }
+      case 1: {
+        return success(data[0]?.value)
+      }
+      default: {
+        return failure({
+          message: `duplicate cookie, should occur maximum once (found ${data.length} times)`,
+          path,
+          severity: 'error',
+        })
+      }
     }
   }
 }

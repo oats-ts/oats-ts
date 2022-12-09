@@ -183,7 +183,10 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
   }
 
   protected schema(descriptor: PathSchema, name: string, data: any, path: string): Try<string> {
-    throw new Error('implement me')
+    return fluent(this.getPathValue(path, data))
+      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.schemaSerialize(descriptor, value, path))
+      .map((value) => this.encode(value))
   }
 
   protected joinArrayItems(prefix: string, separator: string, items: ReadonlyArray<Primitive>): string {

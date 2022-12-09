@@ -1,7 +1,15 @@
-import { Failure, failure, fluent, FluentTry, fromArray, Try } from '@oats-ts/try'
+import { Failure, failure, fluent, FluentTry, fromArray, success, Try } from '@oats-ts/try'
 import { Base } from './Base'
 import { DefaultValueDeserializer } from './DefaultValueDeserializer'
-import { Primitive, PrimitiveRecord, PrimitiveArray, ValueDeserializer, ValueDescriptor } from './types'
+import {
+  Primitive,
+  PrimitiveRecord,
+  PrimitiveArray,
+  ValueDeserializer,
+  ValueDescriptor,
+  SchemaDescriptor,
+  Location,
+} from './types'
 import { mapRecord, isNil } from './utils'
 
 export abstract class BaseDeserializer extends Base {
@@ -56,5 +64,30 @@ export abstract class BaseDeserializer extends Base {
     return fluent(
       fromArray(values.map((value, i) => this.values.deserialize(items, this.decode(value), this.append(path, i)))),
     )
+  }
+
+  protected schemaDeserialize(
+    descriptor: SchemaDescriptor<Location>,
+    value: string | undefined,
+    path: string,
+  ): Try<any> {
+    if (isNil(value)) {
+      return success(value)
+    }
+    try {
+      switch (descriptor.mimeType) {
+        case 'application/json': {
+          return success(JSON.parse(value))
+        }
+        default:
+          return failure({
+            message: `unknown mime-type "${descriptor.mimeType}" (needs custom deserializer)`,
+            path,
+            severity: 'error',
+          })
+      }
+    } catch (e) {
+      return failure({ message: `failed to deserialize using "${descriptor.mimeType}": ${e}`, path, severity: 'error' })
+    }
   }
 }

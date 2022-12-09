@@ -171,8 +171,11 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
       .toTry()
   }
 
-  protected schema(descriptor: QuerySchema, name: string, data: PrimitiveArray, path: string): Try<string[]> {
-    throw new Error('implement me')
+  protected schema(descriptor: QuerySchema, name: string, data: any, path: string): Try<string[]> {
+    return fluent(this.getQueryValue(descriptor, path, data))
+      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.schemaSerialize(descriptor, value, path))
+      .map((value) => [`${this.encode(name)}=${this.encode(value)}`])
   }
 
   protected delimitedArray(
