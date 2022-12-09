@@ -173,9 +173,9 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
 
   protected schema(descriptor: QuerySchema, name: string, data: any, path: string): Try<string[]> {
     return fluent(this.getQueryValue(descriptor, path, data))
-      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
-      .map((value) => [`${this.encode(name)}=${this.encode(value)}`])
+      .map((value) => (isNil(value) ? [] : [`${this.encode(name)}=${this.encode(value)}`]))
   }
 
   protected delimitedArray(

@@ -131,7 +131,7 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
 
   protected schema(descriptor: HeaderSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
     return fluent(this.getHeaderValue(descriptor, path, data))
-      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
       .map((value) => this.encode(value))
   }

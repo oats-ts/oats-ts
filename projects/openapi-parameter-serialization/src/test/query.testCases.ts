@@ -373,7 +373,7 @@ export const optionalDeepObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
   serializerErrors: [],
 }
 
-export const jsonComplexObjectQuery: QueryTestCase<{ obj: ComplexObj }> = {
+export const jsonComplexObjectQueryRequired: QueryTestCase<{ obj: ComplexObj }> = {
   name: 'required complex cookie object',
   descriptor: {
     descriptor: {
@@ -393,4 +393,43 @@ export const jsonComplexObjectQuery: QueryTestCase<{ obj: ComplexObj }> = {
   ],
   deserializerErrors: [null, undefined],
   serializerErrors: [null, undefined, { obj: {} as any }],
+}
+
+export const jsonComplexObjectQueryOptional: QueryTestCase<{ obj?: ComplexObj }> = {
+  name: 'optional complex cookie object',
+  descriptor: {
+    descriptor: {
+      obj: parameter.query.schema('application/json', complexObjSchema),
+    },
+  },
+  data: [
+    ...jsonComplexObjectQueryRequired.data,
+    { model: { obj: undefined }, serialized: undefined },
+    { model: {}, serialized: undefined },
+  ],
+  deserializerErrors: [`?obj=${encode(JSON.stringify({ foo: '10' }))}`],
+  serializerErrors: [{ obj: { test: 'foo' } as any }],
+}
+
+export const nonJsonComplexQuery: QueryTestCase<{ obj?: ComplexObj }> = {
+  name: 'optional complex cookie object',
+  descriptor: {
+    descriptor: {
+      obj: parameter.query.required.schema('foo/bar', complexObjSchema),
+    },
+  },
+  data: [],
+  deserializerErrors: [
+    `?obj=${encode(JSON.stringify({ foo: '10' }))}`,
+    `?obj=${encode(
+      JSON.stringify({
+        req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' },
+        opt: { b: false, n: 123.123 },
+      }),
+    )}`,
+  ],
+  serializerErrors: [
+    { obj: { test: 'foo' } as any },
+    { obj: { req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' }, opt: { b: false, n: 123.123 } } },
+  ],
 }

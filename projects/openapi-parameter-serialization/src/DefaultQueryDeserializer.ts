@@ -263,7 +263,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     return fluent(this.getQueryValue(descriptor, name, path, data))
       .map((value) => (isNil(value) ? value : this.decode(value)))
       .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
-      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.validate(descriptor, value, path))
   }
 
   protected getValues(

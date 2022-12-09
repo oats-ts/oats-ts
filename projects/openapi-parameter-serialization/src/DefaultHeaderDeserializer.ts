@@ -122,7 +122,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     return fluent(this.getHeaderValue(descriptor, name, path, data))
       .map((value) => (isNil(value) ? value : this.decode(value)))
       .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
-      .flatMap((value) => this.validate(descriptor.schema, value))
+      .flatMap((value) => this.validate(descriptor, value, path))
   }
 
   protected getHeaderValue(
