@@ -1,6 +1,7 @@
 import { parameter } from '../parameter'
-import { enm, lit } from './common'
-import { EnumType, LiteralType } from './model'
+import { encode } from '../utils'
+import { complexObjSchema, enm, lit } from './common'
+import { ComplexObj, EnumType, LiteralType } from './model'
 import { CookieTestCase } from './types'
 
 export const requiredStringQuery: CookieTestCase<{ str: string }> = {
@@ -142,4 +143,26 @@ export const optionalEnumQuery: CookieTestCase<{ enm?: EnumType }> = {
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
+}
+
+export const jsonComplexObjectCookie: CookieTestCase<{ obj: ComplexObj }> = {
+  name: 'required complex cookie object',
+  descriptor: {
+    descriptor: {
+      obj: parameter.cookie.required.schema('application/json', complexObjSchema),
+    },
+  },
+  data: [
+    {
+      model: { obj: { req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' }, opt: { b: false, n: 123.123 } } },
+      serialized: `obj=${encode(
+        JSON.stringify({
+          req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' },
+          opt: { b: false, n: 123.123 },
+        }),
+      )}`,
+    },
+  ],
+  deserializerErrors: [null, undefined],
+  serializerErrors: [null, undefined, { obj: {} as any }],
 }

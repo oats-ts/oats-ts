@@ -1,9 +1,10 @@
 import { pathToRegexp } from 'path-to-regexp'
 import { parsePathToSegments } from '../parsePathToSegments'
-import { enm, lit, obj } from './common'
-import { EnumType, LiteralType, ObjType } from './model'
+import { complexObjSchema, enm, lit, obj } from './common'
+import { ComplexObj, EnumType, LiteralType, ObjType } from './model'
 import { PathTestCase } from './types'
 import { parameter } from '../parameter'
+import { encode } from '../utils'
 
 export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
   name: 'required simple path string',
@@ -345,6 +346,30 @@ export const requiredExplodedMatrixObjectPath: PathTestCase<{ obj: ObjType }> = 
     {
       model: { obj: { s: 'some long str', b: false, n: 123, e: 'dog', l: 'cat' } },
       serialized: '/foo/;s=some%20long%20str;b=false;n=123;e=dog;l=cat',
+    },
+  ],
+  deserializerErrors: [null, undefined],
+  serializerErrors: [null, undefined, { obj: {} as any }],
+}
+
+export const jsonComplexObjectPath: PathTestCase<{ obj: ComplexObj }> = {
+  name: 'required complex path object',
+  descriptor: {
+    matcher: pathToRegexp('/foo/:obj/bar'),
+    pathSegments: parsePathToSegments('/foo/{obj}/bar'),
+    descriptor: {
+      obj: parameter.path.required.schema('application/json', complexObjSchema),
+    },
+  },
+  data: [
+    {
+      model: { obj: { req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' }, opt: { b: false, n: 123.123 } } },
+      serialized: `/foo/${encode(
+        JSON.stringify({
+          req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' },
+          opt: { b: false, n: 123.123 },
+        }),
+      )}/bar`,
     },
   ],
   deserializerErrors: [null, undefined],

@@ -1,7 +1,45 @@
+import { validators } from '@oats-ts/validators'
 import { parameter } from '../parameter'
 import { ValueDescriptor } from '../types'
-import { ObjType, OptObjType } from './model'
+import { ComplexObj, ObjType, OptObjType } from './model'
 import { TestCase } from './types'
+
+const { object, shape, optional, string, boolean, number, union, literal } = validators
+
+export const enumSchema = union({
+  cat: literal('cat'),
+  dog: literal('dog'),
+  racoon: literal('racoon'),
+})
+
+export const litSchema = literal('cat')
+
+export const objSchema = object(
+  shape<ObjType>({
+    b: boolean(),
+    e: enumSchema,
+    l: litSchema,
+    n: number(),
+    s: string(),
+  }),
+)
+
+export const optObjSchema = object(
+  shape<OptObjType>({
+    b: optional(boolean()),
+    e: optional(enumSchema),
+    l: optional(litSchema),
+    n: optional(number()),
+    s: optional(string()),
+  }),
+)
+
+export const complexObjSchema = object(
+  shape<ComplexObj>({
+    opt: optObjSchema,
+    req: objSchema,
+  }),
+)
 
 export const lit = parameter.value.string(parameter.value.literal('cat'))
 

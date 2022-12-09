@@ -1,6 +1,7 @@
 import { parameter } from '../parameter'
-import { enm, lit, obj, optObj } from './common'
-import { EnumType, LiteralType, ObjType, OptObjType } from './model'
+import { encode } from '../utils'
+import { complexObjSchema, enm, lit, obj, optObj } from './common'
+import { ComplexObj, EnumType, LiteralType, ObjType, OptObjType } from './model'
 import { QueryTestCase } from './types'
 
 export const requiredStringQuery: QueryTestCase<{ str: string }> = {
@@ -370,4 +371,26 @@ export const optionalDeepObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
   data: [...requiredDeepObjectQuery.data, { model: { obj: undefined }, serialized: undefined }],
   deserializerErrors: [],
   serializerErrors: [],
+}
+
+export const jsonComplexObjectQuery: QueryTestCase<{ obj: ComplexObj }> = {
+  name: 'required complex cookie object',
+  descriptor: {
+    descriptor: {
+      obj: parameter.query.required.schema('application/json', complexObjSchema),
+    },
+  },
+  data: [
+    {
+      model: { obj: { req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' }, opt: { b: false, n: 123.123 } } },
+      serialized: `?obj=${encode(
+        JSON.stringify({
+          req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' },
+          opt: { b: false, n: 123.123 },
+        }),
+      )}`,
+    },
+  ],
+  deserializerErrors: [null, undefined],
+  serializerErrors: [null, undefined, { obj: {} as any }],
 }

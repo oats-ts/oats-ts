@@ -1,5 +1,5 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
-import { CookieParameters, HeaderParameters, ParameterType, PathParameters, QueryParameters } from '../types'
+import { CookieParameters, HeaderParameters, PathParameters, QueryParameters } from '../types'
 
 type Nullable<A> = A | undefined | null
 
@@ -9,7 +9,7 @@ export type SuccessValue<A, B> = {
 }
 
 export type TestCase<
-  Model extends ParameterType,
+  Model,
   Serialized,
   D extends QueryParameters<Model> | PathParameters<Model> | HeaderParameters<Model> | CookieParameters<Model>,
 > = {
@@ -22,10 +22,10 @@ export type TestCase<
   deserializerErrors: Nullable<Serialized>[]
 }
 
-export type HeaderTestCase<Model extends ParameterType> = TestCase<Model, RawHttpHeaders, HeaderParameters<Model>>
+export type HeaderTestCase<Model> = TestCase<Model, RawHttpHeaders, HeaderParameters<Model>>
 
-export type QueryTestCase<Model extends ParameterType> = TestCase<Model, string, QueryParameters<Model>>
+export type QueryTestCase<Model> = TestCase<Model, string, QueryParameters<Model>>
 
-export type PathTestCase<Model extends ParameterType> = TestCase<Model, string, PathParameters<Model>>
+export type PathTestCase<Model> = TestCase<Model, string, PathParameters<Model>>
 
-export type CookieTestCase<Model extends ParameterType> = TestCase<Model, string, CookieParameters<Model>>
+export type CookieTestCase<Model> = TestCase<Model, string, CookieParameters<Model>>

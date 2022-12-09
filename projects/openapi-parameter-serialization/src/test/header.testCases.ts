@@ -1,6 +1,7 @@
 import { parameter } from '../parameter'
-import { enm, lit, obj, optObj } from './common'
-import { EnumType, ObjType, OptObjType } from './model'
+import { encode } from '../utils'
+import { complexObjSchema, enm, lit, obj, optObj } from './common'
+import { ComplexObj, EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
 
 export const requiredStringHeader: HeaderTestCase<{ 'X-String-Field': string }> = {
@@ -324,4 +325,38 @@ export const optionalFieldsObjectHeader: HeaderTestCase<{ 'X-Obj-Field': OptObjT
     { 'x-obj-field': '6' },
   ],
   serializerErrors: [{ 'X-Obj-Field': undefined } as any],
+}
+
+export const jsonObjectSchemaHeader: HeaderTestCase<{ 'X-Obj-Field': ComplexObj }> = {
+  name: 'required complex object headers',
+  descriptor: {
+    descriptor: {
+      'X-Obj-Field': parameter.header.required.schema('application/json', complexObjSchema),
+    },
+  },
+  data: [
+    {
+      model: {
+        'X-Obj-Field': { req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' }, opt: { b: false, n: 123.123 } },
+      },
+      serialized: {
+        'x-obj-field': encode(
+          JSON.stringify({
+            req: { s: 'A B C', b: false, n: 123.123, e: 'dog', l: 'cat' },
+            opt: { b: false, n: 123.123 },
+          }),
+        ),
+      },
+    },
+  ],
+  deserializerErrors: [
+    null,
+    undefined,
+    {},
+    { 'x-obj-fiel': 's,A,n,12,e,dog,l,cat' },
+    { 'x-obj-field': 'hi' },
+    { 'x-obj-field': '6' },
+    { 'x-obj-field': JSON.stringify({ foo: 'bar' }) },
+  ],
+  serializerErrors: [{ 'X-Obj-Field': undefined } as any, { 'X-Obj-Field': { req: 'hi' } as any }],
 }

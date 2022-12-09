@@ -17,6 +17,11 @@ export type OptObjType = {
   e?: EnumType
 }
 
+export type ComplexObj = {
+  req: ObjType
+  opt: OptObjType
+}
+
 export type StringFieldObj = {
   value: string
 }
