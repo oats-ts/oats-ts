@@ -13,6 +13,7 @@ import {
   HeaderPrimitive,
   HeaderArray,
   HeaderObject,
+  HeaderSchema,
 } from './types'
 import { isNil } from './utils'
 
@@ -49,10 +50,12 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
     value: any,
     path: string,
   ): Try<string | undefined> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'simple': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
@@ -60,12 +63,12 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
           case 'object':
             return this.simpleObject(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
           }
         }
       }
       default:
-        throw unexpectedStyle(style, ['simple'])
+        throw unexpectedStyle(descriptor.style, ['simple'])
     }
   }
 
@@ -124,6 +127,10 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
         })
       })
       .toTry()
+  }
+
+  protected schema(descriptor: HeaderSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
+    throw new Error('implement me')
   }
 
   protected getHeaderValue<T extends ParameterValue>(

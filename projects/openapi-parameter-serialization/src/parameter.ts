@@ -7,6 +7,7 @@ import {
   objectDescriptor,
   optionalDescriptor,
   primitiveDescriptor,
+  schemaDescriptor,
   stringDescriptor,
 } from './factories'
 
@@ -20,6 +21,10 @@ export const parameter = {
     enum: enumDescriptor,
   },
   query: {
+    required: {
+      schema: schemaDescriptor('query', true),
+    },
+    schema: schemaDescriptor('query', false),
     form: {
       exploded: {
         required: {
@@ -74,6 +79,10 @@ export const parameter = {
     },
   },
   path: {
+    required: {
+      schema: schemaDescriptor('path', true),
+    },
+    schema: schemaDescriptor('path', false),
     simple: {
       exploded: {
         required: {
@@ -118,6 +127,10 @@ export const parameter = {
     },
   },
   header: {
+    required: {
+      schema: schemaDescriptor('header', true),
+    },
+    schema: schemaDescriptor('header', false),
     simple: {
       exploded: {
         required: {
@@ -140,6 +153,10 @@ export const parameter = {
     },
   },
   cookie: {
+    required: {
+      schema: schemaDescriptor('cookie', true),
+    },
+    schema: schemaDescriptor('cookie', false),
     form: {
       exploded: {
         required: {

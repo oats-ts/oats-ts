@@ -10,6 +10,7 @@ import {
   PathSerializer,
   Primitive,
   PrimitiveRecord,
+  PathSchema,
 } from './types'
 import { entries, isNil } from './utils'
 
@@ -51,10 +52,12 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
   }
 
   protected parameter(descriptor: PathParameterDescriptor, name: string, value: any, path: string): Try<string> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'simple': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
@@ -62,12 +65,12 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
           case 'object':
             return this.simpleObject(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
           }
         }
       }
       case 'label': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.labelPrimitive(descriptor, name, value, path)
           case 'array':
@@ -75,7 +78,7 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
           case 'object':
             return this.labelObject(descriptor, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
         }
       }
       case 'matrix': {
@@ -87,11 +90,11 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
           case 'object':
             return this.matrixObject(descriptor, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
         }
       }
       default:
-        throw unexpectedStyle(style, ['simple', 'label', 'matrix'])
+        throw unexpectedStyle(descriptor.style, ['simple', 'label', 'matrix'])
     }
   }
 
@@ -177,6 +180,10 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
         ),
       )
       .toTry()
+  }
+
+  protected schema(descriptor: PathSchema, name: string, data: any, path: string): Try<string> {
+    throw new Error('implement me')
   }
 
   protected joinArrayItems(prefix: string, separator: string, items: ReadonlyArray<Primitive>): string {

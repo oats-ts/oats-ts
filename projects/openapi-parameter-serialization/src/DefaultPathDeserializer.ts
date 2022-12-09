@@ -16,6 +16,7 @@ import {
   RawPath,
   ValueDescriptor,
   ParameterSegment,
+  PathSchema,
 } from './types'
 import { isNil } from './utils'
 
@@ -50,10 +51,12 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
     value: RawPath,
     path: string,
   ): Try<ParameterValue> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'simple': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
@@ -61,12 +64,12 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
           case 'object':
             return this.simpleObject(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
           }
         }
       }
       case 'label': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.labelPrimitive(descriptor, name, value, path)
           case 'array':
@@ -74,7 +77,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
           case 'object':
             return this.labelObject(descriptor, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
         }
       }
       case 'matrix': {
@@ -86,11 +89,11 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
           case 'object':
             return this.matrixObject(descriptor, name, value, path)
           default:
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
         }
       }
       default:
-        throw unexpectedStyle(style, ['simple', 'label', 'matrix'])
+        throw unexpectedStyle(descriptor.style, ['simple', 'label', 'matrix'])
     }
   }
 
@@ -247,6 +250,10 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
       )
       .flatMap((record) => this.keyValuePairsToObject(descriptor.properties, record, path))
       .toTry()
+  }
+
+  protected schema(descriptor: PathSchema, name: string, data: RawPath, path: string): Try<any> {
+    throw new Error('implement me')
   }
 
   protected getPathValue(name: string, path: string, raw: RawPath): Try<string> {

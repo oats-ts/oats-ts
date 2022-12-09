@@ -12,6 +12,7 @@ import {
   QueryObject,
   QueryPrimitive,
   QuerySerializer,
+  QuerySchema,
 } from './types'
 import { entries, isNil } from './utils'
 
@@ -42,10 +43,12 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   protected parameter(descriptor: QueryParameterDescriptor, name: string, value: any, path: string): Try<string[]> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'form': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.formPrimitive(descriptor, name, value, path)
           case 'array':
@@ -53,36 +56,36 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
           case 'object':
             return this.formObject(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
           }
         }
       }
       case 'pipeDelimited': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'array':
             return this.pipeDelimitedArray(descriptor, name, value, path)
           default:
-            throw unexpectedType(type, ['array'])
+            throw unexpectedType(descriptor.type, ['array'])
         }
       }
       case 'spaceDelimited': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'array':
             return this.spaceDelimitedArray(descriptor, name, value, path)
           default:
-            throw unexpectedType(type, ['array'])
+            throw unexpectedType(descriptor.type, ['array'])
         }
       }
       case 'deepObject': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'object':
             return this.deepObjectObject(descriptor, name, value, path)
           default:
-            throw unexpectedType(type, ['object'])
+            throw unexpectedType(descriptor.type, ['object'])
         }
       }
       default:
-        throw unexpectedStyle(style, ['form', 'pipeDelimited', 'spaceDelimited', 'deepObject'])
+        throw unexpectedStyle(descriptor.style, ['form', 'pipeDelimited', 'spaceDelimited', 'deepObject'])
     }
   }
 
@@ -166,6 +169,10 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
         return success(output)
       })
       .toTry()
+  }
+
+  protected schema(descriptor: QuerySchema, name: string, data: PrimitiveArray, path: string): Try<string[]> {
+    throw new Error('implement me')
   }
 
   protected delimitedArray(

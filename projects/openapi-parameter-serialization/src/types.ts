@@ -1,5 +1,6 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
+import { Schema } from '@oats-ts/validators'
 
 export type Primitive = string | number | boolean | undefined
 export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
@@ -7,7 +8,7 @@ export type PrimitiveRecord = Record<string, Primitive> | undefined
 export type ParameterValue = Primitive | PrimitiveArray | PrimitiveRecord
 export type ParameterType = Record<string, ParameterValue>
 
-export type Type = 'primitive' | 'array' | 'object'
+export type Type = 'primitive' | 'array' | 'object' | 'schema'
 export type Location = 'query' | 'header' | 'path' | 'cookie'
 
 export type QueryStyle = 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
@@ -77,24 +78,37 @@ export type ObjectDescriptor<L extends Location, S extends Style> = DescriptorCo
   properties: PropertyDescriptors
 }
 
+export type SchemaDescriptor<L extends Location> = {
+  type: 'schema'
+  mimeType: string
+  location: L
+  required: boolean
+  schema: Schema
+}
+
 export type ParameterDescriptor<L extends Location, S extends Style> =
   | PrimitiveDescriptor<L, S>
   | ArrayDescriptor<L, S>
   | ObjectDescriptor<L, S>
+  | SchemaDescriptor<L>
 
 export type PathPrimitive = PrimitiveDescriptor<'path', PathStyle>
 export type PathArray = ArrayDescriptor<'path', PathStyle>
 export type PathObject = ObjectDescriptor<'path', PathStyle>
+export type PathSchema = SchemaDescriptor<'path'>
 
 export type QueryPrimitive = PrimitiveDescriptor<'query', QueryStyle>
 export type QueryArray = ArrayDescriptor<'query', QueryStyle>
 export type QueryObject = ObjectDescriptor<'query', QueryStyle>
+export type QuerySchema = SchemaDescriptor<'query'>
 
 export type HeaderPrimitive = PrimitiveDescriptor<'header', HeaderStyle>
 export type HeaderArray = ArrayDescriptor<'header', HeaderStyle>
 export type HeaderObject = ObjectDescriptor<'header', HeaderStyle>
+export type HeaderSchema = SchemaDescriptor<'header'>
 
 export type CookiePrimitive = PrimitiveDescriptor<'cookie', CookieStyle>
+export type CookieSchema = SchemaDescriptor<'cookie'>
 
 export type PathParameterDescriptor = ParameterDescriptor<'path', PathStyle>
 export type QueryParameterDescriptor = ParameterDescriptor<'query', QueryStyle>

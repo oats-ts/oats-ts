@@ -17,6 +17,7 @@ import {
   HeaderArray,
   HeaderObject,
   ValueDescriptor,
+  HeaderSchema,
 } from './types'
 
 export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements HeaderDeserializer<T> {
@@ -47,10 +48,12 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     value: RawPath,
     path: string,
   ): Try<ParameterValue> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'simple': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.simplePrimitive(descriptor, name, value, path)
           case 'array':
@@ -58,12 +61,12 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
           case 'object':
             return this.simpleObject(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
           }
         }
       }
       default:
-        throw unexpectedStyle(style, ['simple', 'label', 'matrix'])
+        throw unexpectedStyle(descriptor.style, ['simple', 'label', 'matrix'])
     }
   }
 
@@ -113,6 +116,10 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
         return this.keyValuePairsToObject(descriptor.properties, record, path)
       })
       .toTry()
+  }
+
+  protected schema(descriptor: HeaderSchema, name: string, data: RawHttpHeaders, path: string): Try<any> {
+    throw new Error('implement me')
   }
 
   protected getHeaderValue(

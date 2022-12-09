@@ -8,6 +8,7 @@ import {
   CookieParameters,
   CookieParameterDescriptor,
   CookiePrimitive,
+  CookieSchema,
 } from './types'
 import { isNil } from './utils'
 
@@ -43,19 +44,21 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
     value: any,
     path: string,
   ): Try<string | undefined> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'form': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.formPrimitive(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type, ['primitive'])
+            throw unexpectedType(descriptor.type, ['primitive'])
           }
         }
       }
       default:
-        throw unexpectedStyle(style, ['simple'])
+        throw unexpectedStyle(descriptor.style, ['simple'])
     }
   }
 
@@ -73,6 +76,10 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
             : fluent(this.values.serialize(descriptor.value, value, path)).map((value) => this.encode(value)),
       )
       .toTry()
+  }
+
+  protected schema(descriptor: CookieSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
+    throw new Error('implement me')
   }
 
   protected getCookieValue<T extends ParameterValue>(

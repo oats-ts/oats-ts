@@ -13,6 +13,7 @@ import {
   QueryObject,
   QueryPrimitive,
   RawQuery,
+  QuerySchema,
 } from './types'
 import { chunks, has, isNil } from './utils'
 
@@ -46,10 +47,12 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     value: RawQuery,
     path: string,
   ): Try<ParameterValue> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, value, path)
+    }
+    switch (descriptor.style) {
       case 'form': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.formPrimitive(descriptor, name, value, path)
           case 'array':
@@ -57,36 +60,36 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
           case 'object':
             return this.formObject(descriptor, name, value, path)
           default: {
-            throw unexpectedType(type)
+            throw unexpectedType((descriptor as any).type)
           }
         }
       }
       case 'pipeDelimited': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'array':
             return this.pipeDelimitedArray(descriptor, name, value, path)
           default:
-            throw unexpectedType(type, ['array'])
+            throw unexpectedType(descriptor.type, ['array'])
         }
       }
       case 'spaceDelimited': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'array':
             return this.spaceDelimitedArray(descriptor, name, value, path)
           default:
-            throw unexpectedType(type, ['array'])
+            throw unexpectedType(descriptor.type, ['array'])
         }
       }
       case 'deepObject': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'object':
             return this.deepObjectObject(descriptor, name, value, path)
           default:
-            throw unexpectedType(type, ['object'])
+            throw unexpectedType(descriptor.type, ['object'])
         }
       }
       default:
-        throw unexpectedStyle(style, ['form', 'pipeDelimited', 'spaceDelimited', 'deepObject'])
+        throw unexpectedStyle(descriptor.style, ['form', 'pipeDelimited', 'spaceDelimited', 'deepObject'])
     }
   }
 
@@ -256,8 +259,12 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     return !hasKeys && !descriptor.required ? success(undefined) : fromRecord(parsed)
   }
 
+  protected schema(descriptor: QuerySchema, name: string, data: RawQuery, path: string): Try<ParameterValue> {
+    throw new Error('implement me')
+  }
+
   protected getValues(
-    descriptor: QueryParameterDescriptor,
+    descriptor: Exclude<QueryParameterDescriptor, QuerySchema>,
     delimiter: string,
     name: string,
     path: string,

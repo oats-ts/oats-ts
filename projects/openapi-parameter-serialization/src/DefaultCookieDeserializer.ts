@@ -10,6 +10,7 @@ import {
   CookieParameters,
   CookieParameterDescriptor,
   CookiePrimitive,
+  CookieSchema,
 } from './types'
 
 export class DefaultCookieDeserializer<T> extends BaseDeserializer implements CookieDeserializer<T> {
@@ -43,19 +44,21 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
     data: CookieValue[],
     path: string,
   ): Try<ParameterValue> {
-    const { style, type } = descriptor
-    switch (style) {
+    if (descriptor.type === 'schema') {
+      return this.schema(descriptor, name, data, path)
+    }
+    switch (descriptor.style) {
       case 'form': {
-        switch (type) {
+        switch (descriptor.type) {
           case 'primitive':
             return this.formPrimitive(descriptor, name, data, path)
           default: {
-            throw unexpectedType(type, ['primitive'])
+            throw unexpectedType(descriptor.type, ['primitive'])
           }
         }
       }
       default:
-        throw unexpectedStyle(style, ['simple', 'label', 'matrix'])
+        throw unexpectedStyle(descriptor.style, ['form'])
     }
   }
 
@@ -80,6 +83,10 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
         })
       }
     }
+  }
+
+  protected schema(descriptor: CookieSchema, name: string, data: CookieValue[], path: string): Try<any> {
+    throw new Error('implement me')
   }
 
   protected deserializeCookie(cookie: string | undefined, path: string): Try<CookieValue[]> {

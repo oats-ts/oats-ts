@@ -1,3 +1,4 @@
+import { Schema } from '@oats-ts/validators'
 import {
   ArrayDescriptor,
   BooleanDescriptor,
@@ -12,6 +13,7 @@ import {
   ValueDescriptor,
   PropertyDescriptors,
   OptionalDescriptor,
+  SchemaDescriptor,
 } from './types'
 
 export const primitiveDescriptor =
@@ -45,6 +47,16 @@ export const objectDescriptor =
     location,
     style,
     properties,
+  })
+
+export const schemaDescriptor =
+  <P extends Location>(location: P, required: boolean) =>
+  (mimeType: string, schema: Schema): SchemaDescriptor<P> => ({
+    type: 'schema',
+    required,
+    location,
+    schema,
+    mimeType,
   })
 
 export function optionalDescriptor(value: ValueDescriptor): OptionalDescriptor {
