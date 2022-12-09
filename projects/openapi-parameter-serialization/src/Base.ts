@@ -1,5 +1,5 @@
-import { DefaultConfig } from '@oats-ts/validators'
 import { encode, decode } from './utils'
+import { appendPath } from '@oats-ts/validators'
 
 export abstract class Base {
   protected abstract basePath(): string
@@ -14,7 +14,7 @@ export abstract class Base {
     return encode(value!)
   }
 
-  protected append(path: string, ...segments: (string | number)[]): string {
-    return DefaultConfig.append(path, ...segments)
+  protected append(path: string, segment: string | number): string {
+    return appendPath(path, segment)
   }
 }

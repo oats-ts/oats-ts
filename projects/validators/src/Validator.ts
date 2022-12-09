@@ -23,6 +23,7 @@ import {
   UnionSchema,
 } from './typings'
 import { isNil } from './isNil'
+import { appendPath } from './appendPath'
 
 export class Validator<S extends Schema = Schema> {
   constructor(protected readonly schema: S, protected readonly defaultPath: string = '$') {}
@@ -308,13 +309,7 @@ export class Validator<S extends Schema = Schema> {
   }
 
   protected append(path: string, segment: string | number): string {
-    if (typeof segment === 'number') {
-      return `${path}[${segment}]`
-    }
-    if (typeof segment === 'string' && /^[$A-Za-z_$][0-9a-zA-Z_$]*$/s.test(segment)) {
-      return `${path}.${segment}`
-    }
-    return `${path}["${segment}"]`
+    return appendPath(path, segment)
   }
 
   protected type(

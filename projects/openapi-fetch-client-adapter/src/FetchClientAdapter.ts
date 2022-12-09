@@ -10,7 +10,7 @@ import {
   ResponseHeadersParameters,
 } from '@oats-ts/openapi-http'
 import { isFailure } from '@oats-ts/try'
-import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
+import { Schema, stringify, Validator } from '@oats-ts/validators'
 import {
   DefaultCookieSerializer,
   DefaultHeaderDeserializer,
@@ -123,8 +123,8 @@ export class FetchClientAdapter implements ClientAdapter {
     return response.text()
   }
 
-  protected configureResponseBodyValidator(validator: Validator<any>): ConfiguredValidator<any> {
-    return configure(validator, 'responseBody', DefaultConfig)
+  protected configureResponseBodyValidator(schema: Schema): Validator {
+    return new Validator(schema, 'responseBody')
   }
 
   public getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
@@ -177,7 +177,7 @@ export class FetchClientAdapter implements ClientAdapter {
       }
 
       const validator = this.configureResponseBodyValidator(validatorsForStatus[mimeType])
-      const issues = validator(response.body)
+      const issues = validator.validate(response.body)
       if (issues.length !== 0) {
         throw new Error(issues.map(stringify).join('\n'))
       }

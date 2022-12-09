@@ -18,18 +18,18 @@ import {
 } from '@oats-ts/openapi-model'
 import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
-import { DefaultConfig, isOk, Issue, Validator, ValidatorConfig, ValidatorType } from '@oats-ts/validators'
+import { isOk, Issue, Validator, Schema } from '@oats-ts/validators'
 import { entries, flatMap, isEmpty, isNil, values } from 'lodash'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
 import { factories, StructuralValidators } from './structural'
 import { OpenAPIValidatorContext } from './typings'
 import { getInferredType, isReferenceObject, OpenAPIReadOutput, tick } from '@oats-ts/openapi-common'
+import { StructuralValidator } from './StructuralValidator'
 
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators
   private _context!: OpenAPIValidatorContext
-  private _config!: ValidatorConfig
   private _uri!: URIManipulatorType
 
   public constructor() {
@@ -54,7 +54,6 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
 
     this._context = this.createContext(data)
     this._uri = this.createURIManipulator()
-    this._config = this.createValidatorConfig()
 
     const validationResult = await Promise.allSettled(
       this.context()
@@ -114,25 +113,8 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return new URIManipulator()
   }
 
-  protected createValidatorConfig(): ValidatorConfig {
-    return {
-      ...DefaultConfig,
-      append: (uri: string, ...pieces: (string | number)[]): string => {
-        return this._uri.append(uri, ...pieces)
-      },
-      severity: (type: ValidatorType) => {
-        if (type === 'restrictKeys') {
-          return 'info'
-        }
-        return 'error'
-      },
-      message: (type: ValidatorType, path: string, data?: any) => {
-        if (type === 'restrictKeys') {
-          return 'excess unused field'
-        }
-        return DefaultConfig.message(type, path, data)
-      },
-    }
+  protected createValidator(s: Schema): Validator {
+    return new StructuralValidator(s)
   }
 
   protected init() {
@@ -200,10 +182,6 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return this._context
   }
 
-  protected config(): ValidatorConfig {
-    return this._config
-  }
-
   protected structural(): StructuralValidators {
     return this._structural
   }
@@ -212,14 +190,16 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return issues.some((issue) => issue.severity === 'error')
   }
 
-  protected fn<T>(fn: (data: T) => Issue[], structural?: Validator<any>): (data: T) => Issue[] {
+  protected fn<T>(fn: (data: T) => Issue[], structural?: Schema): (data: T) => Issue[] {
     return (data: T): Issue[] => {
       if (this.context().validated.has(data)) {
         return []
       }
       this.context().validated.add(data)
 
-      const structuralIssues = structural?.(data, this.context().uriOf(data), this.config()) ?? []
+      const structuralIssues = isNil(structural)
+        ? []
+        : this.createValidator(structural).validate(data, this.context().uriOf(data))
       if (this.isCritical(structuralIssues)) {
         return structuralIssues
       }
@@ -595,7 +575,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     const emptyOperationId: Issue[] = [
       {
         message: `should be a non-empty string`,
-        path: this.config().append(this.context().uriOf(data), 'operationId'),
+        path: this._uri.append(this.context().uriOf(data), 'operationId'),
         severity: 'warning',
       },
     ]
@@ -666,7 +646,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       return [
         {
           message: 'missing schema (strict typing is impossible without it)',
-          path: this.config().append(this.context().uriOf(data), 'schema'),
+          path: this._uri.append(this.context().uriOf(data), 'schema'),
           severity: 'warning',
         },
       ]

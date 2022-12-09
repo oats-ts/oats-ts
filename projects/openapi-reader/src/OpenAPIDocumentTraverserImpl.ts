@@ -14,11 +14,12 @@ import {
   ResponseObject,
 } from '@oats-ts/openapi-model'
 import { failure, fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
-import { DefaultConfig, Validator } from '@oats-ts/validators'
+import { Schema } from '@oats-ts/validators'
 import { entries, isNil } from 'lodash'
 import { register } from './utils/register'
 import { validators } from './validators'
 import { OpenAPIDocumentTraverser, ReadContext, ReferenceTraverser } from './typings'
+import { ReaderValidator } from './ReaderValidator'
 
 export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
   private readonly _context: ReadContext
@@ -49,16 +50,11 @@ export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
     this.context().cache.objectToName.set(input, name)
   }
 
-  protected validate<T>(data: T, uri: string, validator: Validator<any>): Try<void> {
+  protected validate<T>(data: T, uri: string, s: Schema): Try<void> {
     if (this.context().cache.uriToObject.has(uri)) {
       return success(undefined)
     }
-    const issues = validator(data, uri, {
-      ...DefaultConfig,
-      append: (uri: string, ...pieces: (string | number)[]): string => {
-        return this.context().uri.append(uri, ...pieces)
-      },
-    })
+    const issues = new ReaderValidator(s).validate(data, uri)
     return issues.length === 0 ? success(undefined) : failure(...issues)
   }
 
@@ -297,12 +293,8 @@ export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
     return isSuccess(merged) ? success(data) : merged
   }
 
-  protected traverseBaseParameter<T extends BaseParameterObject>(
-    validator: Validator<any>,
-    data: T,
-    uri: string,
-  ): Try<T> {
-    const validationResult = this.validate(data, uri, validator)
+  protected traverseBaseParameter<T extends BaseParameterObject>(s: Schema, data: T, uri: string): Try<T> {
+    const validationResult = this.validate(data, uri, s)
     if (isFailure(validationResult)) {
       return validationResult
     }

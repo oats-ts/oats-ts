@@ -15,6 +15,7 @@ import {
   RecordSchema,
   RestrictKeysSchema,
   Schema,
+  ShapeInput,
   ShapeSchema,
   StringSchema,
   TupleSchema,
@@ -81,8 +82,8 @@ export function restrictKeys(keys: string[]): RestrictKeysSchema {
   return { type: 'restrict-keys', keys }
 }
 
-export function shape(shape: Record<string, Schema>): ShapeSchema {
-  return { type: 'shape', shape }
+export function shape<T = Record<string, any>>(shape: ShapeInput<T>): ShapeSchema {
+  return { type: 'shape', shape: shape as Record<string, Schema> }
 }
 
 export function string(schema?: Schema): StringSchema {

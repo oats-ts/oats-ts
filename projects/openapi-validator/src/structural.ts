@@ -9,14 +9,14 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import { Validator, ShapeInput, validators } from '@oats-ts/validators'
+import { Validator, Schema, ShapeInput, validators } from '@oats-ts/validators'
 import { entries } from 'lodash'
 
 const {
   object,
   optional,
   shape,
-  combine,
+  intersection,
   literal,
   restrictKeys,
   string,
@@ -44,7 +44,7 @@ export const factories = {
       }),
       description: optional(string()),
     }
-    return object(combine(shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))))
+    return object(intersection([shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))]))
   },
   tupleSchemaObject: () => {
     const schemaShape: ShapeInput<SchemaObject> = {
@@ -53,7 +53,7 @@ export const factories = {
       minItems: optional(number()),
       prefixItems: optional(array(items(object()))),
     }
-    return object(combine(shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))))
+    return object(intersection([shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))]))
   },
   arraySchemaObject: () => {
     const schemaShape: ShapeInput<SchemaObject> = {
@@ -61,7 +61,7 @@ export const factories = {
       type: optional(literal('array')),
       items: object(),
     }
-    return object(combine(shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))))
+    return object(intersection([shape<SchemaObject>(schemaShape), restrictKeys(Object.keys(schemaShape))]))
   },
   discriminatedUnionSchemaObject: () => {
     const discUnionShape: ShapeInput<SchemaObject> = {
@@ -74,7 +74,7 @@ export const factories = {
         }),
       ),
       oneOf: array(
-        combine(
+        intersection([
           items(
             object(
               shape<ReferenceObject>({
@@ -83,11 +83,11 @@ export const factories = {
             ),
           ),
           minLength(1),
-        ),
+        ]),
       ),
     }
 
-    return object(combine(shape<SchemaObject>(discUnionShape), restrictKeys(Object.keys(discUnionShape))))
+    return object(intersection([shape<SchemaObject>(discUnionShape), restrictKeys(Object.keys(discUnionShape))]))
   },
   enumSchemaObject: () => {
     const enumShape: ShapeInput<SchemaObject> = {
@@ -95,7 +95,7 @@ export const factories = {
       type: optional(string()),
       enum: array(minLength(1)),
     }
-    return object(combine(shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))))
+    return object(intersection([shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))]))
   },
   parameterEnumSchemaObject: () => {
     const enumShape: ShapeInput<SchemaObject> = {
@@ -109,17 +109,17 @@ export const factories = {
         }),
       ),
       enum: array(
-        combine(
+        intersection([
           minLength(1),
           union({
             'number[]': items(number()),
             'string[]': items(string()),
             'boolean[]': items(boolean()),
           }),
-        ),
+        ]),
       ),
     }
-    return object(combine(shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))))
+    return object(intersection([shape<SchemaObject>(enumShape), restrictKeys(Object.keys(enumShape))]))
   },
   objectSchemaObject: () => {
     const objectSchemaShape: ShapeInput<SchemaObject> = {
@@ -129,14 +129,14 @@ export const factories = {
       description: optional(string()),
       additionalProperties: optional(literal(false)),
     }
-    return object(combine(shape<SchemaObject>(objectSchemaShape), restrictKeys(Object.keys(objectSchemaShape))))
+    return object(intersection([shape<SchemaObject>(objectSchemaShape), restrictKeys(Object.keys(objectSchemaShape))]))
   },
   intersectionSchemaObject: () => {
     const intersectionShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
-      allOf: array(combine(items(object()), minLength(1))),
+      allOf: array(intersection([items(object()), minLength(1)])),
     }
-    return object(combine(shape<SchemaObject>(intersectionShape), restrictKeys(Object.keys(intersectionShape))))
+    return object(intersection([shape<SchemaObject>(intersectionShape), restrictKeys(Object.keys(intersectionShape))]))
   },
   nonDiscriminatedUnionSchemaObject: () => {
     const nonDiscUnionShape: ShapeInput<SchemaObject> = {
@@ -144,7 +144,7 @@ export const factories = {
       type: optional(literal('object')),
       oneOf: array(minLength(1)),
     }
-    return object(combine(shape<SchemaObject>(nonDiscUnionShape), restrictKeys(Object.keys(nonDiscUnionShape))))
+    return object(intersection([shape<SchemaObject>(nonDiscUnionShape), restrictKeys(Object.keys(nonDiscUnionShape))]))
   },
   primitiveSchemaObject: () => {
     const primitiveShape: ShapeInput<SchemaObject> = {
@@ -156,7 +156,7 @@ export const factories = {
         integer: literal('integer'),
       }),
     }
-    return object(combine(shape(primitiveShape), restrictKeys(Object.keys(primitiveShape))))
+    return object(intersection([shape(primitiveShape), restrictKeys(Object.keys(primitiveShape))]))
   },
   recordSchemaObject: () => {
     const recordShape: ShapeInput<SchemaObject> = {
@@ -164,11 +164,11 @@ export const factories = {
       description: optional(string()),
       additionalProperties: object(),
     }
-    return object(combine(shape<SchemaObject>(recordShape), restrictKeys(Object.keys(recordShape))))
+    return object(intersection([shape<SchemaObject>(recordShape), restrictKeys(Object.keys(recordShape))]))
   },
   referenceObject: () => {
     const refShape: ShapeInput<ReferenceObject> = { $ref: string() }
-    return object(combine(shape<ReferenceObject>(refShape), restrictKeys(Object.keys(refShape))))
+    return object(intersection([shape<ReferenceObject>(refShape), restrictKeys(Object.keys(refShape))]))
   },
   componentsObject: () => {
     return object(
@@ -185,7 +185,7 @@ export const factories = {
   },
   mediaTypeObject: () => {
     const medieTypeShape: ShapeInput<MediaTypeObject> = { schema: optional(object()) }
-    return object(combine(shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape))))
+    return object(intersection([shape<MediaTypeObject>(medieTypeShape), restrictKeys(Object.keys(medieTypeShape))]))
   },
   openApiObject: () => {
     return object(
@@ -209,7 +209,7 @@ export const factories = {
       patch: optional(object()),
       parameters: optional(array()),
     }
-    return object(combine(shape<PathItemObject>(pathItemShape), restrictKeys(Object.keys(pathItemShape))))
+    return object(intersection([shape<PathItemObject>(pathItemShape), restrictKeys(Object.keys(pathItemShape))]))
   },
   operationObject: () => {
     const operationShape: ShapeInput<OperationObject> = {
@@ -220,7 +220,7 @@ export const factories = {
       requestBody: optional(object()),
       responses: object(record(string(), object())),
     }
-    return object(combine(shape<OperationObject>(operationShape), restrictKeys(Object.keys(operationShape))))
+    return object(intersection([shape<OperationObject>(operationShape), restrictKeys(Object.keys(operationShape))]))
   },
   requestBodyObject: () => {
     const requestBodyShape: ShapeInput<RequestBodyObject> = {
@@ -228,7 +228,9 @@ export const factories = {
       content: optional(object(record(string(), object()))),
       required: optional(boolean()),
     }
-    return object(combine(shape<RequestBodyObject>(requestBodyShape), restrictKeys(Object.keys(requestBodyShape))))
+    return object(
+      intersection([shape<RequestBodyObject>(requestBodyShape), restrictKeys(Object.keys(requestBodyShape))]),
+    )
   },
   responsesObject: () => {
     const responsesKey = union({
@@ -238,18 +240,7 @@ export const factories = {
       '3XX': literal('3XX'),
       '4XX': literal('4XX'),
       '5XX': literal('5XX'),
-      integer: string((input, path, config) => {
-        if (input.length > 0 && `${Number(input)}` === input && Number.isInteger(parseInt(input, 10))) {
-          return []
-        }
-        return [
-          {
-            path,
-            severity: 'error',
-            message: config.message('integer', path),
-          },
-        ]
-      }),
+      integer: string(),
     })
     return object(record(responsesKey, object()))
   },
@@ -259,7 +250,7 @@ export const factories = {
       headers: optional(object(record(string(), object()))),
       description: optional(string()),
     }
-    return object(combine(shape<ResponseObject>(responseShape), restrictKeys(Object.keys(responseShape))))
+    return object(intersection([shape<ResponseObject>(responseShape), restrictKeys(Object.keys(responseShape))]))
   },
   cookieParameterObject: () => {
     const cookieParamShape: ShapeInput<ParameterObject> = {
@@ -271,7 +262,7 @@ export const factories = {
       description: optional(string()),
       schema: object(),
     }
-    return object(combine(shape<ParameterObject>(cookieParamShape), restrictKeys(Object.keys(cookieParamShape))))
+    return object(intersection([shape<ParameterObject>(cookieParamShape), restrictKeys(Object.keys(cookieParamShape))]))
   },
   headerParameterObject: () => {
     const headerParamShape: ShapeInput<ParameterObject> = {
@@ -283,7 +274,7 @@ export const factories = {
       description: optional(string()),
       schema: object(),
     }
-    return object(combine(shape<ParameterObject>(headerParamShape), restrictKeys(Object.keys(headerParamShape))))
+    return object(intersection([shape<ParameterObject>(headerParamShape), restrictKeys(Object.keys(headerParamShape))]))
   },
   pathParameterObject: () => {
     const pathParamShape: ShapeInput<ParameterObject> = {
@@ -301,7 +292,7 @@ export const factories = {
       ),
       schema: object(),
     }
-    return object(combine(shape<ParameterObject>(pathParamShape), restrictKeys(Object.keys(pathParamShape))))
+    return object(intersection([shape<ParameterObject>(pathParamShape), restrictKeys(Object.keys(pathParamShape))]))
   },
   queryParameterObject: () => {
     const queryParamShape: ShapeInput<ParameterObject> = {
@@ -320,7 +311,7 @@ export const factories = {
       ),
       schema: object(),
     }
-    return object(combine(shape<ParameterObject>(queryParamShape), restrictKeys(Object.keys(queryParamShape))))
+    return object(intersection([shape<ParameterObject>(queryParamShape), restrictKeys(Object.keys(queryParamShape))]))
   },
   headersObject: () => {
     return object(record(string(), object()))
@@ -330,7 +321,7 @@ export const factories = {
   },
 } as const
 
-export type StructuralValidators = Record<keyof typeof factories, () => Validator<any>>
+export type StructuralValidators = Record<keyof typeof factories, () => Schema>
 
 export const structural = entries(factories).reduce(
   (validatorsObject, [name, factory]) => ({ ...validatorsObject, [name]: factory() }),
