@@ -39,21 +39,21 @@ export const objectWithPrimitivesTypeValidator = validators.object(
 )
 
 export const primitiveOptionalTupleTypeTypeValidator = validators.array(
-  validators.tuple(
+  validators.tuple([
     validators.optional(validators.literal('Literal Value')),
     validators.optional(validators.string()),
     validators.optional(validators.number()),
     validators.optional(validators.lazy(() => enumTypeTypeValidator)),
     validators.optional(validators.boolean()),
-  ),
+  ]),
 )
 
 export const primitiveTupleTypeTypeValidator = validators.array(
-  validators.tuple(
+  validators.tuple([
     validators.literal('Literal Value'),
     validators.string(),
     validators.number(),
     validators.lazy(() => enumTypeTypeValidator),
     validators.boolean(),
-  ),
+  ]),
 )

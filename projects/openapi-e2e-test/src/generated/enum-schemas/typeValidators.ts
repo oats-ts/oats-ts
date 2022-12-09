@@ -8,10 +8,10 @@ import { validators } from '@oats-ts/openapi-runtime'
 
 export const arrayEnumTypeTypeValidator = validators.union({
   '["A","B","C"]': validators.array(
-    validators.tuple(validators.literal('A'), validators.literal('B'), validators.literal('C')),
+    validators.tuple([validators.literal('A'), validators.literal('B'), validators.literal('C')]),
   ),
-  '[1,2,3]': validators.array(validators.tuple(validators.literal(1), validators.literal(2), validators.literal(3))),
-  '[true,false]': validators.array(validators.tuple(validators.literal(true), validators.literal(false))),
+  '[1,2,3]': validators.array(validators.tuple([validators.literal(1), validators.literal(2), validators.literal(3)])),
+  '[true,false]': validators.array(validators.tuple([validators.literal(true), validators.literal(false)])),
 })
 
 export const booleanEnumTypeTypeValidator = validators.union({
@@ -25,7 +25,7 @@ export const mixedEnumTypeTypeValidator = validators.union({
   true: validators.literal(true),
   null: validators.literal(null),
   '["B",2,false]': validators.array(
-    validators.tuple(validators.literal('B'), validators.literal(2), validators.literal(false)),
+    validators.tuple([validators.literal('B'), validators.literal(2), validators.literal(false)]),
   ),
   '{"obj":true}': validators.object(validators.shape({ obj: validators.literal(true) })),
 })

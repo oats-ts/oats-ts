@@ -6,11 +6,11 @@
 
 import { validators } from '@oats-ts/openapi-runtime'
 
-export const leafIntersectionTypeTypeValidator = validators.combine(
+export const leafIntersectionTypeTypeValidator = validators.intersection([
   validators.object(validators.shape({ racoon: validators.optional(validators.string()) })),
   validators.object(validators.shape({ meerkat: validators.optional(validators.number()) })),
   validators.object(validators.shape({ type: validators.literal('LeafIntersectionType') })),
-)
+])
 
 export const leafType1TypeValidator = validators.object(
   validators.shape({
@@ -33,11 +33,11 @@ export const leafType3TypeValidator = validators.object(
   }),
 )
 
-export const midLevelIntersectionTypeTypeValidator = validators.combine(
+export const midLevelIntersectionTypeTypeValidator = validators.intersection([
   validators.object(validators.shape({ cat: validators.optional(validators.string()) })),
   validators.object(validators.shape({ dog: validators.optional(validators.number()) })),
   validators.object(validators.shape({ type: validators.literal('MidLevelIntersectionType') })),
-)
+])
 
 export const midLevelUnionTypeTypeValidator = validators.union({
   LeafType2: validators.lazy(() => leafType2TypeValidator),

@@ -12,7 +12,7 @@ describe('parsers', () => {
       expect((result as Success<unknown>).data).toEqual({ foo: 'bar' })
     })
     it('should fail to parse non-JSON content', async () => {
-      const result = await parser('foo', '"foo\n"')
+      const result = await parser('foo', '{"a": ')
       expect(isFailure(result)).toBe(true)
       expect((result as Failure).issues).not.toHaveLength(0)
     })

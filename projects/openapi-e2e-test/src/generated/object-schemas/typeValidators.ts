@@ -16,7 +16,7 @@ export const objectWithNestedTypeFieldsTypeTypeValidator = validators.object(
     }),
     objectField: validators.object(validators.shape({ nestedField: validators.optional(validators.string()) })),
     tupleField: validators.array(
-      validators.tuple(validators.optional(validators.string()), validators.optional(validators.number())),
+      validators.tuple([validators.optional(validators.string()), validators.optional(validators.number())]),
     ),
   }),
 )

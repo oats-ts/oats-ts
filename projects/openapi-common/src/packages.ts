@@ -9,7 +9,7 @@ const validatorsExports = {
 const validatorsContent = {
   validators: {
     string: 'string',
-    combine: 'combine',
+    intersection: 'intersection',
     enumeration: 'enumeration',
     number: 'number',
     boolean: 'boolean',

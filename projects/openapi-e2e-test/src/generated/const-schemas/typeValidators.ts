@@ -7,14 +7,14 @@
 import { validators } from '@oats-ts/openapi-runtime'
 
 export const arrayLiteralTypeTypeValidator = validators.array(
-  validators.tuple(
+  validators.tuple([
     validators.literal('string value'),
     validators.literal(42),
     validators.literal(false),
     validators.literal(null),
     validators.object(validators.shape({ key: validators.literal(10) })),
-    validators.array(validators.tuple(validators.literal(3), validators.literal(false), validators.literal('hello'))),
-  ),
+    validators.array(validators.tuple([validators.literal(3), validators.literal(false), validators.literal('hello')])),
+  ]),
 )
 
 export const booleanLiteralTypeTypeValidator = validators.literal(true)

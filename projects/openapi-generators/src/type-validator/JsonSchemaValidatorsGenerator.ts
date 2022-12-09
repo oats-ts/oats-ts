@@ -209,7 +209,13 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
       return factory.createCallExpression(
         this.getValidatorAst('array'),
         [],
-        [factory.createCallExpression(this.getValidatorAst('tuple'), [], parameters)],
+        [
+          factory.createCallExpression(
+            this.getValidatorAst('tuple'),
+            [],
+            [factory.createArrayLiteralExpression(parameters)],
+          ),
+        ],
       )
     } else if (typeof data === 'object') {
       const properties = entries(data).map(([key, value]) =>
@@ -255,7 +261,11 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
           ]
         : []),
     ]
-    return factory.createCallExpression(this.getValidatorAst('combine'), [], parameters)
+    return factory.createCallExpression(
+      this.getValidatorAst('intersection'),
+      [],
+      [factory.createArrayLiteralExpression(parameters)],
+    )
   }
 
   protected getRecordTypeValidatorAst(data: SchemaObject): Expression {
@@ -339,7 +349,13 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
     return factory.createCallExpression(
       this.getValidatorAst('array'),
       [],
-      [factory.createCallExpression(this.getValidatorAst('tuple'), [], parameters)],
+      [
+        factory.createCallExpression(
+          this.getValidatorAst('tuple'),
+          [],
+          [factory.createArrayLiteralExpression(parameters)],
+        ),
+      ],
     )
   }
 

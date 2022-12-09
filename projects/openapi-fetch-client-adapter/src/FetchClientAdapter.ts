@@ -167,7 +167,11 @@ export class FetchClientAdapter implements ClientAdapter {
       }
 
       // In case the mime type returned by the server was not found amount expectations, throw.
-      if (typeof mimeType !== 'string' || typeof validatorsForStatus[mimeType] !== 'function') {
+      if (
+        typeof mimeType !== 'string' ||
+        typeof validatorsForStatus[mimeType] === undefined ||
+        typeof validatorsForStatus[mimeType] == null
+      ) {
         const mimeTypes = Object.keys(validatorsForStatus)
         const mimeTypesHint =
           mimeTypes.length === 1
