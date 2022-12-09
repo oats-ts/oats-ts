@@ -6,7 +6,10 @@ export type IntersectionSchema = { type: 'intersection'; schemas: Schema[] }
 export type ItemsSchema = { type: 'items'; schema: Schema }
 export type LazySchema = { type: 'lazy'; schema: () => Schema }
 export type LiteralSchema = { type: 'literal'; value: any }
+export type MaxLengthSchema = { type: 'max-length'; maxLength: number }
+export type MaxPropertiesSchema = { type: 'max-properties'; maxProperties: number }
 export type MinLengthSchema = { type: 'min-length'; minLength: number }
+export type MinPropertiesSchema = { type: 'min-properties'; minProperties: number }
 export type NilSchema = { type: 'nil' }
 export type NumberSchema = { type: 'number'; schema?: Schema }
 export type ObjectSchema = { type: 'object'; schema?: Schema }
@@ -27,7 +30,10 @@ export type Schema =
   | ItemsSchema
   | LazySchema
   | LiteralSchema
+  | MaxLengthSchema
+  | MaxPropertiesSchema
   | MinLengthSchema
+  | MinPropertiesSchema
   | NilSchema
   | NumberSchema
   | ObjectSchema

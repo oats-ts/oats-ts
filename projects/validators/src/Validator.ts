@@ -8,7 +8,10 @@ import {
   ItemsSchema,
   LazySchema,
   LiteralSchema,
+  MaxLengthSchema,
+  MaxPropertiesSchema,
   MinLengthSchema,
+  MinPropertiesSchema,
   NilSchema,
   NumberSchema,
   ObjectSchema,
@@ -50,8 +53,14 @@ export class Validator<S extends Schema = Schema> {
         return this.lazy(schema, input, path)
       case 'literal':
         return this.literal(schema, input, path)
+      case 'max-length':
+        return this.maxLength(schema, input, path)
+      case 'max-properties':
+        return this.maxProperties(schema, input, path)
       case 'min-length':
         return this.minLength(schema, input, path)
+      case 'min-properties':
+        return this.minProperties(schema, input, path)
       case 'nil':
         return this.nil(schema, input, path)
       case 'number':
@@ -82,15 +91,15 @@ export class Validator<S extends Schema = Schema> {
   }
 
   protected array(schema: ArraySchema, input: unknown, path: string): Issue[] {
-    return this.type(schema, input, path, (input) => Array.isArray(input))
+    return this.predicateBasedNested(schema, input, path, (input) => Array.isArray(input))
   }
 
   protected boolean(schema: BooleanSchema, input: unknown, path: string): Issue[] {
-    return this.type(schema, input, path, (input) => input === true || input === false)
+    return this.predicateBasedNested(schema, input, path, (input) => input === true || input === false)
   }
 
   protected integer(schema: IntegerSchema, input: unknown, path: string): Issue[] {
-    return this.type(schema, input, path, (input) => Number.isInteger(input))
+    return this.predicateBasedNested(schema, input, path, (input) => Number.isInteger(input))
   }
 
   protected intersection(schema: IntersectionSchema, input: unknown, path: string): Issue[] {
@@ -135,27 +144,33 @@ export class Validator<S extends Schema = Schema> {
     return []
   }
 
+  protected maxLength(schema: MaxLengthSchema, input: unknown, path: string): Issue[] {
+    const matches = ((input as unknown[])?.length ?? Infinity) <= schema.maxLength
+    return this.conditionBased(schema, input, path, matches)
+  }
+  protected maxProperties(schema: MaxPropertiesSchema, input: unknown, path: string): Issue[] {
+    const matches = (Object.keys((input as Record<any, any>) ?? {}).length ?? Infinity) <= schema.maxProperties
+    return this.conditionBased(schema, input, path, matches)
+  }
   protected minLength(schema: MinLengthSchema, input: unknown, path: string): Issue[] {
-    const severity = this.severityOf(schema, input, path)
-    if (isNil(severity)) {
-      return []
-    }
-    if (((input as unknown[])?.length ?? 0) < schema.minLength) {
-      return [{ message: this.messageOf(schema, input, path), path, severity }]
-    }
-    return []
+    const matches = ((input as unknown[])?.length ?? -Infinity) >= schema.minLength
+    return this.conditionBased(schema, input, path, matches)
+  }
+  protected minProperties(schema: MinPropertiesSchema, input: unknown, path: string): Issue[] {
+    const matches = (Object.keys((input as Record<any, any>) ?? {}).length ?? -Infinity) >= schema.minProperties
+    return this.conditionBased(schema, input, path, matches)
   }
 
   protected nil(schema: NilSchema, input: unknown, path: string): Issue[] {
-    return this.type(schema, input, path, (input) => input === null || input === undefined)
+    return this.predicateBasedNested(schema, input, path, (input) => input === null || input === undefined)
   }
 
   protected number(schema: NumberSchema, input: unknown, path: string): Issue[] {
-    return this.type(schema, input, path, (input) => typeof input === 'number' && !Number.isNaN(input))
+    return this.predicateBasedNested(schema, input, path, (input) => typeof input === 'number' && !Number.isNaN(input))
   }
 
   protected object(schema: ObjectSchema, input: unknown, path: string): Issue[] {
-    return this.type(
+    return this.predicateBasedNested(
       schema,
       input,
       path,
@@ -228,7 +243,7 @@ export class Validator<S extends Schema = Schema> {
   }
 
   protected string(schema: StringSchema, input: unknown, path: string): Issue[] {
-    return this.type(schema, input, path, (input) => typeof input === 'string')
+    return this.predicateBasedNested(schema, input, path, (input) => typeof input === 'string')
   }
 
   protected tuple(schema: TupleSchema, input: unknown, path: string): Issue[] {
@@ -312,22 +327,32 @@ export class Validator<S extends Schema = Schema> {
     return appendPath(path, segment)
   }
 
-  protected type(
+  protected predicateBasedNested(
     schema: Schema & { schema?: Schema },
     input: unknown,
     path: string,
-    isOfType: (input: unknown) => boolean,
+    predicate: (input: unknown) => boolean,
   ): Issue[] {
     const severity = this.severityOf(schema, input, path)
     if (isNil(severity)) {
       return []
     }
-    if (!isOfType(input)) {
+    if (!predicate(input)) {
       return [{ path, message: this.messageOf(schema, input, path), severity }]
     }
     if (isNil(schema.schema)) {
       return []
     }
     return this.validateBySchema(schema.schema, input, path)
+  }
+  protected conditionBased(schema: Schema, input: unknown, path: string, matches: boolean): Issue[] {
+    const severity = this.severityOf(schema, input, path)
+    if (isNil(severity)) {
+      return []
+    }
+    if (!matches) {
+      return [{ message: this.messageOf(schema, input, path), path, severity }]
+    }
+    return []
   }
 }
