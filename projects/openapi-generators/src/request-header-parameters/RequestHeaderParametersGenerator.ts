@@ -10,7 +10,7 @@ export class RequestHeaderParametersGenerator extends BaseParameterGenerators {
     return 'oats/request-header-parameters'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/request-headers-type']
+    return ['oats/request-headers-type', 'oats/type-validator']
   }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.header
@@ -19,6 +19,7 @@ export class RequestHeaderParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
+      this.validatorsPkg,
       'oats/request-headers-type',
       'HeaderParameters',
       'header',

@@ -73,6 +73,7 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
+      this.validatorsPkg,
       'oats/response-headers-type',
       'HeaderParameters',
       'header',

@@ -14,7 +14,7 @@ export class PathParametersGenerator extends BaseParameterGenerators {
     return 'oats/path-parameters'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/path-type']
+    return ['oats/path-type', 'oats/type-validator']
   }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.path
@@ -65,6 +65,7 @@ export class PathParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
+      this.validatorsPkg,
       'oats/path-type',
       'PathParameters',
       'path',

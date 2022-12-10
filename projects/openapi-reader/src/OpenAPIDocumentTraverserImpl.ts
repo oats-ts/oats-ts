@@ -315,9 +315,7 @@ export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
     }
 
     if (!isNil(content)) {
-      for (const [key, mediaTypeObject] of entries(content)) {
-        parts.push(this.traverseMediaTypeObject(mediaTypeObject, this.context().uri.append(uri, 'content', key)))
-      }
+      this.traverseContentObject(content, this.context().uri.append(uri, 'content'))
     }
 
     const merged = fromArray(parts)

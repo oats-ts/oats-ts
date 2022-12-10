@@ -8,11 +8,12 @@ import {
   OpenApiParameterSerializationExports,
   ParameterKind,
   getInferredType,
+  ValidatorsPackage,
 } from '@oats-ts/openapi-common'
 import {} from '@oats-ts/openapi-common'
-import { BaseParameterObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
+import { BaseParameterObject, ContentObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
 import { getLiteralAst, getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
-import { entries, isNil } from 'lodash'
+import { entries, flatMap, isNil, values } from 'lodash'
 import { Expression, factory, ImportDeclaration, PropertyAssignment, TypeReferenceNode } from 'typescript'
 import { ParameterDescriptorsGenerator } from './internalTypes'
 import { ParameterFactoryFields } from './OatsApiNames'
@@ -21,6 +22,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
   constructor(
     protected context: OpenAPIGeneratorContext,
     protected paramsPkg: OpenApiParameterSerializationPackage,
+    protected validatorPkg: ValidatorsPackage,
     protected modelTypeTarget: OpenAPIGeneratorTarget,
     protected parametersTypeKey: keyof OpenApiParameterSerializationExports,
     protected location: ParameterLocation,
@@ -32,14 +34,32 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     return this.modelTypeTarget
   }
 
-  public getImports<T>(path: string, input: T): ImportDeclaration[] {
+  public getImports<T>(path: string, input: T, params: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
+    const parameters = params.map((p) => this.context.dereference(p))
+    const validatorImports = flatMap(
+      flatMap(parameters, (p) => this.getSchemasOfContent(p.content)),
+      (schema) => this.context.dependenciesOf<ImportDeclaration>(path, schema, 'oats/type-validator'),
+    )
     return [
       getNamedImports(this.paramsPkg.name, [
         this.paramsPkg.imports.parameter,
         this.paramsPkg.imports[this.parametersTypeKey],
       ]),
+      ...(validatorImports.length > 0
+        ? [getNamedImports(this.validatorPkg.name, [this.validatorPkg.imports.validators])]
+        : []),
       ...this.context.dependenciesOf<ImportDeclaration>(path, input, this.getModelTargetType()),
+      ...validatorImports,
     ]
+  }
+
+  protected getSchemasOfContent(content?: ContentObject): Referenceable<SchemaObject>[] {
+    if (isNil(content)) {
+      return []
+    }
+    return values(content)
+      .map((media) => media.schema)
+      .filter((schema): schema is Referenceable<SchemaObject> => !isNil(schema))
   }
 
   public getParametersTypeAst<T>(input: T): TypeReferenceNode {
@@ -92,7 +112,11 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     const [mimeType, mediaTypeObj] = entries(parameter.content)[0]!
     const validator = this.context.referenceOf<Expression>(mediaTypeObj.schema, 'oats/type-validator')
     return factory.createCallExpression(
-      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [this.location, 'schema']),
+      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+        this.location,
+        ...(parameter.required ?? this.defaultRequired ? [ParameterFactoryFields.required] : []),
+        ParameterFactoryFields.schema,
+      ]),
       [],
       [factory.createStringLiteral(mimeType), validator],
     )

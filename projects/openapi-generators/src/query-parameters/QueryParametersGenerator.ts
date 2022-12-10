@@ -10,7 +10,7 @@ export class QueryParametersGenerator extends BaseParameterGenerators {
     return 'oats/query-parameters'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/query-type']
+    return ['oats/query-type', 'oats/type-validator']
   }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.query
@@ -19,6 +19,7 @@ export class QueryParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
+      this.validatorsPkg,
       'oats/query-type',
       'QueryParameters',
       'query',

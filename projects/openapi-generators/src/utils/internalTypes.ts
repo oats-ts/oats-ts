@@ -7,5 +7,5 @@ export type ParameterDescriptorsGenerator = {
   getParameterDescriptorAst(parameters: Referenceable<BaseParameterObject>[]): Expression
   getParametersTypeAst<T>(input: T): TypeReferenceNode
   getModelTargetType(): OpenAPIGeneratorTarget
-  getImports<T>(path: string, input: T): ImportDeclaration[]
+  getImports<T>(path: string, input: T, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[]
 }

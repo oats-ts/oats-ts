@@ -59,7 +59,7 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
   }
 
   protected getImports(path: string, data: EnhancedOperation): ImportDeclaration[] {
-    return this.descriptorsGenerator.getImports(path, data.operation)
+    return this.descriptorsGenerator.getImports(path, data.operation, this.getParameters(data))
   }
 
   protected getParametersStatementAst(item: EnhancedOperation): Statement {

@@ -10,7 +10,7 @@ export class CookieParametersGenerator extends BaseParameterGenerators {
     return 'oats/cookie-parameters'
   }
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/cookies-type']
+    return ['oats/cookies-type', 'oats/type-validator']
   }
   protected getParameters(item: EnhancedOperation): Referenceable<BaseParameterObject>[] {
     return item.cookie
@@ -19,6 +19,7 @@ export class CookieParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
+      this.validatorsPkg,
       'oats/cookies-type',
       'CookieParameters',
       'cookie',

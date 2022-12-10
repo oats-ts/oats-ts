@@ -1,6 +1,6 @@
 import { RuntimeDependency } from '@oats-ts/oats-ts'
-import { HeaderObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
-import { flatMap, isNil } from 'lodash'
+import { BaseParameterObject, OperationObject, ParameterObject } from '@oats-ts/openapi-model'
+import { flatMap, isNil, values } from 'lodash'
 import {
   createOpenAPIGeneratorContext,
   EnhancedOperation,
@@ -12,12 +12,12 @@ import { TypeNode, ImportDeclaration, factory, SourceFile, SyntaxKind, PropertyS
 import { ParameterTypesGeneratorConfig } from './parameterTypings'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, documentNode, safeName } from '@oats-ts/typescript-common'
-import { ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import { OpenAPICodeGeneratorImpl } from './OpenAPICodeGeneratorImpl'
 
 export abstract class ParameterTypesGenerator<T> extends OpenAPICodeGeneratorImpl<ParameterTypesGeneratorConfig, T> {
   public abstract name(): OpenAPIGeneratorTarget
-  protected abstract getParameterObjects(data: T): (ParameterObject | HeaderObject)[]
+  protected abstract getParameterObjects(data: T): BaseParameterObject[]
   protected abstract getEnhancedOperation(data: T): EnhancedOperation
   protected abstract getNameable(data: T): any
 
@@ -53,19 +53,18 @@ export abstract class ParameterTypesGenerator<T> extends OpenAPICodeGeneratorImp
     return success(createSourceFile(path, this.getImports(path, parameters), [ast]))
   }
 
-  protected getImports(path: string, parameters: (ParameterObject | HeaderObject)[]): ImportDeclaration[] {
+  protected getImports(path: string, parameters: BaseParameterObject[]): ImportDeclaration[] {
     const referencedSchemas = getReferencedNamedSchemas(this.getParameterSchemaObject(parameters), this.context())
     return flatMap(referencedSchemas, (schema) => this.context().dependenciesOf(path, schema, 'oats/type'))
   }
 
-  protected getTypeLiteral(parameters: (ParameterObject | HeaderObject)[]) {
+  protected getTypeLiteral(parameters: BaseParameterObject[]) {
     return factory.createTypeLiteralNode(
-      parameters.map((parameter) => {
-        const name = (parameter as ParameterObject).name ?? this.context().nameOf(parameter)
+      this.getNamedParameters(parameters).map(([name, parameter]) => {
         const node = this.createProperty(
           name,
           Boolean(parameter.required),
-          this.context().referenceOf(parameter.schema, 'oats/type'),
+          this.context().referenceOf(this.getParameterSchema(parameter), 'oats/type'),
         )
         return this.configuration().documentation ? documentNode(node, parameter) : node
       }),
@@ -92,20 +91,34 @@ export abstract class ParameterTypesGenerator<T> extends OpenAPICodeGeneratorImp
     return operation
   }
 
-  protected getParameterSchemaObject(params: (ParameterObject | HeaderObject)[]): SchemaObject {
+  protected getParameterSchema(param: BaseParameterObject): Referenceable<SchemaObject> {
+    if (!isNil(param.content)) {
+      const [media] = values(param.content)
+      return media?.schema!
+    }
+    return param.schema!
+  }
+
+  protected getNamedParameters(params: BaseParameterObject[]): [string, BaseParameterObject][] {
+    return params.map((param) => {
+      const name = (param as ParameterObject).name ?? this.context().nameOf(param)
+      return [name, param]
+    })
+  }
+
+  protected getParameterSchemaObject(params: BaseParameterObject[]): SchemaObject {
+    const namedParams = this.getNamedParameters(params)
+    const required = namedParams.filter(([, param]) => param.required).map(([name]) => name)
+    const properties = namedParams.reduce((props, [name, param]) => {
+      return {
+        ...props,
+        [name]: this.getParameterSchema(param),
+      }
+    }, {} as Record<string, Referenceable<SchemaObject>>)
     return {
       type: 'object',
-      required: params
-        .filter((param) => param.required)
-        .map((param) => (param as ParameterObject).name ?? this.context().nameOf(param)),
-      properties: params.reduce(
-        (props: Record<string, SchemaObject | ReferenceObject>, param: ParameterObject | HeaderObject) => {
-          return Object.assign(props, {
-            [(param as ParameterObject).name ?? this.context().nameOf(param)]: param.schema,
-          })
-        },
-        {},
-      ),
+      required,
+      properties,
     }
   }
 }
