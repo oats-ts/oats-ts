@@ -7,6 +7,7 @@ import { BookStoreSdkImpl } from '../generated/book-store/sdkImpl'
 import { HttpMethodsSdkImpl } from '../generated/methods/sdkImpl'
 import { ParametersSdkImpl } from '../generated/parameters/sdkImpl'
 import { CookiesSdkImpl } from '../generated/cookies/sdkImpl'
+import { ContentParametersSdkImpl } from '../generated/content-parameters/sdkImpl'
 
 class YamlFetchClientAdapter extends FetchClientAdapter {
   override async getParsedResponseBody(response: any): Promise<any> {
@@ -28,6 +29,8 @@ export const bookstoreSdk = new BookStoreSdkImpl(defaultAdapter)
 export const httpMethodsSdk = new HttpMethodsSdkImpl(defaultAdapter)
 
 export const parametersSdk = new ParametersSdkImpl(defaultAdapter)
+
+export const contentParametersSdk = new ContentParametersSdkImpl(defaultAdapter)
 
 export const partialContentSdk = new PartialContentSdkImpl(defaultAdapter)
 

@@ -133,7 +133,7 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
     return fluent(this.getHeaderValue(descriptor, path, data))
       .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
-      .map((value) => this.encode(value))
+      .map((value) => (isNil(value) ? value : this.encode(value)))
   }
 
   protected getHeaderValue<T extends ParameterValue>(

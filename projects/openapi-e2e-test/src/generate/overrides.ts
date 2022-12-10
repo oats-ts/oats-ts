@@ -28,6 +28,9 @@ export const presetOverrides: Record<string, Partial<OpenAPIFullStackPresetConfi
       },
     },
   },
+  'generated-schemas/content-parameters.json': {
+    debugCookies: true,
+  },
   'schemas/cookies.json': {
     debugCookies: true,
   },

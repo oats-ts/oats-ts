@@ -4,9 +4,14 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
+import { CookieParametersCookieParameters } from './cookieTypes'
 import { PathParametersPathParameters } from './pathTypes'
 import { QueryParametersQueryParameters } from './queryTypes'
 import { HeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
+
+export type CookieParametersRequest = {
+  cookies: CookieParametersCookieParameters
+}
 
 export type HeaderParametersRequest = {
   headers: HeaderParametersRequestHeaderParameters

@@ -11,14 +11,22 @@ import {
   RawHttpRequest,
   RawHttpResponse,
   RunnableOperation,
+  SetCookieValue,
 } from '@oats-ts/openapi-runtime'
+import { cookieParametersCookieParameters } from './cookieParameters'
+import { CookieParametersCookieParameters } from './cookieTypes'
 import { pathParametersPathParameters } from './pathParameters'
 import { PathParametersPathParameters } from './pathTypes'
 import { queryParametersQueryParameters } from './queryParameters'
 import { QueryParametersQueryParameters } from './queryTypes'
 import { headerParametersRequestHeaderParameters } from './requestHeaderParameters'
 import { HeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
-import { HeaderParametersRequest, PathParametersRequest, QueryParametersRequest } from './requestTypes'
+import {
+  CookieParametersRequest,
+  HeaderParametersRequest,
+  PathParametersRequest,
+  QueryParametersRequest,
+} from './requestTypes'
 import {
   cookieParametersResponseBodyValidator,
   headerParametersResponseBodyValidator,
@@ -35,19 +43,25 @@ import {
 /**
  * Endpoint for testing cookie parameters with "content" object
  */
-export class CookieParametersOperation implements RunnableOperation<void, CookieParametersResponse> {
+export class CookieParametersOperation implements RunnableOperation<CookieParametersRequest, CookieParametersResponse> {
   protected readonly adapter: ClientAdapter
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  protected getUrl(): string {
+  protected getUrl(_request: CookieParametersRequest): string {
     return this.adapter.getUrl('/cookie-parameters', undefined)
   }
-  protected getHttpMethod(): HttpMethod {
+  protected getHttpMethod(_request: CookieParametersRequest): HttpMethod {
     return 'get'
   }
-  protected getRequestHeaders(): RawHttpHeaders {
-    return this.adapter.getAuxiliaryRequestHeaders()
+  protected getRequestHeaders(request: CookieParametersRequest): RawHttpHeaders {
+    return {
+      ...this.adapter.getCookieBasedRequestHeaders<CookieParametersCookieParameters>(
+        request.cookies,
+        cookieParametersCookieParameters,
+      ),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
   }
   protected getMimeType(response: RawHttpResponse): string | undefined {
     return this.adapter.getMimeType(response)
@@ -58,17 +72,21 @@ export class CookieParametersOperation implements RunnableOperation<void, Cookie
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(response, cookieParametersResponseBodyValidator)
   }
-  public async run(): Promise<CookieParametersResponse> {
+  protected getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
+  public async run(request: CookieParametersRequest): Promise<CookieParametersResponse> {
     const rawRequest: RawHttpRequest = {
-      url: this.getUrl(),
-      method: this.getHttpMethod(),
-      headers: this.getRequestHeaders(),
+      url: this.getUrl(request),
+      method: this.getHttpMethod(request),
+      headers: this.getRequestHeaders(request),
     }
     const rawResponse = await this.adapter.request(rawRequest)
     const typedResponse = {
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as CookieParametersResponse
   }
@@ -106,6 +124,9 @@ export class HeaderParametersOperation implements RunnableOperation<HeaderParame
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(response, headerParametersResponseBodyValidator)
   }
+  protected getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: HeaderParametersRequest): Promise<HeaderParametersResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -117,6 +138,7 @@ export class HeaderParametersOperation implements RunnableOperation<HeaderParame
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as HeaderParametersResponse
   }
@@ -149,6 +171,9 @@ export class PathParametersOperation implements RunnableOperation<PathParameters
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(response, pathParametersResponseBodyValidator)
   }
+  protected getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: PathParametersRequest): Promise<PathParametersResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -160,6 +185,7 @@ export class PathParametersOperation implements RunnableOperation<PathParameters
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as PathParametersResponse
   }
@@ -192,6 +218,9 @@ export class QueryParametersOperation implements RunnableOperation<QueryParamete
   protected getResponseBody(response: RawHttpResponse): any {
     return this.adapter.getResponseBody(response, queryParametersResponseBodyValidator)
   }
+  protected getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
   public async run(request: QueryParametersRequest): Promise<QueryParametersResponse> {
     const rawRequest: RawHttpRequest = {
       url: this.getUrl(request),
@@ -203,6 +232,7 @@ export class QueryParametersOperation implements RunnableOperation<QueryParamete
       mimeType: this.getMimeType(rawResponse),
       statusCode: this.getStatusCode(rawResponse),
       body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as QueryParametersResponse
   }

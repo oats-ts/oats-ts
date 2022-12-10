@@ -4,6 +4,7 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
+import { SetCookieValue } from '@oats-ts/openapi-runtime'
 import { CookieParameters, HeaderParameters, ParameterIssue, PathParameters, QueryParameters } from './types'
 
 export type CookieParametersResponse =
@@ -11,11 +12,13 @@ export type CookieParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: CookieParameters
+      cookies: SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: SetCookieValue[]
     }
 
 export type HeaderParametersResponse =
@@ -23,11 +26,13 @@ export type HeaderParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: HeaderParameters
+      cookies: SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: SetCookieValue[]
     }
 
 export type PathParametersResponse =
@@ -35,11 +40,13 @@ export type PathParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: PathParameters
+      cookies: SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: SetCookieValue[]
     }
 
 export type QueryParametersResponse =
@@ -47,9 +54,11 @@ export type QueryParametersResponse =
       statusCode: 200
       mimeType: 'application/json'
       body: QueryParameters
+      cookies: SetCookieValue[]
     }
   | {
       statusCode: 400
       mimeType: 'application/json'
       body: ParameterIssue[]
+      cookies: SetCookieValue[]
     }

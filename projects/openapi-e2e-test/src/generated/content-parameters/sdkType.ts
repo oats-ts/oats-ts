@@ -4,7 +4,12 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { HeaderParametersRequest, PathParametersRequest, QueryParametersRequest } from './requestTypes'
+import {
+  CookieParametersRequest,
+  HeaderParametersRequest,
+  PathParametersRequest,
+  QueryParametersRequest,
+} from './requestTypes'
 import {
   CookieParametersResponse,
   HeaderParametersResponse,
@@ -16,7 +21,7 @@ export type ContentParametersSdk = {
   /**
    * Endpoint for testing cookie parameters with "content" object
    */
-  cookieParameters(): Promise<CookieParametersResponse>
+  cookieParameters(request: CookieParametersRequest): Promise<CookieParametersResponse>
   /**
    * Endpoint for testing header parameters with "content" object
    */

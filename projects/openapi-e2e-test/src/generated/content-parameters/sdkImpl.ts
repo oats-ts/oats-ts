@@ -11,7 +11,12 @@ import {
   PathParametersOperation,
   QueryParametersOperation,
 } from './operations'
-import { HeaderParametersRequest, PathParametersRequest, QueryParametersRequest } from './requestTypes'
+import {
+  CookieParametersRequest,
+  HeaderParametersRequest,
+  PathParametersRequest,
+  QueryParametersRequest,
+} from './requestTypes'
 import {
   CookieParametersResponse,
   HeaderParametersResponse,
@@ -25,8 +30,8 @@ export class ContentParametersSdkImpl implements ContentParametersSdk {
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter
   }
-  public async cookieParameters(): Promise<CookieParametersResponse> {
-    return this.createCookieParametersOperation().run()
+  public async cookieParameters(request: CookieParametersRequest): Promise<CookieParametersResponse> {
+    return this.createCookieParametersOperation().run(request)
   }
   public async headerParameters(request: HeaderParametersRequest): Promise<HeaderParametersResponse> {
     return this.createHeaderParametersOperation().run(request)
@@ -37,7 +42,7 @@ export class ContentParametersSdkImpl implements ContentParametersSdk {
   public async queryParameters(request: QueryParametersRequest): Promise<QueryParametersResponse> {
     return this.createQueryParametersOperation().run(request)
   }
-  protected createCookieParametersOperation(): RunnableOperation<void, CookieParametersResponse> {
+  protected createCookieParametersOperation(): RunnableOperation<CookieParametersRequest, CookieParametersResponse> {
     return new CookieParametersOperation(this.adapter)
   }
   protected createHeaderParametersOperation(): RunnableOperation<HeaderParametersRequest, HeaderParametersResponse> {
