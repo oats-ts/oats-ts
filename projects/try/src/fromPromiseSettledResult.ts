@@ -7,8 +7,8 @@ export function fromPromiseSettledResult<T>(input: PromiseSettledResult<T>): Try
     return success(input.value)
   } else {
     return failure({
-      message: `${input.reason}`,
-      path: '',
+      message: `${input.reason?.stack ?? input.reason}`,
+      path: '@oats-ts/try#fromPromiseSettledResult',
       severity: 'error',
     })
   }

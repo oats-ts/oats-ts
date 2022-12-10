@@ -7,9 +7,9 @@ export function fromPromise<T>(input: Promise<T>): Promise<Try<T>> {
     .then((data) => success(data))
     .catch((error) =>
       failure({
-        message: `${error}`,
+        message: `${error?.stack ?? error}`,
         severity: 'error',
-        path: '',
+        path: '@oats-ts/try#fromPromise',
       }),
     )
 }

@@ -8,6 +8,8 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { getApiGuruSchemaPaths } from './getApiGuruSchemaPaths'
 
+Error.stackTraceLimit = Infinity
+
 const CHUNK_SIZE = 10
 const OUTPUT_FILE = resolve('.apiguru.txt')
 
@@ -50,7 +52,7 @@ export async function generateSingleDocument(inputPath: string, ouptutPath: stri
       reader: readers.file.yaml(inputPath),
       generator: generator({
         nameProvider: nameProviders.default(),
-        pathProvider: pathProviders.singleFile(ouptutPath),
+        pathProvider: pathProviders.default(ouptutPath),
         children: presets.fullStack({
           cors: true,
           debugCookies: true,

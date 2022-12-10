@@ -1,7 +1,7 @@
 import { GeneratorConfig } from '@oats-ts/oats-ts'
-import { OpenAPIFullStackPresetConfig } from '@oats-ts/openapi-generators'
+import { OpenAPIFullStackPresetConfig, OpenAPIPresetConfig } from '@oats-ts/openapi-generators'
 
-export const presetOverrides: Record<string, Partial<OpenAPIFullStackPresetConfig>> = {
+export const presetConfigs: Record<string, Partial<OpenAPIFullStackPresetConfig>> = {
   'schemas/pet-store-yaml.yaml': {
     cors: ['https://foo.com'],
   },
@@ -44,10 +44,16 @@ export const presetOverrides: Record<string, Partial<OpenAPIFullStackPresetConfi
   },
 }
 
-export const importReplacerOverrides: Record<string, GeneratorConfig['importReplacer']> = {
+export const importReplacers: Record<string, GeneratorConfig['importReplacer']> = {
   'generated-schemas/parameters.json': (_, importName) => `_${importName}`,
 }
 
-export const localNameProviderOverrides: Record<string, GeneratorConfig['localNameProvider']> = {
+export const localNameProviders: Record<string, GeneratorConfig['localNameProvider']> = {
   'schemas/pet-store-json.json': (_input, _target, _local, defaultName) => `_local_${defaultName}`,
+}
+
+export const overrides: Record<string, OpenAPIPresetConfig> = {
+  'edge-cases/mega-enum.yaml': {
+    'oats/type-guard': false,
+  },
 }
