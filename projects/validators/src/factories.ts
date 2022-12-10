@@ -60,12 +60,15 @@ export function literal(value: any): LiteralSchema {
 export function maxLength(length: number): MaxLengthSchema {
   return { type: 'max-length', maxLength: length }
 }
+
 export function minLength(length: number): MinLengthSchema {
   return { type: 'min-length', minLength: length }
 }
+
 export function maxProperties(length: number): MaxPropertiesSchema {
   return { type: 'max-properties', maxProperties: length }
 }
+
 export function minProperties(length: number): MinPropertiesSchema {
   return { type: 'min-properties', minProperties: length }
 }

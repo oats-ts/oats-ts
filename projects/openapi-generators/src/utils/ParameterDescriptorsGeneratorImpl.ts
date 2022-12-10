@@ -64,26 +64,38 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     param: Referenceable<BaseParameterObject>,
   ): PropertyAssignment | undefined {
     const name = getParameterName(param, this.context)
-    const parameter = this.context.dereference(param, true)
-    const schema = this.context.dereference(parameter.schema)
-
-    if (isNil(schema) || isNil(name)) {
+    const valueAst = this.getDescriptorAst(this.context.dereference(param, true))
+    if (isNil(valueAst) || isNil(name)) {
       return undefined
     }
-
-    const valueAst = factory.createCallExpression(
-      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-        this.location,
-        parameter.style ?? this.defaultStyle,
-        ...(parameter.explode ?? this.defaultExplode ? [ParameterFactoryFields.exploded] : []),
-        ...(parameter.required ?? this.defaultRequired ? [ParameterFactoryFields.required] : []),
-        this.getKind(parameter),
-      ]),
-      [],
-      [this.getValueDescriptor(schema)],
-    )
-
     return factory.createPropertyAssignment(isIdentifier(name) ? name : factory.createStringLiteral(name), valueAst)
+  }
+
+  private getDescriptorAst(parameter: BaseParameterObject): Expression | undefined {
+    if (isNil(parameter.content)) {
+      const schema = this.context.dereference(parameter.schema)
+      if (isNil(schema)) {
+        return undefined
+      }
+      return factory.createCallExpression(
+        getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+          this.location,
+          parameter.style ?? this.defaultStyle,
+          ...(parameter.explode ?? this.defaultExplode ? [ParameterFactoryFields.exploded] : []),
+          ...(parameter.required ?? this.defaultRequired ? [ParameterFactoryFields.required] : []),
+          this.getKind(parameter),
+        ]),
+        [],
+        [this.getValueDescriptor(schema)],
+      )
+    }
+    const [mimeType, mediaTypeObj] = entries(parameter.content)[0]!
+    const validator = this.context.referenceOf<Expression>(mediaTypeObj.schema, 'oats/type-validator')
+    return factory.createCallExpression(
+      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [this.location, 'schema']),
+      [],
+      [factory.createStringLiteral(mimeType), validator],
+    )
   }
 
   protected narrowLiteralType(type: SchemaObjectType | string, schema: SchemaObject): 'string' | 'number' | 'boolean' {

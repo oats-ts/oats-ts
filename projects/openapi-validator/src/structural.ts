@@ -28,6 +28,8 @@ const {
   union,
   number,
   any,
+  minProperties,
+  maxProperties,
 } = validators
 
 export const factories = {
@@ -251,6 +253,23 @@ export const factories = {
       description: optional(string()),
     }
     return object(intersection([shape<ResponseObject>(responseShape), restrictKeys(Object.keys(responseShape))]))
+  },
+  contentParameterObject: () => {
+    const contentParameterObject: ShapeInput<ParameterObject> = {
+      name: string(),
+      in: union({
+        cookie: literal('cookie'),
+        header: literal('header'),
+        path: literal('path'),
+        query: literal('query'),
+      }),
+      required: optional(boolean()),
+      description: optional(string()),
+      content: object(intersection([record(string(), object()), minProperties(1), maxProperties(1)])),
+    }
+    return object(
+      intersection([shape<ParameterObject>(contentParameterObject), restrictKeys(Object.keys(contentParameterObject))]),
+    )
   },
   cookieParameterObject: () => {
     const cookieParamShape: ShapeInput<ParameterObject> = {

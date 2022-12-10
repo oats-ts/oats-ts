@@ -30,7 +30,7 @@ import { StructuralValidator } from './StructuralValidator'
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators
   private _context!: OpenAPIValidatorContext
-  private _uri!: URIManipulatorType
+  private uri!: URIManipulatorType
 
   public constructor() {
     this._structural = factories
@@ -53,7 +53,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     await tick()
 
     this._context = this.createContext(data)
-    this._uri = this.createURIManipulator()
+    this.uri = this.createURIManipulator()
 
     const validationResult = await Promise.allSettled(
       this.context()
@@ -171,6 +171,10 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     this.validateHeaderParameterObject = this.fn(
       this.validateHeaderParameterObject,
       this.structural().headerParameterObject(),
+    )
+    this.validateContentParameterObject = this.fn(
+      this.validateContentParameterObject,
+      this.structural().contentParameterObject(),
     )
     this.validateParameterEnumSchemaObject = this.fn(
       this.validateParameterEnumSchemaObject,
@@ -575,7 +579,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     const emptyOperationId: Issue[] = [
       {
         message: `should be a non-empty string`,
-        path: this._uri.append(this.context().uriOf(data), 'operationId'),
+        path: this.uri.append(this.context().uriOf(data), 'operationId'),
         severity: 'warning',
       },
     ]
@@ -592,6 +596,9 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
   }
 
   protected validateParameterObject(data: ParameterObject): Issue[] {
+    if (!isNil(data.content)) {
+      return this.validateContentParameterObject(data)
+    }
     switch (data.in) {
       case 'cookie':
         return this.validateCookieParameterObject(data)
@@ -601,7 +608,19 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
         return this.validatePathParameterObject(data)
       case 'query':
         return this.validateQueryParameterObject(data)
+      default:
+        return [
+          {
+            message: `should be "cookie", "header", "path" or "query"`,
+            severity: 'error',
+            path: this.uri.append(this.context().uriOf(data), 'in'),
+          },
+        ]
     }
+  }
+
+  protected validateContentParameterObject(data: ParameterObject): Issue[] {
+    return [...this.validateContentObject(data.content!)]
   }
 
   protected validateCookieParameterObject(data: ParameterObject): Issue[] {
@@ -646,7 +665,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
       return [
         {
           message: 'missing schema (strict typing is impossible without it)',
-          path: this._uri.append(this.context().uriOf(data), 'schema'),
+          path: this.uri.append(this.context().uriOf(data), 'schema'),
           severity: 'warning',
         },
       ]
