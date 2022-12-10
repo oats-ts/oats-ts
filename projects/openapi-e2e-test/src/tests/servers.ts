@@ -1,4 +1,4 @@
-import { ExpressServerAdapter, ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
+import { ExpressServerAdapter, ExpressToolkit, jsonBodyParser } from '@oats-ts/openapi-express-server-adapter'
 import { HttpResponse } from '@oats-ts/openapi-http'
 import { stringify } from 'yaml'
 import { BodiesApiImpl } from './bodies/BodiesApiImpl'
@@ -109,6 +109,7 @@ export function testContentParametersServer() {
     port: PORT,
     runBeforeAndAfter: 'all',
     attachHandlers: (router) => {
+      router.use(jsonBodyParser())
       createContentParametersContextRouter(router, new ContentParametersApiImpl(), new ExpressServerAdapter())
       createContentParametersAppRouter(router)
     },

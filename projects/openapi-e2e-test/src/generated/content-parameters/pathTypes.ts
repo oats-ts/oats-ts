@@ -4,16 +4,16 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { CommonEnumType, CommonObjectType } from './types'
+import { ContentCommonEnumType, ContentCommonObjectType } from './types'
 
 export type PathParametersPathParameters = {
   str: string
   num: number
   bool: boolean
-  enm: CommonEnumType
+  enm: ContentCommonEnumType
   strArr: string[]
   numArr: number[]
   boolArr: boolean[]
-  enmArr: CommonEnumType[]
-  obj: CommonObjectType
+  enmArr: ContentCommonEnumType[]
+  obj: ContentCommonObjectType
 }

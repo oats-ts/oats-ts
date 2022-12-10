@@ -6,7 +6,7 @@
 
 import { ContentCommonEnumType, ContentCommonObjectType, ContentCommonOptObjectType } from './types'
 
-export type HeaderParametersRequestHeaderParameters = {
+export type ResponseHeaderParameters200ResponseHeaderParameters = {
   'X-Str-Header': string
   'X-OptStr-Header'?: string
   'X-Num-Header': number

@@ -6,29 +6,44 @@
 
 import { validators } from '@oats-ts/openapi-runtime'
 import {
+  contentParameterIssueTypeValidator,
   cookieParametersTypeValidator,
   headerParametersTypeValidator,
-  parameterIssueTypeValidator,
   pathParametersTypeValidator,
   queryParametersTypeValidator,
 } from './typeValidators'
 
 export const cookieParametersResponseBodyValidator = {
   200: { 'application/json': validators.lazy(() => cookieParametersTypeValidator) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => parameterIssueTypeValidator))) },
+  400: {
+    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
+  },
 } as const
 
 export const headerParametersResponseBodyValidator = {
   200: { 'application/json': validators.lazy(() => headerParametersTypeValidator) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => parameterIssueTypeValidator))) },
+  400: {
+    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
+  },
 } as const
 
 export const pathParametersResponseBodyValidator = {
   200: { 'application/json': validators.lazy(() => pathParametersTypeValidator) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => parameterIssueTypeValidator))) },
+  400: {
+    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
+  },
 } as const
 
 export const queryParametersResponseBodyValidator = {
   200: { 'application/json': validators.lazy(() => queryParametersTypeValidator) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => parameterIssueTypeValidator))) },
+  400: {
+    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
+  },
+} as const
+
+export const responseHeaderParametersResponseBodyValidator = {
+  200: { 'application/json': validators.object(validators.shape({ ok: validators.boolean() })) },
+  400: {
+    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
+  },
 } as const

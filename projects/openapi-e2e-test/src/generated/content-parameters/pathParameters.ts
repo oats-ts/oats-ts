@@ -12,7 +12,7 @@ import {
   validators,
 } from '@oats-ts/openapi-runtime'
 import { PathParametersPathParameters } from './pathTypes'
-import { commonEnumTypeTypeValidator, commonObjectTypeTypeValidator } from './typeValidators'
+import { contentCommonEnumTypeTypeValidator, contentCommonObjectTypeTypeValidator } from './typeValidators'
 
 export const pathParametersPathParameters: PathParameters<PathParametersPathParameters> = {
   descriptor: {
@@ -21,7 +21,7 @@ export const pathParametersPathParameters: PathParameters<PathParametersPathPara
     bool: parameter.path.required.schema('application/json', validators.boolean()),
     enm: parameter.path.required.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     strArr: parameter.path.required.schema('application/json', validators.array(validators.items(validators.string()))),
     numArr: parameter.path.required.schema('application/json', validators.array(validators.items(validators.number()))),
@@ -31,11 +31,11 @@ export const pathParametersPathParameters: PathParameters<PathParametersPathPara
     ),
     enmArr: parameter.path.required.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     obj: parameter.path.required.schema(
       'application/json',
-      validators.lazy(() => commonObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonObjectTypeTypeValidator),
     ),
   },
   matcher: parsePathToMatcher('/path-parameters/{str}/{num}/{bool}/{enm}/{strArr}/{numArr}/{boolArr}/{enmArr}/{obj}'),

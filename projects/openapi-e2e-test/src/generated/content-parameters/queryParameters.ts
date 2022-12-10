@@ -7,9 +7,9 @@
 import { QueryParameters, parameter, validators } from '@oats-ts/openapi-runtime'
 import { QueryParametersQueryParameters } from './queryTypes'
 import {
-  commonEnumTypeTypeValidator,
-  commonObjectTypeTypeValidator,
-  commonOptObjectTypeTypeValidator,
+  contentCommonEnumTypeTypeValidator,
+  contentCommonObjectTypeTypeValidator,
+  contentCommonOptObjectTypeTypeValidator,
 } from './typeValidators'
 
 export const queryParametersQueryParameters: QueryParameters<QueryParametersQueryParameters> = {
@@ -22,11 +22,11 @@ export const queryParametersQueryParameters: QueryParameters<QueryParametersQuer
     optBool: parameter.query.schema('application/json', validators.boolean()),
     enm: parameter.query.required.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     optEnm: parameter.query.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     strArr: parameter.query.required.schema(
       'application/json',
@@ -45,19 +45,19 @@ export const queryParametersQueryParameters: QueryParameters<QueryParametersQuer
     optBoolArr: parameter.query.schema('application/json', validators.array(validators.items(validators.boolean()))),
     enmArr: parameter.query.required.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     optEnmArr: parameter.query.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     obj: parameter.query.required.schema(
       'application/json',
-      validators.lazy(() => commonObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonObjectTypeTypeValidator),
     ),
     optObj: parameter.query.schema(
       'application/json',
-      validators.lazy(() => commonOptObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonOptObjectTypeTypeValidator),
     ),
   },
 }

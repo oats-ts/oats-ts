@@ -40,4 +40,17 @@ describe('Content Parameters', () => {
       expect(response.body).toEqual(cookies)
     })
   })
+  describe('response headers', () => {
+    it.each(repeats)('(#%d) should properly serialize and deserialize with random test data', async () => {
+      const headers = randomHeaderParameters()
+      const response = await contentParametersSdk.responseHeaderParameters({
+        body: headers,
+        mimeType: 'application/json',
+      })
+      if (response.statusCode !== 200) {
+        throw response
+      }
+      expect(response.headers).toEqual(headers)
+    })
+  })
 })

@@ -26,18 +26,22 @@ import {
   HeaderParametersRequest,
   PathParametersRequest,
   QueryParametersRequest,
+  ResponseHeaderParametersRequest,
 } from './requestTypes'
 import {
   cookieParametersResponseBodyValidator,
   headerParametersResponseBodyValidator,
   pathParametersResponseBodyValidator,
   queryParametersResponseBodyValidator,
+  responseHeaderParametersResponseBodyValidator,
 } from './responseBodyValidators'
+import { responseHeaderParametersResponseHeaderParameters } from './responseHeaderParameters'
 import {
   CookieParametersResponse,
   HeaderParametersResponse,
   PathParametersResponse,
   QueryParametersResponse,
+  ResponseHeaderParametersResponse,
 } from './responseTypes'
 
 /**
@@ -235,5 +239,64 @@ export class QueryParametersOperation implements RunnableOperation<QueryParamete
       cookies: this.getResponseCookies(rawResponse),
     }
     return typedResponse as QueryParametersResponse
+  }
+}
+
+/**
+ * Endpoint for testing response-header parameters with "content" object
+ */
+export class ResponseHeaderParametersOperation
+  implements RunnableOperation<ResponseHeaderParametersRequest, ResponseHeaderParametersResponse>
+{
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(_request: ResponseHeaderParametersRequest): string {
+    return this.adapter.getUrl('/response-header-parameters', undefined)
+  }
+  protected getHttpMethod(_request: ResponseHeaderParametersRequest): HttpMethod {
+    return 'post'
+  }
+  protected getRequestHeaders(request: ResponseHeaderParametersRequest): RawHttpHeaders {
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
+  }
+  protected getRequestBody(request: ResponseHeaderParametersRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseHeaders(response: RawHttpResponse): RawHttpHeaders {
+    return this.adapter.getResponseHeaders(response, responseHeaderParametersResponseHeaderParameters)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(response, responseHeaderParametersResponseBodyValidator)
+  }
+  protected getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
+    return this.adapter.getResponseCookies(response)
+  }
+  public async run(request: ResponseHeaderParametersRequest): Promise<ResponseHeaderParametersResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getHttpMethod(request),
+      headers: this.getRequestHeaders(request),
+      body: this.getRequestBody(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      headers: this.getResponseHeaders(rawResponse),
+      body: this.getResponseBody(rawResponse),
+      cookies: this.getResponseCookies(rawResponse),
+    }
+    return typedResponse as ResponseHeaderParametersResponse
   }
 }

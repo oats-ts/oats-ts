@@ -10,18 +10,21 @@ import {
   HeaderParametersOperation,
   PathParametersOperation,
   QueryParametersOperation,
+  ResponseHeaderParametersOperation,
 } from './operations'
 import {
   CookieParametersRequest,
   HeaderParametersRequest,
   PathParametersRequest,
   QueryParametersRequest,
+  ResponseHeaderParametersRequest,
 } from './requestTypes'
 import {
   CookieParametersResponse,
   HeaderParametersResponse,
   PathParametersResponse,
   QueryParametersResponse,
+  ResponseHeaderParametersResponse,
 } from './responseTypes'
 import { ContentParametersSdk } from './sdkType'
 
@@ -42,6 +45,11 @@ export class ContentParametersSdkImpl implements ContentParametersSdk {
   public async queryParameters(request: QueryParametersRequest): Promise<QueryParametersResponse> {
     return this.createQueryParametersOperation().run(request)
   }
+  public async responseHeaderParameters(
+    request: ResponseHeaderParametersRequest,
+  ): Promise<ResponseHeaderParametersResponse> {
+    return this.createResponseHeaderParametersOperation().run(request)
+  }
   protected createCookieParametersOperation(): RunnableOperation<CookieParametersRequest, CookieParametersResponse> {
     return new CookieParametersOperation(this.adapter)
   }
@@ -53,5 +61,11 @@ export class ContentParametersSdkImpl implements ContentParametersSdk {
   }
   protected createQueryParametersOperation(): RunnableOperation<QueryParametersRequest, QueryParametersResponse> {
     return new QueryParametersOperation(this.adapter)
+  }
+  protected createResponseHeaderParametersOperation(): RunnableOperation<
+    ResponseHeaderParametersRequest,
+    ResponseHeaderParametersResponse
+  > {
+    return new ResponseHeaderParametersOperation(this.adapter)
   }
 }

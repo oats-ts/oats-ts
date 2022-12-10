@@ -9,12 +9,14 @@ import {
   HeaderParametersRequest,
   PathParametersRequest,
   QueryParametersRequest,
+  ResponseHeaderParametersRequest,
 } from './requestTypes'
 import {
   CookieParametersResponse,
   HeaderParametersResponse,
   PathParametersResponse,
   QueryParametersResponse,
+  ResponseHeaderParametersResponse,
 } from './responseTypes'
 
 export type ContentParametersSdk = {
@@ -34,4 +36,8 @@ export type ContentParametersSdk = {
    * Endpoint for testing query parameters with "content" object
    */
   queryParameters(request: QueryParametersRequest): Promise<QueryParametersResponse>
+  /**
+   * Endpoint for testing response-header parameters with "content" object
+   */
+  responseHeaderParameters(request: ResponseHeaderParametersRequest): Promise<ResponseHeaderParametersResponse>
 }

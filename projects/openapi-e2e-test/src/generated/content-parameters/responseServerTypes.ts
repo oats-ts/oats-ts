@@ -5,7 +5,8 @@
  */
 
 import { SetCookieValue } from '@oats-ts/openapi-runtime'
-import { CookieParameters, HeaderParameters, ParameterIssue, PathParameters, QueryParameters } from './types'
+import { ResponseHeaderParameters200ResponseHeaderParameters } from './responseHeaderTypes'
+import { ContentParameterIssue, CookieParameters, HeaderParameters, PathParameters, QueryParameters } from './types'
 
 export type CookieParametersServerResponse =
   | {
@@ -17,7 +18,7 @@ export type CookieParametersServerResponse =
   | {
       statusCode: 400
       mimeType: 'application/json'
-      body: ParameterIssue[]
+      body: ContentParameterIssue[]
       cookies?: SetCookieValue[]
     }
 
@@ -31,7 +32,7 @@ export type HeaderParametersServerResponse =
   | {
       statusCode: 400
       mimeType: 'application/json'
-      body: ParameterIssue[]
+      body: ContentParameterIssue[]
       cookies?: SetCookieValue[]
     }
 
@@ -45,7 +46,7 @@ export type PathParametersServerResponse =
   | {
       statusCode: 400
       mimeType: 'application/json'
-      body: ParameterIssue[]
+      body: ContentParameterIssue[]
       cookies?: SetCookieValue[]
     }
 
@@ -59,6 +60,23 @@ export type QueryParametersServerResponse =
   | {
       statusCode: 400
       mimeType: 'application/json'
-      body: ParameterIssue[]
+      body: ContentParameterIssue[]
+      cookies?: SetCookieValue[]
+    }
+
+export type ResponseHeaderParametersServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: {
+        ok: boolean
+      }
+      headers: ResponseHeaderParameters200ResponseHeaderParameters
+      cookies?: SetCookieValue[]
+    }
+  | {
+      statusCode: 400
+      mimeType: 'application/json'
+      body: ContentParameterIssue[]
       cookies?: SetCookieValue[]
     }

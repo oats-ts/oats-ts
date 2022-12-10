@@ -7,9 +7,9 @@
 import { HeaderParameters, parameter, validators } from '@oats-ts/openapi-runtime'
 import { HeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
 import {
-  commonEnumTypeTypeValidator,
-  commonObjectTypeTypeValidator,
-  commonOptObjectTypeTypeValidator,
+  contentCommonEnumTypeTypeValidator,
+  contentCommonObjectTypeTypeValidator,
+  contentCommonOptObjectTypeTypeValidator,
 } from './typeValidators'
 
 export const headerParametersRequestHeaderParameters: HeaderParameters<HeaderParametersRequestHeaderParameters> = {
@@ -22,11 +22,11 @@ export const headerParametersRequestHeaderParameters: HeaderParameters<HeaderPar
     'X-OptBool-Header': parameter.header.schema('application/json', validators.boolean()),
     'X-Enm-Header': parameter.header.required.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     'X-OptEnm-Header': parameter.header.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     'X-StrArr-Header': parameter.header.required.schema(
       'application/json',
@@ -54,19 +54,19 @@ export const headerParametersRequestHeaderParameters: HeaderParameters<HeaderPar
     ),
     'X-EnmArr-Header': parameter.header.required.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     'X-OptEnmArr-Header': parameter.header.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     'X-Obj-Header': parameter.header.required.schema(
       'application/json',
-      validators.lazy(() => commonObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonObjectTypeTypeValidator),
     ),
     'X-OptObj-Header': parameter.header.schema(
       'application/json',
-      validators.lazy(() => commonOptObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonOptObjectTypeTypeValidator),
     ),
   },
 }

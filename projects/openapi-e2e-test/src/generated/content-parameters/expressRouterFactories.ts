@@ -14,6 +14,7 @@ import { pathParametersPathParameters } from './pathParameters'
 import { PathParametersPathParameters } from './pathTypes'
 import { queryParametersQueryParameters } from './queryParameters'
 import { QueryParametersQueryParameters } from './queryTypes'
+import { responseHeaderParametersRequestBodyValidator } from './requestBodyValidators'
 import { headerParametersRequestHeaderParameters } from './requestHeaderParameters'
 import { HeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
 import {
@@ -21,15 +22,18 @@ import {
   HeaderParametersServerRequest,
   PathParametersServerRequest,
   QueryParametersServerRequest,
+  ResponseHeaderParametersServerRequest,
 } from './requestServerTypes'
+import { responseHeaderParametersResponseHeaderParameters } from './responseHeaderParameters'
+import { ResponseHeaderParameters } from './types'
 
 export function createCookieParametersRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/cookie-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1k4xmpv']
-      const api: ContentParametersApi = response.locals['__oats_api_1k4xmpv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ygr3ma']
+      const api: ContentParametersApi = response.locals['__oats_api_1ygr3ma']
       try {
         const cookies = await adapter.getCookieParameters<CookieParametersCookieParameters>(
           toolkit,
@@ -58,8 +62,8 @@ export function createHeaderParametersRouter(router?: IRouter | undefined): IRou
     '/header-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1k4xmpv']
-      const api: ContentParametersApi = response.locals['__oats_api_1k4xmpv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ygr3ma']
+      const api: ContentParametersApi = response.locals['__oats_api_1ygr3ma']
       try {
         const headers = await adapter.getRequestHeaders<HeaderParametersRequestHeaderParameters>(
           toolkit,
@@ -88,8 +92,8 @@ export function createPathParametersRouter(router?: IRouter | undefined): IRoute
     '/path-parameters/:str/:num/:bool/:enm/:strArr/:numArr/:boolArr/:enmArr/:obj',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1k4xmpv']
-      const api: ContentParametersApi = response.locals['__oats_api_1k4xmpv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ygr3ma']
+      const api: ContentParametersApi = response.locals['__oats_api_1ygr3ma']
       try {
         const path = await adapter.getPathParameters<PathParametersPathParameters>(
           toolkit,
@@ -118,8 +122,8 @@ export function createQueryParametersRouter(router?: IRouter | undefined): IRout
     '/query-parameters',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1k4xmpv']
-      const api: ContentParametersApi = response.locals['__oats_api_1k4xmpv']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ygr3ma']
+      const api: ContentParametersApi = response.locals['__oats_api_1ygr3ma']
       try {
         const query = await adapter.getQueryParameters<QueryParametersQueryParameters>(
           toolkit,
@@ -131,6 +135,45 @@ export function createQueryParametersRouter(router?: IRouter | undefined): IRout
         const typedResponse = await api.queryParameters(typedRequest)
         const rawResponse: RawHttpResponse = {
           headers: await adapter.getResponseHeaders(toolkit, typedResponse, undefined, undefined),
+          statusCode: await adapter.getStatusCode(toolkit, typedResponse),
+          body: await adapter.getResponseBody(toolkit, typedResponse),
+          cookies: await adapter.getResponseCookies(toolkit, typedResponse),
+        }
+        await adapter.respond(toolkit, rawResponse)
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    },
+  )
+}
+
+export function createResponseHeaderParametersRouter(router?: IRouter | undefined): IRouter {
+  return (router ?? Router()).post(
+    '/response-header-parameters',
+    async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ygr3ma']
+      const api: ContentParametersApi = response.locals['__oats_api_1ygr3ma']
+      try {
+        const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
+        const body = await adapter.getRequestBody<'application/json', ResponseHeaderParameters>(
+          toolkit,
+          true,
+          mimeType,
+          responseHeaderParametersRequestBodyValidator,
+        )
+        const typedRequest: ResponseHeaderParametersServerRequest = {
+          mimeType,
+          body,
+        }
+        const typedResponse = await api.responseHeaderParameters(typedRequest)
+        const rawResponse: RawHttpResponse = {
+          headers: await adapter.getResponseHeaders(
+            toolkit,
+            typedResponse,
+            responseHeaderParametersResponseHeaderParameters,
+            undefined,
+          ),
           statusCode: await adapter.getStatusCode(toolkit, typedResponse),
           body: await adapter.getResponseBody(toolkit, typedResponse),
           cookies: await adapter.getResponseCookies(toolkit, typedResponse),

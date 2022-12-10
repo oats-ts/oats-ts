@@ -10,6 +10,7 @@ import {
   createHeaderParametersRouter,
   createPathParametersRouter,
   createQueryParametersRouter,
+  createResponseHeaderParametersRouter,
 } from './expressRouterFactories'
 import { ContentParametersRouterFactories } from './expressRouterFactoriesType'
 
@@ -23,6 +24,7 @@ export function createContentParametersAppRouter(
     overrides.createHeaderParametersRouter ?? createHeaderParametersRouter,
     overrides.createPathParametersRouter ?? createPathParametersRouter,
     overrides.createQueryParametersRouter ?? createQueryParametersRouter,
+    overrides.createResponseHeaderParametersRouter ?? createResponseHeaderParametersRouter,
   ]
   const uniqueRouters = factories.map((factory) => factory(router)).filter((childRouter) => childRouter !== root)
   return uniqueRouters.length === 0 ? root : root.use(...uniqueRouters)

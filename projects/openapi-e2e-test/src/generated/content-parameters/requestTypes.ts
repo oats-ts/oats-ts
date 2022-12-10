@@ -8,6 +8,7 @@ import { CookieParametersCookieParameters } from './cookieTypes'
 import { PathParametersPathParameters } from './pathTypes'
 import { QueryParametersQueryParameters } from './queryTypes'
 import { HeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
+import { ResponseHeaderParameters } from './types'
 
 export type CookieParametersRequest = {
   cookies: CookieParametersCookieParameters
@@ -23,4 +24,9 @@ export type PathParametersRequest = {
 
 export type QueryParametersRequest = {
   query: QueryParametersQueryParameters
+}
+
+export type ResponseHeaderParametersRequest = {
+  mimeType: 'application/json'
+  body: ResponseHeaderParameters
 }

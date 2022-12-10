@@ -9,18 +9,20 @@ import {
   HeaderParametersServerRequest,
   PathParametersServerRequest,
   QueryParametersServerRequest,
+  ResponseHeaderParametersServerRequest,
 } from '../../generated/content-parameters/requestServerTypes'
 import {
   CookieParametersServerResponse,
   HeaderParametersServerResponse,
   PathParametersServerResponse,
   QueryParametersServerResponse,
+  ResponseHeaderParametersServerResponse,
 } from '../../generated/content-parameters/responseServerTypes'
-import { ParameterIssue } from '../../generated/content-parameters/types'
+import { ContentParameterIssue } from '../../generated/content-parameters/types'
 
 type ParameterResponse<T> =
   | HttpResponse<T, 200, 'application/json', undefined>
-  | HttpResponse<ParameterIssue[], 400, 'application/json', undefined>
+  | HttpResponse<ContentParameterIssue[], 400, 'application/json', undefined>
 
 export class ContentParametersApiImpl implements ContentParametersApi {
   private respond<T, R extends ParameterResponse<T>>(params: Try<T>): R {
@@ -38,6 +40,23 @@ export class ContentParametersApiImpl implements ContentParametersApi {
     } as R
   }
 
+  async responseHeaderParameters(
+    request: ResponseHeaderParametersServerRequest,
+  ): Promise<ResponseHeaderParametersServerResponse> {
+    if (isFailure(request.body)) {
+      return {
+        mimeType: 'application/json',
+        statusCode: 400,
+        body: request.body.issues.map((issue) => ({ message: issue.message })),
+      }
+    }
+    return {
+      body: { ok: true },
+      headers: request.body.data,
+      mimeType: 'application/json',
+      statusCode: 200,
+    }
+  }
   async cookieParameters(request: CookieParametersServerRequest): Promise<CookieParametersServerResponse> {
     return this.respond<CookieParametersCookieParameters, CookieParametersServerResponse>(request.cookies)
   }

@@ -11,4 +11,5 @@ export type ContentParametersRouterFactories = {
   createHeaderParametersRouter: (router?: IRouter | undefined) => IRouter
   createPathParametersRouter: (router?: IRouter | undefined) => IRouter
   createQueryParametersRouter: (router?: IRouter | undefined) => IRouter
+  createResponseHeaderParametersRouter: (router?: IRouter | undefined) => IRouter
 }

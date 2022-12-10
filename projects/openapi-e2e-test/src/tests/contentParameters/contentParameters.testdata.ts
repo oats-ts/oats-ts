@@ -4,12 +4,16 @@ import {
   PathParameters,
   QueryParameters,
 } from '../../generated/content-parameters/types'
-import { CommonEnumType, CommonObjectType, CommonOptObjectType } from '../../generated/content-parameters/types'
+import {
+  ContentCommonEnumType,
+  ContentCommonObjectType,
+  ContentCommonOptObjectType,
+} from '../../generated/content-parameters/types'
 import { random } from '../common/random'
 
-const enumValues: CommonEnumType[] = ['A', 'B', 'C']
+const enumValues: ContentCommonEnumType[] = ['A', 'B', 'C']
 
-function commonObject(): CommonObjectType {
+function commonObject(): ContentCommonObjectType {
   return {
     objBoolField: random.boolean(),
     objEnmField: random.arrayElement(enumValues),
@@ -22,7 +26,7 @@ function commonObject(): CommonObjectType {
   }
 }
 
-function optCommonObject(): CommonOptObjectType {
+function optCommonObject(): ContentCommonOptObjectType {
   return {
     optObjBoolField: random.boolean(),
     optObjEnmField: random.arrayElement(enumValues),

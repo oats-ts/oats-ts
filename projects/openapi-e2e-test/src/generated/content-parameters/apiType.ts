@@ -9,12 +9,14 @@ import {
   HeaderParametersServerRequest,
   PathParametersServerRequest,
   QueryParametersServerRequest,
+  ResponseHeaderParametersServerRequest,
 } from './requestServerTypes'
 import {
   CookieParametersServerResponse,
   HeaderParametersServerResponse,
   PathParametersServerResponse,
   QueryParametersServerResponse,
+  ResponseHeaderParametersServerResponse,
 } from './responseServerTypes'
 
 export type ContentParametersApi = {
@@ -34,4 +36,10 @@ export type ContentParametersApi = {
    * Endpoint for testing query parameters with "content" object
    */
   queryParameters(request: QueryParametersServerRequest): Promise<QueryParametersServerResponse>
+  /**
+   * Endpoint for testing response-header parameters with "content" object
+   */
+  responseHeaderParameters(
+    request: ResponseHeaderParametersServerRequest,
+  ): Promise<ResponseHeaderParametersServerResponse>
 }

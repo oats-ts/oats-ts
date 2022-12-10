@@ -7,9 +7,9 @@
 import { CookieParameters, parameter, validators } from '@oats-ts/openapi-runtime'
 import { CookieParametersCookieParameters } from './cookieTypes'
 import {
-  commonEnumTypeTypeValidator,
-  commonObjectTypeTypeValidator,
-  commonOptObjectTypeTypeValidator,
+  contentCommonEnumTypeTypeValidator,
+  contentCommonObjectTypeTypeValidator,
+  contentCommonOptObjectTypeTypeValidator,
 } from './typeValidators'
 
 export const cookieParametersCookieParameters: CookieParameters<CookieParametersCookieParameters> = {
@@ -22,11 +22,11 @@ export const cookieParametersCookieParameters: CookieParameters<CookieParameters
     optBool: parameter.cookie.schema('application/json', validators.boolean()),
     enm: parameter.cookie.required.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     optEnm: parameter.cookie.schema(
       'application/json',
-      validators.lazy(() => commonEnumTypeTypeValidator),
+      validators.lazy(() => contentCommonEnumTypeTypeValidator),
     ),
     strArr: parameter.cookie.required.schema(
       'application/json',
@@ -45,19 +45,19 @@ export const cookieParametersCookieParameters: CookieParameters<CookieParameters
     optBoolArr: parameter.cookie.schema('application/json', validators.array(validators.items(validators.boolean()))),
     enmArr: parameter.cookie.required.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     optEnmArr: parameter.cookie.schema(
       'application/json',
-      validators.array(validators.items(validators.lazy(() => commonEnumTypeTypeValidator))),
+      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
     obj: parameter.cookie.required.schema(
       'application/json',
-      validators.lazy(() => commonObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonObjectTypeTypeValidator),
     ),
     optObj: parameter.cookie.schema(
       'application/json',
-      validators.lazy(() => commonOptObjectTypeTypeValidator),
+      validators.lazy(() => contentCommonOptObjectTypeTypeValidator),
     ),
   },
 }

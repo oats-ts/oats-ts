@@ -4,56 +4,60 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-export type CommonEnumType = 'A' | 'B' | 'C'
+export type ContentCommonEnumType = 'A' | 'B' | 'C'
 
-export type CommonObjectType = {
+export type ContentCommonObjectType = {
   objBoolField: boolean
-  objEnmField: CommonEnumType
+  objEnmField: ContentCommonEnumType
   objNumField: number
   objOptBoolField?: boolean
-  objOptEnmField?: CommonEnumType
+  objOptEnmField?: ContentCommonEnumType
   objOptNumField?: number
   objOptStrField?: string
   objStrField: string
 }
 
-export type CommonObjectTypeExpl = {
+export type ContentCommonObjectTypeExpl = {
   objExplBoolField: boolean
-  objExplEnmField: CommonEnumType
+  objExplEnmField: ContentCommonEnumType
   objExplNumField: number
   objExplOptBoolField?: boolean
-  objExplOptEnmField?: CommonEnumType
+  objExplOptEnmField?: ContentCommonEnumType
   objExplOptNumField?: number
   objExplOptStrField?: string
   objExplStrField: string
 }
 
-export type CommonOptObjectType = {
+export type ContentCommonOptObjectType = {
   optObjBoolField: boolean
-  optObjEnmField: CommonEnumType
+  optObjEnmField: ContentCommonEnumType
   optObjNumField: number
   optObjOptBoolField?: boolean
-  optObjOptEnmField?: CommonEnumType
+  optObjOptEnmField?: ContentCommonEnumType
   optObjOptNumField?: number
   optObjOptStrField?: string
   optObjStrField: string
 }
 
+export type ContentParameterIssue = {
+  message: string
+}
+
 export type CookieParameters = {
   bool: boolean
   boolArr: boolean[]
-  enm: CommonEnumType
-  enmArr: CommonEnumType[]
+  enm: ContentCommonEnumType
+  enmArr: ContentCommonEnumType[]
   num: number
   numArr: number[]
-  obj: CommonObjectType
+  obj: ContentCommonObjectType
   optBool?: boolean
   optBoolArr?: boolean[]
-  optEnm?: CommonEnumType
-  optEnmArr?: CommonEnumType[]
+  optEnm?: ContentCommonEnumType
+  optEnmArr?: ContentCommonEnumType[]
   optNum?: number
   optNumArr?: number[]
-  optObj?: CommonOptObjectType
+  optObj?: ContentCommonOptObjectType
   optStr?: string
   optStrArr?: string[]
   str: string
@@ -63,36 +67,32 @@ export type CookieParameters = {
 export type HeaderParameters = {
   'X-Bool-Header': boolean
   'X-BoolArr-Header': boolean[]
-  'X-Enm-Header': CommonEnumType
-  'X-EnmArr-Header': CommonEnumType[]
+  'X-Enm-Header': ContentCommonEnumType
+  'X-EnmArr-Header': ContentCommonEnumType[]
   'X-Num-Header': number
   'X-NumArr-Header': number[]
-  'X-Obj-Header': CommonObjectType
+  'X-Obj-Header': ContentCommonObjectType
   'X-OptBool-Header'?: boolean
   'X-OptBoolArr-Header'?: boolean[]
-  'X-OptEnm-Header'?: CommonEnumType
-  'X-OptEnmArr-Header'?: CommonEnumType[]
+  'X-OptEnm-Header'?: ContentCommonEnumType
+  'X-OptEnmArr-Header'?: ContentCommonEnumType[]
   'X-OptNum-Header'?: number
   'X-OptNumArr-Header'?: number[]
-  'X-OptObj-Header'?: CommonOptObjectType
+  'X-OptObj-Header'?: ContentCommonOptObjectType
   'X-OptStr-Header'?: string
   'X-OptStrArr-Header'?: string[]
   'X-Str-Header': string
   'X-StrArr-Header': string[]
 }
 
-export type ParameterIssue = {
-  message: string
-}
-
 export type PathParameters = {
   bool: boolean
   boolArr: boolean[]
-  enm: CommonEnumType
-  enmArr: CommonEnumType[]
+  enm: ContentCommonEnumType
+  enmArr: ContentCommonEnumType[]
   num: number
   numArr: number[]
-  obj: CommonObjectType
+  obj: ContentCommonObjectType
   str: string
   strArr: string[]
 }
@@ -100,20 +100,41 @@ export type PathParameters = {
 export type QueryParameters = {
   bool: boolean
   boolArr: boolean[]
-  enm: CommonEnumType
-  enmArr: CommonEnumType[]
+  enm: ContentCommonEnumType
+  enmArr: ContentCommonEnumType[]
   num: number
   numArr: number[]
-  obj: CommonObjectType
+  obj: ContentCommonObjectType
   optBool?: boolean
   optBoolArr?: boolean[]
-  optEnm?: CommonEnumType
-  optEnmArr?: CommonEnumType[]
+  optEnm?: ContentCommonEnumType
+  optEnmArr?: ContentCommonEnumType[]
   optNum?: number
   optNumArr?: number[]
-  optObj?: CommonOptObjectType
+  optObj?: ContentCommonOptObjectType
   optStr?: string
   optStrArr?: string[]
   str: string
   strArr: string[]
+}
+
+export type ResponseHeaderParameters = {
+  'X-Bool-Header': boolean
+  'X-BoolArr-Header': boolean[]
+  'X-Enm-Header': ContentCommonEnumType
+  'X-EnmArr-Header': ContentCommonEnumType[]
+  'X-Num-Header': number
+  'X-NumArr-Header': number[]
+  'X-Obj-Header': ContentCommonObjectType
+  'X-OptBool-Header'?: boolean
+  'X-OptBoolArr-Header'?: boolean[]
+  'X-OptEnm-Header'?: ContentCommonEnumType
+  'X-OptEnmArr-Header'?: ContentCommonEnumType[]
+  'X-OptNum-Header'?: number
+  'X-OptNumArr-Header'?: number[]
+  'X-OptObj-Header'?: ContentCommonOptObjectType
+  'X-OptStr-Header'?: string
+  'X-OptStrArr-Header'?: string[]
+  'X-Str-Header': string
+  'X-StrArr-Header': string[]
 }

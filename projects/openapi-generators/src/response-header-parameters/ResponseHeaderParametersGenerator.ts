@@ -10,7 +10,7 @@ import {
 import { OperationObject } from '@oats-ts/openapi-model'
 import { success, Try } from '@oats-ts/try'
 import { createSourceFile, getModelImports, getNamedImports } from '@oats-ts/typescript-common'
-import { entries, values } from 'lodash'
+import { entries, flatMap, values } from 'lodash'
 import {
   factory,
   Identifier,
@@ -34,7 +34,7 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
   }
 
   public consumes(): OpenAPIGeneratorTarget[] {
-    return ['oats/response-headers-type']
+    return ['oats/response-headers-type', 'oats/type-validator']
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
@@ -83,8 +83,15 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
     )
   }
 
-  protected getImportDeclarations(_path: string, _data: EnhancedOperation): ImportDeclaration[] {
-    return [getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.parameter])]
+  protected getImportDeclarations(path: string, data: EnhancedOperation): ImportDeclaration[] {
+    const headers = flatMap(entries(getResponseHeaders(data.operation, this.context())), ([, headers]) =>
+      values(headers),
+    )
+
+    return [
+      getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.parameter]),
+      ...this.descriptorsGenerator.getValidatorImports(path, data, headers),
+    ]
   }
 
   protected getResponseHeaderParametersAst(data: EnhancedOperation): Statement {

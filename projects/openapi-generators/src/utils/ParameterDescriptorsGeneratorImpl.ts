@@ -34,22 +34,32 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     return this.modelTypeTarget
   }
 
-  public getImports<T>(path: string, input: T, params: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
+  public getValidatorImports<T>(
+    path: string,
+    input: T,
+    params: Referenceable<BaseParameterObject>[],
+  ): ImportDeclaration[] {
     const parameters = params.map((p) => this.context.dereference(p))
     const validatorImports = flatMap(
       flatMap(parameters, (p) => this.getSchemasOfContent(p.content)),
       (schema) => this.context.dependenciesOf<ImportDeclaration>(path, schema, 'oats/type-validator'),
     )
     return [
-      getNamedImports(this.paramsPkg.name, [
-        this.paramsPkg.imports.parameter,
-        this.paramsPkg.imports[this.parametersTypeKey],
-      ]),
       ...(validatorImports.length > 0
         ? [getNamedImports(this.validatorPkg.name, [this.validatorPkg.imports.validators])]
         : []),
       ...this.context.dependenciesOf<ImportDeclaration>(path, input, this.getModelTargetType()),
       ...validatorImports,
+    ]
+  }
+
+  public getImports<T>(path: string, input: T, params: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
+    return [
+      getNamedImports(this.paramsPkg.name, [
+        this.paramsPkg.imports.parameter,
+        this.paramsPkg.imports[this.parametersTypeKey],
+      ]),
+      ...this.getValidatorImports(path, input, params),
     ]
   }
 

@@ -15,8 +15,8 @@ export function createContentParametersContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_1k4xmpv'] = api
-    response.locals['__oats_adapter_1k4xmpv'] = adapter
+    response.locals['__oats_api_1ygr3ma'] = api
+    response.locals['__oats_adapter_1ygr3ma'] = adapter
     next()
   })
 }

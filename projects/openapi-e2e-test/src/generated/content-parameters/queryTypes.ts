@@ -4,7 +4,7 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { CommonEnumType, CommonObjectType, CommonOptObjectType } from './types'
+import { ContentCommonEnumType, ContentCommonObjectType, ContentCommonOptObjectType } from './types'
 
 export type QueryParametersQueryParameters = {
   str: string
@@ -13,16 +13,16 @@ export type QueryParametersQueryParameters = {
   optNum?: number
   bool: boolean
   optBool?: boolean
-  enm: CommonEnumType
-  optEnm?: CommonEnumType
+  enm: ContentCommonEnumType
+  optEnm?: ContentCommonEnumType
   strArr: string[]
   optStrArr?: string[]
   numArr: number[]
   optNumArr?: number[]
   boolArr: boolean[]
   optBoolArr?: boolean[]
-  enmArr: CommonEnumType[]
-  optEnmArr?: CommonEnumType[]
-  obj: CommonObjectType
-  optObj?: CommonOptObjectType
+  enmArr: ContentCommonEnumType[]
+  optEnmArr?: ContentCommonEnumType[]
+  obj: ContentCommonObjectType
+  optObj?: ContentCommonOptObjectType
 }
