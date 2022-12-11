@@ -35,6 +35,10 @@ function collectPrimtiveTypes(
       types.add(inferredType)
       break
     }
+    case 'literal': {
+      types.add(getPrimitiveValueType(schema.const))
+      break
+    }
     case 'enum': {
       const { enum: e = [] } = schema
       e.forEach((value) => types.add(getPrimitiveValueType(value)))
@@ -57,7 +61,10 @@ function collectPrimtiveTypes(
   }
 }
 
-export function getPrimitiveTypes(schema: SchemaObject, context: OpenAPIGeneratorContext): PrimitiveType[] {
+export function getPrimitiveTypes(
+  schema: Referenceable<SchemaObject>,
+  context: OpenAPIGeneratorContext,
+): PrimitiveType[] {
   const types = new Set<PrimitiveType>()
   collectPrimtiveTypes(schema, context, types)
   return Array.from(types)

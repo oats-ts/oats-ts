@@ -114,4 +114,5 @@ export const ParameterFactoryFields = {
   enum: 'enum',
   optional: 'optional',
   schema: 'schema',
+  union: 'union',
 } as const

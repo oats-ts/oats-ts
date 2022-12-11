@@ -30,6 +30,7 @@ const {
   any,
   minProperties,
   maxProperties,
+  integer,
 } = validators
 
 export const factories = {
@@ -113,11 +114,14 @@ export const factories = {
       enum: array(
         intersection([
           minLength(1),
-          union({
-            'number[]': items(number()),
-            'string[]': items(string()),
-            'boolean[]': items(boolean()),
-          }),
+          items(
+            union({
+              integer: integer(),
+              number: number(),
+              string: string(),
+              boolean: boolean(),
+            }),
+          ),
         ]),
       ),
     }

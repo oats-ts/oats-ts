@@ -46,6 +46,10 @@ function collectFundamentalTypes(
       types.add('primitive')
       break
     }
+    case 'literal': {
+      types.add(getFundamentalValueType(schema.const))
+      break
+    }
     case 'enum': {
       const { enum: e = [] } = schema
       e.forEach((value) => types.add(getFundamentalValueType(value)))
@@ -68,7 +72,10 @@ function collectFundamentalTypes(
   }
 }
 
-export function getFundamentalTypes(schema: SchemaObject, context: OpenAPIGeneratorContext): FundamentalType[] {
+export function getFundamentalTypes(
+  schema: Referenceable<SchemaObject>,
+  context: OpenAPIGeneratorContext,
+): FundamentalType[] {
   const types = new Set<FundamentalType>()
   collectFundamentalTypes(schema, context, types)
   return Array.from(types)

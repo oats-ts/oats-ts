@@ -24,7 +24,14 @@ import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
 import { factories, StructuralValidators } from './structural'
 import { OpenAPIValidatorContext } from './typings'
-import { getInferredType, isReferenceObject, OpenAPIReadOutput, tick } from '@oats-ts/openapi-common'
+import {
+  getFundamentalTypes,
+  getInferredType,
+  getPrimitiveTypes,
+  isReferenceObject,
+  OpenAPIReadOutput,
+  tick,
+} from '@oats-ts/openapi-common'
 import { StructuralValidator } from './StructuralValidator'
 
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
@@ -467,26 +474,108 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     ]
   }
 
+  protected validateParameterIntersectionSchemaObject(data: SchemaObject): Issue[] {
+    const basicIssues = this.validateIntersectionSchemaObject(data)
+    if (!isOk(basicIssues)) {
+      return basicIssues
+    }
+    const issues: Issue[] = []
+    const { allOf = [] } = data
+    for (let i = 0; i < allOf.length; i += 1) {
+      const primitiveTypes = getPrimitiveTypes(allOf[i], this.context())
+      if (primitiveTypes.includes('nil')) {
+        issues.push({
+          message: `should not be a null-enabled schema (use non-required parameter instead)`,
+          path: this.context().uriOf(allOf[i]),
+          severity: 'error',
+        })
+      }
+      if (primitiveTypes.includes('non-primitive')) {
+        issues.push({
+          message: `should be a primitive schema`,
+          path: this.context().uriOf(allOf[i]),
+          severity: 'error',
+        })
+      }
+      if (primitiveTypes.length !== 1) {
+        issues.push({
+          message: `should be of the same primitive type`,
+          path: this.context().uriOf(allOf[i]),
+          severity: 'error',
+        })
+      }
+    }
+    return issues
+  }
+
+  protected validateParameterUnionSchemaObject(data: SchemaObject): Issue[] {
+    const basicIssues = this.validateUnionSchemaObject(data)
+    if (!isOk(basicIssues)) {
+      return basicIssues
+    }
+    const issues: Issue[] = []
+    const { oneOf = [] } = data
+    for (let i = 0; i < oneOf.length; i += 1) {
+      const primitiveTypes = getPrimitiveTypes(oneOf[i], this.context())
+      if (primitiveTypes.includes('nil')) {
+        issues.push({
+          message: `should not include null-enabled schema (use non-required parameter instead)`,
+          path: this.context().uriOf(oneOf[i]),
+          severity: 'error',
+        })
+      }
+      if (primitiveTypes.includes('non-primitive')) {
+        issues.push({
+          message: `should be a primitive schema`,
+          path: this.context().uriOf(oneOf[i]),
+          severity: 'error',
+        })
+      }
+    }
+    return issues
+  }
+
   protected validateParameterSchemaObject(data: SchemaObject): Issue[] {
+    const fundamentals = getFundamentalTypes(data, this.context())
+    const paramTypeError = `should be primitive, array of primitives, fixed-property object with primitve fields, enum, intersection or union of primitives`
+    if (fundamentals.includes('nil') || fundamentals.includes('unknown') || fundamentals.length === 0) {
+      return [
+        {
+          message: paramTypeError,
+          path: this.context().uriOf(data),
+          severity: 'error',
+        },
+      ]
+    }
+    if (fundamentals.length > 1) {
+      return [
+        {
+          message: `should be of the same fundamental type, but was ${fundamentals.map((t) => `"${t}"`).join(', ')}`,
+          path: this.context().uriOf(data),
+          severity: 'error',
+        },
+      ]
+    }
     const type = getInferredType(data)
     switch (type) {
-      case 'object':
-        return this.validateObjectSchemaObject(data, (schema) => this.validatePrimitiveSchemaObject(schema))
-      case 'record':
-        return this.validateRecordSchemaObject(data, (schema) => this.validatePrimitiveSchemaObject(schema))
-      case 'array':
-        return this.validateArraySchemaObject(data, (schema) => this.validatePrimitiveSchemaObject(schema))
       case 'string':
       case 'number':
       case 'boolean':
         return this.validatePrimitiveSchemaObject(data)
+      case 'object':
+        return this.validateObjectSchemaObject(data, (schema) => this.validatePrimitiveSchemaObject(schema))
+      case 'array':
+        return this.validateArraySchemaObject(data, (schema) => this.validatePrimitiveSchemaObject(schema))
       case 'enum':
         return this.validateParameterEnumSchemaObject(data)
+      case 'intersection':
+        return this.validateParameterIntersectionSchemaObject(data)
+      case 'union':
+        return this.validateParameterUnionSchemaObject(data)
       default:
         return [
           {
-            message:
-              'should be either a primitive schema ("string", "number" or "boolean") or array/object of primitives',
+            message: paramTypeError,
             path: this.context().uriOf(data),
             severity: 'error',
           },

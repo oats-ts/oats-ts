@@ -1,18 +1,17 @@
-import { Referenceable, SchemaObject, SchemaObjectType } from '@oats-ts/json-schema-model'
+import { Referenceable, SchemaObject } from '@oats-ts/json-schema-model'
 import {
-  getParameterKind,
   getParameterName,
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenApiParameterSerializationPackage,
   OpenApiParameterSerializationExports,
-  ParameterKind,
-  getInferredType,
   ValidatorsPackage,
+  getFundamentalTypes,
+  getPrimitiveTypes,
+  FundamentalType,
 } from '@oats-ts/openapi-common'
-import {} from '@oats-ts/openapi-common'
 import { BaseParameterObject, ContentObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
-import { getLiteralAst, getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
+import { getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
 import { entries, flatMap, isNil, values } from 'lodash'
 import { Expression, factory, ImportDeclaration, PropertyAssignment, TypeReferenceNode } from 'typescript'
 import { ParameterDescriptorsGenerator } from './internalTypes'
@@ -86,8 +85,8 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     )
   }
 
-  protected getKind(param: BaseParameterObject): ParameterKind {
-    return isNil(param.schema) ? 'unknown' : getParameterKind(this.context.dereference(param.schema, true))
+  protected getFundamentalType(schema: Referenceable<SchemaObject>): FundamentalType {
+    return getFundamentalTypes(schema, this.context)[0]
   }
 
   protected getParameterDescriptorPropertyAst(
@@ -113,7 +112,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
           parameter.style ?? this.defaultStyle,
           ...(parameter.explode ?? this.defaultExplode ? [ParameterFactoryFields.exploded] : []),
           ...(parameter.required ?? this.defaultRequired ? [ParameterFactoryFields.required] : []),
-          this.getKind(parameter),
+          this.getFundamentalType(schema),
         ]),
         [],
         [this.getValueDescriptor(schema)],
@@ -132,101 +131,32 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     )
   }
 
-  protected narrowLiteralType(type: SchemaObjectType | string, schema: SchemaObject): 'string' | 'number' | 'boolean' {
-    switch (type) {
-      case 'string':
-        return 'string'
-      case 'number':
-      case 'integer':
-        return 'number'
-      case 'boolean':
-        return 'boolean'
-      default:
-        throw new TypeError(`Unexpected enum type: "${type}" in ${this.context.uriOf(schema)}`)
-    }
-  }
-
-  protected getLiteralType(schema: SchemaObject): 'string' | 'number' | 'boolean' {
-    const narrowedType = isNil(schema.type) ? undefined : this.narrowLiteralType(schema.type, schema)
-    if (!isNil(narrowedType)) {
-      return narrowedType
-    }
-    const types = Array.from(new Set((schema.enum ?? []).map((value) => typeof value)))
-    switch (types.length) {
-      case 0:
-        throw new TypeError(`Can't infer enum type in ${this.context.uriOf(schema)}`)
-      case 1:
-        return this.narrowLiteralType(types[0], schema)
-      default:
-        throw new TypeError(`Enum must be of same type in ${this.context.uriOf(schema)}`)
-    }
-  }
-
   protected getValueDescriptor(schemaOrRef: Referenceable<SchemaObject> | undefined): Expression {
-    const schema = this.context.dereference(schemaOrRef, true)
-    if (isNil(schema)) {
+    if (isNil(schemaOrRef)) {
       return factory.createIdentifier('undefined')
     }
-    const inferredType = getInferredType(schema)
-    switch (inferredType) {
-      case 'string':
-      case 'number':
-      case 'boolean': {
-        return factory.createCallExpression(
-          getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-            ParameterFactoryFields.value,
-            inferredType,
-          ]),
-          [],
-          [],
-        )
-      }
-      case 'enum': {
-        return factory.createCallExpression(
-          getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-            ParameterFactoryFields.value,
-            this.getLiteralType(schema),
-          ]),
-          [],
-          [
-            factory.createCallExpression(
-              getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-                ParameterFactoryFields.value,
-                ParameterFactoryFields.enum,
-              ]),
-              [],
-              [factory.createArrayLiteralExpression((schema.enum ?? []).map((v) => getLiteralAst(v)))],
-            ),
-          ],
-        )
-      }
-      case 'array': {
-        // TODO is this ok?
-        return this.getValueDescriptor(typeof schema.items === 'boolean' ? { type: 'string' } : schema.items)
-      }
-      case 'object': {
-        const properties = entries(schema.properties ?? {}).map(([name, propSchema]) => {
-          const isRequired = (schema.required || []).indexOf(name) >= 0
-          const requiredValueDesc = this.getValueDescriptor(propSchema)
-          const valueDesc = isRequired
-            ? requiredValueDesc
-            : factory.createCallExpression(
-                getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-                  ParameterFactoryFields.value,
-                  ParameterFactoryFields.optional,
-                ]),
-                [],
-                [requiredValueDesc],
-              )
-          return factory.createPropertyAssignment(
-            isIdentifier(name) ? name : factory.createStringLiteral(name),
-            valueDesc,
-          )
-        })
-        return factory.createObjectLiteralExpression(properties)
-      }
-      default:
-        return factory.createIdentifier('undefined')
+
+    const types = getPrimitiveTypes(schemaOrRef, this.context).map((primitiveType) =>
+      factory.createCallExpression(
+        getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+          ParameterFactoryFields.value,
+          primitiveType,
+        ]),
+        [],
+        [],
+      ),
+    )
+    if (types.length === 0) {
+      return types[0]
     }
+
+    return factory.createCallExpression(
+      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+        ParameterFactoryFields.value,
+        ParameterFactoryFields.union,
+      ]),
+      [],
+      types,
+    )
   }
 }
