@@ -12,6 +12,6 @@ export const formCookieParametersCookieParameters: _CookieParameters<FormCookieP
     optStr: _parameter.cookie.form.primitive(_parameter.value.string()),
     optNum: _parameter.cookie.form.primitive(_parameter.value.number()),
     optBool: _parameter.cookie.form.primitive(_parameter.value.boolean()),
-    optEnm: _parameter.cookie.form.primitive(_parameter.value.string(_parameter.value.enum(['A', 'B', 'C']))),
+    optEnm: _parameter.cookie.form.primitive(_parameter.value.string()),
   },
 }

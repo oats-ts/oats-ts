@@ -115,7 +115,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
           this.getFundamentalType(schema),
         ]),
         [],
-        [this.getValueDescriptor(schema)],
+        [this.getValueDescriptors(schema)],
       )
     }
     const [mimeType, mediaTypeObj] = entries(parameter.content)[0]!
@@ -129,6 +129,44 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
       [],
       [factory.createStringLiteral(mimeType), validator],
     )
+  }
+
+  protected getValueDescriptors(schemaOrRef: Referenceable<SchemaObject> | undefined): Expression {
+    const schema = this.context.dereference(schemaOrRef, true)
+    if (isNil(schema)) {
+      return factory.createIdentifier('undefined')
+    }
+    switch (this.getFundamentalType(schema)) {
+      case 'primitive': {
+        return this.getValueDescriptor(schema)
+      }
+      case 'array': {
+        return this.getValueDescriptor(typeof schema.items === 'boolean' ? { type: 'string' } : schema.items)
+      }
+      case 'object': {
+        const properties = entries(schema.properties ?? {}).map(([name, propSchema]) => {
+          const isRequired = (schema.required || []).indexOf(name) >= 0
+          const requiredValueDesc = this.getValueDescriptor(propSchema)
+          const valueDesc = isRequired
+            ? requiredValueDesc
+            : factory.createCallExpression(
+                getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+                  ParameterFactoryFields.value,
+                  ParameterFactoryFields.optional,
+                ]),
+                [],
+                [requiredValueDesc],
+              )
+          return factory.createPropertyAssignment(
+            isIdentifier(name) ? name : factory.createStringLiteral(name),
+            valueDesc,
+          )
+        })
+        return factory.createObjectLiteralExpression(properties)
+      }
+      default:
+        return factory.createIdentifier('undefined')
+    }
   }
 
   protected getValueDescriptor(schemaOrRef: Referenceable<SchemaObject> | undefined): Expression {
@@ -146,7 +184,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         [],
       ),
     )
-    if (types.length === 0) {
+    if (types.length === 1) {
       return types[0]
     }
 
