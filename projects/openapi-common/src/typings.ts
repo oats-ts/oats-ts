@@ -91,6 +91,8 @@ export type EnhancedResponse = {
 }
 
 export type ParameterKind = 'primitive' | 'object' | 'array' | 'unknown'
+export type FundamentalType = 'primitive' | 'object' | 'array' | 'nil' | 'unknown'
+export type PrimitiveType = 'boolean' | 'string' | 'number' | 'nil' | 'non-primitive'
 
 export type OpenAPIVisitor<I> = {
   visitOpenAPIObject(data: OpenAPIObject, input: I): boolean

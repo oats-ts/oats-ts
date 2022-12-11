@@ -11,6 +11,7 @@ export type {
   RuntimePackage,
   LocalNameDefaults,
   OpenAPIReadOutput,
+  FundamentalType,
 } from './typings'
 
 export { getEnhancedOperations } from './getEnhancedOperations'
@@ -35,13 +36,13 @@ export { OpenAPIGeneratorContextImpl } from './OpenAPIGeneratorContextImpl'
 export { nameProviders } from './nameProviders'
 export { pathProviders } from './pathProviders'
 
+export { getFundamentalTypes } from './getFundamentalTypes'
 export { getInferredType } from './getInferredType'
 export { getNamedSchemas } from './getNamedSchemas'
-export { getPrimitiveType } from './getPrimitiveType'
+export { getPrimitiveTypes } from './getPrimitiveTypes'
 export { getReferencedNamedSchemas } from './getReferencedNamedSchemas'
 export { isReferenceObject } from './isReferenceObject'
 export { isReferenceTarget } from './isReferenceTarget'
-export { PrimitiveTypes, PrimitiveType } from './primitiveTypes'
 export { tick } from './tick'
 export {
   packages,

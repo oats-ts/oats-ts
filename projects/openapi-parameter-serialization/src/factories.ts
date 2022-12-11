@@ -14,6 +14,8 @@ import {
   PropertyDescriptors,
   OptionalDescriptor,
   SchemaDescriptor,
+  UnionDescriptor,
+  PrimitiveTypeDescriptor,
 } from './types'
 
 export const primitiveDescriptor =
@@ -98,5 +100,12 @@ export function literalDescriptor(value: any): LiteralDescriptor {
   return {
     type: 'literal',
     value,
+  }
+}
+
+export function unionDescriptor(values: PrimitiveTypeDescriptor[]): UnionDescriptor {
+  return {
+    type: 'union',
+    values,
   }
 }

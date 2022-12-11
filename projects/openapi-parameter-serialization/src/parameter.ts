@@ -9,6 +9,7 @@ import {
   primitiveDescriptor,
   schemaDescriptor,
   stringDescriptor,
+  unionDescriptor,
 } from './factories'
 
 export const parameter = {
@@ -19,6 +20,7 @@ export const parameter = {
     boolean: booleanDescriptor,
     literal: literalDescriptor,
     enum: enumDescriptor,
+    union: unionDescriptor,
   },
   query: {
     required: {

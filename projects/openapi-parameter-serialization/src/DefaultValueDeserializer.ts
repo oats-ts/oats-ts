@@ -1,4 +1,4 @@
-import { failure, success, Try } from '@oats-ts/try'
+import { failure, isSuccess, success, Try } from '@oats-ts/try'
 import {
   BooleanDescriptor,
   EnumDescriptor,
@@ -9,6 +9,7 @@ import {
   StringDescriptor,
   ValueDeserializer,
   ValueDescriptor,
+  UnionDescriptor,
 } from './types'
 import { isNil } from './utils'
 
@@ -27,7 +28,24 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         return this.optional(descriptor, data, path)
       case 'string':
         return this.string(descriptor, data, path)
+      case 'union':
+        return this.union(descriptor, data, path)
     }
+  }
+
+  protected union(descriptor: UnionDescriptor, value: Primitive, path: string): Try<Primitive> {
+    for (let i = 0; i < descriptor.values.length; i += 1) {
+      const d = descriptor.values[i]
+      const v = this.deserialize(d, value, path)
+      if (isSuccess(v)) {
+        return v
+      }
+    }
+    return failure({
+      message: `should be one of ${descriptor.values.map((v) => `"${v.type}"`).join(', ')}`,
+      path,
+      severity: 'error',
+    })
   }
 
   protected boolean(descriptor: BooleanDescriptor, value: Primitive, path: string): Try<Primitive> {

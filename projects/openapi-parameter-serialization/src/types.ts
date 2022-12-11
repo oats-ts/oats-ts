@@ -48,6 +48,13 @@ export type BooleanDescriptor = {
   value?: ValueDescriptor
 }
 
+export type PrimitiveTypeDescriptor = BooleanDescriptor | NumberDescriptor | StringDescriptor
+
+export type UnionDescriptor = {
+  type: 'union'
+  values: PrimitiveTypeDescriptor[]
+}
+
 export type ValueDescriptor =
   | StringDescriptor
   | NumberDescriptor
@@ -55,6 +62,7 @@ export type ValueDescriptor =
   | EnumDescriptor
   | OptionalDescriptor
   | LiteralDescriptor
+  | UnionDescriptor
 
 export type DescriptorCommon<T extends Type, L extends Location, S extends Style> = {
   type: T
