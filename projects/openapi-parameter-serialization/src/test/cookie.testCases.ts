@@ -1,6 +1,6 @@
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { complexObjSchema, enm, lit } from './common'
+import { enm, lit } from './common'
 import { ComplexObj, EnumType, LiteralType } from './model'
 import { CookieTestCase } from './types'
 
@@ -149,7 +149,7 @@ export const jsonComplexObjectCookie: CookieTestCase<{ obj: ComplexObj }> = {
   name: 'required complex cookie object',
   descriptor: {
     descriptor: {
-      obj: parameter.cookie.required.schema('application/json', complexObjSchema),
+      obj: parameter.cookie.required.schema('application/json'),
     },
   },
   data: [

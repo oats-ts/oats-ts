@@ -128,6 +128,10 @@ export class OpenAPIGeneratorContextImpl<Cfg extends GeneratorConfig> implements
     return uri
   }
 
+  public hasUri(input: any): boolean {
+    return this.data.objectToUri.has(input)
+  }
+
   public hashOf(input: any): number {
     const hash = this.data.objectToHash.get(input)
     if (isNil(hash)) {

@@ -4,7 +4,14 @@
  * Generated from generated-schemas/parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { parameter as _parameter } from '@oats-ts/openapi-runtime'
+import { parameter as _parameter, validators as _validators } from '@oats-ts/openapi-runtime'
+import {
+  commonEnumTypeTypeValidator,
+  commonObjectTypeExplTypeValidator,
+  commonObjectTypeTypeValidator,
+  commonOptObjectTypeExplTypeValidator,
+  commonOptObjectTypeTypeValidator,
+} from './typeValidators'
 
 export const simpleResponseHeaderParametersResponseHeaderParameters = {
   200: {
@@ -82,5 +89,51 @@ export const simpleResponseHeaderParametersResponseHeaderParameters = {
         optObjOptEnmField: _parameter.value.optional(_parameter.value.string()),
       }),
     },
+    schema: _validators.object(
+      _validators.shape({
+        'X-Bool-Header': _validators.boolean(),
+        'X-BoolArr-Header': _validators.array(_validators.items(_validators.boolean())),
+        'X-BoolArrExpl-Header': _validators.array(_validators.items(_validators.boolean())),
+        'X-BoolExpl-Header': _validators.boolean(),
+        'X-Enm-Header': _validators.lazy(() => commonEnumTypeTypeValidator),
+        'X-EnmArr-Header': _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        'X-EnmArrExpl-Header': _validators.array(
+          _validators.items(_validators.lazy(() => commonEnumTypeTypeValidator)),
+        ),
+        'X-EnmExpl-Header': _validators.lazy(() => commonEnumTypeTypeValidator),
+        'X-Num-Header': _validators.number(),
+        'X-NumArr-Header': _validators.array(_validators.items(_validators.number())),
+        'X-NumArrExpl-Header': _validators.array(_validators.items(_validators.number())),
+        'X-NumExpl-Header': _validators.number(),
+        'X-Obj-Header': _validators.lazy(() => commonObjectTypeTypeValidator),
+        'X-ObjExpl-Header': _validators.lazy(() => commonObjectTypeExplTypeValidator),
+        'X-OptBool-Header': _validators.optional(_validators.boolean()),
+        'X-OptBoolArr-Header': _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
+        'X-OptBoolArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
+        'X-OptBoolExpl-Header': _validators.optional(_validators.boolean()),
+        'X-OptEnm-Header': _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
+        'X-OptEnmArr-Header': _validators.optional(
+          _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        ),
+        'X-OptEnmArrExpl-Header': _validators.optional(
+          _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        ),
+        'X-OptEnmExpl-Header': _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
+        'X-OptNum-Header': _validators.optional(_validators.number()),
+        'X-OptNumArr-Header': _validators.optional(_validators.array(_validators.items(_validators.number()))),
+        'X-OptNumArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.number()))),
+        'X-OptNumExpl-Header': _validators.optional(_validators.number()),
+        'X-OptObj-Header': _validators.optional(_validators.lazy(() => commonOptObjectTypeTypeValidator)),
+        'X-OptObjExpl-Header': _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
+        'X-OptStr-Header': _validators.optional(_validators.string()),
+        'X-OptStrArr-Header': _validators.optional(_validators.array(_validators.items(_validators.string()))),
+        'X-OptStrArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.string()))),
+        'X-OptStrExpl-Header': _validators.optional(_validators.string()),
+        'X-Str-Header': _validators.string(),
+        'X-StrArr-Header': _validators.array(_validators.items(_validators.string())),
+        'X-StrArrExpl-Header': _validators.array(_validators.items(_validators.string())),
+        'X-StrExpl-Header': _validators.string(),
+      }),
+    ),
   },
 } as const

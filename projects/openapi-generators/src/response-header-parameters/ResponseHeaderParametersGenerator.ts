@@ -90,7 +90,7 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
 
     return [
       getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.parameter]),
-      ...this.descriptorsGenerator.getValidatorImports(path, data, headers),
+      ...this.descriptorsGenerator.getValidatorImports(path, headers),
     ]
   }
 
@@ -99,6 +99,7 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
     const props = headers
       .filter(([, headers]) => values(headers).length > 0)
       .map(([status, headers]): PropertyAssignment => {
+        const parameters = values(headers)
         return factory.createPropertyAssignment(
           status === 'default' || isStatusCodeRange(status)
             ? factory.createStringLiteral(status)
@@ -106,7 +107,11 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
           factory.createObjectLiteralExpression([
             factory.createPropertyAssignment(
               ParametersFields.descriptor,
-              this.descriptorsGenerator.getParameterDescriptorAst(values(headers)),
+              this.descriptorsGenerator.getParameterDescriptorAst(parameters),
+            ),
+            factory.createPropertyAssignment(
+              ParametersFields.schema,
+              this.descriptorsGenerator.getValidatorSchemaAst(parameters),
             ),
           ]),
         )

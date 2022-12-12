@@ -4,8 +4,13 @@
  * Generated from generated-schemas/parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { CookieParameters as _CookieParameters, parameter as _parameter } from '@oats-ts/openapi-runtime'
+import {
+  CookieParameters as _CookieParameters,
+  parameter as _parameter,
+  validators as _validators,
+} from '@oats-ts/openapi-runtime'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
+import { commonEnumTypeTypeValidator } from './typeValidators'
 
 export const formCookieParametersCookieParameters: _CookieParameters<FormCookieParametersCookieParameters> = {
   descriptor: {
@@ -14,4 +19,12 @@ export const formCookieParametersCookieParameters: _CookieParameters<FormCookieP
     optBool: _parameter.cookie.form.primitive(_parameter.value.boolean()),
     optEnm: _parameter.cookie.form.primitive(_parameter.value.string()),
   },
+  schema: _validators.object(
+    _validators.shape({
+      optBool: _validators.optional(_validators.boolean()),
+      optEnm: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
+      optNum: _validators.optional(_validators.number()),
+      optStr: _validators.optional(_validators.string()),
+    }),
+  ),
 }

@@ -9,6 +9,7 @@ import {
   getFundamentalTypes,
   getPrimitiveTypes,
   FundamentalType,
+  PrimitiveType,
 } from '@oats-ts/openapi-common'
 import { BaseParameterObject, ContentObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
 import { getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
@@ -16,6 +17,14 @@ import { entries, flatMap, isNil, values } from 'lodash'
 import { Expression, factory, ImportDeclaration, PropertyAssignment, TypeReferenceNode } from 'typescript'
 import { ParameterDescriptorsGenerator } from './internalTypes'
 import { ParameterFactoryFields } from './OatsApiNames'
+
+const PrimitiveOrder: Record<PrimitiveType, number> = {
+  boolean: 0,
+  number: 1,
+  string: 2,
+  'non-primitive': 10,
+  nil: 10,
+}
 
 export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGenerator {
   constructor(
@@ -33,33 +42,49 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     return this.modelTypeTarget
   }
 
-  public getValidatorImports<T>(
-    path: string,
-    input: T,
-    params: Referenceable<BaseParameterObject>[],
-  ): ImportDeclaration[] {
-    const parameters = params.map((p) => this.context.dereference(p))
-    const validatorImports = flatMap(
-      flatMap(parameters, (p) => this.getSchemasOfContent(p.content)),
-      (schema) => this.context.dependenciesOf<ImportDeclaration>(path, schema, 'oats/type-validator'),
-    )
+  public getValidatorImports(path: string, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
     return [
-      ...(validatorImports.length > 0
-        ? [getNamedImports(this.validatorPkg.name, [this.validatorPkg.imports.validators])]
-        : []),
-      ...this.context.dependenciesOf<ImportDeclaration>(path, input, this.getModelTargetType()),
-      ...validatorImports,
+      getNamedImports(this.validatorPkg.name, [this.validatorPkg.imports.validators]),
+      ...this.context.dependenciesOf<ImportDeclaration>(path, this.getFakeSchema(parameters), 'oats/type-validator'),
     ]
   }
 
-  public getImports<T>(path: string, input: T, params: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
+  public getValidatorSchemaAst(parameters: Referenceable<BaseParameterObject>[]): Expression {
+    return this.context.referenceOf(this.getFakeSchema(parameters), 'oats/type-validator')
+  }
+
+  public getImports<T>(path: string, input: T, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
     return [
       getNamedImports(this.paramsPkg.name, [
         this.paramsPkg.imports.parameter,
         this.paramsPkg.imports[this.parametersTypeKey],
       ]),
-      ...this.getValidatorImports(path, input, params),
+      ...this.context.dependenciesOf<ImportDeclaration>(path, input, this.getModelTargetType()),
+      ...this.getValidatorImports(path, parameters),
     ]
+  }
+
+  protected getFakeSchema(parameters: Referenceable<BaseParameterObject>[]) {
+    const namedParameters: [string, BaseParameterObject][] = flatMap(parameters, (param) => {
+      const name = getParameterName(param, this.context)
+      if (isNil(name)) {
+        return []
+      }
+      return [[name, this.context.dereference(param, true)]]
+    })
+    const schemas: [string, Referenceable<SchemaObject>][] = flatMap(namedParameters, ([name, parameter]) => {
+      if (!isNil(parameter.content)) {
+        const [media] = values(parameter.content)
+        return isNil(media?.schema) ? [] : [[name, media.schema]]
+      }
+      return isNil(parameter.schema) ? [] : [[name, parameter.schema]]
+    })
+    const fakeSchema: SchemaObject = {
+      type: 'object',
+      required: namedParameters.filter(([, p]) => p.required).map(([name]) => name),
+      properties: schemas.reduce((props, [name, schema]) => ({ ...props, [name]: schema }), {}),
+    }
+    return fakeSchema
   }
 
   protected getSchemasOfContent(content?: ContentObject): Referenceable<SchemaObject>[] {
@@ -118,8 +143,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         [this.getValueDescriptors(schema)],
       )
     }
-    const [mimeType, mediaTypeObj] = entries(parameter.content)[0]!
-    const validator = this.context.referenceOf<Expression>(mediaTypeObj.schema, 'oats/type-validator')
+    const [mimeType] = entries(parameter.content)[0]!
     return factory.createCallExpression(
       getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
         this.location,
@@ -127,7 +151,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         ParameterFactoryFields.schema,
       ]),
       [],
-      [factory.createStringLiteral(mimeType), validator],
+      [factory.createStringLiteral(mimeType)],
     )
   }
 
@@ -174,16 +198,18 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
       return factory.createIdentifier('undefined')
     }
 
-    const types = getPrimitiveTypes(schemaOrRef, this.context).map((primitiveType) =>
-      factory.createCallExpression(
-        getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
-          ParameterFactoryFields.value,
-          primitiveType,
-        ]),
-        [],
-        [],
-      ),
-    )
+    const types = getPrimitiveTypes(schemaOrRef, this.context)
+      .sort((a, b) => PrimitiveOrder[a] - PrimitiveOrder[b])
+      .map((primitiveType) =>
+        factory.createCallExpression(
+          getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+            ParameterFactoryFields.value,
+            primitiveType,
+          ]),
+          [],
+          [],
+        ),
+      )
     if (types.length === 1) {
       return types[0]
     }

@@ -1,6 +1,6 @@
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { complexObjSchema, enm, lit, obj, optObj } from './common'
+import { enm, lit, obj, optObj } from './common'
 import { ComplexObj, EnumType, LiteralType, ObjType, OptObjType } from './model'
 import { QueryTestCase } from './types'
 
@@ -377,7 +377,7 @@ export const jsonComplexObjectQueryRequired: QueryTestCase<{ obj: ComplexObj }> 
   name: 'required complex cookie object',
   descriptor: {
     descriptor: {
-      obj: parameter.query.required.schema('application/json', complexObjSchema),
+      obj: parameter.query.required.schema('application/json'),
     },
   },
   data: [
@@ -399,7 +399,7 @@ export const jsonComplexObjectQueryOptional: QueryTestCase<{ obj?: ComplexObj }>
   name: 'optional complex cookie object',
   descriptor: {
     descriptor: {
-      obj: parameter.query.schema('application/json', complexObjSchema),
+      obj: parameter.query.schema('application/json'),
     },
   },
   data: [
@@ -415,7 +415,7 @@ export const nonJsonComplexQuery: QueryTestCase<{ obj?: ComplexObj }> = {
   name: 'optional complex cookie object',
   descriptor: {
     descriptor: {
-      obj: parameter.query.required.schema('foo/bar', complexObjSchema),
+      obj: parameter.query.required.schema('foo/bar'),
     },
   },
   data: [],

@@ -224,6 +224,11 @@ export type GeneratorContext<D = any, Target extends string = string> = {
    */
   uriOf(input: any): string
   /**
+   * @param input Any value present (or not) in any of #documents().
+   * @returns true if the given value has a valid URI (part of a document) false otherwise
+   */
+  hasUri(input: any): boolean
+  /**
    * @param input Any object or array value in the OpenAPI document.
    * @returns A hash number for the given value.
    */

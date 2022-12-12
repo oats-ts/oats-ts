@@ -42,6 +42,7 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
         )
         return fromRecord(deserialized) as Try<T>
       })
+      .flatMap((value) => this.validate<T>(this.parameters.schema, value, this.basePath()))
       .toTry()
   }
 
@@ -256,7 +257,6 @@ export class DefaultPathDeserializer<T> extends BaseDeserializer implements Path
     return fluent(this.getPathValue(name, path, data))
       .map((value) => this.decode(value))
       .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
-      .flatMap((value) => this.validate(descriptor, value, path))
   }
 
   protected getPathValue(name: string, path: string, raw: RawPath): Try<string> {

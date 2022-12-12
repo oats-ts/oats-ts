@@ -1,6 +1,6 @@
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { complexObjSchema, enm, lit, obj, optObj } from './common'
+import { enm, lit, obj, optObj } from './common'
 import { ComplexObj, EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
 
@@ -331,7 +331,7 @@ export const jsonObjectSchemaHeader: HeaderTestCase<{ 'X-Obj-Field': ComplexObj 
   name: 'required complex object headers',
   descriptor: {
     descriptor: {
-      'X-Obj-Field': parameter.header.required.schema('application/json', complexObjSchema),
+      'X-Obj-Field': parameter.header.required.schema('application/json'),
     },
   },
   data: [

@@ -86,8 +86,15 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
     )
   }
 
+  protected getSchemaAssignment(item: EnhancedOperation): PropertyAssignment {
+    return factory.createPropertyAssignment(
+      ParametersFields.schema,
+      this.descriptorsGenerator.getValidatorSchemaAst(this.getParameters(item)),
+    )
+  }
+
   protected getPropertyAssignments(item: EnhancedOperation): PropertyAssignment[] {
-    return [this.getParameterDescriptorAssignment(item)]
+    return [this.getParameterDescriptorAssignment(item), this.getSchemaAssignment(item)]
   }
 
   protected getParametersExpressionAst(item: EnhancedOperation): Expression {

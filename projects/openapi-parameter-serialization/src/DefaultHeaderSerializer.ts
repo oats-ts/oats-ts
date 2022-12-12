@@ -27,6 +27,10 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
   }
 
   public serialize(input: T): Try<RawHttpHeaders> {
+    const validationResult = this.validate(this.parameters.schema, input, this.basePath())
+    if (isFailure(validationResult)) {
+      return validationResult
+    }
     const serializedParts = Object.keys(this.parameters.descriptor).reduce(
       (parts: Record<string, Try<string>>, _key: string) => {
         const key = _key as keyof T & string
@@ -131,7 +135,6 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
 
   protected schema(descriptor: HeaderSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
     return fluent(this.getHeaderValue(descriptor, path, data))
-      .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
       .map((value) => (isNil(value) ? value : this.encode(value)))
   }

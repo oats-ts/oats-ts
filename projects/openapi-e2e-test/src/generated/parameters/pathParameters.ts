@@ -9,12 +9,18 @@ import {
   parameter as _parameter,
   parsePathToMatcher as _parsePathToMatcher,
   parsePathToSegments as _parsePathToSegments,
+  validators as _validators,
 } from '@oats-ts/openapi-runtime'
 import {
   LabelPathParametersPathParameters,
   MatrixPathParametersPathParameters,
   SimplePathParametersPathParameters,
 } from './pathTypes'
+import {
+  commonEnumTypeTypeValidator,
+  commonObjectTypeExplTypeValidator,
+  commonObjectTypeTypeValidator,
+} from './typeValidators'
 
 export const labelPathParametersPathParameters: _PathParameters<LabelPathParametersPathParameters> = {
   descriptor: {
@@ -55,6 +61,28 @@ export const labelPathParametersPathParameters: _PathParameters<LabelPathParamet
       objOptEnmField: _parameter.value.optional(_parameter.value.string()),
     }),
   },
+  schema: _validators.object(
+    _validators.shape({
+      bool: _validators.boolean(),
+      boolArr: _validators.array(_validators.items(_validators.boolean())),
+      boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
+      boolExpl: _validators.boolean(),
+      enm: _validators.lazy(() => commonEnumTypeTypeValidator),
+      enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
+      num: _validators.number(),
+      numArr: _validators.array(_validators.items(_validators.number())),
+      numArrExpl: _validators.array(_validators.items(_validators.number())),
+      numExpl: _validators.number(),
+      obj: _validators.lazy(() => commonObjectTypeTypeValidator),
+      objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
+      str: _validators.string(),
+      strArr: _validators.array(_validators.items(_validators.string())),
+      strArrExpl: _validators.array(_validators.items(_validators.string())),
+      strExpl: _validators.string(),
+    }),
+  ),
   matcher: _parsePathToMatcher(
     '/label-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}',
   ),
@@ -102,6 +130,28 @@ export const matrixPathParametersPathParameters: _PathParameters<MatrixPathParam
       objOptEnmField: _parameter.value.optional(_parameter.value.string()),
     }),
   },
+  schema: _validators.object(
+    _validators.shape({
+      bool: _validators.boolean(),
+      boolArr: _validators.array(_validators.items(_validators.boolean())),
+      boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
+      boolExpl: _validators.boolean(),
+      enm: _validators.lazy(() => commonEnumTypeTypeValidator),
+      enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
+      num: _validators.number(),
+      numArr: _validators.array(_validators.items(_validators.number())),
+      numArrExpl: _validators.array(_validators.items(_validators.number())),
+      numExpl: _validators.number(),
+      obj: _validators.lazy(() => commonObjectTypeTypeValidator),
+      objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
+      str: _validators.string(),
+      strArr: _validators.array(_validators.items(_validators.string())),
+      strArrExpl: _validators.array(_validators.items(_validators.string())),
+      strExpl: _validators.string(),
+    }),
+  ),
   matcher: _parsePathToMatcher(
     '/matrix-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}',
   ),
@@ -149,6 +199,28 @@ export const simplePathParametersPathParameters: _PathParameters<SimplePathParam
       objOptEnmField: _parameter.value.optional(_parameter.value.string()),
     }),
   },
+  schema: _validators.object(
+    _validators.shape({
+      bool: _validators.boolean(),
+      boolArr: _validators.array(_validators.items(_validators.boolean())),
+      boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
+      boolExpl: _validators.boolean(),
+      enm: _validators.lazy(() => commonEnumTypeTypeValidator),
+      enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
+      num: _validators.number(),
+      numArr: _validators.array(_validators.items(_validators.number())),
+      numArrExpl: _validators.array(_validators.items(_validators.number())),
+      numExpl: _validators.number(),
+      obj: _validators.lazy(() => commonObjectTypeTypeValidator),
+      objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
+      str: _validators.string(),
+      strArr: _validators.array(_validators.items(_validators.string())),
+      strArrExpl: _validators.array(_validators.items(_validators.string())),
+      strExpl: _validators.string(),
+    }),
+  ),
   matcher: _parsePathToMatcher(
     '/simple-path-parameters/{strExpl}/{str}/{numExpl}/{num}/{boolExpl}/{bool}/{enmExpl}/{enm}/{strArrExpl}/{strArr}/{numArrExpl}/{numArr}/{boolArrExpl}/{boolArr}/{enmArrExpl}/{enmArr}/{objExpl}/{obj}',
   ),

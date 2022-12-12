@@ -1,4 +1,4 @@
-import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
+import { failure, fluent, fromRecord, isFailure, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
@@ -24,6 +24,10 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
   }
 
   public serialize(input: T): Try<string> {
+    const validationResult = this.validate(this.parameters.schema, input, this.basePath())
+    if (isFailure(validationResult)) {
+      return validationResult
+    }
     const serializedParts = fromRecord(
       Object.keys(this.parameters.descriptor).reduce((parts: Record<string, Try<string>>, name: string) => {
         const key = name as keyof T & string
@@ -184,7 +188,6 @@ export class DefaultPathSerializer<T> extends BaseSerializer implements PathSeri
 
   protected schema(descriptor: PathSchema, name: string, data: any, path: string): Try<string> {
     return fluent(this.getPathValue(path, data))
-      .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
       .map((value) => this.encode(value))
   }

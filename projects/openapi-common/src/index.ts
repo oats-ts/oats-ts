@@ -12,6 +12,7 @@ export type {
   LocalNameDefaults,
   OpenAPIReadOutput,
   FundamentalType,
+  PrimitiveType,
 } from './typings'
 
 export { getEnhancedOperations } from './getEnhancedOperations'

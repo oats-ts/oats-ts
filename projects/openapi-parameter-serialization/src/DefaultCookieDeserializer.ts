@@ -19,19 +19,22 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
   }
 
   public deserialize(input: string): Try<T> {
-    return fluent(this.deserializeCookie(input, this.basePath())).flatMap((rawData) => {
-      const parsedData = Object.keys(this.parameters.descriptor).reduce(
-        (acc: Record<string, Try<ParameterValue>>, _key: string) => {
-          const key = _key as keyof T & string
-          const values = rawData.filter(({ name }) => name === key)
-          const paramDescriptor = this.parameters.descriptor[key]
-          acc[key] = this.deserializeParameter(paramDescriptor, key, values, this.append(this.basePath(), key))
-          return acc
-        },
-        {},
-      )
-      return fromRecord(parsedData) as Try<T>
-    })
+    return fluent(this.deserializeCookie(input, this.basePath()))
+      .flatMap((rawData) => {
+        const parsedData = Object.keys(this.parameters.descriptor).reduce(
+          (acc: Record<string, Try<ParameterValue>>, _key: string) => {
+            const key = _key as keyof T & string
+            const values = rawData.filter(({ name }) => name === key)
+            const paramDescriptor = this.parameters.descriptor[key]
+            acc[key] = this.deserializeParameter(paramDescriptor, key, values, this.append(this.basePath(), key))
+            return acc
+          },
+          {},
+        )
+        return fromRecord(parsedData) as Try<T>
+      })
+      .flatMap((value) => this.validate<T>(this.parameters.schema, value, this.basePath()))
+      .toTry()
   }
 
   protected basePath(): string {
@@ -80,7 +83,6 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
     return fluent(this.getCookieValue(descriptor, data, path))
       .map((value) => (isNil(value) ? value : this.decode(value)))
       .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
-      .flatMap((value) => this.validate(descriptor, value, path))
   }
 
   protected deserializeCookie(cookie: string | undefined, path: string): Try<CookieValue[]> {

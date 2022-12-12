@@ -1,7 +1,6 @@
 import { encode, decode, isNil } from './utils'
-import { appendPath, isOk, Validator } from '@oats-ts/validators'
+import { appendPath, isOk, Schema, Validator } from '@oats-ts/validators'
 import { failure, success, Try } from '@oats-ts/try'
-import { Location, SchemaDescriptor } from './types'
 
 export abstract class Base {
   protected abstract basePath(): string
@@ -20,15 +19,12 @@ export abstract class Base {
     return appendPath(path, segment)
   }
 
-  protected validate<T>(descriptor: SchemaDescriptor<Location>, value: any, path: string): Try<T> {
-    if (isNil(value) && !descriptor.required) {
-      return success(value as unknown as T)
-    }
-    const validator = new Validator(descriptor.schema, path)
-    const issues = validator.validate(value)
-    if (isOk(issues)) {
+  protected validate<T>(schema: Schema | undefined, value: any, path: string): Try<T> {
+    if (isNil(schema)) {
       return success(value)
     }
-    return failure(...issues)
+    const validator = new Validator(schema, path)
+    const issues = validator.validate(value)
+    return isOk(issues) ? success(value) : failure(...issues)
   }
 }

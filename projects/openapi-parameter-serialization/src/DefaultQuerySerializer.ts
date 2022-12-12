@@ -1,4 +1,4 @@
-import { failure, fluent, fromArray, success, Try } from '@oats-ts/try'
+import { failure, fluent, fromArray, isFailure, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
@@ -26,6 +26,10 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   public serialize(input: T): Try<string | undefined> {
+    const validationResult = this.validate(this.parameters.schema, input, this.basePath())
+    if (isFailure(validationResult)) {
+      return validationResult
+    }
     const serializedParts = fromArray(
       Object.keys(this.parameters.descriptor).map((name: string) => {
         const key = name as keyof T & string
@@ -173,7 +177,6 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
 
   protected schema(descriptor: QuerySchema, name: string, data: any, path: string): Try<string[]> {
     return fluent(this.getQueryValue(descriptor, path, data))
-      .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
       .map((value) => (isNil(value) ? [] : [`${this.encode(name)}=${this.encode(value)}`]))
   }

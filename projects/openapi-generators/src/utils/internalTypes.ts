@@ -5,8 +5,9 @@ import { Expression, ImportDeclaration, TypeReferenceNode } from 'typescript'
 
 export type ParameterDescriptorsGenerator = {
   getParameterDescriptorAst(parameters: Referenceable<BaseParameterObject>[]): Expression
+  getValidatorSchemaAst(parameters: Referenceable<BaseParameterObject>[]): Expression
+  getValidatorImports(path: string, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[]
   getParametersTypeAst<T>(input: T): TypeReferenceNode
   getModelTargetType(): OpenAPIGeneratorTarget
-  getValidatorImports<T>(path: string, input: T, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[]
   getImports<T>(path: string, input: T, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[]
 }

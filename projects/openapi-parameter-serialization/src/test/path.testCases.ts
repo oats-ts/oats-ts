@@ -1,6 +1,6 @@
 import { pathToRegexp } from 'path-to-regexp'
 import { parsePathToSegments } from '../parsePathToSegments'
-import { complexObjSchema, enm, lit, obj } from './common'
+import { enm, lit, obj } from './common'
 import { ComplexObj, EnumType, LiteralType, ObjType } from './model'
 import { PathTestCase } from './types'
 import { parameter } from '../parameter'
@@ -358,7 +358,7 @@ export const jsonComplexObjectPath: PathTestCase<{ obj: ComplexObj }> = {
     matcher: pathToRegexp('/foo/:obj/bar'),
     pathSegments: parsePathToSegments('/foo/{obj}/bar'),
     descriptor: {
-      obj: parameter.path.required.schema('application/json', complexObjSchema),
+      obj: parameter.path.required.schema('application/json'),
     },
   },
   data: [

@@ -1,4 +1,4 @@
-import { failure, fluent, fromArray, success, Try } from '@oats-ts/try'
+import { failure, fluent, fromArray, isFailure, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
 import {
@@ -22,6 +22,10 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
   }
 
   public serialize(input: T): Try<string | undefined> {
+    const validationResult = this.validate(this.parameters.schema, input, this.basePath())
+    if (isFailure(validationResult)) {
+      return validationResult
+    }
     const serializedParts = Object.keys(this.parameters.descriptor).map(
       (_key: string): Try<[string, string | undefined]> => {
         const key = _key as string & keyof T
@@ -80,7 +84,6 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
 
   protected schema(descriptor: CookieSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
     return fluent(this.getCookieValue(descriptor, path, data))
-      .flatMap((value) => this.validate(descriptor, value, path))
       .flatMap((value) => this.schemaSerialize(descriptor, value, path))
       .map((value) => (isNil(value) ? value : this.encode(value)))
   }

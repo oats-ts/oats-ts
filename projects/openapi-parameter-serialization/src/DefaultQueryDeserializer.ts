@@ -27,18 +27,20 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   }
 
   public deserialize(input: string): Try<T> {
-    const deserialized = fluent(this.parseRawQuery(input, this.basePath())).flatMap((raw) => {
-      const parsed = Object.keys(this.parameters.descriptor).reduce(
-        (acc: Record<string, Try<ParameterValue>>, key: string) => {
-          const descriptor = this.parameters.descriptor[key as keyof T]
-          acc[key] = this.parameter(descriptor, key, raw, this.append(this.basePath(), key))
-          return acc
-        },
-        {},
-      )
-      return fromRecord(parsed)
-    })
-    return deserialized.toTry() as Try<T>
+    return fluent(this.parseRawQuery(input, this.basePath()))
+      .flatMap((raw) => {
+        const parsed = Object.keys(this.parameters.descriptor).reduce(
+          (acc: Record<string, Try<ParameterValue>>, key: string) => {
+            const descriptor = this.parameters.descriptor[key as keyof T]
+            acc[key] = this.parameter(descriptor, key, raw, this.append(this.basePath(), key))
+            return acc
+          },
+          {},
+        )
+        return fromRecord(parsed)
+      })
+      .flatMap((value) => this.validate<T>(this.parameters.schema, value, this.basePath()))
+      .toTry()
   }
 
   protected parameter(
@@ -263,7 +265,6 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     return fluent(this.getQueryValue(descriptor, name, path, data))
       .map((value) => (isNil(value) ? value : this.decode(value)))
       .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
-      .flatMap((value) => this.validate(descriptor, value, path))
   }
 
   protected getValues(

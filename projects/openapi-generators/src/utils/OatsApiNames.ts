@@ -105,6 +105,7 @@ export const ParametersFields: Record<keyof PathParameters<any>, keyof PathParam
   descriptor: 'descriptor',
   matcher: 'matcher',
   pathSegments: 'pathSegments',
+  schema: 'schema',
 }
 
 export const ParameterFactoryFields = {

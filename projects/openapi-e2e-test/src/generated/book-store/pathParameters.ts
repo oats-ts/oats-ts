@@ -4,11 +4,18 @@
  * Generated from schemas/book-store.json (originating from oats-ts/oats-schemas)
  */
 
-import { PathParameters, parameter, parsePathToMatcher, parsePathToSegments } from '@oats-ts/openapi-runtime'
+import {
+  PathParameters,
+  parameter,
+  parsePathToMatcher,
+  parsePathToSegments,
+  validators,
+} from '@oats-ts/openapi-runtime'
 import { GetBookPathParameters } from './pathTypes'
 
 export const getBookPathParameters: PathParameters<GetBookPathParameters> = {
   descriptor: { bookId: parameter.path.simple.required.primitive(parameter.value.number()) },
+  schema: validators.object(validators.shape({ bookId: validators.number() })),
   matcher: parsePathToMatcher('/books/{bookId}'),
   pathSegments: parsePathToSegments('/books/{bookId}'),
 }

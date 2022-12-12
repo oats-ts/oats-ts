@@ -4,9 +4,10 @@
  * Generated from schemas/book-store.json (originating from oats-ts/oats-schemas)
  */
 
-import { HeaderParameters, parameter } from '@oats-ts/openapi-runtime'
+import { HeaderParameters, parameter, validators } from '@oats-ts/openapi-runtime'
 import { GetBooksRequestHeaderParameters } from './requestHeaderTypes'
 
 export const getBooksRequestHeaderParameters: HeaderParameters<GetBooksRequestHeaderParameters> = {
   descriptor: { 'x-limit': parameter.header.simple.primitive(parameter.value.number()) },
+  schema: validators.object(validators.shape({ 'x-limit': validators.optional(validators.number()) })),
 }

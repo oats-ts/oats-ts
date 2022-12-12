@@ -1,4 +1,3 @@
-import { Schema } from '@oats-ts/validators'
 import {
   ArrayDescriptor,
   BooleanDescriptor,
@@ -53,11 +52,10 @@ export const objectDescriptor =
 
 export const schemaDescriptor =
   <P extends Location>(location: P, required: boolean) =>
-  (mimeType: string, schema: Schema): SchemaDescriptor<P> => ({
+  (mimeType: string): SchemaDescriptor<P> => ({
     type: 'schema',
     required,
     location,
-    schema,
     mimeType,
   })
 

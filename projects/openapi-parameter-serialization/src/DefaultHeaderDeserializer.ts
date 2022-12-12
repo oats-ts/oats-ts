@@ -35,7 +35,9 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       },
       {},
     )
-    return fromRecord(deserialized) as Try<T>
+    return fluent(fromRecord(deserialized) as Try<T>)
+      .flatMap((value) => this.validate<T>(this.parameters.schema, value, this.basePath()))
+      .toTry()
   }
 
   protected basePath(): string {
@@ -122,7 +124,6 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     return fluent(this.getHeaderValue(descriptor, name, path, data))
       .map((value) => (isNil(value) ? value : this.decode(value)))
       .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
-      .flatMap((value) => this.validate(descriptor, value, path))
   }
 
   protected getHeaderValue(

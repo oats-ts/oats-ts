@@ -4,13 +4,24 @@
  * Generated from generated-schemas/parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { QueryParameters as _QueryParameters, parameter as _parameter } from '@oats-ts/openapi-runtime'
+import {
+  QueryParameters as _QueryParameters,
+  parameter as _parameter,
+  validators as _validators,
+} from '@oats-ts/openapi-runtime'
 import {
   DeepObjectQueryParametersQueryParameters,
   FormQueryParametersQueryParameters,
   PipeDelimitedQueryParametersQueryParameters,
   SpaceDelimitedQueryParametersQueryParameters,
 } from './queryTypes'
+import {
+  commonEnumTypeTypeValidator,
+  commonObjectTypeExplTypeValidator,
+  commonObjectTypeTypeValidator,
+  commonOptObjectTypeExplTypeValidator,
+  commonOptObjectTypeTypeValidator,
+} from './typeValidators'
 
 export const deepObjectQueryParametersQueryParameters: _QueryParameters<DeepObjectQueryParametersQueryParameters> = {
   descriptor: {
@@ -35,6 +46,12 @@ export const deepObjectQueryParametersQueryParameters: _QueryParameters<DeepObje
       optObjExplOptEnmField: _parameter.value.optional(_parameter.value.string()),
     }),
   },
+  schema: _validators.object(
+    _validators.shape({
+      objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
+      optObjExpl: _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
+    }),
+  ),
 }
 
 export const formQueryParametersQueryParameters: _QueryParameters<FormQueryParametersQueryParameters> = {
@@ -112,6 +129,50 @@ export const formQueryParametersQueryParameters: _QueryParameters<FormQueryParam
       optObjOptEnmField: _parameter.value.optional(_parameter.value.string()),
     }),
   },
+  schema: _validators.object(
+    _validators.shape({
+      bool: _validators.boolean(),
+      boolArr: _validators.array(_validators.items(_validators.boolean())),
+      boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
+      boolExpl: _validators.boolean(),
+      enm: _validators.lazy(() => commonEnumTypeTypeValidator),
+      enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
+      num: _validators.number(),
+      numArr: _validators.array(_validators.items(_validators.number())),
+      numArrExpl: _validators.array(_validators.items(_validators.number())),
+      numExpl: _validators.number(),
+      obj: _validators.lazy(() => commonObjectTypeTypeValidator),
+      objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
+      optBool: _validators.optional(_validators.boolean()),
+      optBoolArr: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
+      optBoolArrExpl: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
+      optBoolExpl: _validators.optional(_validators.boolean()),
+      optEnm: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
+      optEnmArr: _validators.optional(
+        _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      ),
+      optEnmArrExpl: _validators.optional(
+        _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+      ),
+      optEnmExpl: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
+      optNum: _validators.optional(_validators.number()),
+      optNumArr: _validators.optional(_validators.array(_validators.items(_validators.number()))),
+      optNumArrExpl: _validators.optional(_validators.array(_validators.items(_validators.number()))),
+      optNumExpl: _validators.optional(_validators.number()),
+      optObj: _validators.optional(_validators.lazy(() => commonOptObjectTypeTypeValidator)),
+      optObjExpl: _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
+      optStr: _validators.optional(_validators.string()),
+      optStrArr: _validators.optional(_validators.array(_validators.items(_validators.string()))),
+      optStrArrExpl: _validators.optional(_validators.array(_validators.items(_validators.string()))),
+      optStrExpl: _validators.optional(_validators.string()),
+      str: _validators.string(),
+      strArr: _validators.array(_validators.items(_validators.string())),
+      strArrExpl: _validators.array(_validators.items(_validators.string())),
+      strExpl: _validators.string(),
+    }),
+  ),
 }
 
 export const pipeDelimitedQueryParametersQueryParameters: _QueryParameters<PipeDelimitedQueryParametersQueryParameters> =
@@ -126,6 +187,20 @@ export const pipeDelimitedQueryParametersQueryParameters: _QueryParameters<PipeD
       enmArrExpl: _parameter.query.pipeDelimited.exploded.required.array(_parameter.value.string()),
       optEnmArrExpl: _parameter.query.pipeDelimited.exploded.array(_parameter.value.string()),
     },
+    schema: _validators.object(
+      _validators.shape({
+        boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
+        enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        numArrExpl: _validators.array(_validators.items(_validators.number())),
+        optBoolArrExpl: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
+        optEnmArrExpl: _validators.optional(
+          _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        ),
+        optNumArrExpl: _validators.optional(_validators.array(_validators.items(_validators.number()))),
+        optStrArrExpl: _validators.optional(_validators.array(_validators.items(_validators.string()))),
+        strArrExpl: _validators.array(_validators.items(_validators.string())),
+      }),
+    ),
   }
 
 export const spaceDelimitedQueryParametersQueryParameters: _QueryParameters<SpaceDelimitedQueryParametersQueryParameters> =
@@ -140,4 +215,18 @@ export const spaceDelimitedQueryParametersQueryParameters: _QueryParameters<Spac
       enmArrExpl: _parameter.query.spaceDelimited.exploded.required.array(_parameter.value.string()),
       optEnmArrExpl: _parameter.query.spaceDelimited.exploded.array(_parameter.value.string()),
     },
+    schema: _validators.object(
+      _validators.shape({
+        boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
+        enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        numArrExpl: _validators.array(_validators.items(_validators.number())),
+        optBoolArrExpl: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
+        optEnmArrExpl: _validators.optional(
+          _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+        ),
+        optNumArrExpl: _validators.optional(_validators.array(_validators.items(_validators.number()))),
+        optStrArrExpl: _validators.optional(_validators.array(_validators.items(_validators.string()))),
+        strArrExpl: _validators.array(_validators.items(_validators.string())),
+      }),
+    ),
   }

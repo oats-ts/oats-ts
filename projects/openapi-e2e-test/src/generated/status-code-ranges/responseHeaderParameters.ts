@@ -4,32 +4,62 @@
  * Generated from edge-cases/status-code-ranges.json (originating from oats-ts/oats-schemas)
  */
 
-import { parameter } from '@oats-ts/openapi-runtime'
+import { parameter, validators } from '@oats-ts/openapi-runtime'
 
 export const range1XxResponseHeaderParameters = {
-  '1XX': { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
+  '1XX': {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
 } as const
 
 export const range2XxResponseHeaderParameters = {
-  '2XX': { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
+  '2XX': {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
 } as const
 
 export const range3XxResponseHeaderParameters = {
-  '3XX': { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
+  '3XX': {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
 } as const
 
 export const range4XxResponseHeaderParameters = {
-  '4XX': { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
+  '4XX': {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
 } as const
 
 export const range5XxResponseHeaderParameters = {
-  '5XX': { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
+  '5XX': {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
 } as const
 
 export const withNormalStatusesResponseHeaderParameters = {
-  400: { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
-  401: { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
-  403: { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
-  500: { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
-  '4XX': { descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) } },
+  400: {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
+  401: {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
+  403: {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
+  500: {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
+  '4XX': {
+    descriptor: { 'X-Foo': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'X-Foo': validators.optional(validators.string()) })),
+  },
 } as const

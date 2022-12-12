@@ -91,7 +91,6 @@ export type SchemaDescriptor<L extends Location> = {
   mimeType: string
   location: L
   required: boolean
-  schema: Schema
 }
 
 export type ParameterDescriptor<L extends Location, S extends Style> =
@@ -129,20 +128,24 @@ export type ParameterDescriptors<T, L extends Location, S extends Style> = {
 
 export type QueryParameters<T> = {
   descriptor: ParameterDescriptors<T, 'query', QueryStyle>
+  schema?: Schema
 }
 
 export type PathParameters<T> = {
   descriptor: ParameterDescriptors<T, 'path', PathStyle>
   pathSegments: PathSegment[]
   matcher: RegExp
+  schema?: Schema
 }
 
 export type HeaderParameters<T> = {
   descriptor: ParameterDescriptors<T, 'header', HeaderStyle>
+  schema?: Schema
 }
 
 export type CookieParameters<T> = {
   descriptor: ParameterDescriptors<T, 'cookie', CookieStyle>
+  schema?: Schema
 }
 
 export type RawPath = Record<string, string>

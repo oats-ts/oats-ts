@@ -8,6 +8,10 @@ export function getDiscriminators(
   context: OpenAPIGeneratorContext,
   schemas: SchemaObject[] = getAllSchemaObjects(context),
 ): Record<string, string> {
+  // Schema not part of any of the documents => can't have a discriminator
+  if (!context.hasUri(input)) {
+    return {}
+  }
   const uri = context.uriOf(input)
   const discriminators: Record<string, string> = {}
   for (let i = 0; i < schemas.length; i += 1) {

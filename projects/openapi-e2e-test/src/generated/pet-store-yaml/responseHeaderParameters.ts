@@ -4,8 +4,11 @@
  * Generated from schemas/pet-store-yaml.yaml (originating from oats-ts/oats-schemas)
  */
 
-import { parameter } from '@oats-ts/openapi-runtime'
+import { parameter, validators } from '@oats-ts/openapi-runtime'
 
 export const listPetsResponseHeaderParameters = {
-  200: { descriptor: { 'x-next': parameter.header.simple.primitive(parameter.value.string()) } },
+  200: {
+    descriptor: { 'x-next': parameter.header.simple.primitive(parameter.value.string()) },
+    schema: validators.object(validators.shape({ 'x-next': validators.optional(validators.string()) })),
+  },
 } as const
