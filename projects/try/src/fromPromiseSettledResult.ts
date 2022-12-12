@@ -1,4 +1,4 @@
-import { failure } from './failure'
+import { fromCaughtError } from './fromCaughtError'
 import { success } from './success'
 import { Try } from './types'
 
@@ -6,10 +6,6 @@ export function fromPromiseSettledResult<T>(input: PromiseSettledResult<T>): Try
   if (input.status === 'fulfilled') {
     return success(input.value)
   } else {
-    return failure({
-      message: `${input.reason?.stack ?? input.reason}`,
-      path: '@oats-ts/try#fromPromiseSettledResult',
-      severity: 'error',
-    })
+    return fromCaughtError(input.reason)
   }
 }
