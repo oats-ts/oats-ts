@@ -1,5 +1,6 @@
 export type LiteralType = 'cat'
 export type EnumType = 'cat' | 'dog' | 'racoon'
+export type MixedEnumType = 'cat' | true | 125
 
 export type ObjType = {
   s: string
@@ -22,58 +23,45 @@ export type ComplexObj = {
   opt: OptObjType
 }
 
-export type StringFieldObj = {
-  value: string
-}
+export type StrField = { str: string }
+export type OptStrField = { str?: string }
+export type NumField = { num: number }
+export type OptNumField = { num?: number }
+export type BoolField = { bool: boolean }
+export type OptBoolField = { bool?: boolean }
+export type LitField = { lit: LiteralType }
+export type OptLitField = { lit?: LiteralType }
+export type EnmField = { enm: EnumType }
+export type OptEnmField = { enm?: EnumType }
+export type MixedEnmField = { enm: MixedEnumType }
+export type OptMixedEnmField = { enm?: MixedEnumType }
+export type NumArrField = { arr: number[] }
+export type OptNumArrField = { arr?: number[] }
+export type StrArrField = { arr: string[] }
+export type OptStrArrField = { arr?: string[] }
+export type BoolArrField = { arr: boolean[] }
+export type OptBoolArrField = { arr?: boolean[] }
+export type ObjField = { obj: ObjType }
+export type OptObjField = { obj?: ObjType }
+export type ObjFieldOpt = { obj: OptObjType }
+export type OptObjFieldOpt = { obj?: OptObjType }
+export type ComplexObjField = { obj: ComplexObj }
+export type OptComplexObjField = { obj?: ComplexObj }
 
-export type NumberFieldObj = {
-  value: number
-}
-
-export type BooleanFieldObj = {
-  value: boolean
-}
-
-export type LiteralFieldObj = {
-  value: LiteralType
-}
-
-export type EnumFieldObj = {
-  value: EnumType
-}
-
-export type ObjectFieldObj = {
-  value: ObjType
-}
-
-export type OptObjectFieldObj = {
-  value: OptObjType
-}
-
-export type StringArrayFieldObj = {
-  value: string[]
-}
-
-export type NumberArrayFieldObj = {
-  value: number[]
-}
-
-export type BooleanArrayFieldObj = {
-  value: boolean[]
-}
-
-export type LiteralArrayFieldObj = {
-  value: LiteralType[]
-}
-
-export type EnumArrayFieldObj = {
-  value: EnumType[]
-}
-
-export type PrimitiveTypesObject<T> = {
-  string?: T
-  number?: T
-  boolean?: T
-  literal?: T
-  enumeration?: T
-}
+export type HStrField = { 'X-String-Field': string }
+export type HOptStrField = { 'X-String-Field'?: string }
+export type HNumField = { 'X-Number-Field': number }
+export type HOptNumField = { 'X-Number-Field'?: number }
+export type HBoolField = { 'X-Boolean-Field': boolean }
+export type HOptBoolField = { 'X-Boolean-Field'?: boolean }
+export type HEnmField = { 'X-Enum-Field': EnumType }
+export type HOptEnmField = { 'X-Enum-Field'?: EnumType }
+export type HMixedEnmField = { 'X-Enum-Field': MixedEnumType }
+export type HOptMixedEnmField = { 'X-Enum-Field'?: MixedEnumType }
+export type HLitField = { 'X-Lit-Field': LiteralType }
+export type HOptLitField = { 'X-Lit-Field'?: LiteralType }
+export type HNumArrField = { 'X-Arr-Field': number[] }
+export type HObjField = { 'X-Obj-Field': ObjType }
+export type HOptObjField = { 'X-Obj-Field'?: ObjType }
+export type HObjOptField = { 'X-Obj-Field': OptObjType }
+export type HComplexObjField = { 'X-Obj-Field': ComplexObj }

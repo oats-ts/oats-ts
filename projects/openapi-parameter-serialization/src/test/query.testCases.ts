@@ -1,20 +1,49 @@
-import { validators } from '@oats-ts/validators'
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { obj, optObj, litSchema, enumSchema } from './common'
-import { ComplexObj, EnumType, LiteralType, ObjType, OptObjType } from './model'
+import { obj, optObj } from './common'
+import {
+  BoolArrField,
+  BoolField,
+  ComplexObjField,
+  EnmField,
+  LitField,
+  NumArrField,
+  NumField,
+  ObjField,
+  ObjFieldOpt,
+  OptBoolField,
+  OptComplexObjField,
+  OptEnmField,
+  OptLitField,
+  OptNumArrField,
+  OptNumField,
+  OptObjField,
+  OptStrField,
+  StrArrField,
+  StrField,
+} from './model'
+import {
+  boolArrFieldSchema,
+  boolFieldSchema,
+  complexObjFieldSchema,
+  enmFieldSchema,
+  litFieldSchema,
+  numArrFieldSchema,
+  numFieldSchema,
+  objFieldOptSchema,
+  objFieldSchema,
+  optBoolFieldSchema,
+  optComplexObjFieldSchema,
+  optEnmFieldSchema,
+  optLitFieldSchema,
+  optNumArrFieldSchema,
+  optNumFieldSchema,
+  optObjFieldSchema,
+  optStrFieldSchema,
+  strArrFieldSchema,
+  strFieldSchema,
+} from './schemas'
 import { QueryTestCase } from './types'
-
-export type StrField = { str: string }
-export type OptStrField = { str?: string }
-export type NumField = { num: number }
-export type OptNumField = { num?: number }
-export type BoolField = { bool: boolean }
-export type OptBoolField = { bool?: boolean }
-export type LitField = { lit: LiteralType }
-export type OptLitField = { lit?: LiteralType }
-export type EnmField = { enm: EnumType }
-export type OptEnmField = { enm?: EnumType }
 
 export const requiredStringQuery: QueryTestCase<StrField> = {
   name: 'required form string query',
@@ -22,6 +51,7 @@ export const requiredStringQuery: QueryTestCase<StrField> = {
     descriptor: {
       str: parameter.query.form.exploded.required.primitive(parameter.value.string()),
     },
+    schema: strFieldSchema,
   },
   data: [
     { model: { str: '' }, serialized: '?str=' },
@@ -38,6 +68,7 @@ export const optionalStringQuery: QueryTestCase<OptStrField> = {
     descriptor: {
       str: parameter.query.form.exploded.primitive(parameter.value.string()),
     },
+    schema: optStrFieldSchema,
   },
   data: [
     { model: { str: 'string' }, serialized: '?str=string' },
@@ -54,6 +85,7 @@ export const requiredNumberQuery: QueryTestCase<NumField> = {
     descriptor: {
       num: parameter.query.form.exploded.required.primitive(parameter.value.number()),
     },
+    schema: numFieldSchema,
   },
   data: [
     { model: { num: 12 }, serialized: '?num=12' },
@@ -71,6 +103,7 @@ export const optionalNumberQuery: QueryTestCase<OptNumField> = {
     descriptor: {
       num: parameter.query.form.exploded.primitive(parameter.value.number()),
     },
+    schema: optNumFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredNumberQuery.data],
   deserializerErrors: [],
@@ -83,6 +116,7 @@ export const requiredBooleanQuery: QueryTestCase<BoolField> = {
     descriptor: {
       bool: parameter.query.form.exploded.required.primitive(parameter.value.boolean()),
     },
+    schema: boolFieldSchema,
   },
   data: [
     { model: { bool: true }, serialized: '?bool=true' },
@@ -98,6 +132,7 @@ export const optionalBooleanQuery: QueryTestCase<OptBoolField> = {
     descriptor: {
       bool: parameter.query.form.exploded.primitive(parameter.value.boolean()),
     },
+    schema: optBoolFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredBooleanQuery.data],
   deserializerErrors: [],
@@ -110,11 +145,7 @@ export const requiredLiteralQuery: QueryTestCase<LitField> = {
     descriptor: {
       lit: parameter.query.form.exploded.required.primitive(parameter.value.string()),
     },
-    schema: validators.object(
-      validators.shape<LitField>({
-        lit: validators.literal('cat'),
-      }),
-    ),
+    schema: litFieldSchema,
   },
   data: [{ model: { lit: 'cat' }, serialized: '?lit=cat' }],
   deserializerErrors: [],
@@ -127,11 +158,7 @@ export const optionalLiteralQuery: QueryTestCase<OptLitField> = {
     descriptor: {
       lit: parameter.query.form.exploded.primitive(parameter.value.string()),
     },
-    schema: validators.object(
-      validators.shape<OptLitField>({
-        lit: validators.optional(litSchema),
-      }),
-    ),
+    schema: optLitFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
   deserializerErrors: [],
@@ -144,7 +171,7 @@ export const requiredEnumQuery: QueryTestCase<EnmField> = {
     descriptor: {
       enm: parameter.query.form.exploded.required.primitive(parameter.value.string()),
     },
-    schema: validators.object(validators.shape<EnmField>({ enm: enumSchema })),
+    schema: enmFieldSchema,
   },
   data: [
     { model: { enm: 'cat' }, serialized: '?enm=cat' },
@@ -161,19 +188,20 @@ export const optionalEnumQuery: QueryTestCase<OptEnmField> = {
     descriptor: {
       enm: parameter.query.form.exploded.primitive(parameter.value.string()),
     },
-    schema: validators.object(validators.shape<EnmField>({ enm: validators.optional(enumSchema) })),
+    schema: optEnmFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredFormNumberArrayQuery: QueryTestCase<{ arr: number[] }> = {
+export const requiredFormNumberArrayQuery: QueryTestCase<NumArrField> = {
   name: 'required form number[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.form.exploded.required.array(parameter.value.number()),
     },
+    schema: numArrFieldSchema,
   },
   data: [
     { model: { arr: [1, 2, 3] }, serialized: '?arr=1&arr=2&arr=3' },
@@ -185,24 +213,26 @@ export const requiredFormNumberArrayQuery: QueryTestCase<{ arr: number[] }> = {
   serializerErrors: [],
 }
 
-export const optionalFormNumberArrayQuery: QueryTestCase<{ arr?: number[] }> = {
+export const optionalFormNumberArrayQuery: QueryTestCase<OptNumArrField> = {
   name: 'optional form number[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.form.exploded.array(parameter.value.number()),
     },
+    schema: optNumArrFieldSchema,
   },
   data: [{ model: { arr: undefined }, serialized: undefined }, ...requiredFormNumberArrayQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<{ arr: number[] }> = {
+export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<NumArrField> = {
   name: 'required non-exploded form number[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.form.required.array(parameter.value.number()),
     },
+    schema: numArrFieldSchema,
   },
   data: [
     { model: { arr: [1, 2, 3] }, serialized: '?arr=1,2,3' },
@@ -214,12 +244,13 @@ export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<{ arr: number[
   serializerErrors: [],
 }
 
-export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<{ arr: string[] }> = {
+export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<StrArrField> = {
   name: 'required pipe-delimited string[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.pipeDelimited.exploded.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['foo', 'ab? ./'] }, serialized: '?arr=foo&arr=ab%3F%20%2E%2F' },
@@ -229,12 +260,13 @@ export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<{ arr: string[
   serializerErrors: [],
 }
 
-export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ arr: string[] }> = {
+export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<StrArrField> = {
   name: 'required pipe-delimited non-exploded string[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.pipeDelimited.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['foo'] }, serialized: '?arr=foo' },
@@ -244,12 +276,13 @@ export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ a
   serializerErrors: [],
 }
 
-export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<{ arr: boolean[] }> = {
+export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<BoolArrField> = {
   name: 'required space-delimited boolean[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.spaceDelimited.exploded.required.array(parameter.value.boolean()),
     },
+    schema: boolArrFieldSchema,
   },
   data: [
     { model: { arr: [] }, serialized: undefined },
@@ -260,12 +293,13 @@ export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<{ arr: boole
   serializerErrors: [],
 }
 
-export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ arr: string[] }> = {
+export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<StrArrField> = {
   name: 'required space-delimited non-exploded string[] query',
   descriptor: {
     descriptor: {
       arr: parameter.query.spaceDelimited.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['foo'] }, serialized: '?arr=foo' },
@@ -276,12 +310,13 @@ export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<{ 
   serializerErrors: [],
 }
 
-export const requiredFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
+export const requiredFormObjectQuery: QueryTestCase<ObjField> = {
   name: 'required form object query',
   descriptor: {
     descriptor: {
       obj: parameter.query.form.exploded.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -297,12 +332,13 @@ export const requiredFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
   serializerErrors: [{ obj: undefined! }],
 }
 
-export const requiredNoExplodeFormObjectQuery: QueryTestCase<{ obj: ObjType }> = {
+export const requiredNoExplodeFormObjectQuery: QueryTestCase<ObjField> = {
   name: 'required non-exploded form object query',
   descriptor: {
     descriptor: {
       obj: parameter.query.form.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -319,24 +355,26 @@ export const requiredNoExplodeFormObjectQuery: QueryTestCase<{ obj: ObjType }> =
   serializerErrors: [{ obj: undefined! }],
 }
 
-export const optionalFormObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
+export const optionalFormObjectQuery: QueryTestCase<OptObjField> = {
   name: 'optional form object query',
   descriptor: {
     descriptor: {
       obj: parameter.query.form.exploded.object(obj),
     },
+    schema: optObjFieldSchema,
   },
   data: [{ model: { obj: undefined }, serialized: undefined }, ...requiredFormObjectQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredPartialFormObjectQuery: QueryTestCase<{ obj: OptObjType }> = {
+export const requiredPartialFormObjectQuery: QueryTestCase<ObjFieldOpt> = {
   name: 'required partial form object query',
   descriptor: {
     descriptor: {
       obj: parameter.query.form.exploded.required.object(optObj),
     },
+    schema: objFieldOptSchema,
   },
   data: [
     {
@@ -364,12 +402,13 @@ export const requiredPartialFormObjectQuery: QueryTestCase<{ obj: OptObjType }> 
   serializerErrors: [{ obj: undefined! }],
 }
 
-export const requiredDeepObjectQuery: QueryTestCase<{ obj: ObjType }> = {
+export const requiredDeepObjectQuery: QueryTestCase<ObjField> = {
   name: 'required deepObject object query',
   descriptor: {
     descriptor: {
       obj: parameter.query.deepObject.exploded.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -385,24 +424,26 @@ export const requiredDeepObjectQuery: QueryTestCase<{ obj: ObjType }> = {
   serializerErrors: [{ obj: undefined! }],
 }
 
-export const optionalDeepObjectQuery: QueryTestCase<{ obj?: ObjType }> = {
+export const optionalDeepObjectQuery: QueryTestCase<OptObjField> = {
   name: 'optional deepObject object query',
   descriptor: {
     descriptor: {
       obj: parameter.query.deepObject.exploded.object(obj),
     },
+    schema: optObjFieldSchema,
   },
   data: [...requiredDeepObjectQuery.data, { model: { obj: undefined }, serialized: undefined }],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const jsonComplexObjectQueryRequired: QueryTestCase<{ obj: ComplexObj }> = {
-  name: 'required complex cookie object',
+export const jsonComplexObjectQueryRequired: QueryTestCase<ComplexObjField> = {
+  name: 'required complex query object',
   descriptor: {
     descriptor: {
       obj: parameter.query.required.schema('application/json'),
     },
+    schema: complexObjFieldSchema,
   },
   data: [
     {
@@ -419,12 +460,13 @@ export const jsonComplexObjectQueryRequired: QueryTestCase<{ obj: ComplexObj }> 
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
-export const jsonComplexObjectQueryOptional: QueryTestCase<{ obj?: ComplexObj }> = {
-  name: 'optional complex cookie object',
+export const jsonComplexObjectQueryOptional: QueryTestCase<OptComplexObjField> = {
+  name: 'optional complex query object',
   descriptor: {
     descriptor: {
       obj: parameter.query.schema('application/json'),
     },
+    schema: optComplexObjFieldSchema,
   },
   data: [
     ...jsonComplexObjectQueryRequired.data,
@@ -435,12 +477,13 @@ export const jsonComplexObjectQueryOptional: QueryTestCase<{ obj?: ComplexObj }>
   serializerErrors: [{ obj: { test: 'foo' } as any }],
 }
 
-export const nonJsonComplexQuery: QueryTestCase<{ obj?: ComplexObj }> = {
-  name: 'optional complex cookie object',
+export const nonJsonComplexQuery: QueryTestCase<OptComplexObjField> = {
+  name: 'optional complex query object (non-json)',
   descriptor: {
     descriptor: {
       obj: parameter.query.required.schema('foo/bar'),
     },
+    schema: optComplexObjFieldSchema,
   },
   data: [],
   deserializerErrors: [

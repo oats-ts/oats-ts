@@ -1,12 +1,22 @@
 import { pathToRegexp } from 'path-to-regexp'
 import { parsePathToSegments } from '../parsePathToSegments'
 import { obj } from './common'
-import { ComplexObj, EnumType, LiteralType, ObjType } from './model'
+import { BoolField, ComplexObjField, EnmField, LitField, NumField, ObjField, StrArrField, StrField } from './model'
 import { PathTestCase } from './types'
 import { parameter } from '../parameter'
 import { encode } from '../utils'
+import {
+  boolFieldSchema,
+  complexObjFieldSchema,
+  enmFieldSchema,
+  litFieldSchema,
+  numFieldSchema,
+  objFieldSchema,
+  strArrFieldSchema,
+  strFieldSchema,
+} from './schemas'
 
-export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
+export const requiredSimpleStringPath: PathTestCase<StrField> = {
   name: 'required simple path string',
   descriptor: {
     matcher: pathToRegexp('/foo/:str'),
@@ -14,6 +24,7 @@ export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
     descriptor: {
       str: parameter.path.simple.required.primitive(parameter.value.string()),
     },
+    schema: strFieldSchema,
   },
   data: [
     { model: { str: 'string' }, serialized: '/foo/string' },
@@ -23,7 +34,7 @@ export const requiredSimpleStringPath: PathTestCase<{ str: string }> = {
   serializerErrors: [null, undefined, { str: '' }],
 }
 
-export const requiredSimpleNumberPath: PathTestCase<{ num: number }> = {
+export const requiredSimpleNumberPath: PathTestCase<NumField> = {
   name: 'required simple path number',
   descriptor: {
     matcher: pathToRegexp('/foo/:num'),
@@ -31,6 +42,7 @@ export const requiredSimpleNumberPath: PathTestCase<{ num: number }> = {
     descriptor: {
       num: parameter.path.simple.required.primitive(parameter.value.number()),
     },
+    schema: numFieldSchema,
   },
   data: [
     { model: { num: 1 }, serialized: '/foo/1' },
@@ -40,7 +52,7 @@ export const requiredSimpleNumberPath: PathTestCase<{ num: number }> = {
   serializerErrors: [null, undefined],
 }
 
-export const requiredSimpleBooleanPath: PathTestCase<{ bool: boolean }> = {
+export const requiredSimpleBooleanPath: PathTestCase<BoolField> = {
   name: 'required simple path boolean',
   descriptor: {
     matcher: pathToRegexp('/foo/:bool'),
@@ -48,6 +60,7 @@ export const requiredSimpleBooleanPath: PathTestCase<{ bool: boolean }> = {
     descriptor: {
       bool: parameter.path.simple.required.primitive(parameter.value.boolean()),
     },
+    schema: boolFieldSchema,
   },
   data: [
     { model: { bool: false }, serialized: '/foo/false' },
@@ -57,7 +70,7 @@ export const requiredSimpleBooleanPath: PathTestCase<{ bool: boolean }> = {
   serializerErrors: [null, undefined],
 }
 
-export const requiredSimpleLiteralPath: PathTestCase<{ lit: LiteralType }> = {
+export const requiredSimpleLiteralPath: PathTestCase<LitField> = {
   name: 'required simple path literal',
   descriptor: {
     matcher: pathToRegexp('/foo/:lit'),
@@ -65,13 +78,14 @@ export const requiredSimpleLiteralPath: PathTestCase<{ lit: LiteralType }> = {
     descriptor: {
       lit: parameter.path.simple.required.primitive(parameter.value.string()),
     },
+    schema: litFieldSchema,
   },
   data: [{ model: { lit: 'cat' }, serialized: '/foo/cat' }],
   deserializerErrors: [null, undefined],
   serializerErrors: [null, undefined],
 }
 
-export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
+export const requiredSimpleEnumPath: PathTestCase<EnmField> = {
   name: 'required simple path enum',
   descriptor: {
     matcher: pathToRegexp('/foo/:enm'),
@@ -79,6 +93,7 @@ export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
     descriptor: {
       enm: parameter.path.simple.required.primitive(parameter.value.string()),
     },
+    schema: enmFieldSchema,
   },
   data: [
     { model: { enm: 'cat' }, serialized: '/foo/cat' },
@@ -89,7 +104,7 @@ export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
   serializerErrors: [null, undefined],
 }
 
-export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
+export const requiredSimpleStringArrayPath: PathTestCase<StrArrField> = {
   name: 'required simple path string[]',
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
@@ -97,6 +112,7 @@ export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
     descriptor: {
       arr: parameter.path.simple.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['a', 'b', 'c'] }, serialized: '/foo/a,b,c' },
@@ -107,7 +123,7 @@ export const requiredSimpleStringArrayPath: PathTestCase<{ arr: string[] }> = {
   serializerErrors: [null, undefined, { arr: undefined! }, { arr: [] }, { arr: [''] }],
 }
 
-export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
+export const requiredSimpleObjectPath: PathTestCase<ObjField> = {
   name: 'required simple path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
@@ -115,6 +131,7 @@ export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
     descriptor: {
       obj: parameter.path.simple.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -130,7 +147,7 @@ export const requiredSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
-export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
+export const requiredExplodeSimpleObjectPath: PathTestCase<ObjField> = {
   name: 'required exploded simple path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
@@ -138,6 +155,7 @@ export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
     descriptor: {
       obj: parameter.path.simple.exploded.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -158,7 +176,7 @@ export const requiredExplodeSimpleObjectPath: PathTestCase<{ obj: ObjType }> = {
   serializerErrors: [null, undefined],
 }
 
-export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
+export const requiredLabelStringPath: PathTestCase<StrField> = {
   name: 'required label path string',
   descriptor: {
     matcher: pathToRegexp('/foo/:str'),
@@ -166,6 +184,7 @@ export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
     descriptor: {
       str: parameter.path.label.required.primitive(parameter.value.string()),
     },
+    schema: strFieldSchema,
   },
   data: [
     { model: { str: 'string' }, serialized: '/foo/.string' },
@@ -175,7 +194,7 @@ export const requiredLabelStringPath: PathTestCase<{ str: string }> = {
   serializerErrors: [null, undefined, { str: '' }],
 }
 
-export const requiredLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
+export const requiredLabelStringArrayPath: PathTestCase<StrArrField> = {
   name: 'required label path string[]',
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
@@ -183,6 +202,7 @@ export const requiredLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
     descriptor: {
       arr: parameter.path.label.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['str', 'foo', 'bar'] }, serialized: '/foo/.str,foo,bar' },
@@ -192,7 +212,7 @@ export const requiredLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
   serializerErrors: [null, undefined, { arr: [] }, { arr: [''] }],
 }
 
-export const requiredExplodeLabelStringArrayPath: PathTestCase<{ arr: string[] }> = {
+export const requiredExplodeLabelStringArrayPath: PathTestCase<StrArrField> = {
   name: 'required exploded label path string[]',
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
@@ -200,6 +220,7 @@ export const requiredExplodeLabelStringArrayPath: PathTestCase<{ arr: string[] }
     descriptor: {
       arr: parameter.path.label.exploded.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['str', 'foo', 'bar'] }, serialized: '/foo/.str.foo.bar' },
@@ -209,7 +230,7 @@ export const requiredExplodeLabelStringArrayPath: PathTestCase<{ arr: string[] }
   serializerErrors: [null, undefined, { arr: [] }, { arr: [''] }],
 }
 
-export const requiredLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
+export const requiredLabelObjectPath: PathTestCase<ObjField> = {
   name: 'required label path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
@@ -217,6 +238,7 @@ export const requiredLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
     descriptor: {
       obj: parameter.path.label.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -232,7 +254,7 @@ export const requiredLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
-export const requiredExplodeLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
+export const requiredExplodeLabelObjectPath: PathTestCase<ObjField> = {
   name: 'required exploded label path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
@@ -240,6 +262,7 @@ export const requiredExplodeLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
     descriptor: {
       obj: parameter.path.label.exploded.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -255,7 +278,7 @@ export const requiredExplodeLabelObjectPath: PathTestCase<{ obj: ObjType }> = {
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
-export const requiredMatrixStringPath: PathTestCase<{ str: string }> = {
+export const requiredMatrixStringPath: PathTestCase<StrField> = {
   name: 'required matrix path string',
   descriptor: {
     matcher: pathToRegexp('/foo/:str'),
@@ -263,6 +286,7 @@ export const requiredMatrixStringPath: PathTestCase<{ str: string }> = {
     descriptor: {
       str: parameter.path.matrix.required.primitive(parameter.value.string()),
     },
+    schema: strFieldSchema,
   },
   data: [
     { model: { str: 'string' }, serialized: '/foo/;str=string' },
@@ -272,7 +296,7 @@ export const requiredMatrixStringPath: PathTestCase<{ str: string }> = {
   serializerErrors: [null, undefined, { str: '' }],
 }
 
-export const requiredMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
+export const requiredMatrixStringArrayPath: PathTestCase<StrArrField> = {
   name: 'required matrix path string[]',
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
@@ -280,6 +304,7 @@ export const requiredMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
     descriptor: {
       arr: parameter.path.matrix.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['str', 'foo', 'bar'] }, serialized: '/foo/;arr=str,foo,bar' },
@@ -289,7 +314,7 @@ export const requiredMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
   serializerErrors: [null, undefined, { arr: [] }, { arr: [''] }],
 }
 
-export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] }> = {
+export const requiredExplodeMatrixStringArrayPath: PathTestCase<StrArrField> = {
   name: 'required exploded matrix path string[]',
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
@@ -297,6 +322,7 @@ export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] 
     descriptor: {
       arr: parameter.path.matrix.exploded.required.array(parameter.value.string()),
     },
+    schema: strArrFieldSchema,
   },
   data: [
     { model: { arr: ['str', 'foo', 'bar'] }, serialized: '/foo/;arr=str;arr=foo;arr=bar' },
@@ -306,7 +332,7 @@ export const requiredExplodeMatrixStringArrayPath: PathTestCase<{ arr: string[] 
   serializerErrors: [null, undefined, { arr: [] }, { arr: [''] }],
 }
 
-export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
+export const requiredMatrixObjectPath: PathTestCase<ObjField> = {
   name: 'required matrix path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
@@ -314,6 +340,7 @@ export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
     descriptor: {
       obj: parameter.path.matrix.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -329,7 +356,7 @@ export const requiredMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
-export const requiredExplodedMatrixObjectPath: PathTestCase<{ obj: ObjType }> = {
+export const requiredExplodedMatrixObjectPath: PathTestCase<ObjField> = {
   name: 'required exploded matrix path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
@@ -337,6 +364,7 @@ export const requiredExplodedMatrixObjectPath: PathTestCase<{ obj: ObjType }> = 
     descriptor: {
       obj: parameter.path.matrix.exploded.required.object(obj),
     },
+    schema: objFieldSchema,
   },
   data: [
     {
@@ -352,7 +380,7 @@ export const requiredExplodedMatrixObjectPath: PathTestCase<{ obj: ObjType }> = 
   serializerErrors: [null, undefined, { obj: {} as any }],
 }
 
-export const jsonComplexObjectPath: PathTestCase<{ obj: ComplexObj }> = {
+export const jsonComplexObjectPath: PathTestCase<ComplexObjField> = {
   name: 'required complex path object',
   descriptor: {
     matcher: pathToRegexp('/foo/:obj/bar'),
@@ -360,6 +388,7 @@ export const jsonComplexObjectPath: PathTestCase<{ obj: ComplexObj }> = {
     descriptor: {
       obj: parameter.path.required.schema('application/json'),
     },
+    schema: complexObjFieldSchema,
   },
   data: [
     {

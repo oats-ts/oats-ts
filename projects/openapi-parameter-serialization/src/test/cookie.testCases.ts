@@ -1,15 +1,40 @@
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { ComplexObj, EnumType, LiteralType } from './model'
+import {
+  BoolField,
+  ComplexObjField,
+  EnmField,
+  LitField,
+  NumField,
+  OptBoolField,
+  OptEnmField,
+  OptLitField,
+  OptNumField,
+  OptStrField,
+  StrField,
+} from './model'
+import {
+  boolFieldSchema,
+  complexObjFieldSchema,
+  enmFieldSchema,
+  litFieldSchema,
+  numFieldSchema,
+  optBoolFieldSchema,
+  optEnmFieldSchema,
+  optLitFieldSchema,
+  optNumFieldSchema,
+  optStrFieldSchema,
+  strFieldSchema,
+} from './schemas'
 import { CookieTestCase } from './types'
 
-export const requiredStringQuery: CookieTestCase<{ str: string }> = {
+export const requiredStringQuery: CookieTestCase<StrField> = {
   name: 'required form string cookie',
-
   descriptor: {
     descriptor: {
       str: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
+    schema: strFieldSchema,
   },
   data: [
     { model: { str: '' }, serialized: 'str=' },
@@ -20,12 +45,13 @@ export const requiredStringQuery: CookieTestCase<{ str: string }> = {
   serializerErrors: [null, undefined, {} as any, { 'x-string-fiel': 'string' } as any],
 }
 
-export const optionalStringQuery: CookieTestCase<{ str?: string }> = {
+export const optionalStringQuery: CookieTestCase<OptStrField> = {
   name: 'optional form string cookie',
   descriptor: {
     descriptor: {
       str: parameter.cookie.form.primitive(parameter.value.string()),
     },
+    schema: optStrFieldSchema,
   },
   data: [
     { model: { str: 'string' }, serialized: 'str=string' },
@@ -36,12 +62,13 @@ export const optionalStringQuery: CookieTestCase<{ str?: string }> = {
   serializerErrors: [],
 }
 
-export const requiredNumberQuery: CookieTestCase<{ num: number }> = {
+export const requiredNumberQuery: CookieTestCase<NumField> = {
   name: 'required form number cookie',
   descriptor: {
     descriptor: {
       num: parameter.cookie.form.required.primitive(parameter.value.number()),
     },
+    schema: numFieldSchema,
   },
   data: [
     { model: { num: 12 }, serialized: 'num=12' },
@@ -53,24 +80,26 @@ export const requiredNumberQuery: CookieTestCase<{ num: number }> = {
   serializerErrors: [],
 }
 
-export const optionalNumberQuery: CookieTestCase<{ num?: number }> = {
+export const optionalNumberQuery: CookieTestCase<OptNumField> = {
   name: 'optional form number cookie',
   descriptor: {
     descriptor: {
       num: parameter.cookie.form.primitive(parameter.value.number()),
     },
+    schema: optNumFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredNumberQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredBooleanQuery: CookieTestCase<{ bool: boolean }> = {
+export const requiredBooleanQuery: CookieTestCase<BoolField> = {
   name: 'required form boolean cookie',
   descriptor: {
     descriptor: {
       bool: parameter.cookie.form.required.primitive(parameter.value.boolean()),
     },
+    schema: boolFieldSchema,
   },
   data: [
     { model: { bool: true }, serialized: 'bool=true' },
@@ -80,48 +109,52 @@ export const requiredBooleanQuery: CookieTestCase<{ bool: boolean }> = {
   serializerErrors: [],
 }
 
-export const optionalBooleanQuery: CookieTestCase<{ bool?: boolean }> = {
+export const optionalBooleanQuery: CookieTestCase<OptBoolField> = {
   name: 'optional form boolean cookie',
   descriptor: {
     descriptor: {
       bool: parameter.cookie.form.primitive(parameter.value.boolean()),
     },
+    schema: optBoolFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredBooleanQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredLiteralQuery: CookieTestCase<{ lit: LiteralType }> = {
+export const requiredLiteralQuery: CookieTestCase<LitField> = {
   name: 'required form literal cookie',
   descriptor: {
     descriptor: {
       lit: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
+    schema: litFieldSchema,
   },
   data: [{ model: { lit: 'cat' }, serialized: 'lit=cat' }],
   deserializerErrors: [undefined, null],
   serializerErrors: [],
 }
 
-export const optionalLiteralQuery: CookieTestCase<{ lit?: LiteralType }> = {
+export const optionalLiteralQuery: CookieTestCase<OptLitField> = {
   name: 'optional form literal cookie',
   descriptor: {
     descriptor: {
       lit: parameter.cookie.form.primitive(parameter.value.string()),
     },
+    schema: optLitFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
+export const requiredEnumQuery: CookieTestCase<EnmField> = {
   name: 'required form enum cookie',
   descriptor: {
     descriptor: {
       enm: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
+    schema: enmFieldSchema,
   },
   data: [
     { model: { enm: 'cat' }, serialized: 'enm=cat' },
@@ -132,24 +165,26 @@ export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
   serializerErrors: [],
 }
 
-export const optionalEnumQuery: CookieTestCase<{ enm?: EnumType }> = {
+export const optionalEnumQuery: CookieTestCase<OptEnmField> = {
   name: 'optional form enum cookie',
   descriptor: {
     descriptor: {
       enm: parameter.cookie.form.primitive(parameter.value.string()),
     },
+    schema: optEnmFieldSchema,
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const jsonComplexObjectCookie: CookieTestCase<{ obj: ComplexObj }> = {
+export const jsonComplexObjectCookie: CookieTestCase<ComplexObjField> = {
   name: 'required complex cookie object',
   descriptor: {
     descriptor: {
       obj: parameter.cookie.required.schema('application/json'),
     },
+    schema: complexObjFieldSchema,
   },
   data: [
     {
