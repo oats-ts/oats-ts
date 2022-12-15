@@ -1,12 +1,12 @@
 import { URIManipulator, URIManipulatorType } from '@oats-ts/oats-ts'
-import { Schema, Severity, Validator } from '@oats-ts/validators'
+import { SchemaRule, Severity, Validator } from '@oats-ts/validators'
 
 export class StructuralValidator extends Validator {
   protected uri: URIManipulatorType = new URIManipulator()
   protected append(path: string, segment: string | number): string {
     return this.uri.append(path, segment)
   }
-  protected severityOf(schema: Schema, input: unknown, path: string): Severity | undefined {
+  protected severityOf(schema: SchemaRule, input: unknown, path: string): Severity | undefined {
     switch (schema.type) {
       case 'restrict-keys':
         return 'info'
@@ -14,7 +14,7 @@ export class StructuralValidator extends Validator {
         return super.severityOf(schema, input, path)
     }
   }
-  protected messageOf(schema: Schema, input: unknown, path: string): string {
+  protected messageOf(schema: SchemaRule, input: unknown, path: string): string {
     switch (schema.type) {
       case 'restrict-keys':
         return ''

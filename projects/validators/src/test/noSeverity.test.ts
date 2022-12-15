@@ -17,17 +17,17 @@ import {
   tuple,
   union,
 } from '../factories'
-import { Schema, Severity } from '../typings'
+import { SchemaRule, Severity } from '../typings'
 import { Validator } from '../Validator'
 
 class PermissiveValidator extends Validator {
-  protected severityOf(schema: Schema, input: unknown, path: string): Severity | undefined {
+  protected severityOf(schema: SchemaRule, input: unknown, path: string): Severity | undefined {
     return undefined
   }
 }
 
 describe('nil', () => {
-  const data: [Schema, any][] = [
+  const data: [SchemaRule, any][] = [
     [nil(), 'foo'],
     [array(), 'foo'],
     [boolean(), 'foo'],

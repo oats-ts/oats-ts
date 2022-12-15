@@ -11,13 +11,13 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import { Schema, validators as v } from '@oats-ts/validators'
+import { SchemaRule, validators as v } from '@oats-ts/validators'
 
 const { shape, object, optional, record, string, array, items, boolean, any, literal, union, number } = v
 
 const recordOfObjects = object(record(string(), object()))
 
-const baseParameterObjectFileds: Record<keyof BaseParameterObject, Schema> = {
+const baseParameterObjectFileds: Record<keyof BaseParameterObject, SchemaRule> = {
   description: optional(string()),
   required: optional(boolean()),
   deprecated: optional(boolean()),

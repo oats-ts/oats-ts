@@ -11,7 +11,7 @@ import {
   StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
-import { stringify, Validator, Schema } from '@oats-ts/validators'
+import { stringify, Validator, SchemaRule } from '@oats-ts/validators'
 import {
   DefaultCookieDeserializer,
   DefaultHeaderDeserializer,
@@ -24,7 +24,7 @@ import { ExpressToolkit } from './typings'
 import MIMEType from 'whatwg-mimetype'
 
 export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
-  protected configureRequestBodyValidator(validator: Schema): Validator {
+  protected configureRequestBodyValidator(validator: SchemaRule): Validator {
     return new Validator(validator, 'requestBody')
   }
 

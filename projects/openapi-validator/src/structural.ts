@@ -9,7 +9,7 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import { Validator, Schema, ShapeInput, validators } from '@oats-ts/validators'
+import { Validator, SchemaRule, ShapeInput, validators } from '@oats-ts/validators'
 import { entries } from 'lodash'
 
 const {
@@ -344,7 +344,7 @@ export const factories = {
   },
 } as const
 
-export type StructuralValidators = Record<keyof typeof factories, () => Schema>
+export type StructuralValidators = Record<keyof typeof factories, () => SchemaRule>
 
 export const structural = entries(factories).reduce(
   (validatorsObject, [name, factory]) => ({ ...validatorsObject, [name]: factory() }),

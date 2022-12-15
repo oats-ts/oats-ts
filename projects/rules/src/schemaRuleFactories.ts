@@ -23,7 +23,7 @@ import {
   StringSchemaRule,
   TupleSchemaRule,
   UnionSchemaRule,
-} from './typings'
+} from './schemaRules'
 
 export function any(): AnySchemaRule {
   return { type: 'any' }

@@ -108,6 +108,12 @@
       "versionPolicyName": "oats"
     },
     {
+      "packageName": "@oats-ts/rules",
+      "projectFolder": "projects/rules",
+      "shouldPublish": true,
+      "versionPolicyName": "oats"
+    },
+    {
       "packageName": "@oats-ts/try",
       "projectFolder": "projects/try",
       "shouldPublish": true,

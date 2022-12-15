@@ -11,7 +11,7 @@ import {
   StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { isFailure } from '@oats-ts/try'
-import { Schema, stringify, Validator } from '@oats-ts/validators'
+import { SchemaRule, stringify, Validator } from '@oats-ts/validators'
 import {
   DefaultCookieSerializer,
   DefaultHeaderDeserializer,
@@ -124,7 +124,7 @@ export class FetchClientAdapter implements ClientAdapter {
     return response.text()
   }
 
-  protected configureResponseBodyValidator(schema: Schema): Validator {
+  protected configureResponseBodyValidator(schema: SchemaRule): Validator {
     return new Validator(schema, 'responseBody')
   }
 

@@ -45,14 +45,6 @@ export type SchemaRule =
   | TupleSchemaRule
   | UnionSchemaRule
 
-export type Severity = 'error' | 'warning' | 'info'
-
-export type Issue = {
-  severity: Severity
-  path: string
-  message: string
-}
-
 export type ShapeInput<T> = {
   [P in keyof T]?: SchemaRule
 }

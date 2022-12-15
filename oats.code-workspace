@@ -5,10 +5,6 @@
       "path": "."
     },
     {
-      "name": "json-schema-generators",
-      "path": "projects/json-schema-generators"
-    },
-    {
       "name": "json-schema-model",
       "path": "projects/json-schema-model"
     },
@@ -67,6 +63,10 @@
     {
       "name": "openapi-validator",
       "path": "projects/openapi-validator"
+    },
+    {
+      "name": "rules",
+      "path": "projects/rules"
     },
     {
       "name": "try",

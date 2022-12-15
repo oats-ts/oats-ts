@@ -14,7 +14,7 @@ import {
   ResponseObject,
 } from '@oats-ts/openapi-model'
 import { failure, fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
-import { Schema } from '@oats-ts/validators'
+import { SchemaRule } from '@oats-ts/validators'
 import { entries, isNil } from 'lodash'
 import { register } from './utils/register'
 import { validators } from './validators'
@@ -50,7 +50,7 @@ export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
     this.context().cache.objectToName.set(input, name)
   }
 
-  protected validate<T>(data: T, uri: string, s: Schema): Try<void> {
+  protected validate<T>(data: T, uri: string, s: SchemaRule): Try<void> {
     if (this.context().cache.uriToObject.has(uri)) {
       return success(undefined)
     }
@@ -293,7 +293,7 @@ export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
     return isSuccess(merged) ? success(data) : merged
   }
 
-  protected traverseBaseParameter<T extends BaseParameterObject>(s: Schema, data: T, uri: string): Try<T> {
+  protected traverseBaseParameter<T extends BaseParameterObject>(s: SchemaRule, data: T, uri: string): Try<T> {
     const validationResult = this.validate(data, uri, s)
     if (isFailure(validationResult)) {
       return validationResult

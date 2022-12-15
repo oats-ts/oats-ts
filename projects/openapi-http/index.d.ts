@@ -1,4 +1,4 @@
-import type { Schema } from '@oats-ts/validators'
+import type { SchemaRule } from '@oats-ts/validators'
 import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {
@@ -57,7 +57,7 @@ export type OperationCorsConfiguration = {
 }
 
 export type RequestBodyValidators<C extends string = string> = {
-  [contentType in C]: Schema
+  [contentType in C]: SchemaRule
 }
 
 export type ResponseHeadersParameters<S extends string = string> = {
@@ -74,7 +74,7 @@ export type ResponseHeadersDeserializers<S extends string = string> = {
 
 export type ResponseBodyValidators = {
   [statusCode: string]: {
-    [contentType: string]: Schema
+    [contentType: string]: SchemaRule
   }
 }
 

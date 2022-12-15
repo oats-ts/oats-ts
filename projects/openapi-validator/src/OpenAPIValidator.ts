@@ -18,7 +18,7 @@ import {
 } from '@oats-ts/openapi-model'
 import { ParameterSegment, parsePathToSegments, PathSegment } from '@oats-ts/openapi-parameter-serialization'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
-import { isOk, Issue, Validator, Schema } from '@oats-ts/validators'
+import { isOk, Issue, Validator, SchemaRule } from '@oats-ts/validators'
 import { entries, flatMap, isEmpty, isNil, values } from 'lodash'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
@@ -120,7 +120,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return new URIManipulator()
   }
 
-  protected createValidator(s: Schema): Validator {
+  protected createValidator(s: SchemaRule): Validator {
     return new StructuralValidator(s)
   }
 
@@ -201,7 +201,7 @@ export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPI
     return issues.some((issue) => issue.severity === 'error')
   }
 
-  protected fn<T>(fn: (data: T) => Issue[], structural?: Schema): (data: T) => Issue[] {
+  protected fn<T>(fn: (data: T) => Issue[], structural?: SchemaRule): (data: T) => Issue[] {
     return (data: T): Issue[] => {
       if (this.context().validated.has(data)) {
         return []

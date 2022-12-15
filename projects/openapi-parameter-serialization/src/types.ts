@@ -1,6 +1,6 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { Try } from '@oats-ts/try'
-import { Schema } from '@oats-ts/validators'
+import { SchemaRule } from '@oats-ts/validators'
 
 export type Primitive = string | number | boolean | undefined
 export type PrimitiveArray = ReadonlyArray<Primitive> | undefined
@@ -116,24 +116,24 @@ export type ParameterDescriptors<T, L extends Location, S extends Style> = {
 
 export type QueryParameters<T> = {
   descriptor: ParameterDescriptors<T, 'query', QueryStyle>
-  schema?: Schema
+  schema?: SchemaRule
 }
 
 export type PathParameters<T> = {
   descriptor: ParameterDescriptors<T, 'path', PathStyle>
   pathSegments: PathSegment[]
   matcher: RegExp
-  schema?: Schema
+  schema?: SchemaRule
 }
 
 export type HeaderParameters<T> = {
   descriptor: ParameterDescriptors<T, 'header', HeaderStyle>
-  schema?: Schema
+  schema?: SchemaRule
 }
 
 export type CookieParameters<T> = {
   descriptor: ParameterDescriptors<T, 'cookie', CookieStyle>
-  schema?: Schema
+  schema?: SchemaRule
 }
 
 export type RawPath = Record<string, string>

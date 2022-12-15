@@ -1,5 +1,5 @@
 {
-  "name": "@oats-ts/openapi-parameter-serialization",
+  "name": "@oats-ts/rules",
   "version": "0.0.49",
   "description": "",
   "author": "Balázs Édes <edesbalazs@gmail.com>",
@@ -24,12 +24,6 @@
   },
   "bugs": {
     "url": "https://github.com/oats-ts/oats-ts/issues"
-  },
-  "dependencies": {
-    "@oats-ts/openapi-http": "0.0.49",
-    "@oats-ts/try": "0.0.49",
-    "@oats-ts/validators": "0.0.49",
-    "path-to-regexp": "6.2.1"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",

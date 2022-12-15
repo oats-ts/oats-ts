@@ -1,41 +1,41 @@
 import {
-  AnySchema,
-  ArraySchema,
-  BooleanSchema,
-  IntegerSchema,
-  IntersectionSchema,
+  AnySchemaRule,
+  ArraySchemaRule,
+  BooleanSchemaRule,
+  IntegerSchemaRule,
+  IntersectionSchemaRule,
   Issue,
-  ItemsSchema,
-  LazySchema,
-  LiteralSchema,
-  MaxLengthSchema,
-  MaxPropertiesSchema,
-  MinLengthSchema,
-  MinPropertiesSchema,
-  NilSchema,
-  NumberSchema,
-  ObjectSchema,
-  OptionalSchema,
-  RecordSchema,
-  RestrictKeysSchema,
-  Schema,
+  ItemsSchemaRule,
+  LazySchemaRule,
+  LiteralSchemaRule,
+  MaxLengthSchemaRule,
+  MaxPropertiesSchemaRule,
+  MinLengthSchemaRule,
+  MinPropertiesSchemaRule,
+  NilSchemaRule,
+  NumberSchemaRule,
+  ObjectSchemaRule,
+  OptionalSchemaRule,
+  RecordSchemaRule,
+  RestrictKeysSchemaRule,
+  SchemaRule,
   Severity,
-  ShapeSchema,
-  StringSchema,
-  TupleSchema,
-  UnionSchema,
+  ShapeSchemaRule,
+  StringSchemaRule,
+  TupleSchemaRule,
+  UnionSchemaRule,
 } from './typings'
 import { isNil } from './isNil'
 import { appendPath } from './appendPath'
 
-export class Validator<S extends Schema = Schema> {
+export class Validator<S extends SchemaRule = SchemaRule> {
   constructor(protected readonly schema: S, protected readonly defaultPath: string = '$') {}
 
   public validate(input: unknown, path: string = this.defaultPath): Issue[] {
     return this.validateBySchema(this.schema, input, path)
   }
 
-  protected validateBySchema(schema: S | Schema, input: unknown, path: string): Issue[] {
+  protected validateBySchema(schema: S | SchemaRule, input: unknown, path: string): Issue[] {
     switch (schema.type) {
       case 'any':
         return this.any(schema, input, path)
@@ -86,23 +86,23 @@ export class Validator<S extends Schema = Schema> {
     }
   }
 
-  protected any(_schema: AnySchema, _input: unknown, _path: string): Issue[] {
+  protected any(_schema: AnySchemaRule, _input: unknown, _path: string): Issue[] {
     return []
   }
 
-  protected array(schema: ArraySchema, input: unknown, path: string): Issue[] {
+  protected array(schema: ArraySchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(schema, input, path, (input) => Array.isArray(input))
   }
 
-  protected boolean(schema: BooleanSchema, input: unknown, path: string): Issue[] {
+  protected boolean(schema: BooleanSchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(schema, input, path, (input) => input === true || input === false)
   }
 
-  protected integer(schema: IntegerSchema, input: unknown, path: string): Issue[] {
+  protected integer(schema: IntegerSchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(schema, input, path, (input) => Number.isInteger(input))
   }
 
-  protected intersection(schema: IntersectionSchema, input: unknown, path: string): Issue[] {
+  protected intersection(schema: IntersectionSchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
@@ -113,7 +113,7 @@ export class Validator<S extends Schema = Schema> {
     return issues
   }
 
-  protected items(schema: ItemsSchema, input: unknown, path: string): Issue[] {
+  protected items(schema: ItemsSchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
@@ -126,14 +126,14 @@ export class Validator<S extends Schema = Schema> {
     return issues
   }
 
-  protected lazy(schema: LazySchema, input: unknown, path: string): Issue[] {
+  protected lazy(schema: LazySchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
     return this.validateBySchema(schema.schema(), input, path)
   }
 
-  protected literal(schema: LiteralSchema, input: unknown, path: string): Issue[] {
+  protected literal(schema: LiteralSchemaRule, input: unknown, path: string): Issue[] {
     const severity = this.severityOf(schema, input, path)
     if (isNil(severity)) {
       return []
@@ -144,32 +144,32 @@ export class Validator<S extends Schema = Schema> {
     return []
   }
 
-  protected maxLength(schema: MaxLengthSchema, input: unknown, path: string): Issue[] {
+  protected maxLength(schema: MaxLengthSchemaRule, input: unknown, path: string): Issue[] {
     const matches = ((input as unknown[])?.length ?? Infinity) <= schema.maxLength
     return this.conditionBased(schema, input, path, matches)
   }
-  protected maxProperties(schema: MaxPropertiesSchema, input: unknown, path: string): Issue[] {
+  protected maxProperties(schema: MaxPropertiesSchemaRule, input: unknown, path: string): Issue[] {
     const matches = (Object.keys((input as Record<any, any>) ?? {}).length ?? Infinity) <= schema.maxProperties
     return this.conditionBased(schema, input, path, matches)
   }
-  protected minLength(schema: MinLengthSchema, input: unknown, path: string): Issue[] {
+  protected minLength(schema: MinLengthSchemaRule, input: unknown, path: string): Issue[] {
     const matches = ((input as unknown[])?.length ?? -Infinity) >= schema.minLength
     return this.conditionBased(schema, input, path, matches)
   }
-  protected minProperties(schema: MinPropertiesSchema, input: unknown, path: string): Issue[] {
+  protected minProperties(schema: MinPropertiesSchemaRule, input: unknown, path: string): Issue[] {
     const matches = (Object.keys((input as Record<any, any>) ?? {}).length ?? -Infinity) >= schema.minProperties
     return this.conditionBased(schema, input, path, matches)
   }
 
-  protected nil(schema: NilSchema, input: unknown, path: string): Issue[] {
+  protected nil(schema: NilSchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(schema, input, path, (input) => input === null || input === undefined)
   }
 
-  protected number(schema: NumberSchema, input: unknown, path: string): Issue[] {
+  protected number(schema: NumberSchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(schema, input, path, (input) => typeof input === 'number' && !Number.isNaN(input))
   }
 
-  protected object(schema: ObjectSchema, input: unknown, path: string): Issue[] {
+  protected object(schema: ObjectSchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(
       schema,
       input,
@@ -178,7 +178,7 @@ export class Validator<S extends Schema = Schema> {
     )
   }
 
-  protected optional(schema: OptionalSchema, input: unknown, path: string): Issue[] {
+  protected optional(schema: OptionalSchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
@@ -188,7 +188,7 @@ export class Validator<S extends Schema = Schema> {
     return this.validateBySchema(schema.schema, input, path)
   }
 
-  protected record(schema: RecordSchema, input: unknown, path: string): Issue[] {
+  protected record(schema: RecordSchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
@@ -205,7 +205,7 @@ export class Validator<S extends Schema = Schema> {
     return issues
   }
 
-  protected restrictKeys(schema: RestrictKeysSchema, input: unknown, path: string): Issue[] {
+  protected restrictKeys(schema: RestrictKeysSchemaRule, input: unknown, path: string): Issue[] {
     const severity = this.severityOf(schema, input, path)
     if (isNil(severity)) {
       return []
@@ -224,7 +224,7 @@ export class Validator<S extends Schema = Schema> {
     return []
   }
 
-  protected shape(schema: ShapeSchema, input: unknown, path: string): Issue[] {
+  protected shape(schema: ShapeSchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
@@ -242,11 +242,11 @@ export class Validator<S extends Schema = Schema> {
     return issues
   }
 
-  protected string(schema: StringSchema, input: unknown, path: string): Issue[] {
+  protected string(schema: StringSchemaRule, input: unknown, path: string): Issue[] {
     return this.predicateBasedNested(schema, input, path, (input) => typeof input === 'string')
   }
 
-  protected tuple(schema: TupleSchema, input: unknown, path: string): Issue[] {
+  protected tuple(schema: TupleSchemaRule, input: unknown, path: string): Issue[] {
     if (isNil(this.severityOf(schema, input, path))) {
       return []
     }
@@ -259,7 +259,7 @@ export class Validator<S extends Schema = Schema> {
     return issues
   }
 
-  protected union(schema: UnionSchema, input: unknown, path: string): Issue[] {
+  protected union(schema: UnionSchemaRule, input: unknown, path: string): Issue[] {
     const severity = this.severityOf(schema, input, path)
     if (isNil(severity)) {
       return []
@@ -279,11 +279,11 @@ export class Validator<S extends Schema = Schema> {
     return [{ message: this.messageOf(schema, input, path), path: path, severity }]
   }
 
-  protected severityOf(schema: Schema, input: unknown, path: string): Severity | undefined {
+  protected severityOf(schema: SchemaRule, input: unknown, path: string): Severity | undefined {
     return 'error'
   }
 
-  protected messageOf(schema: Schema, input: unknown, path: string): string {
+  protected messageOf(schema: SchemaRule, input: unknown, path: string): string {
     switch (schema.type) {
       case 'array': {
         return 'should be an array'
@@ -328,7 +328,7 @@ export class Validator<S extends Schema = Schema> {
   }
 
   protected predicateBasedNested(
-    schema: Schema & { schema?: Schema },
+    schema: SchemaRule & { schema?: SchemaRule },
     input: unknown,
     path: string,
     predicate: (input: unknown) => boolean,
@@ -345,7 +345,7 @@ export class Validator<S extends Schema = Schema> {
     }
     return this.validateBySchema(schema.schema, input, path)
   }
-  protected conditionBased(schema: Schema, input: unknown, path: string, matches: boolean): Issue[] {
+  protected conditionBased(schema: SchemaRule, input: unknown, path: string, matches: boolean): Issue[] {
     const severity = this.severityOf(schema, input, path)
     if (isNil(severity)) {
       return []

@@ -1,5 +1,5 @@
 import { encode, decode, isNil } from './utils'
-import { appendPath, isOk, Schema, Validator } from '@oats-ts/validators'
+import { appendPath, isOk, SchemaRule, Validator } from '@oats-ts/validators'
 import { failure, success, Try } from '@oats-ts/try'
 
 export abstract class Base {
@@ -19,7 +19,7 @@ export abstract class Base {
     return appendPath(path, segment)
   }
 
-  protected validate<T>(schema: Schema | undefined, value: any, path: string): Try<T> {
+  protected validate<T>(schema: SchemaRule | undefined, value: any, path: string): Try<T> {
     if (isNil(schema)) {
       return success(value)
     }
