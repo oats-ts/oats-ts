@@ -8,6 +8,7 @@ import {
   OperationCorsConfiguration,
   SetCookieValue,
   ResponseHeadersParameters,
+  StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
 import { stringify, Validator, Schema } from '@oats-ts/validators'
@@ -87,6 +88,25 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
 
   public async getStatusCode(input: ExpressToolkit, response: HttpResponse): Promise<number> {
     return response.statusCode
+  }
+
+  protected getStatusCodeRange(statusCode: number): StatusCodeRange | 'default' {
+    if (statusCode >= 100 && statusCode < 200) {
+      return '1XX'
+    }
+    if (statusCode >= 200 && statusCode < 300) {
+      return '2XX'
+    }
+    if (statusCode >= 300 && statusCode < 400) {
+      return '3XX'
+    }
+    if (statusCode >= 400 && statusCode < 500) {
+      return '4XX'
+    }
+    if (statusCode >= 500 && statusCode < 600) {
+      return '5XX'
+    }
+    return 'default'
   }
 
   public async getResponseBody(input: ExpressToolkit, response: HttpResponse): Promise<any> {
@@ -208,7 +228,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
     if (descriptors === null || descriptors === undefined) {
       return baseHeaders
     }
-    const descriptor = descriptors[response.statusCode]
+    const descriptor = descriptors[response.statusCode] ?? descriptors[this.getStatusCodeRange(response.statusCode)]
     if (descriptor === null || descriptor === undefined) {
       return baseHeaders
     }

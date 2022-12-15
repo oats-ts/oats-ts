@@ -8,6 +8,7 @@ import {
   ClientAdapter,
   SetCookieValue,
   ResponseHeadersParameters,
+  StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { isFailure } from '@oats-ts/try'
 import { Schema, stringify, Validator } from '@oats-ts/validators'
@@ -153,8 +154,7 @@ export class FetchClientAdapter implements ClientAdapter {
     const { skipResponseValidation } = this.config
 
     if (!skipResponseValidation) {
-      const validatorsForStatus =
-        validators[statusCode] ?? validators[this.getStatusCodeRange(statusCode)] ?? validators.default
+      const validatorsForStatus = validators[statusCode] ?? validators[this.getStatusCodeRange(statusCode)]
 
       // In case the status code returned by the server was not found among the expectations, throw.
       if (validatorsForStatus === undefined || validatorsForStatus === null) {
@@ -190,9 +190,23 @@ export class FetchClientAdapter implements ClientAdapter {
     return response.body
   }
 
-  protected getStatusCodeRange(statusCode: number): string {
-    const str = statusCode.toString(10)
-    return `${str[0]}XX`
+  protected getStatusCodeRange(statusCode: number): StatusCodeRange | 'default' {
+    if (statusCode >= 100 && statusCode < 200) {
+      return '1XX'
+    }
+    if (statusCode >= 200 && statusCode < 300) {
+      return '2XX'
+    }
+    if (statusCode >= 300 && statusCode < 400) {
+      return '3XX'
+    }
+    if (statusCode >= 400 && statusCode < 500) {
+      return '4XX'
+    }
+    if (statusCode >= 500 && statusCode < 600) {
+      return '5XX'
+    }
+    return 'default'
   }
 
   public getResponseHeaders(response: RawHttpResponse, descriptors?: ResponseHeadersParameters): any {
@@ -204,8 +218,7 @@ export class FetchClientAdapter implements ClientAdapter {
       throw new Error(`Status code should not be ${statusCode}`)
     }
 
-    const descriptor =
-      descriptors[statusCode] ?? descriptors[this.getStatusCodeRange(statusCode)] ?? descriptors.default
+    const descriptor = descriptors[statusCode] ?? descriptors[this.getStatusCodeRange(statusCode)]
     if (descriptor === undefined || descriptor === null) {
       const statusCodes = Object.keys(descriptors)
       const mimeTypesHint =

@@ -1,8 +1,6 @@
 import {
   arrayDescriptor,
   booleanDescriptor,
-  enumDescriptor,
-  literalDescriptor,
   numberDescriptor,
   objectDescriptor,
   optionalDescriptor,
@@ -18,8 +16,6 @@ export const parameter = {
     string: stringDescriptor,
     number: numberDescriptor,
     boolean: booleanDescriptor,
-    literal: literalDescriptor,
-    enum: enumDescriptor,
     union: unionDescriptor,
   },
   query: {

@@ -41,24 +41,20 @@ export const complexObjSchema = object(
   }),
 )
 
-export const lit = parameter.value.string(parameter.value.literal('cat'))
-
-export const enm = parameter.value.string(parameter.value.enum(['cat', 'dog', 'racoon']))
-
 export const obj: Record<keyof ObjType, ValueDescriptor> = {
   s: parameter.value.string(),
   n: parameter.value.number(),
   b: parameter.value.boolean(),
-  l: lit,
-  e: enm,
+  l: parameter.value.string(),
+  e: parameter.value.string(),
 }
 
 export const optObj: Record<keyof OptObjType, ValueDescriptor> = {
   s: parameter.value.optional(parameter.value.string()),
   n: parameter.value.optional(parameter.value.number()),
   b: parameter.value.optional(parameter.value.boolean()),
-  l: parameter.value.optional(lit),
-  e: parameter.value.optional(enm),
+  l: parameter.value.optional(parameter.value.string()),
+  e: parameter.value.optional(parameter.value.string()),
 }
 
 export function testCases(cases: Record<string, TestCase<any, any, any>>) {

@@ -18,16 +18,6 @@ export type CookieStyle = 'form'
 
 export type Style = QueryStyle | PathStyle | HeaderStyle | CookieStyle
 
-export type EnumDescriptor = {
-  type: 'enum'
-  values: Primitive[]
-}
-
-export type LiteralDescriptor = {
-  type: 'literal'
-  value: Primitive
-}
-
 export type OptionalDescriptor = {
   type: 'optional'
   value: ValueDescriptor
@@ -59,9 +49,7 @@ export type ValueDescriptor =
   | StringDescriptor
   | NumberDescriptor
   | BooleanDescriptor
-  | EnumDescriptor
   | OptionalDescriptor
-  | LiteralDescriptor
   | UnionDescriptor
 
 export type DescriptorCommon<T extends Type, L extends Location, S extends Style> = {

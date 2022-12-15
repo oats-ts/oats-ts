@@ -1,6 +1,6 @@
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { enm, lit, obj, optObj } from './common'
+import { obj, optObj } from './common'
 import { ComplexObj, EnumType, ObjType, OptObjType } from './model'
 import { HeaderTestCase } from './types'
 
@@ -103,7 +103,7 @@ export const requiredEnumHeader: HeaderTestCase<{ 'X-Enum-Field': EnumType }> = 
   name: 'required boolean headers',
   descriptor: {
     descriptor: {
-      'X-Enum-Field': parameter.header.simple.required.primitive(enm),
+      'X-Enum-Field': parameter.header.simple.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -126,7 +126,7 @@ export const requiredLiteralHeader: HeaderTestCase<{ 'X-Lit-Field': EnumType }> 
   name: 'required boolean headers',
   descriptor: {
     descriptor: {
-      'X-Lit-Field': parameter.header.simple.required.primitive(lit),
+      'X-Lit-Field': parameter.header.simple.required.primitive(parameter.value.string()),
     },
   },
   data: [{ model: { 'X-Lit-Field': 'cat' }, serialized: { 'x-lit-field': 'cat' } }],
@@ -145,7 +145,7 @@ export const optionalEnumHeader: HeaderTestCase<{ 'X-Enum-Field'?: EnumType }> =
   name: 'optional boolean headers',
   descriptor: {
     descriptor: {
-      'X-Enum-Field': parameter.header.simple.primitive(enm),
+      'X-Enum-Field': parameter.header.simple.primitive(parameter.value.string()),
     },
   },
   data: [{ model: {}, serialized: {} }, ...requiredEnumHeader.data],

@@ -1,6 +1,5 @@
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { enm, lit } from './common'
 import { ComplexObj, EnumType, LiteralType } from './model'
 import { CookieTestCase } from './types'
 
@@ -97,7 +96,7 @@ export const requiredLiteralQuery: CookieTestCase<{ lit: LiteralType }> = {
   name: 'required form literal cookie',
   descriptor: {
     descriptor: {
-      lit: parameter.cookie.form.required.primitive(lit),
+      lit: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
   },
   data: [{ model: { lit: 'cat' }, serialized: 'lit=cat' }],
@@ -109,7 +108,7 @@ export const optionalLiteralQuery: CookieTestCase<{ lit?: LiteralType }> = {
   name: 'optional form literal cookie',
   descriptor: {
     descriptor: {
-      lit: parameter.cookie.form.primitive(lit),
+      lit: parameter.cookie.form.primitive(parameter.value.string()),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
@@ -121,7 +120,7 @@ export const requiredEnumQuery: CookieTestCase<{ enm: EnumType }> = {
   name: 'required form enum cookie',
   descriptor: {
     descriptor: {
-      enm: parameter.cookie.form.required.primitive(enm),
+      enm: parameter.cookie.form.required.primitive(parameter.value.string()),
     },
   },
   data: [
@@ -137,7 +136,7 @@ export const optionalEnumQuery: CookieTestCase<{ enm?: EnumType }> = {
   name: 'optional form enum cookie',
   descriptor: {
     descriptor: {
-      enm: parameter.cookie.form.primitive(enm),
+      enm: parameter.cookie.form.primitive(parameter.value.string()),
     },
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],

@@ -1,8 +1,6 @@
 import { failure, isSuccess, success, Try } from '@oats-ts/try'
 import {
   BooleanDescriptor,
-  EnumDescriptor,
-  LiteralDescriptor,
   NumberDescriptor,
   OptionalDescriptor,
   Primitive,
@@ -18,10 +16,6 @@ export class DefaultValueDeserializer implements ValueDeserializer {
     switch (descriptor.type) {
       case 'boolean':
         return this.boolean(descriptor, data, path)
-      case 'enum':
-        return this.enumeration(descriptor, data, path)
-      case 'literal':
-        return this.literal(descriptor, data, path)
       case 'number':
         return this.number(descriptor, data, path)
       case 'optional':
@@ -58,30 +52,6 @@ export class DefaultValueDeserializer implements ValueDeserializer {
     }
     const boolValue = value === 'true'
     return isNil(descriptor.value) ? success(boolValue) : this.deserialize(descriptor.value, boolValue, path)
-  }
-
-  protected enumeration(descriptor: EnumDescriptor, value: Primitive, path: string): Try<Primitive> {
-    if (descriptor.values.indexOf(value) < 0) {
-      const valuesLiteral = descriptor.values.map((v) => (typeof v === 'string' ? `"${v}"` : `${v}`)).join(',')
-      return failure({
-        message: `should be one of ${valuesLiteral}.`,
-        path,
-        severity: 'error',
-      })
-    }
-    return success(value)
-  }
-
-  protected literal(descriptor: LiteralDescriptor, value: Primitive, path: string): Try<Primitive> {
-    if (value !== descriptor.value) {
-      const strLiteral = typeof descriptor.value === 'string' ? `"${descriptor.value}"` : descriptor.value
-      return failure({
-        message: `should be ${strLiteral}.`,
-        path,
-        severity: 'error',
-      })
-    }
-    return success(value)
   }
 
   protected number(descriptor: NumberDescriptor, value: Primitive, path: string): Try<Primitive> {

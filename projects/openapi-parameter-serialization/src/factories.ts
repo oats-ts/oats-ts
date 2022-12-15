@@ -1,8 +1,6 @@
 import {
   ArrayDescriptor,
   BooleanDescriptor,
-  EnumDescriptor,
-  LiteralDescriptor,
   NumberDescriptor,
   ObjectDescriptor,
   Location,
@@ -83,20 +81,6 @@ export function numberDescriptor(value?: ValueDescriptor): NumberDescriptor {
 export function booleanDescriptor(value?: ValueDescriptor): BooleanDescriptor {
   return {
     type: 'boolean',
-    value,
-  }
-}
-
-export function enumDescriptor(values: any[]): EnumDescriptor {
-  return {
-    type: 'enum',
-    values,
-  }
-}
-
-export function literalDescriptor(value: any): LiteralDescriptor {
-  return {
-    type: 'literal',
     value,
   }
 }

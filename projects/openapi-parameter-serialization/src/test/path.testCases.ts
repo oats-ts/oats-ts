@@ -1,6 +1,6 @@
 import { pathToRegexp } from 'path-to-regexp'
 import { parsePathToSegments } from '../parsePathToSegments'
-import { enm, lit, obj } from './common'
+import { obj } from './common'
 import { ComplexObj, EnumType, LiteralType, ObjType } from './model'
 import { PathTestCase } from './types'
 import { parameter } from '../parameter'
@@ -63,7 +63,7 @@ export const requiredSimpleLiteralPath: PathTestCase<{ lit: LiteralType }> = {
     matcher: pathToRegexp('/foo/:lit'),
     pathSegments: parsePathToSegments('/foo/{lit}'),
     descriptor: {
-      lit: parameter.path.simple.required.primitive(lit),
+      lit: parameter.path.simple.required.primitive(parameter.value.string()),
     },
   },
   data: [{ model: { lit: 'cat' }, serialized: '/foo/cat' }],
@@ -77,7 +77,7 @@ export const requiredSimpleEnumPath: PathTestCase<{ enm: EnumType }> = {
     matcher: pathToRegexp('/foo/:enm'),
     pathSegments: parsePathToSegments('/foo/{enm}'),
     descriptor: {
-      enm: parameter.path.simple.required.primitive(enm),
+      enm: parameter.path.simple.required.primitive(parameter.value.string()),
     },
   },
   data: [

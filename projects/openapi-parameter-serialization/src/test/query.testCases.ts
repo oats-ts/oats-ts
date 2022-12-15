@@ -1,10 +1,22 @@
+import { validators } from '@oats-ts/validators'
 import { parameter } from '../parameter'
 import { encode } from '../utils'
-import { enm, lit, obj, optObj } from './common'
+import { obj, optObj, litSchema, enumSchema } from './common'
 import { ComplexObj, EnumType, LiteralType, ObjType, OptObjType } from './model'
 import { QueryTestCase } from './types'
 
-export const requiredStringQuery: QueryTestCase<{ str: string }> = {
+export type StrField = { str: string }
+export type OptStrField = { str?: string }
+export type NumField = { num: number }
+export type OptNumField = { num?: number }
+export type BoolField = { bool: boolean }
+export type OptBoolField = { bool?: boolean }
+export type LitField = { lit: LiteralType }
+export type OptLitField = { lit?: LiteralType }
+export type EnmField = { enm: EnumType }
+export type OptEnmField = { enm?: EnumType }
+
+export const requiredStringQuery: QueryTestCase<StrField> = {
   name: 'required form string query',
   descriptor: {
     descriptor: {
@@ -20,7 +32,7 @@ export const requiredStringQuery: QueryTestCase<{ str: string }> = {
   serializerErrors: [null, undefined, {} as any, { 'x-string-fiel': 'string' } as any],
 }
 
-export const optionalStringQuery: QueryTestCase<{ str?: string }> = {
+export const optionalStringQuery: QueryTestCase<OptStrField> = {
   name: 'optional form string query',
   descriptor: {
     descriptor: {
@@ -36,7 +48,7 @@ export const optionalStringQuery: QueryTestCase<{ str?: string }> = {
   serializerErrors: [],
 }
 
-export const requiredNumberQuery: QueryTestCase<{ num: number }> = {
+export const requiredNumberQuery: QueryTestCase<NumField> = {
   name: 'required form number query',
   descriptor: {
     descriptor: {
@@ -53,7 +65,7 @@ export const requiredNumberQuery: QueryTestCase<{ num: number }> = {
   serializerErrors: [],
 }
 
-export const optionalNumberQuery: QueryTestCase<{ num?: number }> = {
+export const optionalNumberQuery: QueryTestCase<OptNumField> = {
   name: 'optional form number query',
   descriptor: {
     descriptor: {
@@ -65,7 +77,7 @@ export const optionalNumberQuery: QueryTestCase<{ num?: number }> = {
   serializerErrors: [],
 }
 
-export const requiredBooleanQuery: QueryTestCase<{ bool: boolean }> = {
+export const requiredBooleanQuery: QueryTestCase<BoolField> = {
   name: 'required form boolean query',
   descriptor: {
     descriptor: {
@@ -80,7 +92,7 @@ export const requiredBooleanQuery: QueryTestCase<{ bool: boolean }> = {
   serializerErrors: [],
 }
 
-export const optionalBooleanQuery: QueryTestCase<{ bool?: boolean }> = {
+export const optionalBooleanQuery: QueryTestCase<OptBoolField> = {
   name: 'optional form boolean query',
   descriptor: {
     descriptor: {
@@ -92,36 +104,47 @@ export const optionalBooleanQuery: QueryTestCase<{ bool?: boolean }> = {
   serializerErrors: [],
 }
 
-export const requiredLiteralQuery: QueryTestCase<{ lit: LiteralType }> = {
+export const requiredLiteralQuery: QueryTestCase<LitField> = {
   name: 'required form literal query',
   descriptor: {
     descriptor: {
-      lit: parameter.query.form.exploded.required.primitive(lit),
+      lit: parameter.query.form.exploded.required.primitive(parameter.value.string()),
     },
+    schema: validators.object(
+      validators.shape<LitField>({
+        lit: validators.literal('cat'),
+      }),
+    ),
   },
   data: [{ model: { lit: 'cat' }, serialized: '?lit=cat' }],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const optionalLiteralQuery: QueryTestCase<{ lit?: LiteralType }> = {
+export const optionalLiteralQuery: QueryTestCase<OptLitField> = {
   name: 'optional form literal query',
   descriptor: {
     descriptor: {
-      lit: parameter.query.form.exploded.primitive(lit),
+      lit: parameter.query.form.exploded.primitive(parameter.value.string()),
     },
+    schema: validators.object(
+      validators.shape<OptLitField>({
+        lit: validators.optional(litSchema),
+      }),
+    ),
   },
   data: [{ model: {}, serialized: undefined }, ...requiredLiteralQuery.data],
   deserializerErrors: [],
   serializerErrors: [],
 }
 
-export const requiredEnumQuery: QueryTestCase<{ enm: EnumType }> = {
+export const requiredEnumQuery: QueryTestCase<EnmField> = {
   name: 'required form enum query',
   descriptor: {
     descriptor: {
-      enm: parameter.query.form.exploded.required.primitive(enm),
+      enm: parameter.query.form.exploded.required.primitive(parameter.value.string()),
     },
+    schema: validators.object(validators.shape<EnmField>({ enm: enumSchema })),
   },
   data: [
     { model: { enm: 'cat' }, serialized: '?enm=cat' },
@@ -132,12 +155,13 @@ export const requiredEnumQuery: QueryTestCase<{ enm: EnumType }> = {
   serializerErrors: [],
 }
 
-export const optionalEnumQuery: QueryTestCase<{ enm?: EnumType }> = {
+export const optionalEnumQuery: QueryTestCase<OptEnmField> = {
   name: 'optional form enum query',
   descriptor: {
     descriptor: {
-      enm: parameter.query.form.exploded.primitive(enm),
+      enm: parameter.query.form.exploded.primitive(parameter.value.string()),
     },
+    schema: validators.object(validators.shape<EnmField>({ enm: validators.optional(enumSchema) })),
   },
   data: [{ model: {}, serialized: undefined }, ...requiredEnumQuery.data],
   deserializerErrors: [],
