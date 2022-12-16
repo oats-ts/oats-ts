@@ -1,48 +1,47 @@
-import { failure, isSuccess, success, Try } from '@oats-ts/try'
 import {
-  BooleanDescriptor,
-  NumberDescriptor,
-  OptionalDescriptor,
-  Primitive,
-  StringDescriptor,
-  ValueDeserializer,
-  ValueDescriptor,
-  UnionDescriptor,
-} from './types'
+  BooleanParameterRule,
+  NumberParameterRule,
+  OptionalParameterRule,
+  StringParameterRule,
+  UnionParameterRule,
+  ValueParameterRule,
+} from '@oats-ts/rules'
+import { failure, isSuccess, success, Try } from '@oats-ts/try'
+import { Primitive, ValueDeserializer } from './types'
 import { isNil } from './utils'
 
 export class DefaultValueDeserializer implements ValueDeserializer {
-  public deserialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<Primitive> {
-    switch (descriptor.type) {
+  public deserialize(rule: ValueParameterRule, data: Primitive, path: string): Try<Primitive> {
+    switch (rule.type) {
       case 'boolean':
-        return this.boolean(descriptor, data, path)
+        return this.boolean(rule, data, path)
       case 'number':
-        return this.number(descriptor, data, path)
+        return this.number(rule, data, path)
       case 'optional':
-        return this.optional(descriptor, data, path)
+        return this.optional(rule, data, path)
       case 'string':
-        return this.string(descriptor, data, path)
+        return this.string(rule, data, path)
       case 'union':
-        return this.union(descriptor, data, path)
+        return this.union(rule, data, path)
     }
   }
 
-  protected union(descriptor: UnionDescriptor, value: Primitive, path: string): Try<Primitive> {
-    for (let i = 0; i < descriptor.values.length; i += 1) {
-      const d = descriptor.values[i]
+  protected union(rule: UnionParameterRule, value: Primitive, path: string): Try<Primitive> {
+    for (let i = 0; i < rule.alternatives.length; i += 1) {
+      const d = rule.alternatives[i]
       const v = this.deserialize(d, value, path)
       if (isSuccess(v)) {
         return v
       }
     }
     return failure({
-      message: `should be one of ${descriptor.values.map((v) => `"${v.type}"`).join(', ')}`,
+      message: `should be one of ${rule.alternatives.map((v) => `"${v.type}"`).join(', ')}`,
       path,
       severity: 'error',
     })
   }
 
-  protected boolean(descriptor: BooleanDescriptor, value: Primitive, path: string): Try<Primitive> {
+  protected boolean(rule: BooleanParameterRule, value: Primitive, path: string): Try<Primitive> {
     if (value !== 'true' && value !== 'false') {
       return failure({
         message: `should be a boolean ("true" or "false")`,
@@ -50,11 +49,10 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    const boolValue = value === 'true'
-    return isNil(descriptor.value) ? success(boolValue) : this.deserialize(descriptor.value, boolValue, path)
+    return success(value === 'true')
   }
 
-  protected number(descriptor: NumberDescriptor, value: Primitive, path: string): Try<Primitive> {
+  protected number(rule: NumberParameterRule, value: Primitive, path: string): Try<Primitive> {
     if (typeof value !== 'string') {
       return failure({
         message: `should not be ${value}`,
@@ -70,14 +68,14 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    return isNil(descriptor.value) ? success(numValue) : this.deserialize(descriptor.value, numValue, path)
+    return success(numValue)
   }
 
-  protected optional(descriptor: OptionalDescriptor, value: Primitive, path: string): Try<Primitive> {
-    return isNil(value) ? success(undefined) : this.deserialize(descriptor.value, value, path)
+  protected optional(rule: OptionalParameterRule, value: Primitive, path: string): Try<Primitive> {
+    return isNil(value) ? success(undefined) : this.deserialize(rule.value, value, path)
   }
 
-  protected string(descriptor: StringDescriptor, value: Primitive, path: string): Try<Primitive> {
+  protected string(rule: StringParameterRule, value: Primitive, path: string): Try<Primitive> {
     if (typeof value !== 'string') {
       return failure({
         message: `should be a string.`,
@@ -85,6 +83,6 @@ export class DefaultValueDeserializer implements ValueDeserializer {
         severity: 'error',
       })
     }
-    return isNil(descriptor.value) ? success(value) : this.deserialize(descriptor.value, value, path)
+    return success(value)
   }
 }

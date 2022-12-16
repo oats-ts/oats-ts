@@ -3,30 +3,28 @@ import { failure, fluent, fromRecord, success, Try } from '@oats-ts/try'
 import { isNil } from './utils'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
+import { ParameterValue, Primitive, CookieDeserializer } from './types'
 import {
-  ParameterValue,
-  Primitive,
-  CookieDeserializer,
-  CookieParameters,
-  CookieParameterDescriptor,
-  CookiePrimitive,
-  CookieSchema,
-} from './types'
+  CookieDescriptorRule,
+  CookieParameterRule,
+  MimeTypeParameterRule,
+  PrimitiveParameterRule,
+} from '@oats-ts/rules'
 
 export class DefaultCookieDeserializer<T> extends BaseDeserializer implements CookieDeserializer<T> {
-  constructor(protected readonly parameters: CookieParameters<T>) {
+  constructor(protected readonly parameters: CookieDescriptorRule<T>) {
     super()
   }
 
   public deserialize(input: string): Try<T> {
     return fluent(this.deserializeCookie(input, this.basePath()))
       .flatMap((rawData) => {
-        const parsedData = Object.keys(this.parameters.descriptor).reduce(
+        const parsedData = Object.keys(this.parameters.parameters).reduce(
           (acc: Record<string, Try<ParameterValue>>, _key: string) => {
             const key = _key as keyof T & string
             const values = rawData.filter(({ name }) => name === key)
-            const paramDescriptor = this.parameters.descriptor[key]
-            acc[key] = this.deserializeParameter(paramDescriptor, key, values, this.append(this.basePath(), key))
+            const paramrule = this.parameters.parameters[key]
+            acc[key] = this.deserializeParameter(paramrule, key, values, this.append(this.basePath(), key))
             return acc
           },
           {},
@@ -42,47 +40,52 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
   }
 
   protected deserializeParameter(
-    descriptor: CookieParameterDescriptor,
+    rule: CookieParameterRule,
     name: string,
     data: CookieValue[],
     path: string,
   ): Try<ParameterValue> {
-    if (descriptor.type === 'schema') {
-      return this.schema(descriptor, name, data, path)
+    if (rule.structure.type === 'mime-type') {
+      return this.schema(rule as CookieParameterRule<MimeTypeParameterRule>, name, data, path)
     }
-    switch (descriptor.style) {
+    switch (rule.style) {
       case 'form': {
-        switch (descriptor.type) {
+        switch (rule.structure.type) {
           case 'primitive':
-            return this.formPrimitive(descriptor, name, data, path)
+            return this.formPrimitive(rule as CookieParameterRule<PrimitiveParameterRule>, name, data, path)
           default: {
-            throw unexpectedType(descriptor.type, ['primitive'])
+            throw unexpectedType(rule.structure.type, ['primitive'])
           }
         }
       }
       default:
-        throw unexpectedStyle(descriptor.style, ['form'])
+        throw unexpectedStyle(rule.style, ['form'])
     }
   }
 
   protected formPrimitive(
-    descriptor: CookiePrimitive,
+    rule: CookieParameterRule<PrimitiveParameterRule>,
     name: string,
     data: CookieValue[],
     path: string,
   ): Try<Primitive> {
-    return fluent(this.getCookieValue(descriptor, data, path)).flatMap((value) => {
-      if (!descriptor.required && isNil(value)) {
+    return fluent(this.getCookieValue(rule, data, path)).flatMap((value) => {
+      if (!rule.required && isNil(value)) {
         return success(undefined)
       }
-      return this.values.deserialize(descriptor.value, isNil(value) ? value : this.decode(value), path)
+      return this.values.deserialize(rule.structure.value, isNil(value) ? value : this.decode(value), path)
     })
   }
 
-  protected schema(descriptor: CookieSchema, name: string, data: CookieValue[], path: string): Try<any> {
-    return fluent(this.getCookieValue(descriptor, data, path))
+  protected schema(
+    rule: CookieParameterRule<MimeTypeParameterRule>,
+    name: string,
+    data: CookieValue[],
+    path: string,
+  ): Try<any> {
+    return fluent(this.getCookieValue(rule, data, path))
       .map((value) => (isNil(value) ? value : this.decode(value)))
-      .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
+      .flatMap((value) => this.schemaDeserialize(rule.structure, value, path))
   }
 
   protected deserializeCookie(cookie: string | undefined, path: string): Try<CookieValue[]> {
@@ -106,16 +109,10 @@ export class DefaultCookieDeserializer<T> extends BaseDeserializer implements Co
     }
   }
 
-  protected getCookieValue(
-    descriptor: CookieParameterDescriptor,
-    data: CookieValue[],
-    path: string,
-  ): Try<string | undefined> {
+  protected getCookieValue(rule: CookieParameterRule, data: CookieValue[], path: string): Try<string | undefined> {
     switch (data.length) {
       case 0: {
-        return descriptor.required
-          ? failure({ message: `missing cookie`, path, severity: 'error' })
-          : success(undefined)
+        return rule.required ? failure({ message: `missing cookie`, path, severity: 'error' }) : success(undefined)
       }
       case 1: {
         return success(data[0]?.value)

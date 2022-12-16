@@ -1,19 +1,17 @@
+import {
+  CookieDescriptorRule,
+  CookieParameterRule,
+  MimeTypeParameterRule,
+  PrimitiveParameterRule,
+} from '@oats-ts/rules'
 import { failure, fluent, fromArray, isFailure, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
-import {
-  ParameterValue,
-  Primitive,
-  CookieSerializer,
-  CookieParameters,
-  CookieParameterDescriptor,
-  CookiePrimitive,
-  CookieSchema,
-} from './types'
+import { ParameterValue, Primitive, CookieSerializer } from './types'
 import { isNil } from './utils'
 
 export class DefaultCookieSerializer<T> extends BaseSerializer implements CookieSerializer<T> {
-  constructor(protected readonly parameters: CookieParameters<T>) {
+  constructor(protected readonly parameters: CookieDescriptorRule<T>) {
     super()
   }
 
@@ -26,12 +24,12 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
     if (isFailure(validationResult)) {
       return validationResult
     }
-    const serializedParts = Object.keys(this.parameters.descriptor).map(
+    const serializedParts = Object.keys(this.parameters.parameters).map(
       (_key: string): Try<[string, string | undefined]> => {
         const key = _key as string & keyof T
-        const paramDescriptor = this.parameters.descriptor[key]
+        const paramrule = this.parameters.parameters[key]
         const cookieValue = input?.[key]
-        const serialized = this.serializeParameter(paramDescriptor, key, cookieValue, this.append(this.basePath(), key))
+        const serialized = this.serializeParameter(paramrule, key, cookieValue, this.append(this.basePath(), key))
         return fluent(serialized).map((value) => [key, value])
       },
     )
@@ -43,60 +41,65 @@ export class DefaultCookieSerializer<T> extends BaseSerializer implements Cookie
   }
 
   protected serializeParameter(
-    descriptor: CookieParameterDescriptor,
+    rule: CookieParameterRule,
     name: string,
     value: any,
     path: string,
   ): Try<string | undefined> {
-    if (descriptor.type === 'schema') {
-      return this.schema(descriptor, name, value, path)
+    if (rule.structure.type === 'mime-type') {
+      return this.schema(rule as CookieParameterRule<MimeTypeParameterRule>, name, value, path)
     }
-    switch (descriptor.style) {
+    switch (rule.style) {
       case 'form': {
-        switch (descriptor.type) {
+        switch (rule.structure.type) {
           case 'primitive':
-            return this.formPrimitive(descriptor, name, value, path)
+            return this.formPrimitive(rule as CookieParameterRule<PrimitiveParameterRule>, name, value, path)
           default: {
-            throw unexpectedType(descriptor.type, ['primitive'])
+            throw unexpectedType(rule.structure.type, ['primitive'])
           }
         }
       }
       default:
-        throw unexpectedStyle(descriptor.style, ['simple'])
+        throw unexpectedStyle(rule.style, ['simple'])
     }
   }
 
   protected formPrimitive(
-    descriptor: CookiePrimitive,
+    rule: CookieParameterRule<PrimitiveParameterRule>,
     name: string,
     data: Primitive,
     path: string,
   ): Try<string | undefined> {
-    return fluent(this.getCookieValue(descriptor, path, data))
+    return fluent(this.getCookieValue(rule, path, data))
       .flatMap(
         (value): Try<string | undefined> =>
           isNil(value)
             ? success(undefined)
-            : fluent(this.values.serialize(descriptor.value, value, path)).map((value) => this.encode(value)),
+            : fluent(this.values.serialize(rule.structure.value, value, path)).map((value) => this.encode(value)),
       )
       .toTry()
   }
 
-  protected schema(descriptor: CookieSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
-    return fluent(this.getCookieValue(descriptor, path, data))
-      .flatMap((value) => this.schemaSerialize(descriptor, value, path))
+  protected schema(
+    rule: CookieParameterRule<MimeTypeParameterRule>,
+    name: string,
+    data: Primitive,
+    path: string,
+  ): Try<string | undefined> {
+    return fluent(this.getCookieValue(rule, path, data))
+      .flatMap((value) => this.schemaSerialize(rule.structure, value, path))
       .map((value) => (isNil(value) ? value : this.encode(value)))
   }
 
   protected getCookieValue<T extends ParameterValue>(
-    descriptor: CookieParameterDescriptor,
+    rule: CookieParameterRule,
     path: string,
     value: T | undefined,
   ): Try<T> {
     if (!isNil(value)) {
       return success(value)
     }
-    if (!descriptor.required) {
+    if (!rule.required) {
       return success(undefined as unknown as T)
     }
     return failure({

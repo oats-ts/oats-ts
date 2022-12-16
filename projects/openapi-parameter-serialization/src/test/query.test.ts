@@ -5,7 +5,7 @@ import { success } from '@oats-ts/try'
 import { testCases } from './common'
 import { DefaultQuerySerializer } from '../DefaultQuerySerializer'
 import { DefaultQueryDeserializer } from '../DefaultQueryDeserializer'
-import { Type, QueryParameterDescriptor, QueryParameters, QueryStyle } from '../types'
+import { QueryDescriptorRule, QueryParameterRule } from '@oats-ts/rules'
 
 describe('query', () => {
   testCases(queryTestCases).forEach((test: QueryTestCase<any>) => {
@@ -37,12 +37,27 @@ describe('query', () => {
     })
   })
   describe('Illegal construction', () => {
-    const illegalSchemas: QueryParameters<any>[] = [
-      { descriptor: { foo: { type: 'foo' as Type, style: 'form' } as QueryParameterDescriptor } },
-      { descriptor: { foo: { type: 'primitive', style: 'deepObject' } as QueryParameterDescriptor } },
-      { descriptor: { foo: { type: 'primitive', style: 'pipeDelimited' } as QueryParameterDescriptor } },
-      { descriptor: { foo: { type: 'object', style: 'spaceDelimited' } as QueryParameterDescriptor } },
-      { descriptor: { foo: { type: 'object', style: 'fooo' as QueryStyle } as QueryParameterDescriptor } },
+    const illegalSchemas: QueryDescriptorRule<any>[] = [
+      {
+        parameters: { foo: { structure: { type: 'foo' }, style: 'form' } as unknown as QueryParameterRule },
+        schema: undefined!,
+      },
+      {
+        parameters: { foo: { structure: { type: 'primtive' }, style: 'label' } as unknown as QueryParameterRule },
+        schema: undefined!,
+      },
+      {
+        parameters: { foo: { structure: { type: 'primtive' }, style: 'label' } as unknown as QueryParameterRule },
+        schema: undefined!,
+      },
+      {
+        parameters: { foo: { structure: { type: 'object' }, style: 'label' } as unknown as QueryParameterRule },
+        schema: undefined!,
+      },
+      {
+        parameters: { foo: { structure: { type: 'object' }, style: 'fooo' } as unknown as QueryParameterRule },
+        schema: undefined!,
+      },
     ]
 
     illegalSchemas.forEach((schema) => {

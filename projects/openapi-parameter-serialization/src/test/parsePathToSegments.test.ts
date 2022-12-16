@@ -1,5 +1,5 @@
+import { PathSegment } from '@oats-ts/rules'
 import { parsePathToSegments } from '../parsePathToSegments'
-import { PathSegment } from '../types'
 
 const data: [string, PathSegment[]][] = [
   // Empty

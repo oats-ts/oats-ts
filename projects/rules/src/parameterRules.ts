@@ -1,36 +1,40 @@
-export type HeaderParameterRule = {
+export type HeaderParameterRule<T extends StructuralParameterRule = StructuralParameterRule> = {
   location: 'header'
   style: 'simple'
   required: boolean
   explode: boolean
-  structure: StructuralParameterRule
+  structure: T
 }
 
-export type PathParameterRule = {
+export type PathParameterRule<T extends StructuralParameterRule = StructuralParameterRule> = {
   location: 'path'
   style: 'simple' | 'label' | 'matrix'
   required: true
   explode: boolean
-  structure: StructuralParameterRule
+  structure: T
 }
 
-export type QueryParameterRule = {
+export type QueryParameterRule<T extends StructuralParameterRule = StructuralParameterRule> = {
   location: 'query'
   style: 'form' | 'spaceDelimited' | 'pipeDelimited' | 'deepObject'
   required: boolean
   explode: boolean
-  structure: StructuralParameterRule
+  structure: T
 }
 
-export type CookieParameterRule = {
+export type CookieParameterRule<T extends StructuralParameterRule = StructuralParameterRule> = {
   location: 'cookie'
   style: 'form'
   required: boolean
   explode: boolean
-  structure: PrimitiveParameterRule | MimeTypeParameterRule
+  structure: T
 }
 
-export type ParameterRule = QueryParameterRule | PathParameterRule | CookieParameterRule | HeaderParameterRule
+export type ParameterRule<T extends StructuralParameterRule = StructuralParameterRule> =
+  | QueryParameterRule<T>
+  | PathParameterRule<T>
+  | CookieParameterRule<T>
+  | HeaderParameterRule<T>
 
 export type PrimitiveParameterRule = { type: 'primitive'; value: ValueParameterRule }
 export type ObjectParameterRule = { type: 'object'; properties: Record<string, ValueParameterRule> }

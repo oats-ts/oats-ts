@@ -106,7 +106,7 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
             : factory.createNumericLiteral(status),
           factory.createObjectLiteralExpression([
             factory.createPropertyAssignment(
-              ParametersFields.descriptor,
+              ParametersFields.parameters,
               this.descriptorsGenerator.getParameterDescriptorAst(parameters),
             ),
             factory.createPropertyAssignment(

@@ -5,9 +5,9 @@ import { success } from '@oats-ts/try'
 import { testCases } from './common'
 import { DefaultPathSerializer } from '../DefaultPathSerializer'
 import { DefaultPathDeserializer } from '../DefaultPathDeserializer'
-import { Type, PathParameterDescriptor, PathParameters, PathStyle } from '../types'
 import { pathToRegexp } from 'path-to-regexp'
 import { parsePathToSegments } from '../parsePathToSegments'
+import { PathDescriptorRule, PathParameterRule } from '@oats-ts/rules'
 
 describe('path', () => {
   testCases(pathTestCases).forEach((test: PathTestCase<any>) => {
@@ -40,26 +40,30 @@ describe('path', () => {
   })
 
   describe('Illegal construction', () => {
-    const illegalSchemas: PathParameters<any>[] = [
+    const illegalSchemas: PathDescriptorRule<any>[] = [
       {
-        descriptor: { foo: { type: 'foo' as Type, style: 'label' } as PathParameterDescriptor },
+        parameters: { foo: { structure: { type: 'foo' }, style: 'label' } as unknown as PathParameterRule },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
+        schema: undefined!,
       },
       {
-        descriptor: { foo: { type: 'foo' as Type, style: 'matrix' } as PathParameterDescriptor },
+        parameters: { foo: { structure: { type: 'foo' }, style: 'matrix' } as unknown as PathParameterRule },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
+        schema: undefined!,
       },
       {
-        descriptor: { foo: { type: 'foo' as Type, style: 'simple' } as PathParameterDescriptor },
+        parameters: { foo: { structure: { type: 'foo' }, style: 'simple' } as unknown as PathParameterRule },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
+        schema: undefined!,
       },
       {
-        descriptor: { foo: { type: 'object', style: 'fooo' as PathStyle } as PathParameterDescriptor },
+        parameters: { foo: { structure: { type: 'object' }, style: 'fooo' } as unknown as PathParameterRule },
         pathSegments: parsePathToSegments('/foo/{foo}'),
         matcher: pathToRegexp('/foo/:foo'),
+        schema: undefined!,
       },
     ]
 

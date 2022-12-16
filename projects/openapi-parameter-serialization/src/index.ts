@@ -6,8 +6,6 @@ export { getPathTemplate } from './getPathTemplate'
 export { parsePathToMatcher } from './parsePathToMatcher'
 export { serializeSetCookieValue } from './serializeSetCookieValue'
 
-export { parameter } from './parameter'
-
 export { DefaultCookieDeserializer } from './DefaultCookieDeserializer'
 export { DefaultCookieSerializer } from './DefaultCookieSerializer'
 export { DefaultHeaderDeserializer } from './DefaultHeaderDeserializer'

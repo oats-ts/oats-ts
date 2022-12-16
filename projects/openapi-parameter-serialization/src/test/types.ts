@@ -1,5 +1,5 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
-import { CookieParameters, HeaderParameters, PathParameters, QueryParameters } from '../types'
+import { CookieDescriptorRule, HeaderDescriptorRule, PathDescriptorRule, QueryDescriptorRule } from '@oats-ts/rules'
 
 type Nullable<A> = A | undefined | null
 
@@ -11,7 +11,11 @@ export type SuccessValue<A, B> = {
 export type TestCase<
   Model,
   Serialized,
-  D extends QueryParameters<Model> | PathParameters<Model> | HeaderParameters<Model> | CookieParameters<Model>,
+  D extends
+    | QueryDescriptorRule<Model>
+    | PathDescriptorRule<Model>
+    | HeaderDescriptorRule<Model>
+    | CookieDescriptorRule<Model>,
 > = {
   name: string
   only?: boolean
@@ -22,10 +26,10 @@ export type TestCase<
   deserializerErrors: Nullable<Serialized>[]
 }
 
-export type HeaderTestCase<Model> = TestCase<Model, RawHttpHeaders, HeaderParameters<Model>>
+export type HeaderTestCase<Model> = TestCase<Model, RawHttpHeaders, HeaderDescriptorRule<Model>>
 
-export type QueryTestCase<Model> = TestCase<Model, string, QueryParameters<Model>>
+export type QueryTestCase<Model> = TestCase<Model, string, QueryDescriptorRule<Model>>
 
-export type PathTestCase<Model> = TestCase<Model, string, PathParameters<Model>>
+export type PathTestCase<Model> = TestCase<Model, string, PathDescriptorRule<Model>>
 
-export type CookieTestCase<Model> = TestCase<Model, string, CookieParameters<Model>>
+export type CookieTestCase<Model> = TestCase<Model, string, CookieDescriptorRule<Model>>

@@ -1,4 +1,4 @@
-import { parameter } from '../parameter'
+import { parameters } from '@oats-ts/rules'
 import { encode } from '../utils'
 import {
   BoolField,
@@ -31,8 +31,8 @@ import { CookieTestCase } from './types'
 export const requiredStringQuery: CookieTestCase<StrField> = {
   name: 'required form string cookie',
   descriptor: {
-    descriptor: {
-      str: parameter.cookie.form.required.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.cookie.form.required.primitive(parameters.value.string()),
     },
     schema: strFieldSchema,
   },
@@ -48,8 +48,8 @@ export const requiredStringQuery: CookieTestCase<StrField> = {
 export const optionalStringQuery: CookieTestCase<OptStrField> = {
   name: 'optional form string cookie',
   descriptor: {
-    descriptor: {
-      str: parameter.cookie.form.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.cookie.form.primitive(parameters.value.string()),
     },
     schema: optStrFieldSchema,
   },
@@ -65,8 +65,8 @@ export const optionalStringQuery: CookieTestCase<OptStrField> = {
 export const requiredNumberQuery: CookieTestCase<NumField> = {
   name: 'required form number cookie',
   descriptor: {
-    descriptor: {
-      num: parameter.cookie.form.required.primitive(parameter.value.number()),
+    parameters: {
+      num: parameters.cookie.form.required.primitive(parameters.value.number()),
     },
     schema: numFieldSchema,
   },
@@ -83,8 +83,8 @@ export const requiredNumberQuery: CookieTestCase<NumField> = {
 export const optionalNumberQuery: CookieTestCase<OptNumField> = {
   name: 'optional form number cookie',
   descriptor: {
-    descriptor: {
-      num: parameter.cookie.form.primitive(parameter.value.number()),
+    parameters: {
+      num: parameters.cookie.form.primitive(parameters.value.number()),
     },
     schema: optNumFieldSchema,
   },
@@ -96,8 +96,8 @@ export const optionalNumberQuery: CookieTestCase<OptNumField> = {
 export const requiredBooleanQuery: CookieTestCase<BoolField> = {
   name: 'required form boolean cookie',
   descriptor: {
-    descriptor: {
-      bool: parameter.cookie.form.required.primitive(parameter.value.boolean()),
+    parameters: {
+      bool: parameters.cookie.form.required.primitive(parameters.value.boolean()),
     },
     schema: boolFieldSchema,
   },
@@ -112,8 +112,8 @@ export const requiredBooleanQuery: CookieTestCase<BoolField> = {
 export const optionalBooleanQuery: CookieTestCase<OptBoolField> = {
   name: 'optional form boolean cookie',
   descriptor: {
-    descriptor: {
-      bool: parameter.cookie.form.primitive(parameter.value.boolean()),
+    parameters: {
+      bool: parameters.cookie.form.primitive(parameters.value.boolean()),
     },
     schema: optBoolFieldSchema,
   },
@@ -125,8 +125,8 @@ export const optionalBooleanQuery: CookieTestCase<OptBoolField> = {
 export const requiredLiteralQuery: CookieTestCase<LitField> = {
   name: 'required form literal cookie',
   descriptor: {
-    descriptor: {
-      lit: parameter.cookie.form.required.primitive(parameter.value.string()),
+    parameters: {
+      lit: parameters.cookie.form.required.primitive(parameters.value.string()),
     },
     schema: litFieldSchema,
   },
@@ -138,8 +138,8 @@ export const requiredLiteralQuery: CookieTestCase<LitField> = {
 export const optionalLiteralQuery: CookieTestCase<OptLitField> = {
   name: 'optional form literal cookie',
   descriptor: {
-    descriptor: {
-      lit: parameter.cookie.form.primitive(parameter.value.string()),
+    parameters: {
+      lit: parameters.cookie.form.primitive(parameters.value.string()),
     },
     schema: optLitFieldSchema,
   },
@@ -151,8 +151,8 @@ export const optionalLiteralQuery: CookieTestCase<OptLitField> = {
 export const requiredEnumQuery: CookieTestCase<EnmField> = {
   name: 'required form enum cookie',
   descriptor: {
-    descriptor: {
-      enm: parameter.cookie.form.required.primitive(parameter.value.string()),
+    parameters: {
+      enm: parameters.cookie.form.required.primitive(parameters.value.string()),
     },
     schema: enmFieldSchema,
   },
@@ -168,8 +168,8 @@ export const requiredEnumQuery: CookieTestCase<EnmField> = {
 export const optionalEnumQuery: CookieTestCase<OptEnmField> = {
   name: 'optional form enum cookie',
   descriptor: {
-    descriptor: {
-      enm: parameter.cookie.form.primitive(parameter.value.string()),
+    parameters: {
+      enm: parameters.cookie.form.primitive(parameters.value.string()),
     },
     schema: optEnmFieldSchema,
   },
@@ -181,8 +181,8 @@ export const optionalEnumQuery: CookieTestCase<OptEnmField> = {
 export const jsonComplexObjectCookie: CookieTestCase<ComplexObjField> = {
   name: 'required complex cookie object',
   descriptor: {
-    descriptor: {
-      obj: parameter.cookie.required.schema('application/json'),
+    parameters: {
+      obj: parameters.cookie.required.schema('application/json'),
     },
     schema: complexObjFieldSchema,
   },

@@ -40,6 +40,7 @@
     "@oats-ts/openapi-model": "0.0.49",
     "@oats-ts/openapi-parameter-serialization": "0.0.49",
     "@oats-ts/try": "0.0.49",
+    "@oats-ts/rules": "0.0.49",
     "@oats-ts/typescript-common": "0.0.49",
     "@oats-ts/validators": "0.0.49",
     "camelcase": "6.2.0",

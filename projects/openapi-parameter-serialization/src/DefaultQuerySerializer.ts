@@ -1,23 +1,19 @@
+import {
+  ArrayParameterRule,
+  MimeTypeParameterRule,
+  ObjectParameterRule,
+  PrimitiveParameterRule,
+  QueryDescriptorRule,
+  QueryParameterRule,
+} from '@oats-ts/rules'
 import { failure, fluent, fromArray, isFailure, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
-import {
-  ParameterValue,
-  Primitive,
-  PrimitiveArray,
-  PrimitiveRecord,
-  QueryArray,
-  QueryParameterDescriptor,
-  QueryParameters,
-  QueryObject,
-  QueryPrimitive,
-  QuerySerializer,
-  QuerySchema,
-} from './types'
+import { ParameterValue, Primitive, PrimitiveArray, PrimitiveRecord, QuerySerializer } from './types'
 import { entries, isNil } from './utils'
 
 export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySerializer<T> {
-  constructor(protected readonly parameters: QueryParameters<T>) {
+  constructor(protected readonly parameters: QueryDescriptorRule<T>) {
     super()
   }
 
@@ -31,9 +27,9 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
       return validationResult
     }
     const serializedParts = fromArray(
-      Object.keys(this.parameters.descriptor).map((name: string) => {
+      Object.keys(this.parameters.parameters).map((name: string) => {
         const key = name as keyof T & string
-        const descriptor: QueryParameterDescriptor = this.parameters.descriptor[key]
+        const descriptor: QueryParameterRule = this.parameters.parameters[key]
         const value = input?.[key] as unknown as ParameterValue
         const path = this.append(this.basePath(), key)
         return this.parameter(descriptor, key, value, path)
@@ -46,46 +42,46 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
       .toTry()
   }
 
-  protected parameter(descriptor: QueryParameterDescriptor, name: string, value: any, path: string): Try<string[]> {
-    if (descriptor.type === 'schema') {
-      return this.schema(descriptor, name, value, path)
+  protected parameter(descriptor: QueryParameterRule, name: string, value: any, path: string): Try<string[]> {
+    if (descriptor.structure.type === 'mime-type') {
+      return this.schema(descriptor as QueryParameterRule<MimeTypeParameterRule>, name, value, path)
     }
     switch (descriptor.style) {
       case 'form': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'primitive':
-            return this.formPrimitive(descriptor, name, value, path)
+            return this.formPrimitive(descriptor as QueryParameterRule<PrimitiveParameterRule>, name, value, path)
           case 'array':
-            return this.formArray(descriptor, name, value, path)
+            return this.formArray(descriptor as QueryParameterRule<ArrayParameterRule>, name, value, path)
           case 'object':
-            return this.formObject(descriptor, name, value, path)
+            return this.formObject(descriptor as QueryParameterRule<ObjectParameterRule>, name, value, path)
           default: {
-            throw unexpectedType((descriptor as any).type)
+            throw unexpectedType((descriptor as QueryParameterRule).structure.type)
           }
         }
       }
       case 'pipeDelimited': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'array':
-            return this.pipeDelimitedArray(descriptor, name, value, path)
+            return this.pipeDelimitedArray(descriptor as QueryParameterRule<ArrayParameterRule>, name, value, path)
           default:
-            throw unexpectedType(descriptor.type, ['array'])
+            throw unexpectedType(descriptor.structure.type, ['array'])
         }
       }
       case 'spaceDelimited': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'array':
-            return this.spaceDelimitedArray(descriptor, name, value, path)
+            return this.spaceDelimitedArray(descriptor as QueryParameterRule<ArrayParameterRule>, name, value, path)
           default:
-            throw unexpectedType(descriptor.type, ['array'])
+            throw unexpectedType(descriptor.structure.type, ['array'])
         }
       }
       case 'deepObject': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'object':
-            return this.deepObjectObject(descriptor, name, value, path)
+            return this.deepObjectObject(descriptor as QueryParameterRule<ObjectParameterRule>, name, value, path)
           default:
-            throw unexpectedType(descriptor.type, ['object'])
+            throw unexpectedType(descriptor.structure.type, ['object'])
         }
       }
       default:
@@ -93,7 +89,12 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
     }
   }
 
-  protected formPrimitive(descriptor: QueryPrimitive, name: string, data: Primitive, path: string): Try<string[]> {
+  protected formPrimitive(
+    descriptor: QueryParameterRule<PrimitiveParameterRule>,
+    name: string,
+    data: Primitive,
+    path: string,
+  ): Try<string[]> {
     return fluent(this.getQueryValue(descriptor, path, data))
       .map((value) => {
         if (isNil(value)) {
@@ -106,17 +107,27 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
       .toTry()
   }
 
-  protected formArray(descriptor: QueryArray, name: string, data: PrimitiveArray, path: string): Try<string[]> {
+  protected formArray(
+    descriptor: QueryParameterRule<ArrayParameterRule>,
+    name: string,
+    data: PrimitiveArray,
+    path: string,
+  ): Try<string[]> {
     return this.delimitedArray(descriptor, ',', path, data, name)
   }
 
-  protected formObject(descriptor: QueryObject, name: string, data: PrimitiveRecord, path: string): Try<string[]> {
+  protected formObject(
+    descriptor: QueryParameterRule<ObjectParameterRule>,
+    name: string,
+    data: PrimitiveRecord,
+    path: string,
+  ): Try<string[]> {
     return fluent(this.getQueryValue(descriptor, path, data))
       .flatMap((value): Try<string[]> => {
         if (isNil(value)) {
           return success([])
         }
-        return this.objectToKeyValuePairs(descriptor.properties, value, path).map((kvPairs): string[] => {
+        return this.objectToKeyValuePairs(descriptor.structure.properties, value, path).map((kvPairs): string[] => {
           if (kvPairs.length === 0) {
             return []
           }
@@ -131,7 +142,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   protected pipeDelimitedArray(
-    descriptor: QueryArray,
+    descriptor: QueryParameterRule<ArrayParameterRule>,
     name: string,
     data: PrimitiveArray,
     path: string,
@@ -140,7 +151,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   protected spaceDelimitedArray(
-    descriptor: QueryArray,
+    descriptor: QueryParameterRule<ArrayParameterRule>,
     name: string,
     data: PrimitiveArray,
     path: string,
@@ -149,7 +160,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   protected deepObjectObject(
-    descriptor: QueryObject,
+    descriptor: QueryParameterRule<ObjectParameterRule>,
     name: string,
     data: PrimitiveRecord,
     path: string,
@@ -175,14 +186,19 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
       .toTry()
   }
 
-  protected schema(descriptor: QuerySchema, name: string, data: any, path: string): Try<string[]> {
+  protected schema(
+    descriptor: QueryParameterRule<MimeTypeParameterRule>,
+    name: string,
+    data: any,
+    path: string,
+  ): Try<string[]> {
     return fluent(this.getQueryValue(descriptor, path, data))
-      .flatMap((value) => this.schemaSerialize(descriptor, value, path))
+      .flatMap((value) => this.schemaSerialize(descriptor.structure, value, path))
       .map((value) => (isNil(value) ? [] : [`${this.encode(name)}=${this.encode(value)}`]))
   }
 
   protected delimitedArray(
-    descriptor: QueryArray,
+    descriptor: QueryParameterRule<ArrayParameterRule>,
     delimiter: string,
     path: string,
     data: PrimitiveArray,
@@ -194,7 +210,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
           return success([])
         }
         const keyStr = this.encode(name)
-        return this.arrayToValues(descriptor.items, value, path).map((values) => {
+        return this.arrayToValues(descriptor.structure.items, value, path).map((values) => {
           if (descriptor.explode) {
             return values.length === 0 ? [] : values.map((item) => `${keyStr}=${this.encode(item?.toString())}`)
           }
@@ -205,7 +221,7 @@ export class DefaultQuerySerializer<T> extends BaseSerializer implements QuerySe
   }
 
   protected getQueryValue<T extends ParameterValue>(
-    descriptor: QueryParameterDescriptor,
+    descriptor: QueryParameterRule,
     path: string,
     value: T | undefined,
   ): Try<T | undefined> {

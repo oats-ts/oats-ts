@@ -4,33 +4,28 @@ import { Issue } from '@oats-ts/validators'
 import { isNil } from './utils'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
+import { ParameterValue, Primitive, PrimitiveArray, PrimitiveRecord, RawPath, HeaderDeserializer } from './types'
 import {
-  ParameterValue,
-  Primitive,
-  PrimitiveArray,
-  PrimitiveRecord,
-  RawPath,
-  HeaderDeserializer,
-  HeaderParameters,
-  HeaderParameterDescriptor,
-  HeaderPrimitive,
-  HeaderArray,
-  HeaderObject,
-  ValueDescriptor,
-  HeaderSchema,
-} from './types'
+  ArrayParameterRule,
+  HeaderDescriptorRule,
+  HeaderParameterRule,
+  MimeTypeParameterRule,
+  ObjectParameterRule,
+  PrimitiveParameterRule,
+  ValueParameterRule,
+} from '@oats-ts/rules'
 
 export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements HeaderDeserializer<T> {
-  constructor(protected readonly parameters: HeaderParameters<T>) {
+  constructor(protected readonly parameters: HeaderDescriptorRule<T>) {
     super()
   }
 
   public deserialize(input: RawHttpHeaders): Try<T> {
-    const deserialized = Object.keys(this.parameters.descriptor).reduce(
+    const deserialized = Object.keys(this.parameters.parameters).reduce(
       (acc: Record<string, Try<ParameterValue>>, _key: string) => {
         const key = _key as string & keyof T
-        const descriptor = this.parameters.descriptor[key]
-        acc[key] = this.parameter(descriptor, key, input ?? {}, this.append(this.basePath(), key))
+        const rule = this.parameters.parameters[key]
+        acc[key] = this.parameter(rule, key, input ?? {}, this.append(this.basePath(), key))
         return acc
       },
       {},
@@ -44,70 +39,65 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
     return 'headers'
   }
 
-  protected parameter(
-    descriptor: HeaderParameterDescriptor,
-    name: string,
-    value: RawPath,
-    path: string,
-  ): Try<ParameterValue> {
-    if (descriptor.type === 'schema') {
-      return this.schema(descriptor, name, value, path)
+  protected parameter(rule: HeaderParameterRule, name: string, value: RawPath, path: string): Try<ParameterValue> {
+    if (rule.structure.type === 'mime-type') {
+      return this.schema(rule as HeaderParameterRule<MimeTypeParameterRule>, name, value, path)
     }
-    switch (descriptor.style) {
+    switch (rule.style) {
       case 'simple': {
-        switch (descriptor.type) {
+        switch (rule.structure.type) {
           case 'primitive':
-            return this.simplePrimitive(descriptor, name, value, path)
+            return this.simplePrimitive(rule as HeaderParameterRule<PrimitiveParameterRule>, name, value, path)
           case 'array':
-            return this.simpleArray(descriptor, name, value, path)
+            return this.simpleArray(rule as HeaderParameterRule<ArrayParameterRule>, name, value, path)
           case 'object':
-            return this.simpleObject(descriptor, name, value, path)
+            return this.simpleObject(rule as HeaderParameterRule<ObjectParameterRule>, name, value, path)
           default: {
-            throw unexpectedType((descriptor as any).type)
+            throw unexpectedType((rule as HeaderParameterRule).structure.type)
           }
         }
       }
       default:
-        throw unexpectedStyle(descriptor.style, ['simple', 'label', 'matrix'])
+        throw unexpectedStyle(rule.style, ['simple', 'label', 'matrix'])
     }
   }
 
   protected simplePrimitive(
-    descriptor: HeaderPrimitive,
+    rule: HeaderParameterRule<PrimitiveParameterRule>,
     name: string,
     data: RawHttpHeaders,
     path: string,
   ): Try<Primitive> {
-    return fluent(this.getHeaderValue(descriptor, name, path, data))
+    return fluent(this.getHeaderValue(rule, name, path, data))
       .flatMap((value) =>
-        isNil(value) ? success(undefined) : this.values.deserialize(descriptor.value, this.decode(value), path),
+        isNil(value) ? success(undefined) : this.values.deserialize(rule.structure.value, this.decode(value), path),
       )
       .toTry()
   }
 
   protected simpleArray(
-    descriptor: HeaderArray,
+    rule: HeaderParameterRule<ArrayParameterRule>,
     name: string,
     data: RawHttpHeaders,
     path: string,
   ): Try<PrimitiveArray> {
-    return fluent(this.getHeaderValue(descriptor, name, path, data))
-      .flatMap((pathValue) => this.deserializeArray(descriptor.items, ',', pathValue, path))
+    return fluent(this.getHeaderValue(rule, name, path, data))
+      .flatMap((pathValue) => this.deserializeArray(rule.structure.items, ',', pathValue, path))
       .toTry()
   }
 
   protected simpleObject(
-    descriptor: HeaderObject,
+    rule: HeaderParameterRule<ObjectParameterRule>,
     name: string,
     data: RawHttpHeaders,
     path: string,
   ): Try<PrimitiveRecord> {
-    return fluent(this.getHeaderValue(descriptor, name, path, data))
+    return fluent(this.getHeaderValue(rule, name, path, data))
       .flatMap((rawDataStr: string): Try<Record<string, string> | undefined> => {
         if (isNil(rawDataStr)) {
           return success(undefined)
         }
-        return descriptor.explode
+        return rule.explode
           ? this.keyValueToRecord(',', '=', rawDataStr, path)
           : this.delimitedToRecord(',', rawDataStr, path)
       })
@@ -115,25 +105,25 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
         if (isNil(record)) {
           return success(undefined)
         }
-        return this.keyValuePairsToObject(descriptor.properties, record, path)
+        return this.keyValuePairsToObject(rule.structure.properties, record, path)
       })
       .toTry()
   }
 
-  protected schema(descriptor: HeaderSchema, name: string, data: RawHttpHeaders, path: string): Try<any> {
-    return fluent(this.getHeaderValue(descriptor, name, path, data))
+  protected schema(
+    rule: HeaderParameterRule<MimeTypeParameterRule>,
+    name: string,
+    data: RawHttpHeaders,
+    path: string,
+  ): Try<any> {
+    return fluent(this.getHeaderValue(rule, name, path, data))
       .map((value) => (isNil(value) ? value : this.decode(value)))
-      .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
+      .flatMap((value) => this.schemaDeserialize(rule.structure, value, path))
   }
 
-  protected getHeaderValue(
-    descriptor: HeaderParameterDescriptor,
-    name: string,
-    path: string,
-    raw: RawHttpHeaders,
-  ): Try<string> {
+  protected getHeaderValue(rule: HeaderParameterRule, name: string, path: string, raw: RawHttpHeaders): Try<string> {
     const value = raw[name] ?? raw[name.toLowerCase()]
-    if (isNil(value) && descriptor.required) {
+    if (isNil(value) && rule.required) {
       return failure({
         message: `should not be ${value}`,
         path,
@@ -191,7 +181,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
   }
 
   protected deserializeArray(
-    descriptor: ValueDescriptor,
+    rule: ValueParameterRule,
     separator: string,
     value: string,
     path: string,
@@ -203,9 +193,7 @@ export class DefaultHeaderDeserializer<T> extends BaseDeserializer implements He
       return success([])
     }
     return fromArray(
-      value
-        .split(separator)
-        .map((value, i) => this.values.deserialize(descriptor, this.decode(value), this.append(path, i))),
+      value.split(separator).map((value, i) => this.values.deserialize(rule, this.decode(value), this.append(path, i))),
     )
   }
 }

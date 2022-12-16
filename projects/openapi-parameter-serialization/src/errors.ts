@@ -1,8 +1,6 @@
-import { Style, Type } from './types'
+const types = ['primitive', 'array', 'object']
 
-const types: Type[] = ['primitive', 'array', 'object']
-
-export function unexpectedType(type: any, expectedTypes: Type[] = types): TypeError {
+export function unexpectedType(type: any, expectedTypes: string[] = types): TypeError {
   return new TypeError(
     `Unexpected type "${type}". Expected${expectedTypes.length > 1 ? ' one of' : ''} ${expectedTypes
       .map((type) => `"${type}"`)
@@ -10,7 +8,7 @@ export function unexpectedType(type: any, expectedTypes: Type[] = types): TypeEr
   )
 }
 
-export function unexpectedStyle(style: any, expectedStyles: Style[]): TypeError {
+export function unexpectedStyle(style: any, expectedStyles: string[]): TypeError {
   return new TypeError(
     `Unexpected style "${style}". Expected${expectedStyles.length > 1 ? ' one of' : ''} ${expectedStyles
       .map((type) => `"${type}"`)

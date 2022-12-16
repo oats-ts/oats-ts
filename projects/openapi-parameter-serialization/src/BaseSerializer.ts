@@ -1,7 +1,8 @@
+import { MimeTypeParameterRule, ValueParameterRule } from '@oats-ts/rules'
 import { failure, fluent, FluentTry, fromArray, fromRecord, success, Try } from '@oats-ts/try'
 import { Base } from './Base'
 import { DefaultValueSerializer } from './DefaultValueSerializer'
-import { Location, PrimitiveArray, PrimitiveRecord, SchemaDescriptor, ValueDescriptor, ValueSerializer } from './types'
+import { PrimitiveArray, PrimitiveRecord, ValueSerializer } from './types'
 import { entries, isNil } from './utils'
 
 export abstract class BaseSerializer extends Base {
@@ -17,7 +18,7 @@ export abstract class BaseSerializer extends Base {
   }
 
   protected objectToKeyValuePairs(
-    properties: Record<string, ValueDescriptor>,
+    properties: Record<string, ValueParameterRule>,
     value: Exclude<PrimitiveRecord, undefined>,
     path: string,
   ): FluentTry<[string, string][]> {
@@ -34,7 +35,7 @@ export abstract class BaseSerializer extends Base {
   }
 
   protected arrayToValues(
-    items: ValueDescriptor,
+    items: ValueParameterRule,
     value: Exclude<PrimitiveArray, undefined>,
     path: string,
   ): FluentTry<string[]> {
@@ -43,24 +44,24 @@ export abstract class BaseSerializer extends Base {
     ).map((items) => items.filter((item): item is string => !isNil(item)))
   }
 
-  protected schemaSerialize(descriptor: SchemaDescriptor<Location>, value: any, path: string): Try<string | undefined> {
+  protected schemaSerialize(rule: MimeTypeParameterRule, value: any, path: string): Try<string | undefined> {
     if (isNil(value)) {
       return success(undefined)
     }
     try {
-      switch (descriptor.mimeType) {
+      switch (rule.mimeType) {
         case 'application/json': {
           return success(JSON.stringify(value))
         }
         default:
           return failure({
-            message: `unknown mime-type "${descriptor.mimeType}" (needs custom serializer)`,
+            message: `unknown mime-type "${rule.mimeType}" (needs custom serializer)`,
             path,
             severity: 'error',
           })
       }
     } catch (e) {
-      return failure({ message: `failed to serialize using "${descriptor.mimeType}": ${e}`, path, severity: 'error' })
+      return failure({ message: `failed to serialize using "${rule.mimeType}": ${e}`, path, severity: 'error' })
     }
   }
 }

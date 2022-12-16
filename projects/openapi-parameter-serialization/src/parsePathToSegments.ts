@@ -1,4 +1,4 @@
-import { PathSegment, SegmentLocation } from './types'
+import { PathSegment, SegmentLocation } from '@oats-ts/rules'
 import { isNil } from './utils'
 
 export function parsePathToSegments(path: string): PathSegment[] {

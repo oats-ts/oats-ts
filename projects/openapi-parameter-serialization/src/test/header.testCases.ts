@@ -1,4 +1,4 @@
-import { parameter } from '../parameter'
+import { parameters } from '@oats-ts/rules'
 import { encode } from '../utils'
 import { obj, optObj } from './common'
 import {
@@ -40,8 +40,8 @@ import { HeaderTestCase } from './types'
 export const requiredStringHeader: HeaderTestCase<HStrField> = {
   name: 'required string headers',
   descriptor: {
-    descriptor: {
-      'X-String-Field': parameter.header.simple.required.primitive(parameter.value.string()),
+    parameters: {
+      'X-String-Field': parameters.header.simple.required.primitive(parameters.value.string()),
     },
     schema: hStrFieldSchema,
   },
@@ -56,8 +56,8 @@ export const requiredStringHeader: HeaderTestCase<HStrField> = {
 export const optionalStringHeader: HeaderTestCase<HOptStrField> = {
   name: 'optional string headers',
   descriptor: {
-    descriptor: {
-      'X-String-Field': parameter.header.simple.primitive(parameter.value.string()),
+    parameters: {
+      'X-String-Field': parameters.header.simple.primitive(parameters.value.string()),
     },
     schema: hOptStrFieldSchema,
   },
@@ -69,8 +69,8 @@ export const optionalStringHeader: HeaderTestCase<HOptStrField> = {
 export const requiredNumberHeader: HeaderTestCase<HNumField> = {
   name: 'required number headers',
   descriptor: {
-    descriptor: {
-      'X-Number-Field': parameter.header.simple.required.primitive(parameter.value.number()),
+    parameters: {
+      'X-Number-Field': parameters.header.simple.required.primitive(parameters.value.number()),
     },
     schema: hNumFieldSchema,
   },
@@ -92,8 +92,8 @@ export const requiredNumberHeader: HeaderTestCase<HNumField> = {
 export const optionalNumberHeader: HeaderTestCase<HOptNumField> = {
   name: 'optional number headers',
   descriptor: {
-    descriptor: {
-      'X-Number-Field': parameter.header.simple.primitive(parameter.value.number()),
+    parameters: {
+      'X-Number-Field': parameters.header.simple.primitive(parameters.value.number()),
     },
     schema: hOptNumFieldSchema,
   },
@@ -105,8 +105,8 @@ export const optionalNumberHeader: HeaderTestCase<HOptNumField> = {
 export const requiredBooleanHeader: HeaderTestCase<HBoolField> = {
   name: 'required boolean headers',
   descriptor: {
-    descriptor: {
-      'X-Boolean-Field': parameter.header.simple.required.primitive(parameter.value.boolean()),
+    parameters: {
+      'X-Boolean-Field': parameters.header.simple.required.primitive(parameters.value.boolean()),
     },
     schema: hBoolFieldSchema,
   },
@@ -128,8 +128,8 @@ export const requiredBooleanHeader: HeaderTestCase<HBoolField> = {
 export const optionalBooleanHeader: HeaderTestCase<HOptBoolField> = {
   name: 'optional boolean headers',
   descriptor: {
-    descriptor: {
-      'X-Boolean-Field': parameter.header.simple.primitive(parameter.value.boolean()),
+    parameters: {
+      'X-Boolean-Field': parameters.header.simple.primitive(parameters.value.boolean()),
     },
     schema: hOptBoolFieldSchema,
   },
@@ -141,8 +141,8 @@ export const optionalBooleanHeader: HeaderTestCase<HOptBoolField> = {
 export const requiredEnumHeader: HeaderTestCase<HEnmField> = {
   name: 'required boolean headers',
   descriptor: {
-    descriptor: {
-      'X-Enum-Field': parameter.header.simple.required.primitive(parameter.value.string()),
+    parameters: {
+      'X-Enum-Field': parameters.header.simple.required.primitive(parameters.value.string()),
     },
     schema: hEnmFieldSchema,
   },
@@ -164,9 +164,9 @@ export const requiredEnumHeader: HeaderTestCase<HEnmField> = {
 export const requiredMixedEnumHeader: HeaderTestCase<HMixedEnmField> = {
   name: 'required mixed enum headers',
   descriptor: {
-    descriptor: {
-      'X-Enum-Field': parameter.header.simple.required.primitive(
-        parameter.value.union([parameter.value.boolean(), parameter.value.number(), parameter.value.string()]),
+    parameters: {
+      'X-Enum-Field': parameters.header.simple.required.primitive(
+        parameters.value.union([parameters.value.boolean(), parameters.value.number(), parameters.value.string()]),
       ),
     },
     schema: hMixedEnmFieldSchema,
@@ -197,8 +197,8 @@ export const requiredMixedEnumHeader: HeaderTestCase<HMixedEnmField> = {
 export const requiredLiteralHeader: HeaderTestCase<HLitField> = {
   name: 'required boolean headers',
   descriptor: {
-    descriptor: {
-      'X-Lit-Field': parameter.header.simple.required.primitive(parameter.value.string()),
+    parameters: {
+      'X-Lit-Field': parameters.header.simple.required.primitive(parameters.value.string()),
     },
     schema: hLitFieldSchema,
   },
@@ -217,8 +217,8 @@ export const requiredLiteralHeader: HeaderTestCase<HLitField> = {
 export const optionalEnumHeader: HeaderTestCase<HOptEnmField> = {
   name: 'optional boolean headers',
   descriptor: {
-    descriptor: {
-      'X-Enum-Field': parameter.header.simple.primitive(parameter.value.string()),
+    parameters: {
+      'X-Enum-Field': parameters.header.simple.primitive(parameters.value.string()),
     },
     schema: hOptEnmFieldSchema,
   },
@@ -230,8 +230,8 @@ export const optionalEnumHeader: HeaderTestCase<HOptEnmField> = {
 export const requiredNumberArrayHeader: HeaderTestCase<HNumArrField> = {
   name: 'required number array headers',
   descriptor: {
-    descriptor: {
-      'X-Arr-Field': parameter.header.simple.required.array(parameter.value.number()),
+    parameters: {
+      'X-Arr-Field': parameters.header.simple.required.array(parameters.value.number()),
     },
     schema: hNumArrFieldSchema,
   },
@@ -268,8 +268,8 @@ export const requiredNumberArrayHeader: HeaderTestCase<HNumArrField> = {
 export const requiredObjectHeader: HeaderTestCase<HObjField> = {
   name: 'required object headers',
   descriptor: {
-    descriptor: {
-      'X-Obj-Field': parameter.header.simple.required.object(obj),
+    parameters: {
+      'X-Obj-Field': parameters.header.simple.required.object(obj),
     },
     schema: hObjFieldSchema,
   },
@@ -302,8 +302,8 @@ export const requiredObjectHeader: HeaderTestCase<HObjField> = {
 export const requiredExplodeObjectHeader: HeaderTestCase<HObjField> = {
   name: 'required object headers',
   descriptor: {
-    descriptor: {
-      'X-Obj-Field': parameter.header.simple.exploded.required.object(obj),
+    parameters: {
+      'X-Obj-Field': parameters.header.simple.exploded.required.object(obj),
     },
     schema: hObjFieldSchema,
   },
@@ -337,8 +337,8 @@ export const requiredExplodeObjectHeader: HeaderTestCase<HObjField> = {
 export const optionalObjectHeader: HeaderTestCase<HOptObjField> = {
   name: 'optional object headers',
   descriptor: {
-    descriptor: {
-      'X-Obj-Field': parameter.header.simple.object(obj),
+    parameters: {
+      'X-Obj-Field': parameters.header.simple.object(obj),
     },
     schema: hOptObjFieldSchema,
   },
@@ -368,8 +368,8 @@ export const optionalObjectHeader: HeaderTestCase<HOptObjField> = {
 export const optionalFieldsObjectHeader: HeaderTestCase<HObjOptField> = {
   name: 'required object headers with optional fields',
   descriptor: {
-    descriptor: {
-      'X-Obj-Field': parameter.header.simple.required.object(optObj),
+    parameters: {
+      'X-Obj-Field': parameters.header.simple.required.object(optObj),
     },
     schema: hObjFieldOptSchema,
   },
@@ -409,8 +409,8 @@ export const optionalFieldsObjectHeader: HeaderTestCase<HObjOptField> = {
 export const jsonObjectSchemaHeader: HeaderTestCase<HComplexObjField> = {
   name: 'required complex object headers',
   descriptor: {
-    descriptor: {
-      'X-Obj-Field': parameter.header.required.schema('application/json'),
+    parameters: {
+      'X-Obj-Field': parameters.header.required.schema('application/json'),
     },
     schema: hComplexObjSchema,
   },

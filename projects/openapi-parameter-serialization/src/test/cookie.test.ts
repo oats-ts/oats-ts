@@ -3,9 +3,9 @@ import * as cookieTestCases from './cookie.testCases'
 import { CookieTestCase } from './types'
 import { success } from '@oats-ts/try'
 import { testCases } from './common'
-import { CookieParameterDescriptor, CookieParameters, CookieStyle, Type } from '../types'
 import { DefaultCookieSerializer } from '../DefaultCookieSerializer'
 import { DefaultCookieDeserializer } from '../DefaultCookieDeserializer'
+import { CookieDescriptorRule, CookieParameterRule } from '@oats-ts/rules'
 
 describe('cookie', () => {
   testCases(cookieTestCases).forEach((test: CookieTestCase<any>) => {
@@ -37,9 +37,15 @@ describe('cookie', () => {
     })
   })
   describe('Illegal construction', () => {
-    const illegalSchemas: CookieParameters<any>[] = [
-      { descriptor: { foo: { type: 'foo' as Type, style: 'form' } as CookieParameterDescriptor } },
-      { descriptor: { foo: { type: 'object', style: 'fooo' as CookieStyle } as CookieParameterDescriptor } },
+    const illegalSchemas: CookieDescriptorRule<any>[] = [
+      {
+        parameters: { foo: { structure: { type: 'foo' }, style: 'form' } as unknown as CookieParameterRule },
+        schema: undefined!,
+      },
+      {
+        parameters: { foo: { structure: { type: 'object' }, style: 'fooo' } as unknown as CookieParameterRule },
+        schema: undefined!,
+      },
     ]
 
     illegalSchemas.forEach((schema) => {

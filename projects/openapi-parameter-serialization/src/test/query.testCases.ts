@@ -1,4 +1,4 @@
-import { parameter } from '../parameter'
+import { parameters } from '@oats-ts/rules'
 import { encode } from '../utils'
 import { obj, optObj } from './common'
 import {
@@ -48,8 +48,8 @@ import { QueryTestCase } from './types'
 export const requiredStringQuery: QueryTestCase<StrField> = {
   name: 'required form string query',
   descriptor: {
-    descriptor: {
-      str: parameter.query.form.exploded.required.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.query.form.exploded.required.primitive(parameters.value.string()),
     },
     schema: strFieldSchema,
   },
@@ -65,8 +65,8 @@ export const requiredStringQuery: QueryTestCase<StrField> = {
 export const optionalStringQuery: QueryTestCase<OptStrField> = {
   name: 'optional form string query',
   descriptor: {
-    descriptor: {
-      str: parameter.query.form.exploded.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.query.form.exploded.primitive(parameters.value.string()),
     },
     schema: optStrFieldSchema,
   },
@@ -82,8 +82,8 @@ export const optionalStringQuery: QueryTestCase<OptStrField> = {
 export const requiredNumberQuery: QueryTestCase<NumField> = {
   name: 'required form number query',
   descriptor: {
-    descriptor: {
-      num: parameter.query.form.exploded.required.primitive(parameter.value.number()),
+    parameters: {
+      num: parameters.query.form.exploded.required.primitive(parameters.value.number()),
     },
     schema: numFieldSchema,
   },
@@ -100,8 +100,8 @@ export const requiredNumberQuery: QueryTestCase<NumField> = {
 export const optionalNumberQuery: QueryTestCase<OptNumField> = {
   name: 'optional form number query',
   descriptor: {
-    descriptor: {
-      num: parameter.query.form.exploded.primitive(parameter.value.number()),
+    parameters: {
+      num: parameters.query.form.exploded.primitive(parameters.value.number()),
     },
     schema: optNumFieldSchema,
   },
@@ -113,8 +113,8 @@ export const optionalNumberQuery: QueryTestCase<OptNumField> = {
 export const requiredBooleanQuery: QueryTestCase<BoolField> = {
   name: 'required form boolean query',
   descriptor: {
-    descriptor: {
-      bool: parameter.query.form.exploded.required.primitive(parameter.value.boolean()),
+    parameters: {
+      bool: parameters.query.form.exploded.required.primitive(parameters.value.boolean()),
     },
     schema: boolFieldSchema,
   },
@@ -129,8 +129,8 @@ export const requiredBooleanQuery: QueryTestCase<BoolField> = {
 export const optionalBooleanQuery: QueryTestCase<OptBoolField> = {
   name: 'optional form boolean query',
   descriptor: {
-    descriptor: {
-      bool: parameter.query.form.exploded.primitive(parameter.value.boolean()),
+    parameters: {
+      bool: parameters.query.form.exploded.primitive(parameters.value.boolean()),
     },
     schema: optBoolFieldSchema,
   },
@@ -142,8 +142,8 @@ export const optionalBooleanQuery: QueryTestCase<OptBoolField> = {
 export const requiredLiteralQuery: QueryTestCase<LitField> = {
   name: 'required form literal query',
   descriptor: {
-    descriptor: {
-      lit: parameter.query.form.exploded.required.primitive(parameter.value.string()),
+    parameters: {
+      lit: parameters.query.form.exploded.required.primitive(parameters.value.string()),
     },
     schema: litFieldSchema,
   },
@@ -155,8 +155,8 @@ export const requiredLiteralQuery: QueryTestCase<LitField> = {
 export const optionalLiteralQuery: QueryTestCase<OptLitField> = {
   name: 'optional form literal query',
   descriptor: {
-    descriptor: {
-      lit: parameter.query.form.exploded.primitive(parameter.value.string()),
+    parameters: {
+      lit: parameters.query.form.exploded.primitive(parameters.value.string()),
     },
     schema: optLitFieldSchema,
   },
@@ -168,8 +168,8 @@ export const optionalLiteralQuery: QueryTestCase<OptLitField> = {
 export const requiredEnumQuery: QueryTestCase<EnmField> = {
   name: 'required form enum query',
   descriptor: {
-    descriptor: {
-      enm: parameter.query.form.exploded.required.primitive(parameter.value.string()),
+    parameters: {
+      enm: parameters.query.form.exploded.required.primitive(parameters.value.string()),
     },
     schema: enmFieldSchema,
   },
@@ -185,8 +185,8 @@ export const requiredEnumQuery: QueryTestCase<EnmField> = {
 export const optionalEnumQuery: QueryTestCase<OptEnmField> = {
   name: 'optional form enum query',
   descriptor: {
-    descriptor: {
-      enm: parameter.query.form.exploded.primitive(parameter.value.string()),
+    parameters: {
+      enm: parameters.query.form.exploded.primitive(parameters.value.string()),
     },
     schema: optEnmFieldSchema,
   },
@@ -198,8 +198,8 @@ export const optionalEnumQuery: QueryTestCase<OptEnmField> = {
 export const requiredFormNumberArrayQuery: QueryTestCase<NumArrField> = {
   name: 'required form number[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.form.exploded.required.array(parameter.value.number()),
+    parameters: {
+      arr: parameters.query.form.exploded.required.array(parameters.value.number()),
     },
     schema: numArrFieldSchema,
   },
@@ -216,8 +216,8 @@ export const requiredFormNumberArrayQuery: QueryTestCase<NumArrField> = {
 export const optionalFormNumberArrayQuery: QueryTestCase<OptNumArrField> = {
   name: 'optional form number[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.form.exploded.array(parameter.value.number()),
+    parameters: {
+      arr: parameters.query.form.exploded.array(parameters.value.number()),
     },
     schema: optNumArrFieldSchema,
   },
@@ -229,8 +229,8 @@ export const optionalFormNumberArrayQuery: QueryTestCase<OptNumArrField> = {
 export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<NumArrField> = {
   name: 'required non-exploded form number[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.form.required.array(parameter.value.number()),
+    parameters: {
+      arr: parameters.query.form.required.array(parameters.value.number()),
     },
     schema: numArrFieldSchema,
   },
@@ -247,8 +247,8 @@ export const requiredFormNumberArrayNoExplodeQuery: QueryTestCase<NumArrField> =
 export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<StrArrField> = {
   name: 'required pipe-delimited string[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.pipeDelimited.exploded.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.query.pipeDelimited.exploded.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -263,8 +263,8 @@ export const requiredPipeDelimitedStringArrayQuery: QueryTestCase<StrArrField> =
 export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<StrArrField> = {
   name: 'required pipe-delimited non-exploded string[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.pipeDelimited.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.query.pipeDelimited.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -279,8 +279,8 @@ export const requiredPipeDelimitedNonExplodedStringArrayQuery: QueryTestCase<Str
 export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<BoolArrField> = {
   name: 'required space-delimited boolean[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.spaceDelimited.exploded.required.array(parameter.value.boolean()),
+    parameters: {
+      arr: parameters.query.spaceDelimited.exploded.required.array(parameters.value.boolean()),
     },
     schema: boolArrFieldSchema,
   },
@@ -296,8 +296,8 @@ export const requiredSpaceDelimitedBooleanArrayQuery: QueryTestCase<BoolArrField
 export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<StrArrField> = {
   name: 'required space-delimited non-exploded string[] query',
   descriptor: {
-    descriptor: {
-      arr: parameter.query.spaceDelimited.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.query.spaceDelimited.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -313,8 +313,8 @@ export const requiredSpaceDelimitedNonExplodedStringArrayQuery: QueryTestCase<St
 export const requiredFormObjectQuery: QueryTestCase<ObjField> = {
   name: 'required form object query',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.form.exploded.required.object(obj),
+    parameters: {
+      obj: parameters.query.form.exploded.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -335,8 +335,8 @@ export const requiredFormObjectQuery: QueryTestCase<ObjField> = {
 export const requiredNoExplodeFormObjectQuery: QueryTestCase<ObjField> = {
   name: 'required non-exploded form object query',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.form.required.object(obj),
+    parameters: {
+      obj: parameters.query.form.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -358,8 +358,8 @@ export const requiredNoExplodeFormObjectQuery: QueryTestCase<ObjField> = {
 export const optionalFormObjectQuery: QueryTestCase<OptObjField> = {
   name: 'optional form object query',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.form.exploded.object(obj),
+    parameters: {
+      obj: parameters.query.form.exploded.object(obj),
     },
     schema: optObjFieldSchema,
   },
@@ -371,8 +371,8 @@ export const optionalFormObjectQuery: QueryTestCase<OptObjField> = {
 export const requiredPartialFormObjectQuery: QueryTestCase<ObjFieldOpt> = {
   name: 'required partial form object query',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.form.exploded.required.object(optObj),
+    parameters: {
+      obj: parameters.query.form.exploded.required.object(optObj),
     },
     schema: objFieldOptSchema,
   },
@@ -405,8 +405,8 @@ export const requiredPartialFormObjectQuery: QueryTestCase<ObjFieldOpt> = {
 export const requiredDeepObjectQuery: QueryTestCase<ObjField> = {
   name: 'required deepObject object query',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.deepObject.exploded.required.object(obj),
+    parameters: {
+      obj: parameters.query.deepObject.exploded.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -427,8 +427,8 @@ export const requiredDeepObjectQuery: QueryTestCase<ObjField> = {
 export const optionalDeepObjectQuery: QueryTestCase<OptObjField> = {
   name: 'optional deepObject object query',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.deepObject.exploded.object(obj),
+    parameters: {
+      obj: parameters.query.deepObject.exploded.object(obj),
     },
     schema: optObjFieldSchema,
   },
@@ -440,8 +440,8 @@ export const optionalDeepObjectQuery: QueryTestCase<OptObjField> = {
 export const jsonComplexObjectQueryRequired: QueryTestCase<ComplexObjField> = {
   name: 'required complex query object',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.required.schema('application/json'),
+    parameters: {
+      obj: parameters.query.required.schema('application/json'),
     },
     schema: complexObjFieldSchema,
   },
@@ -463,8 +463,8 @@ export const jsonComplexObjectQueryRequired: QueryTestCase<ComplexObjField> = {
 export const jsonComplexObjectQueryOptional: QueryTestCase<OptComplexObjField> = {
   name: 'optional complex query object',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.schema('application/json'),
+    parameters: {
+      obj: parameters.query.schema('application/json'),
     },
     schema: optComplexObjFieldSchema,
   },
@@ -480,8 +480,8 @@ export const jsonComplexObjectQueryOptional: QueryTestCase<OptComplexObjField> =
 export const nonJsonComplexQuery: QueryTestCase<OptComplexObjField> = {
   name: 'optional complex query object (non-json)',
   descriptor: {
-    descriptor: {
-      obj: parameter.query.required.schema('foo/bar'),
+    parameters: {
+      obj: parameters.query.required.schema('foo/bar'),
     },
     schema: optComplexObjFieldSchema,
   },

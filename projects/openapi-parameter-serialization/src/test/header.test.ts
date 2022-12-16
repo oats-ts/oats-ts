@@ -6,7 +6,7 @@ import { DefaultHeaderSerializer } from '../DefaultHeaderSerializer'
 import { DefaultHeaderDeserializer } from '../DefaultHeaderDeserializer'
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
 import { testCases } from './common'
-import { Type, HeaderParameterDescriptor, HeaderParameters, HeaderStyle } from '../types'
+import { HeaderDescriptorRule, HeaderParameterRule } from '@oats-ts/rules'
 
 describe('header', () => {
   testCases(headerTests).forEach((test: HeaderTestCase<any>) => {
@@ -38,9 +38,15 @@ describe('header', () => {
     })
   })
   describe('Illegal construction', () => {
-    const illegalSchemas: HeaderParameters<any>[] = [
-      { descriptor: { foo: { type: 'foo' as Type, style: 'simple' } as HeaderParameterDescriptor } },
-      { descriptor: { foo: { type: 'primitive', style: 'deepObject' as HeaderStyle } as HeaderParameterDescriptor } },
+    const illegalSchemas: HeaderDescriptorRule<any>[] = [
+      {
+        parameters: { foo: { structure: { type: 'foo' }, style: 'simple' } as unknown as HeaderParameterRule },
+        schema: undefined!,
+      },
+      {
+        parameters: { foo: { structure: { type: 'primitive' }, style: 'label' } as unknown as HeaderParameterRule },
+        schema: undefined!,
+      },
     ]
 
     illegalSchemas.forEach((schema) => {

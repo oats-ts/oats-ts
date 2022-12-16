@@ -1,4 +1,11 @@
-import { CookieParameterRule, HeaderParameterRule, PathParameterRule, QueryParameterRule } from './parameterRules'
+import {
+  CookieParameterRule,
+  HeaderParameterRule,
+  MimeTypeParameterRule,
+  PathParameterRule,
+  QueryParameterRule,
+  ValueParameterRule,
+} from './parameterRules'
 
 import {
   ArrayParameterRule,
@@ -13,13 +20,9 @@ import {
 } from './parameterRules'
 
 const primitive =
-  <P extends ParameterRule>(
-    location: P['location'],
-    style: P['style'],
-    explode: P['explode'],
-    required: P['required'],
-  ) =>
-  (value: PrimitiveParameterRule['value']): P =>
+  <P extends ParameterRule<PrimitiveParameterRule>>(location: P['location']) =>
+  (style: P['style'], explode: P['explode'], required: P['required']) =>
+  (value: ValueParameterRule): P =>
     ({
       explode,
       location,
@@ -29,13 +32,9 @@ const primitive =
     } as P)
 
 const object =
-  <P extends ParameterRule>(
-    location: P['location'],
-    style: P['style'],
-    explode: P['explode'],
-    required: P['required'],
-  ) =>
-  (properties: ObjectParameterRule['properties']): P =>
+  <P extends ParameterRule<ObjectParameterRule>>(location: P['location']) =>
+  (style: P['style'], explode: P['explode'], required: P['required']) =>
+  (properties: Record<string, ValueParameterRule>): P =>
     ({
       explode,
       location,
@@ -45,13 +44,9 @@ const object =
     } as P)
 
 const array =
-  <P extends ParameterRule>(
-    location: P['location'],
-    style: P['style'],
-    explode: P['explode'],
-    required: P['required'],
-  ) =>
-  (items: ArrayParameterRule['items']): P =>
+  <P extends ParameterRule<ArrayParameterRule>>(location: P['location']) =>
+  (style: P['style'], explode: P['explode'], required: P['required']) =>
+  (items: ValueParameterRule): P =>
     ({
       explode,
       location,
@@ -61,7 +56,8 @@ const array =
     } as P)
 
 const mimeType =
-  <P extends ParameterRule>(location: P['location'], required: P['required']) =>
+  <P extends ParameterRule<MimeTypeParameterRule>>(location: P['location']) =>
+  (required: P['required']) =>
   (mimeType: string): P =>
     ({
       location,
@@ -70,6 +66,24 @@ const mimeType =
       style: 'none' as unknown as P['style'],
       structure: { type: 'mime-type', mimeType },
     } as P)
+
+const pathPrimitive = primitive<PathParameterRule<PrimitiveParameterRule>>('path')
+const queryPrimitive = primitive<QueryParameterRule<PrimitiveParameterRule>>('query')
+const cookiePrimitive = primitive<CookieParameterRule<PrimitiveParameterRule>>('cookie')
+const headerPrimitive = primitive<HeaderParameterRule<PrimitiveParameterRule>>('header')
+
+const pathArray = array<PathParameterRule<ArrayParameterRule>>('path')
+const queryArray = array<QueryParameterRule<ArrayParameterRule>>('query')
+const headerArray = array<HeaderParameterRule<ArrayParameterRule>>('header')
+
+const pathObject = object<PathParameterRule<ObjectParameterRule>>('path')
+const queryObject = object<QueryParameterRule<ObjectParameterRule>>('query')
+const headerObject = object<HeaderParameterRule<ObjectParameterRule>>('header')
+
+const pathMimeType = mimeType<PathParameterRule<MimeTypeParameterRule>>('path')
+const queryMimeType = mimeType<QueryParameterRule<MimeTypeParameterRule>>('query')
+const cookieMimeType = mimeType<CookieParameterRule<MimeTypeParameterRule>>('cookie')
+const headerMimeType = mimeType<HeaderParameterRule<MimeTypeParameterRule>>('header')
 
 function string(): StringParameterRule {
   return { type: 'string' }
@@ -101,153 +115,153 @@ export const value = { string, number, boolean, optional, union }
 
 export const query = {
   required: {
-    schema: mimeType<QueryParameterRule>('query', true),
+    schema: queryMimeType(true),
   },
-  schema: mimeType<QueryParameterRule>('query', false),
+  schema: queryMimeType(false),
   form: {
     exploded: {
       required: {
-        primitive: primitive<QueryParameterRule>('query', 'form', true, true),
-        array: array<QueryParameterRule>('query', 'form', true, true),
-        object: object<QueryParameterRule>('query', 'form', true, true),
+        primitive: queryPrimitive('form', true, true),
+        array: queryArray('form', true, true),
+        object: queryObject('form', true, true),
       },
-      primitive: primitive<QueryParameterRule>('query', 'form', true, false),
-      array: array<QueryParameterRule>('query', 'form', true, false),
-      object: object<QueryParameterRule>('query', 'form', true, false),
+      primitive: queryPrimitive('form', true, false),
+      array: queryArray('form', true, false),
+      object: queryObject('form', true, false),
     },
     required: {
-      primitive: primitive<QueryParameterRule>('query', 'form', false, true),
-      array: array<QueryParameterRule>('query', 'form', false, true),
-      object: object<QueryParameterRule>('query', 'form', false, true),
+      primitive: queryPrimitive('form', false, true),
+      array: queryArray('form', false, true),
+      object: queryObject('form', false, true),
     },
-    primitive: primitive<QueryParameterRule>('query', 'form', false, false),
-    array: array<QueryParameterRule>('query', 'form', false, false),
-    object: object<QueryParameterRule>('query', 'form', false, false),
+    primitive: queryPrimitive('form', false, false),
+    array: queryArray('form', false, false),
+    object: queryObject('form', false, false),
   },
   spaceDelimited: {
     exploded: {
       required: {
-        array: array<QueryParameterRule>('query', 'spaceDelimited', true, true),
+        array: queryArray('spaceDelimited', true, true),
       },
-      array: array<QueryParameterRule>('query', 'spaceDelimited', true, false),
+      array: queryArray('spaceDelimited', true, false),
     },
     required: {
-      array: array<QueryParameterRule>('query', 'spaceDelimited', false, true),
+      array: queryArray('spaceDelimited', false, true),
     },
-    array: array<QueryParameterRule>('query', 'spaceDelimited', false, false),
+    array: queryArray('spaceDelimited', false, false),
   },
   pipeDelimited: {
     exploded: {
       required: {
-        array: array<QueryParameterRule>('query', 'pipeDelimited', true, true),
+        array: queryArray('pipeDelimited', true, true),
       },
-      array: array<QueryParameterRule>('query', 'pipeDelimited', true, false),
+      array: queryArray('pipeDelimited', true, false),
     },
     required: {
-      array: array<QueryParameterRule>('query', 'pipeDelimited', false, true),
+      array: queryArray('pipeDelimited', false, true),
     },
-    array: array<QueryParameterRule>('query', 'pipeDelimited', false, false),
+    array: queryArray('pipeDelimited', false, false),
   },
   deepObject: {
     exploded: {
       required: {
-        object: object<QueryParameterRule>('query', 'deepObject', true, true),
+        object: queryObject('deepObject', true, true),
       },
-      object: object<QueryParameterRule>('query', 'deepObject', true, false),
+      object: queryObject('deepObject', true, false),
     },
   },
 }
 
 export const path = {
   required: {
-    schema: mimeType<PathParameterRule>('path', true),
+    schema: pathMimeType(true),
   },
   simple: {
     exploded: {
       required: {
-        primitive: primitive<PathParameterRule>('path', 'simple', true, true),
-        array: array<PathParameterRule>('path', 'simple', true, true),
-        object: object<PathParameterRule>('path', 'simple', true, true),
+        primitive: pathPrimitive('simple', true, true),
+        array: pathArray('simple', true, true),
+        object: pathObject('simple', true, true),
       },
     },
     required: {
-      primitive: primitive<PathParameterRule>('path', 'simple', false, true),
-      array: array<PathParameterRule>('path', 'simple', false, true),
-      object: object<PathParameterRule>('path', 'simple', false, true),
+      primitive: pathPrimitive('simple', false, true),
+      array: pathArray('simple', false, true),
+      object: pathObject('simple', false, true),
     },
   },
   label: {
     exploded: {
       required: {
-        primitive: primitive<PathParameterRule>('path', 'label', true, true),
-        array: array<PathParameterRule>('path', 'label', true, true),
-        object: object<PathParameterRule>('path', 'label', true, true),
+        primitive: pathPrimitive('label', true, true),
+        array: pathArray('label', true, true),
+        object: pathObject('label', true, true),
       },
     },
     required: {
-      primitive: primitive<PathParameterRule>('path', 'label', false, true),
-      array: array<PathParameterRule>('path', 'label', false, true),
-      object: object<PathParameterRule>('path', 'label', false, true),
+      primitive: pathPrimitive('label', false, true),
+      array: pathArray('label', false, true),
+      object: pathObject('label', false, true),
     },
   },
   matrix: {
     exploded: {
       required: {
-        primitive: primitive<PathParameterRule>('path', 'matrix', true, true),
-        array: array<PathParameterRule>('path', 'matrix', true, true),
-        object: object<PathParameterRule>('path', 'matrix', true, true),
+        primitive: pathPrimitive('matrix', true, true),
+        array: pathArray('matrix', true, true),
+        object: pathObject('matrix', true, true),
       },
     },
     required: {
-      primitive: primitive<PathParameterRule>('path', 'matrix', false, true),
-      array: array<PathParameterRule>('path', 'matrix', false, true),
-      object: object<PathParameterRule>('path', 'matrix', false, true),
+      primitive: pathPrimitive('matrix', false, true),
+      array: pathArray('matrix', false, true),
+      object: pathObject('matrix', false, true),
     },
   },
 }
 
 export const header = {
   required: {
-    schema: mimeType<HeaderParameterRule>('header', true),
+    schema: headerMimeType(true),
   },
-  schema: mimeType<HeaderParameterRule>('header', false),
+  schema: headerMimeType(false),
   simple: {
     exploded: {
       required: {
-        primitive: primitive<HeaderParameterRule>('header', 'simple', true, true),
-        array: array<HeaderParameterRule>('header', 'simple', true, true),
-        object: object<HeaderParameterRule>('header', 'simple', true, true),
+        primitive: headerPrimitive('simple', true, true),
+        array: headerArray('simple', true, true),
+        object: headerObject('simple', true, true),
       },
-      primitive: primitive<HeaderParameterRule>('header', 'simple', true, false),
-      array: array<HeaderParameterRule>('header', 'simple', true, false),
-      object: object<HeaderParameterRule>('header', 'simple', true, false),
+      primitive: headerPrimitive('simple', true, false),
+      array: headerArray('simple', true, false),
+      object: headerObject('simple', true, false),
     },
     required: {
-      primitive: primitive<HeaderParameterRule>('header', 'simple', false, true),
-      array: array<HeaderParameterRule>('header', 'simple', false, true),
-      object: object<HeaderParameterRule>('header', 'simple', false, true),
+      primitive: headerPrimitive('simple', false, true),
+      array: headerArray('simple', false, true),
+      object: headerObject('simple', false, true),
     },
-    primitive: primitive<HeaderParameterRule>('header', 'simple', false, false),
-    array: array<HeaderParameterRule>('header', 'simple', false, false),
-    object: object<HeaderParameterRule>('header', 'simple', false, false),
+    primitive: headerPrimitive('simple', false, false),
+    array: headerArray('simple', false, false),
+    object: headerObject('simple', false, false),
   },
 }
 
 export const cookie = {
   required: {
-    schema: mimeType<CookieParameterRule>('cookie', true),
+    schema: cookieMimeType(true),
   },
-  schema: mimeType<CookieParameterRule>('cookie', false),
+  schema: cookieMimeType(false),
   form: {
     exploded: {
       required: {
-        primitive: primitive<CookieParameterRule>('cookie', 'form', true, true),
+        primitive: cookiePrimitive('form', true, true),
       },
-      primitive: primitive<CookieParameterRule>('cookie', 'form', true, false),
+      primitive: cookiePrimitive('form', true, false),
     },
     required: {
-      primitive: primitive<CookieParameterRule>('cookie', 'form', false, true),
+      primitive: cookiePrimitive('form', false, true),
     },
-    primitive: primitive<CookieParameterRule>('cookie', 'form', false, false),
+    primitive: cookiePrimitive('form', false, false),
   },
 }

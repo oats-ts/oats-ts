@@ -3,7 +3,6 @@ import { parsePathToSegments } from '../parsePathToSegments'
 import { obj } from './common'
 import { BoolField, ComplexObjField, EnmField, LitField, NumField, ObjField, StrArrField, StrField } from './model'
 import { PathTestCase } from './types'
-import { parameter } from '../parameter'
 import { encode } from '../utils'
 import {
   boolFieldSchema,
@@ -15,14 +14,15 @@ import {
   strArrFieldSchema,
   strFieldSchema,
 } from './schemas'
+import { parameters } from '@oats-ts/rules'
 
 export const requiredSimpleStringPath: PathTestCase<StrField> = {
   name: 'required simple path string',
   descriptor: {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
-    descriptor: {
-      str: parameter.path.simple.required.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.path.simple.required.primitive(parameters.value.string()),
     },
     schema: strFieldSchema,
   },
@@ -39,8 +39,8 @@ export const requiredSimpleNumberPath: PathTestCase<NumField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:num'),
     pathSegments: parsePathToSegments('/foo/{num}'),
-    descriptor: {
-      num: parameter.path.simple.required.primitive(parameter.value.number()),
+    parameters: {
+      num: parameters.path.simple.required.primitive(parameters.value.number()),
     },
     schema: numFieldSchema,
   },
@@ -57,8 +57,8 @@ export const requiredSimpleBooleanPath: PathTestCase<BoolField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:bool'),
     pathSegments: parsePathToSegments('/foo/{bool}'),
-    descriptor: {
-      bool: parameter.path.simple.required.primitive(parameter.value.boolean()),
+    parameters: {
+      bool: parameters.path.simple.required.primitive(parameters.value.boolean()),
     },
     schema: boolFieldSchema,
   },
@@ -75,8 +75,8 @@ export const requiredSimpleLiteralPath: PathTestCase<LitField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:lit'),
     pathSegments: parsePathToSegments('/foo/{lit}'),
-    descriptor: {
-      lit: parameter.path.simple.required.primitive(parameter.value.string()),
+    parameters: {
+      lit: parameters.path.simple.required.primitive(parameters.value.string()),
     },
     schema: litFieldSchema,
   },
@@ -90,8 +90,8 @@ export const requiredSimpleEnumPath: PathTestCase<EnmField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:enm'),
     pathSegments: parsePathToSegments('/foo/{enm}'),
-    descriptor: {
-      enm: parameter.path.simple.required.primitive(parameter.value.string()),
+    parameters: {
+      enm: parameters.path.simple.required.primitive(parameters.value.string()),
     },
     schema: enmFieldSchema,
   },
@@ -109,8 +109,8 @@ export const requiredSimpleStringArrayPath: PathTestCase<StrArrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    descriptor: {
-      arr: parameter.path.simple.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.path.simple.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -128,8 +128,8 @@ export const requiredSimpleObjectPath: PathTestCase<ObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    descriptor: {
-      obj: parameter.path.simple.required.object(obj),
+    parameters: {
+      obj: parameters.path.simple.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -152,8 +152,8 @@ export const requiredExplodeSimpleObjectPath: PathTestCase<ObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    descriptor: {
-      obj: parameter.path.simple.exploded.required.object(obj),
+    parameters: {
+      obj: parameters.path.simple.exploded.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -181,8 +181,8 @@ export const requiredLabelStringPath: PathTestCase<StrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
-    descriptor: {
-      str: parameter.path.label.required.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.path.label.required.primitive(parameters.value.string()),
     },
     schema: strFieldSchema,
   },
@@ -199,8 +199,8 @@ export const requiredLabelStringArrayPath: PathTestCase<StrArrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    descriptor: {
-      arr: parameter.path.label.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.path.label.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -217,8 +217,8 @@ export const requiredExplodeLabelStringArrayPath: PathTestCase<StrArrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    descriptor: {
-      arr: parameter.path.label.exploded.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.path.label.exploded.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -235,8 +235,8 @@ export const requiredLabelObjectPath: PathTestCase<ObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    descriptor: {
-      obj: parameter.path.label.required.object(obj),
+    parameters: {
+      obj: parameters.path.label.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -259,8 +259,8 @@ export const requiredExplodeLabelObjectPath: PathTestCase<ObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    descriptor: {
-      obj: parameter.path.label.exploded.required.object(obj),
+    parameters: {
+      obj: parameters.path.label.exploded.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -283,8 +283,8 @@ export const requiredMatrixStringPath: PathTestCase<StrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:str'),
     pathSegments: parsePathToSegments('/foo/{str}'),
-    descriptor: {
-      str: parameter.path.matrix.required.primitive(parameter.value.string()),
+    parameters: {
+      str: parameters.path.matrix.required.primitive(parameters.value.string()),
     },
     schema: strFieldSchema,
   },
@@ -301,8 +301,8 @@ export const requiredMatrixStringArrayPath: PathTestCase<StrArrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    descriptor: {
-      arr: parameter.path.matrix.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.path.matrix.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -319,8 +319,8 @@ export const requiredExplodeMatrixStringArrayPath: PathTestCase<StrArrField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:arr'),
     pathSegments: parsePathToSegments('/foo/{arr}'),
-    descriptor: {
-      arr: parameter.path.matrix.exploded.required.array(parameter.value.string()),
+    parameters: {
+      arr: parameters.path.matrix.exploded.required.array(parameters.value.string()),
     },
     schema: strArrFieldSchema,
   },
@@ -337,8 +337,8 @@ export const requiredMatrixObjectPath: PathTestCase<ObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    descriptor: {
-      obj: parameter.path.matrix.required.object(obj),
+    parameters: {
+      obj: parameters.path.matrix.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -361,8 +361,8 @@ export const requiredExplodedMatrixObjectPath: PathTestCase<ObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj'),
     pathSegments: parsePathToSegments('/foo/{obj}'),
-    descriptor: {
-      obj: parameter.path.matrix.exploded.required.object(obj),
+    parameters: {
+      obj: parameters.path.matrix.exploded.required.object(obj),
     },
     schema: objFieldSchema,
   },
@@ -385,8 +385,8 @@ export const jsonComplexObjectPath: PathTestCase<ComplexObjField> = {
   descriptor: {
     matcher: pathToRegexp('/foo/:obj/bar'),
     pathSegments: parsePathToSegments('/foo/{obj}/bar'),
-    descriptor: {
-      obj: parameter.path.required.schema('application/json'),
+    parameters: {
+      obj: parameters.path.required.schema('application/json'),
     },
     schema: complexObjFieldSchema,
   },

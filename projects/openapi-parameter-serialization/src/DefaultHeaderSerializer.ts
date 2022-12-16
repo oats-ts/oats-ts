@@ -1,24 +1,20 @@
 import { RawHttpHeaders } from '@oats-ts/openapi-http'
+import {
+  ArrayParameterRule,
+  HeaderDescriptorRule,
+  HeaderParameterRule,
+  MimeTypeParameterRule,
+  ObjectParameterRule,
+  PrimitiveParameterRule,
+} from '@oats-ts/rules'
 import { failure, fluent, fromRecord, isFailure, isSuccess, success, Try } from '@oats-ts/try'
 import { BaseSerializer } from './BaseSerializer'
 import { unexpectedStyle, unexpectedType } from './errors'
-import {
-  HeaderParameters,
-  ParameterValue,
-  Primitive,
-  PrimitiveArray,
-  PrimitiveRecord,
-  HeadersSerializer,
-  HeaderParameterDescriptor,
-  HeaderPrimitive,
-  HeaderArray,
-  HeaderObject,
-  HeaderSchema,
-} from './types'
+import { ParameterValue, Primitive, PrimitiveArray, PrimitiveRecord, HeadersSerializer } from './types'
 import { isNil } from './utils'
 
 export class DefaultHeaderSerializer<T> extends BaseSerializer implements HeadersSerializer<T> {
-  constructor(protected readonly parameters: HeaderParameters<T>) {
+  constructor(protected readonly parameters: HeaderDescriptorRule<T>) {
     super()
   }
 
@@ -31,10 +27,10 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
     if (isFailure(validationResult)) {
       return validationResult
     }
-    const serializedParts = Object.keys(this.parameters.descriptor).reduce(
+    const serializedParts = Object.keys(this.parameters.parameters).reduce(
       (parts: Record<string, Try<string>>, _key: string) => {
         const key = _key as keyof T & string
-        const descriptor = this.parameters.descriptor[key as keyof T]
+        const descriptor = this.parameters.parameters[key as keyof T]
         const inputValue = input?.[key as keyof T]
         const value = this.parameter(descriptor, key, inputValue, this.append(this.basePath(), key))
         // Only add the stuff that failed or succeeded but is not undefined
@@ -49,25 +45,25 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
   }
 
   protected parameter(
-    descriptor: HeaderParameterDescriptor,
+    descriptor: HeaderParameterRule,
     name: string,
     value: any,
     path: string,
   ): Try<string | undefined> {
-    if (descriptor.type === 'schema') {
-      return this.schema(descriptor, name, value, path)
+    if (descriptor.structure.type === 'mime-type') {
+      return this.schema(descriptor as HeaderParameterRule<MimeTypeParameterRule>, name, value, path)
     }
     switch (descriptor.style) {
       case 'simple': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'primitive':
-            return this.simplePrimitive(descriptor, name, value, path)
+            return this.simplePrimitive(descriptor as HeaderParameterRule<PrimitiveParameterRule>, name, value, path)
           case 'array':
-            return this.simpleArray(descriptor, name, value, path)
+            return this.simpleArray(descriptor as HeaderParameterRule<ArrayParameterRule>, name, value, path)
           case 'object':
-            return this.simpleObject(descriptor, name, value, path)
+            return this.simpleObject(descriptor as HeaderParameterRule<ObjectParameterRule>, name, value, path)
           default: {
-            throw unexpectedType((descriptor as any).type)
+            throw unexpectedType((descriptor as HeaderParameterRule).structure.type)
           }
         }
       }
@@ -77,7 +73,7 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
   }
 
   protected simplePrimitive(
-    descriptor: HeaderPrimitive,
+    descriptor: HeaderParameterRule<PrimitiveParameterRule>,
     name: string,
     data: Primitive,
     path: string,
@@ -86,13 +82,13 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
       .flatMap((value): Try<string | undefined> => {
         return isNil(value)
           ? success(undefined)
-          : fluent(this.values.serialize(descriptor.value, value, path)).map((value) => this.encode(value))
+          : fluent(this.values.serialize(descriptor.structure.value, value, path)).map((value) => this.encode(value))
       })
       .toTry()
   }
 
   protected simpleArray(
-    descriptor: HeaderArray,
+    descriptor: HeaderParameterRule<ArrayParameterRule>,
     name: string,
     data: PrimitiveArray,
     path: string,
@@ -102,7 +98,7 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
         if (isNil(value)) {
           return success(undefined)
         }
-        return this.arrayToValues(descriptor.items, value, path).map((items) =>
+        return this.arrayToValues(descriptor.structure.items, value, path).map((items) =>
           items.map((item) => this.encode(item)).join(','),
         )
       })
@@ -110,7 +106,7 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
   }
 
   protected simpleObject(
-    descriptor: HeaderObject,
+    descriptor: HeaderParameterRule<ObjectParameterRule>,
     name: string,
     data: PrimitiveRecord,
     path: string,
@@ -120,27 +116,34 @@ export class DefaultHeaderSerializer<T> extends BaseSerializer implements Header
         if (isNil(value)) {
           return success(undefined)
         }
-        return this.objectToKeyValuePairs(descriptor.properties, value, path).map((pairs): string | undefined => {
-          if (pairs.length === 0) {
-            return ''
-          }
-          if (descriptor.explode) {
-            return pairs.map(([key, value]) => `${this.encode(key)}=${this.encode(value)}`).join(',')
-          }
-          return pairs.map(([key, value]) => `${this.encode(key)},${this.encode(value)}`).join(',')
-        })
+        return this.objectToKeyValuePairs(descriptor.structure.properties, value, path).map(
+          (pairs): string | undefined => {
+            if (pairs.length === 0) {
+              return ''
+            }
+            if (descriptor.explode) {
+              return pairs.map(([key, value]) => `${this.encode(key)}=${this.encode(value)}`).join(',')
+            }
+            return pairs.map(([key, value]) => `${this.encode(key)},${this.encode(value)}`).join(',')
+          },
+        )
       })
       .toTry()
   }
 
-  protected schema(descriptor: HeaderSchema, name: string, data: Primitive, path: string): Try<string | undefined> {
+  protected schema(
+    descriptor: HeaderParameterRule<MimeTypeParameterRule>,
+    name: string,
+    data: Primitive,
+    path: string,
+  ): Try<string | undefined> {
     return fluent(this.getHeaderValue(descriptor, path, data))
-      .flatMap((value) => this.schemaSerialize(descriptor, value, path))
+      .flatMap((value) => this.schemaSerialize(descriptor.structure, value, path))
       .map((value) => (isNil(value) ? value : this.encode(value)))
   }
 
   protected getHeaderValue<T extends ParameterValue>(
-    descriptor: HeaderParameterDescriptor,
+    descriptor: HeaderParameterRule,
     path: string,
     value: T | undefined,
   ): Try<T | undefined> {

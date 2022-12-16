@@ -1,18 +1,17 @@
-import { failure, isSuccess, success, Try } from '@oats-ts/try'
 import {
-  BooleanDescriptor,
-  NumberDescriptor,
-  OptionalDescriptor,
-  Primitive,
-  UnionDescriptor,
-  StringDescriptor,
-  ValueDescriptor,
-  ValueSerializer,
-} from './types'
+  BooleanParameterRule,
+  NumberParameterRule,
+  OptionalParameterRule,
+  StringParameterRule,
+  UnionParameterRule,
+  ValueParameterRule,
+} from '@oats-ts/rules'
+import { failure, isSuccess, success, Try } from '@oats-ts/try'
+import { Primitive, ValueSerializer } from './types'
 import { isNil } from './utils'
 
 export class DefaultValueSerializer implements ValueSerializer {
-  public serialize(descriptor: ValueDescriptor, data: Primitive, path: string): Try<string | undefined> {
+  public serialize(descriptor: ValueParameterRule, data: Primitive, path: string): Try<string | undefined> {
     switch (descriptor.type) {
       case 'boolean':
         return this.boolean(descriptor, data, path)
@@ -27,22 +26,22 @@ export class DefaultValueSerializer implements ValueSerializer {
     }
   }
 
-  protected union(descriptor: UnionDescriptor, value: Primitive, path: string): Try<string | undefined> {
-    for (let i = 0; i < descriptor.values.length; i += 1) {
-      const d = descriptor.values[i]
+  protected union(descriptor: UnionParameterRule, value: Primitive, path: string): Try<string | undefined> {
+    for (let i = 0; i < descriptor.alternatives.length; i += 1) {
+      const d = descriptor.alternatives[i]
       const v = this.serialize(d, value, path)
       if (isSuccess(v)) {
         return v
       }
     }
     return failure({
-      message: `should be one of ${descriptor.values.map((v) => `"${v.type}"`).join(', ')}`,
+      message: `should be one of ${descriptor.alternatives.map((v) => `"${v.type}"`).join(', ')}`,
       path,
       severity: 'error',
     })
   }
 
-  protected boolean(descriptor: BooleanDescriptor, value: Primitive, path: string): Try<string | undefined> {
+  protected boolean(descriptor: BooleanParameterRule, value: Primitive, path: string): Try<string | undefined> {
     if (typeof value !== 'boolean') {
       return failure({
         message: `should be a boolean (true or false)`,
@@ -50,10 +49,10 @@ export class DefaultValueSerializer implements ValueSerializer {
         severity: 'error',
       })
     }
-    return isNil(descriptor.value) ? success(this.stringify(value)) : this.serialize(descriptor.value, value, path)
+    return success(this.stringify(value))
   }
 
-  protected number(descriptor: NumberDescriptor, value: Primitive, path: string): Try<string | undefined> {
+  protected number(descriptor: NumberParameterRule, value: Primitive, path: string): Try<string | undefined> {
     if (typeof value !== 'number') {
       return failure({
         message: `should be a number`,
@@ -61,14 +60,14 @@ export class DefaultValueSerializer implements ValueSerializer {
         severity: 'error',
       })
     }
-    return isNil(descriptor.value) ? success(this.stringify(value)) : this.serialize(descriptor.value, value, path)
+    return success(this.stringify(value))
   }
 
-  protected optional(descriptor: OptionalDescriptor, value: Primitive, path: string): Try<string | undefined> {
+  protected optional(descriptor: OptionalParameterRule, value: Primitive, path: string): Try<string | undefined> {
     return isNil(value) ? success(undefined) : this.serialize(descriptor.value, value, path)
   }
 
-  protected string(descriptor: StringDescriptor, value: Primitive, path: string): Try<string | undefined> {
+  protected string(descriptor: StringParameterRule, value: Primitive, path: string): Try<string | undefined> {
     if (typeof value !== 'string') {
       return failure({
         message: `should be a string.`,
@@ -76,7 +75,7 @@ export class DefaultValueSerializer implements ValueSerializer {
         severity: 'error',
       })
     }
-    return isNil(descriptor.value) ? success(value) : this.serialize(descriptor.value, value, path)
+    return success(value)
   }
 
   protected stringify(value: Primitive): string {

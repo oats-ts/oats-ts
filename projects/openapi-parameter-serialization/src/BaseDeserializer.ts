@@ -1,15 +1,8 @@
+import { MimeTypeParameterRule, ValueParameterRule } from '@oats-ts/rules'
 import { Failure, failure, fluent, FluentTry, fromArray, success, Try } from '@oats-ts/try'
 import { Base } from './Base'
 import { DefaultValueDeserializer } from './DefaultValueDeserializer'
-import {
-  Primitive,
-  PrimitiveRecord,
-  PrimitiveArray,
-  ValueDeserializer,
-  ValueDescriptor,
-  SchemaDescriptor,
-  Location,
-} from './types'
+import { Primitive, PrimitiveRecord, PrimitiveArray, ValueDeserializer } from './types'
 import { mapRecord, isNil } from './utils'
 
 export abstract class BaseDeserializer extends Base {
@@ -25,7 +18,7 @@ export abstract class BaseDeserializer extends Base {
   }
 
   protected keyValuePairsToObject(
-    properties: Record<string, ValueDescriptor>,
+    properties: Record<string, ValueParameterRule>,
     record: Record<string, string | undefined>,
     path: string,
   ): FluentTry<PrimitiveRecord> {
@@ -60,34 +53,30 @@ export abstract class BaseDeserializer extends Base {
     )
   }
 
-  protected stringValuesToArray(items: ValueDescriptor, values: string[], path: string): FluentTry<PrimitiveArray> {
+  protected stringValuesToArray(items: ValueParameterRule, values: string[], path: string): FluentTry<PrimitiveArray> {
     return fluent(
       fromArray(values.map((value, i) => this.values.deserialize(items, this.decode(value), this.append(path, i)))),
     )
   }
 
-  protected schemaDeserialize(
-    descriptor: SchemaDescriptor<Location>,
-    value: string | undefined,
-    path: string,
-  ): Try<any> {
+  protected schemaDeserialize(rule: MimeTypeParameterRule, value: string | undefined, path: string): Try<any> {
     if (isNil(value)) {
       return success(value)
     }
     try {
-      switch (descriptor.mimeType) {
+      switch (rule.mimeType) {
         case 'application/json': {
           return success(JSON.parse(value))
         }
         default:
           return failure({
-            message: `unknown mime-type "${descriptor.mimeType}" (needs custom deserializer)`,
+            message: `unknown mime-type "${rule.mimeType}" (needs custom deserializer)`,
             path,
             severity: 'error',
           })
       }
     } catch (e) {
-      return failure({ message: `failed to deserialize using "${descriptor.mimeType}": ${e}`, path, severity: 'error' })
+      return failure({ message: `failed to deserialize using "${rule.mimeType}": ${e}`, path, severity: 'error' })
     }
   }
 }

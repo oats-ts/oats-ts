@@ -1,24 +1,19 @@
+import {
+  ArrayParameterRule,
+  MimeTypeParameterRule,
+  ObjectParameterRule,
+  PrimitiveParameterRule,
+  QueryDescriptorRule,
+  QueryParameterRule,
+} from '@oats-ts/rules'
 import { Failure, failure, fluent, fromArray, fromRecord, success, Try } from '@oats-ts/try'
 import { BaseDeserializer } from './BaseDeserializer'
 import { unexpectedStyle, unexpectedType } from './errors'
-import {
-  ParameterValue,
-  Primitive,
-  PrimitiveArray,
-  PrimitiveRecord,
-  QueryArray,
-  QueryDeserializer,
-  QueryParameterDescriptor,
-  QueryParameters,
-  QueryObject,
-  QueryPrimitive,
-  RawQuery,
-  QuerySchema,
-} from './types'
+import { ParameterValue, Primitive, PrimitiveArray, PrimitiveRecord, QueryDeserializer, RawQuery } from './types'
 import { chunks, has, isNil } from './utils'
 
 export class DefaultQueryDeserializer<T> extends BaseDeserializer implements QueryDeserializer<T> {
-  constructor(protected readonly parameters: QueryParameters<T>) {
+  constructor(protected readonly parameters: QueryDescriptorRule<T>) {
     super()
   }
 
@@ -29,9 +24,9 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   public deserialize(input: string): Try<T> {
     return fluent(this.parseRawQuery(input, this.basePath()))
       .flatMap((raw) => {
-        const parsed = Object.keys(this.parameters.descriptor).reduce(
+        const parsed = Object.keys(this.parameters.parameters).reduce(
           (acc: Record<string, Try<ParameterValue>>, key: string) => {
-            const descriptor = this.parameters.descriptor[key as keyof T]
+            const descriptor = this.parameters.parameters[key as keyof T]
             acc[key] = this.parameter(descriptor, key, raw, this.append(this.basePath(), key))
             return acc
           },
@@ -44,50 +39,50 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   }
 
   protected parameter(
-    descriptor: QueryParameterDescriptor,
+    descriptor: QueryParameterRule,
     name: string,
     value: RawQuery,
     path: string,
   ): Try<ParameterValue> {
-    if (descriptor.type === 'schema') {
-      return this.schema(descriptor, name, value, path)
+    if (descriptor.structure.type === 'mime-type') {
+      return this.schema(descriptor as QueryParameterRule<MimeTypeParameterRule>, name, value, path)
     }
     switch (descriptor.style) {
       case 'form': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'primitive':
-            return this.formPrimitive(descriptor, name, value, path)
+            return this.formPrimitive(descriptor as QueryParameterRule<PrimitiveParameterRule>, name, value, path)
           case 'array':
-            return this.formArray(descriptor, name, value, path)
+            return this.formArray(descriptor as QueryParameterRule<ArrayParameterRule>, name, value, path)
           case 'object':
-            return this.formObject(descriptor, name, value, path)
+            return this.formObject(descriptor as QueryParameterRule<ObjectParameterRule>, name, value, path)
           default: {
-            throw unexpectedType((descriptor as any).type)
+            throw unexpectedType((descriptor as QueryParameterRule).structure.type)
           }
         }
       }
       case 'pipeDelimited': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'array':
-            return this.pipeDelimitedArray(descriptor, name, value, path)
+            return this.pipeDelimitedArray(descriptor as QueryParameterRule<ArrayParameterRule>, name, value, path)
           default:
-            throw unexpectedType(descriptor.type, ['array'])
+            throw unexpectedType(descriptor.structure.type, ['array'])
         }
       }
       case 'spaceDelimited': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'array':
-            return this.spaceDelimitedArray(descriptor, name, value, path)
+            return this.spaceDelimitedArray(descriptor as QueryParameterRule<ArrayParameterRule>, name, value, path)
           default:
-            throw unexpectedType(descriptor.type, ['array'])
+            throw unexpectedType(descriptor.structure.type, ['array'])
         }
       }
       case 'deepObject': {
-        switch (descriptor.type) {
+        switch (descriptor.structure.type) {
           case 'object':
-            return this.deepObjectObject(descriptor, name, value, path)
+            return this.deepObjectObject(descriptor as QueryParameterRule<ObjectParameterRule>, name, value, path)
           default:
-            throw unexpectedType(descriptor.type, ['object'])
+            throw unexpectedType(descriptor.structure.type, ['object'])
         }
       }
       default:
@@ -124,31 +119,51 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     }
   }
 
-  protected formPrimitive(descriptor: QueryPrimitive, name: string, data: RawQuery, path: string): Try<Primitive> {
+  protected formPrimitive(
+    descriptor: QueryParameterRule<PrimitiveParameterRule>,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<Primitive> {
     return fluent(this.getQueryValue(descriptor, name, path, data))
       .flatMap((value) =>
-        isNil(value) ? success(undefined) : this.values.deserialize(descriptor.value, this.decode(value), path),
+        isNil(value)
+          ? success(undefined)
+          : this.values.deserialize(descriptor.structure.value, this.decode(value), path),
       )
       .toTry()
   }
 
-  protected formArray(descriptor: QueryArray, name: string, data: RawQuery, path: string): Try<PrimitiveArray> {
+  protected formArray(
+    descriptor: QueryParameterRule<ArrayParameterRule>,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<PrimitiveArray> {
     return this.delimitedArray(',', descriptor, name, data, path)
   }
 
-  protected formObject(descriptor: QueryObject, name: string, data: RawQuery, path: string): Try<ParameterValue> {
+  protected formObject(
+    descriptor: QueryParameterRule<ObjectParameterRule>,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<ParameterValue> {
     return descriptor.explode
       ? this.formObjectExplode(descriptor, name, data, path)
       : this.formObjectNoExplode(descriptor, name, data, path)
   }
 
   protected formObjectExplode(
-    descriptor: QueryObject,
+    descriptor: QueryParameterRule<ObjectParameterRule>,
     name: string,
     data: RawQuery,
     path: string,
   ): Try<PrimitiveRecord> {
-    const rawValues = Object.keys(descriptor.properties).map((key): [string, string[]] => [key, data[key] ?? []])
+    const rawValues = Object.keys(descriptor.structure.properties).map((key): [string, string[]] => [
+      key,
+      data[key] ?? [],
+    ])
 
     if (!descriptor.required && rawValues.filter(([_, values]) => values.length > 0).length === 0) {
       return success(undefined)
@@ -173,11 +188,11 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       {} as Record<string, string | undefined>,
     )
 
-    return this.keyValuePairsToObject(descriptor.properties, record, path)
+    return this.keyValuePairsToObject(descriptor.structure.properties, record, path)
   }
 
   protected formObjectNoExplode(
-    descriptor: QueryObject,
+    descriptor: QueryParameterRule<ObjectParameterRule>,
     name: string,
     data: RawQuery,
     path: string,
@@ -211,11 +226,11 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
       return kvRecord
     }, {})
 
-    return this.keyValuePairsToObject(descriptor.properties, record, path)
+    return this.keyValuePairsToObject(descriptor.structure.properties, record, path)
   }
 
   protected pipeDelimitedArray(
-    descriptor: QueryArray,
+    descriptor: QueryParameterRule<ArrayParameterRule>,
     name: string,
     data: RawQuery,
     path: string,
@@ -224,7 +239,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   }
 
   protected spaceDelimitedArray(
-    descriptor: QueryArray,
+    descriptor: QueryParameterRule<ArrayParameterRule>,
     name: string,
     data: RawQuery,
     path: string,
@@ -232,14 +247,19 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     return this.delimitedArray(this.encode(' '), descriptor, name, data, path)
   }
 
-  protected deepObjectObject(descriptor: QueryObject, name: string, data: RawQuery, path: string): Try<ParameterValue> {
-    const parserKeys = Object.keys(descriptor.properties)
+  protected deepObjectObject(
+    descriptor: QueryParameterRule<ObjectParameterRule>,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<ParameterValue> {
+    const parserKeys = Object.keys(descriptor.structure.properties)
     if (parserKeys.length === 0) {
       return success({})
     }
     let hasKeys: boolean = false
     const parsed = parserKeys.reduce((acc: Record<string, Try<Primitive>>, key: string) => {
-      const valueDescriptor = descriptor.properties[key]
+      const valueDescriptor = descriptor.structure.properties[key]
       const queryKey = `${this.encode(name)}[${this.encode(key)}]`
       const values = data[queryKey] || []
       if (values.length > 1) {
@@ -261,14 +281,19 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
     return !hasKeys && !descriptor.required ? success(undefined) : fromRecord(parsed)
   }
 
-  protected schema(descriptor: QuerySchema, name: string, data: RawQuery, path: string): Try<any> {
+  protected schema(
+    descriptor: QueryParameterRule<MimeTypeParameterRule>,
+    name: string,
+    data: RawQuery,
+    path: string,
+  ): Try<any> {
     return fluent(this.getQueryValue(descriptor, name, path, data))
       .map((value) => (isNil(value) ? value : this.decode(value)))
-      .flatMap((value) => this.schemaDeserialize(descriptor, value, path))
+      .flatMap((value) => this.schemaDeserialize(descriptor.structure, value, path))
   }
 
   protected getValues(
-    descriptor: Exclude<QueryParameterDescriptor, QuerySchema>,
+    descriptor: Exclude<QueryParameterRule, QueryParameterRule<MimeTypeParameterRule>>,
     delimiter: string,
     name: string,
     path: string,
@@ -284,7 +309,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
 
   protected delimitedArray(
     delimiter: string,
-    descriptor: QueryArray,
+    descriptor: QueryParameterRule<ArrayParameterRule>,
     name: string,
     data: RawQuery,
     path: string,
@@ -296,7 +321,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
         }
         return fromArray(
           values.map((value, index) =>
-            this.values.deserialize(descriptor.items, this.decode(value), this.append(path, index)),
+            this.values.deserialize(descriptor.structure.items, this.decode(value), this.append(path, index)),
           ),
         )
       })
@@ -304,7 +329,7 @@ export class DefaultQueryDeserializer<T> extends BaseDeserializer implements Que
   }
 
   protected getQueryValue(
-    descriptor: QueryParameterDescriptor,
+    descriptor: QueryParameterRule,
     name: string,
     path: string,
     params: RawQuery,

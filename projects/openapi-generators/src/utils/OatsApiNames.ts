@@ -7,7 +7,7 @@ import {
   RunnableOperation,
   HttpResponse,
 } from '@oats-ts/openapi-http'
-import { PathParameters } from '@oats-ts/openapi-parameter-serialization'
+import { PathDescriptorRule } from '@oats-ts/rules'
 
 export const ServerAdapterMethods: Record<keyof ServerAdapter<any>, keyof ServerAdapter<any>> = {
   getPathParameters: 'getPathParameters',
@@ -101,8 +101,8 @@ export const RunnableOperationMethods: Record<keyof RunnableOperation<any, any>,
   run: 'run',
 }
 
-export const ParametersFields: Record<keyof PathParameters<any>, keyof PathParameters<any>> = {
-  descriptor: 'descriptor',
+export const ParametersFields: Record<keyof PathDescriptorRule<any>, keyof PathDescriptorRule<any>> = {
+  parameters: 'parameters',
   matcher: 'matcher',
   pathSegments: 'pathSegments',
   schema: 'schema',

@@ -81,7 +81,7 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
 
   protected getParameterDescriptorAssignment(item: EnhancedOperation): PropertyAssignment {
     return factory.createPropertyAssignment(
-      ParametersFields.descriptor,
+      ParametersFields.parameters,
       this.descriptorsGenerator.getParameterDescriptorAst(this.getParameters(item)),
     )
   }
