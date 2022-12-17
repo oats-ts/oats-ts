@@ -1,8 +1,8 @@
-import { any } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('any', () => {
-  const v = new Validator(any())
+  const v = new Validator(schemas.any())
   it('should pass', () => {
     expect(v.validate(null)).toEqual([])
     expect(v.validate(undefined)).toEqual([])

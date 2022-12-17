@@ -19,9 +19,9 @@ export class RequestHeaderParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
-      this.validatorsPkg,
+      this.rulesPkg,
       'oats/request-headers-type',
-      'HeaderParameters',
+      'HeaderDescriptorRule',
       'header',
       'simple',
       false,

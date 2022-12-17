@@ -4,26 +4,22 @@
  * Generated from schemas/array-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const arrayArrayTypeTypeValidator = validators.array(
-  validators.items(validators.array(validators.items(validators.string()))),
+export const arrayArrayTypeTypeValidator = schemas.array(schemas.items(schemas.array(schemas.items(schemas.string()))))
+
+export const booleanArrayTypeTypeValidator = schemas.array(schemas.items(schemas.boolean()))
+
+export const numberArrayTypeTypeValidator = schemas.array(schemas.items(schemas.number()))
+
+export const objectArrayTypeTypeValidator = schemas.array(
+  schemas.items(schemas.object(schemas.shape({ foo: schemas.string() }))),
 )
 
-export const booleanArrayTypeTypeValidator = validators.array(validators.items(validators.boolean()))
+export const refArrayTypeTypeValidator = schemas.array(schemas.items(schemas.lazy(() => referenceTargetTypeValidator)))
 
-export const numberArrayTypeTypeValidator = validators.array(validators.items(validators.number()))
-
-export const objectArrayTypeTypeValidator = validators.array(
-  validators.items(validators.object(validators.shape({ foo: validators.string() }))),
+export const referenceTargetTypeValidator = schemas.object(
+  schemas.shape({ referenceTarget: schemas.optional(schemas.literal(true)) }),
 )
 
-export const refArrayTypeTypeValidator = validators.array(
-  validators.items(validators.lazy(() => referenceTargetTypeValidator)),
-)
-
-export const referenceTargetTypeValidator = validators.object(
-  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
-)
-
-export const stringArrayTypeTypeValidator = validators.array(validators.items(validators.string()))
+export const stringArrayTypeTypeValidator = schemas.array(schemas.items(schemas.string()))

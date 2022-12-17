@@ -4,16 +4,16 @@
  * Generated from schemas/book-store.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const appErrorTypeValidator = validators.object(validators.shape({ message: validators.string() }))
+export const appErrorTypeValidator = schemas.object(schemas.shape({ message: schemas.string() }))
 
-export const bookTypeValidator = validators.object(
-  validators.shape({
-    author: validators.string(),
-    description: validators.optional(validators.string()),
-    id: validators.number(),
-    price: validators.number(),
-    title: validators.string(),
+export const bookTypeValidator = schemas.object(
+  schemas.shape({
+    author: schemas.string(),
+    description: schemas.optional(schemas.string()),
+    id: schemas.number(),
+    price: schemas.number(),
+    title: schemas.string(),
   }),
 )

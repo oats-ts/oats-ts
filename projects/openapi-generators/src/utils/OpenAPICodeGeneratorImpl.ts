@@ -3,14 +3,10 @@ import {
   createOpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenAPIReadOutput,
-} from '@oats-ts/openapi-common'
-import { BaseCodeGenerator, GeneratorInit } from '@oats-ts/oats-ts'
-import { SourceFile } from 'typescript'
-import {
+  RulesPackage,
   ExpressPackage,
   OpenApiHttpPackage,
   OpenApiParameterSerializationPackage,
-  ValidatorsPackage,
   TryPackage,
   OpenAPIRuntimePackage,
   OpenApiExpressServerAdapterPackage,
@@ -18,6 +14,8 @@ import {
   packages,
   LocalNameDefaults,
 } from '@oats-ts/openapi-common'
+import { BaseCodeGenerator, GeneratorInit } from '@oats-ts/oats-ts'
+import { SourceFile } from 'typescript'
 
 export abstract class OpenAPICodeGeneratorImpl<Config, Items> extends BaseCodeGenerator<
   OpenAPIReadOutput,
@@ -29,13 +27,13 @@ export abstract class OpenAPICodeGeneratorImpl<Config, Items> extends BaseCodeGe
   public abstract name(): OpenAPIGeneratorTarget
   public abstract consumes(): OpenAPIGeneratorTarget[]
 
-  protected validatorsPkg!: ValidatorsPackage
   protected httpPkg!: OpenApiHttpPackage
   protected paramsPkg!: OpenApiParameterSerializationPackage
   protected expressPkg!: ExpressPackage
   protected tryPkg!: TryPackage
   protected runtimePkg!: OpenAPIRuntimePackage
   protected adapterPkg!: OpenApiExpressServerAdapterPackage
+  protected rulesPkg!: RulesPackage
   protected fetchPkg!: RuntimePackage<any, any>
 
   protected getDefaultLocals(): LocalNameDefaults {
@@ -54,7 +52,6 @@ export abstract class OpenAPICodeGeneratorImpl<Config, Items> extends BaseCodeGe
 
   public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
     super.initialize(init)
-    this.validatorsPkg = this.getValidatorPackage()
     this.httpPkg = this.getOpenApiHttpPackage()
     this.paramsPkg = this.getOpenApiParameterSerializationPackage()
     this.expressPkg = this.createExpressPackage()
@@ -62,9 +59,10 @@ export abstract class OpenAPICodeGeneratorImpl<Config, Items> extends BaseCodeGe
     this.runtimePkg = this.getOpenAPIRuntimePackage()
     this.adapterPkg = this.getOpenApiExpressServerAdapterPackage()
     this.fetchPkg = this.getFetchPackage()
+    this.rulesPkg = this.getRulesPackage()
   }
 
-  protected getValidatorPackage(): ValidatorsPackage {
+  protected getRulesPackage(): RulesPackage {
     return this.getOpenAPIRuntimePackage()
   }
 

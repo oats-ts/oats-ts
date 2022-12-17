@@ -1,8 +1,8 @@
-import { maxProperties } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('minProperties', () => {
-  const v = new Validator(maxProperties(3))
+  const v = new Validator(schemas.maxProperties(3))
   it('should pass', () => {
     expect(v.validate({ a: 1, b: 2, c: 3 })).toHaveLength(0)
     expect(v.validate({ a: 1, b: 2 })).toHaveLength(0)

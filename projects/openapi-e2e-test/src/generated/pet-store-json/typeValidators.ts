@@ -4,21 +4,21 @@
  * Generated from schemas/pet-store-json.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const errorTypeValidator = validators.object(
-  validators.shape({
-    code: validators.number(),
-    message: validators.string(),
+export const errorTypeValidator = schemas.object(
+  schemas.shape({
+    code: schemas.number(),
+    message: schemas.string(),
   }),
 )
 
-export const petTypeValidator = validators.object(
-  validators.shape({
-    id: validators.number(),
-    name: validators.string(),
-    tag: validators.optional(validators.string()),
+export const petTypeValidator = schemas.object(
+  schemas.shape({
+    id: schemas.number(),
+    name: schemas.string(),
+    tag: schemas.optional(schemas.string()),
   }),
 )
 
-export const petsTypeValidator = validators.array(validators.items(validators.lazy(() => petTypeValidator)))
+export const petsTypeValidator = schemas.array(schemas.items(schemas.lazy(() => petTypeValidator)))

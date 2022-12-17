@@ -49,7 +49,6 @@ export {
   packages,
   TryPackage,
   ExpressPackage,
-  ValidatorsPackage,
   OpenApiHttpPackage,
   OpenAPIRuntimePackage,
   OpenApiExpressServerAdapterPackage,
@@ -61,6 +60,7 @@ export {
   OpenApiHttpExports,
   OpenApiParameterSerializationExports,
   TryExports,
-  ValidatorsContent,
-  ValidatorsExports,
+  RulesContent,
+  RulesExports,
+  RulesPackage,
 } from './packages'

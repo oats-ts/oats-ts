@@ -1,8 +1,8 @@
-import { minLength } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('minLength', () => {
-  const v = new Validator(minLength(3))
+  const v = new Validator(schemas.minLength(3))
   it('should pass', () => {
     expect(v.validate('abc')).toHaveLength(0)
     expect(v.validate(['a', 'b', 'c'])).toHaveLength(0)

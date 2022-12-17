@@ -18,7 +18,7 @@ import {
 } from '@oats-ts/openapi-model'
 import { parsePathToSegments } from '@oats-ts/openapi-parameter-serialization'
 import { failure, fluent, fromArray, fromPromiseSettledResult, isSuccess, success, Try } from '@oats-ts/try'
-import { isOk, Issue, Validator, SchemaRule } from '@oats-ts/validators'
+import { isOk, Issue, Validator } from '@oats-ts/validators'
 import { entries, flatMap, isEmpty, isNil, values } from 'lodash'
 import { OpenAPIValidatorContextImpl } from './OpenApiValidatorContextImpl'
 import { severityComparator } from '@oats-ts/validators'
@@ -33,7 +33,7 @@ import {
   tick,
 } from '@oats-ts/openapi-common'
 import { StructuralValidator } from './StructuralValidator'
-import { ParameterSegment, PathSegment } from '@oats-ts/rules'
+import { ParameterSegment, PathSegment, SchemaRule } from '@oats-ts/rules'
 
 export class OpenAPIValidator implements ContentValidator<OpenAPIObject, OpenAPIReadOutput> {
   private readonly _structural: StructuralValidators

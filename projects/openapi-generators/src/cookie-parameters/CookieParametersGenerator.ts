@@ -19,9 +19,9 @@ export class CookieParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
-      this.validatorsPkg,
+      this.rulesPkg,
       'oats/cookies-type',
-      'CookieParameters',
+      'CookieDescriptorRule',
       'cookie',
       'form',
       true,

@@ -4,7 +4,7 @@
  * Generated from generated-schemas/bodies.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 import {
   enumTypeTypeValidator,
   objectWithArraysTypeValidator,
@@ -15,66 +15,66 @@ import {
 } from './typeValidators'
 
 export const arrObjRequestBodyValidator = {
-  'application/json': validators.lazy(() => objectWithArraysTypeValidator),
-  'application/yaml': validators.lazy(() => objectWithArraysTypeValidator),
+  'application/json': schemas.lazy(() => objectWithArraysTypeValidator),
+  'application/yaml': schemas.lazy(() => objectWithArraysTypeValidator),
 } as const
 
 export const boolArrRequestBodyValidator = {
-  'application/json': validators.array(validators.items(validators.boolean())),
-  'application/yaml': validators.array(validators.items(validators.boolean())),
+  'application/json': schemas.array(schemas.items(schemas.boolean())),
+  'application/yaml': schemas.array(schemas.items(schemas.boolean())),
 } as const
 
 export const boolRequestBodyValidator = {
-  'application/json': validators.boolean(),
-  'application/yaml': validators.boolean(),
+  'application/json': schemas.boolean(),
+  'application/yaml': schemas.boolean(),
 } as const
 
 export const enmArrRequestBodyValidator = {
-  'application/json': validators.array(validators.items(validators.lazy(() => enumTypeTypeValidator))),
-  'application/yaml': validators.array(validators.items(validators.lazy(() => enumTypeTypeValidator))),
+  'application/json': schemas.array(schemas.items(schemas.lazy(() => enumTypeTypeValidator))),
+  'application/yaml': schemas.array(schemas.items(schemas.lazy(() => enumTypeTypeValidator))),
 } as const
 
 export const enmRequestBodyValidator = {
-  'application/json': validators.lazy(() => enumTypeTypeValidator),
-  'application/yaml': validators.lazy(() => enumTypeTypeValidator),
+  'application/json': schemas.lazy(() => enumTypeTypeValidator),
+  'application/yaml': schemas.lazy(() => enumTypeTypeValidator),
 } as const
 
 export const nestedObjRequestBodyValidator = {
-  'application/json': validators.lazy(() => objectWithNestedObjectsTypeValidator),
-  'application/yaml': validators.lazy(() => objectWithNestedObjectsTypeValidator),
+  'application/json': schemas.lazy(() => objectWithNestedObjectsTypeValidator),
+  'application/yaml': schemas.lazy(() => objectWithNestedObjectsTypeValidator),
 } as const
 
 export const numArrRequestBodyValidator = {
-  'application/json': validators.array(validators.items(validators.number())),
-  'application/yaml': validators.array(validators.items(validators.number())),
+  'application/json': schemas.array(schemas.items(schemas.number())),
+  'application/yaml': schemas.array(schemas.items(schemas.number())),
 } as const
 
 export const numRequestBodyValidator = {
-  'application/json': validators.number(),
-  'application/yaml': validators.number(),
+  'application/json': schemas.number(),
+  'application/yaml': schemas.number(),
 } as const
 
 export const optPrimTupleRequestBodyValidator = {
-  'application/json': validators.lazy(() => primitiveOptionalTupleTypeTypeValidator),
-  'application/yaml': validators.lazy(() => primitiveOptionalTupleTypeTypeValidator),
+  'application/json': schemas.lazy(() => primitiveOptionalTupleTypeTypeValidator),
+  'application/yaml': schemas.lazy(() => primitiveOptionalTupleTypeTypeValidator),
 } as const
 
 export const primObjRequestBodyValidator = {
-  'application/json': validators.lazy(() => objectWithPrimitivesTypeValidator),
-  'application/yaml': validators.lazy(() => objectWithPrimitivesTypeValidator),
+  'application/json': schemas.lazy(() => objectWithPrimitivesTypeValidator),
+  'application/yaml': schemas.lazy(() => objectWithPrimitivesTypeValidator),
 } as const
 
 export const primTupleRequestBodyValidator = {
-  'application/json': validators.lazy(() => primitiveTupleTypeTypeValidator),
-  'application/yaml': validators.lazy(() => primitiveTupleTypeTypeValidator),
+  'application/json': schemas.lazy(() => primitiveTupleTypeTypeValidator),
+  'application/yaml': schemas.lazy(() => primitiveTupleTypeTypeValidator),
 } as const
 
 export const strArrRequestBodyValidator = {
-  'application/json': validators.array(validators.items(validators.string())),
-  'application/yaml': validators.array(validators.items(validators.string())),
+  'application/json': schemas.array(schemas.items(schemas.string())),
+  'application/yaml': schemas.array(schemas.items(schemas.string())),
 } as const
 
 export const strRequestBodyValidator = {
-  'application/json': validators.string(),
-  'application/yaml': validators.string(),
+  'application/json': schemas.string(),
+  'application/yaml': schemas.string(),
 } as const

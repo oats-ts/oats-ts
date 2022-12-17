@@ -1,5 +1,4 @@
-import { validators } from '@oats-ts/validators'
-import { array, items } from '@oats-ts/validators/lib/factories'
+import { schemas } from '@oats-ts/rules'
 import {
   BoolField,
   ComplexObj,
@@ -36,7 +35,7 @@ import {
   StrField,
 } from './model'
 
-const { object, shape, optional, string, boolean, number, union, literal } = validators
+const { object, shape, optional, string, boolean, number, union, literal, array, items } = schemas
 
 export const enumSchema = union({
   cat: literal('cat'),

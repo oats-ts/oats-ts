@@ -1,4 +1,3 @@
-export * as validators from './factories'
 export { Validator } from './Validator'
 export { severityComparator } from './severityComparator'
 export { appendPath } from './appendPath'

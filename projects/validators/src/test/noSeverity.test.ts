@@ -1,23 +1,5 @@
-import {
-  array,
-  boolean,
-  integer,
-  intersection,
-  items,
-  lazy,
-  literal,
-  minLength,
-  nil,
-  number,
-  optional,
-  record,
-  restrictKeys,
-  shape,
-  string,
-  tuple,
-  union,
-} from '../factories'
-import { SchemaRule, Severity } from '../typings'
+import { schemas, SchemaRule } from '@oats-ts/rules'
+import { Severity } from '../typings'
 import { Validator } from '../Validator'
 
 class PermissiveValidator extends Validator {
@@ -28,21 +10,21 @@ class PermissiveValidator extends Validator {
 
 describe('nil', () => {
   const data: [SchemaRule, any][] = [
-    [nil(), 'foo'],
-    [array(), 'foo'],
-    [boolean(), 'foo'],
-    [integer(), 'foo'],
-    [intersection([string(), number()]), false],
-    [items(string()), [1]],
-    [lazy(() => string()), 12],
-    [literal(13), 12],
-    [minLength(2), [12]],
-    [optional(string()), 1],
-    [record(string(), number()), 1],
-    [restrictKeys(['foo']), { bar: 'hi' }],
-    [shape({ bar: string() }), { bar: 12 }],
-    [tuple([string(), number()]), []],
-    [union({ string: string(), number: number() }), false],
+    [schemas.nil(), 'foo'],
+    [schemas.array(), 'foo'],
+    [schemas.boolean(), 'foo'],
+    [schemas.integer(), 'foo'],
+    [schemas.intersection([schemas.string(), schemas.number()]), false],
+    [schemas.items(schemas.string()), [1]],
+    [schemas.lazy(() => schemas.string()), 12],
+    [schemas.literal(13), 12],
+    [schemas.minLength(2), [12]],
+    [schemas.optional(schemas.string()), 1],
+    [schemas.record(schemas.string(), schemas.number()), 1],
+    [schemas.restrictKeys(['foo']), { bar: 'hi' }],
+    [schemas.shape({ bar: schemas.string() }), { bar: 12 }],
+    [schemas.tuple([schemas.string(), schemas.number()]), []],
+    [schemas.union({ string: schemas.string(), number: schemas.number() }), false],
   ]
 
   data.forEach(([schema, input]) => {

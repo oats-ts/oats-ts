@@ -4,7 +4,7 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { HeaderParameters, parameter, validators } from '@oats-ts/openapi-runtime'
+import { HeaderDescriptorRule, parameters, schemas } from '@oats-ts/openapi-runtime'
 import { HeaderParametersRequestHeaderParameters } from './requestHeaderTypes'
 import {
   contentCommonEnumTypeTypeValidator,
@@ -12,49 +12,49 @@ import {
   contentCommonOptObjectTypeTypeValidator,
 } from './typeValidators'
 
-export const headerParametersRequestHeaderParameters: HeaderParameters<HeaderParametersRequestHeaderParameters> = {
-  descriptor: {
-    'X-Str-Header': parameter.header.required.schema('application/json'),
-    'X-OptStr-Header': parameter.header.schema('application/json'),
-    'X-Num-Header': parameter.header.required.schema('application/json'),
-    'X-OptNum-Header': parameter.header.schema('application/json'),
-    'X-Bool-Header': parameter.header.required.schema('application/json'),
-    'X-OptBool-Header': parameter.header.schema('application/json'),
-    'X-Enm-Header': parameter.header.required.schema('application/json'),
-    'X-OptEnm-Header': parameter.header.schema('application/json'),
-    'X-StrArr-Header': parameter.header.required.schema('application/json'),
-    'X-OptStrArr-Header': parameter.header.schema('application/json'),
-    'X-NumArr-Header': parameter.header.required.schema('application/json'),
-    'X-OptNumArr-Header': parameter.header.schema('application/json'),
-    'X-BoolArr-Header': parameter.header.required.schema('application/json'),
-    'X-OptBoolArr-Header': parameter.header.schema('application/json'),
-    'X-EnmArr-Header': parameter.header.required.schema('application/json'),
-    'X-OptEnmArr-Header': parameter.header.schema('application/json'),
-    'X-Obj-Header': parameter.header.required.schema('application/json'),
-    'X-OptObj-Header': parameter.header.schema('application/json'),
+export const headerParametersRequestHeaderParameters: HeaderDescriptorRule<HeaderParametersRequestHeaderParameters> = {
+  parameters: {
+    'X-Str-Header': parameters.header.required.schema('application/json'),
+    'X-OptStr-Header': parameters.header.schema('application/json'),
+    'X-Num-Header': parameters.header.required.schema('application/json'),
+    'X-OptNum-Header': parameters.header.schema('application/json'),
+    'X-Bool-Header': parameters.header.required.schema('application/json'),
+    'X-OptBool-Header': parameters.header.schema('application/json'),
+    'X-Enm-Header': parameters.header.required.schema('application/json'),
+    'X-OptEnm-Header': parameters.header.schema('application/json'),
+    'X-StrArr-Header': parameters.header.required.schema('application/json'),
+    'X-OptStrArr-Header': parameters.header.schema('application/json'),
+    'X-NumArr-Header': parameters.header.required.schema('application/json'),
+    'X-OptNumArr-Header': parameters.header.schema('application/json'),
+    'X-BoolArr-Header': parameters.header.required.schema('application/json'),
+    'X-OptBoolArr-Header': parameters.header.schema('application/json'),
+    'X-EnmArr-Header': parameters.header.required.schema('application/json'),
+    'X-OptEnmArr-Header': parameters.header.schema('application/json'),
+    'X-Obj-Header': parameters.header.required.schema('application/json'),
+    'X-OptObj-Header': parameters.header.schema('application/json'),
   },
-  schema: validators.object(
-    validators.shape({
-      'X-Bool-Header': validators.boolean(),
-      'X-BoolArr-Header': validators.array(validators.items(validators.boolean())),
-      'X-Enm-Header': validators.lazy(() => contentCommonEnumTypeTypeValidator),
-      'X-EnmArr-Header': validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-      'X-Num-Header': validators.number(),
-      'X-NumArr-Header': validators.array(validators.items(validators.number())),
-      'X-Obj-Header': validators.lazy(() => contentCommonObjectTypeTypeValidator),
-      'X-OptBool-Header': validators.optional(validators.boolean()),
-      'X-OptBoolArr-Header': validators.optional(validators.array(validators.items(validators.boolean()))),
-      'X-OptEnm-Header': validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-      'X-OptEnmArr-Header': validators.optional(
-        validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
+  schema: schemas.object(
+    schemas.shape({
+      'X-Bool-Header': schemas.boolean(),
+      'X-BoolArr-Header': schemas.array(schemas.items(schemas.boolean())),
+      'X-Enm-Header': schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+      'X-EnmArr-Header': schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+      'X-Num-Header': schemas.number(),
+      'X-NumArr-Header': schemas.array(schemas.items(schemas.number())),
+      'X-Obj-Header': schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+      'X-OptBool-Header': schemas.optional(schemas.boolean()),
+      'X-OptBoolArr-Header': schemas.optional(schemas.array(schemas.items(schemas.boolean()))),
+      'X-OptEnm-Header': schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+      'X-OptEnmArr-Header': schemas.optional(
+        schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
       ),
-      'X-OptNum-Header': validators.optional(validators.number()),
-      'X-OptNumArr-Header': validators.optional(validators.array(validators.items(validators.number()))),
-      'X-OptObj-Header': validators.optional(validators.lazy(() => contentCommonOptObjectTypeTypeValidator)),
-      'X-OptStr-Header': validators.optional(validators.string()),
-      'X-OptStrArr-Header': validators.optional(validators.array(validators.items(validators.string()))),
-      'X-Str-Header': validators.string(),
-      'X-StrArr-Header': validators.array(validators.items(validators.string())),
+      'X-OptNum-Header': schemas.optional(schemas.number()),
+      'X-OptNumArr-Header': schemas.optional(schemas.array(schemas.items(schemas.number()))),
+      'X-OptObj-Header': schemas.optional(schemas.lazy(() => contentCommonOptObjectTypeTypeValidator)),
+      'X-OptStr-Header': schemas.optional(schemas.string()),
+      'X-OptStrArr-Header': schemas.optional(schemas.array(schemas.items(schemas.string()))),
+      'X-Str-Header': schemas.string(),
+      'X-StrArr-Header': schemas.array(schemas.items(schemas.string())),
     }),
   ),
 }

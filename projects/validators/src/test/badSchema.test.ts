@@ -1,4 +1,4 @@
-import { SchemaRule } from '../typings'
+import { SchemaRule } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('boolean', () => {

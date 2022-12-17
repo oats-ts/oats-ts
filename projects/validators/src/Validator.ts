@@ -4,7 +4,6 @@ import {
   BooleanSchemaRule,
   IntegerSchemaRule,
   IntersectionSchemaRule,
-  Issue,
   ItemsSchemaRule,
   LazySchemaRule,
   LiteralSchemaRule,
@@ -19,14 +18,14 @@ import {
   RecordSchemaRule,
   RestrictKeysSchemaRule,
   SchemaRule,
-  Severity,
   ShapeSchemaRule,
   StringSchemaRule,
   TupleSchemaRule,
   UnionSchemaRule,
-} from './typings'
+} from '@oats-ts/rules'
 import { isNil } from './isNil'
 import { appendPath } from './appendPath'
+import { Issue, Severity } from './typings'
 
 export class Validator<S extends SchemaRule = SchemaRule> {
   constructor(protected readonly schema: S, protected readonly defaultPath: string = '$') {}

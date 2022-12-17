@@ -1,8 +1,8 @@
-import { boolean } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('boolean', () => {
-  const v = new Validator(boolean())
+  const v = new Validator(schemas.boolean())
   it('should pass', () => {
     expect(v.validate(false)).toHaveLength(0)
     expect(v.validate(true)).toHaveLength(0)

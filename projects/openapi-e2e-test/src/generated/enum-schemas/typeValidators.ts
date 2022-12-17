@@ -4,54 +4,50 @@
  * Generated from schemas/enum-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const arrayEnumTypeTypeValidator = validators.union({
-  '["A","B","C"]': validators.array(
-    validators.tuple([validators.literal('A'), validators.literal('B'), validators.literal('C')]),
-  ),
-  '[1,2,3]': validators.array(validators.tuple([validators.literal(1), validators.literal(2), validators.literal(3)])),
-  '[true,false]': validators.array(validators.tuple([validators.literal(true), validators.literal(false)])),
+export const arrayEnumTypeTypeValidator = schemas.union({
+  '["A","B","C"]': schemas.array(schemas.tuple([schemas.literal('A'), schemas.literal('B'), schemas.literal('C')])),
+  '[1,2,3]': schemas.array(schemas.tuple([schemas.literal(1), schemas.literal(2), schemas.literal(3)])),
+  '[true,false]': schemas.array(schemas.tuple([schemas.literal(true), schemas.literal(false)])),
 })
 
-export const booleanEnumTypeTypeValidator = validators.union({
-  true: validators.literal(true),
-  false: validators.literal(false),
+export const booleanEnumTypeTypeValidator = schemas.union({
+  true: schemas.literal(true),
+  false: schemas.literal(false),
 })
 
-export const mixedEnumTypeTypeValidator = validators.union({
-  A: validators.literal('A'),
-  '121': validators.literal(121),
-  true: validators.literal(true),
-  null: validators.literal(null),
-  '["B",2,false]': validators.array(
-    validators.tuple([validators.literal('B'), validators.literal(2), validators.literal(false)]),
-  ),
-  '{"obj":true}': validators.object(validators.shape({ obj: validators.literal(true) })),
+export const mixedEnumTypeTypeValidator = schemas.union({
+  A: schemas.literal('A'),
+  '121': schemas.literal(121),
+  true: schemas.literal(true),
+  null: schemas.literal(null),
+  '["B",2,false]': schemas.array(schemas.tuple([schemas.literal('B'), schemas.literal(2), schemas.literal(false)])),
+  '{"obj":true}': schemas.object(schemas.shape({ obj: schemas.literal(true) })),
 })
 
-export const numberEnumTypeTypeValidator = validators.union({
-  '1': validators.literal(1),
-  '2': validators.literal(2),
-  '3': validators.literal(3),
+export const numberEnumTypeTypeValidator = schemas.union({
+  '1': schemas.literal(1),
+  '2': schemas.literal(2),
+  '3': schemas.literal(3),
 })
 
-export const objectEnumTypeTypeValidator = validators.union({
-  '{"str":"hi"}': validators.object(validators.shape({ str: validators.literal('hi') })),
-  '{"num":121}': validators.object(validators.shape({ num: validators.literal(121) })),
-  '{"bool":true}': validators.object(validators.shape({ bool: validators.literal(true) })),
-  '{"null":null}': validators.object(validators.shape({ null: validators.literal(null) })),
-  '{"has-dashes":true,"has space":true,"has .`/!+^ chars":true}': validators.object(
-    validators.shape({
-      'has-dashes': validators.literal(true),
-      'has space': validators.literal(true),
-      'has .`/!+^ chars': validators.literal(true),
+export const objectEnumTypeTypeValidator = schemas.union({
+  '{"str":"hi"}': schemas.object(schemas.shape({ str: schemas.literal('hi') })),
+  '{"num":121}': schemas.object(schemas.shape({ num: schemas.literal(121) })),
+  '{"bool":true}': schemas.object(schemas.shape({ bool: schemas.literal(true) })),
+  '{"null":null}': schemas.object(schemas.shape({ null: schemas.literal(null) })),
+  '{"has-dashes":true,"has space":true,"has .`/!+^ chars":true}': schemas.object(
+    schemas.shape({
+      'has-dashes': schemas.literal(true),
+      'has space': schemas.literal(true),
+      'has .`/!+^ chars': schemas.literal(true),
     }),
   ),
 })
 
-export const stringEnumTypeTypeValidator = validators.union({
-  A: validators.literal('A'),
-  B: validators.literal('B'),
-  C: validators.literal('C'),
+export const stringEnumTypeTypeValidator = schemas.union({
+  A: schemas.literal('A'),
+  B: schemas.literal('B'),
+  C: schemas.literal('C'),
 })

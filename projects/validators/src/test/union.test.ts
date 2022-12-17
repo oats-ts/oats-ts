@@ -1,12 +1,12 @@
-import { literal, object, string, union } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('union', () => {
   const v = new Validator(
-    union({
-      string: string(),
-      '42': literal(42),
-      object: object(),
+    schemas.union({
+      string: schemas.string(),
+      '42': schemas.literal(42),
+      object: schemas.object(),
     }),
   )
   it('should pass', () => {

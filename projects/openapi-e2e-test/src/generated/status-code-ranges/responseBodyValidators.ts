@@ -4,22 +4,22 @@
  * Generated from edge-cases/status-code-ranges.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const range1XxResponseBodyValidator = { NaN: { 'application/json': validators.string() } } as const
+export const range1XxResponseBodyValidator = { NaN: { 'application/json': schemas.string() } } as const
 
-export const range2XxResponseBodyValidator = { NaN: { 'application/json': validators.string() } } as const
+export const range2XxResponseBodyValidator = { NaN: { 'application/json': schemas.string() } } as const
 
-export const range3XxResponseBodyValidator = { NaN: { 'application/json': validators.string() } } as const
+export const range3XxResponseBodyValidator = { NaN: { 'application/json': schemas.string() } } as const
 
-export const range4XxResponseBodyValidator = { NaN: { 'application/json': validators.string() } } as const
+export const range4XxResponseBodyValidator = { NaN: { 'application/json': schemas.string() } } as const
 
-export const range5XxResponseBodyValidator = { NaN: { 'application/json': validators.string() } } as const
+export const range5XxResponseBodyValidator = { NaN: { 'application/json': schemas.string() } } as const
 
 export const withNormalStatusesResponseBodyValidator = {
-  400: { 'application/json': validators.string() },
-  401: { 'application/json': validators.string() },
-  403: { 'application/json': validators.string() },
-  500: { 'application/json': validators.string() },
-  NaN: { 'application/json': validators.string() },
+  400: { 'application/json': schemas.string() },
+  401: { 'application/json': schemas.string() },
+  403: { 'application/json': schemas.string() },
+  500: { 'application/json': schemas.string() },
+  NaN: { 'application/json': schemas.string() },
 } as const

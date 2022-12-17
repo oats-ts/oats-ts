@@ -4,8 +4,8 @@
  * Generated from schemas/cookies.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
 export const loginRequestBodyValidator = {
-  'application/json': validators.object(validators.shape({ name: validators.string() })),
+  'application/json': schemas.object(schemas.shape({ name: schemas.string() })),
 } as const

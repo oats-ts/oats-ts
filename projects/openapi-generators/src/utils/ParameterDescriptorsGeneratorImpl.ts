@@ -4,12 +4,12 @@ import {
   OpenAPIGeneratorContext,
   OpenAPIGeneratorTarget,
   OpenApiParameterSerializationPackage,
-  OpenApiParameterSerializationExports,
-  ValidatorsPackage,
   getFundamentalTypes,
   getPrimitiveTypes,
   FundamentalType,
   PrimitiveType,
+  RulesPackage,
+  RulesExports,
 } from '@oats-ts/openapi-common'
 import { BaseParameterObject, ContentObject, ParameterLocation, ParameterStyle } from '@oats-ts/openapi-model'
 import { getNamedImports, getPropertyChain, isIdentifier } from '@oats-ts/typescript-common'
@@ -30,9 +30,9 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
   constructor(
     protected context: OpenAPIGeneratorContext,
     protected paramsPkg: OpenApiParameterSerializationPackage,
-    protected validatorPkg: ValidatorsPackage,
+    protected rulesPkg: RulesPackage,
     protected modelTypeTarget: OpenAPIGeneratorTarget,
-    protected parametersTypeKey: keyof OpenApiParameterSerializationExports,
+    protected parametersTypeKey: keyof RulesExports,
     protected location: ParameterLocation,
     protected defaultStyle: ParameterStyle,
     protected defaultExplode: boolean,
@@ -44,7 +44,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
 
   public getValidatorImports(path: string, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
     return [
-      getNamedImports(this.validatorPkg.name, [this.validatorPkg.imports.validators]),
+      getNamedImports(this.rulesPkg.name, [this.rulesPkg.imports.parameters]),
       ...this.context.dependenciesOf<ImportDeclaration>(path, this.getFakeSchema(parameters), 'oats/type-validator'),
     ]
   }
@@ -55,9 +55,9 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
 
   public getImports<T>(path: string, input: T, parameters: Referenceable<BaseParameterObject>[]): ImportDeclaration[] {
     return [
-      getNamedImports(this.paramsPkg.name, [
-        this.paramsPkg.imports.parameter,
-        this.paramsPkg.imports[this.parametersTypeKey],
+      getNamedImports(this.rulesPkg.name, [
+        this.rulesPkg.imports.parameters,
+        this.rulesPkg.imports[this.parametersTypeKey],
       ]),
       ...this.context.dependenciesOf<ImportDeclaration>(path, input, this.getModelTargetType()),
       ...this.getValidatorImports(path, parameters),
@@ -97,7 +97,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
   }
 
   public getParametersTypeAst<T>(input: T): TypeReferenceNode {
-    const parametersTypeName = this.paramsPkg.exports[this.parametersTypeKey]
+    const parametersTypeName = this.rulesPkg.exports[this.parametersTypeKey]
     const parameterType = this.context.referenceOf<TypeReferenceNode>(input, this.getModelTargetType())
     return factory.createTypeReferenceNode(factory.createIdentifier(parametersTypeName), [parameterType])
   }
@@ -132,7 +132,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         return undefined
       }
       return factory.createCallExpression(
-        getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+        getPropertyChain(factory.createIdentifier(this.rulesPkg.exports.parameters), [
           this.location,
           parameter.style ?? this.defaultStyle,
           ...(parameter.explode ?? this.defaultExplode ? [ParameterFactoryFields.exploded] : []),
@@ -145,7 +145,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     }
     const [mimeType] = entries(parameter.content)[0]!
     return factory.createCallExpression(
-      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+      getPropertyChain(factory.createIdentifier(this.rulesPkg.exports.parameters), [
         this.location,
         ...(parameter.required ?? this.defaultRequired ? [ParameterFactoryFields.required] : []),
         ParameterFactoryFields.schema,
@@ -174,7 +174,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
           const valueDesc = isRequired
             ? requiredValueDesc
             : factory.createCallExpression(
-                getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+                getPropertyChain(factory.createIdentifier(this.rulesPkg.exports.parameters), [
                   ParameterFactoryFields.value,
                   ParameterFactoryFields.optional,
                 ]),
@@ -202,7 +202,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
       .sort((a, b) => PrimitiveOrder[a] - PrimitiveOrder[b])
       .map((primitiveType) =>
         factory.createCallExpression(
-          getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+          getPropertyChain(factory.createIdentifier(this.rulesPkg.exports.parameters), [
             ParameterFactoryFields.value,
             primitiveType,
           ]),
@@ -215,7 +215,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
     }
 
     return factory.createCallExpression(
-      getPropertyChain(factory.createIdentifier(this.paramsPkg.exports.parameter), [
+      getPropertyChain(factory.createIdentifier(this.rulesPkg.exports.parameters), [
         ParameterFactoryFields.value,
         ParameterFactoryFields.union,
       ]),

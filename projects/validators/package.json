@@ -25,6 +25,9 @@
   "bugs": {
     "url": "https://github.com/oats-ts/oats-ts/issues"
   },
+  "dependencies": {
+    "@oats-ts/rules": "0.0.49"
+  },
   "devDependencies": {
     "@types/jest": "26.0.23",
     "@types/node": "16.7.1",

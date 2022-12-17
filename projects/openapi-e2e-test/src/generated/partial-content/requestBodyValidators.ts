@@ -4,10 +4,8 @@
  * Generated from schemas/partial-content.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
 export const optionalRequestBodyRequestBodyValidator = {
-  'application/json': validators.optional(
-    validators.object(validators.shape({ foo: validators.optional(validators.string()) })),
-  ),
+  'application/json': schemas.optional(schemas.object(schemas.shape({ foo: schemas.optional(schemas.string()) }))),
 } as const

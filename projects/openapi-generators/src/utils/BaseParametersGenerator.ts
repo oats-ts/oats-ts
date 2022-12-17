@@ -46,7 +46,10 @@ export abstract class BaseParameterGenerators extends OperationBasedCodeGenerato
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: this.paramsPkg.name, version }]
+    return [
+      { name: this.paramsPkg.name, version },
+      { name: this.rulesPkg.name, version },
+    ]
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {

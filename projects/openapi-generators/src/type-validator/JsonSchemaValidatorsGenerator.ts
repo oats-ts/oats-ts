@@ -8,12 +8,7 @@ import { entries, has, sortBy } from 'lodash'
 import { ValidatorImportProviderImpl } from './ValidatorImportProviderImpl'
 import { ExternalRefValidatorImportProviderImpl } from './ExternalRefValidatorImportProviderImpl'
 import { SchemaBasedCodeGenerator } from '../utils/SchemaBasedCodeGenerator'
-import {
-  getDiscriminators,
-  OpenAPIGeneratorTarget,
-  OpenAPIReadOutput,
-  ValidatorsPackage,
-} from '@oats-ts/openapi-common'
+import { getDiscriminators, OpenAPIGeneratorTarget, OpenAPIReadOutput, RulesContent } from '@oats-ts/openapi-common'
 
 export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<ValidatorsGeneratorConfig> {
   protected importProvider!: ValidatorImportProvider
@@ -28,7 +23,7 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: this.getValidatorPackage().name, version }]
+    return [{ name: this.rulesPkg.name, version }]
   }
 
   public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
@@ -38,14 +33,14 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
       this.configuration(),
       this.helper,
       this.type,
-      this.getValidatorPackage(),
+      this.rulesPkg,
     )
     this.externalRefImportProvider = new ExternalRefValidatorImportProviderImpl(
       this.context(),
       this.configuration(),
       this.helper,
       this.type,
-      this.getValidatorPackage(),
+      this.rulesPkg,
     )
   }
 
@@ -359,11 +354,10 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
     )
   }
 
-  protected getValidatorAst(type: keyof ValidatorsPackage['content']['validators']): Expression {
-    const pkg = this.getValidatorPackage()
+  protected getValidatorAst(type: keyof RulesContent['schemas']): Expression {
     return factory.createPropertyAccessExpression(
-      factory.createIdentifier(pkg.exports.validators),
-      pkg.content.validators[type],
+      factory.createIdentifier(this.rulesPkg.exports.schemas),
+      this.rulesPkg.content.schemas[type],
     )
   }
 }

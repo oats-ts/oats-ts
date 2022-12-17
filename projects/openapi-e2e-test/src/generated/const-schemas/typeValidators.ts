@@ -4,29 +4,29 @@
  * Generated from schemas/const-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const arrayLiteralTypeTypeValidator = validators.array(
-  validators.tuple([
-    validators.literal('string value'),
-    validators.literal(42),
-    validators.literal(false),
-    validators.literal(null),
-    validators.object(validators.shape({ key: validators.literal(10) })),
-    validators.array(validators.tuple([validators.literal(3), validators.literal(false), validators.literal('hello')])),
+export const arrayLiteralTypeTypeValidator = schemas.array(
+  schemas.tuple([
+    schemas.literal('string value'),
+    schemas.literal(42),
+    schemas.literal(false),
+    schemas.literal(null),
+    schemas.object(schemas.shape({ key: schemas.literal(10) })),
+    schemas.array(schemas.tuple([schemas.literal(3), schemas.literal(false), schemas.literal('hello')])),
   ]),
 )
 
-export const booleanLiteralTypeTypeValidator = validators.literal(true)
+export const booleanLiteralTypeTypeValidator = schemas.literal(true)
 
-export const nestedObjectLiteralTypeTypeValidator = validators.object(
-  validators.shape({
-    obj: validators.object(
-      validators.shape({
-        I: validators.object(
-          validators.shape({
-            am: validators.object(
-              validators.shape({ deeply: validators.object(validators.shape({ nested: validators.literal(true) })) }),
+export const nestedObjectLiteralTypeTypeValidator = schemas.object(
+  schemas.shape({
+    obj: schemas.object(
+      schemas.shape({
+        I: schemas.object(
+          schemas.shape({
+            am: schemas.object(
+              schemas.shape({ deeply: schemas.object(schemas.shape({ nested: schemas.literal(true) })) }),
             ),
           }),
         ),
@@ -35,24 +35,24 @@ export const nestedObjectLiteralTypeTypeValidator = validators.object(
   }),
 )
 
-export const nullLiteralTypeTypeValidator = validators.literal(null)
+export const nullLiteralTypeTypeValidator = schemas.literal(null)
 
-export const numberLiteralTypeTypeValidator = validators.literal(125)
+export const numberLiteralTypeTypeValidator = schemas.literal(125)
 
-export const quotedKeysObjectLiteralTypeTypeValidator = validators.object(
-  validators.shape({
-    'has-dashes': validators.literal(true),
-    'has space': validators.literal(true),
-    'has .`/!+^ chars': validators.literal(true),
+export const quotedKeysObjectLiteralTypeTypeValidator = schemas.object(
+  schemas.shape({
+    'has-dashes': schemas.literal(true),
+    'has space': schemas.literal(true),
+    'has .`/!+^ chars': schemas.literal(true),
   }),
 )
 
-export const simpleObjectLiteralTypeTypeValidator = validators.object(
-  validators.shape({
-    s: validators.literal("I'm a string"),
-    n: validators.literal(10),
-    b: validators.literal(true),
+export const simpleObjectLiteralTypeTypeValidator = schemas.object(
+  schemas.shape({
+    s: schemas.literal("I'm a string"),
+    n: schemas.literal(10),
+    b: schemas.literal(true),
   }),
 )
 
-export const stringLiteralTypeTypeValidator = validators.literal("I'm a constant string")
+export const stringLiteralTypeTypeValidator = schemas.literal("I'm a constant string")

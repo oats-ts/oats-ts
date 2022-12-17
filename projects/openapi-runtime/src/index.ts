@@ -28,3 +28,4 @@ export type {
 export * from '@oats-ts/openapi-parameter-serialization'
 export * from '@oats-ts/try'
 export * from '@oats-ts/validators'
+export * from '@oats-ts/rules'

@@ -27,7 +27,7 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: this.validatorsPkg.name, version }]
+    return [{ name: this.rulesPkg.name, version }]
   }
 
   protected shouldGenerate(item: EnhancedOperation): boolean {
@@ -113,8 +113,8 @@ export class ResponseBodyValidatorsGenerator extends OperationBasedCodeGenerator
         ? expression
         : factory.createCallExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier(this.validatorsPkg.exports.validators),
-              this.validatorsPkg.content.validators.optional,
+              factory.createIdentifier(this.rulesPkg.exports.schemas),
+              this.rulesPkg.content.schemas.optional,
             ),
             [],
             [expression],

@@ -4,11 +4,11 @@
  * Generated from schemas/book-store.json (originating from oats-ts/oats-schemas)
  */
 
-import { parameter, validators } from '@oats-ts/openapi-runtime'
+import { parameters, schemas } from '@oats-ts/openapi-runtime'
 
 export const getBooksResponseHeaderParameters = {
   200: {
-    descriptor: { 'x-length': parameter.header.simple.required.primitive(parameter.value.number()) },
-    schema: validators.object(validators.shape({ 'x-length': validators.number() })),
+    parameters: { 'x-length': parameters.header.simple.required.primitive(parameters.value.number()) },
+    schema: schemas.object(schemas.shape({ 'x-length': schemas.number() })),
   },
 } as const

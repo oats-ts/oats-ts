@@ -1,14 +1,14 @@
-import { shape, optional, boolean, number, object, string } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('shape', () => {
   it('should validate shape', () => {
     const v = new Validator(
-      object(
-        shape({
-          cat: string(),
-          foo: number(),
-          mayhaps: optional(boolean()),
+      schemas.object(
+        schemas.shape({
+          cat: schemas.string(),
+          foo: schemas.number(),
+          mayhaps: schemas.optional(schemas.boolean()),
         }),
       ),
     )

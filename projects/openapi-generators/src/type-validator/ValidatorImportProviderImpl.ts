@@ -1,5 +1,5 @@
 import { Referenceable, ReferenceObject, SchemaObject } from '@oats-ts/json-schema-model'
-import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget, ValidatorsPackage } from '@oats-ts/openapi-common'
+import { OpenAPIGeneratorContext, OpenAPIGeneratorTarget, RulesPackage } from '@oats-ts/openapi-common'
 import { getModelImports, getNamedImports } from '@oats-ts/typescript-common'
 import { entries, isNil } from 'lodash'
 import { ImportDeclaration } from 'typescript'
@@ -12,7 +12,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     protected readonly config: ValidatorsGeneratorConfig,
     protected readonly helper: TraversalHelper,
     protected readonly type: TypeDiscriminator,
-    protected readonly pkg: ValidatorsPackage,
+    protected readonly pkg: RulesPackage,
   ) {}
 
   protected collectReferenceTypeImports(data: ReferenceObject, d: ValidatorImportProviderData): void {
@@ -138,7 +138,7 @@ export class ValidatorImportProviderImpl implements ValidatorImportProvider {
     this.collectImports(schema, data)
     const referenceImports = Array.from(data.referenceImports)
     return [
-      ...(data.needsValidatorImport ? [getNamedImports(this.pkg.name, [this.pkg.imports.validators])] : []),
+      ...(data.needsValidatorImport ? [getNamedImports(this.pkg.name, [this.pkg.imports.schemas])] : []),
       ...getModelImports<OpenAPIGeneratorTarget>(
         fromPath,
         'oats/type-validator',

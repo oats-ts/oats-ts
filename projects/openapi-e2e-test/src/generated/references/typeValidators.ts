@@ -4,30 +4,28 @@
  * Generated from schemas/references.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const inlineRefTargetTypeValidator = validators.object(
-  validators.shape({ foo: validators.optional(validators.string()) }),
+export const inlineRefTargetTypeValidator = schemas.object(schemas.shape({ foo: schemas.optional(schemas.string()) }))
+
+export const inlineRefTypeTypeValidator = schemas.lazy(() => inlineRefTargetTypeValidator)
+
+export const referenceTargetTypeValidator = schemas.object(
+  schemas.shape({ referenceTarget: schemas.optional(schemas.literal(true)) }),
 )
 
-export const inlineRefTypeTypeValidator = validators.lazy(() => inlineRefTargetTypeValidator)
+export const remoteRefTypeTypeValidator = schemas.lazy(() => typeWithRemoteRefFieldTypeValidator)
 
-export const referenceTargetTypeValidator = validators.object(
-  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
-)
-
-export const remoteRefTypeTypeValidator = validators.lazy(() => typeWithRemoteRefFieldTypeValidator)
-
-export const typeWithRefOfRemoteRefTypeValidator = validators.object(
-  validators.shape({
-    referenceArrayField: validators.array(validators.items(validators.lazy(() => typeWithRemoteRefFieldTypeValidator))),
-    referenceField: validators.lazy(() => typeWithRemoteRefFieldTypeValidator),
+export const typeWithRefOfRemoteRefTypeValidator = schemas.object(
+  schemas.shape({
+    referenceArrayField: schemas.array(schemas.items(schemas.lazy(() => typeWithRemoteRefFieldTypeValidator))),
+    referenceField: schemas.lazy(() => typeWithRemoteRefFieldTypeValidator),
   }),
 )
 
-export const typeWithRemoteRefFieldTypeValidator = validators.object(
-  validators.shape({
-    referenceArrayField: validators.array(validators.items(validators.lazy(() => referenceTargetTypeValidator))),
-    referenceField: validators.lazy(() => referenceTargetTypeValidator),
+export const typeWithRemoteRefFieldTypeValidator = schemas.object(
+  schemas.shape({
+    referenceArrayField: schemas.array(schemas.items(schemas.lazy(() => referenceTargetTypeValidator))),
+    referenceField: schemas.lazy(() => referenceTargetTypeValidator),
   }),
 )

@@ -4,9 +4,9 @@
  * Generated from schemas/cookies.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
 export const protectedPathResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ name: validators.string() })) },
+  200: { 'application/json': schemas.object(schemas.shape({ name: schemas.string() })) },
   401: {},
 } as const

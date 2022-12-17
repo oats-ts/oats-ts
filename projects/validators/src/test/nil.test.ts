@@ -1,8 +1,8 @@
-import { nil } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('nil', () => {
-  const v = new Validator(nil())
+  const v = new Validator(schemas.nil())
   it('should pass', () => {
     expect(v.validate(null)).toHaveLength(0)
     expect(v.validate(undefined)).toHaveLength(0)

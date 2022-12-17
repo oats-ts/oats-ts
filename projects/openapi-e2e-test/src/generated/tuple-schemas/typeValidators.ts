@@ -4,35 +4,31 @@
  * Generated from schemas/tuple-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const mixedTupleTypeTypeValidator = validators.array(
-  validators.tuple([
-    validators.string(),
-    validators.optional(validators.number()),
-    validators.optional(validators.boolean()),
+export const mixedTupleTypeTypeValidator = schemas.array(
+  schemas.tuple([schemas.string(), schemas.optional(schemas.number()), schemas.optional(schemas.boolean())]),
+)
+
+export const optionalTupleTypeTypeValidator = schemas.array(
+  schemas.tuple([
+    schemas.optional(schemas.string()),
+    schemas.optional(schemas.number()),
+    schemas.optional(schemas.boolean()),
   ]),
 )
 
-export const optionalTupleTypeTypeValidator = validators.array(
-  validators.tuple([
-    validators.optional(validators.string()),
-    validators.optional(validators.number()),
-    validators.optional(validators.boolean()),
-  ]),
+export const referenceTargetTypeValidator = schemas.object(
+  schemas.shape({ referenceTarget: schemas.optional(schemas.literal(true)) }),
 )
 
-export const referenceTargetTypeValidator = validators.object(
-  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
-)
-
-export const tupleTypeTypeValidator = validators.array(
-  validators.tuple([
-    validators.string(),
-    validators.number(),
-    validators.boolean(),
-    validators.array(validators.items(validators.string())),
-    validators.object(validators.shape({ foo: validators.optional(validators.string()) })),
-    validators.lazy(() => referenceTargetTypeValidator),
+export const tupleTypeTypeValidator = schemas.array(
+  schemas.tuple([
+    schemas.string(),
+    schemas.number(),
+    schemas.boolean(),
+    schemas.array(schemas.items(schemas.string())),
+    schemas.object(schemas.shape({ foo: schemas.optional(schemas.string()) })),
+    schemas.lazy(() => referenceTargetTypeValidator),
   ]),
 )

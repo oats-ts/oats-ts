@@ -19,9 +19,9 @@ export class QueryParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
-      this.validatorsPkg,
+      this.rulesPkg,
       'oats/query-type',
-      'QueryParameters',
+      'QueryDescriptorRule',
       'query',
       'form',
       true,

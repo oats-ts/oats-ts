@@ -4,46 +4,46 @@
  * Generated from schemas/union-type-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const inlineObjectUnionTypeTypeValidator = validators.union({
-  _0: validators.object(validators.shape({ foo: validators.string() })),
-  _1: validators.object(validators.shape({ bar: validators.number() })),
+export const inlineObjectUnionTypeTypeValidator = schemas.union({
+  _0: schemas.object(schemas.shape({ foo: schemas.string() })),
+  _1: schemas.object(schemas.shape({ bar: schemas.number() })),
 })
 
-export const leafType1TypeValidator = validators.object(
-  validators.shape({
-    foo: validators.string(),
-    type: validators.literal('LeafType1'),
+export const leafType1TypeValidator = schemas.object(
+  schemas.shape({
+    foo: schemas.string(),
+    type: schemas.literal('LeafType1'),
   }),
 )
 
-export const leafType2TypeValidator = validators.object(
-  validators.shape({
-    bar: validators.string(),
-    type: validators.literal('LeafType2'),
+export const leafType2TypeValidator = schemas.object(
+  schemas.shape({
+    bar: schemas.string(),
+    type: schemas.literal('LeafType2'),
   }),
 )
 
-export const leafType3TypeValidator = validators.object(
-  validators.shape({
-    foobar: validators.string(),
-    type: validators.literal('LeafType3'),
+export const leafType3TypeValidator = schemas.object(
+  schemas.shape({
+    foobar: schemas.string(),
+    type: schemas.literal('LeafType3'),
   }),
 )
 
-export const midLevelUnionTypeTypeValidator = validators.union({
-  LeafType2: validators.lazy(() => leafType2TypeValidator),
-  LeafType3: validators.lazy(() => leafType3TypeValidator),
+export const midLevelUnionTypeTypeValidator = schemas.union({
+  LeafType2: schemas.lazy(() => leafType2TypeValidator),
+  LeafType3: schemas.lazy(() => leafType3TypeValidator),
 })
 
-export const primitiveUnionTypeTypeValidator = validators.union({
-  string: validators.string(),
-  number: validators.number(),
-  boolean: validators.boolean(),
+export const primitiveUnionTypeTypeValidator = schemas.union({
+  string: schemas.string(),
+  number: schemas.number(),
+  boolean: schemas.boolean(),
 })
 
-export const topLevelUnionTypeTypeValidator = validators.union({
-  LeafType1: validators.lazy(() => leafType1TypeValidator),
-  MidLevelUnionType: validators.lazy(() => midLevelUnionTypeTypeValidator),
+export const topLevelUnionTypeTypeValidator = schemas.union({
+  LeafType1: schemas.lazy(() => leafType1TypeValidator),
+  MidLevelUnionType: schemas.lazy(() => midLevelUnionTypeTypeValidator),
 })

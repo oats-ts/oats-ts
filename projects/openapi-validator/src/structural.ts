@@ -9,7 +9,8 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import { Validator, SchemaRule, ShapeInput, validators } from '@oats-ts/validators'
+import { SchemaRule, schemas, ShapeInput } from '@oats-ts/rules'
+import { Validator } from '@oats-ts/validators'
 import { entries } from 'lodash'
 
 const {
@@ -31,7 +32,7 @@ const {
   minProperties,
   maxProperties,
   integer,
-} = validators
+} = schemas
 
 export const factories = {
   literalSchemaObject: () => {

@@ -4,7 +4,7 @@
  * Generated from schemas/pet-store-json.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 import { petTypeValidator } from './typeValidators'
 
-export const createPetsRequestBodyValidator = { 'application/json': validators.lazy(() => petTypeValidator) } as const
+export const createPetsRequestBodyValidator = { 'application/json': schemas.lazy(() => petTypeValidator) } as const

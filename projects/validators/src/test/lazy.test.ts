@@ -1,8 +1,8 @@
-import { lazy, string } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('lazy', () => {
-  const v = new Validator(lazy(() => string()))
+  const v = new Validator(schemas.lazy(() => schemas.string()))
   it('should pass', () => {
     expect(v.validate('cat')).toHaveLength(0)
     expect(v.validate('')).toHaveLength(0)

@@ -11,7 +11,7 @@ import {
   StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { isFailure } from '@oats-ts/try'
-import { SchemaRule, stringify, Validator } from '@oats-ts/validators'
+import { stringify, Validator } from '@oats-ts/validators'
 import {
   DefaultCookieSerializer,
   DefaultHeaderDeserializer,
@@ -21,6 +21,7 @@ import {
   deserializeSetCookie,
 } from '@oats-ts/openapi-parameter-serialization'
 import { FetchClientAdapterConfig } from './typings'
+import type { SchemaRule } from '@oats-ts/rules'
 
 export class FetchClientAdapter implements ClientAdapter {
   private readonly config: FetchClientAdapterConfig

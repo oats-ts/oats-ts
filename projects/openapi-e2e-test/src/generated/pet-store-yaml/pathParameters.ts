@@ -5,17 +5,17 @@
  */
 
 import {
-  PathParameters,
-  parameter,
+  PathDescriptorRule,
+  parameters,
   parsePathToMatcher,
   parsePathToSegments,
-  validators,
+  schemas,
 } from '@oats-ts/openapi-runtime'
 import { ShowPetByIdPathParameters } from './pathTypes'
 
-export const showPetByIdPathParameters: PathParameters<ShowPetByIdPathParameters> = {
-  descriptor: { petId: parameter.path.simple.required.primitive(parameter.value.string()) },
-  schema: validators.object(validators.shape({ petId: validators.string() })),
+export const showPetByIdPathParameters: PathDescriptorRule<ShowPetByIdPathParameters> = {
+  parameters: { petId: parameters.path.simple.required.primitive(parameters.value.string()) },
+  schema: schemas.object(schemas.shape({ petId: schemas.string() })),
   matcher: parsePathToMatcher('/pets/{petId}'),
   pathSegments: parsePathToSegments('/pets/{petId}'),
 }

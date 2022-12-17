@@ -1,8 +1,8 @@
-import { array } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('array', () => {
-  const v = new Validator(array())
+  const v = new Validator(schemas.array())
   it('should pass', () => {
     expect(v.validate([])).toHaveLength(0)
     expect(v.validate(['hi'])).toHaveLength(0)

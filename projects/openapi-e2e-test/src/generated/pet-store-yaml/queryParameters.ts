@@ -4,10 +4,10 @@
  * Generated from schemas/pet-store-yaml.yaml (originating from oats-ts/oats-schemas)
  */
 
-import { QueryParameters, parameter, validators } from '@oats-ts/openapi-runtime'
+import { QueryDescriptorRule, parameters, schemas } from '@oats-ts/openapi-runtime'
 import { ListPetsQueryParameters } from './queryTypes'
 
-export const listPetsQueryParameters: QueryParameters<ListPetsQueryParameters> = {
-  descriptor: { limit: parameter.query.form.exploded.primitive(parameter.value.number()) },
-  schema: validators.object(validators.shape({ limit: validators.optional(validators.number()) })),
+export const listPetsQueryParameters: QueryDescriptorRule<ListPetsQueryParameters> = {
+  parameters: { limit: parameters.query.form.exploded.primitive(parameters.value.number()) },
+  schema: schemas.object(schemas.shape({ limit: schemas.optional(schemas.number()) })),
 }

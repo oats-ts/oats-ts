@@ -4,7 +4,7 @@
  * Generated from generated-schemas/parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators as _validators } from '@oats-ts/openapi-runtime'
+import { schemas as _schemas } from '@oats-ts/openapi-runtime'
 import {
   deepObjectQueryParametersTypeValidator,
   formCookieParametersTypeValidator,
@@ -19,71 +19,51 @@ import {
 } from './typeValidators'
 
 export const deepObjectQueryParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => deepObjectQueryParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => deepObjectQueryParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const formCookieParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => formCookieParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => formCookieParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const formQueryParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => formQueryParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => formQueryParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const labelPathParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => labelPathParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => labelPathParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const matrixPathParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => matrixPathParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => matrixPathParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const pipeDelimitedQueryParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => pipeDelimitedQueryParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => pipeDelimitedQueryParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simpleHeaderParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => simpleHeaderParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => simpleHeaderParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simplePathParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => simplePathParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => simplePathParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const simpleResponseHeaderParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.object(_validators.shape({ ok: _validators.boolean() })) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.object(_schemas.shape({ ok: _schemas.boolean() })) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const
 
 export const spaceDelimitedQueryParametersResponseBodyValidator = {
-  200: { 'application/json': _validators.lazy(() => spaceDelimitedQueryParametersTypeValidator) },
-  400: {
-    'application/json': _validators.array(_validators.items(_validators.lazy(() => parameterIssueTypeValidator))),
-  },
+  200: { 'application/json': _schemas.lazy(() => spaceDelimitedQueryParametersTypeValidator) },
+  400: { 'application/json': _schemas.array(_schemas.items(_schemas.lazy(() => parameterIssueTypeValidator))) },
 } as const

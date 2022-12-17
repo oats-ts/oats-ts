@@ -4,6 +4,6 @@
  * Generated from edge-cases/missing-content-schema.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const missingRequestBodySchemaRequestBodyValidator = { 'application/json': validators.any() } as const
+export const missingRequestBodySchemaRequestBodyValidator = { 'application/json': schemas.any() } as const

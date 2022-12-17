@@ -1,4 +1,4 @@
-import type { SchemaRule } from '@oats-ts/validators'
+import type { SchemaRule } from '@oats-ts/rules'
 import type { Try } from '@oats-ts/try'
 
 export type ClientAdapter = {

@@ -4,314 +4,306 @@
  * Generated from generated-schemas/parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators as _validators } from '@oats-ts/openapi-runtime'
+import { schemas as _schemas } from '@oats-ts/openapi-runtime'
 
-export const commonEnumTypeTypeValidator = _validators.union({
-  A: _validators.literal('A'),
-  B: _validators.literal('B'),
-  C: _validators.literal('C'),
+export const commonEnumTypeTypeValidator = _schemas.union({
+  A: _schemas.literal('A'),
+  B: _schemas.literal('B'),
+  C: _schemas.literal('C'),
 })
 
-export const commonObjectTypeExplTypeValidator = _validators.object(
-  _validators.shape({
-    objExplBoolField: _validators.boolean(),
-    objExplEnmField: _validators.lazy(() => commonEnumTypeTypeValidator),
-    objExplNumField: _validators.number(),
-    objExplOptBoolField: _validators.optional(_validators.boolean()),
-    objExplOptEnmField: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    objExplOptNumField: _validators.optional(_validators.number()),
-    objExplOptStrField: _validators.optional(_validators.string()),
-    objExplStrField: _validators.string(),
+export const commonObjectTypeExplTypeValidator = _schemas.object(
+  _schemas.shape({
+    objExplBoolField: _schemas.boolean(),
+    objExplEnmField: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    objExplNumField: _schemas.number(),
+    objExplOptBoolField: _schemas.optional(_schemas.boolean()),
+    objExplOptEnmField: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    objExplOptNumField: _schemas.optional(_schemas.number()),
+    objExplOptStrField: _schemas.optional(_schemas.string()),
+    objExplStrField: _schemas.string(),
   }),
 )
 
-export const commonObjectTypeTypeValidator = _validators.object(
-  _validators.shape({
-    objBoolField: _validators.boolean(),
-    objEnmField: _validators.lazy(() => commonEnumTypeTypeValidator),
-    objNumField: _validators.number(),
-    objOptBoolField: _validators.optional(_validators.boolean()),
-    objOptEnmField: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    objOptNumField: _validators.optional(_validators.number()),
-    objOptStrField: _validators.optional(_validators.string()),
-    objStrField: _validators.string(),
+export const commonObjectTypeTypeValidator = _schemas.object(
+  _schemas.shape({
+    objBoolField: _schemas.boolean(),
+    objEnmField: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    objNumField: _schemas.number(),
+    objOptBoolField: _schemas.optional(_schemas.boolean()),
+    objOptEnmField: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    objOptNumField: _schemas.optional(_schemas.number()),
+    objOptStrField: _schemas.optional(_schemas.string()),
+    objStrField: _schemas.string(),
   }),
 )
 
-export const commonOptObjectTypeExplTypeValidator = _validators.object(
-  _validators.shape({
-    optObjExplBoolField: _validators.boolean(),
-    optObjExplEnmField: _validators.lazy(() => commonEnumTypeTypeValidator),
-    optObjExplNumField: _validators.number(),
-    optObjExplOptBoolField: _validators.optional(_validators.boolean()),
-    optObjExplOptEnmField: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    optObjExplOptNumField: _validators.optional(_validators.number()),
-    optObjExplOptStrField: _validators.optional(_validators.string()),
-    optObjExplStrField: _validators.string(),
+export const commonOptObjectTypeExplTypeValidator = _schemas.object(
+  _schemas.shape({
+    optObjExplBoolField: _schemas.boolean(),
+    optObjExplEnmField: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    optObjExplNumField: _schemas.number(),
+    optObjExplOptBoolField: _schemas.optional(_schemas.boolean()),
+    optObjExplOptEnmField: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    optObjExplOptNumField: _schemas.optional(_schemas.number()),
+    optObjExplOptStrField: _schemas.optional(_schemas.string()),
+    optObjExplStrField: _schemas.string(),
   }),
 )
 
-export const commonOptObjectTypeTypeValidator = _validators.object(
-  _validators.shape({
-    optObjBoolField: _validators.boolean(),
-    optObjEnmField: _validators.lazy(() => commonEnumTypeTypeValidator),
-    optObjNumField: _validators.number(),
-    optObjOptBoolField: _validators.optional(_validators.boolean()),
-    optObjOptEnmField: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    optObjOptNumField: _validators.optional(_validators.number()),
-    optObjOptStrField: _validators.optional(_validators.string()),
-    optObjStrField: _validators.string(),
+export const commonOptObjectTypeTypeValidator = _schemas.object(
+  _schemas.shape({
+    optObjBoolField: _schemas.boolean(),
+    optObjEnmField: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    optObjNumField: _schemas.number(),
+    optObjOptBoolField: _schemas.optional(_schemas.boolean()),
+    optObjOptEnmField: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    optObjOptNumField: _schemas.optional(_schemas.number()),
+    optObjOptStrField: _schemas.optional(_schemas.string()),
+    optObjStrField: _schemas.string(),
   }),
 )
 
-export const deepObjectQueryParametersTypeValidator = _validators.object(
-  _validators.shape({
-    objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    optObjExpl: _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
+export const deepObjectQueryParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    objExpl: _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    optObjExpl: _schemas.optional(_schemas.lazy(() => commonOptObjectTypeExplTypeValidator)),
   }),
 )
 
-export const formCookieParametersTypeValidator = _validators.object(
-  _validators.shape({
-    optBool: _validators.optional(_validators.boolean()),
-    optEnm: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    optNum: _validators.optional(_validators.number()),
-    optStr: _validators.optional(_validators.string()),
+export const formCookieParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    optBool: _schemas.optional(_schemas.boolean()),
+    optEnm: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    optNum: _schemas.optional(_schemas.number()),
+    optStr: _schemas.optional(_schemas.string()),
   }),
 )
 
-export const formQueryParametersTypeValidator = _validators.object(
-  _validators.shape({
-    bool: _validators.boolean(),
-    boolArr: _validators.array(_validators.items(_validators.boolean())),
-    boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
-    boolExpl: _validators.boolean(),
-    enm: _validators.lazy(() => commonEnumTypeTypeValidator),
-    enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
-    num: _validators.number(),
-    numArr: _validators.array(_validators.items(_validators.number())),
-    numArrExpl: _validators.array(_validators.items(_validators.number())),
-    numExpl: _validators.number(),
-    obj: _validators.lazy(() => commonObjectTypeTypeValidator),
-    objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    optBool: _validators.optional(_validators.boolean()),
-    optBoolArr: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    optBoolArrExpl: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    optBoolExpl: _validators.optional(_validators.boolean()),
-    optEnm: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    optEnmArr: _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+export const formQueryParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    bool: _schemas.boolean(),
+    boolArr: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolArrExpl: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolExpl: _schemas.boolean(),
+    enm: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    enmArr: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmExpl: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    num: _schemas.number(),
+    numArr: _schemas.array(_schemas.items(_schemas.number())),
+    numArrExpl: _schemas.array(_schemas.items(_schemas.number())),
+    numExpl: _schemas.number(),
+    obj: _schemas.lazy(() => commonObjectTypeTypeValidator),
+    objExpl: _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    optBool: _schemas.optional(_schemas.boolean()),
+    optBoolArr: _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    optBoolArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    optBoolExpl: _schemas.optional(_schemas.boolean()),
+    optEnm: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    optEnmArr: _schemas.optional(_schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator)))),
+    optEnmArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator)))),
+    optEnmExpl: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    optNum: _schemas.optional(_schemas.number()),
+    optNumArr: _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    optNumArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    optNumExpl: _schemas.optional(_schemas.number()),
+    optObj: _schemas.optional(_schemas.lazy(() => commonOptObjectTypeTypeValidator)),
+    optObjExpl: _schemas.optional(_schemas.lazy(() => commonOptObjectTypeExplTypeValidator)),
+    optStr: _schemas.optional(_schemas.string()),
+    optStrArr: _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    optStrArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    optStrExpl: _schemas.optional(_schemas.string()),
+    str: _schemas.string(),
+    strArr: _schemas.array(_schemas.items(_schemas.string())),
+    strArrExpl: _schemas.array(_schemas.items(_schemas.string())),
+    strExpl: _schemas.string(),
+  }),
+)
+
+export const labelPathParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    bool: _schemas.boolean(),
+    boolArr: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolArrExpl: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolExpl: _schemas.boolean(),
+    enm: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    enmArr: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmExpl: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    num: _schemas.number(),
+    numArr: _schemas.array(_schemas.items(_schemas.number())),
+    numArrExpl: _schemas.array(_schemas.items(_schemas.number())),
+    numExpl: _schemas.number(),
+    obj: _schemas.lazy(() => commonObjectTypeTypeValidator),
+    objExpl: _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    str: _schemas.string(),
+    strArr: _schemas.array(_schemas.items(_schemas.string())),
+    strArrExpl: _schemas.array(_schemas.items(_schemas.string())),
+    strExpl: _schemas.string(),
+  }),
+)
+
+export const matrixPathParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    bool: _schemas.boolean(),
+    boolArr: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolArrExpl: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolExpl: _schemas.boolean(),
+    enm: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    enmArr: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmExpl: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    num: _schemas.number(),
+    numArr: _schemas.array(_schemas.items(_schemas.number())),
+    numArrExpl: _schemas.array(_schemas.items(_schemas.number())),
+    numExpl: _schemas.number(),
+    obj: _schemas.lazy(() => commonObjectTypeTypeValidator),
+    objExpl: _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    str: _schemas.string(),
+    strArr: _schemas.array(_schemas.items(_schemas.string())),
+    strArrExpl: _schemas.array(_schemas.items(_schemas.string())),
+    strExpl: _schemas.string(),
+  }),
+)
+
+export const parameterIssueTypeValidator = _schemas.object(_schemas.shape({ message: _schemas.string() }))
+
+export const pipeDelimitedQueryParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    boolArrExpl: _schemas.array(_schemas.items(_schemas.boolean())),
+    enmArrExpl: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    numArrExpl: _schemas.array(_schemas.items(_schemas.number())),
+    optBoolArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    optEnmArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator)))),
+    optNumArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    optStrArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    strArrExpl: _schemas.array(_schemas.items(_schemas.string())),
+  }),
+)
+
+export const simpleHeaderParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    'X-Bool-Header': _schemas.boolean(),
+    'X-BoolArr-Header': _schemas.array(_schemas.items(_schemas.boolean())),
+    'X-BoolArrExpl-Header': _schemas.array(_schemas.items(_schemas.boolean())),
+    'X-BoolExpl-Header': _schemas.boolean(),
+    'X-Enm-Header': _schemas.lazy(() => commonEnumTypeTypeValidator),
+    'X-EnmArr-Header': _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    'X-EnmArrExpl-Header': _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    'X-EnmExpl-Header': _schemas.lazy(() => commonEnumTypeTypeValidator),
+    'X-Num-Header': _schemas.number(),
+    'X-NumArr-Header': _schemas.array(_schemas.items(_schemas.number())),
+    'X-NumArrExpl-Header': _schemas.array(_schemas.items(_schemas.number())),
+    'X-NumExpl-Header': _schemas.number(),
+    'X-Obj-Header': _schemas.lazy(() => commonObjectTypeTypeValidator),
+    'X-ObjExpl-Header': _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    'X-OptBool-Header': _schemas.optional(_schemas.boolean()),
+    'X-OptBoolArr-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    'X-OptBoolArrExpl-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    'X-OptBoolExpl-Header': _schemas.optional(_schemas.boolean()),
+    'X-OptEnm-Header': _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    'X-OptEnmArr-Header': _schemas.optional(
+      _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
     ),
-    optEnmArrExpl: _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
+    'X-OptEnmArrExpl-Header': _schemas.optional(
+      _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
     ),
-    optEnmExpl: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    optNum: _validators.optional(_validators.number()),
-    optNumArr: _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    optNumArrExpl: _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    optNumExpl: _validators.optional(_validators.number()),
-    optObj: _validators.optional(_validators.lazy(() => commonOptObjectTypeTypeValidator)),
-    optObjExpl: _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
-    optStr: _validators.optional(_validators.string()),
-    optStrArr: _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    optStrArrExpl: _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    optStrExpl: _validators.optional(_validators.string()),
-    str: _validators.string(),
-    strArr: _validators.array(_validators.items(_validators.string())),
-    strArrExpl: _validators.array(_validators.items(_validators.string())),
-    strExpl: _validators.string(),
+    'X-OptEnmExpl-Header': _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    'X-OptNum-Header': _schemas.optional(_schemas.number()),
+    'X-OptNumArr-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    'X-OptNumArrExpl-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    'X-OptNumExpl-Header': _schemas.optional(_schemas.number()),
+    'X-OptObj-Header': _schemas.optional(_schemas.lazy(() => commonOptObjectTypeTypeValidator)),
+    'X-OptObjExpl-Header': _schemas.optional(_schemas.lazy(() => commonOptObjectTypeExplTypeValidator)),
+    'X-OptStr-Header': _schemas.optional(_schemas.string()),
+    'X-OptStrArr-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    'X-OptStrArrExpl-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    'X-OptStrExpl-Header': _schemas.optional(_schemas.string()),
+    'X-Str-Header': _schemas.string(),
+    'X-StrArr-Header': _schemas.array(_schemas.items(_schemas.string())),
+    'X-StrArrExpl-Header': _schemas.array(_schemas.items(_schemas.string())),
+    'X-StrExpl-Header': _schemas.string(),
   }),
 )
 
-export const labelPathParametersTypeValidator = _validators.object(
-  _validators.shape({
-    bool: _validators.boolean(),
-    boolArr: _validators.array(_validators.items(_validators.boolean())),
-    boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
-    boolExpl: _validators.boolean(),
-    enm: _validators.lazy(() => commonEnumTypeTypeValidator),
-    enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
-    num: _validators.number(),
-    numArr: _validators.array(_validators.items(_validators.number())),
-    numArrExpl: _validators.array(_validators.items(_validators.number())),
-    numExpl: _validators.number(),
-    obj: _validators.lazy(() => commonObjectTypeTypeValidator),
-    objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    str: _validators.string(),
-    strArr: _validators.array(_validators.items(_validators.string())),
-    strArrExpl: _validators.array(_validators.items(_validators.string())),
-    strExpl: _validators.string(),
+export const simplePathParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    bool: _schemas.boolean(),
+    boolArr: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolArrExpl: _schemas.array(_schemas.items(_schemas.boolean())),
+    boolExpl: _schemas.boolean(),
+    enm: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    enmArr: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmArrExpl: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    enmExpl: _schemas.lazy(() => commonEnumTypeTypeValidator),
+    num: _schemas.number(),
+    numArr: _schemas.array(_schemas.items(_schemas.number())),
+    numArrExpl: _schemas.array(_schemas.items(_schemas.number())),
+    numExpl: _schemas.number(),
+    obj: _schemas.lazy(() => commonObjectTypeTypeValidator),
+    objExpl: _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    str: _schemas.string(),
+    strArr: _schemas.array(_schemas.items(_schemas.string())),
+    strArrExpl: _schemas.array(_schemas.items(_schemas.string())),
+    strExpl: _schemas.string(),
   }),
 )
 
-export const matrixPathParametersTypeValidator = _validators.object(
-  _validators.shape({
-    bool: _validators.boolean(),
-    boolArr: _validators.array(_validators.items(_validators.boolean())),
-    boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
-    boolExpl: _validators.boolean(),
-    enm: _validators.lazy(() => commonEnumTypeTypeValidator),
-    enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
-    num: _validators.number(),
-    numArr: _validators.array(_validators.items(_validators.number())),
-    numArrExpl: _validators.array(_validators.items(_validators.number())),
-    numExpl: _validators.number(),
-    obj: _validators.lazy(() => commonObjectTypeTypeValidator),
-    objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    str: _validators.string(),
-    strArr: _validators.array(_validators.items(_validators.string())),
-    strArrExpl: _validators.array(_validators.items(_validators.string())),
-    strExpl: _validators.string(),
+export const simpleResponseHeaderParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    'X-Bool-Header': _schemas.boolean(),
+    'X-BoolArr-Header': _schemas.array(_schemas.items(_schemas.boolean())),
+    'X-BoolArrExpl-Header': _schemas.array(_schemas.items(_schemas.boolean())),
+    'X-BoolExpl-Header': _schemas.boolean(),
+    'X-Enm-Header': _schemas.lazy(() => commonEnumTypeTypeValidator),
+    'X-EnmArr-Header': _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    'X-EnmArrExpl-Header': _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    'X-EnmExpl-Header': _schemas.lazy(() => commonEnumTypeTypeValidator),
+    'X-Num-Header': _schemas.number(),
+    'X-NumArr-Header': _schemas.array(_schemas.items(_schemas.number())),
+    'X-NumArrExpl-Header': _schemas.array(_schemas.items(_schemas.number())),
+    'X-NumExpl-Header': _schemas.number(),
+    'X-Obj-Header': _schemas.lazy(() => commonObjectTypeTypeValidator),
+    'X-ObjExpl-Header': _schemas.lazy(() => commonObjectTypeExplTypeValidator),
+    'X-OptBool-Header': _schemas.optional(_schemas.boolean()),
+    'X-OptBoolArr-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    'X-OptBoolArrExpl-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    'X-OptBoolExpl-Header': _schemas.optional(_schemas.boolean()),
+    'X-OptEnm-Header': _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    'X-OptEnmArr-Header': _schemas.optional(
+      _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    ),
+    'X-OptEnmArrExpl-Header': _schemas.optional(
+      _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    ),
+    'X-OptEnmExpl-Header': _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+    'X-OptNum-Header': _schemas.optional(_schemas.number()),
+    'X-OptNumArr-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    'X-OptNumArrExpl-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    'X-OptNumExpl-Header': _schemas.optional(_schemas.number()),
+    'X-OptObj-Header': _schemas.optional(_schemas.lazy(() => commonOptObjectTypeTypeValidator)),
+    'X-OptObjExpl-Header': _schemas.optional(_schemas.lazy(() => commonOptObjectTypeExplTypeValidator)),
+    'X-OptStr-Header': _schemas.optional(_schemas.string()),
+    'X-OptStrArr-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    'X-OptStrArrExpl-Header': _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    'X-OptStrExpl-Header': _schemas.optional(_schemas.string()),
+    'X-Str-Header': _schemas.string(),
+    'X-StrArr-Header': _schemas.array(_schemas.items(_schemas.string())),
+    'X-StrArrExpl-Header': _schemas.array(_schemas.items(_schemas.string())),
+    'X-StrExpl-Header': _schemas.string(),
   }),
 )
 
-export const parameterIssueTypeValidator = _validators.object(_validators.shape({ message: _validators.string() }))
-
-export const pipeDelimitedQueryParametersTypeValidator = _validators.object(
-  _validators.shape({
-    boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
-    enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    numArrExpl: _validators.array(_validators.items(_validators.number())),
-    optBoolArrExpl: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    optEnmArrExpl: _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    ),
-    optNumArrExpl: _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    optStrArrExpl: _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    strArrExpl: _validators.array(_validators.items(_validators.string())),
-  }),
-)
-
-export const simpleHeaderParametersTypeValidator = _validators.object(
-  _validators.shape({
-    'X-Bool-Header': _validators.boolean(),
-    'X-BoolArr-Header': _validators.array(_validators.items(_validators.boolean())),
-    'X-BoolArrExpl-Header': _validators.array(_validators.items(_validators.boolean())),
-    'X-BoolExpl-Header': _validators.boolean(),
-    'X-Enm-Header': _validators.lazy(() => commonEnumTypeTypeValidator),
-    'X-EnmArr-Header': _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    'X-EnmArrExpl-Header': _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    'X-EnmExpl-Header': _validators.lazy(() => commonEnumTypeTypeValidator),
-    'X-Num-Header': _validators.number(),
-    'X-NumArr-Header': _validators.array(_validators.items(_validators.number())),
-    'X-NumArrExpl-Header': _validators.array(_validators.items(_validators.number())),
-    'X-NumExpl-Header': _validators.number(),
-    'X-Obj-Header': _validators.lazy(() => commonObjectTypeTypeValidator),
-    'X-ObjExpl-Header': _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    'X-OptBool-Header': _validators.optional(_validators.boolean()),
-    'X-OptBoolArr-Header': _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    'X-OptBoolArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    'X-OptBoolExpl-Header': _validators.optional(_validators.boolean()),
-    'X-OptEnm-Header': _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    'X-OptEnmArr-Header': _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    ),
-    'X-OptEnmArrExpl-Header': _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    ),
-    'X-OptEnmExpl-Header': _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    'X-OptNum-Header': _validators.optional(_validators.number()),
-    'X-OptNumArr-Header': _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    'X-OptNumArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    'X-OptNumExpl-Header': _validators.optional(_validators.number()),
-    'X-OptObj-Header': _validators.optional(_validators.lazy(() => commonOptObjectTypeTypeValidator)),
-    'X-OptObjExpl-Header': _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
-    'X-OptStr-Header': _validators.optional(_validators.string()),
-    'X-OptStrArr-Header': _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    'X-OptStrArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    'X-OptStrExpl-Header': _validators.optional(_validators.string()),
-    'X-Str-Header': _validators.string(),
-    'X-StrArr-Header': _validators.array(_validators.items(_validators.string())),
-    'X-StrArrExpl-Header': _validators.array(_validators.items(_validators.string())),
-    'X-StrExpl-Header': _validators.string(),
-  }),
-)
-
-export const simplePathParametersTypeValidator = _validators.object(
-  _validators.shape({
-    bool: _validators.boolean(),
-    boolArr: _validators.array(_validators.items(_validators.boolean())),
-    boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
-    boolExpl: _validators.boolean(),
-    enm: _validators.lazy(() => commonEnumTypeTypeValidator),
-    enmArr: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    enmExpl: _validators.lazy(() => commonEnumTypeTypeValidator),
-    num: _validators.number(),
-    numArr: _validators.array(_validators.items(_validators.number())),
-    numArrExpl: _validators.array(_validators.items(_validators.number())),
-    numExpl: _validators.number(),
-    obj: _validators.lazy(() => commonObjectTypeTypeValidator),
-    objExpl: _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    str: _validators.string(),
-    strArr: _validators.array(_validators.items(_validators.string())),
-    strArrExpl: _validators.array(_validators.items(_validators.string())),
-    strExpl: _validators.string(),
-  }),
-)
-
-export const simpleResponseHeaderParametersTypeValidator = _validators.object(
-  _validators.shape({
-    'X-Bool-Header': _validators.boolean(),
-    'X-BoolArr-Header': _validators.array(_validators.items(_validators.boolean())),
-    'X-BoolArrExpl-Header': _validators.array(_validators.items(_validators.boolean())),
-    'X-BoolExpl-Header': _validators.boolean(),
-    'X-Enm-Header': _validators.lazy(() => commonEnumTypeTypeValidator),
-    'X-EnmArr-Header': _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    'X-EnmArrExpl-Header': _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    'X-EnmExpl-Header': _validators.lazy(() => commonEnumTypeTypeValidator),
-    'X-Num-Header': _validators.number(),
-    'X-NumArr-Header': _validators.array(_validators.items(_validators.number())),
-    'X-NumArrExpl-Header': _validators.array(_validators.items(_validators.number())),
-    'X-NumExpl-Header': _validators.number(),
-    'X-Obj-Header': _validators.lazy(() => commonObjectTypeTypeValidator),
-    'X-ObjExpl-Header': _validators.lazy(() => commonObjectTypeExplTypeValidator),
-    'X-OptBool-Header': _validators.optional(_validators.boolean()),
-    'X-OptBoolArr-Header': _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    'X-OptBoolArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    'X-OptBoolExpl-Header': _validators.optional(_validators.boolean()),
-    'X-OptEnm-Header': _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    'X-OptEnmArr-Header': _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    ),
-    'X-OptEnmArrExpl-Header': _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    ),
-    'X-OptEnmExpl-Header': _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-    'X-OptNum-Header': _validators.optional(_validators.number()),
-    'X-OptNumArr-Header': _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    'X-OptNumArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    'X-OptNumExpl-Header': _validators.optional(_validators.number()),
-    'X-OptObj-Header': _validators.optional(_validators.lazy(() => commonOptObjectTypeTypeValidator)),
-    'X-OptObjExpl-Header': _validators.optional(_validators.lazy(() => commonOptObjectTypeExplTypeValidator)),
-    'X-OptStr-Header': _validators.optional(_validators.string()),
-    'X-OptStrArr-Header': _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    'X-OptStrArrExpl-Header': _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    'X-OptStrExpl-Header': _validators.optional(_validators.string()),
-    'X-Str-Header': _validators.string(),
-    'X-StrArr-Header': _validators.array(_validators.items(_validators.string())),
-    'X-StrArrExpl-Header': _validators.array(_validators.items(_validators.string())),
-    'X-StrExpl-Header': _validators.string(),
-  }),
-)
-
-export const spaceDelimitedQueryParametersTypeValidator = _validators.object(
-  _validators.shape({
-    boolArrExpl: _validators.array(_validators.items(_validators.boolean())),
-    enmArrExpl: _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    numArrExpl: _validators.array(_validators.items(_validators.number())),
-    optBoolArrExpl: _validators.optional(_validators.array(_validators.items(_validators.boolean()))),
-    optEnmArrExpl: _validators.optional(
-      _validators.array(_validators.items(_validators.lazy(() => commonEnumTypeTypeValidator))),
-    ),
-    optNumArrExpl: _validators.optional(_validators.array(_validators.items(_validators.number()))),
-    optStrArrExpl: _validators.optional(_validators.array(_validators.items(_validators.string()))),
-    strArrExpl: _validators.array(_validators.items(_validators.string())),
+export const spaceDelimitedQueryParametersTypeValidator = _schemas.object(
+  _schemas.shape({
+    boolArrExpl: _schemas.array(_schemas.items(_schemas.boolean())),
+    enmArrExpl: _schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator))),
+    numArrExpl: _schemas.array(_schemas.items(_schemas.number())),
+    optBoolArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.boolean()))),
+    optEnmArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.lazy(() => commonEnumTypeTypeValidator)))),
+    optNumArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.number()))),
+    optStrArrExpl: _schemas.optional(_schemas.array(_schemas.items(_schemas.string()))),
+    strArrExpl: _schemas.array(_schemas.items(_schemas.string())),
   }),
 )

@@ -4,23 +4,23 @@
  * Generated from schemas/book-store.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 import { appErrorTypeValidator, bookTypeValidator } from './typeValidators'
 
 export const addBookResponseBodyValidator = {
-  201: { 'application/json': validators.lazy(() => bookTypeValidator) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
+  201: { 'application/json': schemas.lazy(() => bookTypeValidator) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBookResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => bookTypeValidator) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
+  200: { 'application/json': schemas.lazy(() => bookTypeValidator) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => appErrorTypeValidator))) },
 } as const
 
 export const getBooksResponseBodyValidator = {
-  200: { 'application/json': validators.array(validators.items(validators.lazy(() => bookTypeValidator))) },
-  400: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
-  500: { 'application/json': validators.array(validators.items(validators.lazy(() => appErrorTypeValidator))) },
+  200: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => bookTypeValidator))) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => appErrorTypeValidator))) },
+  500: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => appErrorTypeValidator))) },
 } as const

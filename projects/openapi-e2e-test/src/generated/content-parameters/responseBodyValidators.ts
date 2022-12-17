@@ -4,7 +4,7 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 import {
   contentParameterIssueTypeValidator,
   cookieParametersTypeValidator,
@@ -14,36 +14,26 @@ import {
 } from './typeValidators'
 
 export const cookieParametersResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => cookieParametersTypeValidator) },
-  400: {
-    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
-  },
+  200: { 'application/json': schemas.lazy(() => cookieParametersTypeValidator) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => contentParameterIssueTypeValidator))) },
 } as const
 
 export const headerParametersResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => headerParametersTypeValidator) },
-  400: {
-    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
-  },
+  200: { 'application/json': schemas.lazy(() => headerParametersTypeValidator) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => contentParameterIssueTypeValidator))) },
 } as const
 
 export const pathParametersResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => pathParametersTypeValidator) },
-  400: {
-    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
-  },
+  200: { 'application/json': schemas.lazy(() => pathParametersTypeValidator) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => contentParameterIssueTypeValidator))) },
 } as const
 
 export const queryParametersResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => queryParametersTypeValidator) },
-  400: {
-    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
-  },
+  200: { 'application/json': schemas.lazy(() => queryParametersTypeValidator) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => contentParameterIssueTypeValidator))) },
 } as const
 
 export const responseHeaderParametersResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ ok: validators.boolean() })) },
-  400: {
-    'application/json': validators.array(validators.items(validators.lazy(() => contentParameterIssueTypeValidator))),
-  },
+  200: { 'application/json': schemas.object(schemas.shape({ ok: schemas.boolean() })) },
+  400: { 'application/json': schemas.array(schemas.items(schemas.lazy(() => contentParameterIssueTypeValidator))) },
 } as const

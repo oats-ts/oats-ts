@@ -5,38 +5,38 @@
  */
 
 import {
-  PathParameters,
-  parameter,
+  PathDescriptorRule,
+  parameters,
   parsePathToMatcher,
   parsePathToSegments,
-  validators,
+  schemas,
 } from '@oats-ts/openapi-runtime'
 import { PathParametersPathParameters } from './pathTypes'
 import { contentCommonEnumTypeTypeValidator, contentCommonObjectTypeTypeValidator } from './typeValidators'
 
-export const pathParametersPathParameters: PathParameters<PathParametersPathParameters> = {
-  descriptor: {
-    str: parameter.path.required.schema('application/json'),
-    num: parameter.path.required.schema('application/json'),
-    bool: parameter.path.required.schema('application/json'),
-    enm: parameter.path.required.schema('application/json'),
-    strArr: parameter.path.required.schema('application/json'),
-    numArr: parameter.path.required.schema('application/json'),
-    boolArr: parameter.path.required.schema('application/json'),
-    enmArr: parameter.path.required.schema('application/json'),
-    obj: parameter.path.required.schema('application/json'),
+export const pathParametersPathParameters: PathDescriptorRule<PathParametersPathParameters> = {
+  parameters: {
+    str: parameters.path.required.schema('application/json'),
+    num: parameters.path.required.schema('application/json'),
+    bool: parameters.path.required.schema('application/json'),
+    enm: parameters.path.required.schema('application/json'),
+    strArr: parameters.path.required.schema('application/json'),
+    numArr: parameters.path.required.schema('application/json'),
+    boolArr: parameters.path.required.schema('application/json'),
+    enmArr: parameters.path.required.schema('application/json'),
+    obj: parameters.path.required.schema('application/json'),
   },
-  schema: validators.object(
-    validators.shape({
-      bool: validators.boolean(),
-      boolArr: validators.array(validators.items(validators.boolean())),
-      enm: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-      enmArr: validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-      num: validators.number(),
-      numArr: validators.array(validators.items(validators.number())),
-      obj: validators.lazy(() => contentCommonObjectTypeTypeValidator),
-      str: validators.string(),
-      strArr: validators.array(validators.items(validators.string())),
+  schema: schemas.object(
+    schemas.shape({
+      bool: schemas.boolean(),
+      boolArr: schemas.array(schemas.items(schemas.boolean())),
+      enm: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+      enmArr: schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+      num: schemas.number(),
+      numArr: schemas.array(schemas.items(schemas.number())),
+      obj: schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+      str: schemas.string(),
+      strArr: schemas.array(schemas.items(schemas.string())),
     }),
   ),
   matcher: parsePathToMatcher('/path-parameters/{str}/{num}/{bool}/{enm}/{strArr}/{numArr}/{boolArr}/{enmArr}/{obj}'),

@@ -38,7 +38,10 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: this.paramsPkg.name, version }]
+    return [
+      { name: this.paramsPkg.name, version },
+      { name: this.rulesPkg.name, version },
+    ]
   }
 
   public initialize(init: GeneratorInit<OpenAPIReadOutput, SourceFile>): void {
@@ -73,9 +76,9 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
-      this.validatorsPkg,
+      this.rulesPkg,
       'oats/response-headers-type',
-      'HeaderParameters',
+      'HeaderDescriptorRule',
       'header',
       'simple',
       false,
@@ -89,7 +92,7 @@ export class ResponseHeaderParametersGenerator extends OperationBasedCodeGenerat
     )
 
     return [
-      getNamedImports(this.paramsPkg.name, [this.paramsPkg.imports.parameter]),
+      getNamedImports(this.rulesPkg.name, [this.rulesPkg.imports.parameters]),
       ...this.descriptorsGenerator.getValidatorImports(path, headers),
     ]
   }

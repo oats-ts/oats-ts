@@ -4,24 +4,24 @@
  * Generated from generated-schemas/methods.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
 export const deleteMethodResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ methodUsed: validators.string() })) },
+  200: { 'application/json': schemas.object(schemas.shape({ methodUsed: schemas.string() })) },
 } as const
 
 export const getMethodResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ methodUsed: validators.string() })) },
+  200: { 'application/json': schemas.object(schemas.shape({ methodUsed: schemas.string() })) },
 } as const
 
 export const patchMethodResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ methodUsed: validators.string() })) },
+  200: { 'application/json': schemas.object(schemas.shape({ methodUsed: schemas.string() })) },
 } as const
 
 export const postMethodResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ methodUsed: validators.string() })) },
+  200: { 'application/json': schemas.object(schemas.shape({ methodUsed: schemas.string() })) },
 } as const
 
 export const putMethodResponseBodyValidator = {
-  200: { 'application/json': validators.object(validators.shape({ methodUsed: validators.string() })) },
+  200: { 'application/json': schemas.object(schemas.shape({ methodUsed: schemas.string() })) },
 } as const

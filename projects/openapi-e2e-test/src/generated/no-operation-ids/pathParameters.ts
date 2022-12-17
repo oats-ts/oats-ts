@@ -5,38 +5,38 @@
  */
 
 import {
-  PathParameters,
-  parameter,
+  PathDescriptorRule,
+  parameters,
   parsePathToMatcher,
   parsePathToSegments,
-  validators,
+  schemas,
 } from '@oats-ts/openapi-runtime'
 import { PatchFooParam1BarParam2PathParameters, PutFooParam1BarParam2PathParameters } from './pathTypes'
 
-export const patchFooParam1BarParam2PathParameters: PathParameters<PatchFooParam1BarParam2PathParameters> = {
-  descriptor: {
-    param1: parameter.path.simple.required.primitive(parameter.value.string()),
-    param2: parameter.path.simple.required.primitive(parameter.value.string()),
+export const patchFooParam1BarParam2PathParameters: PathDescriptorRule<PatchFooParam1BarParam2PathParameters> = {
+  parameters: {
+    param1: parameters.path.simple.required.primitive(parameters.value.string()),
+    param2: parameters.path.simple.required.primitive(parameters.value.string()),
   },
-  schema: validators.object(
-    validators.shape({
-      param1: validators.string(),
-      param2: validators.string(),
+  schema: schemas.object(
+    schemas.shape({
+      param1: schemas.string(),
+      param2: schemas.string(),
     }),
   ),
   matcher: parsePathToMatcher('/foo/{param1}/bar/{param2}'),
   pathSegments: parsePathToSegments('/foo/{param1}/bar/{param2}'),
 }
 
-export const putFooParam1BarParam2PathParameters: PathParameters<PutFooParam1BarParam2PathParameters> = {
-  descriptor: {
-    param1: parameter.path.simple.required.primitive(parameter.value.string()),
-    param2: parameter.path.simple.required.primitive(parameter.value.string()),
+export const putFooParam1BarParam2PathParameters: PathDescriptorRule<PutFooParam1BarParam2PathParameters> = {
+  parameters: {
+    param1: parameters.path.simple.required.primitive(parameters.value.string()),
+    param2: parameters.path.simple.required.primitive(parameters.value.string()),
   },
-  schema: validators.object(
-    validators.shape({
-      param1: validators.string(),
-      param2: validators.string(),
+  schema: schemas.object(
+    schemas.shape({
+      param1: schemas.string(),
+      param2: schemas.string(),
     }),
   ),
   matcher: parsePathToMatcher('/foo/{param1}/bar/{param2}'),

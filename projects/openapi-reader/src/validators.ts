@@ -11,9 +11,9 @@ import {
   RequestBodyObject,
   ResponseObject,
 } from '@oats-ts/openapi-model'
-import { SchemaRule, validators as v } from '@oats-ts/validators'
+import { SchemaRule, schemas } from '@oats-ts/rules'
 
-const { shape, object, optional, record, string, array, items, boolean, any, literal, union, number } = v
+const { shape, object, optional, record, string, array, items, boolean, any, literal, union, number } = schemas
 
 const recordOfObjects = object(record(string(), object()))
 

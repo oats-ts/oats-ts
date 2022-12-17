@@ -4,8 +4,8 @@
  * Generated from schemas/reference-target-schema.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const referenceTargetTypeValidator = validators.object(
-  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+export const referenceTargetTypeValidator = schemas.object(
+  schemas.shape({ referenceTarget: schemas.optional(schemas.literal(true)) }),
 )

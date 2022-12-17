@@ -4,14 +4,12 @@
  * Generated from edge-cases/additional-properties-boolean.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const additionaPropertiesFalseWithPropsTypeValidator = validators.object(
-  validators.shape({ foo: validators.string() }),
-)
+export const additionaPropertiesFalseWithPropsTypeValidator = schemas.object(schemas.shape({ foo: schemas.string() }))
 
-export const additionaPropertiesTrueWithPropsTypeValidator = validators.any()
+export const additionaPropertiesTrueWithPropsTypeValidator = schemas.any()
 
-export const additionalPropertiesFalseTypeValidator = validators.object(validators.shape({}))
+export const additionalPropertiesFalseTypeValidator = schemas.object(schemas.shape({}))
 
-export const additionalPropertiesTrueTypeValidator = validators.any()
+export const additionalPropertiesTrueTypeValidator = schemas.any()

@@ -33,7 +33,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
   }
 
   public runtimeDependencies(): RuntimeDependency[] {
-    return [{ name: this.validatorsPkg.name, version }]
+    return [{ name: this.rulesPkg.name, version }]
   }
 
   protected shouldGenerate(data: EnhancedOperation): boolean {
@@ -57,7 +57,7 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
       ...flatMap(content, ([, schema]) =>
         this.context().dependenciesOf<ImportDeclaration>(path, schema, 'oats/type-validator'),
       ),
-      ...(needsOptional ? [getNamedImports(this.validatorsPkg.name, [this.validatorsPkg.imports.validators])] : []),
+      ...(needsOptional ? [getNamedImports(this.rulesPkg.name, [this.rulesPkg.imports.schemas])] : []),
     ]
   }
 
@@ -93,8 +93,8 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
 
       if (isNil(mediaTypeObj.schema)) {
         validatorExpr = factory.createCallExpression(
-          getPropertyChain(factory.createIdentifier(this.validatorsPkg.exports.validators), [
-            this.validatorsPkg.content.validators.any,
+          getPropertyChain(factory.createIdentifier(this.rulesPkg.exports.schemas), [
+            this.rulesPkg.content.schemas.any,
           ]),
           [],
           [],
@@ -104,8 +104,8 @@ export class RequestBodyValidatorsGenerator extends OperationBasedCodeGenerator<
         if (!required) {
           validatorExpr = factory.createCallExpression(
             factory.createPropertyAccessExpression(
-              factory.createIdentifier(this.validatorsPkg.exports.validators),
-              this.validatorsPkg.content.validators.optional,
+              factory.createIdentifier(this.rulesPkg.exports.schemas),
+              this.rulesPkg.content.schemas.optional,
             ),
             [],
             [validatorExpr],

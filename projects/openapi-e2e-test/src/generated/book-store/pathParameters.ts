@@ -5,17 +5,17 @@
  */
 
 import {
-  PathParameters,
-  parameter,
+  PathDescriptorRule,
+  parameters,
   parsePathToMatcher,
   parsePathToSegments,
-  validators,
+  schemas,
 } from '@oats-ts/openapi-runtime'
 import { GetBookPathParameters } from './pathTypes'
 
-export const getBookPathParameters: PathParameters<GetBookPathParameters> = {
-  descriptor: { bookId: parameter.path.simple.required.primitive(parameter.value.number()) },
-  schema: validators.object(validators.shape({ bookId: validators.number() })),
+export const getBookPathParameters: PathDescriptorRule<GetBookPathParameters> = {
+  parameters: { bookId: parameters.path.simple.required.primitive(parameters.value.number()) },
+  schema: schemas.object(schemas.shape({ bookId: schemas.number() })),
   matcher: parsePathToMatcher('/books/{bookId}'),
   pathSegments: parsePathToSegments('/books/{bookId}'),
 }

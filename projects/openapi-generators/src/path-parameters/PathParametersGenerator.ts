@@ -65,9 +65,9 @@ export class PathParametersGenerator extends BaseParameterGenerators {
     return new ParameterDescriptorsGeneratorImpl(
       this.context(),
       this.paramsPkg,
-      this.validatorsPkg,
+      this.rulesPkg,
       'oats/path-type',
-      'PathParameters',
+      'PathDescriptorRule',
       'path',
       'simple',
       false,

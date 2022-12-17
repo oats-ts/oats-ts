@@ -1,9 +1,9 @@
-import { array, items, string } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('items', () => {
   describe('wrapped in array()', () => {
-    const v = new Validator(array(items(string())))
+    const v = new Validator(schemas.array(schemas.items(schemas.string())))
     it('should pass', () => {
       expect(v.validate([])).toHaveLength(0)
       expect(v.validate(['a'])).toHaveLength(0)
@@ -17,7 +17,7 @@ describe('items', () => {
     })
   })
   describe('unwrapped', () => {
-    const v = new Validator(items(string()))
+    const v = new Validator(schemas.items(schemas.string()))
     it('should pass', () => {
       expect(v.validate([])).toHaveLength(0)
       expect(v.validate(['a'])).toHaveLength(0)

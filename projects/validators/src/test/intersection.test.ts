@@ -1,12 +1,12 @@
-import { boolean, intersection, number, object, shape, string } from '../factories'
+import { schemas } from '@oats-ts/rules'
 import { Validator } from '../Validator'
 
 describe('intersection', () => {
   const v = new Validator(
-    intersection([
-      object(shape({ foo: string() })),
-      object(shape({ bar: number() })),
-      object(shape({ boo: boolean() })),
+    schemas.intersection([
+      schemas.object(schemas.shape({ foo: schemas.string() })),
+      schemas.object(schemas.shape({ bar: schemas.number() })),
+      schemas.object(schemas.shape({ boo: schemas.boolean() })),
     ]),
   )
   it('should pass', () => {

@@ -14,12 +14,12 @@ import {
   ResponseObject,
 } from '@oats-ts/openapi-model'
 import { failure, fromArray, isFailure, isSuccess, success, Try } from '@oats-ts/try'
-import { SchemaRule } from '@oats-ts/validators'
 import { entries, isNil } from 'lodash'
 import { register } from './utils/register'
 import { validators } from './validators'
 import { OpenAPIDocumentTraverser, ReadContext, ReferenceTraverser } from './typings'
 import { ReaderValidator } from './ReaderValidator'
+import { SchemaRule } from '@oats-ts/rules'
 
 export class OpenAPIDocumentTraverserImpl implements OpenAPIDocumentTraverser {
   private readonly _context: ReadContext

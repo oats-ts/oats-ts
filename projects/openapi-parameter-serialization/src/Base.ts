@@ -1,6 +1,7 @@
 import { encode, decode, isNil } from './utils'
-import { appendPath, isOk, SchemaRule, Validator } from '@oats-ts/validators'
+import { appendPath, isOk, Validator } from '@oats-ts/validators'
 import { failure, success, Try } from '@oats-ts/try'
+import { SchemaRule } from '@oats-ts/rules'
 
 export abstract class Base {
   protected abstract basePath(): string

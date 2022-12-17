@@ -4,11 +4,11 @@
  * Generated from schemas/ignored-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const ignoredFieldsTypeTypeValidator = validators.object(
-  validators.shape({
-    ignored: validators.any(),
-    type: validators.literal('discriminator-field'),
+export const ignoredFieldsTypeTypeValidator = schemas.object(
+  schemas.shape({
+    ignored: schemas.any(),
+    type: schemas.literal('discriminator-field'),
   }),
 )

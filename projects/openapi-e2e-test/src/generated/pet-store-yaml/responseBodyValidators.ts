@@ -4,20 +4,20 @@
  * Generated from schemas/pet-store-yaml.yaml (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 import { errorTypeValidator, petTypeValidator, petsTypeValidator } from './typeValidators'
 
 export const createPetsResponseBodyValidator = {
-  201: { 'application/json': validators.lazy(() => petTypeValidator) },
-  default: { 'application/json': validators.lazy(() => errorTypeValidator) },
+  201: { 'application/json': schemas.lazy(() => petTypeValidator) },
+  default: { 'application/json': schemas.lazy(() => errorTypeValidator) },
 } as const
 
 export const listPetsResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => petsTypeValidator) },
-  default: { 'application/json': validators.lazy(() => errorTypeValidator) },
+  200: { 'application/json': schemas.lazy(() => petsTypeValidator) },
+  default: { 'application/json': schemas.lazy(() => errorTypeValidator) },
 } as const
 
 export const showPetByIdResponseBodyValidator = {
-  200: { 'application/json': validators.lazy(() => petTypeValidator) },
-  default: { 'application/json': validators.lazy(() => errorTypeValidator) },
+  200: { 'application/json': schemas.lazy(() => petTypeValidator) },
+  default: { 'application/json': schemas.lazy(() => errorTypeValidator) },
 } as const

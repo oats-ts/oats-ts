@@ -4,7 +4,7 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { CookieParameters, parameter, validators } from '@oats-ts/openapi-runtime'
+import { CookieDescriptorRule, parameters, schemas } from '@oats-ts/openapi-runtime'
 import { CookieParametersCookieParameters } from './cookieTypes'
 import {
   contentCommonEnumTypeTypeValidator,
@@ -12,49 +12,47 @@ import {
   contentCommonOptObjectTypeTypeValidator,
 } from './typeValidators'
 
-export const cookieParametersCookieParameters: CookieParameters<CookieParametersCookieParameters> = {
-  descriptor: {
-    str: parameter.cookie.required.schema('application/json'),
-    optStr: parameter.cookie.schema('application/json'),
-    num: parameter.cookie.required.schema('application/json'),
-    optNum: parameter.cookie.schema('application/json'),
-    bool: parameter.cookie.required.schema('application/json'),
-    optBool: parameter.cookie.schema('application/json'),
-    enm: parameter.cookie.required.schema('application/json'),
-    optEnm: parameter.cookie.schema('application/json'),
-    strArr: parameter.cookie.required.schema('application/json'),
-    optStrArr: parameter.cookie.schema('application/json'),
-    numArr: parameter.cookie.required.schema('application/json'),
-    optNumArr: parameter.cookie.schema('application/json'),
-    boolArr: parameter.cookie.required.schema('application/json'),
-    optBoolArr: parameter.cookie.schema('application/json'),
-    enmArr: parameter.cookie.required.schema('application/json'),
-    optEnmArr: parameter.cookie.schema('application/json'),
-    obj: parameter.cookie.required.schema('application/json'),
-    optObj: parameter.cookie.schema('application/json'),
+export const cookieParametersCookieParameters: CookieDescriptorRule<CookieParametersCookieParameters> = {
+  parameters: {
+    str: parameters.cookie.required.schema('application/json'),
+    optStr: parameters.cookie.schema('application/json'),
+    num: parameters.cookie.required.schema('application/json'),
+    optNum: parameters.cookie.schema('application/json'),
+    bool: parameters.cookie.required.schema('application/json'),
+    optBool: parameters.cookie.schema('application/json'),
+    enm: parameters.cookie.required.schema('application/json'),
+    optEnm: parameters.cookie.schema('application/json'),
+    strArr: parameters.cookie.required.schema('application/json'),
+    optStrArr: parameters.cookie.schema('application/json'),
+    numArr: parameters.cookie.required.schema('application/json'),
+    optNumArr: parameters.cookie.schema('application/json'),
+    boolArr: parameters.cookie.required.schema('application/json'),
+    optBoolArr: parameters.cookie.schema('application/json'),
+    enmArr: parameters.cookie.required.schema('application/json'),
+    optEnmArr: parameters.cookie.schema('application/json'),
+    obj: parameters.cookie.required.schema('application/json'),
+    optObj: parameters.cookie.schema('application/json'),
   },
-  schema: validators.object(
-    validators.shape({
-      bool: validators.boolean(),
-      boolArr: validators.array(validators.items(validators.boolean())),
-      enm: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-      enmArr: validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-      num: validators.number(),
-      numArr: validators.array(validators.items(validators.number())),
-      obj: validators.lazy(() => contentCommonObjectTypeTypeValidator),
-      optBool: validators.optional(validators.boolean()),
-      optBoolArr: validators.optional(validators.array(validators.items(validators.boolean()))),
-      optEnm: validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-      optEnmArr: validators.optional(
-        validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-      ),
-      optNum: validators.optional(validators.number()),
-      optNumArr: validators.optional(validators.array(validators.items(validators.number()))),
-      optObj: validators.optional(validators.lazy(() => contentCommonOptObjectTypeTypeValidator)),
-      optStr: validators.optional(validators.string()),
-      optStrArr: validators.optional(validators.array(validators.items(validators.string()))),
-      str: validators.string(),
-      strArr: validators.array(validators.items(validators.string())),
+  schema: schemas.object(
+    schemas.shape({
+      bool: schemas.boolean(),
+      boolArr: schemas.array(schemas.items(schemas.boolean())),
+      enm: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+      enmArr: schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+      num: schemas.number(),
+      numArr: schemas.array(schemas.items(schemas.number())),
+      obj: schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+      optBool: schemas.optional(schemas.boolean()),
+      optBoolArr: schemas.optional(schemas.array(schemas.items(schemas.boolean()))),
+      optEnm: schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+      optEnmArr: schemas.optional(schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator)))),
+      optNum: schemas.optional(schemas.number()),
+      optNumArr: schemas.optional(schemas.array(schemas.items(schemas.number()))),
+      optObj: schemas.optional(schemas.lazy(() => contentCommonOptObjectTypeTypeValidator)),
+      optStr: schemas.optional(schemas.string()),
+      optStrArr: schemas.optional(schemas.array(schemas.items(schemas.string()))),
+      str: schemas.string(),
+      strArr: schemas.array(schemas.items(schemas.string())),
     }),
   ),
 }

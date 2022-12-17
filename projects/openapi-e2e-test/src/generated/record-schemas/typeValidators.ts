@@ -4,35 +4,29 @@
  * Generated from schemas/record-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const arrayRecordTypeTypeValidator = validators.object(
-  validators.record(validators.string(), validators.array(validators.items(validators.string()))),
+export const arrayRecordTypeTypeValidator = schemas.object(
+  schemas.record(schemas.string(), schemas.array(schemas.items(schemas.string()))),
 )
 
-export const booleanRecordTypeTypeValidator = validators.object(
-  validators.record(validators.string(), validators.boolean()),
+export const booleanRecordTypeTypeValidator = schemas.object(schemas.record(schemas.string(), schemas.boolean()))
+
+export const numberRecordTypeTypeValidator = schemas.object(schemas.record(schemas.string(), schemas.number()))
+
+export const objectRecordTypeTypeValidator = schemas.object(
+  schemas.record(schemas.string(), schemas.object(schemas.shape({ foo: schemas.string() }))),
 )
 
-export const numberRecordTypeTypeValidator = validators.object(
-  validators.record(validators.string(), validators.number()),
-)
-
-export const objectRecordTypeTypeValidator = validators.object(
-  validators.record(validators.string(), validators.object(validators.shape({ foo: validators.string() }))),
-)
-
-export const refRecordTypeTypeValidator = validators.object(
-  validators.record(
-    validators.string(),
-    validators.lazy(() => referenceTargetTypeValidator),
+export const refRecordTypeTypeValidator = schemas.object(
+  schemas.record(
+    schemas.string(),
+    schemas.lazy(() => referenceTargetTypeValidator),
   ),
 )
 
-export const referenceTargetTypeValidator = validators.object(
-  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+export const referenceTargetTypeValidator = schemas.object(
+  schemas.shape({ referenceTarget: schemas.optional(schemas.literal(true)) }),
 )
 
-export const stringRecordTypeTypeValidator = validators.object(
-  validators.record(validators.string(), validators.string()),
-)
+export const stringRecordTypeTypeValidator = schemas.object(schemas.record(schemas.string(), schemas.string()))

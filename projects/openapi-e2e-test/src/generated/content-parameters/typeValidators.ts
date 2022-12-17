@@ -4,165 +4,161 @@
  * Generated from generated-schemas/content-parameters.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const contentCommonEnumTypeTypeValidator = validators.union({
-  A: validators.literal('A'),
-  B: validators.literal('B'),
-  C: validators.literal('C'),
+export const contentCommonEnumTypeTypeValidator = schemas.union({
+  A: schemas.literal('A'),
+  B: schemas.literal('B'),
+  C: schemas.literal('C'),
 })
 
-export const contentCommonObjectTypeExplTypeValidator = validators.object(
-  validators.shape({
-    objExplBoolField: validators.boolean(),
-    objExplEnmField: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    objExplNumField: validators.number(),
-    objExplOptBoolField: validators.optional(validators.boolean()),
-    objExplOptEnmField: validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    objExplOptNumField: validators.optional(validators.number()),
-    objExplOptStrField: validators.optional(validators.string()),
-    objExplStrField: validators.string(),
+export const contentCommonObjectTypeExplTypeValidator = schemas.object(
+  schemas.shape({
+    objExplBoolField: schemas.boolean(),
+    objExplEnmField: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    objExplNumField: schemas.number(),
+    objExplOptBoolField: schemas.optional(schemas.boolean()),
+    objExplOptEnmField: schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    objExplOptNumField: schemas.optional(schemas.number()),
+    objExplOptStrField: schemas.optional(schemas.string()),
+    objExplStrField: schemas.string(),
   }),
 )
 
-export const contentCommonObjectTypeTypeValidator = validators.object(
-  validators.shape({
-    objBoolField: validators.boolean(),
-    objEnmField: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    objNumField: validators.number(),
-    objOptBoolField: validators.optional(validators.boolean()),
-    objOptEnmField: validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    objOptNumField: validators.optional(validators.number()),
-    objOptStrField: validators.optional(validators.string()),
-    objStrField: validators.string(),
+export const contentCommonObjectTypeTypeValidator = schemas.object(
+  schemas.shape({
+    objBoolField: schemas.boolean(),
+    objEnmField: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    objNumField: schemas.number(),
+    objOptBoolField: schemas.optional(schemas.boolean()),
+    objOptEnmField: schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    objOptNumField: schemas.optional(schemas.number()),
+    objOptStrField: schemas.optional(schemas.string()),
+    objStrField: schemas.string(),
   }),
 )
 
-export const contentCommonOptObjectTypeTypeValidator = validators.object(
-  validators.shape({
-    optObjBoolField: validators.boolean(),
-    optObjEnmField: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    optObjNumField: validators.number(),
-    optObjOptBoolField: validators.optional(validators.boolean()),
-    optObjOptEnmField: validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    optObjOptNumField: validators.optional(validators.number()),
-    optObjOptStrField: validators.optional(validators.string()),
-    optObjStrField: validators.string(),
+export const contentCommonOptObjectTypeTypeValidator = schemas.object(
+  schemas.shape({
+    optObjBoolField: schemas.boolean(),
+    optObjEnmField: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    optObjNumField: schemas.number(),
+    optObjOptBoolField: schemas.optional(schemas.boolean()),
+    optObjOptEnmField: schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    optObjOptNumField: schemas.optional(schemas.number()),
+    optObjOptStrField: schemas.optional(schemas.string()),
+    optObjStrField: schemas.string(),
   }),
 )
 
-export const contentParameterIssueTypeValidator = validators.object(validators.shape({ message: validators.string() }))
+export const contentParameterIssueTypeValidator = schemas.object(schemas.shape({ message: schemas.string() }))
 
-export const cookieParametersTypeValidator = validators.object(
-  validators.shape({
-    bool: validators.boolean(),
-    boolArr: validators.array(validators.items(validators.boolean())),
-    enm: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    enmArr: validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    num: validators.number(),
-    numArr: validators.array(validators.items(validators.number())),
-    obj: validators.lazy(() => contentCommonObjectTypeTypeValidator),
-    optBool: validators.optional(validators.boolean()),
-    optBoolArr: validators.optional(validators.array(validators.items(validators.boolean()))),
-    optEnm: validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    optEnmArr: validators.optional(
-      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
+export const cookieParametersTypeValidator = schemas.object(
+  schemas.shape({
+    bool: schemas.boolean(),
+    boolArr: schemas.array(schemas.items(schemas.boolean())),
+    enm: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    enmArr: schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+    num: schemas.number(),
+    numArr: schemas.array(schemas.items(schemas.number())),
+    obj: schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+    optBool: schemas.optional(schemas.boolean()),
+    optBoolArr: schemas.optional(schemas.array(schemas.items(schemas.boolean()))),
+    optEnm: schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    optEnmArr: schemas.optional(schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator)))),
+    optNum: schemas.optional(schemas.number()),
+    optNumArr: schemas.optional(schemas.array(schemas.items(schemas.number()))),
+    optObj: schemas.optional(schemas.lazy(() => contentCommonOptObjectTypeTypeValidator)),
+    optStr: schemas.optional(schemas.string()),
+    optStrArr: schemas.optional(schemas.array(schemas.items(schemas.string()))),
+    str: schemas.string(),
+    strArr: schemas.array(schemas.items(schemas.string())),
+  }),
+)
+
+export const headerParametersTypeValidator = schemas.object(
+  schemas.shape({
+    'X-Bool-Header': schemas.boolean(),
+    'X-BoolArr-Header': schemas.array(schemas.items(schemas.boolean())),
+    'X-Enm-Header': schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    'X-EnmArr-Header': schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+    'X-Num-Header': schemas.number(),
+    'X-NumArr-Header': schemas.array(schemas.items(schemas.number())),
+    'X-Obj-Header': schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+    'X-OptBool-Header': schemas.optional(schemas.boolean()),
+    'X-OptBoolArr-Header': schemas.optional(schemas.array(schemas.items(schemas.boolean()))),
+    'X-OptEnm-Header': schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    'X-OptEnmArr-Header': schemas.optional(
+      schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
-    optNum: validators.optional(validators.number()),
-    optNumArr: validators.optional(validators.array(validators.items(validators.number()))),
-    optObj: validators.optional(validators.lazy(() => contentCommonOptObjectTypeTypeValidator)),
-    optStr: validators.optional(validators.string()),
-    optStrArr: validators.optional(validators.array(validators.items(validators.string()))),
-    str: validators.string(),
-    strArr: validators.array(validators.items(validators.string())),
+    'X-OptNum-Header': schemas.optional(schemas.number()),
+    'X-OptNumArr-Header': schemas.optional(schemas.array(schemas.items(schemas.number()))),
+    'X-OptObj-Header': schemas.optional(schemas.lazy(() => contentCommonOptObjectTypeTypeValidator)),
+    'X-OptStr-Header': schemas.optional(schemas.string()),
+    'X-OptStrArr-Header': schemas.optional(schemas.array(schemas.items(schemas.string()))),
+    'X-Str-Header': schemas.string(),
+    'X-StrArr-Header': schemas.array(schemas.items(schemas.string())),
   }),
 )
 
-export const headerParametersTypeValidator = validators.object(
-  validators.shape({
-    'X-Bool-Header': validators.boolean(),
-    'X-BoolArr-Header': validators.array(validators.items(validators.boolean())),
-    'X-Enm-Header': validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    'X-EnmArr-Header': validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    'X-Num-Header': validators.number(),
-    'X-NumArr-Header': validators.array(validators.items(validators.number())),
-    'X-Obj-Header': validators.lazy(() => contentCommonObjectTypeTypeValidator),
-    'X-OptBool-Header': validators.optional(validators.boolean()),
-    'X-OptBoolArr-Header': validators.optional(validators.array(validators.items(validators.boolean()))),
-    'X-OptEnm-Header': validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    'X-OptEnmArr-Header': validators.optional(
-      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
+export const pathParametersTypeValidator = schemas.object(
+  schemas.shape({
+    bool: schemas.boolean(),
+    boolArr: schemas.array(schemas.items(schemas.boolean())),
+    enm: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    enmArr: schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+    num: schemas.number(),
+    numArr: schemas.array(schemas.items(schemas.number())),
+    obj: schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+    str: schemas.string(),
+    strArr: schemas.array(schemas.items(schemas.string())),
+  }),
+)
+
+export const queryParametersTypeValidator = schemas.object(
+  schemas.shape({
+    bool: schemas.boolean(),
+    boolArr: schemas.array(schemas.items(schemas.boolean())),
+    enm: schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    enmArr: schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+    num: schemas.number(),
+    numArr: schemas.array(schemas.items(schemas.number())),
+    obj: schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+    optBool: schemas.optional(schemas.boolean()),
+    optBoolArr: schemas.optional(schemas.array(schemas.items(schemas.boolean()))),
+    optEnm: schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    optEnmArr: schemas.optional(schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator)))),
+    optNum: schemas.optional(schemas.number()),
+    optNumArr: schemas.optional(schemas.array(schemas.items(schemas.number()))),
+    optObj: schemas.optional(schemas.lazy(() => contentCommonOptObjectTypeTypeValidator)),
+    optStr: schemas.optional(schemas.string()),
+    optStrArr: schemas.optional(schemas.array(schemas.items(schemas.string()))),
+    str: schemas.string(),
+    strArr: schemas.array(schemas.items(schemas.string())),
+  }),
+)
+
+export const responseHeaderParametersTypeValidator = schemas.object(
+  schemas.shape({
+    'X-Bool-Header': schemas.boolean(),
+    'X-BoolArr-Header': schemas.array(schemas.items(schemas.boolean())),
+    'X-Enm-Header': schemas.lazy(() => contentCommonEnumTypeTypeValidator),
+    'X-EnmArr-Header': schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
+    'X-Num-Header': schemas.number(),
+    'X-NumArr-Header': schemas.array(schemas.items(schemas.number())),
+    'X-Obj-Header': schemas.lazy(() => contentCommonObjectTypeTypeValidator),
+    'X-OptBool-Header': schemas.optional(schemas.boolean()),
+    'X-OptBoolArr-Header': schemas.optional(schemas.array(schemas.items(schemas.boolean()))),
+    'X-OptEnm-Header': schemas.optional(schemas.lazy(() => contentCommonEnumTypeTypeValidator)),
+    'X-OptEnmArr-Header': schemas.optional(
+      schemas.array(schemas.items(schemas.lazy(() => contentCommonEnumTypeTypeValidator))),
     ),
-    'X-OptNum-Header': validators.optional(validators.number()),
-    'X-OptNumArr-Header': validators.optional(validators.array(validators.items(validators.number()))),
-    'X-OptObj-Header': validators.optional(validators.lazy(() => contentCommonOptObjectTypeTypeValidator)),
-    'X-OptStr-Header': validators.optional(validators.string()),
-    'X-OptStrArr-Header': validators.optional(validators.array(validators.items(validators.string()))),
-    'X-Str-Header': validators.string(),
-    'X-StrArr-Header': validators.array(validators.items(validators.string())),
-  }),
-)
-
-export const pathParametersTypeValidator = validators.object(
-  validators.shape({
-    bool: validators.boolean(),
-    boolArr: validators.array(validators.items(validators.boolean())),
-    enm: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    enmArr: validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    num: validators.number(),
-    numArr: validators.array(validators.items(validators.number())),
-    obj: validators.lazy(() => contentCommonObjectTypeTypeValidator),
-    str: validators.string(),
-    strArr: validators.array(validators.items(validators.string())),
-  }),
-)
-
-export const queryParametersTypeValidator = validators.object(
-  validators.shape({
-    bool: validators.boolean(),
-    boolArr: validators.array(validators.items(validators.boolean())),
-    enm: validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    enmArr: validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    num: validators.number(),
-    numArr: validators.array(validators.items(validators.number())),
-    obj: validators.lazy(() => contentCommonObjectTypeTypeValidator),
-    optBool: validators.optional(validators.boolean()),
-    optBoolArr: validators.optional(validators.array(validators.items(validators.boolean()))),
-    optEnm: validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    optEnmArr: validators.optional(
-      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    ),
-    optNum: validators.optional(validators.number()),
-    optNumArr: validators.optional(validators.array(validators.items(validators.number()))),
-    optObj: validators.optional(validators.lazy(() => contentCommonOptObjectTypeTypeValidator)),
-    optStr: validators.optional(validators.string()),
-    optStrArr: validators.optional(validators.array(validators.items(validators.string()))),
-    str: validators.string(),
-    strArr: validators.array(validators.items(validators.string())),
-  }),
-)
-
-export const responseHeaderParametersTypeValidator = validators.object(
-  validators.shape({
-    'X-Bool-Header': validators.boolean(),
-    'X-BoolArr-Header': validators.array(validators.items(validators.boolean())),
-    'X-Enm-Header': validators.lazy(() => contentCommonEnumTypeTypeValidator),
-    'X-EnmArr-Header': validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    'X-Num-Header': validators.number(),
-    'X-NumArr-Header': validators.array(validators.items(validators.number())),
-    'X-Obj-Header': validators.lazy(() => contentCommonObjectTypeTypeValidator),
-    'X-OptBool-Header': validators.optional(validators.boolean()),
-    'X-OptBoolArr-Header': validators.optional(validators.array(validators.items(validators.boolean()))),
-    'X-OptEnm-Header': validators.optional(validators.lazy(() => contentCommonEnumTypeTypeValidator)),
-    'X-OptEnmArr-Header': validators.optional(
-      validators.array(validators.items(validators.lazy(() => contentCommonEnumTypeTypeValidator))),
-    ),
-    'X-OptNum-Header': validators.optional(validators.number()),
-    'X-OptNumArr-Header': validators.optional(validators.array(validators.items(validators.number()))),
-    'X-OptObj-Header': validators.optional(validators.lazy(() => contentCommonOptObjectTypeTypeValidator)),
-    'X-OptStr-Header': validators.optional(validators.string()),
-    'X-OptStrArr-Header': validators.optional(validators.array(validators.items(validators.string()))),
-    'X-Str-Header': validators.string(),
-    'X-StrArr-Header': validators.array(validators.items(validators.string())),
+    'X-OptNum-Header': schemas.optional(schemas.number()),
+    'X-OptNumArr-Header': schemas.optional(schemas.array(schemas.items(schemas.number()))),
+    'X-OptObj-Header': schemas.optional(schemas.lazy(() => contentCommonOptObjectTypeTypeValidator)),
+    'X-OptStr-Header': schemas.optional(schemas.string()),
+    'X-OptStrArr-Header': schemas.optional(schemas.array(schemas.items(schemas.string()))),
+    'X-Str-Header': schemas.string(),
+    'X-StrArr-Header': schemas.array(schemas.items(schemas.string())),
   }),
 )

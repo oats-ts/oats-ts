@@ -4,10 +4,10 @@
  * Generated from schemas/book-store.json (originating from oats-ts/oats-schemas)
  */
 
-import { QueryParameters, parameter, validators } from '@oats-ts/openapi-runtime'
+import { QueryDescriptorRule, parameters, schemas } from '@oats-ts/openapi-runtime'
 import { GetBooksQueryParameters } from './queryTypes'
 
-export const getBooksQueryParameters: QueryParameters<GetBooksQueryParameters> = {
-  descriptor: { offset: parameter.query.form.exploded.primitive(parameter.value.number()) },
-  schema: validators.object(validators.shape({ offset: validators.optional(validators.number()) })),
+export const getBooksQueryParameters: QueryDescriptorRule<GetBooksQueryParameters> = {
+  parameters: { offset: parameters.query.form.exploded.primitive(parameters.value.number()) },
+  schema: schemas.object(schemas.shape({ offset: schemas.optional(schemas.number()) })),
 }

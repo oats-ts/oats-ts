@@ -2,31 +2,6 @@ import { GeneratorContext } from '@oats-ts/oats-ts'
 import { entries } from 'lodash'
 import { RuntimePackage, RuntimePackageInternal } from './typings'
 
-const validatorsExports = {
-  validators: 'validators',
-}
-
-const validatorsContent = {
-  validators: {
-    string: 'string',
-    intersection: 'intersection',
-    enumeration: 'enumeration',
-    number: 'number',
-    boolean: 'boolean',
-    array: 'array',
-    object: 'object',
-    optional: 'optional',
-    shape: 'shape',
-    items: 'items',
-    record: 'record',
-    any: 'any',
-    union: 'union',
-    lazy: 'lazy',
-    literal: 'literal',
-    tuple: 'tuple',
-  },
-}
-
 const tryExports = {
   Try: 'Try',
   getData: 'getData',
@@ -68,16 +43,6 @@ const openApiExpressServerAdapterExports = {
 }
 
 const openApiParameterSerializationExports = {
-  parameter: 'parameter',
-  dsl: 'dsl',
-  HeaderDsl: 'HeaderDsl',
-  CookieDsl: 'CookieDsl',
-  PathDsl: 'PathDsl',
-  QueryDsl: 'QueryDsl',
-  QueryParameters: 'QueryParameters',
-  PathParameters: 'PathParameters',
-  HeaderParameters: 'HeaderParameters',
-  CookieParameters: 'CookieParameters',
   parsePathToMatcher: 'parsePathToMatcher',
   parsePathToSegments: 'parsePathToSegments',
 }
@@ -92,9 +57,36 @@ const expressExports = {
   Handler: 'Handler',
 }
 
-export type ValidatorsExports = typeof validatorsExports
-export type ValidatorsContent = typeof validatorsContent
-export type ValidatorsPackage = RuntimePackage<ValidatorsExports, ValidatorsContent>
+const rulesExports = {
+  SchemaRule: 'SchemaRule',
+  HeaderDescriptorRule: 'HeaderDescriptorRule',
+  PathDescriptorRule: 'PathDescriptorRule',
+  CookieDescriptorRule: 'CookieDescriptorRule',
+  QueryDescriptorRule: 'QueryDescriptorRule',
+  schemas: 'schemas',
+  parameters: 'parameters',
+}
+
+const rulesContent = {
+  schemas: {
+    string: 'string',
+    intersection: 'intersection',
+    enumeration: 'enumeration',
+    number: 'number',
+    boolean: 'boolean',
+    array: 'array',
+    object: 'object',
+    optional: 'optional',
+    shape: 'shape',
+    items: 'items',
+    record: 'record',
+    any: 'any',
+    union: 'union',
+    lazy: 'lazy',
+    literal: 'literal',
+    tuple: 'tuple',
+  },
+}
 
 export type TryExports = typeof tryExports
 export type TryPackage = RuntimePackage<TryExports, {}>
@@ -108,21 +100,20 @@ export type OpenApiParameterSerializationPackage = RuntimePackage<OpenApiParamet
 export type OpenApiExpressServerAdapterExports = typeof openApiExpressServerAdapterExports
 export type OpenApiExpressServerAdapterPackage = RuntimePackage<OpenApiExpressServerAdapterExports, {}>
 
+export type RulesExports = typeof rulesExports
+export type RulesContent = typeof rulesContent
+
 export type ExpressExports = typeof expressExports
 export type ExpressPackage = RuntimePackage<ExpressExports, {}>
 
-export type OpenAPIRuntimeExports = ValidatorsExports &
-  TryExports &
-  OpenApiHttpExports &
-  OpenApiParameterSerializationExports
-export type OpenAPIRuntimeContent = ValidatorsContent
-export type OpenAPIRuntimePackage = RuntimePackage<OpenAPIRuntimeExports, OpenAPIRuntimeContent>
+export type RulesPackage = RuntimePackage<RulesExports, RulesContent>
 
-const validators = {
-  name: '@oats-ts/validators',
-  exports: validatorsExports,
-  content: validatorsContent,
-}
+export type OpenAPIRuntimeExports = TryExports &
+  OpenApiHttpExports &
+  OpenApiParameterSerializationExports &
+  RulesExports
+export type OpenAPIRuntimeContent = RulesContent
+export type OpenAPIRuntimePackage = RuntimePackage<OpenAPIRuntimeExports, OpenAPIRuntimeContent>
 
 const _try = {
   name: '@oats-ts/try',
@@ -157,13 +148,13 @@ const express = {
 const openApiRuntime = {
   name: '@oats-ts/openapi-runtime',
   exports: {
-    ...validatorsExports,
     ...tryExports,
     ...openApiHttpExports,
     ...openApiParameterSerializationExports,
+    ...rulesExports,
   },
   content: {
-    ...validatorsContent,
+    ...rulesContent,
   },
 }
 
@@ -171,6 +162,12 @@ const openApiFetchClientAdapter = {
   name: '@oats-ts/openapi-fetch-client-adapter',
   content: {},
   exports: {},
+}
+
+const rules = {
+  name: '@oats-ts/rules',
+  content: rulesContent,
+  exports: rulesExports,
 }
 
 const createPackage =
@@ -200,7 +197,7 @@ const createPackage =
   }
 
 export const packages = {
-  validators: createPackage<ValidatorsPackage>(validators),
+  rules: createPackage<RulesPackage>(rules),
   try: createPackage<TryPackage>(_try),
   openApiHttp: createPackage<OpenApiHttpPackage>(openApiHttp),
   openApiExpressServerAdapter: createPackage<OpenApiExpressServerAdapterPackage>(openApiExpressServerAdapter),

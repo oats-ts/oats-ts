@@ -4,46 +4,44 @@
  * Generated from schemas/object-schemas.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const objectWithNestedTypeFieldsTypeTypeValidator = validators.object(
-  validators.shape({
-    arrayField: validators.array(validators.items(validators.string())),
-    enumField: validators.union({
-      A: validators.literal('A'),
-      B: validators.literal('B'),
-      C: validators.literal('C'),
+export const objectWithNestedTypeFieldsTypeTypeValidator = schemas.object(
+  schemas.shape({
+    arrayField: schemas.array(schemas.items(schemas.string())),
+    enumField: schemas.union({
+      A: schemas.literal('A'),
+      B: schemas.literal('B'),
+      C: schemas.literal('C'),
     }),
-    objectField: validators.object(validators.shape({ nestedField: validators.optional(validators.string()) })),
-    tupleField: validators.array(
-      validators.tuple([validators.optional(validators.string()), validators.optional(validators.number())]),
-    ),
+    objectField: schemas.object(schemas.shape({ nestedField: schemas.optional(schemas.string()) })),
+    tupleField: schemas.array(schemas.tuple([schemas.optional(schemas.string()), schemas.optional(schemas.number())])),
   }),
 )
 
-export const objectWithOptionalPrimitiveFieldsTypeTypeValidator = validators.object(
-  validators.shape({
-    booleanField: validators.optional(validators.boolean()),
-    numberField: validators.optional(validators.number()),
-    stringField: validators.optional(validators.string()),
+export const objectWithOptionalPrimitiveFieldsTypeTypeValidator = schemas.object(
+  schemas.shape({
+    booleanField: schemas.optional(schemas.boolean()),
+    numberField: schemas.optional(schemas.number()),
+    stringField: schemas.optional(schemas.string()),
   }),
 )
 
-export const objectWithPrimitiveFieldsTypeTypeValidator = validators.object(
-  validators.shape({
-    booleanField: validators.boolean(),
-    numberField: validators.number(),
-    stringField: validators.string(),
+export const objectWithPrimitiveFieldsTypeTypeValidator = schemas.object(
+  schemas.shape({
+    booleanField: schemas.boolean(),
+    numberField: schemas.number(),
+    stringField: schemas.string(),
   }),
 )
 
-export const objectWithReferenceFieldsTypeTypeValidator = validators.object(
-  validators.shape({
-    referenceArrayField: validators.array(validators.items(validators.lazy(() => referenceTargetTypeValidator))),
-    referenceField: validators.lazy(() => referenceTargetTypeValidator),
+export const objectWithReferenceFieldsTypeTypeValidator = schemas.object(
+  schemas.shape({
+    referenceArrayField: schemas.array(schemas.items(schemas.lazy(() => referenceTargetTypeValidator))),
+    referenceField: schemas.lazy(() => referenceTargetTypeValidator),
   }),
 )
 
-export const referenceTargetTypeValidator = validators.object(
-  validators.shape({ referenceTarget: validators.optional(validators.literal(true)) }),
+export const referenceTargetTypeValidator = schemas.object(
+  schemas.shape({ referenceTarget: schemas.optional(schemas.literal(true)) }),
 )

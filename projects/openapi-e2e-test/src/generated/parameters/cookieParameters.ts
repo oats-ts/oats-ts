@@ -5,26 +5,26 @@
  */
 
 import {
-  CookieParameters as _CookieParameters,
-  parameter as _parameter,
-  validators as _validators,
+  CookieDescriptorRule as _CookieDescriptorRule,
+  parameters as _parameters,
+  schemas as _schemas,
 } from '@oats-ts/openapi-runtime'
 import { FormCookieParametersCookieParameters } from './cookieTypes'
 import { commonEnumTypeTypeValidator } from './typeValidators'
 
-export const formCookieParametersCookieParameters: _CookieParameters<FormCookieParametersCookieParameters> = {
-  descriptor: {
-    optStr: _parameter.cookie.form.primitive(_parameter.value.string()),
-    optNum: _parameter.cookie.form.primitive(_parameter.value.number()),
-    optBool: _parameter.cookie.form.primitive(_parameter.value.boolean()),
-    optEnm: _parameter.cookie.form.primitive(_parameter.value.string()),
+export const formCookieParametersCookieParameters: _CookieDescriptorRule<FormCookieParametersCookieParameters> = {
+  parameters: {
+    optStr: _parameters.cookie.form.primitive(_parameters.value.string()),
+    optNum: _parameters.cookie.form.primitive(_parameters.value.number()),
+    optBool: _parameters.cookie.form.primitive(_parameters.value.boolean()),
+    optEnm: _parameters.cookie.form.primitive(_parameters.value.string()),
   },
-  schema: _validators.object(
-    _validators.shape({
-      optBool: _validators.optional(_validators.boolean()),
-      optEnm: _validators.optional(_validators.lazy(() => commonEnumTypeTypeValidator)),
-      optNum: _validators.optional(_validators.number()),
-      optStr: _validators.optional(_validators.string()),
+  schema: _schemas.object(
+    _schemas.shape({
+      optBool: _schemas.optional(_schemas.boolean()),
+      optEnm: _schemas.optional(_schemas.lazy(() => commonEnumTypeTypeValidator)),
+      optNum: _schemas.optional(_schemas.number()),
+      optStr: _schemas.optional(_schemas.string()),
     }),
   ),
 }

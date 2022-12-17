@@ -4,56 +4,56 @@
  * Generated from generated-schemas/bodies.json (originating from oats-ts/oats-schemas)
  */
 
-import { validators } from '@oats-ts/openapi-runtime'
+import { schemas } from '@oats-ts/openapi-runtime'
 
-export const enumTypeTypeValidator = validators.union({
-  A: validators.literal('A'),
-  B: validators.literal('B'),
-  C: validators.literal('C'),
+export const enumTypeTypeValidator = schemas.union({
+  A: schemas.literal('A'),
+  B: schemas.literal('B'),
+  C: schemas.literal('C'),
 })
 
-export const objectWithArraysTypeValidator = validators.object(
-  validators.shape({
-    boolArr: validators.array(validators.items(validators.boolean())),
-    enmArr: validators.array(validators.items(validators.lazy(() => enumTypeTypeValidator))),
-    numArr: validators.array(validators.items(validators.number())),
-    strArr: validators.array(validators.items(validators.string())),
+export const objectWithArraysTypeValidator = schemas.object(
+  schemas.shape({
+    boolArr: schemas.array(schemas.items(schemas.boolean())),
+    enmArr: schemas.array(schemas.items(schemas.lazy(() => enumTypeTypeValidator))),
+    numArr: schemas.array(schemas.items(schemas.number())),
+    strArr: schemas.array(schemas.items(schemas.string())),
   }),
 )
 
-export const objectWithNestedObjectsTypeValidator = validators.object(
-  validators.shape({
-    arrObj: validators.lazy(() => objectWithArraysTypeValidator),
-    primObj: validators.lazy(() => objectWithPrimitivesTypeValidator),
+export const objectWithNestedObjectsTypeValidator = schemas.object(
+  schemas.shape({
+    arrObj: schemas.lazy(() => objectWithArraysTypeValidator),
+    primObj: schemas.lazy(() => objectWithPrimitivesTypeValidator),
   }),
 )
 
-export const objectWithPrimitivesTypeValidator = validators.object(
-  validators.shape({
-    bool: validators.boolean(),
-    enm: validators.lazy(() => enumTypeTypeValidator),
-    lit: validators.literal('Literal Value'),
-    num: validators.number(),
-    str: validators.string(),
+export const objectWithPrimitivesTypeValidator = schemas.object(
+  schemas.shape({
+    bool: schemas.boolean(),
+    enm: schemas.lazy(() => enumTypeTypeValidator),
+    lit: schemas.literal('Literal Value'),
+    num: schemas.number(),
+    str: schemas.string(),
   }),
 )
 
-export const primitiveOptionalTupleTypeTypeValidator = validators.array(
-  validators.tuple([
-    validators.optional(validators.literal('Literal Value')),
-    validators.optional(validators.string()),
-    validators.optional(validators.number()),
-    validators.optional(validators.lazy(() => enumTypeTypeValidator)),
-    validators.optional(validators.boolean()),
+export const primitiveOptionalTupleTypeTypeValidator = schemas.array(
+  schemas.tuple([
+    schemas.optional(schemas.literal('Literal Value')),
+    schemas.optional(schemas.string()),
+    schemas.optional(schemas.number()),
+    schemas.optional(schemas.lazy(() => enumTypeTypeValidator)),
+    schemas.optional(schemas.boolean()),
   ]),
 )
 
-export const primitiveTupleTypeTypeValidator = validators.array(
-  validators.tuple([
-    validators.literal('Literal Value'),
-    validators.string(),
-    validators.number(),
-    validators.lazy(() => enumTypeTypeValidator),
-    validators.boolean(),
+export const primitiveTupleTypeTypeValidator = schemas.array(
+  schemas.tuple([
+    schemas.literal('Literal Value'),
+    schemas.string(),
+    schemas.number(),
+    schemas.lazy(() => enumTypeTypeValidator),
+    schemas.boolean(),
   ]),
 )
