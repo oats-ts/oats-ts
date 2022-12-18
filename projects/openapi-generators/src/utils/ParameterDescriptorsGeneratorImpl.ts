@@ -220,7 +220,7 @@ export class ParameterDescriptorsGeneratorImpl implements ParameterDescriptorsGe
         ParameterFactoryFields.union,
       ]),
       [],
-      types,
+      [factory.createArrayLiteralExpression(types)],
     )
   }
 }
