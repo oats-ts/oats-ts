@@ -8,7 +8,10 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": ["LICENSE.txt", "lib"],
+  "files": [
+    "LICENSE.txt",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oats-ts/oats-ts.git"
@@ -27,8 +30,8 @@
   "dependencies": {
     "@oats-ts/openapi-http": "0.0.49",
     "@oats-ts/openapi-parameter-serialization": "0.0.49",
+    "@oats-ts/rules": "0.0.49",
     "@oats-ts/try": "0.0.49",
-    "@oats-ts/validators": "0.0.49",
-    "@oats-ts/rules": "0.0.49"
+    "@oats-ts/validators": "0.0.49"
   }
 }
