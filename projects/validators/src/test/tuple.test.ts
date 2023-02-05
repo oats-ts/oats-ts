@@ -1,9 +1,9 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('tuple', () => {
   describe('wrapped in array()', () => {
-    const v = new Validator(
+    const v = new DefaultValidator(
       schemas.array(schemas.tuple([schemas.string(), schemas.number(), schemas.optional(schemas.boolean())])),
     )
     it('should pass', () => {
@@ -27,7 +27,7 @@ describe('tuple', () => {
     })
   })
   describe('unwrapped', () => {
-    const v = new Validator(schemas.tuple([schemas.string(), schemas.number(), schemas.optional(schemas.boolean())]))
+    const v = new DefaultValidator(schemas.tuple([schemas.string(), schemas.number(), schemas.optional(schemas.boolean())]))
     it('should pass', () => {
       expect(v.validate(['foo', 12])).toHaveLength(0)
       expect(v.validate(['', 12.54])).toHaveLength(0)

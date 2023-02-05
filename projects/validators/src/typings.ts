@@ -5,3 +5,7 @@ export type Issue = {
   path: string
   message: string
 }
+
+export type Validator = {
+  validate(input: unknown, path?: string | undefined): Issue[]
+}

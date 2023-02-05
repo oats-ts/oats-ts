@@ -1,8 +1,8 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('restrictKeys', () => {
-  const v = new Validator(schemas.object(schemas.restrictKeys(['a', 'b', 'c'])))
+  const v = new DefaultValidator(schemas.object(schemas.restrictKeys(['a', 'b', 'c'])))
   it('should pass', () => {
     expect(v.validate({})).toHaveLength(0)
     expect(v.validate({ a: 1 })).toHaveLength(0)

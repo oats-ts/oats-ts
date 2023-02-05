@@ -25,9 +25,9 @@ import {
 } from '@oats-ts/rules'
 import { isNil } from './isNil'
 import { appendPath } from './appendPath'
-import { Issue, Severity } from './typings'
+import { Issue, Severity, Validator } from './typings'
 
-export class Validator<S extends SchemaRule = SchemaRule> {
+export class DefaultValidator<S extends SchemaRule = SchemaRule> implements Validator {
   constructor(protected readonly schema: S, protected readonly defaultPath: string = '$') {}
 
   public validate(input: unknown, path: string = this.defaultPath): Issue[] {

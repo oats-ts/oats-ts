@@ -1,5 +1,5 @@
 import { encode, decode, isNil } from './utils'
-import { appendPath, isOk, Validator } from '@oats-ts/validators'
+import { appendPath, isOk, DefaultValidator } from '@oats-ts/validators'
 import { failure, success, Try } from '@oats-ts/try'
 import { SchemaRule } from '@oats-ts/rules'
 
@@ -24,7 +24,7 @@ export abstract class Base {
     if (isNil(schema)) {
       return success(value)
     }
-    const validator = new Validator(schema, path)
+    const validator = new DefaultValidator(schema, path)
     const issues = validator.validate(value)
     return isOk(issues) ? success(value) : failure(...issues)
   }

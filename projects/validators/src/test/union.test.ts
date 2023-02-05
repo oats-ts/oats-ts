@@ -1,8 +1,8 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('union', () => {
-  const v = new Validator(
+  const v = new DefaultValidator(
     schemas.union({
       string: schemas.string(),
       '42': schemas.literal(42),

@@ -1,8 +1,8 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('object', () => {
-  const v = new Validator(schemas.object())
+  const v = new DefaultValidator(schemas.object())
   it('should pass', () => {
     expect(v.validate({})).toHaveLength(0)
     expect(v.validate({ foo: 'bar' })).toHaveLength(0)

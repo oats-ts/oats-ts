@@ -11,7 +11,7 @@ import {
   StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { isFailure } from '@oats-ts/try'
-import { stringify, Validator } from '@oats-ts/validators'
+import { stringify, Validator, DefaultValidator } from '@oats-ts/validators'
 import {
   DefaultCookieSerializer,
   DefaultHeaderDeserializer,
@@ -125,8 +125,8 @@ export class FetchClientAdapter implements ClientAdapter {
     return response.text()
   }
 
-  protected configureResponseBodyValidator(schema: SchemaRule): Validator {
-    return new Validator(schema, 'responseBody')
+  protected getResponseBodyValidator(schema: SchemaRule): Validator {
+    return new DefaultValidator(schema, 'responseBody')
   }
 
   public getResponseCookies(response: RawHttpResponse): SetCookieValue[] {
@@ -181,7 +181,7 @@ export class FetchClientAdapter implements ClientAdapter {
         throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint} (body: ${response.body})`)
       }
 
-      const validator = this.configureResponseBodyValidator(validatorsForStatus[mimeType])
+      const validator = this.getResponseBodyValidator(validatorsForStatus[mimeType])
       const issues = validator.validate(response.body)
       if (issues.length !== 0) {
         throw new Error(issues.map(stringify).join('\n'))

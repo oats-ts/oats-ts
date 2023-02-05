@@ -11,7 +11,7 @@ import {
   StatusCodeRange,
 } from '@oats-ts/openapi-http'
 import { failure, isFailure, success, Try } from '@oats-ts/try'
-import { stringify, Validator } from '@oats-ts/validators'
+import { stringify, Validator, DefaultValidator } from '@oats-ts/validators'
 import {
   DefaultCookieDeserializer,
   DefaultHeaderDeserializer,
@@ -25,8 +25,8 @@ import MIMEType from 'whatwg-mimetype'
 import type { SchemaRule } from '@oats-ts/rules'
 
 export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
-  protected configureRequestBodyValidator(validator: SchemaRule): Validator {
-    return new Validator(validator, 'requestBody')
+  protected getRequestBodyValidator(validator: SchemaRule): Validator {
+    return new DefaultValidator(validator, 'requestBody')
   }
 
   public async getPathParameters<P>(toolkit: ExpressToolkit, descriptor: any): Promise<Try<P>> {
@@ -82,7 +82,7 @@ export class ExpressServerAdapter implements ServerAdapter<ExpressToolkit> {
         path: 'headers',
       })
     }
-    const validator = this.configureRequestBodyValidator(validators[mimeType])
+    const validator = this.getRequestBodyValidator(validators[mimeType])
     const issues = validator.validate(toolkit.request.body)
     return issues.length > 0 ? failure(...issues) : success(toolkit.request.body as B)
   }

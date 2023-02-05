@@ -1,4 +1,4 @@
-export { Validator } from './Validator'
+export { DefaultValidator } from './DefaultValidator'
 export { severityComparator } from './severityComparator'
 export { appendPath } from './appendPath'
 export { isOk } from './isOk'

@@ -1,8 +1,8 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('any', () => {
-  const v = new Validator(schemas.any())
+  const v = new DefaultValidator(schemas.any())
   it('should pass', () => {
     expect(v.validate(null)).toEqual([])
     expect(v.validate(undefined)).toEqual([])

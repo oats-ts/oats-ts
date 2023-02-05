@@ -1,9 +1,9 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('shape', () => {
   it('should validate shape', () => {
-    const v = new Validator(
+    const v = new DefaultValidator(
       schemas.object(
         schemas.shape({
           cat: schemas.string(),

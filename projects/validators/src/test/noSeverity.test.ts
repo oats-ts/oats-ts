@@ -1,8 +1,8 @@
 import { schemas, SchemaRule } from '@oats-ts/rules'
 import { Severity } from '../typings'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
-class PermissiveValidator extends Validator {
+class PermissiveValidator extends DefaultValidator {
   protected severityOf(schema: SchemaRule, input: unknown, path: string): Severity | undefined {
     return undefined
   }

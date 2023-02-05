@@ -1,9 +1,9 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('items', () => {
   describe('wrapped in array()', () => {
-    const v = new Validator(schemas.array(schemas.items(schemas.string())))
+    const v = new DefaultValidator(schemas.array(schemas.items(schemas.string())))
     it('should pass', () => {
       expect(v.validate([])).toHaveLength(0)
       expect(v.validate(['a'])).toHaveLength(0)
@@ -17,7 +17,7 @@ describe('items', () => {
     })
   })
   describe('unwrapped', () => {
-    const v = new Validator(schemas.items(schemas.string()))
+    const v = new DefaultValidator(schemas.items(schemas.string()))
     it('should pass', () => {
       expect(v.validate([])).toHaveLength(0)
       expect(v.validate(['a'])).toHaveLength(0)

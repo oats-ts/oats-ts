@@ -1,8 +1,8 @@
 import { URIManipulator, URIManipulatorType } from '@oats-ts/oats-ts'
 import { SchemaRule } from '@oats-ts/rules'
-import { Severity, Validator } from '@oats-ts/validators'
+import { DefaultValidator, Severity } from '@oats-ts/validators'
 
-export class StructuralValidator extends Validator {
+export class StructuralValidator extends DefaultValidator {
   protected uri: URIManipulatorType = new URIManipulator()
   protected append(path: string, segment: string | number): string {
     return this.uri.append(path, segment)

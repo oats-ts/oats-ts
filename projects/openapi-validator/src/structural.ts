@@ -349,5 +349,5 @@ export type StructuralValidators = Record<keyof typeof factories, () => SchemaRu
 
 export const structural = entries(factories).reduce(
   (validatorsObject, [name, factory]) => ({ ...validatorsObject, [name]: factory() }),
-  {} as Record<keyof typeof factories, Validator<any>>,
+  {} as Record<keyof typeof factories, Validator>,
 )

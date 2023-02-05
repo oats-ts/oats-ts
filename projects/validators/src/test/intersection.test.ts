@@ -1,8 +1,8 @@
 import { schemas } from '@oats-ts/rules'
-import { Validator } from '../Validator'
+import { DefaultValidator } from '../DefaultValidator'
 
 describe('intersection', () => {
-  const v = new Validator(
+  const v = new DefaultValidator(
     schemas.intersection([
       schemas.object(schemas.shape({ foo: schemas.string() })),
       schemas.object(schemas.shape({ bar: schemas.number() })),
