@@ -5,10 +5,6 @@
       "path": "."
     },
     {
-      "name": "json-schema-generators",
-      "path": "projects/json-schema-generators"
-    },
-    {
       "name": "json-schema-model",
       "path": "projects/json-schema-model"
     },

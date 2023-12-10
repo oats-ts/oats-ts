@@ -2,7 +2,9 @@
   "compilerOptions": {
     "declaration": true,
     "esModuleInterop": true,
-    "lib": ["ES2020"],
+    "lib": [
+      "ES2020"
+    ],
     "module": "commonjs",
     "noImplicitAny": true,
     "noUnusedLocals": true,
@@ -11,6 +13,11 @@
     "strict": true,
     "target": "ES2018"
   },
-  "include": ["./src"],
-  "exclude": ["node_modules", "lib"]
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
 }
