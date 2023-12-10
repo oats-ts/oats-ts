@@ -8,7 +8,11 @@
   "typings": "lib/index.d.ts",
   "main": "lib/index.js",
   "directories": {},
-  "files": ["LICENSE.txt", "lib", "readme.md"],
+  "files": [
+    "LICENSE.txt",
+    "lib",
+    "readme.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oats-ts/oats-ts.git"

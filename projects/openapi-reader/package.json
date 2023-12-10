@@ -35,18 +35,18 @@
   "dependencies": {
     "@oats-ts/json-schema-model": "0.0.49",
     "@oats-ts/oats-ts": "0.0.49",
-    "@oats-ts/openapi-model": "0.0.49",
     "@oats-ts/openapi-common": "0.0.49",
+    "@oats-ts/openapi-model": "0.0.49",
     "@oats-ts/try": "0.0.49",
     "@oats-ts/validators": "0.0.49",
     "@types/urijs": "1.19.19",
     "@types/valid-url": "1.0.3",
     "browser-or-node": "2.0.0",
-    "cross-fetch": "3.1.5",
+    "cross-fetch": "4.0.0",
     "lodash": "4.17.21",
     "typescript": "4.7.4",
     "urijs": "1.19.11",
     "valid-url": "1.0.9",
-    "yaml": "2.1.3"
+    "yaml": "2.3.4"
   }
 }

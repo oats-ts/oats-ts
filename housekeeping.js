@@ -190,9 +190,21 @@ async function run() {
 
   for (const folder of rootFolders) {
     const folderPath = join(PROJECTS_FOLDER, folder)
-    await updateTsConfig(folderPath)
-    await updatePackageJson(folderPath)
-    await updateLicenseTxt(folderPath)
+    try {
+      await updateTsConfig(folderPath)
+    } catch (e) {
+      console.error(`Failed to update tsconfig.json in ${folderPath}: ${e}`)
+    }
+    try {
+      await updatePackageJson(folderPath)
+    } catch (e) {
+      console.error(`Failed to update package.json in ${folderPath}: ${e}`)
+    }
+    try {
+      await updateLicenseTxt(folderPath)
+    } catch (e) {
+      console.error(`Failed to update LICENSE.txt in ${folderPath}: ${e}`)
+    }
   }
 
   await updateCodeWorkspace(rootFolders)
