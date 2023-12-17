@@ -23,8 +23,8 @@ export function isObjectWithNestedTypeFieldsType(input: any): input is ObjectWit
     typeof input.objectField === 'object' &&
     (input.objectField.nestedField === undefined || typeof input.objectField.nestedField === 'string') &&
     Array.isArray(input.tupleField) &&
-    (input.tupleField[0] === null || input.tupleField[0] === undefined || typeof input.tupleField[0] === 'string') &&
-    (input.tupleField[1] === null || input.tupleField[1] === undefined || typeof input.tupleField[1] === 'number')
+    (input.tupleField[0] === undefined || typeof input.tupleField[0] === 'string') &&
+    (input.tupleField[1] === undefined || typeof input.tupleField[1] === 'number')
   )
 }
 

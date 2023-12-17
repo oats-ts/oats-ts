@@ -69,11 +69,11 @@ export function isObjectWithPrimitives(input: any): input is ObjectWithPrimitive
 export function isPrimitiveOptionalTupleType(input: any): input is PrimitiveOptionalTupleType {
   return (
     Array.isArray(input) &&
-    (input[0] === null || input[0] === undefined || input[0] === 'Literal Value') &&
-    (input[1] === null || input[1] === undefined || typeof input[1] === 'string') &&
-    (input[2] === null || input[2] === undefined || typeof input[2] === 'number') &&
-    (input[3] === null || input[3] === undefined || (isEnumType(input[3]) as boolean)) &&
-    (input[4] === null || input[4] === undefined || typeof input[4] === 'boolean')
+    (input[0] === undefined || input[0] === 'Literal Value') &&
+    (input[1] === undefined || typeof input[1] === 'string') &&
+    (input[2] === undefined || typeof input[2] === 'number') &&
+    (input[3] === undefined || (isEnumType(input[3]) as boolean)) &&
+    (input[4] === undefined || typeof input[4] === 'boolean')
   )
 }
 

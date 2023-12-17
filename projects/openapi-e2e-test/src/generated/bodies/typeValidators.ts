@@ -31,10 +31,10 @@ export const objectWithNestedObjectsTypeValidator = validators.object(
 
 export const objectWithNullablePrimitivesTypeValidator = validators.object(
   validators.shape({
-    nullableBool: validators.boolean(),
-    nullableLit: validators.literal('Literal Value'),
-    nullableNum: validators.number(),
-    nullableStr: validators.string(),
+    nullableBool: validators.optional(validators.boolean()),
+    nullableLit: validators.optional(validators.literal('Literal Value')),
+    nullableNum: validators.optional(validators.number()),
+    nullableStr: validators.optional(validators.string()),
   }),
 )
 

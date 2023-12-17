@@ -98,7 +98,7 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
       return this.getReferenceAssertionAst(data, variable)
     }
     const baseAssertion = this.getNonNullableTypeAssertion(data, variable)
-    if (data.nullable) {
+    if (data?.nullable) {
       const nullAssertion = factory.createBinaryExpression(
         variable,
         SyntaxKind.EqualsEqualsEqualsToken,
