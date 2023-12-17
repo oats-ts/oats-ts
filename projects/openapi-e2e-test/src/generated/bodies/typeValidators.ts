@@ -24,7 +24,17 @@ export const objectWithArraysTypeValidator = validators.object(
 export const objectWithNestedObjectsTypeValidator = validators.object(
   validators.shape({
     arrObj: validators.lazy(() => objectWithArraysTypeValidator),
+    nullablePrimObj: validators.lazy(() => objectWithNullablePrimitivesTypeValidator),
     primObj: validators.lazy(() => objectWithPrimitivesTypeValidator),
+  }),
+)
+
+export const objectWithNullablePrimitivesTypeValidator = validators.object(
+  validators.shape({
+    nullableBool: validators.optional(validators.boolean()),
+    nullableLit: validators.optional(validators.literal('Literal Value')),
+    nullableNum: validators.optional(validators.number()),
+    nullableStr: validators.optional(validators.string()),
   }),
 )
 

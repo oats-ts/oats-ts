@@ -8,6 +8,7 @@ import {
   EnumType,
   ObjectWithArrays,
   ObjectWithNestedObjects,
+  ObjectWithNullablePrimitives,
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
@@ -83,6 +84,18 @@ export type NestedObjServerResponse =
       statusCode: 200
       mimeType: 'application/yaml'
       body: ObjectWithNestedObjects
+    }
+
+export type NullablePrimObjServerResponse =
+  | {
+      statusCode: 200
+      mimeType: 'application/json'
+      body: ObjectWithNullablePrimitives
+    }
+  | {
+      statusCode: 200
+      mimeType: 'application/yaml'
+      body: ObjectWithNullablePrimitives
     }
 
 export type NumArrServerResponse =

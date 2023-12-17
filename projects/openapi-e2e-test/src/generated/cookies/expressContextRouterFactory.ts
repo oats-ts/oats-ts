@@ -15,8 +15,8 @@ export function createCookiesContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_ny4wur'] = api
-    response.locals['__oats_adapter_ny4wur'] = adapter
+    response.locals['__oats_api_1qywoik'] = api
+    response.locals['__oats_adapter_1qywoik'] = adapter
     next()
   })
 }

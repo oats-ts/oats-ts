@@ -28,6 +28,7 @@
   "dependencies": {
     "@oats-ts/oats-ts": "0.0.50",
     "@oats-ts/openapi": "0.0.50",
+    "@oats-ts/openapi-common": "0.0.50",
     "@oats-ts/openapi-express-server-adapter": "0.0.50",
     "@oats-ts/openapi-fetch-client-adapter": "0.0.50",
     "@oats-ts/openapi-generators": "0.0.50",

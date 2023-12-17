@@ -10,17 +10,17 @@ export function isMixedTupleType(input: any): input is MixedTupleType {
   return (
     Array.isArray(input) &&
     typeof input[0] === 'string' &&
-    (input[1] === null || input[1] === undefined || typeof input[1] === 'number') &&
-    (input[2] === null || input[2] === undefined || typeof input[2] === 'boolean')
+    (input[1] === undefined || typeof input[1] === 'number') &&
+    (input[2] === undefined || typeof input[2] === 'boolean')
   )
 }
 
 export function isOptionalTupleType(input: any): input is OptionalTupleType {
   return (
     Array.isArray(input) &&
-    (input[0] === null || input[0] === undefined || typeof input[0] === 'string') &&
-    (input[1] === null || input[1] === undefined || typeof input[1] === 'number') &&
-    (input[2] === null || input[2] === undefined || typeof input[2] === 'boolean')
+    (input[0] === undefined || typeof input[0] === 'string') &&
+    (input[1] === undefined || typeof input[1] === 'number') &&
+    (input[2] === undefined || typeof input[2] === 'boolean')
   )
 }
 
@@ -28,7 +28,7 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
+    (input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }
 
@@ -42,7 +42,7 @@ export function isTupleType(input: any): input is TupleType {
     input[3].every((item: any) => typeof item === 'string') &&
     input[4] !== null &&
     typeof input[4] === 'object' &&
-    (input[4].foo === null || input[4].foo === undefined || typeof input[4].foo === 'string') &&
+    (input[4].foo === undefined || typeof input[4].foo === 'string') &&
     (isReferenceTarget(input[5]) as boolean)
   )
 }

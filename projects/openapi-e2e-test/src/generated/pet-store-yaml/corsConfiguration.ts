@@ -6,7 +6,7 @@
 
 import { CorsConfiguration } from '@oats-ts/openapi-runtime'
 
-export const swaggerPetstoreCorsConfiguration: CorsConfiguration = {
+export const swaggerPetstoreYamlCorsConfiguration: CorsConfiguration = {
   '/pets': {
     get: {
       allowedOrigins: ['https://foo.com'],

@@ -8,6 +8,7 @@ import {
   EnumType,
   ObjectWithArrays,
   ObjectWithNestedObjects,
+  ObjectWithNullablePrimitives,
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
@@ -37,7 +38,19 @@ export function isObjectWithNestedObjects(input: any): input is ObjectWithNested
     input !== null &&
     typeof input === 'object' &&
     (isObjectWithArrays(input.arrObj) as boolean) &&
+    (isObjectWithNullablePrimitives(input.nullablePrimObj) as boolean) &&
     (isObjectWithPrimitives(input.primObj) as boolean)
+  )
+}
+
+export function isObjectWithNullablePrimitives(input: any): input is ObjectWithNullablePrimitives {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    (input.nullableBool === null || typeof input.nullableBool === 'boolean') &&
+    (input.nullableLit === null || input.nullableLit === 'Literal Value') &&
+    (input.nullableNum === null || typeof input.nullableNum === 'number') &&
+    (input.nullableStr === null || typeof input.nullableStr === 'string')
   )
 }
 
@@ -56,11 +69,11 @@ export function isObjectWithPrimitives(input: any): input is ObjectWithPrimitive
 export function isPrimitiveOptionalTupleType(input: any): input is PrimitiveOptionalTupleType {
   return (
     Array.isArray(input) &&
-    (input[0] === null || input[0] === undefined || input[0] === 'Literal Value') &&
-    (input[1] === null || input[1] === undefined || typeof input[1] === 'string') &&
-    (input[2] === null || input[2] === undefined || typeof input[2] === 'number') &&
-    (input[3] === null || input[3] === undefined || (isEnumType(input[3]) as boolean)) &&
-    (input[4] === null || input[4] === undefined || typeof input[4] === 'boolean')
+    (input[0] === undefined || input[0] === 'Literal Value') &&
+    (input[1] === undefined || typeof input[1] === 'string') &&
+    (input[2] === undefined || typeof input[2] === 'number') &&
+    (input[3] === undefined || (isEnumType(input[3]) as boolean)) &&
+    (input[4] === undefined || typeof input[4] === 'boolean')
   )
 }
 

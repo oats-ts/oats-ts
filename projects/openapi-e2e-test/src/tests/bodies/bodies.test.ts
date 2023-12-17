@@ -3,6 +3,7 @@ import {
   randomEnum,
   randomObjectWithArrays,
   randomObjectWithNestedObjects,
+  randomObjectWithNullablePrimitives,
   randomObjectWithPrimitives,
   randomOptionalTuple,
   randomTuple,
@@ -63,6 +64,11 @@ describe('Request and Response bodies', () => {
     it.each(repeats)('(#%d) object (primitives)', async () => {
       const body = randomObjectWithPrimitives()
       const response = await sdk.primObj({ body, mimeType })
+      expect(response.body).toEqual(body)
+    })
+    it.each(repeats)('(#%d) object (nullable primitives)', async () => {
+      const body = randomObjectWithNullablePrimitives()
+      const response = await sdk.nullablePrimObj({ body, mimeType })
       expect(response.body).toEqual(body)
     })
     it.each(repeats)('(#%d) object (arrays)', async () => {

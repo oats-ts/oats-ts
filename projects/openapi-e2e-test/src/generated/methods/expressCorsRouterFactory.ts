@@ -13,7 +13,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter | undefined): IRout
   return (router ?? Router())
     .options('/delete-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : httpMethodsCorsConfiguration?.['/delete-method']?.[method]
@@ -25,7 +25,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter | undefined): IRout
     })
     .options('/patch-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : httpMethodsCorsConfiguration?.['/patch-method']?.[method]
@@ -37,7 +37,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter | undefined): IRout
     })
     .options('/put-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : httpMethodsCorsConfiguration?.['/put-method']?.[method]
@@ -49,7 +49,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter | undefined): IRout
     })
     .options('/post-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : httpMethodsCorsConfiguration?.['/post-method']?.[method]
@@ -61,7 +61,7 @@ export function createHttpMethodsCorsRouter(router?: IRouter | undefined): IRout
     })
     .options('/get-method', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : httpMethodsCorsConfiguration?.['/get-method']?.[method]

@@ -17,8 +17,8 @@ export function createDelete123Router(router?: IRouter | undefined): IRouter {
     '/123',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const typedResponse = await api.delete123()
         const rawResponse: RawHttpResponse = {
@@ -39,8 +39,8 @@ export function createDeleteRouter(router?: IRouter | undefined): IRouter {
     '/',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const typedResponse = await api.delete()
         const rawResponse: RawHttpResponse = {
@@ -61,8 +61,8 @@ export function createGetEmptyRouter(router?: IRouter | undefined): IRouter {
     '/empty',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const typedResponse = await api.getEmpty()
         const rawResponse: RawHttpResponse = {
@@ -83,8 +83,8 @@ export function createGetFooRouter(router?: IRouter | undefined): IRouter {
     '/foo',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const typedResponse = await api.getFoo()
         const rawResponse: RawHttpResponse = {
@@ -105,8 +105,8 @@ export function createPatchFooParam1BarParam2Router(router?: IRouter | undefined
     '/foo/:param1/bar/:param2',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const path = await adapter.getPathParameters<PatchFooParam1BarParam2PathParameters>(
           toolkit,
@@ -134,8 +134,8 @@ export function createPostFooRouter(router?: IRouter | undefined): IRouter {
     '/foo',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const typedResponse = await api.postFoo()
         const rawResponse: RawHttpResponse = {
@@ -156,8 +156,8 @@ export function createPutFooParam1BarParam2Router(router?: IRouter | undefined):
     '/foo/:param1/bar/:param2',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_159po70']
-      const api: NoOperationIdsApi = response.locals['__oats_api_159po70']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_hkvref']
+      const api: NoOperationIdsApi = response.locals['__oats_api_hkvref']
       try {
         const path = await adapter.getPathParameters<PutFooParam1BarParam2PathParameters>(
           toolkit,

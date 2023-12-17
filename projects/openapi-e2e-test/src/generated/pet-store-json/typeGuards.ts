@@ -18,7 +18,7 @@ export function isPet(input: any): input is Pet {
     typeof input === 'object' &&
     typeof input.id === 'number' &&
     typeof input.name === 'string' &&
-    (input.tag === null || input.tag === undefined || typeof input.tag === 'string')
+    (input.tag === undefined || typeof input.tag === 'string')
   )
 }
 

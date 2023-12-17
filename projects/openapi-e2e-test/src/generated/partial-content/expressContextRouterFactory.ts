@@ -15,8 +15,8 @@ export function createPartialContentContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_1j5lc0s'] = api
-    response.locals['__oats_adapter_1j5lc0s'] = adapter
+    response.locals['__oats_api_my940s'] = api
+    response.locals['__oats_adapter_my940s'] = adapter
     next()
   })
 }

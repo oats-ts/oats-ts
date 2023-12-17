@@ -21,12 +21,10 @@ export function isObjectWithNestedTypeFieldsType(input: any): input is ObjectWit
     (input.enumField === 'A' || input.enumField === 'B' || input.enumField === 'C') &&
     input.objectField !== null &&
     typeof input.objectField === 'object' &&
-    (input.objectField.nestedField === null ||
-      input.objectField.nestedField === undefined ||
-      typeof input.objectField.nestedField === 'string') &&
+    (input.objectField.nestedField === undefined || typeof input.objectField.nestedField === 'string') &&
     Array.isArray(input.tupleField) &&
-    (input.tupleField[0] === null || input.tupleField[0] === undefined || typeof input.tupleField[0] === 'string') &&
-    (input.tupleField[1] === null || input.tupleField[1] === undefined || typeof input.tupleField[1] === 'number')
+    (input.tupleField[0] === undefined || typeof input.tupleField[0] === 'string') &&
+    (input.tupleField[1] === undefined || typeof input.tupleField[1] === 'number')
   )
 }
 
@@ -34,9 +32,9 @@ export function isObjectWithOptionalPrimitiveFieldsType(input: any): input is Ob
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.booleanField === null || input.booleanField === undefined || typeof input.booleanField === 'boolean') &&
-    (input.numberField === null || input.numberField === undefined || typeof input.numberField === 'number') &&
-    (input.stringField === null || input.stringField === undefined || typeof input.stringField === 'string')
+    (input.booleanField === undefined || typeof input.booleanField === 'boolean') &&
+    (input.numberField === undefined || typeof input.numberField === 'number') &&
+    (input.stringField === undefined || typeof input.stringField === 'string')
   )
 }
 
@@ -64,6 +62,6 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
+    (input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }

@@ -15,8 +15,8 @@ export function createBookStoreContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_15ojy6m'] = api
-    response.locals['__oats_adapter_15ojy6m'] = adapter
+    response.locals['__oats_api_1o36nbj'] = api
+    response.locals['__oats_adapter_1o36nbj'] = adapter
     next()
   })
 }

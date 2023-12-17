@@ -19,6 +19,7 @@ import {
   EnmArrRequest,
   EnmRequest,
   NestedObjRequest,
+  NullablePrimObjRequest,
   NumArrRequest,
   NumRequest,
   OptPrimTupleRequest,
@@ -34,6 +35,7 @@ import {
   enmArrResponseBodyValidator,
   enmResponseBodyValidator,
   nestedObjResponseBodyValidator,
+  nullablePrimObjResponseBodyValidator,
   numArrResponseBodyValidator,
   numResponseBodyValidator,
   optPrimTupleResponseBodyValidator,
@@ -49,6 +51,7 @@ import {
   EnmArrResponse,
   EnmResponse,
   NestedObjResponse,
+  NullablePrimObjResponse,
   NumArrResponse,
   NumResponse,
   OptPrimTupleResponse,
@@ -331,6 +334,52 @@ export class NestedObjOperation implements RunnableOperation<NestedObjRequest, N
       body: this.getResponseBody(rawResponse),
     }
     return typedResponse as NestedObjResponse
+  }
+}
+
+export class NullablePrimObjOperation implements RunnableOperation<NullablePrimObjRequest, NullablePrimObjResponse> {
+  protected readonly adapter: ClientAdapter
+  public constructor(adapter: ClientAdapter) {
+    this.adapter = adapter
+  }
+  protected getUrl(_request: NullablePrimObjRequest): string {
+    return this.adapter.getUrl('/nullable-prim-obj', undefined)
+  }
+  protected getHttpMethod(_request: NullablePrimObjRequest): HttpMethod {
+    return 'post'
+  }
+  protected getRequestHeaders(request: NullablePrimObjRequest): RawHttpHeaders {
+    return {
+      ...this.adapter.getMimeTypeBasedRequestHeaders(request.mimeType),
+      ...this.adapter.getAuxiliaryRequestHeaders(),
+    }
+  }
+  protected getRequestBody(request: NullablePrimObjRequest): any {
+    return this.adapter.getRequestBody(request.mimeType, request.body)
+  }
+  protected getMimeType(response: RawHttpResponse): string | undefined {
+    return this.adapter.getMimeType(response)
+  }
+  protected getStatusCode(response: RawHttpResponse): number | undefined {
+    return this.adapter.getStatusCode(response)
+  }
+  protected getResponseBody(response: RawHttpResponse): any {
+    return this.adapter.getResponseBody(response, nullablePrimObjResponseBodyValidator)
+  }
+  public async run(request: NullablePrimObjRequest): Promise<NullablePrimObjResponse> {
+    const rawRequest: RawHttpRequest = {
+      url: this.getUrl(request),
+      method: this.getHttpMethod(request),
+      headers: this.getRequestHeaders(request),
+      body: this.getRequestBody(request),
+    }
+    const rawResponse = await this.adapter.request(rawRequest)
+    const typedResponse = {
+      mimeType: this.getMimeType(rawResponse),
+      statusCode: this.getStatusCode(rawResponse),
+      body: this.getResponseBody(rawResponse),
+    }
+    return typedResponse as NullablePrimObjResponse
   }
 }
 

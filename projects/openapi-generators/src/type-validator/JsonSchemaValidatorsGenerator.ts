@@ -88,7 +88,16 @@ export class JsonSchemaValidatorsGenerator extends SchemaBasedCodeGenerator<Vali
 
     if (this.type.isReferenceObject(data)) {
       return this.getReferenceTypeValidatorAst(data)
-    } else if (this.type.isUnionSchema(data)) {
+    }
+
+    const nonNullableAst = this.getNonNullableTypeValidatorAst(data)
+    return data?.nullable
+      ? factory.createCallExpression(this.getValidatorAst('optional'), [], [nonNullableAst])
+      : nonNullableAst
+  }
+
+  protected getNonNullableTypeValidatorAst(data: SchemaObject): Expression {
+    if (this.type.isUnionSchema(data)) {
       return this.getUnionTypeValidatorAst(data)
     } else if (this.type.isEnumSchema(data)) {
       return this.getEnumTypeValidatorAst(data)

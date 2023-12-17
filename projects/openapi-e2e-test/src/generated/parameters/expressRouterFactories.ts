@@ -62,8 +62,8 @@ export function createDeepObjectQueryParametersRouter(router?: _IRouter | undefi
     '/deepObject-query-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const query = await adapter.getQueryParameters<DeepObjectQueryParametersQueryParameters>(
           toolkit,
@@ -94,8 +94,8 @@ export function createFormCookieParametersRouter(router?: _IRouter | undefined):
     '/form-cookie-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const cookies = await adapter.getCookieParameters<FormCookieParametersCookieParameters>(
           toolkit,
@@ -126,8 +126,8 @@ export function createFormQueryParametersRouter(router?: _IRouter | undefined): 
     '/form-query-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const query = await adapter.getQueryParameters<FormQueryParametersQueryParameters>(
           toolkit,
@@ -158,8 +158,8 @@ export function createLabelPathParametersRouter(router?: _IRouter | undefined): 
     '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const path = await adapter.getPathParameters<LabelPathParametersPathParameters>(
           toolkit,
@@ -193,8 +193,8 @@ export function createMatrixPathParametersRouter(router?: _IRouter | undefined):
     '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const path = await adapter.getPathParameters<MatrixPathParametersPathParameters>(
           toolkit,
@@ -228,8 +228,8 @@ export function createPipeDelimitedQueryParametersRouter(router?: _IRouter | und
     '/pipeDelimited-query-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const query = await adapter.getQueryParameters<PipeDelimitedQueryParametersQueryParameters>(
           toolkit,
@@ -260,8 +260,8 @@ export function createSimpleHeaderParametersRouter(router?: _IRouter | undefined
     '/simple-header-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const headers = await adapter.getRequestHeaders<SimpleHeaderParametersRequestHeaderParameters>(
           toolkit,
@@ -292,8 +292,8 @@ export function createSimplePathParametersRouter(router?: _IRouter | undefined):
     '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const path = await adapter.getPathParameters<SimplePathParametersPathParameters>(
           toolkit,
@@ -327,8 +327,8 @@ export function createSimpleResponseHeaderParametersRouter(router?: _IRouter | u
     '/simple-response-header-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', SimpleResponseHeaderParameters>(
@@ -368,8 +368,8 @@ export function createSpaceDelimitedQueryParametersRouter(router?: _IRouter | un
     '/spaceDelimited-query-parameters',
     async (request: _Request, response: _Response, next: _NextFunction): Promise<void> => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
-      const api: ParametersApi = response.locals['__oats_api_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
+      const api: ParametersApi = response.locals['__oats_api_15nbq9j']
       try {
         const query = await adapter.getQueryParameters<SpaceDelimitedQueryParametersQueryParameters>(
           toolkit,

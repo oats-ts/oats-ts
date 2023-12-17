@@ -7,16 +7,16 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { MissingContentSchemaApi } from './apiType'
+import { MissingContentApi } from './apiType'
 
-export function createMissingContentSchemaContextRouter(
+export function createMissingContentContextRouter(
   router: IRouter | undefined,
-  api: MissingContentSchemaApi,
+  api: MissingContentApi,
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_fzqbew'] = api
-    response.locals['__oats_adapter_fzqbew'] = adapter
+    response.locals['__oats_api_1ibjm69'] = api
+    response.locals['__oats_adapter_1ibjm69'] = adapter
     next()
   })
 }

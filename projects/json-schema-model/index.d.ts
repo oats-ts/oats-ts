@@ -29,6 +29,7 @@ export type SchemaObject = {
   uniqueItems?: boolean
   maxProperties?: number
   minProperties?: number
+  nullable?: boolean
   enum?: any[]
   const?: any
   examples?: any[]

@@ -9,6 +9,7 @@ import {
   enumTypeTypeValidator,
   objectWithArraysTypeValidator,
   objectWithNestedObjectsTypeValidator,
+  objectWithNullablePrimitivesTypeValidator,
   objectWithPrimitivesTypeValidator,
   primitiveOptionalTupleTypeTypeValidator,
   primitiveTupleTypeTypeValidator,
@@ -50,6 +51,13 @@ export const nestedObjResponseBodyValidator = {
   200: {
     'application/json': validators.lazy(() => objectWithNestedObjectsTypeValidator),
     'application/yaml': validators.lazy(() => objectWithNestedObjectsTypeValidator),
+  },
+} as const
+
+export const nullablePrimObjResponseBodyValidator = {
+  200: {
+    'application/json': validators.lazy(() => objectWithNullablePrimitivesTypeValidator),
+    'application/yaml': validators.lazy(() => objectWithNullablePrimitivesTypeValidator),
   },
 } as const
 

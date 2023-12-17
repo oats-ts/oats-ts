@@ -18,8 +18,8 @@ export function createLoginRouter(router?: IRouter | undefined): IRouter {
     '/login',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_ny4wur']
-      const api: CookiesApi = response.locals['__oats_api_ny4wur']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qywoik']
+      const api: CookiesApi = response.locals['__oats_api_1qywoik']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<
@@ -52,8 +52,8 @@ export function createProtectedPathRouter(router?: IRouter | undefined): IRouter
     '/protected',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_ny4wur']
-      const api: CookiesApi = response.locals['__oats_api_ny4wur']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qywoik']
+      const api: CookiesApi = response.locals['__oats_api_1qywoik']
       try {
         const cookies = await adapter.getCookieParameters<ProtectedPathCookieParameters>(
           toolkit,

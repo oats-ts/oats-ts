@@ -2,6 +2,7 @@ import {
   EnumType,
   ObjectWithArrays,
   ObjectWithNestedObjects,
+  ObjectWithNullablePrimitives,
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
@@ -24,6 +25,15 @@ export function randomObjectWithPrimitives(): ObjectWithPrimitives {
   }
 }
 
+export function randomObjectWithNullablePrimitives(): ObjectWithNullablePrimitives {
+  return {
+    nullableStr: random.boolean() ? random.string() : null,
+    nullableNum: random.boolean() ? random.number() : null,
+    nullableBool: random.boolean() ? random.boolean() : null,
+    nullableLit: random.boolean() ? 'Literal Value' : null,
+  }
+}
+
 export function randomObjectWithArrays(): ObjectWithArrays {
   return {
     strArr: random.arrayOf(() => random.string()),
@@ -37,6 +47,7 @@ export function randomObjectWithNestedObjects(): ObjectWithNestedObjects {
   return {
     arrObj: randomObjectWithArrays(),
     primObj: randomObjectWithPrimitives(),
+    nullablePrimObj: randomObjectWithNullablePrimitives(),
   }
 }
 

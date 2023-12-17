@@ -15,7 +15,15 @@ export type ObjectWithArrays = {
 
 export type ObjectWithNestedObjects = {
   arrObj: ObjectWithArrays
+  nullablePrimObj: ObjectWithNullablePrimitives
   primObj: ObjectWithPrimitives
+}
+
+export type ObjectWithNullablePrimitives = {
+  nullableBool: boolean | null
+  nullableLit: 'Literal Value' | null
+  nullableNum: number | null
+  nullableStr: string | null
 }
 
 export type ObjectWithPrimitives = {

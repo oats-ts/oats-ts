@@ -15,8 +15,8 @@ export function createStatusCodeRangesContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_17tixfz'] = api
-    response.locals['__oats_adapter_17tixfz'] = adapter
+    response.locals['__oats_api_1jz9g3s'] = api
+    response.locals['__oats_adapter_1jz9g3s'] = adapter
     next()
   })
 }

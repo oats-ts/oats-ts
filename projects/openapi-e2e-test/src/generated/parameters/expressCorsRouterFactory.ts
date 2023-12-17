@@ -21,7 +21,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
       '/simple-response-header-parameters',
       async (request: _Request, response: _Response, next: _NextFunction) => {
         const toolkit: _ExpressToolkit = { request, response, next }
-        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
         try {
           const method = adapter.getAccessControlRequestedMethod(toolkit)
           const corsConfig =
@@ -37,7 +37,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
     )
     .options('/form-cookie-parameters', async (request: _Request, response: _Response, next: _NextFunction) => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig =
@@ -50,7 +50,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
     })
     .options('/simple-header-parameters', async (request: _Request, response: _Response, next: _NextFunction) => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig =
@@ -63,7 +63,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
     })
     .options('/deepObject-query-parameters', async (request: _Request, response: _Response, next: _NextFunction) => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig =
@@ -76,7 +76,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
     })
     .options('/pipeDelimited-query-parameters', async (request: _Request, response: _Response, next: _NextFunction) => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig =
@@ -91,7 +91,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
       '/spaceDelimited-query-parameters',
       async (request: _Request, response: _Response, next: _NextFunction) => {
         const toolkit: _ExpressToolkit = { request, response, next }
-        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
         try {
           const method = adapter.getAccessControlRequestedMethod(toolkit)
           const corsConfig =
@@ -107,7 +107,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
     )
     .options('/form-query-parameters', async (request: _Request, response: _Response, next: _NextFunction) => {
       const toolkit: _ExpressToolkit = { request, response, next }
-      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+      const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig =
@@ -122,7 +122,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
       '/matrix-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: _Request, response: _Response, next: _NextFunction) => {
         const toolkit: _ExpressToolkit = { request, response, next }
-        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
         try {
           const method = adapter.getAccessControlRequestedMethod(toolkit)
           const corsConfig =
@@ -142,7 +142,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
       '/label-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: _Request, response: _Response, next: _NextFunction) => {
         const toolkit: _ExpressToolkit = { request, response, next }
-        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
         try {
           const method = adapter.getAccessControlRequestedMethod(toolkit)
           const corsConfig =
@@ -162,7 +162,7 @@ export function createParametersCorsRouter(router?: _IRouter | undefined): _IRou
       '/simple-path-parameters/:strExpl/:str/:numExpl/:num/:boolExpl/:bool/:enmExpl/:enm/:strArrExpl/:strArr/:numArrExpl/:numArr/:boolArrExpl/:boolArr/:enmArrExpl/:enmArr/:objExpl/:obj',
       async (request: _Request, response: _Response, next: _NextFunction) => {
         const toolkit: _ExpressToolkit = { request, response, next }
-        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_7xzhoe']
+        const adapter: _ServerAdapter<_ExpressToolkit> = response.locals['__oats_adapter_15nbq9j']
         try {
           const method = adapter.getAccessControlRequestedMethod(toolkit)
           const corsConfig =

@@ -1,6 +1,7 @@
 import express, { Express, IRouter } from 'express'
 import { HttpTerminator, createHttpTerminator } from 'http-terminator'
 import { Server } from 'http'
+import { tick } from '@oats-ts/openapi-common'
 
 export type TestServerInput = {
   /** The port the server should be running on */
@@ -15,11 +16,12 @@ export type TestServerInput = {
   runBeforeAndAfter: 'all' | 'each'
 }
 
-export async function stopExpressServer(terminator?: HttpTerminator): Promise<void> {
+export async function stopExpressServer(terminator?: HttpTerminator): Promise<any> {
   if (!terminator) {
     throw new TypeError('Server or terminator not created')
   }
-  return terminator.terminate()
+  await terminator.terminate()
+  return tick()
 }
 
 export async function startExpressServer(app: Express, input: TestServerInput): Promise<HttpTerminator> {
@@ -40,10 +42,14 @@ export async function startExpressServer(app: Express, input: TestServerInput): 
 export function testExpressServer(input: TestServerInput) {
   const app = express()
   let terminator: HttpTerminator | undefined = undefined
+
   const startHandler = async () => {
     terminator = await startExpressServer(app, input)
   }
-  const stopHandler = async () => stopExpressServer(terminator)
+
+  const stopHandler = async () => {
+    return stopExpressServer(terminator)
+  }
 
   if (input.runBeforeAndAfter === 'all') {
     beforeAll(startHandler)

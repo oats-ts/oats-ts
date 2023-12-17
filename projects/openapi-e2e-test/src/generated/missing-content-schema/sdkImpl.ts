@@ -8,9 +8,9 @@ import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import { MissingRequestBodySchemaOperation, MissingResponseSchemaOperation } from './operations'
 import { MissingRequestBodySchemaRequest } from './requestTypes'
 import { MissingRequestBodySchemaResponse, MissingResponseSchemaResponse } from './responseTypes'
-import { MissingContentSchemaSdk } from './sdkType'
+import { MissingContentSdk } from './sdkType'
 
-export class MissingContentSchemaSdkImpl implements MissingContentSchemaSdk {
+export class MissingContentSdkImpl implements MissingContentSdk {
   protected readonly adapter: ClientAdapter
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter

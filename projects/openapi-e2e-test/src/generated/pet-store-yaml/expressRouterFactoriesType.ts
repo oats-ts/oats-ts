@@ -6,7 +6,7 @@
 
 import { IRouter } from 'express'
 
-export type SwaggerPetstoreRouterFactories = {
+export type SwaggerPetstoreYamlRouterFactories = {
   createCreatePetsRouter: (router?: IRouter | undefined) => IRouter
   createListPetsRouter: (router?: IRouter | undefined) => IRouter
   createShowPetByIdRouter: (router?: IRouter | undefined) => IRouter

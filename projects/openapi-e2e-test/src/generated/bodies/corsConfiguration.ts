@@ -114,6 +114,15 @@ export const bodiesCorsConfiguration: CorsConfiguration = {
       maxAge: undefined,
     },
   },
+  '/nullable-prim-obj': {
+    post: {
+      allowedOrigins: false,
+      allowedRequestHeaders: ['content-type'],
+      allowedResponseHeaders: ['content-type'],
+      allowCredentials: false,
+      maxAge: undefined,
+    },
+  },
   '/arr-obj': {
     post: {
       allowedOrigins: false,

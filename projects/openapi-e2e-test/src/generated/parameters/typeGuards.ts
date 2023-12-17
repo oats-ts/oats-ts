@@ -34,14 +34,10 @@ export function isCommonObjectType(input: any): input is CommonObjectType {
     typeof input.objBoolField === 'boolean' &&
     (isCommonEnumType(input.objEnmField) as boolean) &&
     typeof input.objNumField === 'number' &&
-    (input.objOptBoolField === null ||
-      input.objOptBoolField === undefined ||
-      typeof input.objOptBoolField === 'boolean') &&
-    (input.objOptEnmField === null ||
-      input.objOptEnmField === undefined ||
-      (isCommonEnumType(input.objOptEnmField) as boolean)) &&
-    (input.objOptNumField === null || input.objOptNumField === undefined || typeof input.objOptNumField === 'number') &&
-    (input.objOptStrField === null || input.objOptStrField === undefined || typeof input.objOptStrField === 'string') &&
+    (input.objOptBoolField === undefined || typeof input.objOptBoolField === 'boolean') &&
+    (input.objOptEnmField === undefined || (isCommonEnumType(input.objOptEnmField) as boolean)) &&
+    (input.objOptNumField === undefined || typeof input.objOptNumField === 'number') &&
+    (input.objOptStrField === undefined || typeof input.objOptStrField === 'string') &&
     typeof input.objStrField === 'string'
   )
 }
@@ -53,18 +49,10 @@ export function isCommonObjectTypeExpl(input: any): input is CommonObjectTypeExp
     typeof input.objExplBoolField === 'boolean' &&
     (isCommonEnumType(input.objExplEnmField) as boolean) &&
     typeof input.objExplNumField === 'number' &&
-    (input.objExplOptBoolField === null ||
-      input.objExplOptBoolField === undefined ||
-      typeof input.objExplOptBoolField === 'boolean') &&
-    (input.objExplOptEnmField === null ||
-      input.objExplOptEnmField === undefined ||
-      (isCommonEnumType(input.objExplOptEnmField) as boolean)) &&
-    (input.objExplOptNumField === null ||
-      input.objExplOptNumField === undefined ||
-      typeof input.objExplOptNumField === 'number') &&
-    (input.objExplOptStrField === null ||
-      input.objExplOptStrField === undefined ||
-      typeof input.objExplOptStrField === 'string') &&
+    (input.objExplOptBoolField === undefined || typeof input.objExplOptBoolField === 'boolean') &&
+    (input.objExplOptEnmField === undefined || (isCommonEnumType(input.objExplOptEnmField) as boolean)) &&
+    (input.objExplOptNumField === undefined || typeof input.objExplOptNumField === 'number') &&
+    (input.objExplOptStrField === undefined || typeof input.objExplOptStrField === 'string') &&
     typeof input.objExplStrField === 'string'
   )
 }
@@ -76,18 +64,10 @@ export function isCommonOptObjectType(input: any): input is CommonOptObjectType 
     typeof input.optObjBoolField === 'boolean' &&
     (isCommonEnumType(input.optObjEnmField) as boolean) &&
     typeof input.optObjNumField === 'number' &&
-    (input.optObjOptBoolField === null ||
-      input.optObjOptBoolField === undefined ||
-      typeof input.optObjOptBoolField === 'boolean') &&
-    (input.optObjOptEnmField === null ||
-      input.optObjOptEnmField === undefined ||
-      (isCommonEnumType(input.optObjOptEnmField) as boolean)) &&
-    (input.optObjOptNumField === null ||
-      input.optObjOptNumField === undefined ||
-      typeof input.optObjOptNumField === 'number') &&
-    (input.optObjOptStrField === null ||
-      input.optObjOptStrField === undefined ||
-      typeof input.optObjOptStrField === 'string') &&
+    (input.optObjOptBoolField === undefined || typeof input.optObjOptBoolField === 'boolean') &&
+    (input.optObjOptEnmField === undefined || (isCommonEnumType(input.optObjOptEnmField) as boolean)) &&
+    (input.optObjOptNumField === undefined || typeof input.optObjOptNumField === 'number') &&
+    (input.optObjOptStrField === undefined || typeof input.optObjOptStrField === 'string') &&
     typeof input.optObjStrField === 'string'
   )
 }
@@ -99,18 +79,10 @@ export function isCommonOptObjectTypeExpl(input: any): input is CommonOptObjectT
     typeof input.optObjExplBoolField === 'boolean' &&
     (isCommonEnumType(input.optObjExplEnmField) as boolean) &&
     typeof input.optObjExplNumField === 'number' &&
-    (input.optObjExplOptBoolField === null ||
-      input.optObjExplOptBoolField === undefined ||
-      typeof input.optObjExplOptBoolField === 'boolean') &&
-    (input.optObjExplOptEnmField === null ||
-      input.optObjExplOptEnmField === undefined ||
-      (isCommonEnumType(input.optObjExplOptEnmField) as boolean)) &&
-    (input.optObjExplOptNumField === null ||
-      input.optObjExplOptNumField === undefined ||
-      typeof input.optObjExplOptNumField === 'number') &&
-    (input.optObjExplOptStrField === null ||
-      input.optObjExplOptStrField === undefined ||
-      typeof input.optObjExplOptStrField === 'string') &&
+    (input.optObjExplOptBoolField === undefined || typeof input.optObjExplOptBoolField === 'boolean') &&
+    (input.optObjExplOptEnmField === undefined || (isCommonEnumType(input.optObjExplOptEnmField) as boolean)) &&
+    (input.optObjExplOptNumField === undefined || typeof input.optObjExplOptNumField === 'number') &&
+    (input.optObjExplOptStrField === undefined || typeof input.optObjExplOptStrField === 'string') &&
     typeof input.optObjExplStrField === 'string'
   )
 }
@@ -120,9 +92,7 @@ export function isDeepObjectQueryParameters(input: any): input is DeepObjectQuer
     input !== null &&
     typeof input === 'object' &&
     (isCommonObjectTypeExpl(input.objExpl) as boolean) &&
-    (input.optObjExpl === null ||
-      input.optObjExpl === undefined ||
-      (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean))
+    (input.optObjExpl === undefined || (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean))
   )
 }
 
@@ -130,10 +100,10 @@ export function isFormCookieParameters(input: any): input is FormCookieParameter
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
-    (input.optEnm === null || input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
-    (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
-    (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string')
+    (input.optBool === undefined || typeof input.optBool === 'boolean') &&
+    (input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
+    (input.optNum === undefined || typeof input.optNum === 'number') &&
+    (input.optStr === undefined || typeof input.optStr === 'string')
   )
 }
 
@@ -161,43 +131,33 @@ export function isFormQueryParameters(input: any): input is FormQueryParameters 
     typeof input.numExpl === 'number' &&
     (isCommonObjectType(input.obj) as boolean) &&
     (isCommonObjectTypeExpl(input.objExpl) as boolean) &&
-    (input.optBool === null || input.optBool === undefined || typeof input.optBool === 'boolean') &&
-    (input.optBoolArr === null ||
-      input.optBoolArr === undefined ||
+    (input.optBool === undefined || typeof input.optBool === 'boolean') &&
+    (input.optBoolArr === undefined ||
       (Array.isArray(input.optBoolArr) && input.optBoolArr.every((item: any) => typeof item === 'boolean'))) &&
-    (input.optBoolArrExpl === null ||
-      input.optBoolArrExpl === undefined ||
+    (input.optBoolArrExpl === undefined ||
       (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
-    (input.optBoolExpl === null || input.optBoolExpl === undefined || typeof input.optBoolExpl === 'boolean') &&
-    (input.optEnm === null || input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
-    (input.optEnmArr === null ||
-      input.optEnmArr === undefined ||
+    (input.optBoolExpl === undefined || typeof input.optBoolExpl === 'boolean') &&
+    (input.optEnm === undefined || (isCommonEnumType(input.optEnm) as boolean)) &&
+    (input.optEnmArr === undefined ||
       (Array.isArray(input.optEnmArr) && input.optEnmArr.every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input.optEnmArrExpl === null ||
-      input.optEnmArrExpl === undefined ||
+    (input.optEnmArrExpl === undefined ||
       (Array.isArray(input.optEnmArrExpl) &&
         input.optEnmArrExpl.every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input.optEnmExpl === null || input.optEnmExpl === undefined || (isCommonEnumType(input.optEnmExpl) as boolean)) &&
-    (input.optNum === null || input.optNum === undefined || typeof input.optNum === 'number') &&
-    (input.optNumArr === null ||
-      input.optNumArr === undefined ||
+    (input.optEnmExpl === undefined || (isCommonEnumType(input.optEnmExpl) as boolean)) &&
+    (input.optNum === undefined || typeof input.optNum === 'number') &&
+    (input.optNumArr === undefined ||
       (Array.isArray(input.optNumArr) && input.optNumArr.every((item: any) => typeof item === 'number'))) &&
-    (input.optNumArrExpl === null ||
-      input.optNumArrExpl === undefined ||
+    (input.optNumArrExpl === undefined ||
       (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
-    (input.optNumExpl === null || input.optNumExpl === undefined || typeof input.optNumExpl === 'number') &&
-    (input.optObj === null || input.optObj === undefined || (isCommonOptObjectType(input.optObj) as boolean)) &&
-    (input.optObjExpl === null ||
-      input.optObjExpl === undefined ||
-      (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean)) &&
-    (input.optStr === null || input.optStr === undefined || typeof input.optStr === 'string') &&
-    (input.optStrArr === null ||
-      input.optStrArr === undefined ||
+    (input.optNumExpl === undefined || typeof input.optNumExpl === 'number') &&
+    (input.optObj === undefined || (isCommonOptObjectType(input.optObj) as boolean)) &&
+    (input.optObjExpl === undefined || (isCommonOptObjectTypeExpl(input.optObjExpl) as boolean)) &&
+    (input.optStr === undefined || typeof input.optStr === 'string') &&
+    (input.optStrArr === undefined ||
       (Array.isArray(input.optStrArr) && input.optStrArr.every((item: any) => typeof item === 'string'))) &&
-    (input.optStrArrExpl === null ||
-      input.optStrArrExpl === undefined ||
+    (input.optStrArrExpl === undefined ||
       (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
-    (input.optStrExpl === null || input.optStrExpl === undefined || typeof input.optStrExpl === 'string') &&
+    (input.optStrExpl === undefined || typeof input.optStrExpl === 'string') &&
     typeof input.str === 'string' &&
     Array.isArray(input.strArr) &&
     input.strArr.every((item: any) => typeof item === 'string') &&
@@ -287,18 +247,14 @@ export function isPipeDelimitedQueryParameters(input: any): input is PipeDelimit
     input.enmArrExpl.every((item: any) => isCommonEnumType(item) as boolean) &&
     Array.isArray(input.numArrExpl) &&
     input.numArrExpl.every((item: any) => typeof item === 'number') &&
-    (input.optBoolArrExpl === null ||
-      input.optBoolArrExpl === undefined ||
+    (input.optBoolArrExpl === undefined ||
       (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
-    (input.optEnmArrExpl === null ||
-      input.optEnmArrExpl === undefined ||
+    (input.optEnmArrExpl === undefined ||
       (Array.isArray(input.optEnmArrExpl) &&
         input.optEnmArrExpl.every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input.optNumArrExpl === null ||
-      input.optNumArrExpl === undefined ||
+    (input.optNumArrExpl === undefined ||
       (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
-    (input.optStrArrExpl === null ||
-      input.optStrArrExpl === undefined ||
+    (input.optStrArrExpl === undefined ||
       (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
     Array.isArray(input.strArrExpl) &&
     input.strArrExpl.every((item: any) => typeof item === 'string')
@@ -329,68 +285,41 @@ export function isSimpleHeaderParameters(input: any): input is SimpleHeaderParam
     typeof input['X-NumExpl-Header'] === 'number' &&
     (isCommonObjectType(input['X-Obj-Header']) as boolean) &&
     (isCommonObjectTypeExpl(input['X-ObjExpl-Header']) as boolean) &&
-    (input['X-OptBool-Header'] === null ||
-      input['X-OptBool-Header'] === undefined ||
-      typeof input['X-OptBool-Header'] === 'boolean') &&
-    (input['X-OptBoolArr-Header'] === null ||
-      input['X-OptBoolArr-Header'] === undefined ||
+    (input['X-OptBool-Header'] === undefined || typeof input['X-OptBool-Header'] === 'boolean') &&
+    (input['X-OptBoolArr-Header'] === undefined ||
       (Array.isArray(input['X-OptBoolArr-Header']) &&
         input['X-OptBoolArr-Header'].every((item: any) => typeof item === 'boolean'))) &&
-    (input['X-OptBoolArrExpl-Header'] === null ||
-      input['X-OptBoolArrExpl-Header'] === undefined ||
+    (input['X-OptBoolArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptBoolArrExpl-Header']) &&
         input['X-OptBoolArrExpl-Header'].every((item: any) => typeof item === 'boolean'))) &&
-    (input['X-OptBoolExpl-Header'] === null ||
-      input['X-OptBoolExpl-Header'] === undefined ||
-      typeof input['X-OptBoolExpl-Header'] === 'boolean') &&
-    (input['X-OptEnm-Header'] === null ||
-      input['X-OptEnm-Header'] === undefined ||
-      (isCommonEnumType(input['X-OptEnm-Header']) as boolean)) &&
-    (input['X-OptEnmArr-Header'] === null ||
-      input['X-OptEnmArr-Header'] === undefined ||
+    (input['X-OptBoolExpl-Header'] === undefined || typeof input['X-OptBoolExpl-Header'] === 'boolean') &&
+    (input['X-OptEnm-Header'] === undefined || (isCommonEnumType(input['X-OptEnm-Header']) as boolean)) &&
+    (input['X-OptEnmArr-Header'] === undefined ||
       (Array.isArray(input['X-OptEnmArr-Header']) &&
         input['X-OptEnmArr-Header'].every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input['X-OptEnmArrExpl-Header'] === null ||
-      input['X-OptEnmArrExpl-Header'] === undefined ||
+    (input['X-OptEnmArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptEnmArrExpl-Header']) &&
         input['X-OptEnmArrExpl-Header'].every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input['X-OptEnmExpl-Header'] === null ||
-      input['X-OptEnmExpl-Header'] === undefined ||
-      (isCommonEnumType(input['X-OptEnmExpl-Header']) as boolean)) &&
-    (input['X-OptNum-Header'] === null ||
-      input['X-OptNum-Header'] === undefined ||
-      typeof input['X-OptNum-Header'] === 'number') &&
-    (input['X-OptNumArr-Header'] === null ||
-      input['X-OptNumArr-Header'] === undefined ||
+    (input['X-OptEnmExpl-Header'] === undefined || (isCommonEnumType(input['X-OptEnmExpl-Header']) as boolean)) &&
+    (input['X-OptNum-Header'] === undefined || typeof input['X-OptNum-Header'] === 'number') &&
+    (input['X-OptNumArr-Header'] === undefined ||
       (Array.isArray(input['X-OptNumArr-Header']) &&
         input['X-OptNumArr-Header'].every((item: any) => typeof item === 'number'))) &&
-    (input['X-OptNumArrExpl-Header'] === null ||
-      input['X-OptNumArrExpl-Header'] === undefined ||
+    (input['X-OptNumArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptNumArrExpl-Header']) &&
         input['X-OptNumArrExpl-Header'].every((item: any) => typeof item === 'number'))) &&
-    (input['X-OptNumExpl-Header'] === null ||
-      input['X-OptNumExpl-Header'] === undefined ||
-      typeof input['X-OptNumExpl-Header'] === 'number') &&
-    (input['X-OptObj-Header'] === null ||
-      input['X-OptObj-Header'] === undefined ||
-      (isCommonOptObjectType(input['X-OptObj-Header']) as boolean)) &&
-    (input['X-OptObjExpl-Header'] === null ||
-      input['X-OptObjExpl-Header'] === undefined ||
+    (input['X-OptNumExpl-Header'] === undefined || typeof input['X-OptNumExpl-Header'] === 'number') &&
+    (input['X-OptObj-Header'] === undefined || (isCommonOptObjectType(input['X-OptObj-Header']) as boolean)) &&
+    (input['X-OptObjExpl-Header'] === undefined ||
       (isCommonOptObjectTypeExpl(input['X-OptObjExpl-Header']) as boolean)) &&
-    (input['X-OptStr-Header'] === null ||
-      input['X-OptStr-Header'] === undefined ||
-      typeof input['X-OptStr-Header'] === 'string') &&
-    (input['X-OptStrArr-Header'] === null ||
-      input['X-OptStrArr-Header'] === undefined ||
+    (input['X-OptStr-Header'] === undefined || typeof input['X-OptStr-Header'] === 'string') &&
+    (input['X-OptStrArr-Header'] === undefined ||
       (Array.isArray(input['X-OptStrArr-Header']) &&
         input['X-OptStrArr-Header'].every((item: any) => typeof item === 'string'))) &&
-    (input['X-OptStrArrExpl-Header'] === null ||
-      input['X-OptStrArrExpl-Header'] === undefined ||
+    (input['X-OptStrArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptStrArrExpl-Header']) &&
         input['X-OptStrArrExpl-Header'].every((item: any) => typeof item === 'string'))) &&
-    (input['X-OptStrExpl-Header'] === null ||
-      input['X-OptStrExpl-Header'] === undefined ||
-      typeof input['X-OptStrExpl-Header'] === 'string') &&
+    (input['X-OptStrExpl-Header'] === undefined || typeof input['X-OptStrExpl-Header'] === 'string') &&
     typeof input['X-Str-Header'] === 'string' &&
     Array.isArray(input['X-StrArr-Header']) &&
     input['X-StrArr-Header'].every((item: any) => typeof item === 'string') &&
@@ -457,68 +386,41 @@ export function isSimpleResponseHeaderParameters(input: any): input is SimpleRes
     typeof input['X-NumExpl-Header'] === 'number' &&
     (isCommonObjectType(input['X-Obj-Header']) as boolean) &&
     (isCommonObjectTypeExpl(input['X-ObjExpl-Header']) as boolean) &&
-    (input['X-OptBool-Header'] === null ||
-      input['X-OptBool-Header'] === undefined ||
-      typeof input['X-OptBool-Header'] === 'boolean') &&
-    (input['X-OptBoolArr-Header'] === null ||
-      input['X-OptBoolArr-Header'] === undefined ||
+    (input['X-OptBool-Header'] === undefined || typeof input['X-OptBool-Header'] === 'boolean') &&
+    (input['X-OptBoolArr-Header'] === undefined ||
       (Array.isArray(input['X-OptBoolArr-Header']) &&
         input['X-OptBoolArr-Header'].every((item: any) => typeof item === 'boolean'))) &&
-    (input['X-OptBoolArrExpl-Header'] === null ||
-      input['X-OptBoolArrExpl-Header'] === undefined ||
+    (input['X-OptBoolArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptBoolArrExpl-Header']) &&
         input['X-OptBoolArrExpl-Header'].every((item: any) => typeof item === 'boolean'))) &&
-    (input['X-OptBoolExpl-Header'] === null ||
-      input['X-OptBoolExpl-Header'] === undefined ||
-      typeof input['X-OptBoolExpl-Header'] === 'boolean') &&
-    (input['X-OptEnm-Header'] === null ||
-      input['X-OptEnm-Header'] === undefined ||
-      (isCommonEnumType(input['X-OptEnm-Header']) as boolean)) &&
-    (input['X-OptEnmArr-Header'] === null ||
-      input['X-OptEnmArr-Header'] === undefined ||
+    (input['X-OptBoolExpl-Header'] === undefined || typeof input['X-OptBoolExpl-Header'] === 'boolean') &&
+    (input['X-OptEnm-Header'] === undefined || (isCommonEnumType(input['X-OptEnm-Header']) as boolean)) &&
+    (input['X-OptEnmArr-Header'] === undefined ||
       (Array.isArray(input['X-OptEnmArr-Header']) &&
         input['X-OptEnmArr-Header'].every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input['X-OptEnmArrExpl-Header'] === null ||
-      input['X-OptEnmArrExpl-Header'] === undefined ||
+    (input['X-OptEnmArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptEnmArrExpl-Header']) &&
         input['X-OptEnmArrExpl-Header'].every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input['X-OptEnmExpl-Header'] === null ||
-      input['X-OptEnmExpl-Header'] === undefined ||
-      (isCommonEnumType(input['X-OptEnmExpl-Header']) as boolean)) &&
-    (input['X-OptNum-Header'] === null ||
-      input['X-OptNum-Header'] === undefined ||
-      typeof input['X-OptNum-Header'] === 'number') &&
-    (input['X-OptNumArr-Header'] === null ||
-      input['X-OptNumArr-Header'] === undefined ||
+    (input['X-OptEnmExpl-Header'] === undefined || (isCommonEnumType(input['X-OptEnmExpl-Header']) as boolean)) &&
+    (input['X-OptNum-Header'] === undefined || typeof input['X-OptNum-Header'] === 'number') &&
+    (input['X-OptNumArr-Header'] === undefined ||
       (Array.isArray(input['X-OptNumArr-Header']) &&
         input['X-OptNumArr-Header'].every((item: any) => typeof item === 'number'))) &&
-    (input['X-OptNumArrExpl-Header'] === null ||
-      input['X-OptNumArrExpl-Header'] === undefined ||
+    (input['X-OptNumArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptNumArrExpl-Header']) &&
         input['X-OptNumArrExpl-Header'].every((item: any) => typeof item === 'number'))) &&
-    (input['X-OptNumExpl-Header'] === null ||
-      input['X-OptNumExpl-Header'] === undefined ||
-      typeof input['X-OptNumExpl-Header'] === 'number') &&
-    (input['X-OptObj-Header'] === null ||
-      input['X-OptObj-Header'] === undefined ||
-      (isCommonOptObjectType(input['X-OptObj-Header']) as boolean)) &&
-    (input['X-OptObjExpl-Header'] === null ||
-      input['X-OptObjExpl-Header'] === undefined ||
+    (input['X-OptNumExpl-Header'] === undefined || typeof input['X-OptNumExpl-Header'] === 'number') &&
+    (input['X-OptObj-Header'] === undefined || (isCommonOptObjectType(input['X-OptObj-Header']) as boolean)) &&
+    (input['X-OptObjExpl-Header'] === undefined ||
       (isCommonOptObjectTypeExpl(input['X-OptObjExpl-Header']) as boolean)) &&
-    (input['X-OptStr-Header'] === null ||
-      input['X-OptStr-Header'] === undefined ||
-      typeof input['X-OptStr-Header'] === 'string') &&
-    (input['X-OptStrArr-Header'] === null ||
-      input['X-OptStrArr-Header'] === undefined ||
+    (input['X-OptStr-Header'] === undefined || typeof input['X-OptStr-Header'] === 'string') &&
+    (input['X-OptStrArr-Header'] === undefined ||
       (Array.isArray(input['X-OptStrArr-Header']) &&
         input['X-OptStrArr-Header'].every((item: any) => typeof item === 'string'))) &&
-    (input['X-OptStrArrExpl-Header'] === null ||
-      input['X-OptStrArrExpl-Header'] === undefined ||
+    (input['X-OptStrArrExpl-Header'] === undefined ||
       (Array.isArray(input['X-OptStrArrExpl-Header']) &&
         input['X-OptStrArrExpl-Header'].every((item: any) => typeof item === 'string'))) &&
-    (input['X-OptStrExpl-Header'] === null ||
-      input['X-OptStrExpl-Header'] === undefined ||
-      typeof input['X-OptStrExpl-Header'] === 'string') &&
+    (input['X-OptStrExpl-Header'] === undefined || typeof input['X-OptStrExpl-Header'] === 'string') &&
     typeof input['X-Str-Header'] === 'string' &&
     Array.isArray(input['X-StrArr-Header']) &&
     input['X-StrArr-Header'].every((item: any) => typeof item === 'string') &&
@@ -538,18 +440,14 @@ export function isSpaceDelimitedQueryParameters(input: any): input is SpaceDelim
     input.enmArrExpl.every((item: any) => isCommonEnumType(item) as boolean) &&
     Array.isArray(input.numArrExpl) &&
     input.numArrExpl.every((item: any) => typeof item === 'number') &&
-    (input.optBoolArrExpl === null ||
-      input.optBoolArrExpl === undefined ||
+    (input.optBoolArrExpl === undefined ||
       (Array.isArray(input.optBoolArrExpl) && input.optBoolArrExpl.every((item: any) => typeof item === 'boolean'))) &&
-    (input.optEnmArrExpl === null ||
-      input.optEnmArrExpl === undefined ||
+    (input.optEnmArrExpl === undefined ||
       (Array.isArray(input.optEnmArrExpl) &&
         input.optEnmArrExpl.every((item: any) => isCommonEnumType(item) as boolean))) &&
-    (input.optNumArrExpl === null ||
-      input.optNumArrExpl === undefined ||
+    (input.optNumArrExpl === undefined ||
       (Array.isArray(input.optNumArrExpl) && input.optNumArrExpl.every((item: any) => typeof item === 'number'))) &&
-    (input.optStrArrExpl === null ||
-      input.optStrArrExpl === undefined ||
+    (input.optStrArrExpl === undefined ||
       (Array.isArray(input.optStrArrExpl) && input.optStrArrExpl.every((item: any) => typeof item === 'string'))) &&
     Array.isArray(input.strArrExpl) &&
     input.strArrExpl.every((item: any) => typeof item === 'string')

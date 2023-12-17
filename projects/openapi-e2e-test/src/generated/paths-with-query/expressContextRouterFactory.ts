@@ -7,16 +7,16 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { PathsWithQueryApi } from './apiType'
+import { PathsWithQueryParametersApi } from './apiType'
 
-export function createPathsWithQueryContextRouter(
+export function createPathsWithQueryParametersContextRouter(
   router: IRouter | undefined,
-  api: PathsWithQueryApi,
+  api: PathsWithQueryParametersApi,
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_u8jlxu'] = api
-    response.locals['__oats_adapter_u8jlxu'] = adapter
+    response.locals['__oats_api_jg333n'] = api
+    response.locals['__oats_adapter_jg333n'] = adapter
     next()
   })
 }

@@ -6,11 +6,11 @@
 
 import { IRouter, Router } from 'express'
 import { createCreatePetsRouter, createListPetsRouter, createShowPetByIdRouter } from './expressRouterFactories'
-import { SwaggerPetstoreRouterFactories } from './expressRouterFactoriesType'
+import { SwaggerPetstoreJsonRouterFactories } from './expressRouterFactoriesType'
 
-export function createSwaggerPetstoreAppRouter(
+export function createSwaggerPetstoreJsonAppRouter(
   _local_router?: IRouter | undefined,
-  _local_overrides: Partial<SwaggerPetstoreRouterFactories> = {},
+  _local_overrides: Partial<SwaggerPetstoreJsonRouterFactories> = {},
 ): IRouter {
   const _local_root = _local_router ?? Router()
   const _local_factories = [

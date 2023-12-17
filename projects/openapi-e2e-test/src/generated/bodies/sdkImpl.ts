@@ -12,6 +12,7 @@ import {
   EnmArrOperation,
   EnmOperation,
   NestedObjOperation,
+  NullablePrimObjOperation,
   NumArrOperation,
   NumOperation,
   OptPrimTupleOperation,
@@ -27,6 +28,7 @@ import {
   EnmArrRequest,
   EnmRequest,
   NestedObjRequest,
+  NullablePrimObjRequest,
   NumArrRequest,
   NumRequest,
   OptPrimTupleRequest,
@@ -42,6 +44,7 @@ import {
   EnmArrResponse,
   EnmResponse,
   NestedObjResponse,
+  NullablePrimObjResponse,
   NumArrResponse,
   NumResponse,
   OptPrimTupleResponse,
@@ -74,6 +77,9 @@ export class BodiesSdkImpl implements BodiesSdk {
   }
   public async nestedObj(request: NestedObjRequest): Promise<NestedObjResponse> {
     return this.createNestedObjOperation().run(request)
+  }
+  public async nullablePrimObj(request: NullablePrimObjRequest): Promise<NullablePrimObjResponse> {
+    return this.createNullablePrimObjOperation().run(request)
   }
   public async num(request: NumRequest): Promise<NumResponse> {
     return this.createNumOperation().run(request)
@@ -113,6 +119,9 @@ export class BodiesSdkImpl implements BodiesSdk {
   }
   protected createNestedObjOperation(): RunnableOperation<NestedObjRequest, NestedObjResponse> {
     return new NestedObjOperation(this.adapter)
+  }
+  protected createNullablePrimObjOperation(): RunnableOperation<NullablePrimObjRequest, NullablePrimObjResponse> {
+    return new NullablePrimObjOperation(this.adapter)
   }
   protected createNumOperation(): RunnableOperation<NumRequest, NumResponse> {
     return new NumOperation(this.adapter)

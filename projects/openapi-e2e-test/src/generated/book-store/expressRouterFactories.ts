@@ -25,8 +25,8 @@ export function createAddBookRouter(router?: IRouter | undefined): IRouter {
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
-      const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1o36nbj']
+      const api: BookStoreApi = response.locals['__oats_api_1o36nbj']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', Book>(
@@ -60,8 +60,8 @@ export function createGetBookRouter(router?: IRouter | undefined): IRouter {
     '/books/:bookId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
-      const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1o36nbj']
+      const api: BookStoreApi = response.locals['__oats_api_1o36nbj']
       try {
         const path = await adapter.getPathParameters<GetBookPathParameters>(toolkit, getBookPathParameters)
         const typedRequest: GetBookServerRequest = {
@@ -88,8 +88,8 @@ export function createGetBooksRouter(router?: IRouter | undefined): IRouter {
     '/books',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
-      const api: BookStoreApi = response.locals['__oats_api_15ojy6m']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1o36nbj']
+      const api: BookStoreApi = response.locals['__oats_api_1o36nbj']
       try {
         const query = await adapter.getQueryParameters<GetBooksQueryParameters>(toolkit, getBooksQueryParameters)
         const headers = await adapter.getRequestHeaders<GetBooksRequestHeaderParameters>(
