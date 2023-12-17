@@ -15,6 +15,7 @@ import {
   PrimObjServerRequest,
   ArrObjServerRequest,
   NestedObjServerRequest,
+  NullablePrimObjServerRequest,
 } from '../../generated/bodies/requestServerTypes'
 import {
   StrServerResponse,
@@ -30,6 +31,7 @@ import {
   PrimObjServerResponse,
   ArrObjServerResponse,
   NestedObjServerResponse,
+  NullablePrimObjServerResponse,
 } from '../../generated/bodies/responseServerTypes'
 
 export class BodiesApiImpl implements BodiesApi {
@@ -78,6 +80,9 @@ export class BodiesApiImpl implements BodiesApi {
     return this.respond(request)
   }
   async primObj(request: PrimObjServerRequest): Promise<PrimObjServerResponse> {
+    return this.respond(request)
+  }
+  async nullablePrimObj(request: NullablePrimObjServerRequest): Promise<NullablePrimObjServerResponse> {
     return this.respond(request)
   }
   async str(request: StrServerRequest): Promise<StrServerResponse> {
