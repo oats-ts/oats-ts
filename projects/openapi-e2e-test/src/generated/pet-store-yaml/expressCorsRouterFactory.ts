@@ -7,17 +7,17 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
+import { swaggerPetstoreYamlCorsConfiguration } from './corsConfiguration'
 
-export function createSwaggerPetstoreCorsRouter(router?: IRouter | undefined): IRouter {
+export function createSwaggerPetstoreYamlCorsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router())
     .options('/pets/:petId', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1e1876z']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig =
-          method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.[method]
+          method === undefined ? undefined : swaggerPetstoreYamlCorsConfiguration?.['/pets/{petId}']?.[method]
         const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
         await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {
@@ -26,10 +26,10 @@ export function createSwaggerPetstoreCorsRouter(router?: IRouter | undefined): I
     })
     .options('/pets', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1e1876z']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
-        const corsConfig = method === undefined ? undefined : swaggerPetstoreCorsConfiguration?.['/pets']?.[method]
+        const corsConfig = method === undefined ? undefined : swaggerPetstoreYamlCorsConfiguration?.['/pets']?.[method]
         const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
         await adapter.respond(toolkit, { headers: corsHeaders })
       } catch (error) {

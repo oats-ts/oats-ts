@@ -15,8 +15,8 @@ export function createDeleteMethodRouter(router?: IRouter | undefined): IRouter 
     '/delete-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
+      const api: HttpMethodsApi = response.locals['__oats_api_79bqez']
       try {
         const corsConfig = httpMethodsCorsConfiguration?.['/delete-method']?.['delete']
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
@@ -39,8 +39,8 @@ export function createGetMethodRouter(router?: IRouter | undefined): IRouter {
     '/get-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
+      const api: HttpMethodsApi = response.locals['__oats_api_79bqez']
       try {
         const corsConfig = httpMethodsCorsConfiguration?.['/get-method']?.get
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
@@ -63,8 +63,8 @@ export function createPatchMethodRouter(router?: IRouter | undefined): IRouter {
     '/patch-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
+      const api: HttpMethodsApi = response.locals['__oats_api_79bqez']
       try {
         const corsConfig = httpMethodsCorsConfiguration?.['/patch-method']?.patch
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
@@ -87,8 +87,8 @@ export function createPostMethodRouter(router?: IRouter | undefined): IRouter {
     '/post-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
+      const api: HttpMethodsApi = response.locals['__oats_api_79bqez']
       try {
         const corsConfig = httpMethodsCorsConfiguration?.['/post-method']?.post
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
@@ -111,8 +111,8 @@ export function createPutMethodRouter(router?: IRouter | undefined): IRouter {
     '/put-method',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1quzk6y']
-      const api: HttpMethodsApi = response.locals['__oats_api_1quzk6y']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_79bqez']
+      const api: HttpMethodsApi = response.locals['__oats_api_79bqez']
       try {
         const corsConfig = httpMethodsCorsConfiguration?.['/put-method']?.put
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)

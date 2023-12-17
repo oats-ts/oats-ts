@@ -15,8 +15,8 @@ export function createHttpMethodsContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_1quzk6y'] = api
-    response.locals['__oats_adapter_1quzk6y'] = adapter
+    response.locals['__oats_api_79bqez'] = api
+    response.locals['__oats_adapter_79bqez'] = adapter
     next()
   })
 }

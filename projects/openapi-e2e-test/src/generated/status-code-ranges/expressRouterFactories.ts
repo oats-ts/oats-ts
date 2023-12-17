@@ -22,8 +22,8 @@ export function createRange1XxRouter(router?: IRouter | undefined): IRouter {
     '/1xx',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_17tixfz']
-      const api: StatusCodeRangesApi = response.locals['__oats_api_17tixfz']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1jz9g3s']
+      const api: StatusCodeRangesApi = response.locals['__oats_api_1jz9g3s']
       try {
         const typedResponse = await api.range1Xx()
         const rawResponse: RawHttpResponse = {
@@ -49,8 +49,8 @@ export function createRange2XxRouter(router?: IRouter | undefined): IRouter {
     '/2xx',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_17tixfz']
-      const api: StatusCodeRangesApi = response.locals['__oats_api_17tixfz']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1jz9g3s']
+      const api: StatusCodeRangesApi = response.locals['__oats_api_1jz9g3s']
       try {
         const typedResponse = await api.range2Xx()
         const rawResponse: RawHttpResponse = {
@@ -76,8 +76,8 @@ export function createRange3XxRouter(router?: IRouter | undefined): IRouter {
     '/3xx',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_17tixfz']
-      const api: StatusCodeRangesApi = response.locals['__oats_api_17tixfz']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1jz9g3s']
+      const api: StatusCodeRangesApi = response.locals['__oats_api_1jz9g3s']
       try {
         const typedResponse = await api.range3Xx()
         const rawResponse: RawHttpResponse = {
@@ -103,8 +103,8 @@ export function createRange4XxRouter(router?: IRouter | undefined): IRouter {
     '/4xx',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_17tixfz']
-      const api: StatusCodeRangesApi = response.locals['__oats_api_17tixfz']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1jz9g3s']
+      const api: StatusCodeRangesApi = response.locals['__oats_api_1jz9g3s']
       try {
         const typedResponse = await api.range4Xx()
         const rawResponse: RawHttpResponse = {
@@ -130,8 +130,8 @@ export function createRange5XxRouter(router?: IRouter | undefined): IRouter {
     '/5xx',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_17tixfz']
-      const api: StatusCodeRangesApi = response.locals['__oats_api_17tixfz']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1jz9g3s']
+      const api: StatusCodeRangesApi = response.locals['__oats_api_1jz9g3s']
       try {
         const typedResponse = await api.range5Xx()
         const rawResponse: RawHttpResponse = {
@@ -157,8 +157,8 @@ export function createWithNormalStatusesRouter(router?: IRouter | undefined): IR
     '/with-normal-statuses',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_17tixfz']
-      const api: StatusCodeRangesApi = response.locals['__oats_api_17tixfz']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1jz9g3s']
+      const api: StatusCodeRangesApi = response.locals['__oats_api_1jz9g3s']
       try {
         const typedResponse = await api.withNormalStatuses()
         const rawResponse: RawHttpResponse = {

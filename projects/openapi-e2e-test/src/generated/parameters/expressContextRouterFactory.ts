@@ -21,8 +21,8 @@ export function createParametersContextRouter(
   adapter: _ServerAdapter<_ExpressToolkit>,
 ): _IRouter {
   return (router ?? _Router()).use((_: _Request, response: _Response, next: _NextFunction) => {
-    response.locals['__oats_api_7xzhoe'] = api
-    response.locals['__oats_adapter_7xzhoe'] = adapter
+    response.locals['__oats_api_15nbq9j'] = api
+    response.locals['__oats_adapter_15nbq9j'] = adapter
     next()
   })
 }

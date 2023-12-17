@@ -8,6 +8,7 @@ import {
   EnumType,
   ObjectWithArrays,
   ObjectWithNestedObjects,
+  ObjectWithNullablePrimitives,
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
@@ -37,7 +38,19 @@ export function isObjectWithNestedObjects(input: any): input is ObjectWithNested
     input !== null &&
     typeof input === 'object' &&
     (isObjectWithArrays(input.arrObj) as boolean) &&
+    (isObjectWithNullablePrimitives(input.nullablePrimObj) as boolean) &&
     (isObjectWithPrimitives(input.primObj) as boolean)
+  )
+}
+
+export function isObjectWithNullablePrimitives(input: any): input is ObjectWithNullablePrimitives {
+  return (
+    input !== null &&
+    typeof input === 'object' &&
+    (input.nullableBool === null || typeof input.nullableBool === 'boolean') &&
+    (input.nullableLit === null || input.nullableLit === 'Literal Value') &&
+    (input.nullableNum === null || typeof input.nullableNum === 'number') &&
+    (input.nullableStr === null || typeof input.nullableStr === 'string')
   )
 }
 

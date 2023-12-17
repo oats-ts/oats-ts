@@ -11,6 +11,7 @@ import {
   EnmArrServerRequest,
   EnmServerRequest,
   NestedObjServerRequest,
+  NullablePrimObjServerRequest,
   NumArrServerRequest,
   NumServerRequest,
   OptPrimTupleServerRequest,
@@ -26,6 +27,7 @@ import {
   EnmArrServerResponse,
   EnmServerResponse,
   NestedObjServerResponse,
+  NullablePrimObjServerResponse,
   NumArrServerResponse,
   NumServerResponse,
   OptPrimTupleServerResponse,
@@ -42,6 +44,7 @@ export type BodiesApi = {
   enm(request: EnmServerRequest): Promise<EnmServerResponse>
   enmArr(request: EnmArrServerRequest): Promise<EnmArrServerResponse>
   nestedObj(request: NestedObjServerRequest): Promise<NestedObjServerResponse>
+  nullablePrimObj(request: NullablePrimObjServerRequest): Promise<NullablePrimObjServerResponse>
   num(request: NumServerRequest): Promise<NumServerResponse>
   numArr(request: NumArrServerRequest): Promise<NumArrServerResponse>
   optPrimTuple(request: OptPrimTupleServerRequest): Promise<OptPrimTupleServerResponse>

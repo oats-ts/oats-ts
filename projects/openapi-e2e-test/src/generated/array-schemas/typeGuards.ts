@@ -44,7 +44,7 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
+    (input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }
 

@@ -13,6 +13,7 @@ export type BodiesRouterFactories = {
   createEnmRouter: (router?: IRouter | undefined) => IRouter
   createEnmArrRouter: (router?: IRouter | undefined) => IRouter
   createNestedObjRouter: (router?: IRouter | undefined) => IRouter
+  createNullablePrimObjRouter: (router?: IRouter | undefined) => IRouter
   createNumRouter: (router?: IRouter | undefined) => IRouter
   createNumArrRouter: (router?: IRouter | undefined) => IRouter
   createOptPrimTupleRouter: (router?: IRouter | undefined) => IRouter

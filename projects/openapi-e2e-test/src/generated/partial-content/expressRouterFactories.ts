@@ -16,8 +16,8 @@ export function createMissingBodyRouter(router?: IRouter | undefined): IRouter {
     '/missing-body',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1j5lc0s']
-      const api: PartialContentApi = response.locals['__oats_api_1j5lc0s']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_my940s']
+      const api: PartialContentApi = response.locals['__oats_api_my940s']
       try {
         const typedResponse = await api.missingBody()
         const rawResponse: RawHttpResponse = {
@@ -38,8 +38,8 @@ export function createOptionalRequestBodyRouter(router?: IRouter | undefined): I
     '/optional-request-body',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1j5lc0s']
-      const api: PartialContentApi = response.locals['__oats_api_1j5lc0s']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_my940s']
+      const api: PartialContentApi = response.locals['__oats_api_my940s']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<

@@ -7,15 +7,15 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { PathsWithQueryApi } from './apiType'
+import { PathsWithQueryParametersApi } from './apiType'
 
 export function createGetFooBarABRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router()).get(
     '/foo/bar',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_u8jlxu']
-      const api: PathsWithQueryApi = response.locals['__oats_api_u8jlxu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_jg333n']
+      const api: PathsWithQueryParametersApi = response.locals['__oats_api_jg333n']
       try {
         const typedResponse = await api.getFooBarAB()
         const rawResponse: RawHttpResponse = {
@@ -36,8 +36,8 @@ export function createGetFooBoopBarABBCRouter(router?: IRouter | undefined): IRo
     '/foo/boop/bar',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_u8jlxu']
-      const api: PathsWithQueryApi = response.locals['__oats_api_u8jlxu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_jg333n']
+      const api: PathsWithQueryParametersApi = response.locals['__oats_api_jg333n']
       try {
         const typedResponse = await api.getFooBoopBarABBC()
         const rawResponse: RawHttpResponse = {

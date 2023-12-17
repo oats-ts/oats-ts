@@ -6,7 +6,7 @@
 
 import { GetFooBarABResponse, GetFooBoopBarABBCResponse } from './responseTypes'
 
-export type PathsWithQuerySdk = {
+export type PathsWithQueryParametersSdk = {
   getFooBarAB(): Promise<GetFooBarABResponse>
   getFooBoopBarABBC(): Promise<GetFooBoopBarABBCResponse>
 }

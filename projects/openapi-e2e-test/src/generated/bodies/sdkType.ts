@@ -11,6 +11,7 @@ import {
   EnmArrRequest,
   EnmRequest,
   NestedObjRequest,
+  NullablePrimObjRequest,
   NumArrRequest,
   NumRequest,
   OptPrimTupleRequest,
@@ -26,6 +27,7 @@ import {
   EnmArrResponse,
   EnmResponse,
   NestedObjResponse,
+  NullablePrimObjResponse,
   NumArrResponse,
   NumResponse,
   OptPrimTupleResponse,
@@ -42,6 +44,7 @@ export type BodiesSdk = {
   enm(request: EnmRequest): Promise<EnmResponse>
   enmArr(request: EnmArrRequest): Promise<EnmArrResponse>
   nestedObj(request: NestedObjRequest): Promise<NestedObjResponse>
+  nullablePrimObj(request: NullablePrimObjRequest): Promise<NullablePrimObjResponse>
   num(request: NumRequest): Promise<NumResponse>
   numArr(request: NumArrRequest): Promise<NumArrResponse>
   optPrimTuple(request: OptPrimTupleRequest): Promise<OptPrimTupleResponse>

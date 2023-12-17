@@ -7,7 +7,7 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { MissingContentSchemaApi } from './apiType'
+import { MissingContentApi } from './apiType'
 import { missingRequestBodySchemaRequestBodyValidator } from './requestBodyValidators'
 import { MissingRequestBodySchemaServerRequest } from './requestServerTypes'
 
@@ -16,8 +16,8 @@ export function createMissingRequestBodySchemaRouter(router?: IRouter | undefine
     '/missing-request-body-schema',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_fzqbew']
-      const api: MissingContentSchemaApi = response.locals['__oats_api_fzqbew']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ibjm69']
+      const api: MissingContentApi = response.locals['__oats_api_1ibjm69']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', any>(
@@ -49,8 +49,8 @@ export function createMissingResponseSchemaRouter(router?: IRouter | undefined):
     '/missing-response-schema',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_fzqbew']
-      const api: MissingContentSchemaApi = response.locals['__oats_api_fzqbew']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1ibjm69']
+      const api: MissingContentApi = response.locals['__oats_api_1ibjm69']
       try {
         const typedResponse = await api.missingResponseSchema()
         const rawResponse: RawHttpResponse = {

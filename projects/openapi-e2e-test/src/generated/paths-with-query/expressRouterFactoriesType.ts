@@ -6,7 +6,7 @@
 
 import { IRouter } from 'express'
 
-export type PathsWithQueryRouterFactories = {
+export type PathsWithQueryParametersRouterFactories = {
   createGetFooBarABRouter: (router?: IRouter | undefined) => IRouter
   createGetFooBoopBarABBCRouter: (router?: IRouter | undefined) => IRouter
 }

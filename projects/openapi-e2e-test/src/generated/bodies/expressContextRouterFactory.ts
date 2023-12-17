@@ -15,8 +15,8 @@ export function createBodiesContextRouter(
   adapter: ServerAdapter<ExpressToolkit>,
 ): IRouter {
   return (router ?? Router()).use((_: Request, response: Response, next: NextFunction) => {
-    response.locals['__oats_api_14n8ypu'] = api
-    response.locals['__oats_adapter_14n8ypu'] = adapter
+    response.locals['__oats_api_1qzwl9e'] = api
+    response.locals['__oats_adapter_1qzwl9e'] = adapter
     next()
   })
 }

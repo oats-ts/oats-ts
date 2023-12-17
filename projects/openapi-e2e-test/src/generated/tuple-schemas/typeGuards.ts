@@ -28,7 +28,7 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
+    (input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }
 
@@ -42,7 +42,7 @@ export function isTupleType(input: any): input is TupleType {
     input[3].every((item: any) => typeof item === 'string') &&
     input[4] !== null &&
     typeof input[4] === 'object' &&
-    (input[4].foo === null || input[4].foo === undefined || typeof input[4].foo === 'string') &&
+    (input[4].foo === undefined || typeof input[4].foo === 'string') &&
     (isReferenceTarget(input[5]) as boolean)
   )
 }

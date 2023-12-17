@@ -8,9 +8,9 @@ import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import { CreatePetsOperation, ListPetsOperation, ShowPetByIdOperation } from './operations'
 import { CreatePetsRequest, ListPetsRequest, ShowPetByIdRequest } from './requestTypes'
 import { CreatePetsResponse, ListPetsResponse, ShowPetByIdResponse } from './responseTypes'
-import { SwaggerPetstoreSdk } from './sdkType'
+import { SwaggerPetstoreJsonSdk } from './sdkType'
 
-export class SwaggerPetstoreSdkImpl implements SwaggerPetstoreSdk {
+export class SwaggerPetstoreJsonSdkImpl implements SwaggerPetstoreJsonSdk {
   protected readonly _local_adapter: ClientAdapter
   public constructor(_local_adapter: ClientAdapter) {
     this._local_adapter = _local_adapter

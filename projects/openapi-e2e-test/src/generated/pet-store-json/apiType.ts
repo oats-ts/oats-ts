@@ -7,7 +7,7 @@
 import { CreatePetsServerRequest, ListPetsServerRequest, ShowPetByIdServerRequest } from './requestServerTypes'
 import { CreatePetsServerResponse, ListPetsServerResponse, ShowPetByIdServerResponse } from './responseServerTypes'
 
-export type SwaggerPetstoreApi = {
+export type SwaggerPetstoreJsonApi = {
   /**
    * Create a pet
    */

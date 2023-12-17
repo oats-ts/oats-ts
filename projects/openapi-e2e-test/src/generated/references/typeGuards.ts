@@ -14,11 +14,7 @@ import {
 } from './types'
 
 export function isInlineRefTarget(input: any): input is InlineRefTarget {
-  return (
-    input !== null &&
-    typeof input === 'object' &&
-    (input.foo === null || input.foo === undefined || typeof input.foo === 'string')
-  )
+  return input !== null && typeof input === 'object' && (input.foo === undefined || typeof input.foo === 'string')
 }
 
 export function isInlineRefType(input: any): input is InlineRefType {
@@ -29,7 +25,7 @@ export function isReferenceTarget(input: any): input is ReferenceTarget {
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.referenceTarget === null || input.referenceTarget === undefined || input.referenceTarget === true)
+    (input.referenceTarget === undefined || input.referenceTarget === true)
   )
 }
 

@@ -7,8 +7,8 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { SwaggerPetstoreApi } from './apiType'
-import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
+import { SwaggerPetstoreYamlApi } from './apiType'
+import { swaggerPetstoreYamlCorsConfiguration } from './corsConfiguration'
 import { showPetByIdPathParameters } from './pathParameters'
 import { ShowPetByIdPathParameters } from './pathTypes'
 import { listPetsQueryParameters } from './queryParameters'
@@ -23,8 +23,8 @@ export function createCreatePetsRouter(router?: IRouter | undefined): IRouter {
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1e1876z']
+      const api: SwaggerPetstoreYamlApi = response.locals['__oats_api_1e1876z']
       try {
         const mimeType = await adapter.getMimeType<'application/json'>(toolkit)
         const body = await adapter.getRequestBody<'application/json', Pet>(
@@ -37,7 +37,7 @@ export function createCreatePetsRouter(router?: IRouter | undefined): IRouter {
           mimeType,
           body,
         }
-        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.post
+        const corsConfig = swaggerPetstoreYamlCorsConfiguration?.['/pets']?.post
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.createPets(typedRequest)
         const rawResponse: RawHttpResponse = {
@@ -58,14 +58,14 @@ export function createListPetsRouter(router?: IRouter | undefined): IRouter {
     '/pets',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1e1876z']
+      const api: SwaggerPetstoreYamlApi = response.locals['__oats_api_1e1876z']
       try {
         const query = await adapter.getQueryParameters<ListPetsQueryParameters>(toolkit, listPetsQueryParameters)
         const typedRequest: ListPetsServerRequest = {
           query,
         }
-        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.get
+        const corsConfig = swaggerPetstoreYamlCorsConfiguration?.['/pets']?.get
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.listPets(typedRequest)
         const rawResponse: RawHttpResponse = {
@@ -91,14 +91,14 @@ export function createShowPetByIdRouter(router?: IRouter | undefined): IRouter {
     '/pets/:petId',
     async (request: Request, response: Response, next: NextFunction): Promise<void> => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_qslhlh']
-      const api: SwaggerPetstoreApi = response.locals['__oats_api_qslhlh']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1e1876z']
+      const api: SwaggerPetstoreYamlApi = response.locals['__oats_api_1e1876z']
       try {
         const path = await adapter.getPathParameters<ShowPetByIdPathParameters>(toolkit, showPetByIdPathParameters)
         const typedRequest: ShowPetByIdServerRequest = {
           path,
         }
-        const corsConfig = swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.get
+        const corsConfig = swaggerPetstoreYamlCorsConfiguration?.['/pets/{petId}']?.get
         const corsHeaders = await adapter.getCorsHeaders(toolkit, corsConfig)
         const typedResponse = await api.showPetById(typedRequest)
         const rawResponse: RawHttpResponse = {

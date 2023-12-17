@@ -7,7 +7,7 @@
 import { MissingRequestBodySchemaServerRequest } from './requestServerTypes'
 import { MissingRequestBodySchemaServerResponse, MissingResponseSchemaServerResponse } from './responseServerTypes'
 
-export type MissingContentSchemaApi = {
+export type MissingContentApi = {
   missingRequestBodySchema(
     request: MissingRequestBodySchemaServerRequest,
   ): Promise<MissingRequestBodySchemaServerResponse>

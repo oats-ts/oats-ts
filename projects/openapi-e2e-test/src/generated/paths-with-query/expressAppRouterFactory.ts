@@ -6,11 +6,11 @@
 
 import { IRouter, Router } from 'express'
 import { createGetFooBarABRouter, createGetFooBoopBarABBCRouter } from './expressRouterFactories'
-import { PathsWithQueryRouterFactories } from './expressRouterFactoriesType'
+import { PathsWithQueryParametersRouterFactories } from './expressRouterFactoriesType'
 
-export function createPathsWithQueryAppRouter(
+export function createPathsWithQueryParametersAppRouter(
   router?: IRouter | undefined,
-  overrides: Partial<PathsWithQueryRouterFactories> = {},
+  overrides: Partial<PathsWithQueryParametersRouterFactories> = {},
 ): IRouter {
   const root = router ?? Router()
   const factories = [

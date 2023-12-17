@@ -13,7 +13,7 @@ export function createBookStoreCorsRouter(router?: IRouter | undefined): IRouter
   return (router ?? Router())
     .options('/books/:bookId', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1o36nbj']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bookStoreCorsConfiguration?.['/books/{bookId}']?.[method]
@@ -25,7 +25,7 @@ export function createBookStoreCorsRouter(router?: IRouter | undefined): IRouter
     })
     .options('/books', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_15ojy6m']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1o36nbj']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bookStoreCorsConfiguration?.['/books']?.[method]

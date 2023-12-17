@@ -6,11 +6,11 @@
 
 import { IRouter, Router } from 'express'
 import { createMissingRequestBodySchemaRouter, createMissingResponseSchemaRouter } from './expressRouterFactories'
-import { MissingContentSchemaRouterFactories } from './expressRouterFactoriesType'
+import { MissingContentRouterFactories } from './expressRouterFactoriesType'
 
-export function createMissingContentSchemaAppRouter(
+export function createMissingContentAppRouter(
   router?: IRouter | undefined,
-  overrides: Partial<MissingContentSchemaRouterFactories> = {},
+  overrides: Partial<MissingContentRouterFactories> = {},
 ): IRouter {
   const root = router ?? Router()
   const factories = [

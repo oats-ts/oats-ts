@@ -7,9 +7,9 @@
 import { ClientAdapter, RunnableOperation } from '@oats-ts/openapi-runtime'
 import { GetFooBarABOperation, GetFooBoopBarABBCOperation } from './operations'
 import { GetFooBarABResponse, GetFooBoopBarABBCResponse } from './responseTypes'
-import { PathsWithQuerySdk } from './sdkType'
+import { PathsWithQueryParametersSdk } from './sdkType'
 
-export class PathsWithQuerySdkImpl implements PathsWithQuerySdk {
+export class PathsWithQueryParametersSdkImpl implements PathsWithQueryParametersSdk {
   protected readonly adapter: ClientAdapter
   public constructor(adapter: ClientAdapter) {
     this.adapter = adapter

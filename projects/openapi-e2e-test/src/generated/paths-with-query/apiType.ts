@@ -6,7 +6,7 @@
 
 import { GetFooBarABServerResponse, GetFooBoopBarABBCServerResponse } from './responseServerTypes'
 
-export type PathsWithQueryApi = {
+export type PathsWithQueryParametersApi = {
   getFooBarAB(): Promise<GetFooBarABServerResponse>
   getFooBoopBarABBC(): Promise<GetFooBoopBarABBCServerResponse>
 }

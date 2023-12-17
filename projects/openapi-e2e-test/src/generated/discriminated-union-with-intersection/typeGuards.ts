@@ -18,10 +18,10 @@ export function isLeafIntersectionType(input: any): input is LeafIntersectionTyp
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.racoon === null || input.racoon === undefined || typeof input.racoon === 'string') &&
+    (input.racoon === undefined || typeof input.racoon === 'string') &&
     input !== null &&
     typeof input === 'object' &&
-    (input.meerkat === null || input.meerkat === undefined || typeof input.meerkat === 'number') &&
+    (input.meerkat === undefined || typeof input.meerkat === 'number') &&
     input.type === 'LeafIntersectionType'
   )
 }
@@ -42,10 +42,10 @@ export function isMidLevelIntersectionType(input: any): input is MidLevelInterse
   return (
     input !== null &&
     typeof input === 'object' &&
-    (input.cat === null || input.cat === undefined || typeof input.cat === 'string') &&
+    (input.cat === undefined || typeof input.cat === 'string') &&
     input !== null &&
     typeof input === 'object' &&
-    (input.dog === null || input.dog === undefined || typeof input.dog === 'number') &&
+    (input.dog === undefined || typeof input.dog === 'number') &&
     input.type === 'MidLevelIntersectionType'
   )
 }

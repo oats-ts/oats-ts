@@ -7,8 +7,8 @@
 import { ExpressToolkit } from '@oats-ts/openapi-express-server-adapter'
 import { RawHttpResponse, ServerAdapter } from '@oats-ts/openapi-runtime'
 import { IRouter, NextFunction, Request, Response, Router } from 'express'
-import { SwaggerPetstoreApi } from './apiType'
-import { swaggerPetstoreCorsConfiguration } from './corsConfiguration'
+import { SwaggerPetstoreJsonApi } from './apiType'
+import { swaggerPetstoreJsonCorsConfiguration } from './corsConfiguration'
 import { showPetByIdPathParameters } from './pathParameters'
 import { ShowPetByIdPathParameters } from './pathTypes'
 import { listPetsQueryParameters } from './queryParameters'
@@ -23,8 +23,8 @@ export function createCreatePetsRouter(_local_router?: IRouter | undefined): IRo
     '/pets',
     async (_local_request: Request, _local_response: Response, _local_next: NextFunction): Promise<void> => {
       const _local_toolkit: ExpressToolkit = { request: _local_request, response: _local_response, next: _local_next }
-      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_qslhlh']
-      const _local_api: SwaggerPetstoreApi = _local_response.locals['_local___oats_api_qslhlh']
+      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_84oaoa']
+      const _local_api: SwaggerPetstoreJsonApi = _local_response.locals['_local___oats_api_84oaoa']
       try {
         const _local_mimeType = await _local_adapter.getMimeType<'application/json'>(_local_toolkit)
         const _local_body = await _local_adapter.getRequestBody<'application/json', Pet>(
@@ -37,7 +37,7 @@ export function createCreatePetsRouter(_local_router?: IRouter | undefined): IRo
           mimeType: _local_mimeType,
           body: _local_body,
         }
-        const _local_corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.post
+        const _local_corsConfig = swaggerPetstoreJsonCorsConfiguration?.['/pets']?.post
         const _local_corsHeaders = await _local_adapter.getCorsHeaders(_local_toolkit, _local_corsConfig)
         const _local_typedResponse = await _local_api._local_createPets(_local_typedRequest)
         const _local_rawResponse: RawHttpResponse = {
@@ -63,8 +63,8 @@ export function createListPetsRouter(_local_router?: IRouter | undefined): IRout
     '/pets',
     async (_local_request: Request, _local_response: Response, _local_next: NextFunction): Promise<void> => {
       const _local_toolkit: ExpressToolkit = { request: _local_request, response: _local_response, next: _local_next }
-      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_qslhlh']
-      const _local_api: SwaggerPetstoreApi = _local_response.locals['_local___oats_api_qslhlh']
+      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_84oaoa']
+      const _local_api: SwaggerPetstoreJsonApi = _local_response.locals['_local___oats_api_84oaoa']
       try {
         const _local_query = await _local_adapter.getQueryParameters<ListPetsQueryParameters>(
           _local_toolkit,
@@ -73,7 +73,7 @@ export function createListPetsRouter(_local_router?: IRouter | undefined): IRout
         const _local_typedRequest: ListPetsServerRequest = {
           query: _local_query,
         }
-        const _local_corsConfig = swaggerPetstoreCorsConfiguration?.['/pets']?.get
+        const _local_corsConfig = swaggerPetstoreJsonCorsConfiguration?.['/pets']?.get
         const _local_corsHeaders = await _local_adapter.getCorsHeaders(_local_toolkit, _local_corsConfig)
         const _local_typedResponse = await _local_api._local_listPets(_local_typedRequest)
         const _local_rawResponse: RawHttpResponse = {
@@ -99,8 +99,8 @@ export function createShowPetByIdRouter(_local_router?: IRouter | undefined): IR
     '/pets/:petId',
     async (_local_request: Request, _local_response: Response, _local_next: NextFunction): Promise<void> => {
       const _local_toolkit: ExpressToolkit = { request: _local_request, response: _local_response, next: _local_next }
-      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_qslhlh']
-      const _local_api: SwaggerPetstoreApi = _local_response.locals['_local___oats_api_qslhlh']
+      const _local_adapter: ServerAdapter<ExpressToolkit> = _local_response.locals['_local___oats_adapter_84oaoa']
+      const _local_api: SwaggerPetstoreJsonApi = _local_response.locals['_local___oats_api_84oaoa']
       try {
         const _local_path = await _local_adapter.getPathParameters<ShowPetByIdPathParameters>(
           _local_toolkit,
@@ -109,7 +109,7 @@ export function createShowPetByIdRouter(_local_router?: IRouter | undefined): IR
         const _local_typedRequest: ShowPetByIdServerRequest = {
           path: _local_path,
         }
-        const _local_corsConfig = swaggerPetstoreCorsConfiguration?.['/pets/{petId}']?.get
+        const _local_corsConfig = swaggerPetstoreJsonCorsConfiguration?.['/pets/{petId}']?.get
         const _local_corsHeaders = await _local_adapter.getCorsHeaders(_local_toolkit, _local_corsConfig)
         const _local_typedResponse = await _local_api._local_showPetById(_local_typedRequest)
         const _local_rawResponse: RawHttpResponse = {

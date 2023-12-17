@@ -13,7 +13,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
   return (router ?? Router())
     .options('/nested-obj', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/nested-obj']?.[method]
@@ -25,7 +25,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/arr-obj', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/arr-obj']?.[method]
@@ -35,9 +35,21 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
         adapter.handleError(toolkit, error)
       }
     })
+    .options('/nullable-prim-obj', async (request: Request, response: Response, next: NextFunction) => {
+      const toolkit: ExpressToolkit = { request, response, next }
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
+      try {
+        const method = adapter.getAccessControlRequestedMethod(toolkit)
+        const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/nullable-prim-obj']?.[method]
+        const corsHeaders = await adapter.getPreflightCorsHeaders(toolkit, method, corsConfig)
+        await adapter.respond(toolkit, { headers: corsHeaders })
+      } catch (error) {
+        adapter.handleError(toolkit, error)
+      }
+    })
     .options('/prim-obj', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/prim-obj']?.[method]
@@ -49,7 +61,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/bool-arr', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/bool-arr']?.[method]
@@ -61,7 +73,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/enm-arr', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/enm-arr']?.[method]
@@ -73,7 +85,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/num-arr', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/num-arr']?.[method]
@@ -85,7 +97,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/str-arr', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/str-arr']?.[method]
@@ -97,7 +109,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/opt-prim-tuple', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/opt-prim-tuple']?.[method]
@@ -109,7 +121,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/prim-tuple', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/prim-tuple']?.[method]
@@ -121,7 +133,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/bool', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/bool']?.[method]
@@ -133,7 +145,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/enm', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/enm']?.[method]
@@ -145,7 +157,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/num', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/num']?.[method]
@@ -157,7 +169,7 @@ export function createBodiesCorsRouter(router?: IRouter | undefined): IRouter {
     })
     .options('/str', async (request: Request, response: Response, next: NextFunction) => {
       const toolkit: ExpressToolkit = { request, response, next }
-      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_14n8ypu']
+      const adapter: ServerAdapter<ExpressToolkit> = response.locals['__oats_adapter_1qzwl9e']
       try {
         const method = adapter.getAccessControlRequestedMethod(toolkit)
         const corsConfig = method === undefined ? undefined : bodiesCorsConfiguration?.['/str']?.[method]

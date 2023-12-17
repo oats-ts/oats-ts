@@ -8,6 +8,7 @@ import {
   EnumType,
   ObjectWithArrays,
   ObjectWithNestedObjects,
+  ObjectWithNullablePrimitives,
   ObjectWithPrimitives,
   PrimitiveOptionalTupleType,
   PrimitiveTupleType,
@@ -71,6 +72,16 @@ export type NestedObjRequest =
   | {
       mimeType: 'application/yaml'
       body: ObjectWithNestedObjects
+    }
+
+export type NullablePrimObjRequest =
+  | {
+      mimeType: 'application/json'
+      body: ObjectWithNullablePrimitives
+    }
+  | {
+      mimeType: 'application/yaml'
+      body: ObjectWithNullablePrimitives
     }
 
 export type NumArrRequest =
