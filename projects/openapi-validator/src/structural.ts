@@ -34,6 +34,7 @@ export const factories = {
   literalSchemaObject: () => {
     const schemaShape: ShapeInput<SchemaObject> = {
       type: optional(string()),
+      nullable: optional(boolean()),
       const: union({
         string: string(),
         number: number(),
@@ -49,6 +50,7 @@ export const factories = {
   tupleSchemaObject: () => {
     const schemaShape: ShapeInput<SchemaObject> = {
       type: optional(literal('array')),
+      nullable: optional(boolean()),
       description: optional(string()),
       minItems: optional(number()),
       prefixItems: optional(array(items(object()))),
@@ -58,6 +60,7 @@ export const factories = {
   arraySchemaObject: () => {
     const schemaShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
+      nullable: optional(boolean()),
       type: optional(literal('array')),
       items: object(),
     }
@@ -67,6 +70,7 @@ export const factories = {
     const discUnionShape: ShapeInput<SchemaObject> = {
       type: optional(literal('object')),
       description: optional(string()),
+      nullable: optional(boolean()),
       discriminator: object(
         shape<DiscriminatorObject>({
           propertyName: string(),
@@ -92,6 +96,7 @@ export const factories = {
   enumSchemaObject: () => {
     const enumShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
+      nullable: optional(boolean()),
       type: optional(string()),
       enum: array(minLength(1)),
     }
@@ -100,6 +105,7 @@ export const factories = {
   parameterEnumSchemaObject: () => {
     const enumShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
+      nullable: optional(boolean()),
       type: optional(
         union({
           integer: literal('integer'),
@@ -126,6 +132,7 @@ export const factories = {
   objectSchemaObject: () => {
     const objectSchemaShape: ShapeInput<SchemaObject> = {
       type: optional(literal('object')),
+      nullable: optional(boolean()),
       required: optional(array(items(string()))),
       properties: optional(object()),
       description: optional(string()),
@@ -136,6 +143,7 @@ export const factories = {
   intersectionSchemaObject: () => {
     const intersectionShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
+      nullable: optional(boolean()),
       allOf: array(combine(items(object()), minLength(1))),
     }
     return object(combine(shape<SchemaObject>(intersectionShape), restrictKeys(Object.keys(intersectionShape))))
@@ -143,6 +151,7 @@ export const factories = {
   nonDiscriminatedUnionSchemaObject: () => {
     const nonDiscUnionShape: ShapeInput<SchemaObject> = {
       description: optional(string()),
+      nullable: optional(boolean()),
       type: optional(literal('object')),
       oneOf: array(minLength(1)),
     }
@@ -157,6 +166,7 @@ export const factories = {
         number: literal('number'),
         integer: literal('integer'),
       }),
+      nullable: optional(boolean()),
     }
     return object(combine(shape(primitiveShape), restrictKeys(Object.keys(primitiveShape))))
   },
@@ -165,6 +175,7 @@ export const factories = {
       type: optional(literal('object')),
       description: optional(string()),
       additionalProperties: object(),
+      nullable: optional(boolean()),
     }
     return object(combine(shape<SchemaObject>(recordShape), restrictKeys(Object.keys(recordShape))))
   },
