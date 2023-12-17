@@ -96,7 +96,21 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
 
     if (this.type.isReferenceObject(data)) {
       return this.getReferenceAssertionAst(data, variable)
-    } else if (this.type.isUnionSchema(data)) {
+    }
+    const baseAssertion = this.getNonNullableTypeAssertion(data, variable)
+    if (data.nullable) {
+      const nullAssertion = factory.createBinaryExpression(
+        variable,
+        SyntaxKind.EqualsEqualsEqualsToken,
+        factory.createNull(),
+      )
+      return reduceLogicalExpressions(SyntaxKind.BarBarToken, [nullAssertion, baseAssertion])
+    }
+    return baseAssertion
+  }
+
+  protected getNonNullableTypeAssertion(data: SchemaObject, variable: Expression): Expression {
+    if (this.type.isUnionSchema(data)) {
       return this.getUnionTypeAssertionAst(data, variable)
     } else if (this.type.isEnumSchema(data)) {
       return this.getEnumAssertionAst(data, variable)
@@ -323,7 +337,6 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
         const isOptional: boolean = (data.required ?? []).indexOf(name) < 0
         return isOptional
           ? getLogicalExpression(SyntaxKind.BarBarToken, [
-              factory.createBinaryExpression(memberVar, SyntaxKind.EqualsEqualsEqualsToken, factory.createNull()),
               factory.createBinaryExpression(
                 memberVar,
                 SyntaxKind.EqualsEqualsEqualsToken,
@@ -418,7 +431,6 @@ export class JsonSchemaTypeGuardsGenerator extends SchemaBasedCodeGenerator<Type
         return itemAssert
       }
       return reduceLogicalExpressions(SyntaxKind.BarBarToken, [
-        factory.createBinaryExpression(itemAst, SyntaxKind.EqualsEqualsEqualsToken, factory.createNull()),
         factory.createBinaryExpression(
           itemAst,
           SyntaxKind.EqualsEqualsEqualsToken,

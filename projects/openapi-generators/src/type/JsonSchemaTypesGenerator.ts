@@ -54,6 +54,11 @@ export class JsonSchemaTypesGenerator extends SchemaBasedCodeGenerator<TypesGene
     if (this.type.isReferenceObject(data)) {
       return this.getTypeReferenceAst(data)
     }
+    const typeAst = this.getNonNullableRighthandSideTypeAst(data)
+    return data.nullable ? factory.createUnionTypeNode([typeAst, factory.createTypeReferenceNode('null')]) : typeAst
+  }
+
+  protected getNonNullableRighthandSideTypeAst(data: SchemaObject) {
     if (this.type.isArraySchema(data)) {
       return this.getArrayTypeAst(data)
     } else if (this.type.isEnumSchema(data)) {
