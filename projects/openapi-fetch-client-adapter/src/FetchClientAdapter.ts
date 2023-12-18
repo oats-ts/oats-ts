@@ -10,7 +10,7 @@ import {
   ResponseHeadersParameters,
 } from '@oats-ts/openapi-http'
 import { isFailure } from '@oats-ts/try'
-import { configure, ConfiguredValidator, DefaultConfig, stringify, Validator } from '@oats-ts/validators'
+import { configure, ConfiguredValidator, DefaultConfig, Issue, stringify, Validator } from '@oats-ts/validators'
 import {
   DefaultCookieSerializer,
   DefaultHeaderDeserializer,
@@ -156,30 +156,34 @@ export class FetchClientAdapter implements ClientAdapter {
       const validatorsForStatus =
         validators[statusCode] ?? validators[this.getStatusCodeRange(statusCode)] ?? validators.default
 
-      // In case the status code returned by the server was not found among the expectations, throw.
+      // In case the status code returned by the server was not found among the expectations.
       if (validatorsForStatus === undefined || validatorsForStatus === null) {
         const statusCodes = Object.keys(validators)
-        const statusCodesHint =
-          statusCodes.length === 1
-            ? `Expected "${statusCodes[0]}".`
-            : `Expected one of ${statusCodes.map((code) => `${code}`).join(',')}`
-        throw new Error(`Unexpected status code: "${statusCode}". ${statusCodesHint} (body: ${response.body})`)
-      }
-
-      // In case the mime type returned by the server was not found amount expectations, throw.
-      if (typeof mimeType !== 'string' || typeof validatorsForStatus[mimeType] !== 'function') {
-        const mimeTypes = Object.keys(validatorsForStatus)
-        const mimeTypesHint =
-          mimeTypes.length === 1
-            ? `Expected "${mimeTypes[0]}".`
-            : `Expected one of ${mimeTypes.map((type) => `"${type}"`).join(',')}`
-        throw new Error(`Unexpected mime type: "${mimeType}". ${mimeTypesHint} (body: ${response.body})`)
-      }
-
-      const validator = this.configureResponseBodyValidator(validatorsForStatus[mimeType])
-      const issues = validator(response.body)
-      if (issues.length !== 0) {
-        throw new Error(issues.map(stringify).join('\n'))
+        this.handleResponseIssues([this.getStatusCodeIssue(statusCode, response.body, statusCodes)])
+        // Status code was ok
+      } else {
+        // In case the mime type returned by the server was not found amount expectations.
+        if (typeof mimeType !== 'string' || typeof validatorsForStatus[mimeType] !== 'function') {
+          const mimeTypes = Object.keys(validatorsForStatus)
+          const mimeTypesHint =
+            mimeTypes.length === 1
+              ? `Expected "${mimeTypes[0]}".`
+              : `Expected one of ${mimeTypes.map((type) => `"${type}"`).join(',')}`
+          const issue: Issue = {
+            message: `Unexpected mime type: "${mimeType}". ${mimeTypesHint} (body: ${response.body})`,
+            path: 'headers["content-type"]',
+            severity: 'error',
+          }
+          this.handleResponseIssues([issue])
+          // Mime-type was ok
+        } else {
+          // Check if the response body matches expectations
+          const validator = this.configureResponseBodyValidator(validatorsForStatus[mimeType])
+          const issues = validator(response.body)
+          if (issues.length !== 0) {
+            this.handleResponseIssues(issues)
+          }
+        }
       }
     }
 
@@ -202,22 +206,37 @@ export class FetchClientAdapter implements ClientAdapter {
 
     const descriptor =
       descriptors[statusCode] ?? descriptors[this.getStatusCodeRange(statusCode)] ?? descriptors.default
+
+    // Unexpected status code
     if (descriptor === undefined || descriptor === null) {
       const statusCodes = Object.keys(descriptors)
-      const mimeTypesHint =
-        statusCodes.length === 1
-          ? `Expected "${statusCodes[0]}".`
-          : `Expected one of ${statusCodes.map((type) => `${type}`).join(',')}`
-      throw new Error(`Unexpected status code: ${statusCode}. ${mimeTypesHint} (body: ${response.body})`)
+      this.handleResponseIssues([this.getStatusCodeIssue(statusCode, response.body, statusCodes)])
+      // Status code ok
+    } else {
+      // Deserialize & validate response headers
+      const headers = new DefaultHeaderDeserializer(descriptor).deserialize(response.headers ?? {})
+      if (isFailure(headers)) {
+        this.handleResponseIssues(headers.issues)
+        return undefined
+      }
+      return headers.data
     }
-    if (response.headers === null || response.headers === undefined) {
-      throw new Error(`Response headers should not be ${response.headers} (body: ${response.body})`)
+  }
+
+  protected getStatusCodeIssue(statusCode: number, body: any | undefined, statusCodes: string[]): Issue {
+    const statusCodesHint =
+      statusCodes.length === 1
+        ? `Expected "${statusCodes[0]}".`
+        : `Expected one of ${statusCodes.map((type) => `${type}`).join(',')}`
+    return {
+      message: `Unexpected status code: ${statusCode}. ${statusCodesHint} (body: ${body})`,
+      severity: 'error',
+      path: 'statusCode',
     }
-    const headers = new DefaultHeaderDeserializer(descriptor).deserialize(response.headers)
-    if (isFailure(headers)) {
-      throw new Error(`Failed to deserialize response headers:\n${headers.issues.map(stringify).join('\n')}`)
-    }
-    return headers.data
+  }
+
+  protected handleResponseIssues(issues: Issue[]): void {
+    throw new Error(issues.map(stringify).join('\n'))
   }
 
   protected getRequestInit(request: RawHttpRequest): any | undefined {
